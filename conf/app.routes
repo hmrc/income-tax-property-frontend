@@ -19,3 +19,5 @@ GET         /account/sign-out                            controllers.auth.AuthCo
 GET         /account/signed-out                          controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad
+
+GET         /:taxYear/summary                            controllers.SummaryController.show(taxYear: Int)
