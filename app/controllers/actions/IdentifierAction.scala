@@ -22,11 +22,12 @@ import controllers.routes
 import models.requests.IdentifierRequest
 import play.api.mvc.Results._
 import play.api.mvc._
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
-import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
+import uk.gov.hmrc.auth.core.retrieve.~
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-
 import scala.concurrent.{ExecutionContext, Future}
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
@@ -42,33 +43,48 @@ class AuthenticatedIdentifierAction @Inject()(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised().retrieve(Retrievals.internalId) {
-      _.map {
-        internalId => block(IdentifierRequest(request, internalId))
-      }.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id"))
-    } recover {
+    authorised()
+      .retrieve(
+        Retrievals.affinityGroup and
+          Retrievals.internalId
+      ) {
+        case Some(Individual) ~ Some(internalId) =>
+          block(IdentifierRequest(request, internalId, isAgent = false))
+        case Some(Agent) ~ Some(internalId) =>
+          block(IdentifierRequest(request, internalId, isAgent = true))
+      }.recoverWith {
       case _: NoActiveSession =>
-        Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+        Future.successful(Redirect(config.loginUrl))
+      case _: BearerTokenExpired =>
+        Future.successful(Redirect(config.loginUrl))
       case _: AuthorisationException =>
-        Redirect(routes.UnauthorisedController.onPageLoad)
+        Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     }
   }
 }
 
-class SessionIdentifierAction @Inject()(
-                                         val parser: BodyParsers.Default
+class SessionIdentifierAction @Inject()(val authConnector: AuthConnector,
+                                        val parser: BodyParsers.Default
                                        )
-                                       (implicit val executionContext: ExecutionContext) extends IdentifierAction {
+                                       (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
-    hc.sessionId match {
-      case Some(session) =>
-        block(IdentifierRequest(request, session.value))
-      case None =>
-        Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-    }
+    authorised()
+        .retrieve(
+          Retrievals.affinityGroup
+        ) {
+          case Some(affinityGroup) =>
+            (affinityGroup, hc.sessionId) match {
+              case (Agent, Some(session)) =>
+                block(IdentifierRequest(request, session.value, isAgent = true))
+              case (Individual, Some(session)) =>
+                block(IdentifierRequest(request, session.value, isAgent = false))
+              case (_, None) =>
+                Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+            }
+          case _ => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        }(hc, executionContext)
   }
 }
