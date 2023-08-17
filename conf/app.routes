@@ -21,9 +21,9 @@ GET         /account/signed-out                          controllers.auth.Signed
 GET         /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
 GET         /:taxYear/summary                            controllers.SummaryController.show(taxYear: Int)
-GET        /expensesLessThan1000                        controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = NormalMode)
-POST       /expensesLessThan1000                        controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = NormalMode)
-GET        /changeExpensesLessThan1000                  controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = CheckMode)
-POST       /changeExpensesLessThan1000                  controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = CheckMode)
+GET         /expenses-less-than-1000                     controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = NormalMode)
+POST        /expenses-less-than-1000                     controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = NormalMode)
+GET         /change-expenses-less-than-1000              controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = CheckMode)
+POST        /change-expenses-less-than-1000              controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = CheckMode)
 
-GET        /propertyRentalsStart                       controllers.PropertyRentalsStartController.onPageLoad()
+GET         /property-rentals-start                      controllers.PropertyRentalsStartController.onPageLoad()
