@@ -60,3 +60,12 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+expensesLessThan1000.title = expensesLessThan1000
+expensesLessThan1000.heading = expensesLessThan1000
+expensesLessThan1000.checkYourAnswersLabel = expensesLessThan1000
+expensesLessThan1000.error.required = Select yes if expensesLessThan1000
+expensesLessThan1000.change.hidden = ExpensesLessThan1000
+
+propertyRentalsStart.title = propertyRentalsStart
+propertyRentalsStart.heading = propertyRentalsStart
