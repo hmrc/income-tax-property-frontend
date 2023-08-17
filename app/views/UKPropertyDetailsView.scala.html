@@ -26,17 +26,17 @@
 
 @layout(pageTitle = titleNoForm(messages(s"uKPropertyDetails.title.${individualOrAgent}"))) {
 
-    <h1 class="govuk-heading-xl">@messages("uKPropertyDetails.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("uKPropertyDetails.heading")</h1>
 
     <p class="govuk-body">@messages("uKPropertyDetails.para1")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-     <li>@messages("uKPropertyDetails.bullet1")</li>
-     <li>@messages("uKPropertyDetails.bullet2")</li>
+     <li>@messages(s"uKPropertyDetails.bullet1.${individualOrAgent}")</li>
+     <li>@messages(s"uKPropertyDetails.bullet2.${individualOrAgent}")</li>
     </ul>
 
-    <p class="govuk-body">@messages(s"uKPropertyDetails.para2.part1.${individualOrAgent}")
-    <a href="#">@messages(s"uKPropertyDetails.para2.part2.${individualOrAgent}")</a>
+    <p class="govuk-body">@messages("uKPropertyDetails.para2.part1")
+    <a href="#">@messages("uKPropertyDetails.para2.part2")</a>
     @messages("uKPropertyDetails.para2.part3")</p>
 
     <p class="govuk-body">
