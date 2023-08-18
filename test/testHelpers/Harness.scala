@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package testHelpers
 
-import models.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import controllers.actions.IdentifierAction
+import play.api.mvc.Results
 
-import scala.concurrent.{ExecutionContext, Future}
-
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
-
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
-    Future(OptionalDataRequest(request.request, request.userId, request.isAgent, dataToReturn))
-
-  override protected implicit val executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
+class Harness(authAction: IdentifierAction) {
+  def onPageLoad() = authAction { _ => Results.Ok }
 }

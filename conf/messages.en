@@ -60,3 +60,27 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+uKPropertyDetails.title.individual = UK Property details
+uKPropertyDetails.title.agent = UK Property details
+uKPropertyDetails.heading = UK Property details
+uKPropertyDetails.para1 = You previously told us:
+uKPropertyDetails.bullet1.individual = You started renting your properties on {0}
+uKPropertyDetails.bullet1.agent = That your client started renting their properties on {0}
+uKPropertyDetails.bullet2.individual = Your accounting method is: Traditional (accrual)
+uKPropertyDetails.bullet2.agent = Their accounting method is: Traditional (accrual)
+uKPropertyDetails.para2.part1 = If these details are wrong you can
+uKPropertyDetails.para2.part2 = go back to your online account
+uKPropertyDetails.para2.part3 = to change them.
+uKPropertyDetails.button = Continue
+
+totalIncome.title.individual = How much total income did you get from your UK properties?
+totalIncome.title.agent = How much total income did your client get from all of their properties?
+totalIncome.heading.individual = How much total income did you get from your UK properties?
+totalIncome.heading.agent = How much total income did your client get from all of their properties?
+totalIncome.under = Under £1000
+totalIncome.between = Between £1000 and £85000
+totalIncome.over = Over £85000
+totalIncome.checkYourAnswersLabel = This is the amount before any deductions have been made.
+totalIncome.error.required = Select how much total income you got from your UK properties
+totalIncome.change.hidden = totalIncome

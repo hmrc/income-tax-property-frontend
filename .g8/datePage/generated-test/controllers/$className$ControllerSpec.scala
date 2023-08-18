@@ -119,7 +119,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
         val result = route(application, getRequest).value
@@ -131,7 +131,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
         val result = route(application, postRequest()).value

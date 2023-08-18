@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package forms
 
-import models.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import javax.inject.Inject
 
-import scala.concurrent.{ExecutionContext, Future}
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.TotalIncome
 
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
+class TotalIncomeFormProvider @Inject() extends Mappings {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
-    Future(OptionalDataRequest(request.request, request.userId, request.isAgent, dataToReturn))
-
-  override protected implicit val executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
+  def apply(): Form[TotalIncome] =
+    Form(
+      "value" -> enumerable[TotalIncome]("totalIncome.error.required")
+    )
 }
