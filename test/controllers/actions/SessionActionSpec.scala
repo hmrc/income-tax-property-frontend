@@ -20,6 +20,9 @@ import base.SpecBase
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.FakeAuthConnector
+import testHelpers.Retrievals.Ops
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.SessionKeys
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -36,12 +39,12 @@ class SessionActionSpec extends SpecBase {
 
       "must redirect to the session expired page" in {
 
-        val application = applicationBuilder(userAnswers = None).build()
+        val application = applicationBuilder(userAnswers = None, true).build()
 
         running(application){
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-          val sessionAction = new SessionIdentifierAction(bodyParsers)
+          val sessionAction = new SessionIdentifierAction(new FakeAuthConnector(Some(Agent)), bodyParsers)
 
           val controller = new Harness(sessionAction)
 
@@ -57,12 +60,12 @@ class SessionActionSpec extends SpecBase {
 
       "must perform the action" in {
 
-        val application = applicationBuilder(userAnswers = None).build()
+        val application = applicationBuilder(userAnswers = None, true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-          val sessionAction = new SessionIdentifierAction(bodyParsers)
+          val sessionAction = new SessionIdentifierAction(new FakeAuthConnector(Some(Agent)), bodyParsers)
 
           val controller = new Harness(sessionAction)
 

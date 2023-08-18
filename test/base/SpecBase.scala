@@ -26,6 +26,7 @@ import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.mvc.{BodyParsers, PlayBodyParsers}
 import play.api.test.FakeRequest
 
 trait SpecBase
@@ -38,15 +39,24 @@ trait SpecBase
 
   val userAnswersId: String = "id"
 
-  def emptyUserAnswers : UserAnswers = UserAnswers(userAnswersId)
+  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None, isAgent: Boolean): GuiceApplicationBuilder = {
+    val fakeIdentifierAction = {
+      if (isAgent) {
+        bind[IdentifierAction].to[FakeAgentIdentifierAction]
+      } else {
+        bind[IdentifierAction].to[FakeIndividualIdentifierAction]
+      }
+    }
+
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[IdentifierAction].to[FakeIdentifierAction],
+        fakeIdentifierAction,
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
+  }
 }

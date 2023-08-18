@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package pages
 
-import models.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
-
-import scala.concurrent.{ExecutionContext, Future}
-
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
-
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
-    Future(OptionalDataRequest(request.request, request.userId, request.isAgent, dataToReturn))
-
-  override protected implicit val executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
-}
+object UKPropertyDetailsPage extends Page {}

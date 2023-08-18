@@ -18,6 +18,7 @@ package viewmodels.govuk
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.button.Button
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
+import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 
 object button extends ButtonFluency
 
@@ -45,6 +46,9 @@ trait ButtonFluency {
         element   = Some("input"),
         inputType = Some(inputType)
       )
+
+    def withId(id: String): Button =
+      button.copy(id = Some(id))
 
     def withName(name: String): Button =
       button.copy(name = Some(name))
