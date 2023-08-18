@@ -22,10 +22,17 @@ GET         /unauthorised                                controllers.Unauthorise
 
 GET         /:taxYear/summary                            controllers.SummaryController.show(taxYear: Int)
 
+GET         /expenses-less-than-1000                     controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = NormalMode)
+POST        /expenses-less-than-1000                     controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = NormalMode)
+GET         /change-expenses-less-than-1000              controllers.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = CheckMode)
+POST        /change-expenses-less-than-1000              controllers.ExpensesLessThan1000Controller.onSubmit(mode: Mode = CheckMode)
+
+GET         /property-rentals-start                      controllers.PropertyRentalsStartController.onPageLoad()
+
 GET         /uk-property-details                         controllers.UKPropertyDetailsController.onPageLoad
 
-GET        /totalIncome                                  controllers.TotalIncomeController.onPageLoad(mode: Mode = NormalMode)
-POST       /totalIncome                                  controllers.TotalIncomeController.onSubmit(mode: Mode = NormalMode)
+GET         /totalIncome                                 controllers.TotalIncomeController.onPageLoad(mode: Mode = NormalMode)
+POST        /totalIncome                                 controllers.TotalIncomeController.onSubmit(mode: Mode = NormalMode)
 
-GET        /changetotalIncome                            controllers.TotalIncomeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changetotalIncome                            controllers.TotalIncomeController.onSubmit(mode: Mode = CheckMode)
+GET         /changetotalIncome                           controllers.TotalIncomeController.onPageLoad(mode: Mode = CheckMode)
+POST        /changetotalIncome                           controllers.TotalIncomeController.onSubmit(mode: Mode = CheckMode)

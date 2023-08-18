@@ -61,6 +61,17 @@ signedOut.guidance = We did not save your answers.
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
+expensesLessThan1000.title = Expenses less than £1000
+expensesLessThan1000.heading = Expenses less than £1000
+expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1000
+expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
+expensesLessThan1000.error.required.agent = Select yes if your client's total expenses were less than £1,000
+expensesLessThan1000.change.hidden = Expenses less than £1000
+
+propertyRentalsStart.title = Property rentals
+propertyRentalsStart.heading = Property rentals
+propertyRentalsStart.p1 = You'll need information about your income and expenses to answer the questions starting on the next page.
+
 uKPropertyDetails.title.individual = UK Property details
 uKPropertyDetails.title.agent = UK Property details
 uKPropertyDetails.heading = UK Property details
