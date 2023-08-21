@@ -28,7 +28,8 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case UKPropertyDetailsPage => _ => routes.TotalIncomeController.onPageLoad(NormalMode)
-    case TotalIncomePage => _ => routes.SummaryController.show(2023)
+    case TotalIncomePage => _ => routes.UKPropertySelectController.onPageLoad()
+    case UKPropertySelectPage => _ => routes.SummaryController.show(2023)
     case _ => _ => routes.IndexController.onPageLoad
   }
 
