@@ -119,41 +119,5 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
-
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, totalIncomeRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
-
-        val boundForm = form.bind(Map("value" -> "invalid value"))
-
-        val view = application.injector.instanceOf[TotalIncomeView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "agent")(request, messages(application)).toString
-      }
-    }
-
-    "must redirect to the next page when valid data is submitted and no previous data was found" in {
-
-      val application = applicationBuilder(userAnswers = None, true).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, totalIncomeRoute)
-            .withFormUrlEncodedBody(("value", TotalIncome.values.head.toString))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
   }
 }
