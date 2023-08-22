@@ -35,7 +35,7 @@
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages(s"totalIncome.heading.${individualOrAgent}")).withSize(LegendSize.Medium),
+                legend = LegendViewModel(messages(s"totalIncome.heading.${individualOrAgent}")).asPageHeading(),
                 items  = TotalIncome.options
             )
         )
