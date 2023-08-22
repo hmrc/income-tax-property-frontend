@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import models.NormalMode
 
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,6 +46,6 @@ class UKPropertyDetailsController @Inject()(
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
-      Ok(view(request.isAgentMessageKey))
+      Redirect(routes.TotalIncomeController.onPageLoad(NormalMode))
   }
 }
