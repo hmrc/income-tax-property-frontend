@@ -84,6 +84,7 @@ propertyRentalsStart.details.p4 = If your rental is jointly let you only need to
 propertyRentalsStart.details.p5 = Read more about
 propertyRentalsStart.details.p5.link.text = how to work out your rental income when you let property (opens in new tab)
 propertyRentalsStart.details.p5.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
+propertyRentalsStart.button = Continue
 
 uKPropertyDetails.title.individual = UK Property details
 uKPropertyDetails.title.agent = UK Property details
