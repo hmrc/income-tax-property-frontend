@@ -15,7 +15,7 @@
  *@
 
 @import models.NormalMode
-@import routes.TotalIncomeController
+@import routes.UKPropertyDetailsController
 
 @this(
         layout: templates.Layout,
@@ -42,7 +42,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("uKPropertyDetails.button"))
-                .asLink(TotalIncomeController.onPageLoad(NormalMode).url)
+                .asLink(UKPropertyDetailsController.onSubmit.url)
                 .withId("continue")
         )
     </p>

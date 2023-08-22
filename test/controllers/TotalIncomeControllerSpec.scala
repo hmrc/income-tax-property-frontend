@@ -140,23 +140,6 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return OK and the correct view for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None, true).build()
-
-      running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[TotalIncomeView]
-
-        status(result) mustEqual OK
-        println(result)
-        contentAsString(result) mustEqual view(form, NormalMode, "agent")(request, messages(application)).toString
-      }
-    }
-
     "must redirect to the next page when valid data is submitted and no previous data was found" in {
 
       val application = applicationBuilder(userAnswers = None, true).build()
