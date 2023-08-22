@@ -64,12 +64,13 @@ signedOut.guidance = We did not save your answers.
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-expensesLessThan1000.title = Expenses less than £1000
-expensesLessThan1000.heading = Expenses less than £1000
-expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1000
+expensesLessThan1000.title = Expenses less than £1,000
+expensesLessThan1000.heading = Expenses less than £1,000
+expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
+expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
 expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
 expensesLessThan1000.error.required.agent = Select yes if your client's total expenses were less than £1,000
-expensesLessThan1000.change.hidden = Expenses less than £1000
+expensesLessThan1000.change.hidden = Expenses less than £1,000
 
 propertyRentalsStart.title = Property rentals
 propertyRentalsStart.heading = Property rentals
