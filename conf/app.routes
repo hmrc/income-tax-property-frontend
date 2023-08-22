@@ -37,6 +37,7 @@ POST        /totalIncome                                 controllers.TotalIncome
 GET         /changetotalIncome                           controllers.TotalIncomeController.onPageLoad(mode: Mode = CheckMode)
 POST        /changetotalIncome                           controllers.TotalIncomeController.onSubmit(mode: Mode = CheckMode)
 
+
 GET        /uk-property-select                           controllers.UKPropertySelectController.onPageLoad(mode: Mode = NormalMode)
 POST       /uk-property-select                           controllers.UKPropertySelectController.onSubmit(mode: Mode = NormalMode)
 

@@ -1,0 +1,32 @@
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("claimPropertyIncomeAllowance.title"))) {
+
+    @formHelper(action = routes.ClaimPropertyIncomeAllowanceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+
+    <h1 class="govuk-heading-l">@messages("claimPropertyIncomeAllowance.heading")</h1>
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        @govukRadios(
+            RadiosViewModel.yesNo(
+                field = form("value"),
+                legend = LegendViewModel(messages("claimPropertyIncomeAllowance.legend")).asPageHeading(LegendSize.Medium)
+            )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+        )
+    }
+}
