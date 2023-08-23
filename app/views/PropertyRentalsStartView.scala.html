@@ -24,5 +24,35 @@
 @layout(pageTitle = titleNoForm(messages("propertyRentalsStart.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("propertyRentalsStart.heading")</h1>
-    <p>@messages("propertyRentalsStart.p1")</p>
+    <p class="govuk-body">@messages("propertyRentalsStart.p1")</p>
+    <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          @messages("propertyRentalsStart.details")
+        </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p class="govuk-body">@messages("propertyRentalsStart.details.p1")</p>
+            <ul id="thing">
+                <li>@messages("propertyRentalsStart.details.l1")</li>
+                <li>@messages("propertyRentalsStart.details.l2")</li>
+            </ul>
+            <p class="govuk-body">@messages("propertyRentalsStart.details.p2")</p>
+            <p class="govuk-body">@messages("propertyRentalsStart.details.p3")</p>
+            <p class="govuk-body">@messages("propertyRentalsStart.details.p4")</p>
+            <p class="govuk-body">@messages("propertyRentalsStart.details.p5")
+                <a href="@messages("propertyRentalsStart.details.p5.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("propertyRentalsStart.details.p5.link.text")
+                </a>.
+            </p>
+        </div>
+    </details>
+
+    <p class="govuk-body">
+        @govukButton(
+        ButtonViewModel(messages("propertyRentalsStart.button"))
+        .asLink(ExpensesLessThan1000Controller.onPageLoad(NormalMode).url)
+        .withId("continue")
+        )
+    </p>
 }

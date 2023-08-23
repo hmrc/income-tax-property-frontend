@@ -26,12 +26,12 @@
     showBackLink = true
 ) {
 
-    <h1 class="govuk-heading-l">@messages("summary.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("summary.aboutUKProperties.heading")</h1>
 
     <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
         <li class="app-task-list__item">
             <span class="app-task-list__task-name">
-                <a class="govuk-link" id="about_link" href="@routes.UKPropertyDetailsController.onPageLoad">@messages(s"common.about")</a>
+                <a class="govuk-link" id="about_uk_properties_link" href="@routes.UKPropertyDetailsController.onPageLoad">@messages(s"summary.aboutUKProperties")</a>
             </span>
             <span class="hmrc-status-tag">
                 @{
@@ -41,4 +41,20 @@
             </span>
         </li>
     </ol>
+
+<h2 class="govuk-heading-l">@messages("summary.rentals.heading")</h2>
+
+<ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
+    <li class="app-task-list__item">
+            <span class="app-task-list__task-name">
+                <a class="govuk-link" id="about_rentals_link" href="@routes.PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
+            </span>
+        <span class="hmrc-status-tag">
+                @{
+                    val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
+                    govukTag(tag)
+                }
+            </span>
+    </li>
+</ol>
 }
