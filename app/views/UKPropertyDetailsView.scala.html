@@ -42,7 +42,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("uKPropertyDetails.button"))
-                .asLink(UKPropertyDetailsController.onSubmit().url)
+                .asLink(UKPropertyDetailsController.onSubmit.url)
                 .withId("continue")
         )
     </p>

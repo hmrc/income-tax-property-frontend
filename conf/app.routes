@@ -29,8 +29,8 @@ POST        /change-expenses-less-than-1000              controllers.ExpensesLes
 
 GET         /property-rentals-start                      controllers.PropertyRentalsStartController.onPageLoad()
 
-GET         /uk-property-details                         controllers.UKPropertyDetailsController.onPageLoad()
-POST        /uk-property-details                         controllers.UKPropertyDetailsController.onSubmit()
+GET         /uk-property-details                         controllers.UKPropertyDetailsController.onPageLoad
+POST        /uk-property-details                         controllers.UKPropertyDetailsController.onSubmit
 
 GET         /totalIncome                                 controllers.TotalIncomeController.onPageLoad(mode: Mode = NormalMode)
 POST        /totalIncome                                 controllers.TotalIncomeController.onSubmit(mode: Mode = NormalMode)

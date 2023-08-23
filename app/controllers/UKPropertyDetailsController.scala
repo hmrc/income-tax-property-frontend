@@ -36,12 +36,12 @@ class UKPropertyDetailsController @Inject()(
                                        sessionService: SessionService
                                            ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = identify {
+  def onPageLoad: Action[AnyContent] = identify {
     implicit request =>
       Ok(view(request.isAgentMessageKey))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData) {
+  def onSubmit: Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
