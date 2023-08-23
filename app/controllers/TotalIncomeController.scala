@@ -47,7 +47,7 @@ class TotalIncomeController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)

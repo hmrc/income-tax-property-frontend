@@ -40,12 +40,4 @@ class UKPropertyDetailsController @Inject()(
     implicit request =>
       Ok(view(request.isAgentMessageKey))
   }
-
-  def onSubmit: Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      if (request.userAnswers.isEmpty) {
-        sessionService.createNewEmptySession(request.userId)
-      }
-      Redirect(routes.TotalIncomeController.onPageLoad(NormalMode))
-  }
 }
