@@ -27,4 +27,6 @@ case class OptionalDataRequest[A](request: Request[A],
   def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
 }
 
-case class DataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers) extends WrappedRequest[A](request)
+case class DataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers, isAgent: Boolean) extends WrappedRequest[A](request) {
+  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
+}

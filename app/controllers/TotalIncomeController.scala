@@ -25,7 +25,7 @@ import navigation.Navigator
 import pages.TotalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.TotalIncomeView
 
@@ -33,13 +33,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TotalIncomeController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        formProvider: TotalIncomeFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
+                                       sessionService: SessionService,
+                                       navigator: Navigator,
                                        view: TotalIncomeView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -47,7 +47,7 @@ class TotalIncomeController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -56,7 +56,7 @@ class TotalIncomeController @Inject()(
       Ok(view(preparedForm, mode, request.isAgentMessageKey))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -65,8 +65,8 @@ class TotalIncomeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(TotalIncomePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomePage, value))
+            _              <- sessionService.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TotalIncomePage, mode, updatedAnswers))
       )
   }

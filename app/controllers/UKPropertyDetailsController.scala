@@ -17,9 +17,12 @@
 package controllers
 
 import controllers.actions._
+import models.NormalMode
+
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UKPropertyDetailsView
 
@@ -29,8 +32,9 @@ class UKPropertyDetailsController @Inject()(
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: UKPropertyDetailsView
-                                     ) extends FrontendBaseController with I18nSupport {
+                                       view: UKPropertyDetailsView,
+                                       sessionService: SessionService
+                                           ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify {
     implicit request =>
