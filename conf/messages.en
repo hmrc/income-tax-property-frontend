@@ -2,6 +2,8 @@ service.name = Update and submit an Income Tax Return
 
 common.notStarted = Not started
 
+summary.title = About your UK Properties
+
 summary.aboutUKProperties.heading = About your UK Properties
 summary.aboutUKProperties = About
 
