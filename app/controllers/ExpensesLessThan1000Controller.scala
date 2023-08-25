@@ -18,13 +18,14 @@ package controllers
 
 import controllers.actions._
 import forms.ExpensesLessThan1000FormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.ExpensesLessThan1000Page
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ExpensesLessThan1000View
 
@@ -32,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ExpensesLessThan1000Controller @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
+                                         sessionService: SessionService,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
@@ -65,7 +66,7 @@ class ExpensesLessThan1000Controller @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesLessThan1000Page, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _              <- sessionService.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, mode, updatedAnswers))
       )
   }
