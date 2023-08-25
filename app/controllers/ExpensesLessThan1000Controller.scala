@@ -43,25 +43,27 @@ class ExpensesLessThan1000Controller @Inject()(
                                          view: ExpensesLessThan1000View
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+
+      val form = formProvider(request.isAgentMessageKey)
 
       val preparedForm = request.userAnswers.get(ExpensesLessThan1000Page) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, request.isAgentMessageKey))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
+      val form = formProvider(request.isAgentMessageKey)
+
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, request.isAgentMessageKey))),
 
         value =>
           for {

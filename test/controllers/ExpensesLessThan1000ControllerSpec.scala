@@ -38,7 +38,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ExpensesLessThan1000FormProvider()
-  val form = formProvider()
+  val form = formProvider("individual")
 
   lazy val expensesLessThan1000Route = routes.ExpensesLessThan1000Controller.onPageLoad(NormalMode).url
 
@@ -56,7 +56,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ExpensesLessThan1000View]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -74,7 +74,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -120,7 +120,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
