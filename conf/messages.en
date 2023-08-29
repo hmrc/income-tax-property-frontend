@@ -2,8 +2,8 @@ service.name = Update and submit an Income Tax Return
 
 common.notStarted = Not started
 
+summary.heading = About your UK Properties
 summary.title = About your UK Properties
-
 summary.aboutUKProperties.heading = About your UK Properties
 summary.aboutUKProperties = About
 
@@ -124,3 +124,16 @@ totalIncome.over = Over £85000
 totalIncome.checkYourAnswersLabel = This is the amount before any deductions have been made.
 totalIncome.error.required = Select how much total income you got from your UK properties
 totalIncome.change.hidden = totalIncome
+
+ukPropertySelect.title.individual = Select UK property
+ukPropertySelect.title.agent = UK property selected
+ukPropertySelect.heading.individual = UK property
+ukPropertySelect.heading.message = Please select all that apply
+ukPropertySelect.heading.agent = UK property
+ukPropertySelect.error.required = Please select a valid UK Property option
+ukPropertySelect.error.required.agent = No UK Property selected
+ukPropertySelect.property.rentals = Property rentals
+ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
+ukPropertySelect.rent.a.room = Rent a room
+ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
+ukPropertySelect.change.hidden = UK Property

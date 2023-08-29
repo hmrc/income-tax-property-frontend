@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models._
-import org.scalacheck.{Arbitrary, Gen}
-
-trait ModelGenerators {
-
-  implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
-    Arbitrary {
-      Gen.oneOf(UKPropertySelect.values)
-    }
-
-  implicit lazy val arbitrarytotalIncome: Arbitrary[TotalIncome] =
-    Arbitrary {
-      Gen.oneOf(TotalIncome.values.toSeq)
-    }
-}
+object UKPropertySelectPage extends Page {}

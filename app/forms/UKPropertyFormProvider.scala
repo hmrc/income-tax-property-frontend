@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.{Arbitrary, Gen}
+import javax.inject.Inject
 
-trait ModelGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.set
+import models.UKPropertySelect
 
-  implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
-    Arbitrary {
-      Gen.oneOf(UKPropertySelect.values)
-    }
+class UKPropertyFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitrarytotalIncome: Arbitrary[TotalIncome] =
-    Arbitrary {
-      Gen.oneOf(TotalIncome.values.toSeq)
-    }
+  def apply(): Form[Set[UKPropertySelect]] =
+    Form(
+      "value" -> set(enumerable[UKPropertySelect]("ukPropertySelect.error.required")).verifying(nonEmptySet("ukPropertySelect.error.required"))
+    )
 }

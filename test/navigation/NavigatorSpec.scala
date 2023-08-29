@@ -44,7 +44,7 @@ class NavigatorSpec extends SpecBase {
       "most go from TotalIncomePage to the summary page" in {
         navigator.nextPage(
           TotalIncomePage, NormalMode, UserAnswers("test")
-        ) mustBe routes.SummaryController.show(2023)
+        ) mustBe routes.UKPropertySelectController.onPageLoad()
       }
     }
 
