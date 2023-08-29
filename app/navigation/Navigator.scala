@@ -30,6 +30,7 @@ class Navigator @Inject()() {
     case UKPropertyDetailsPage => _ => routes.TotalIncomeController.onPageLoad(NormalMode)
     case TotalIncomePage => _ => routes.UKPropertySelectController.onPageLoad()
     case UKPropertySelectPage => _ => routes.SummaryController.show(2023)
+    case UKPropertyPage => _ => routes.CheckYourAnswersController.onPageLoad
     case _ => _ => routes.IndexController.onPageLoad
   }
 
