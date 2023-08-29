@@ -3,6 +3,7 @@ service.name = Update and submit an Income Tax Return
 common.notStarted = Not started
 
 summary.heading = About your UK Properties
+summary.title = About your UK Properties
 summary.aboutUKProperties.heading = About your UK Properties
 summary.aboutUKProperties = About
 
@@ -67,27 +68,34 @@ unauthorised.heading = You can’t access this service with this account
 
 expensesLessThan1000.title = Expenses less than £1,000
 expensesLessThan1000.heading = Expenses less than £1,000
-expensesLessThan1000.legend = Are your total expenses less than £1,000?
-expensesLessThan1000.legend.agent = Are your client's total expenses less than £1,000?
+expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
+expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
 expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
 expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
 expensesLessThan1000.p2 = Read more about
 expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
 expensesLessThan1000.p2.link.text = tax-free allowances on property and trading income (opens in new tab)
-expensesLessThan1000.error.required = Select yes if your total expenses were less than £1,000
-expensesLessThan1000.error.required.agent = Select yes if your client's total expenses were less than £1,000
+expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
+expensesLessThan1000.error.required.agent = Select yes if your client’s total expenses were less than £1,000
 expensesLessThan1000.change.hidden = Expenses less than £1,000
 
 propertyRentalsStart.title = Property rentals
 propertyRentalsStart.heading = Property rentals
-propertyRentalsStart.p1 = You’ll need information about your income and expenses to answer the questions starting on the next page.
-propertyRentalsStart.details = Understanding how to work out your income from property rentals
-propertyRentalsStart.details.p1 = You must pay tax on any profit you make from renting out property. How much you pay depends on:
-propertyRentalsStart.details.l1 = how much profit you make
-propertyRentalsStart.details.l2 = your personal circumstances
-propertyRentalsStart.details.p2 = Your profit is the amount left once you’ve taken away your allowable expenses from your total rental income.
+propertyRentalsStart.p1.individual = You’ll need information about your income and expenses to answer the questions starting on the next page.
+propertyRentalsStart.p1.agent = You’ll need information about your client’s income and expenses to answer the questions starting on the next page.
+propertyRentalsStart.details.individual = Understanding how to work out your income from property rentals
+propertyRentalsStart.details.agent = Understanding how to work out your client’s income from property rentals
+propertyRentalsStart.details.p1.individual = You must pay tax on any profit you make from renting out property. How much you pay depends on:
+propertyRentalsStart.details.p1.agent = Your client must pay tax on any profit they make from renting out property. How much they pay depends on:
+propertyRentalsStart.details.l1.individual = how much profit you make
+propertyRentalsStart.details.l1.agent = how much profit they make
+propertyRentalsStart.details.l2.individual = your personal circumstances
+propertyRentalsStart.details.l2.agent = their personal circumstances
+propertyRentalsStart.details.p2.individual = Your profit is the amount left once you’ve taken away your allowable expenses from your total rental income.
+propertyRentalsStart.details.p2.agent = Profit is the amount left once you’ve taken away the allowable expenses from the total rental income.
 propertyRentalsStart.details.p3 = Profits and losses from overseas properties must be kept separate from properties in the UK.
-propertyRentalsStart.details.p4 = If your rental is jointly let you only need to tell us about your share of the income for the property.
+propertyRentalsStart.details.p4.individual = If your rental is jointly let you only need to tell us about your share of the income for the property.
+propertyRentalsStart.details.p4.agent = If your client’s property is jointly let just tell us about their share of the income from their property.
 propertyRentalsStart.details.p5 = Read more about
 propertyRentalsStart.details.p5.link.text = how to work out your rental income when you let property (opens in new tab)
 propertyRentalsStart.details.p5.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income

@@ -37,7 +37,7 @@ class PropertyRentalsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[PropertyRentalsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view("individual")(request, messages(application)).toString
       }
     }
   }

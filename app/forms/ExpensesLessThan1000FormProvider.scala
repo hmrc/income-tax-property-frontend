@@ -23,8 +23,8 @@ import play.api.data.Form
 
 class ExpensesLessThan1000FormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean("expensesLessThan1000.error.required")
+      "value" -> boolean(s"expensesLessThan1000.error.required.${individualOrAgent}")
     )
 }
