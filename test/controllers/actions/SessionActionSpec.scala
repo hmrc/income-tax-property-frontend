@@ -21,7 +21,6 @@ import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import testHelpers.FakeAuthConnector
-import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.SessionKeys
 

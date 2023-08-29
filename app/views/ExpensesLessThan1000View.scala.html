@@ -24,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("expensesLessThan1000.title"))) {
 
@@ -47,7 +47,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("expensesLessThan1000.legend")).withSize(LegendSize.Medium)
+                legend = LegendViewModel(messages(s"expensesLessThan1000.legend.${individualOrAgent}")).withSize(LegendSize.Medium)
             )
         )
 

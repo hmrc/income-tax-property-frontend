@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class ExpensesLessThan1000FormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "expensesLessThan1000.error.required"
+  val requiredKey = "expensesLessThan1000.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ExpensesLessThan1000FormProvider()()
+  val form = new ExpensesLessThan1000FormProvider()("individual")
 
   ".value" - {
 
