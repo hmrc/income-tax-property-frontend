@@ -24,9 +24,9 @@ import viewmodels.govuk.checkbox._
 sealed trait UKPropertySelect
 
 object UKPropertySelect extends Enumerable.Implicits {
-  private case object PropertyRentals extends WithName("property.rentals") with UKPropertySelect
-  private case object FurnishedHolidayLettings extends WithName("furnished.holiday.lettings") with UKPropertySelect
-  private case object RentARoom extends WithName("rent.a.room") with UKPropertySelect
+  case object PropertyRentals extends WithName("property.rentals") with UKPropertySelect
+  case object FurnishedHolidayLettings extends WithName("furnished.holiday.lettings") with UKPropertySelect
+  case object RentARoom extends WithName("rent.a.room") with UKPropertySelect
 
   val values: Seq[UKPropertySelect] = Seq(
     PropertyRentals,

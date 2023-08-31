@@ -19,7 +19,7 @@
     govukTag: GovukTag
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(showPropertyRentals: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("summary.title")),
@@ -42,19 +42,21 @@
         </li>
     </ol>
 
-<h2 class="govuk-heading-l">@messages("summary.rentals.heading")</h2>
+    @if(showPropertyRentals){
+        <h2 class="govuk-heading-l">@messages("summary.rentals.heading")</h2>
 
-<ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
-    <li class="app-task-list__item">
-            <span class="app-task-list__task-name">
-                <a class="govuk-link" id="about_rentals_link" href="@routes.PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
-            </span>
-        <span class="hmrc-status-tag">
-                @{
-                    val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
-                    govukTag(tag)
-                }
-            </span>
-    </li>
-</ol>
+        <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
+            <li class="app-task-list__item">
+                    <span class="app-task-list__task-name">
+                        <a class="govuk-link" id="about_rentals_link" href="@routes.PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
+                    </span>
+                <span class="hmrc-status-tag">
+                        @{
+                            val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
+                            govukTag(tag)
+                        }
+                    </span>
+            </li>
+        </ol>
+    }
 }
