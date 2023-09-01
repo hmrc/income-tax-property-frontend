@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.propertyrentals
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class ExpensesLessThan1000FormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  def apply(individualOrAgent: String): Form[Boolean] =
+class ClaimPropertyIncomeAllowanceFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean(s"expensesLessThan1000.error.required.${individualOrAgent}")
+      "value" -> boolean("claimPropertyIncomeAllowance.error.required")
     )
 }

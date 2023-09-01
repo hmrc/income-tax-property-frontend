@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import base.SpecBase
+import controllers.propertyrentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.PropertyRentalsStartView
+import views.html.propertyrentals.PropertyRentalsStartView
 
 class PropertyRentalsStartControllerSpec extends SpecBase {
 
@@ -30,7 +31,7 @@ class PropertyRentalsStartControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.PropertyRentalsStartController.onPageLoad().url)
+        val request = FakeRequest(GET, propertyrentals.routes.PropertyRentalsStartController.onPageLoad().url)
 
         val result = route(application, request).value
 

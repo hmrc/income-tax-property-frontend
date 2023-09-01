@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import controllers.propertyrentals.routes._
+
 @this(
     layout: templates.Layout,
     govukTag: GovukTag
@@ -48,7 +50,7 @@
         <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="about_rentals_link" href="@routes.PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
+                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
                     </span>
                 <span class="hmrc-status-tag">
                         @{

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import controllers.actions._
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.PropertyRentalsStartView
+import views.html.propertyrentals.PropertyRentalsStartView
+
+import javax.inject.Inject
 
 class PropertyRentalsStartController @Inject()(
                                        override val messagesApi: MessagesApi,

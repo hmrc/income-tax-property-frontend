@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.propertyrentals
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object ExpensesLessThan1000Page extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ toString
+class ExpensesLessThan1000FormProvider @Inject() extends Mappings {
 
-  override def toString: String = "expensesLessThan1000"
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "value" -> boolean(s"expensesLessThan1000.error.required.${individualOrAgent}")
+    )
 }

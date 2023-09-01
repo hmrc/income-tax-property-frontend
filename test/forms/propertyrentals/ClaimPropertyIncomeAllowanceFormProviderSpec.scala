@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class ExpensesLessThan1000FormProviderSpec extends BooleanFieldBehaviours {
+class ClaimPropertyIncomeAllowanceFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "expensesLessThan1000.error.required.individual"
+  val requiredKey = "claimPropertyIncomeAllowance.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new ExpensesLessThan1000FormProvider()("individual")
+  val form = new ClaimPropertyIncomeAllowanceFormProvider()()
 
   ".value" - {
 
