@@ -16,21 +16,30 @@
 
 package controllers
 
-import controllers.actions.IdentifierAction
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import models.UKPropertySelect
+import pages.UKPropertyPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
 
 import javax.inject.Inject
+import scala.collection.Set
+import scala.collection.immutable.Set
 
 class SummaryController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  identify: IdentifierAction,
+                                 getData: DataRetrievalAction,
                                  view: SummaryView
                                ) extends FrontendBaseController with I18nSupport {
 
-  def show(taxYear: Int): Action[AnyContent] = identify { implicit request =>
-    Ok(view())
+  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    val containsPropertyRental = request.userAnswers
+      .flatMap(_.get(UKPropertyPage))
+      .exists(_.contains(UKPropertySelect.PropertyRentals))
+    val showPropertyRentals = containsPropertyRental
+    Ok(view(showPropertyRentals))
   }
 }
