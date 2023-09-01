@@ -126,12 +126,12 @@ totalIncome.error.required = Select how much total income you got from your UK p
 totalIncome.change.hidden = totalIncome
 
 ukPropertySelect.title.individual = Select UK property
-ukPropertySelect.title.agent = UK property selected
+ukPropertySelect.title.agent = Select UK property
 ukPropertySelect.heading.individual = UK property
 ukPropertySelect.heading.message = Please select all that apply
 ukPropertySelect.heading.agent = UK property
 ukPropertySelect.error.required = Please select a valid UK Property option
-ukPropertySelect.error.required.agent = No UK Property selected
+ukPropertySelect.error.required.agent = Please select a valid UK Property option
 ukPropertySelect.property.rentals = Property rentals
 ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
