@@ -14,62 +14,59 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import controllers.actions._
-import forms.ExpensesLessThan1000FormProvider
-
-import javax.inject.Inject
+import forms.propertyrentals.ClaimPropertyIncomeAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ExpensesLessThan1000Page
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.SessionService
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ExpensesLessThan1000View
+import views.html.propertyrentals.ClaimPropertyIncomeAllowanceView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ExpensesLessThan1000Controller @Inject()(
+class ClaimPropertyIncomeAllowanceController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         sessionService: SessionService,
+                                         sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: ExpensesLessThan1000FormProvider,
+                                         formProvider: ClaimPropertyIncomeAllowanceFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ExpensesLessThan1000View
+                                         view: ClaimPropertyIncomeAllowanceView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val form = formProvider(request.isAgentMessageKey)
-
-      val preparedForm = request.userAnswers.get(ExpensesLessThan1000Page) match {
+      val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowancePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, request.isAgentMessageKey))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val form = formProvider(request.isAgentMessageKey)
-
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesLessThan1000Page, value))
-            _              <- sessionService.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, mode, updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowancePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(ClaimPropertyIncomeAllowancePage, mode, updatedAnswers))
       )
   }
 }

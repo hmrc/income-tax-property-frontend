@@ -14,67 +14,68 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import base.SpecBase
-import forms.ExpensesLessThan1000FormProvider
+import controllers.{propertyrentals, routes}
+import forms.propertyrentals.ClaimPropertyIncomeAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ExpensesLessThan1000Page
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ExpensesLessThan1000View
+import views.html.propertyrentals.ClaimPropertyIncomeAllowanceView
 
 import scala.concurrent.Future
 
-class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
+class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ExpensesLessThan1000FormProvider()
-  val form = formProvider("individual")
+  val formProvider = new ClaimPropertyIncomeAllowanceFormProvider()
+  val form = formProvider()
 
-  lazy val expensesLessThan1000Route = routes.ExpensesLessThan1000Controller.onPageLoad(NormalMode).url
+  lazy val claimPropertyIncomeAllowanceRoute = propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode).url
 
-  "ExpensesLessThan1000 Controller" - {
+  "ClaimPropertyIncomeAllowance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, expensesLessThan1000Route)
+        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ExpensesLessThan1000View]
+        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ExpensesLessThan1000Page, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, expensesLessThan1000Route)
+        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
 
-        val view = application.injector.instanceOf[ExpensesLessThan1000View]
+        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +86,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -94,7 +95,7 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, expensesLessThan1000Route)
+          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -106,30 +107,30 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, expensesLessThan1000Route)
+          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[ExpensesLessThan1000View]
+        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, expensesLessThan1000Route)
+        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
 
         val result = route(application, request).value
 
@@ -140,11 +141,11 @@ class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, expensesLessThan1000Route)
+          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

@@ -137,3 +137,9 @@ ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
 ukPropertySelect.change.hidden = UK Property
+
+claimPropertyIncomeAllowance.title = claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.heading = claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance

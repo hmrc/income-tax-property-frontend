@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.propertyrentals.routes._
 
 @this(
     layout: templates.Layout,
@@ -30,7 +31,7 @@
 
     <h1 class="govuk-heading-xl">@messages("expensesLessThan1000.heading")</h1>
 
-    @formHelper(action = routes.ExpensesLessThan1000Controller.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ExpensesLessThan1000Controller.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
