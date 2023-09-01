@@ -36,10 +36,9 @@ class SummaryController @Inject()(
                                ) extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    val containsPropertyRental = request.userAnswers.flatMap(_.get(UKPropertyPage)) match {
-      case Some(thing) => thing.contains(UKPropertySelect.PropertyRentals)
-      case _ => false
-    }
+    val containsPropertyRental = request.userAnswers
+      .flatMap(_.get(UKPropertyPage))
+      .exists(_.contains(UKPropertySelect.PropertyRentals))
     val showPropertyRentals = containsPropertyRental
     Ok(view(showPropertyRentals))
   }
