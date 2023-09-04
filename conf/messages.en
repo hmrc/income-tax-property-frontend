@@ -144,14 +144,14 @@ claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowanc
 claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 
-calculatedFigureYourself.title = calculatedFigureYourself
-calculatedFigureYourself.heading = calculatedFigureYourself
-calculatedFigureYourself.checkYourAnswersLabel = calculatedFigureYourself
-calculatedFigureYourself.error.required = Select yes if calculatedFigureYourself
-calculatedFigureYourself.change.hidden = CalculatedFigureYourself
+calculatedFigureYourself.title = Deducting tax from non-UK landlords
+calculatedFigureYourself.heading = Have you calculated the figure yourself?
+calculatedFigureYourself.checkYourAnswersLabel = Have you calculated the figure yourself?
+calculatedFigureYourself.error.required = Select yes if you've calculated the premium for the grant of a lease taxable amount
+calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
 
-leasePremiumPayment.title = leasePremiumPayment
-leasePremiumPayment.heading = leasePremiumPayment
-leasePremiumPayment.checkYourAnswersLabel = leasePremiumPayment
-leasePremiumPayment.error.required = Select yes if leasePremiumPayment
-leasePremiumPayment.change.hidden = LeasePremiumPayment
+leasePremiumPayment.title = Property income allowance
+leasePremiumPayment.heading = Premiums for the grant of a lease
+leasePremiumPayment.checkYourAnswersLabel = Premiums for the grant of a lease
+leasePremiumPayment.error.required = Select yes if you received a payment to take on a lease
+leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
