@@ -28,7 +28,8 @@
     showBackLink = true
 ) {
 
-    <h1 class="govuk-heading-l">@messages("summary.aboutUKProperties.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
+    <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
 
     <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
         <li class="app-task-list__item">
@@ -45,7 +46,7 @@
     </ol>
 
     @if(showPropertyRentals){
-        <h2 class="govuk-heading-l">@messages("summary.rentals.heading")</h2>
+        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
 
         <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
             <li class="app-task-list__item">

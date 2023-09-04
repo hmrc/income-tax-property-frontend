@@ -14,9 +14,12 @@
  * limitations under the License.
  *@
 
+@import routes.SummaryController
+
 @this(
     layout: templates.Layout,
-    govukSummaryList: GovukSummaryList
+    govukSummaryList: GovukSummaryList,
+    govukButton: GovukButton
 )
 
 @(list: SummaryList)(implicit request: Request[_], messages: Messages)
@@ -26,4 +29,9 @@
     <h1 class="govuk-heading-xl">@messages("checkYourAnswers.heading")</h1>
 
     @govukSummaryList(list)
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+            .asLink(SummaryController.show(2023).url)
+    )
 }
