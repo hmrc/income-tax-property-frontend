@@ -44,3 +44,13 @@ GET        /claim-property-income-allowance              controllers.propertyren
 POST       /claim-property-income-allowance              controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(mode: Mode = NormalMode)
 GET        /change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(mode: Mode = CheckMode)
+
+GET        /calculated-figure-yourself                   controllers.CalculatedFigureYourselfController.onPageLoad(mode: Mode = NormalMode)
+POST       /calculated-figure-yourself                   controllers.CalculatedFigureYourselfController.onSubmit(mode: Mode = NormalMode)
+GET        /change-calculated-figure-yourself            controllers.CalculatedFigureYourselfController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-calculated-figure-yourself            controllers.CalculatedFigureYourselfController.onSubmit(mode: Mode = CheckMode)
+
+GET        /lease-premium-payment                        controllers.LeasePremiumPaymentController.onPageLoad(mode: Mode = NormalMode)
+POST       /lease-premium-payment                        controllers.LeasePremiumPaymentController.onSubmit(mode: Mode = NormalMode)
+GET        /change-lease-premium-payment                 controllers.LeasePremiumPaymentController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-lease-premium-payment                 controllers.LeasePremiumPaymentController.onSubmit(mode: Mode = CheckMode)

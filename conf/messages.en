@@ -143,3 +143,15 @@ claimPropertyIncomeAllowance.heading = claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
+
+calculatedFigureYourself.title = calculatedFigureYourself
+calculatedFigureYourself.heading = calculatedFigureYourself
+calculatedFigureYourself.checkYourAnswersLabel = calculatedFigureYourself
+calculatedFigureYourself.error.required = Select yes if calculatedFigureYourself
+calculatedFigureYourself.change.hidden = CalculatedFigureYourself
+
+leasePremiumPayment.title = leasePremiumPayment
+leasePremiumPayment.heading = leasePremiumPayment
+leasePremiumPayment.checkYourAnswersLabel = leasePremiumPayment
+leasePremiumPayment.error.required = Select yes if leasePremiumPayment
+leasePremiumPayment.change.hidden = LeasePremiumPayment
