@@ -18,13 +18,15 @@ package controllers
 
 import controllers.actions._
 import forms.DeductingTaxFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.DeductingTaxPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.DeductingTaxView
 
@@ -38,16 +40,17 @@ class DeductingTaxController @Inject()(
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
                                          formProvider: DeductingTaxFormProvider,
+                                         sessionService: SessionService,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: DeductingTaxView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.get(DeductingTaxPage) match {
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
