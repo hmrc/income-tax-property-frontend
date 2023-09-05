@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
-import pages.propertyrentals.ExpensesLessThan1000Page
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 
 class NavigatorSpec extends SpecBase {
 
@@ -64,6 +64,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ExpensesLessThan1000Page, NormalMode, UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode)
+      }
+
+      "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
+        navigator.nextPage(
+          ClaimPropertyIncomeAllowancePage, NormalMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad
       }
 
     }
