@@ -163,3 +163,9 @@ leasePremiumPayment.details.p3 = Any premiums for the grant of a lease are regar
 leasePremiumPayment.question = Did you receive a payment to take on a lease?
 leasePremiumPayment.error.required = Select yes if you received a payment to take on a lease
 leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
+
+deductingTax.title = deductingTax
+deductingTax.heading = deductingTax
+deductingTax.checkYourAnswersLabel = deductingTax
+deductingTax.error.required = Select yes if deductingTax
+deductingTax.change.hidden = DeductingTax
