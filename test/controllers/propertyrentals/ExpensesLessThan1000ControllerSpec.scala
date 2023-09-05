@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class ExpensesLessThan1000ControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute = Call("GET", "/claim-property-income-allowance")
 
   val formProvider = new ExpensesLessThan1000FormProvider()
   val form = formProvider("individual")

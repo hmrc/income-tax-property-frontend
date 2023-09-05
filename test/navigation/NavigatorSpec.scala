@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
+import pages.propertyrentals.ExpensesLessThan1000Page
 
 class NavigatorSpec extends SpecBase {
 
@@ -35,17 +36,36 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
       }
 
-      "must go from UKPropertyDetailsPage to TotalIncomePage" in {
+      "must go from UKPropertyDetailsPage to Total Income" in {
         navigator.nextPage(
           UKPropertyDetailsPage, NormalMode, UserAnswers("test")
         ) mustBe routes.TotalIncomeController.onPageLoad(NormalMode)
       }
 
-      "most go from TotalIncomePage to the summary page" in {
+      "must go from TotalIncomePage to the UK property select page" in {
         navigator.nextPage(
           TotalIncomePage, NormalMode, UserAnswers("test")
         ) mustBe routes.UKPropertySelectController.onPageLoad()
       }
+
+      "most go from UKPropertySelectPage to the summary page" in {
+        navigator.nextPage(
+          UKPropertySelectPage, NormalMode, UserAnswers("test")
+        ) mustBe routes.SummaryController.show(2023)
+      }
+
+      "must go from UKPropertyPage to Check Your Answers" in {
+        navigator.nextPage(
+          UKPropertyPage, NormalMode, UserAnswers("test")
+        ) mustBe routes.CheckYourAnswersController.onPageLoad
+      }
+
+      "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
+        navigator.nextPage(
+          ExpensesLessThan1000Page, NormalMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode)
+      }
+
     }
 
     "in Check mode" - {
