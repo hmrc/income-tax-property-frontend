@@ -57,7 +57,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -75,7 +75,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -121,7 +121,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 

@@ -139,8 +139,17 @@ ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
 ukPropertySelect.change.hidden = UK Property
 
-claimPropertyIncomeAllowance.title = claimPropertyIncomeAllowance
-claimPropertyIncomeAllowance.heading = claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.title.individual = Do you want to claim property income allowance?
+claimPropertyIncomeAllowance.title.agent = Does your client want to claim property income allowance?
+claimPropertyIncomeAllowance.heading = Claiming property income allowance
+claimPropertyIncomeAllowance.details.summary = Understanding property income allowance
+claimPropertyIncomeAllowance.details.content = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances. Read more about
+claimPropertyIncomeAllowance.details.content.link.text = tax-free allowances on property and trading income
+claimPropertyIncomeAllowance.details.content.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+claimPropertyIncomeAllowance.legend.individual = Do you want to claim property income allowance?
+claimPropertyIncomeAllowance.legend.agent = Does your client want to claim property income allowance?
+claimPropertyIncomeAllowance.yes = Yes, claim property income allowance
+claimPropertyIncomeAllowance.no = No, claim expenses
 claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
