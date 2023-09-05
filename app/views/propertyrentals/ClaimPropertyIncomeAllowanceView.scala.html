@@ -29,6 +29,8 @@
 
 @layout(pageTitle = title(form, messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}"))) {
 
+    <h1 class="govuk-heading-l">@messages("claimPropertyIncomeAllowance.heading")</h1>
+
     @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -41,18 +43,19 @@
                   @messages("claimPropertyIncomeAllowance.details.summary")
                 </span>
             </summary>
-            <p>
-                @messages("claimPropertyIncomeAllowance.details.content")
-            </p>
-            <a href="@messages("claimPropertyIncomeAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-            @messages("claimPropertyIncomeAllowance.details.content.link.text")
-            </a>
+            <div class="govuk-details__text">
+                <p class="govuk-body">@messages("claimPropertyIncomeAllowance.details.content")
+                    <a href="@messages("claimPropertyIncomeAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("claimPropertyIncomeAllowance.details.content.link.text")
+                    </a>
+                </p>
+            </div>
         </details>
 
         @govukRadios(
             RadiosViewModel.yesNoWithOtherNames(
                 field = form("value"),
-                legend = LegendViewModel(messages("claimPropertyIncomeAllowance.heading")).asPageHeading(),
+                legend = LegendViewModel(messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 yesText = "claimPropertyIncomeAllowance.yes",
                 noText = "claimPropertyIncomeAllowance.no"
             )

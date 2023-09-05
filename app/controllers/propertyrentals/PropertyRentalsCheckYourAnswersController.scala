@@ -21,6 +21,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers.propertyrentals.{ClaimPropertyIncomeAllowanceSummary, ExpensesLessThan1000Summary}
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.CheckYourAnswersView
 
@@ -37,7 +38,10 @@ class PropertyRentalsCheckYourAnswersController @Inject()(
     implicit request =>
 
       val list = SummaryListViewModel(
-        rows = Seq.empty
+        rows = Seq(
+          ExpensesLessThan1000Summary.row(request.userAnswers),
+          ClaimPropertyIncomeAllowanceSummary.row(request.userAnswers)
+        ).flatten
       )
 
       Ok(view(list))

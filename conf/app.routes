@@ -22,13 +22,6 @@ GET         /unauthorised                                controllers.Unauthorise
 
 GET         /:taxYear/summary                            controllers.SummaryController.show(taxYear: Int)
 
-GET         /expenses-less-than-1000                     controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = NormalMode)
-POST        /expenses-less-than-1000                     controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(mode: Mode = NormalMode)
-GET         /change-expenses-less-than-1000              controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = CheckMode)
-POST        /change-expenses-less-than-1000              controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(mode: Mode = CheckMode)
-
-GET         /property-rentals-start                      controllers.propertyrentals.PropertyRentalsStartController.onPageLoad()
-
 GET         /uk-property-details                         controllers.UKPropertyDetailsController.onPageLoad
 
 GET         /totalIncome                                 controllers.TotalIncomeController.onPageLoad(mode: Mode = NormalMode)
@@ -40,11 +33,21 @@ POST        /changetotalIncome                           controllers.TotalIncome
 GET         /uk-property-select                           controllers.UKPropertySelectController.onPageLoad(mode: Mode = NormalMode)
 POST        /uk-property-select                           controllers.UKPropertySelectController.onSubmit(mode: Mode = NormalMode)
 
+############## Property rentals
+
+GET         /property-rentals-start                      controllers.propertyrentals.PropertyRentalsStartController.onPageLoad()
+
+GET         /expenses-less-than-1000                     controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = NormalMode)
+POST        /expenses-less-than-1000                     controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(mode: Mode = NormalMode)
+GET         /change-expenses-less-than-1000              controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(mode: Mode = CheckMode)
+POST        /change-expenses-less-than-1000              controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(mode: Mode = CheckMode)
+
 GET         /claim-property-income-allowance              controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(mode: Mode = NormalMode)
 POST        /claim-property-income-allowance              controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(mode: Mode = NormalMode)
-
 GET         /change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(mode: Mode = CheckMode)
+
+GET         /property-rentals/check-your-answers          controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onPageLoad
 
 GET         /calculated-figure-yourself                   controllers.CalculatedFigureYourselfController.onPageLoad(mode: Mode = NormalMode)
 POST        /calculated-figure-yourself                   controllers.CalculatedFigureYourselfController.onSubmit(mode: Mode = NormalMode)

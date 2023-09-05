@@ -16,6 +16,7 @@
 
 @this(
     layout: templates.Layout,
+    govukButton: GovukButton,
     govukSummaryList: GovukSummaryList
 )
 
@@ -26,4 +27,8 @@
     <h1 class="govuk-heading-xl">@messages("checkYourAnswers.heading")</h1>
 
     @govukSummaryList(list)
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).asLink(controllers.routes.SummaryController.show(2023).url)
+    )
 }

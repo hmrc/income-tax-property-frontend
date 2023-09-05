@@ -67,19 +67,6 @@ signedOut.guidance = We did not save your answers.
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-expensesLessThan1000.title = Expenses less than £1,000
-expensesLessThan1000.heading = Expenses less than £1,000
-expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
-expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
-expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
-expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
-expensesLessThan1000.p2 = Read more about
-expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
-expensesLessThan1000.p2.link.text = tax-free allowances on property and trading income (opens in new tab)
-expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
-expensesLessThan1000.error.required.agent = Select yes if your client’s total expenses were less than £1,000
-expensesLessThan1000.change.hidden = Expenses less than £1,000
-
 propertyRentalsStart.title = Property rentals
 propertyRentalsStart.heading = Property rentals
 propertyRentalsStart.p1.individual = You’ll need information about your income and expenses to answer the questions starting on the next page.
@@ -139,12 +126,25 @@ ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
 ukPropertySelect.change.hidden = UK Property
 
+expensesLessThan1000.title = Expenses less than £1,000
+expensesLessThan1000.heading = Expenses less than £1,000
+expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
+expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
+expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
+expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
+expensesLessThan1000.p2 = Read more about
+expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+expensesLessThan1000.p2.link.text = tax-free allowances on property and trading income (opens in new tab)
+expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
+expensesLessThan1000.error.required.agent = Select yes if your client’s total expenses were less than £1,000
+expensesLessThan1000.change.hidden = Expenses less than £1,000
+
 claimPropertyIncomeAllowance.title.individual = Do you want to claim property income allowance?
 claimPropertyIncomeAllowance.title.agent = Does your client want to claim property income allowance?
 claimPropertyIncomeAllowance.heading = Claiming property income allowance
 claimPropertyIncomeAllowance.details.summary = Understanding property income allowance
 claimPropertyIncomeAllowance.details.content = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances. Read more about
-claimPropertyIncomeAllowance.details.content.link.text = tax-free allowances on property and trading income
+claimPropertyIncomeAllowance.details.content.link.text = tax-free allowances on property and trading income (opens in a new tab)
 claimPropertyIncomeAllowance.details.content.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
 claimPropertyIncomeAllowance.legend.individual = Do you want to claim property income allowance?
 claimPropertyIncomeAllowance.legend.agent = Does your client want to claim property income allowance?
