@@ -164,8 +164,13 @@ leasePremiumPayment.question = Did you receive a payment to take on a lease?
 leasePremiumPayment.error.required = Select yes if you received a payment to take on a lease
 leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
 
-deductingTax.title = deductingTax
-deductingTax.heading = deductingTax
+deductingTax.title = Deducting Tax from non-uk landlords
+deductingTax.heading = Deducting Tax from non-uk landlords
 deductingTax.checkYourAnswersLabel = deductingTax
 deductingTax.error.required = Select yes if deductingTax
 deductingTax.change.hidden = DeductingTax
+deductingTax.legend = Did you have tax deducted?
+deductingTax.yes = Yes
+deductingTax.no = No
+deductingTax.yes.text = How much tax was deducted?
+deductingTax.link = Paying tax as a non-uk landlord
