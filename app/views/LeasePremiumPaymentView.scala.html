@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -26,6 +28,24 @@
 
 @layout(pageTitle = title(form, messages("leasePremiumPayment.title"))) {
 
+    <h1 class="govuk-heading-xl">@messages("leasePremiumPayment.heading")</h1>
+
+    <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          @messages("leasePremiumPayment.details")
+        </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p class="govuk-body">@messages("leasePremiumPayment.details.p1")</p>
+            <ul>
+                <li>@messages("leasePremiumPayment.details.l1")</li>
+                <li>@messages("leasePremiumPayment.details.l2")</li>
+            </ul>
+            <p class="govuk-body">@messages("leasePremiumPayment.details.p2")</p>
+            <p class="govuk-body">@messages("leasePremiumPayment.details.p3")</p>
+        </div>
+    </details>
     @formHelper(action = routes.LeasePremiumPaymentController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -35,7 +55,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("leasePremiumPayment.heading")).asPageHeading()
+                legend = LegendViewModel(messages("leasePremiumPayment.question")).withSize(LegendSize.Medium)
             )
         )
 
