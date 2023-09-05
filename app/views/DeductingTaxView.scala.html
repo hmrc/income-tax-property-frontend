@@ -32,12 +32,42 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukRadios(
-            RadiosViewModel.yesNo(
-                field = form("value"),
-                legend = LegendViewModel(messages("deductingTax.heading")).asPageHeading()
-            )
-        )
+        <p>
+            <h2 class="govuk-heading-l">@messages("deductingTax.heading")</h2>
+            <a href="#" class="govuk-link">@messages("deductingTax.link")</a>
+        </p>
+
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h3 class="govuk-fieldset__heading">
+                        @messages("deductingTax.legend")
+                    </h3>
+                </legend>
+                <div class="govuk-radios" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="taxDeductedYesNo" name="taxDeductedYesNo" type="radio" value="yes" data-aria-controls="taxDeductedYes">
+                        <label class="govuk-label govuk-radios__label" for="taxDeductedYesNo">
+                            @messages("deductingTax.yes")
+                        </label>
+                    </div>
+                    <div class="govuk-radios__conditional" id="taxDeductedYes">
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="tax-deducted">
+                                @messages("deductingTax.yes.text")
+                            </label>
+                            <input class="govuk-input govuk-!-width-one-half" id="tax-deducted" name="taxDeducted" type="text" spellcheck="false">
+                        </div>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="taxDeductedNo" name="taxDeductedNo" type="radio" value="no" data-aria-controls="taxDeductedNo">
+                        <label class="govuk-label govuk-radios__label" for="taxDeductedNo">
+                            @messages("deductingTax.no")
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
 
         @govukButton(
             ButtonViewModel(messages("site.continue"))
