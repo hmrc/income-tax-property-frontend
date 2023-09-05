@@ -53,7 +53,9 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
+            ButtonViewModel(messages("site.continue"))
+            .asLink(ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode).url)
+            .withId("continue")
         )
     }
 }

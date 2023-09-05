@@ -17,7 +17,7 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-
+import controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController
 import play.api.mvc.Call
 import controllers.routes
 import pages._
@@ -31,6 +31,7 @@ class Navigator @Inject()() {
     case TotalIncomePage => _ => routes.UKPropertySelectController.onPageLoad()
     case UKPropertySelectPage => _ => routes.SummaryController.show(2023)
     case UKPropertyPage => _ => routes.CheckYourAnswersController.onPageLoad
+    case propertyrentals.ExpensesLessThan1000Page => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad
   }
 

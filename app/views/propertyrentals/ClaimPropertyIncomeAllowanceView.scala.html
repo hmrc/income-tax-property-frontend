@@ -20,13 +20,14 @@
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
+    govukDetails: GovukDetails,
     govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("claimPropertyIncomeAllowance.title"))) {
+@layout(pageTitle = title(form, messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}"))) {
 
     @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
@@ -34,10 +35,26 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  @messages("claimPropertyIncomeAllowance.details.summary")
+                </span>
+            </summary>
+            <p>
+                @messages("claimPropertyIncomeAllowance.details.content")
+            </p>
+            <a href="@messages("claimPropertyIncomeAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+            @messages("claimPropertyIncomeAllowance.details.content.link.text")
+            </a>
+        </details>
+
         @govukRadios(
-            RadiosViewModel.yesNo(
+            RadiosViewModel.yesNoWithOtherNames(
                 field = form("value"),
-                legend = LegendViewModel(messages("claimPropertyIncomeAllowance.heading")).asPageHeading()
+                legend = LegendViewModel(messages("claimPropertyIncomeAllowance.heading")).asPageHeading(),
+                yesText = "claimPropertyIncomeAllowance.yes",
+                noText = "claimPropertyIncomeAllowance.no"
             )
         )
 
