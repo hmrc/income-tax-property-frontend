@@ -53,6 +53,8 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
 
+ukproperty.caption = About UK property for 6 April {0} to 5 April {1}
+
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
 journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
@@ -130,7 +132,8 @@ expensesLessThan1000.title = Expenses less than £1,000
 expensesLessThan1000.heading = Expenses less than £1,000
 expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
 expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
-expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
+expensesLessThan1000.checkYourAnswersLabel.agent = Are your client’s total expenses less than £1,000?
+expensesLessThan1000.checkYourAnswersLabel.individual = Are your total expenses less than £1,000?
 expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
 expensesLessThan1000.p2 = Read more about
 expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
@@ -150,7 +153,8 @@ claimPropertyIncomeAllowance.legend.individual = Do you want to claim property i
 claimPropertyIncomeAllowance.legend.agent = Does your client want to claim property income allowance?
 claimPropertyIncomeAllowance.yes = Yes, claim property income allowance
 claimPropertyIncomeAllowance.no = No, claim expenses
-claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.checkYourAnswersLabel.agent = Would your client like to claim property income allowance?
+claimPropertyIncomeAllowance.checkYourAnswersLabel.individual = Would you like to claim property income allowance?
 claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 

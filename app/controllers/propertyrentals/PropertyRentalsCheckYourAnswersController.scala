@@ -39,8 +39,8 @@ class PropertyRentalsCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-          ExpensesLessThan1000Summary.row(request.userAnswers),
-          ClaimPropertyIncomeAllowanceSummary.row(request.userAnswers)
+          ExpensesLessThan1000Summary.row(request.userAnswers, request.isAgentMessageKey),
+          ClaimPropertyIncomeAllowanceSummary.row(request.userAnswers, request.isAgentMessageKey)
         ).flatten
       )
 

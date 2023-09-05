@@ -26,14 +26,14 @@ import viewmodels.implicits._
 
 object ExpensesLessThan1000Summary {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ExpensesLessThan1000Page).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key = "expensesLessThan1000.checkYourAnswersLabel",
+          key = s"expensesLessThan1000.checkYourAnswersLabel.$individualOrAgent",
           value = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", ExpensesLessThan1000Controller.onPageLoad(CheckMode).url)
