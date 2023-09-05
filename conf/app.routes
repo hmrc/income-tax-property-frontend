@@ -54,3 +54,8 @@ GET        /lease-premium-payment                        controllers.LeasePremiu
 POST       /lease-premium-payment                        controllers.LeasePremiumPaymentController.onSubmit(mode: Mode = NormalMode)
 GET        /change-lease-premium-payment                 controllers.LeasePremiumPaymentController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-lease-premium-payment                 controllers.LeasePremiumPaymentController.onSubmit(mode: Mode = CheckMode)
+
+GET        /deductingTax                                 controllers.DeductingTaxController.onPageLoad(mode: Mode = NormalMode)
+POST       /deductingTax                                 controllers.DeductingTaxController.onSubmit(mode: Mode = NormalMode)
+GET        /changeDeductingTax                           controllers.DeductingTaxController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeDeductingTax                           controllers.DeductingTaxController.onSubmit(mode: Mode = CheckMode)
