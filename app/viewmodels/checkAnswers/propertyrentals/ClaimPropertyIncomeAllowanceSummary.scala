@@ -30,7 +30,7 @@ object ClaimPropertyIncomeAllowanceSummary {
     answers.get(ClaimPropertyIncomeAllowancePage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = if (answer) "claimPropertyIncomeAllowance.yes" else "claimPropertyIncomeAllowance.no"
 
         SummaryListRowViewModel(
           key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
