@@ -155,7 +155,8 @@ claimPropertyIncomeAllowance.yes = Yes, claim property income allowance
 claimPropertyIncomeAllowance.no = No, claim expenses
 claimPropertyIncomeAllowance.checkYourAnswersLabel.agent = Would your client like to claim property income allowance?
 claimPropertyIncomeAllowance.checkYourAnswersLabel.individual = Would you like to claim property income allowance?
-claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.error.required.agent = Select yes if your client wants to claim property income allowance
+claimPropertyIncomeAllowance.error.required.individual = Select yes if you want to claim property income allowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 
 calculatedFigureYourself.title = Deducting tax from non-UK landlords
