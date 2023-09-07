@@ -25,13 +25,13 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("expensesLessThan1000.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("expensesLessThan1000.heading")</h1>
 
-    @formHelper(action = ExpensesLessThan1000Controller.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ExpensesLessThan1000Controller.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

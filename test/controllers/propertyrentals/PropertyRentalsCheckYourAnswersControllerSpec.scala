@@ -22,7 +22,11 @@ import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.CheckYourAnswersView
 
+import java.time.LocalDate
+
 class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+
+  val taxYear = LocalDate.now.getYear
 
   "Check Your Answers Controller" - {
 
@@ -31,7 +35,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Summar
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -39,7 +43,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Summar
         val list = SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -48,7 +52,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Summar
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 

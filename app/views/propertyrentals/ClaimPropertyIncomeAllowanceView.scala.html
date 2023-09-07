@@ -25,13 +25,13 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}"))) {
 
     <h1 class="govuk-heading-l">@messages("claimPropertyIncomeAllowance.heading")</h1>
 
-    @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

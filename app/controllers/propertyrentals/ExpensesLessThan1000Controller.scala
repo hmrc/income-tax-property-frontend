@@ -42,7 +42,7 @@ class ExpensesLessThan1000Controller @Inject()(
                                          view: ExpensesLessThan1000View
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val form = formProvider(request.isAgentMessageKey)
@@ -52,23 +52,23 @@ class ExpensesLessThan1000Controller @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, request.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       val form = formProvider(request.isAgentMessageKey)
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesLessThan1000Page, value))
             _              <- sessionService.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, taxYear, mode, updatedAnswers))
       )
   }
 }

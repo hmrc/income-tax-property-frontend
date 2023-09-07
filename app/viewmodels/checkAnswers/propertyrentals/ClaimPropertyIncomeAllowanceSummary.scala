@@ -26,7 +26,7 @@ import viewmodels.implicits._
 
 object ClaimPropertyIncomeAllowanceSummary {
 
-  def row(answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ClaimPropertyIncomeAllowancePage).map {
       answer =>
 
@@ -36,7 +36,7 @@ object ClaimPropertyIncomeAllowanceSummary {
           key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
           value = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ClaimPropertyIncomeAllowanceController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("claimPropertyIncomeAllowance.change.hidden"))
           )
         )

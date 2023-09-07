@@ -26,7 +26,7 @@ import viewmodels.implicits._
 
 object CalculatedFigureYourselfSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedFigureYourselfPage).map {
       answer =>
 
@@ -36,7 +36,7 @@ object CalculatedFigureYourselfSummary  {
           key     = "calculatedFigureYourself.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.CalculatedFigureYourselfController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
           )
         )

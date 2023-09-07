@@ -17,14 +17,13 @@
 package controllers
 
 import controllers.actions._
-import models.NormalMode
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UKPropertyDetailsView
+
+import javax.inject.Inject
 
 class UKPropertyDetailsController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -36,8 +35,8 @@ class UKPropertyDetailsController @Inject()(
                                        sessionService: SessionService
                                            ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view(request.isAgentMessageKey))
+      Ok(view(taxYear, request.isAgentMessageKey))
   }
 }

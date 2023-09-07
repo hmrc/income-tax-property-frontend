@@ -44,7 +44,7 @@ class ClaimPropertyIncomeAllowanceController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowancePage) match {
@@ -52,21 +52,21 @@ class ClaimPropertyIncomeAllowanceController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, request.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowancePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimPropertyIncomeAllowancePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ClaimPropertyIncomeAllowancePage, taxYear, mode, updatedAnswers))
       )
   }
 }

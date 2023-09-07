@@ -34,16 +34,16 @@ class PropertyRentalsCheckYourAnswersController @Inject()(
                                             view: CheckYourAnswersView
                                           ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val list = SummaryListViewModel(
         rows = Seq(
-          ExpensesLessThan1000Summary.row(request.userAnswers, request.isAgentMessageKey),
-          ClaimPropertyIncomeAllowanceSummary.row(request.userAnswers, request.isAgentMessageKey)
+          ExpensesLessThan1000Summary.row(taxYear, request.userAnswers, request.isAgentMessageKey),
+          ClaimPropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, request.isAgentMessageKey)
         ).flatten
       )
 
-      Ok(view(list))
+      Ok(view(list, taxYear))
   }
 }

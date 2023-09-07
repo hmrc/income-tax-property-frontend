@@ -24,11 +24,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"ukPropertySelect.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.UKPropertySelectController.onSubmit, 'autoComplete -> "off") {
+    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
