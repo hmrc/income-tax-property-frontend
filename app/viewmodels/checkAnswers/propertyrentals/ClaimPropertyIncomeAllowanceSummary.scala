@@ -26,17 +26,17 @@ import viewmodels.implicits._
 
 object ClaimPropertyIncomeAllowanceSummary {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ClaimPropertyIncomeAllowancePage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = if (answer) "claimPropertyIncomeAllowance.yes" else "claimPropertyIncomeAllowance.no"
 
         SummaryListRowViewModel(
-          key = "claimPropertyIncomeAllowance.checkYourAnswersLabel",
+          key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
           value = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ClaimPropertyIncomeAllowanceController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("claimPropertyIncomeAllowance.change.hidden"))
           )
         )

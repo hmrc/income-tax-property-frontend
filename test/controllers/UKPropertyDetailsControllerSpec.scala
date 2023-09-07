@@ -26,8 +26,12 @@ import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.{AuthConnector, ConfidenceLevel}
 import views.html.UKPropertyDetailsView
 
+import java.time.LocalDate
+
 
 class UKPropertyDetailsControllerSpec extends SpecBase {
+
+  private val taxYear = LocalDate.now.getYear
 
   "UKPropertyDetails Controller" - {
 
@@ -35,17 +39,17 @@ class UKPropertyDetailsControllerSpec extends SpecBase {
       val authConnector = new FakeAuthConnector(Some(Individual) ~ ConfidenceLevel.L200)
 
       val application =
-        applicationBuilder(None,false)
+        applicationBuilder(None,isAgent = false)
           .overrides(bind[AuthConnector].toInstance(authConnector))
           .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad(taxYear).url)
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UKPropertyDetailsView]
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view("individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "individual")(request, messages(application)).toString
 
       }
     }
@@ -54,18 +58,18 @@ class UKPropertyDetailsControllerSpec extends SpecBase {
        val authConnector = new FakeAuthConnector(Some(Agent) ~ ConfidenceLevel.L200)
 
         val application =
-          applicationBuilder(None,true)
+          applicationBuilder(None,isAgent = true)
             .overrides(bind[AuthConnector].toInstance(authConnector))
             .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad.url)
+        val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad(taxYear).url)
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UKPropertyDetailsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view("agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent")(request, messages(application)).toString
       }
      }
   }

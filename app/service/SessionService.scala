@@ -21,9 +21,9 @@ import play.api.Logging
 import repositories.SessionRepository
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-class SessionService @Inject()(connector: SessionRepository)(implicit ec: ExecutionContext) extends Logging {
+class SessionService @Inject()(connector: SessionRepository) extends Logging {
 
   def createNewEmptySession(id: String): Future[Boolean] = connector.set(UserAnswers(id))
 

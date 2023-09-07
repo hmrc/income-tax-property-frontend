@@ -28,7 +28,7 @@ import viewmodels.implicits._
 
 object totalIncomeSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(TotalIncomePage).map {
       answer =>
 
@@ -42,7 +42,7 @@ object totalIncomeSummary  {
           key     = "totalIncome.checkYourAnswersLabel",
           value   = value,
           actions = Seq(
-            ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("totalIncome.change.hidden"))
           )
         )

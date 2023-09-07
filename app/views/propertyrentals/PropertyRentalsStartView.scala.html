@@ -21,7 +21,7 @@
         govukButton: GovukButton
 )
 
-@(individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("propertyRentalsStart.title"))) {
 
@@ -53,7 +53,7 @@
     <p class="govuk-body">
         @govukButton(
         ButtonViewModel(messages("propertyRentalsStart.button"))
-        .asLink(ExpensesLessThan1000Controller.onPageLoad(NormalMode).url)
+        .asLink(ExpensesLessThan1000Controller.onPageLoad(taxYear, NormalMode).url)
         .withId("continue")
         )
     </p>

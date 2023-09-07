@@ -32,6 +32,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.propertyrentals.ClaimPropertyIncomeAllowanceView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
@@ -40,8 +41,9 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
   val formProvider = new ClaimPropertyIncomeAllowanceFormProvider()
   val form = formProvider()
+  val taxYear = LocalDate.now.getYear
 
-  lazy val claimPropertyIncomeAllowanceRoute = propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode).url
+  lazy val claimPropertyIncomeAllowanceRoute = propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode).url
 
   "ClaimPropertyIncomeAllowance Controller" - {
 
@@ -57,7 +59,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -75,7 +77,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -121,7 +123,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 

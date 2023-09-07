@@ -22,7 +22,11 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.propertyrentals.PropertyRentalsStartView
 
+import java.time.LocalDate
+
 class PropertyRentalsStartControllerSpec extends SpecBase {
+
+  val taxYear = LocalDate.now.getYear
 
   "PropertyRentalsStart Controller" - {
 
@@ -31,14 +35,14 @@ class PropertyRentalsStartControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, propertyrentals.routes.PropertyRentalsStartController.onPageLoad().url)
+        val request = FakeRequest(GET, propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[PropertyRentalsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view("individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "individual")(request, messages(application)).toString
       }
     }
   }

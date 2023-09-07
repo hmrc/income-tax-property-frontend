@@ -22,11 +22,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("calculatedFigureYourself.title"))) {
 
-    @formHelper(action = routes.CalculatedFigureYourselfController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.CalculatedFigureYourselfController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

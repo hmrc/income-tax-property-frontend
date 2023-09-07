@@ -31,13 +31,15 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.TotalIncomeView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/update-and-submit-income-tax-return/property/2023/summary")
 
-  lazy val totalIncomeRoute = routes.TotalIncomeController.onPageLoad(NormalMode).url
+  val taxYear = LocalDate.now.getYear
+  lazy val totalIncomeRoute = routes.TotalIncomeController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new TotalIncomeFormProvider()
   val form = formProvider()
@@ -56,7 +58,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[TotalIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -72,7 +74,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[TotalIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -90,7 +92,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(TotalIncome.values.head), NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(TotalIncome.values.head), taxYear, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -136,7 +138,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(request, messages(application)).toString
       }
     }
   }

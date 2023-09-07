@@ -31,6 +31,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.CalculatedFigureYourselfView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar {
@@ -39,8 +40,9 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
 
   val formProvider = new CalculatedFigureYourselfFormProvider()
   val form = formProvider()
+  val taxYear = LocalDate.now.getYear
 
-  lazy val calculatedFigureYourselfRoute = routes.CalculatedFigureYourselfController.onPageLoad(NormalMode).url
+  lazy val calculatedFigureYourselfRoute = routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode).url
 
   "CalculatedFigureYourself Controller" - {
 
@@ -56,7 +58,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -74,7 +76,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -120,7 +122,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 

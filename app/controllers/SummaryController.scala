@@ -25,8 +25,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
 
 import javax.inject.Inject
-import scala.collection.Set
-import scala.collection.immutable.Set
 
 class SummaryController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
@@ -40,6 +38,6 @@ class SummaryController @Inject()(
       .flatMap(_.get(UKPropertyPage))
       .exists(_.contains(UKPropertySelect.PropertyRentals))
     val showPropertyRentals = containsPropertyRental
-    Ok(view(showPropertyRentals))
+    Ok(view(taxYear, showPropertyRentals))
   }
 }

@@ -30,21 +30,23 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import testHelpers.FakeAuthConnector
+import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.{AuthConnector, ConfidenceLevel}
 import views.html.UKPropertySelectView
-import testHelpers.Retrievals.Ops
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call(GET, "/uk-property-details")
-
-  lazy val ukPropertySelectRoute = routes.UKPropertySelectController.onPageLoad().url
+  def onwardRoute : Call = Call(GET, "/uk-property-details")
 
   val formProvider = new UKPropertyFormProvider()
   val form = formProvider()
+  private val taxYear = LocalDate.now.getYear
+
+  lazy val ukPropertySelectRoute = routes.UKPropertySelectController.onPageLoad(taxYear).url
 
   "UKPropertySelectController" - {
 
@@ -62,7 +64,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(form, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -84,7 +86,8 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(UKPropertySelect.values.toSet), NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual
+          view(form.fill(UKPropertySelect.values.toSet), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -135,7 +138,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
