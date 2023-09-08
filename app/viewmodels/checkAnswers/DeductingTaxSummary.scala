@@ -26,7 +26,7 @@ import viewmodels.implicits._
 
 object DeductingTaxSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(answers: UserAnswers, taxYear: Int)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DeductingTaxPage).map {
       answer =>
 
@@ -36,7 +36,7 @@ object DeductingTaxSummary  {
           key     = "deductingTax.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )
         )
