@@ -74,10 +74,21 @@ class NavigatorSpec extends SpecBase {
           ClaimPropertyIncomeAllowancePage, taxYear, NormalMode, UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
       }
-
     }
 
     "in Check mode" - {
+
+      "must go from ExpensesLessThan1000Page to CheckYourAnswersPage" in {
+        navigator.nextPage(
+          ExpensesLessThan1000Page, taxYear, CheckMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
+        navigator.nextPage(
+          ClaimPropertyIncomeAllowancePage, taxYear, CheckMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+      }
 
       "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
 
