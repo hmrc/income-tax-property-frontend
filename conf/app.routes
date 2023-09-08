@@ -65,7 +65,7 @@ GET         /:taxYear/change-premiums-grant-lease                               
 POST        /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 ############## Deducting Tax
-GET        /deducting-tax                                 controllers.DeductingTaxController.onPageLoad(mode: Mode = NormalMode)
-POST       /deducting-tax                                 controllers.DeductingTaxController.onSubmit(mode: Mode = NormalMode)
-GET        /change-deducting-tax                           controllers.DeductingTaxController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-deducting-tax                           controllers.DeductingTaxController.onSubmit(mode: Mode = CheckMode)
+GET        /:taxYear/deducting-tax                                                  controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/deducting-tax                                                  controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-deducting-tax                                           controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-deducting-tax                                           controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
