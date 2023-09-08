@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.premiumlease
 
 import controllers.actions._
-import forms.LeasePremiumPaymentFormProvider
-import javax.inject.Inject
+import forms.premiumlease.LeasePremiumPaymentFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.LeasePremiumPaymentPage
+import pages.premiumLease.LeasePremiumPaymentPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.LeasePremiumPaymentView
+import views.html.premiumlease.LeasePremiumPaymentView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class LeasePremiumPaymentController @Inject()(

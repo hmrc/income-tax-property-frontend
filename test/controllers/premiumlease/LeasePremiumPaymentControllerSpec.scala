@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.premiumlease
 
 import base.SpecBase
-import forms.LeasePremiumPaymentFormProvider
+import controllers.routes
+import forms.premiumlease.LeasePremiumPaymentFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.LeasePremiumPaymentPage
+import pages.premiumLease.LeasePremiumPaymentPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.LeasePremiumPaymentView
+import views.html.premiumlease.LeasePremiumPaymentView
+import controllers.premiumlease.routes._
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -42,7 +44,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
   private val taxYear = LocalDate.now.getYear
 
-  lazy val leasePremiumPaymentRoute = routes.LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode).url
+  lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode).url
 
   "LeasePremiumPayment Controller" - {
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.premiumlease
 
 import base.SpecBase
-import forms.CalculatedFigureYourselfFormProvider
+import forms.premiumlease.CalculatedFigureYourselfFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.CalculatedFigureYourselfView
+import views.html.premiumlease.CalculatedFigureYourselfView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -136,7 +136,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -152,7 +152,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

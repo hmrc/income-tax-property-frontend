@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.premiumlease
 
-import controllers.routes
+import controllers.premiumlease.routes
 import models.{CheckMode, UserAnswers}
-import pages.LeasePremiumPaymentPage
+import pages.premiumLease.PremiumsGrantLeasePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object LeasePremiumPaymentSummary  {
+object PremiumsGrantLeaseSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LeasePremiumPaymentPage).map {
+    answers.get(PremiumsGrantLeasePage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
-
         SummaryListRowViewModel(
-          key     = "leasePremiumPayment.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = "premiumsGrantLease.checkYourAnswersLabel",
+          value = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.LeasePremiumPaymentController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("leasePremiumPayment.change.hidden"))
+            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("premiumsGrantLease.change.hidden"))
           )
         )
     }

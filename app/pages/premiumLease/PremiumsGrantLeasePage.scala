@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.premiumLease
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
+case object PremiumsGrantLeasePage extends QuestionPage[Int] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "leasePremiumPayment"
+  override def toString: String = "premiumsGrantLease"
 }
