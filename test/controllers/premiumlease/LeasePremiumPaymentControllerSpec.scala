@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import import views.html.premiumlease.LeasePremiumPaymentView
+import views.html.premiumlease.LeasePremiumPaymentView
 import controllers.premiumlease.routes._
 
 import java.time.LocalDate
