@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import controllers.premiumlease.PremiumsGrantLeaseView
+import views.html.premiumlease.PremiumsGrantLeaseView
 
 import java.time.LocalDate
 import scala.concurrent.Future
