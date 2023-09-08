@@ -47,7 +47,7 @@ class DeductingTaxController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
@@ -55,21 +55,21 @@ class DeductingTaxController @Inject()(
         case Some(value) => form.fill(DeductingTax(value, None))
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, taxYear))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, taxYear))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value.yesNo))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, updatedAnswers))
       )
   }
 }
