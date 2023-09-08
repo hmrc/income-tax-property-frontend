@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.premiumLease
 
-import controllers.routes
+import controllers.premiumLease.routes
 import models.{CheckMode, UserAnswers}
-import pages.LeasePremiumPaymentPage
+import pages.premiumLease.LeasePremiumPaymentPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object LeasePremiumPaymentSummary  {
+
+object LeasePremiumPaymentSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(LeasePremiumPaymentPage).map {
@@ -33,8 +34,8 @@ object LeasePremiumPaymentSummary  {
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "leasePremiumPayment.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = "leasePremiumPayment.checkYourAnswersLabel",
+          value = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", routes.LeasePremiumPaymentController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("leasePremiumPayment.change.hidden"))

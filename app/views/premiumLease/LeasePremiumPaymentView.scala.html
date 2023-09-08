@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.premiumLease.routes._
 
 @this(
     layout: templates.Layout,
@@ -46,7 +47,7 @@
             <p class="govuk-body">@messages("leasePremiumPayment.details.p3")</p>
         </div>
     </details>
-    @formHelper(action = routes.LeasePremiumPaymentController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = LeasePremiumPaymentController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
