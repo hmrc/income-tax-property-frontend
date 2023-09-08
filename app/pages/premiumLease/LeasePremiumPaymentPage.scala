@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package navigation
+package pages.premiumLease
 
-import play.api.mvc.Call
-import pages._
-import models.{Mode, UserAnswers}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
 
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "leasePremiumPayment"
 }

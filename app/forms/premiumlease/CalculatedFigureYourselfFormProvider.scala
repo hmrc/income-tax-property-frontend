@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package service
+package forms.premiumlease
 
-import models.UserAnswers
-import play.api.Logging
-import repositories.SessionRepository
+import forms.mappings.Mappings
+import play.api.data.Form
 
 import javax.inject.Inject
-import scala.concurrent.Future
 
-class SessionService @Inject()(connector: SessionRepository) extends Logging {
+class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
 
-  def createNewEmptySession(id: String): Future[Boolean] = connector.set(UserAnswers(id))
-
-  def get(id: String): Future[Option[UserAnswers]] = connector.get(id)
-
-  def set(userAnswers: UserAnswers): Future[Boolean] = connector.set(userAnswers)
-
-  def remove(id: String): Future[Boolean] = connector.clear(id)
-
-  def keepAlive(id: String): Future[Boolean] = connector.keepAlive(id)
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("calculatedFigureYourself.error.required")
+    )
 }

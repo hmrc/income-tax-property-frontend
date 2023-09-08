@@ -14,39 +14,29 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.premiumlease
 
-import controllers.routes
-import models.UserAnswers
-import pages.UKPropertyPage
+import models.{CheckMode, UserAnswers}
+import pages.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-
-object UKPropertySelectSummary  {
+import controllers.premiumlease._
+object CalculatedFigureYourselfSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UKPropertyPage).map {
-      answers =>
+    answers.get(CalculatedFigureYourselfPage).map {
+      answer =>
 
-        val value = ValueViewModel(
-          HtmlContent(
-            answers.map {
-              answer => HtmlFormat.escape(messages(s"ukPropertySelect.$answer")).toString
-            }
-            .mkString(",<br>")
-          )
-        )
+        val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "ukPropertySelect.checkYourAnswersLabel",
-          value   = value,
+          key = "calculatedFigureYourself.checkYourAnswersLabel",
+          value = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear).url)
-              .withVisuallyHiddenText(messages("ukPropertySelect.change.hidden"))
+            ActionItemViewModel("site.change", routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
           )
         )
     }

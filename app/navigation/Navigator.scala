@@ -17,7 +17,7 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-import controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController
+import controllers.propertyrentals.routes.{ClaimPropertyIncomeAllowanceController, PropertyRentalsCheckYourAnswersController}
 import play.api.mvc.Call
 import controllers.routes
 import pages._
@@ -26,24 +26,25 @@ import models._
 @Singleton
 class Navigator @Inject()() {
 
-  private val normalRoutes: Page => UserAnswers => Call = {
-    case UKPropertyDetailsPage => _ => routes.TotalIncomeController.onPageLoad(NormalMode)
-    case TotalIncomePage => _ => routes.UKPropertySelectController.onPageLoad()
-    case UKPropertySelectPage => _ => routes.SummaryController.show(2023)
-    case UKPropertyPage => _ => routes.CheckYourAnswersController.onPageLoad
+  private val normalRoutes: Page => Int => UserAnswers => Call = {
+    case UKPropertyDetailsPage => taxYear => _ => routes.TotalIncomeController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomePage => taxYear => _ => routes.UKPropertySelectController.onPageLoad(taxYear)
+    case UKPropertySelectPage => taxYear => _ => routes.SummaryController.show(taxYear)
+    case UKPropertyPage => taxYear => _ => routes.CheckYourAnswersController.onPageLoad
+    case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+    case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case DeductingTaxPage => _ => routes.DeductingTaxController.onPageLoad(NormalMode)
-    case propertyrentals.ExpensesLessThan1000Page => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(NormalMode)
-    case _ => _ => routes.IndexController.onPageLoad
+    case _ => _ => _ => routes.IndexController.onPageLoad
   }
 
-  private val checkRouteMap: Page => UserAnswers => Call = {
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad
+  private val checkRouteMap: Page => Int => UserAnswers => Call = {
+    case _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
+  def nextPage(page: Page, taxYear: Int, mode: Mode, userAnswers: UserAnswers): Call = mode match {
     case NormalMode =>
-      normalRoutes(page)(userAnswers)
+      normalRoutes(page)(taxYear)(userAnswers)
     case CheckMode =>
-      checkRouteMap(page)(userAnswers)
+      checkRouteMap(page)(taxYear)(userAnswers)
   }
 }

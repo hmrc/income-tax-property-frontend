@@ -21,7 +21,7 @@
     govukTag: GovukTag
 )
 
-@(showPropertyRentals: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, showPropertyRentals: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("summary.title")),
@@ -34,7 +34,7 @@
     <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
         <li class="app-task-list__item">
             <span class="app-task-list__task-name">
-                <a class="govuk-link" id="about_uk_properties_link" href="@routes.UKPropertyDetailsController.onPageLoad">@messages(s"summary.aboutUKProperties")</a>
+                <a class="govuk-link" id="about_uk_properties_link" href="@routes.UKPropertyDetailsController.onPageLoad(taxYear)">@messages(s"summary.aboutUKProperties")</a>
             </span>
             <span class="hmrc-status-tag">
                 @{
@@ -51,7 +51,7 @@
         <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad">@messages(s"summary.aboutRentals")</a>
+                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad(taxYear)">@messages(s"summary.aboutRentals")</a>
                     </span>
                 <span class="hmrc-status-tag">
                         @{

@@ -33,8 +33,8 @@ class PropertyRentalsStartController @Inject()(
                                        view: PropertyRentalsStartView
                                      ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(request.isAgentMessageKey))
+      Ok(view(taxYear, request.isAgentMessageKey))
   }
 }

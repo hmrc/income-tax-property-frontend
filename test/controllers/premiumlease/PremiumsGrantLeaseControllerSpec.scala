@@ -14,70 +14,72 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals
+package controllers.premiumlease
 
 import base.SpecBase
-import controllers.{propertyrentals, routes}
-import forms.propertyrentals.ClaimPropertyIncomeAllowanceFormProvider
+import forms.premiumlease.PremiumsGrantLeaseFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.premiumLease.PremiumsGrantLeasePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.propertyrentals.ClaimPropertyIncomeAllowanceView
+import views.html.premiumlease.PremiumsGrantLeaseView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
+
+  val formProvider = new PremiumsGrantLeaseFormProvider()
+  val form = formProvider()
+  private val taxYear = LocalDate.now.getYear
+
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ClaimPropertyIncomeAllowanceFormProvider()
-  val form = formProvider()
-  val taxYear = LocalDate.now.getYear
+  val validAnswer = 0
 
-  lazy val claimPropertyIncomeAllowanceRoute = propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val premiumsGrantLeaseRoute = routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode).url
 
-  "ClaimPropertyIncomeAllowance Controller" - {
+  "PremiumsGrantLease Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
+        val request = FakeRequest(GET, premiumsGrantLeaseRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PremiumsGrantLeasePage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
+        val request = FakeRequest(GET, premiumsGrantLeaseRoute)
 
-        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -88,7 +90,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -97,8 +99,8 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, premiumsGrantLeaseRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -109,21 +111,21 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", ""))
+          FakeRequest(POST, premiumsGrantLeaseRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -132,12 +134,12 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
+        val request = FakeRequest(GET, premiumsGrantLeaseRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -147,13 +149,14 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, premiumsGrantLeaseRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

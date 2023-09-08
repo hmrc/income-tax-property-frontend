@@ -14,67 +14,69 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.premiumlease
 
 import base.SpecBase
-import forms.LeasePremiumPaymentFormProvider
+import forms.premiumlease.CalculatedFigureYourselfFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.LeasePremiumPaymentPage
+import pages.CalculatedFigureYourselfPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.LeasePremiumPaymentView
+import views.html.premiumlease.CalculatedFigureYourselfView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
-class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
+class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new LeasePremiumPaymentFormProvider()
+  val formProvider = new CalculatedFigureYourselfFormProvider()
   val form = formProvider()
+  val taxYear = LocalDate.now.getYear
 
-  lazy val leasePremiumPaymentRoute = routes.LeasePremiumPaymentController.onPageLoad(NormalMode).url
+  lazy val calculatedFigureYourselfRoute = routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode).url
 
-  "LeasePremiumPayment Controller" - {
+  "CalculatedFigureYourself Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+        val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(LeasePremiumPaymentPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CalculatedFigureYourselfPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+        val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -94,7 +96,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
+          FakeRequest(POST, calculatedFigureYourselfRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -110,17 +112,17 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
+          FakeRequest(POST, calculatedFigureYourselfRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+        val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -129,12 +131,12 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -144,13 +146,13 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
+          FakeRequest(POST, calculatedFigureYourselfRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

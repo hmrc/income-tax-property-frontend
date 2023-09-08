@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.premiumlease.routes._
 
 @this(
     layout: templates.Layout,
@@ -24,7 +25,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("leasePremiumPayment.title"))) {
 
@@ -46,7 +47,7 @@
             <p class="govuk-body">@messages("leasePremiumPayment.details.p3")</p>
         </div>
     </details>
-    @formHelper(action = routes.LeasePremiumPaymentController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = LeasePremiumPaymentController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

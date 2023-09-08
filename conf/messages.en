@@ -53,6 +53,8 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
 
+ukproperty.caption = About UK property for 6 April {0} to 5 April {1}
+
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
 journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
@@ -66,19 +68,6 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
-
-expensesLessThan1000.title = Expenses less than £1,000
-expensesLessThan1000.heading = Expenses less than £1,000
-expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
-expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
-expensesLessThan1000.checkYourAnswersLabel = Expenses less than £1,000
-expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
-expensesLessThan1000.p2 = Read more about
-expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
-expensesLessThan1000.p2.link.text = tax-free allowances on property and trading income (opens in new tab)
-expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
-expensesLessThan1000.error.required.agent = Select yes if your client’s total expenses were less than £1,000
-expensesLessThan1000.change.hidden = Expenses less than £1,000
 
 propertyRentalsStart.title = Property rentals
 propertyRentalsStart.heading = Property rentals
@@ -139,19 +128,35 @@ ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
 ukPropertySelect.change.hidden = UK Property
 
+expensesLessThan1000.title = Expenses less than £1,000
+expensesLessThan1000.heading = Expenses less than £1,000
+expensesLessThan1000.legend.individual = Are your total expenses less than £1,000?
+expensesLessThan1000.legend.agent = Are your client’s total expenses less than £1,000?
+expensesLessThan1000.checkYourAnswersLabel.agent = Are your client’s total expenses less than £1,000?
+expensesLessThan1000.checkYourAnswersLabel.individual = Are your total expenses less than £1,000?
+expensesLessThan1000.p1 = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances.
+expensesLessThan1000.p2 = Read more about
+expensesLessThan1000.p2.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+expensesLessThan1000.p2.link.text = tax-free allowances on property and trading income (opens in new tab)
+expensesLessThan1000.error.required.individual = Select yes if your total expenses were less than £1,000
+expensesLessThan1000.error.required.agent = Select yes if your client’s total expenses were less than £1,000
+expensesLessThan1000.change.hidden = Expenses less than £1,000
+
 claimPropertyIncomeAllowance.title.individual = Do you want to claim property income allowance?
 claimPropertyIncomeAllowance.title.agent = Does your client want to claim property income allowance?
 claimPropertyIncomeAllowance.heading = Claiming property income allowance
 claimPropertyIncomeAllowance.details.summary = Understanding property income allowance
 claimPropertyIncomeAllowance.details.content = If you claim the property income allowance, of up to £1,000, you cannot deduct any other allowable expenses or claim any other allowances. Read more about
-claimPropertyIncomeAllowance.details.content.link.text = tax-free allowances on property and trading income
+claimPropertyIncomeAllowance.details.content.link.text = tax-free allowances on property and trading income (opens in a new tab)
 claimPropertyIncomeAllowance.details.content.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
 claimPropertyIncomeAllowance.legend.individual = Do you want to claim property income allowance?
 claimPropertyIncomeAllowance.legend.agent = Does your client want to claim property income allowance?
 claimPropertyIncomeAllowance.yes = Yes, claim property income allowance
 claimPropertyIncomeAllowance.no = No, claim expenses
-claimPropertyIncomeAllowance.checkYourAnswersLabel = claimPropertyIncomeAllowance
-claimPropertyIncomeAllowance.error.required = Select yes if claimPropertyIncomeAllowance
+claimPropertyIncomeAllowance.checkYourAnswersLabel.agent = Would your client like to claim property income allowance?
+claimPropertyIncomeAllowance.checkYourAnswersLabel.individual = Would you like to claim property income allowance?
+claimPropertyIncomeAllowance.error.required.agent = Select yes if your client wants to claim property income allowance
+claimPropertyIncomeAllowance.error.required.individual = Select yes if you want to claim property income allowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 
 calculatedFigureYourself.title = Deducting tax from non-UK landlords
@@ -172,6 +177,29 @@ leasePremiumPayment.details.p3 = Any premiums for the grant of a lease are regar
 leasePremiumPayment.question = Did you receive a payment to take on a lease?
 leasePremiumPayment.error.required = Select yes if you received a payment to take on a lease
 leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
+
+premiumsGrantLease.title = Premiums for a grant of a lease
+premiumsGrantLease.heading = Premiums for the grant of a lease
+premiumsGrantLease.line1 = You can work out your taxable amount as follows:
+premiumsGrantLease.line2.part1 = Taxable amount =
+premiumsGrantLease.line2.part2 = P
+premiumsGrantLease.line2.part3 = x ((50 -
+premiumsGrantLease.line2.part4 = Y
+premiumsGrantLease.line2.part4 = ) / 50)
+premiumsGrantLease.line3.part1 = P
+premiumsGrantLease.line3.part2 = is the amount of the premium.
+premiumsGrantLease.line4.part1 = Y
+premiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
+premiumsGrantLease.calculation.subHeading = Your calculation:
+premiumsGrantLease.calculation.premium = Premium: {0}
+premiumsGrantLease.calculation.years = Years: {0} - {1} = {3}
+premiumsGrantLease.calculation.taxableAmount = Taxable amount:
+premiumsGrantLease.checkYourAnswersLabel = If you agree with the figure that we've calculated for you, enter it here
+premiumsGrantLease.error.nonNumeric = Enter your premiumsGrantLease using numbers
+premiumsGrantLease.error.required = Enter your premiumsGrantLease
+premiumsGrantLease.error.wholeNumber = Enter your premiumsGrantLease using whole numbers
+premiumsGrantLease.error.outOfRange = PremiumsGrantLease must be between {0} and {1}
+premiumsGrantLease.change.hidden = PremiumsGrantLease
 
 deductingTax.title = Deducting Tax from non-uk landlords
 deductingTax.heading = Deducting Tax from non-uk landlords
