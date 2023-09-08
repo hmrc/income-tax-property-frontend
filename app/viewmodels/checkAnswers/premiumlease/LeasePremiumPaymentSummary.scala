@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.premiumLease
+package viewmodels.checkAnswers.premiumlease
 
-import controllers.premiumLease.routes
+import controllers.premiumlease.routes
 import models.{CheckMode, UserAnswers}
 import pages.premiumLease.LeasePremiumPaymentPage
 import play.api.i18n.Messages

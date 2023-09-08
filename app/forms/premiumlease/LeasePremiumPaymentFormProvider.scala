@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package forms.premiumLease
+package forms.premiumlease
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
+class LeasePremiumPaymentFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Int] =
+  def apply(): Form[Boolean] =
     Form(
-      "value" -> int(
-        "premiumsGrantLease.error.required",
-        "premiumsGrantLease.error.wholeNumber",
-        "premiumsGrantLease.error.nonNumeric")
-          .verifying(inRange(0, 1000000000, "premiumsGrantLease.error.outOfRange"))
+      "value" -> boolean("leasePremiumPayment.error.required")
     )
 }

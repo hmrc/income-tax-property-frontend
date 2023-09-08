@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.premiumLease
+package forms.premiumlease
 
 import forms.mappings.Mappings
 import play.api.data.Form

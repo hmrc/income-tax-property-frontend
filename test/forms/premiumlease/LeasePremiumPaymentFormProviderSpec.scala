@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package forms.premiumLease
+package forms.premiumlease
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours {
+class LeasePremiumPaymentFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "calculatedFigureYourself.error.required"
+  val requiredKey = "leasePremiumPayment.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new CalculatedFigureYourselfFormProvider()()
+  val form = new LeasePremiumPaymentFormProvider()()
 
   ".value" - {
 
