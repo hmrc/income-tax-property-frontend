@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import controllers.premiumlease.routes._
+@import pages.premiumLease.PremiumsGrantLeasePage
 
 
 @this(
@@ -26,7 +27,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_],taxYear: Int ,mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_],taxYear: Int , periods: Int, premiumAmount: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("premiumsGrantLease.title"))) {
 
@@ -54,14 +55,14 @@
     <p class="govuk-heading-m">@messages("premiumsGrantLease.calculation.subHeading")</p>
 
     <p class="govuk-body">
-        @messages("premiumsGrantLease.calculation.premium")
+        @messages("premiumsGrantLease.calculation.premium", Seq(premiumAmount.toString))
         <br>
-        @messages("premiumsGrantLease.calculation.years")
+        @messages("premiumsGrantLease.calculation.years", Seq(periods.toString, (periods - 1)))
     </p>
 
     <p class="govuk-body">
         <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span>
-        <span></span>
+        <span>£@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
     </p>
 
 

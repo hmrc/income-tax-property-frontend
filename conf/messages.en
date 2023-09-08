@@ -195,7 +195,7 @@ premiumsGrantLease.line3.part2 = is the amount of the premium.
 premiumsGrantLease.line4.part1 = Y
 premiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
 premiumsGrantLease.calculation.subHeading = Your calculation:
-premiumsGrantLease.calculation.premium = Premium: {0}
+premiumsGrantLease.calculation.premium = Premium: £{0}
 premiumsGrantLease.calculation.years = Years: {0} - {1} = {3}
 premiumsGrantLease.calculation.taxableAmount = Taxable amount:
 premiumsGrantLease.checkYourAnswersLabel = If you agree with the figure that we've calculated for you, enter it here
