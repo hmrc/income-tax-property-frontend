@@ -17,7 +17,6 @@
 package controllers.premiumLease
 
 import base.SpecBase
-import controllers.premiumLease.routes
 import forms.premiumLease.CalculatedFigureYourselfFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -30,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.CalculatedFigureYourselfView
+import views.html.premiumLease.CalculatedFigureYourselfView
 
 import java.time.LocalDate
 import scala.concurrent.Future

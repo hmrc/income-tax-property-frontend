@@ -1,4 +1,4 @@
-package controllers
+package controllers.premiumLease
 
 import base.SpecBase
 import forms.premiumLease.PremiumsGrantLeaseFormProvider
@@ -13,26 +13,29 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.PremiumsGrantLeaseView
+import views.html.premiumLease.PremiumsGrantLeaseView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new PremiumsGrantLeaseFormProvider()
   val form = formProvider()
+  private val taxYear = LocalDate.now.getYear
+
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = 0
 
-  lazy val premiumsGrantLeaseRoute = routes.PremiumsGrantLeaseController.onPageLoad(NormalMode).url
+  lazy val premiumsGrantLeaseRoute = routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode).url
 
   "PremiumsGrantLease Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseRoute)
@@ -42,7 +45,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -50,7 +53,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(PremiumsGrantLeasePage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseRoute)
@@ -60,7 +63,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -71,7 +74,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -92,7 +95,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
@@ -106,7 +109,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -120,7 +123,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -137,7 +140,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
