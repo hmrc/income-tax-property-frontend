@@ -37,6 +37,8 @@ class Navigator @Inject()() {
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => Call = {
+    case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+    case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
