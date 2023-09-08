@@ -228,3 +228,21 @@ incomeFromPropertyRentals.link = work out your rental income when you let proper
 incomeFromPropertyRentals.para2.individual = How much total income did you receive from all of your property rentals?
 incomeFromPropertyRentals.para2.agent = How much total income did your client receive from all of their property rentals?
 incomeFromPropertyRentals.deductions = This is the amount before any deductions have been made.
+
+recievedGrantLeaseAmount.title = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.heading = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.checkYourAnswersLabel = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.error.nonNumeric = Enter your recievedGrantLeaseAmount using numbers
+recievedGrantLeaseAmount.error.required = Enter your recievedGrantLeaseAmount
+recievedGrantLeaseAmount.error.wholeNumber = Enter your recievedGrantLeaseAmount using whole numbers
+recievedGrantLeaseAmount.error.outOfRange = recievedGrantLeaseAmount must be between {0} and {1}
+recievedGrantLeaseAmount.change.hidden = recievedGrantLeaseAmount
+
+yearLeaseAmount.title = YearLeaseAmount
+yearLeaseAmount.heading = YearLeaseAmount
+yearLeaseAmount.checkYourAnswersLabel = YearLeaseAmount
+yearLeaseAmount.error.nonNumeric = Enter your yearLeaseAmount using numbers
+yearLeaseAmount.error.required = Enter your yearLeaseAmount
+yearLeaseAmount.error.wholeNumber = Enter your yearLeaseAmount using whole numbers
+yearLeaseAmount.error.outOfRange = YearLeaseAmount must be between {0} and {1}
+yearLeaseAmount.change.hidden = YearLeaseAmount
