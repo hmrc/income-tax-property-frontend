@@ -39,8 +39,9 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new DeductingTaxFormProvider()
   val form = formProvider()
+  val taxYear = 2023
 
-  lazy val deductingTaxRoute = routes.DeductingTaxController.onPageLoad(NormalMode).url
+  lazy val deductingTaxRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode).url
 
   "DeductingTax Controller" - {
 
@@ -56,7 +57,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[DeductingTaxView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -74,7 +75,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, None)), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, None)), NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -120,7 +121,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
