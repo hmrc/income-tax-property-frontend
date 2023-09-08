@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.DeductingTaxFormProvider
+import forms.{DeductingTax, DeductingTaxFormProvider}
 
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
@@ -52,7 +52,7 @@ class DeductingTaxController @Inject()(
       if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
         case None => form
-        case Some(value) => form.fill(value)
+        case Some(value) => form.fill(DeductingTax(value, None))
       }
 
       Ok(view(preparedForm, mode))
@@ -67,7 +67,7 @@ class DeductingTaxController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value.yesNo))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(DeductingTaxPage, mode, updatedAnswers))
       )
