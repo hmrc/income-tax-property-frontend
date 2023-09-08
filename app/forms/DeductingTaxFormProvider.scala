@@ -17,14 +17,19 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
-import play.api.data.Form
+import play.api.data.Forms._
+import play.api.data._
 
 class DeductingTaxFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("deductingTax.error.required")
+  def apply(): Form[DeductingTax] =
+    Form[DeductingTax](
+      mapping(
+      "taxDeductedYesNo" -> boolean("deductingTax.error.required"),
+      "taxDeductedAmount" -> optional(Forms.text)
+      )(DeductingTax.apply)(DeductingTax.unapply)
     )
 }
+
+case class DeductingTax(yesNo: Boolean, amount: Option[String])
