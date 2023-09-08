@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.premiumLease
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-
-object CalculatedFigureYourselfSummary  {
+import controllers.premiumLease._
+object CalculatedFigureYourselfSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedFigureYourselfPage).map {
@@ -33,8 +32,8 @@ object CalculatedFigureYourselfSummary  {
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "calculatedFigureYourself.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = "calculatedFigureYourself.checkYourAnswersLabel",
+          value = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))

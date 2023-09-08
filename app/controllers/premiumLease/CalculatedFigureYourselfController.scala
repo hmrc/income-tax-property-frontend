@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.premiumLease
 
 import controllers.actions._
-import forms.CalculatedFigureYourselfFormProvider
-import javax.inject.Inject
+import forms.premiumLease.CalculatedFigureYourselfFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.CalculatedFigureYourselfPage
@@ -26,8 +25,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CalculatedFigureYourselfView
+import views.html.premiumLease.CalculatedFigureYourselfView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CalculatedFigureYourselfController @Inject()(

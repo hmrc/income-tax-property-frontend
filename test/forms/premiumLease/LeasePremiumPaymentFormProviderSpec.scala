@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.premiumLease
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.premiumLease.LeasePremiumPaymentFormProvider
 import play.api.data.FormError
 
 class LeasePremiumPaymentFormProviderSpec extends BooleanFieldBehaviours {

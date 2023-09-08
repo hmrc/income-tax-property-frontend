@@ -26,7 +26,7 @@ import viewmodels.implicits._
 
 object PremiumsGrantLeaseSummary {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(PremiumsGrantLeasePage).map {
       answer =>
 
@@ -34,7 +34,7 @@ object PremiumsGrantLeaseSummary {
           key = "premiumsGrantLease.checkYourAnswersLabel",
           value = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("premiumsGrantLease.change.hidden"))
           )
         )
