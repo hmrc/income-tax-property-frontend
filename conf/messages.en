@@ -200,3 +200,14 @@ premiumsGrantLease.error.required = Enter your premiumsGrantLease
 premiumsGrantLease.error.wholeNumber = Enter your premiumsGrantLease using whole numbers
 premiumsGrantLease.error.outOfRange = PremiumsGrantLease must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
+
+deductingTax.title = Deducting Tax from non-uk landlords
+deductingTax.heading = Deducting Tax from non-uk landlords
+deductingTax.checkYourAnswersLabel = deductingTax
+deductingTax.error.required = Select yes if deductingTax
+deductingTax.change.hidden = DeductingTax
+deductingTax.legend = Did you have tax deducted?
+deductingTax.yes = Yes
+deductingTax.no = No
+deductingTax.yes.text = How much tax was deducted?
+deductingTax.link = Paying tax as a non-uk landlord

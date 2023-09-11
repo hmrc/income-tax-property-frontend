@@ -35,6 +35,7 @@ class Navigator @Inject()() {
     case premiumlease.LeasePremiumPaymentPage => taxYear => _ => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+    case DeductingTaxPage => taxYear => _ => routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 
