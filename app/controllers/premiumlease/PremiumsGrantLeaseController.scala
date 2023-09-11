@@ -25,7 +25,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.premiumlease.PremiumsGrantLeaseView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -69,7 +68,7 @@ class PremiumsGrantLeaseController @Inject()(
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) => Future.successful(Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
-        case (_, None) => Future.successful(Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
+        case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
         case (amount, period) =>
           form.bindFromRequest().fold(
             formWithErrors =>
@@ -81,5 +80,6 @@ class PremiumsGrantLeaseController @Inject()(
                 _ <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(PremiumsGrantLeasePage, taxYear, mode, updatedAnswers))
           )
+        }
       }
   }
