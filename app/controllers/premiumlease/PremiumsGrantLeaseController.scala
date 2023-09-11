@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.premiumlease.PremiumsGrantLeaseFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.premiumLease.PremiumsGrantLeasePage
+import pages.premiumlease.PremiumsGrantLeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
