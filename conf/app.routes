@@ -51,14 +51,19 @@ GET         /:taxYear/property-rentals/check-your-answers                       
 
 ############## Premium lease
 
-GET         /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+# 3
 GET         /:taxYear/lease-premium-payment                                         controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/lease-premium-payment                                         controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/change-lease-premium-payment                                  controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/change-lease-premium-payment                                  controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+# 4
+GET         /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+# 6
 GET         /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)

@@ -63,6 +63,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CheckYourAnswersController.onPageLoad
       }
 
+      "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage" in {
+        navigator.nextPage(
+          ExpensesLessThan1000Page, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+
       "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
         navigator.nextPage(
           ExpensesLessThan1000Page, taxYear, NormalMode, UserAnswers("test")
