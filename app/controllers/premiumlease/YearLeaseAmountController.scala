@@ -20,7 +20,6 @@ import controllers.actions._
 import forms.premiumlease.YearLeaseAmountFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.premiumLease.YearLeaseAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

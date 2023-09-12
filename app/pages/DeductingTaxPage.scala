@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+
+package pages.premiumlease
 
 import play.api.libs.json.JsPath
 
