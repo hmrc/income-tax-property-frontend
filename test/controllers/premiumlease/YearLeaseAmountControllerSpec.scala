@@ -40,9 +40,9 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
   private val taxYear = LocalDate.now.getYear
 
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute = Call("GET", "/premiums-grant-lease")
 
-  val validAnswer = 0
+  val validAnswer = 2
 
   lazy val yearLeaseAmountRoute = routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode).url
 

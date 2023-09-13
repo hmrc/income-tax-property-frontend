@@ -20,10 +20,12 @@ import controllers.actions._
 import forms.premiumlease.YearLeaseAmountFormProvider
 import models.Mode
 import navigation.Navigator
+import pages.premiumlease.YearLeaseAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import views.html.premiumlease.YearLeaseAmountView

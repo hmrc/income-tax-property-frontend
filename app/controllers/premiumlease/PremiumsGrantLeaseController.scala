@@ -20,12 +20,12 @@ import controllers.actions._
 import forms.premiumlease.PremiumsGrantLeaseFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.premiumlease.PremiumsGrantLeasePage
-import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage}
+import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.premiumlease.PremiumsGrantLeaseView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -58,7 +58,7 @@ class PremiumsGrantLeaseController @Inject()(
             case Some(value) => form.fill(value)
           }
 
-          Ok(view(preparedForm, taxYear, amount.get, period.get, mode))
+          Ok(view(preparedForm, taxYear, amount.get, period.get, mode, request.isAgentMessageKey))
       }
   }
 
@@ -73,7 +73,7 @@ class PremiumsGrantLeaseController @Inject()(
         case (amount, period) =>
           form.bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, amount.get, period.get, mode))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, amount.get, period.get, mode, request.isAgentMessageKey))),
 
             value =>
               for {

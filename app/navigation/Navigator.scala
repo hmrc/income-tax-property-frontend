@@ -18,12 +18,11 @@ package navigation
 
 import javax.inject.{Inject, Singleton}
 import controllers.propertyrentals.routes.{ClaimPropertyIncomeAllowanceController, PropertyRentalsCheckYourAnswersController}
-import controllers.premiumlease.routes.CalculatedFigureYourselfController
+import controllers.premiumlease.routes.{CalculatedFigureYourselfController, PremiumsGrantLeaseController, RecievedGrantLeaseAmountController, YearLeaseAmountController}
 import play.api.mvc.Call
 import controllers.routes
 import pages._
 import models._
-import controllers.premiumlease.routes.{PremiumsGrantLeaseController, YearLeaseAmountController}
 
 @Singleton
 class Navigator @Inject()() {
@@ -34,6 +33,7 @@ class Navigator @Inject()() {
     case UKPropertySelectPage => taxYear => _ => routes.SummaryController.show(taxYear)
     case UKPropertyPage => taxYear => _ => routes.CheckYourAnswersController.onPageLoad
     case premiumlease.LeasePremiumPaymentPage => taxYear => _ => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+    case CalculatedFigureYourselfPage => taxYear => _ => RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
     case premiumlease.RecievedGrantLeaseAmountPage => taxYear => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
     case premiumlease.YearLeaseAmountPage => taxYear => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
