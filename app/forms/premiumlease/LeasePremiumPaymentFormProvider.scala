@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 class LeasePremiumPaymentFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean("leasePremiumPayment.error.required")
+      "value" -> boolean(s"leasePremiumPayment.error.required.$individualOrAgent")
     )
 }

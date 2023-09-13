@@ -160,9 +160,11 @@ claimPropertyIncomeAllowance.error.required.individual = Select yes if you want 
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 
 calculatedFigureYourself.title = Deducting tax from non-UK landlords
-calculatedFigureYourself.heading = Have you calculated the figure yourself?
+calculatedFigureYourself.heading.agent = Did your client calculate the figure themselves?
+calculatedFigureYourself.heading.individual = Have you calculated the figure yourself?
 calculatedFigureYourself.checkYourAnswersLabel = Have you calculated the figure yourself?
-calculatedFigureYourself.error.required = Select yes if you've calculated the premium for the grant of a lease taxable amount
+calculatedFigureYourself.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
+calculatedFigureYourself.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
 
 leasePremiumPayment.title = Property income allowance
@@ -174,8 +176,10 @@ leasePremiumPayment.details.l1 = a premium or lump sum
 leasePremiumPayment.details.l2 = regular rent payments
 leasePremiumPayment.details.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
 leasePremiumPayment.details.p3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
-leasePremiumPayment.question = Did you receive a payment to take on a lease?
-leasePremiumPayment.error.required = Select yes if you received a payment to take on a lease
+leasePremiumPayment.question.agent = Did your client receive a payment to take on a lease?
+leasePremiumPayment.question.individual = Did you receive a payment to take on a lease?
+leasePremiumPayment.error.required.agent = Select yes if your client received a payment to take on a lease
+leasePremiumPayment.error.required.individual = Select yes if you received a payment to take on a lease
 leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
 
 premiumsGrantLease.title = Premiums for a grant of a lease
