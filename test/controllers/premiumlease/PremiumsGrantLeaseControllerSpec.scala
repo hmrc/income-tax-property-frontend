@@ -61,7 +61,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, 100, 10, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -79,7 +79,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, 100, 10, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -125,7 +125,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, 100, 10, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
