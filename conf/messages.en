@@ -202,9 +202,10 @@ premiumsGrantLease.calculation.taxableAmount = Taxable amount:
 premiumsGrantLease.checkYourAnswersLabel.individual = If you agree with the figure that we've calculated for you, enter it here
 premiumsGrantLease.checkYourAnswersLabel.agent = If you agree with the figure that we've calculated for your client, enter it here
 premiumsGrantLease.error.nonNumeric = Enter your premiumsGrantLease using numbers
-premiumsGrantLease.error.required = Enter your premiumsGrantLease
-premiumsGrantLease.error.wholeNumber = Enter your premiumsGrantLease using whole numbers
-premiumsGrantLease.error.outOfRange = PremiumsGrantLease must be between {0} and {1}
+premiumsGrantLease.error.required.agent = Enter the figure that we've calculated for your client
+premiumsGrantLease.error.required.individual = Enter the figure that we've calculated for you
+premiumsGrantLease.error.wholeNumber = Enter the figure using whole numbers
+premiumsGrantLease.error.outOfRange = The figure must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
 
 deductingTax.title = Deducting Tax from non-UK landlords

@@ -23,10 +23,10 @@ import javax.inject.Inject
 
 class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Int] =
+  def apply(agentOrIndividual: String): Form[Int] =
     Form(
       "value" -> int(
-        "premiumsGrantLease.error.required",
+        s"premiumsGrantLease.error.required.$agentOrIndividual",
         "premiumsGrantLease.error.wholeNumber",
         "premiumsGrantLease.error.nonNumeric")
           .verifying(inRange(0, 1000000000, "premiumsGrantLease.error.outOfRange"))

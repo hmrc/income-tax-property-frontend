@@ -42,7 +42,6 @@ class PremiumsGrantLeaseController @Inject()(
                                               view: PremiumsGrantLeaseView
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -51,11 +50,11 @@ class PremiumsGrantLeaseController @Inject()(
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) => Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode))
-        case (_, None) => Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode))
+        case (_, None) => Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode))
         case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage) match {
-            case None => form
-            case Some(value) => form.fill(value)
+            case None => formProvider(request.isAgentMessageKey)
+            case Some(value) => formProvider(request.isAgentMessageKey).fill(value)
           }
 
           Ok(view(preparedForm, taxYear, amount, period, mode, request.isAgentMessageKey))
@@ -71,7 +70,7 @@ class PremiumsGrantLeaseController @Inject()(
         case (None, _) => Future.successful(Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
         case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
         case (Some(amount), Some(period)) =>
-          form.bindFromRequest().fold(
+          formProvider(request.isAgentMessageKey).bindFromRequest().fold(
             formWithErrors =>
               Future.successful(BadRequest(view(formWithErrors, taxYear, amount, period, mode, request.isAgentMessageKey))),
 
