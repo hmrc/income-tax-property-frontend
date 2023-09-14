@@ -188,7 +188,7 @@ premiumsGrantLease.line1.individual = You can work out your taxable amount as fo
 premiumsGrantLease.line1.agent = You can work out your client's taxable amount as follows:
 premiumsGrantLease.line2.part1 = Taxable amount =
 premiumsGrantLease.line2.part2 = P
-premiumsGrantLease.line2.part3 = x ((50 -
+premiumsGrantLease.line2.part3 =  x ((50 -
 premiumsGrantLease.line2.part4 = Y
 premiumsGrantLease.line2.part4 = ) / 50)
 premiumsGrantLease.line3.part1 = P

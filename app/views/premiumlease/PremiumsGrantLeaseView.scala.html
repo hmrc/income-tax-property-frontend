@@ -31,20 +31,20 @@
 
 @layout(pageTitle = title(form, messages("premiumsGrantLease.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("leasePremiumPayment.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("premiumsGrantLease.heading")</h1>
 
-    <p class="govuk-body">@messages(s"leasePremiumPayment.line1.${agentOrIndividual}")</p>
+    <p class="govuk-body">@messages(s"premiumsGrantLease.line1.${agentOrIndividual}")</p>
 
     <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part1")</span><span>@messages("premiumsGrantLease.line2.part2")</span><span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part3")</span><span>@messages("premiumsGrantLease.line2.part4")</span>
+        <span>@messages("premiumsGrantLease.line2.part1")</span><span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part2")</span><span>@messages("premiumsGrantLease.line2.part3")</span><span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part4")</span>
     </p>
 
     <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("leasePremiumPayment.line3.part1")</span><span>@messages("leasePremiumPayment.line3.part2")</span>
+        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line3.part1")</span><span>@messages("premiumsGrantLease.line3.part2")</span>
     </p>
 
     <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("leasePremiumPayment.line4.part1")</span><span>@messages("leasePremiumPayment.line4.part2")</span>
+        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line4.part1")</span><span>@messages("premiumsGrantLease.line4.part2")</span>
     </p>
 
     <p class="govuk-heading-m">@messages("premiumsGrantLease.calculation.subHeading")</p>
@@ -73,6 +73,7 @@
             )
             .asNumeric()
             .withWidth(Fixed10)
+            .withId("PremiumPayment")
         )
 
         @govukButton(

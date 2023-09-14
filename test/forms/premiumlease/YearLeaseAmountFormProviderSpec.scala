@@ -27,8 +27,8 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
 
     val fieldName = "value"
 
-    val minimum = 0
-    val maximum = 100
+    val minimum = 2
+    val maximum = 50
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 

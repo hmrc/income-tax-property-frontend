@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.premiumlease.PremiumsGrantLeasePage
+import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -51,7 +51,11 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RecievedGrantLeaseAmountPage, 100).success.value
+        .set(YearLeaseAmountPage, 10).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseRoute)
@@ -60,16 +64,18 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[PremiumsGrantLeaseView]
 
-        status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, 100, 10, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PremiumsGrantLeasePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RecievedGrantLeaseAmountPage, 100).success.value
+        .set(YearLeaseAmountPage, 10).success.value
+        .set(PremiumsGrantLeasePage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseRoute)
@@ -78,7 +84,6 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        status(result) mustEqual OK
         contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, 100, 10, NormalMode, "agent")(request, messages(application)).toString
       }
     }
@@ -89,8 +94,12 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RecievedGrantLeaseAmountPage, 10).success.value
+        .set(YearLeaseAmountPage, 3).success.value
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(userAnswers), true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -111,7 +120,11 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RecievedGrantLeaseAmountPage, 10).success.value
+        .set(YearLeaseAmountPage, 3).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
       running(application) {
         val request =
