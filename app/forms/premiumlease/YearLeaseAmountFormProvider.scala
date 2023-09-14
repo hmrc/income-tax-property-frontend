@@ -29,6 +29,6 @@ class YearLeaseAmountFormProvider @Inject() extends Mappings {
         "yearLeaseAmount.error.required",
         "yearLeaseAmount.error.wholeNumber",
         "yearLeaseAmount.error.nonNumeric")
-          .verifying(inRange(0, 100, "yearLeaseAmount.error.outOfRange"))
+          .verifying(inRange(2, 50, "yearLeaseAmount.error.outOfRange"))
     )
 }
