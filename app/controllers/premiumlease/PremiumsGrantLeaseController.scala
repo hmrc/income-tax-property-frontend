@@ -52,13 +52,13 @@ class PremiumsGrantLeaseController @Inject()(
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) => Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode))
         case (_, None) => Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode))
-        case (amount, period) =>
+        case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage) match {
             case None => form
             case Some(value) => form.fill(value)
           }
 
-          Ok(view(preparedForm, taxYear, amount.get, period.get, mode, request.isAgentMessageKey))
+          Ok(view(preparedForm, taxYear, amount, period, mode, request.isAgentMessageKey))
       }
   }
 
@@ -70,10 +70,10 @@ class PremiumsGrantLeaseController @Inject()(
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) => Future.successful(Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
         case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
-        case (amount, period) =>
+        case (Some(amount), Some(period)) =>
           form.bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, amount.get, period.get, mode, request.isAgentMessageKey))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, amount, period, mode, request.isAgentMessageKey))),
 
             value =>
               for {
