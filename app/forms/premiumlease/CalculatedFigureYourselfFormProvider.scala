@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean("calculatedFigureYourself.error.required")
+      "value" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent")
     )
 }

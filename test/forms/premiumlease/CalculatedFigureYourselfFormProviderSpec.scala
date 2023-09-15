@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "calculatedFigureYourself.error.required"
+  val requiredKey = "calculatedFigureYourself.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new CalculatedFigureYourselfFormProvider()()
+  val form = new CalculatedFigureYourselfFormProvider()("individual")
 
   ".value" - {
 

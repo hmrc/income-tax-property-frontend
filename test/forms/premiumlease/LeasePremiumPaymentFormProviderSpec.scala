@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class LeasePremiumPaymentFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "leasePremiumPayment.error.required"
+  val requiredKey = "leasePremiumPayment.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new LeasePremiumPaymentFormProvider()()
+  val form = new LeasePremiumPaymentFormProvider()("individual")
 
   ".value" - {
 

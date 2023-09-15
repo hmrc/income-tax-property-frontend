@@ -17,6 +17,7 @@
 package controllers.premiumlease
 
 import base.SpecBase
+import controllers.premiumlease.routes._
 import controllers.routes
 import forms.premiumlease.LeasePremiumPaymentFormProvider
 import models.{NormalMode, UserAnswers}
@@ -31,20 +32,19 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.premiumlease.LeasePremiumPaymentView
-import controllers.premiumlease.routes._
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
 class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute : Call = Call("GET", "/foo")
+  private def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new LeasePremiumPaymentFormProvider()
-  val form = formProvider()
+  private val formProvider = new LeasePremiumPaymentFormProvider()
+  private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
 
-  lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode).url
+  private lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode).url
 
   "LeasePremiumPayment Controller" - {
 
@@ -60,7 +60,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[LeasePremiumPaymentView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -78,7 +78,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -124,7 +124,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
