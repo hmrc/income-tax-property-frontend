@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.UserAnswers
+import models.{CheckMode, UserAnswers}
 import pages.UKPropertyPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -45,7 +45,7 @@ object UKPropertySelectSummary  {
           key     = "ukPropertySelect.checkYourAnswersLabel",
           value   = value,
           actions = Seq(
-            ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear).url)
+            ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("ukPropertySelect.change.hidden"))
           )
         )

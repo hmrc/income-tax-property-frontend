@@ -15,6 +15,7 @@
  *@
 
 @import models.Mode
+@import models.NormalMode
 
 @this(
     layout: templates.Layout,
@@ -28,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages(s"ukPropertySelect.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear), 'autoComplete -> "off") {
+    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))

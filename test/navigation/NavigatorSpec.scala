@@ -48,7 +48,7 @@ class NavigatorSpec extends SpecBase {
       "must go from TotalIncomePage to the UK property select page" in {
         navigator.nextPage(
           TotalIncomePage, taxYear, NormalMode, UserAnswers("test")
-        ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear)
+        ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
 
       "most go from UKPropertySelectPage to the summary page" in {

@@ -22,7 +22,7 @@ import forms.{DeductingTax, DeductingTaxFormProvider}
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.DeductingTaxPage
+import pages.{DeductingTaxPage, IncomeFromPropertyRentalsPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -69,7 +69,7 @@ class DeductingTaxController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value.yesNo))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(IncomeFromPropertyRentalsPage, taxYear, mode, updatedAnswers))
       )
   }
 }

@@ -29,13 +29,14 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => Int => UserAnswers => Call = {
     case UKPropertyDetailsPage => taxYear => _ => routes.TotalIncomeController.onPageLoad(taxYear, NormalMode)
-    case TotalIncomePage => taxYear => _ => routes.UKPropertySelectController.onPageLoad(taxYear)
+    case TotalIncomePage => taxYear => _ => routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
     case UKPropertySelectPage => taxYear => _ => routes.SummaryController.show(taxYear)
     case UKPropertyPage => taxYear => _ => routes.CheckYourAnswersController.onPageLoad
     case premiumlease.LeasePremiumPaymentPage => taxYear => _ => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case DeductingTaxPage => taxYear => _ => routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+    case IncomeFromPropertyRentalsPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 
