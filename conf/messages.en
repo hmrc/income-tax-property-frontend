@@ -185,7 +185,7 @@ leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease
 premiumsGrantLease.title = Premiums for a grant of a lease
 premiumsGrantLease.heading = Premiums for the grant of a lease
 premiumsGrantLease.line1.individual = You can work out your taxable amount as follows:
-premiumsGrantLease.line1.agent = You can work out your client's taxable amount as follows:
+premiumsGrantLease.line1.agent = You can work out your client’s taxable amount as follows:
 premiumsGrantLease.line2.part1 = Taxable amount =
 premiumsGrantLease.line2.part2 = P
 premiumsGrantLease.line2.part3 =  x ((50 -
@@ -199,11 +199,11 @@ premiumsGrantLease.calculation.subHeading = Your calculation:
 premiumsGrantLease.calculation.premium = Premium: £{0}
 premiumsGrantLease.calculation.years = Years: {0} - {1} = {2}
 premiumsGrantLease.calculation.taxableAmount = Taxable amount:
-premiumsGrantLease.checkYourAnswersLabel.individual = If you agree with the figure that we've calculated for you, enter it here
-premiumsGrantLease.checkYourAnswersLabel.agent = If you agree with the figure that we've calculated for your client, enter it here
+premiumsGrantLease.checkYourAnswersLabel.individual = If you agree with the figure that we’ve calculated for you, enter it here
+premiumsGrantLease.checkYourAnswersLabel.agent = If you agree with the figure that we’ve calculated for your client, enter it here
 premiumsGrantLease.error.nonNumeric = Enter your premiumsGrantLease using numbers
-premiumsGrantLease.error.required.agent = Enter the figure that we've calculated for your client
-premiumsGrantLease.error.required.individual = Enter the figure that we've calculated for you
+premiumsGrantLease.error.required.agent = Enter the figure that we’ve calculated for your client
+premiumsGrantLease.error.required.individual = Enter the figure that we’ve calculated for you
 premiumsGrantLease.error.wholeNumber = Enter the figure using whole numbers
 premiumsGrantLease.error.outOfRange = The figure must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
