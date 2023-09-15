@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals
+package forms.premiumlease
 
 import forms.behaviours.IntFieldBehaviours
-import forms.premiumlease.PremiumsGrantLeaseFormProvider
 import play.api.data.FormError
 
 class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
