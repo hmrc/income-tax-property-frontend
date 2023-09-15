@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.premiumlease
+package pages
 
-import models.{CheckMode, UserAnswers}
-import pages.CalculatedFigureYourselfPage
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist._
-import viewmodels.implicits._
-import controllers.premiumlease._
-object CalculatedFigureYourselfSummary {
+import models.CalculatedFigureYourself
+import play.api.libs.json.JsPath
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-//
-  ???
+case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYourself] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "calculatedFigureYourself"
 }

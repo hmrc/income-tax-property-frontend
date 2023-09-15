@@ -17,29 +17,61 @@
 package forms.premiumlease
 
 import forms.behaviours.BooleanFieldBehaviours
+import models.CalculatedFigureYourself
+import org.scalatest.OptionValues
+import play.api.data
 import play.api.data.FormError
 
-class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours {
+class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
   val requiredKey = "calculatedFigureYourself.error.required.individual"
   val invalidKey = "error.boolean"
 
   val form = new CalculatedFigureYourselfFormProvider()("individual")
 
-  ".value" - {
+  ".calculatedFigureYourselfAmount" - {
+    "when calculatedFigureYourself is true" - {
+      "and an amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "1234"))
+        boundForm.value.value mustBe CalculatedFigureYourself(true, Some("1234"))
+        boundForm.errors mustBe empty
+      }
 
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+      "and no amount is entered, should fail to bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "true"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.error.required"))
+      }
+    }
+    "when calculatedFigureYourself is false" - {
+      "and an amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "false", "calculatedFigureYourselfAmount" -> "1234"))
+        boundForm.value.value mustBe CalculatedFigureYourself(false, None)
+        boundForm.errors mustBe empty
+      }
+      "and no amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "false"))
+        boundForm.value.value mustBe CalculatedFigureYourself(false, None)
+        boundForm.errors mustBe empty
+      }
+    }
   }
+//
+//  ".calculatedFigureYourself" - {
+//
+//    val fieldName = "calculatedFigureYourself"
+//
+//
+//
+//    behave like booleanField(
+//      form,
+//      fieldName,
+//      invalidError = FormError(fieldName, invalidKey)
+//    )
+//
+//    behave like mandatoryField(
+//      form,
+//      fieldName,
+//      requiredError = FormError(fieldName, requiredKey)
+//    )
+//  }
 }

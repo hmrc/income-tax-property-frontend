@@ -18,6 +18,7 @@ package viewmodels.govuk
 
 import play.api.data.Field
 import play.api.i18n.Messages
+import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.fieldset.{Fieldset, Legend}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
@@ -109,6 +110,44 @@ trait RadiosFluency {
         fieldset = FieldsetViewModel(legend),
         items    = items
       ).inline()
+    }
+
+    def yesNoConditional(
+                          field: Field,
+                          legend: Legend,
+                          conditionalHtml: Option[Html] = None
+                        )(implicit messages: Messages): Radios =
+      yesNoConditional(
+        field = field,
+        fieldset = FieldsetViewModel(legend),
+        conditionalHtml = conditionalHtml
+      )
+
+    def yesNoConditional(
+                          field: Field,
+                          fieldset: Fieldset,
+                          conditionalHtml: Option[Html]
+                        )(implicit messages: Messages): Radios = {
+
+      val items = Seq(
+        RadioItem(
+          id = Some(field.id),
+          value = Some("true"),
+          content = Text(messages("site.yes")),
+          conditionalHtml = conditionalHtml
+        ),
+        RadioItem(
+          id = Some(s"${field.id}-no"),
+          value = Some("false"),
+          content = Text(messages("site.no"))
+        )
+      )
+
+      apply(
+        field = field,
+        fieldset = fieldset,
+        items = items
+      )
     }
   }
 

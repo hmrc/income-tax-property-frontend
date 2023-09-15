@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object CalculatedFigureYourselfPage extends QuestionPage[Boolean] {
+final case class CalculatedFigureYourself(calculatedFigureYourself: Boolean, amount: Option[String])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "calculatedFigureYourself"
+object CalculatedFigureYourself {
+  implicit val format: Format[CalculatedFigureYourself] = Json.format
 }
