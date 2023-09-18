@@ -38,6 +38,8 @@ POST        /:taxYear/change-uk-property-select                                 
 
 ############## Property rentals
 
+## About
+
 GET         /:taxYear/property-rentals/property-rentals-start                       controllers.propertyrentals.PropertyRentalsStartController.onPageLoad(taxYear: Int)
 
 GET         /:taxYear/property-rentals/expenses-less-than-1000                      controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
@@ -51,6 +53,10 @@ GET         /:taxYear/property-rentals/change-claim-property-income-allowance   
 POST        /:taxYear/property-rentals/change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/property-rentals/check-your-answers                           controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear: Int)
+
+## Income
+
+GET         /:taxYear/property-rentals/property-income-start                          controllers.propertyrentals.PropertyIncomeStartController.onPageLoad(taxYear: Int)
 
 ############## Premium lease
 
