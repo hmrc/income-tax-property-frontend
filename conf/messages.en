@@ -184,25 +184,28 @@ leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease
 
 premiumsGrantLease.title = Premiums for a grant of a lease
 premiumsGrantLease.heading = Premiums for the grant of a lease
-premiumsGrantLease.line1 = You can work out your taxable amount as follows:
+premiumsGrantLease.line1.individual = You can work out your taxable amount as follows:
+premiumsGrantLease.line1.agent = You can work out your client’s taxable amount as follows:
 premiumsGrantLease.line2.part1 = Taxable amount =
 premiumsGrantLease.line2.part2 = P
-premiumsGrantLease.line2.part3 = x ((50 -
+premiumsGrantLease.line2.part3 =  x ((50 -
 premiumsGrantLease.line2.part4 = Y
-premiumsGrantLease.line2.part4 = ) / 50)
+premiumsGrantLease.line2.part5 = ) / 50)
 premiumsGrantLease.line3.part1 = P
-premiumsGrantLease.line3.part2 = is the amount of the premium.
+premiumsGrantLease.line3.part2 =  is the amount of the premium.
 premiumsGrantLease.line4.part1 = Y
-premiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
+premiumsGrantLease.line4.part2 =  is the number of complete periods of 12 months (other than the first) for the length of the lease.
 premiumsGrantLease.calculation.subHeading = Your calculation:
-premiumsGrantLease.calculation.premium = Premium: {0}
-premiumsGrantLease.calculation.years = Years: {0} - {1} = {3}
+premiumsGrantLease.calculation.premium = Premium: £{0}
+premiumsGrantLease.calculation.years = Years: {0} - {1} = {2}
 premiumsGrantLease.calculation.taxableAmount = Taxable amount:
-premiumsGrantLease.checkYourAnswersLabel = If you agree with the figure that we've calculated for you, enter it here
+premiumsGrantLease.checkYourAnswersLabel.individual = If you agree with the figure that we’ve calculated for you, enter it here
+premiumsGrantLease.checkYourAnswersLabel.agent = If you agree with the figure that we’ve calculated for your client, enter it here
 premiumsGrantLease.error.nonNumeric = Enter your premiumsGrantLease using numbers
-premiumsGrantLease.error.required = Enter your premiumsGrantLease
-premiumsGrantLease.error.wholeNumber = Enter your premiumsGrantLease using whole numbers
-premiumsGrantLease.error.outOfRange = PremiumsGrantLease must be between {0} and {1}
+premiumsGrantLease.error.required.agent = Enter the figure that we’ve calculated for your client
+premiumsGrantLease.error.required.individual = Enter the figure that we’ve calculated for you
+premiumsGrantLease.error.wholeNumber = Enter the figure using whole numbers
+premiumsGrantLease.error.outOfRange = The figure must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
 
 deductingTax.title = Deducting Tax from non-UK landlords
@@ -228,3 +231,21 @@ incomeFromPropertyRentals.link = work out your rental income when you let proper
 incomeFromPropertyRentals.para2.individual = How much total income did you receive from all of your property rentals?
 incomeFromPropertyRentals.para2.agent = How much total income did your client receive from all of their property rentals?
 incomeFromPropertyRentals.deductions = This is the amount before any deductions have been made.
+
+recievedGrantLeaseAmount.title = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.heading = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.checkYourAnswersLabel = recievedGrantLeaseAmount
+recievedGrantLeaseAmount.error.nonNumeric = Enter your recievedGrantLeaseAmount using numbers
+recievedGrantLeaseAmount.error.required = Enter your recievedGrantLeaseAmount
+recievedGrantLeaseAmount.error.wholeNumber = Enter your recievedGrantLeaseAmount using whole numbers
+recievedGrantLeaseAmount.error.outOfRange = recievedGrantLeaseAmount must be between {0} and {1}
+recievedGrantLeaseAmount.change.hidden = recievedGrantLeaseAmount
+
+yearLeaseAmount.title = YearLeaseAmount
+yearLeaseAmount.heading = YearLeaseAmount
+yearLeaseAmount.checkYourAnswersLabel = YearLeaseAmount
+yearLeaseAmount.error.nonNumeric = Enter your yearLeaseAmount using numbers
+yearLeaseAmount.error.required = Enter your yearLeaseAmount
+yearLeaseAmount.error.wholeNumber = Enter your yearLeaseAmount using whole numbers
+yearLeaseAmount.error.outOfRange = YearLeaseAmount must be between {0} and {1}
+yearLeaseAmount.change.hidden = YearLeaseAmount

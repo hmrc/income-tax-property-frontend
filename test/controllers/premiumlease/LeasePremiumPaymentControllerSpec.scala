@@ -38,7 +38,7 @@ import scala.concurrent.Future
 
 class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
-  private def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute : Call = Call("GET", "/calculated-figure-yourself")
 
   private val formProvider = new LeasePremiumPaymentFormProvider()
   private val form = formProvider("individual")

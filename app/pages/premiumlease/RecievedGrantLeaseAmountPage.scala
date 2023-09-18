@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package forms.premiumlease
+package pages.premiumlease
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
 
-class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
+case object RecievedGrantLeaseAmountPage extends QuestionPage[Int] {
 
-  def apply(agentOrIndividual: String): Form[Int] =
-    Form(
-      "value" -> int(
-        s"premiumsGrantLease.error.required.$agentOrIndividual",
-        "premiumsGrantLease.error.wholeNumber",
-        "premiumsGrantLease.error.nonNumeric")
-          .verifying(inRange(0, 1000000000, "premiumsGrantLease.error.outOfRange"))
-    )
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "recievedGrantLeaseAmount"
 }

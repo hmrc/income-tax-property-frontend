@@ -21,14 +21,14 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
+class YearLeaseAmountFormProvider @Inject() extends Mappings {
 
-  def apply(agentOrIndividual: String): Form[Int] =
+  def apply(): Form[Int] =
     Form(
       "value" -> int(
-        s"premiumsGrantLease.error.required.$agentOrIndividual",
-        "premiumsGrantLease.error.wholeNumber",
-        "premiumsGrantLease.error.nonNumeric")
-          .verifying(inRange(0, 1000000000, "premiumsGrantLease.error.outOfRange"))
+        "yearLeaseAmount.error.required",
+        "yearLeaseAmount.error.wholeNumber",
+        "yearLeaseAmount.error.nonNumeric")
+          .verifying(inRange(2, 50, "yearLeaseAmount.error.outOfRange"))
     )
 }

@@ -66,6 +66,16 @@ POST        /:taxYear/calculated-figure-yourself                                
 GET         /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/received-grant-lease-amount                                    controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/received-grant-lease-amount                                    controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-received-grant-lease-amount                             controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-received-grant-lease-amount                             controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/year-lease-amount                                              controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/year-lease-amount                                              controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-year-lease-amount                                       controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-year-lease-amount                                       controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
 # 6
 GET         /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

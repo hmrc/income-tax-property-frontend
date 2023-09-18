@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals
+package forms.premiumlease
 
 import forms.behaviours.IntFieldBehaviours
-import forms.premiumlease.PremiumsGrantLeaseFormProvider
 import play.api.data.FormError
 
 class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new PremiumsGrantLeaseFormProvider()()
 
-  ".value" - {
+  ".value for agent" - {
+    val form = new PremiumsGrantLeaseFormProvider()("agent")
 
     val fieldName = "value"
 
@@ -57,7 +56,7 @@ class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "premiumsGrantLease.error.required")
+      requiredError = FormError(fieldName, "premiumsGrantLease.error.required.agent")
     )
   }
 }

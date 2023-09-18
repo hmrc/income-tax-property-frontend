@@ -19,9 +19,15 @@ package pages.premiumlease
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
+import scala.language.postfixOps
+
 case object PremiumsGrantLeasePage extends QuestionPage[Int] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "premiumsGrantLease"
+
+  def calculateTaxableAmount(premiumAmount: Int, periods: Int): Int = premiumAmount*((50-minusOne(periods))*50)
+
+  def minusOne(periods: Int): Int = periods - 1
 }
