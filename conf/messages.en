@@ -232,22 +232,25 @@ incomeFromPropertyRentals.para2.individual = How much total income did you recei
 incomeFromPropertyRentals.para2.agent = How much total income did your client receive from all of their property rentals?
 incomeFromPropertyRentals.deductions = This is the amount before any deductions have been made.
 
-recievedGrantLeaseAmount.title = recievedGrantLeaseAmount
-recievedGrantLeaseAmount.heading = recievedGrantLeaseAmount
-recievedGrantLeaseAmount.checkYourAnswersLabel = recievedGrantLeaseAmount
-recievedGrantLeaseAmount.error.nonNumeric = Enter your recievedGrantLeaseAmount using numbers
-recievedGrantLeaseAmount.error.required = Enter your recievedGrantLeaseAmount
-recievedGrantLeaseAmount.error.wholeNumber = Enter your recievedGrantLeaseAmount using whole numbers
-recievedGrantLeaseAmount.error.outOfRange = recievedGrantLeaseAmount must be between {0} and {1}
-recievedGrantLeaseAmount.change.hidden = recievedGrantLeaseAmount
 
-yearLeaseAmount.title = YearLeaseAmount
-yearLeaseAmount.heading = YearLeaseAmount
-yearLeaseAmount.checkYourAnswersLabel = YearLeaseAmount
-yearLeaseAmount.error.nonNumeric = Enter your yearLeaseAmount using numbers
-yearLeaseAmount.error.required = Enter your yearLeaseAmount
-yearLeaseAmount.error.wholeNumber = Enter your yearLeaseAmount using whole numbers
-yearLeaseAmount.error.outOfRange = YearLeaseAmount must be between {0} and {1}
+recievedGrantLeaseAmount.title.individual = How much did you receive for the grant of a lease?
+recievedGrantLeaseAmount.title.agent = How much did your client receive for the grant of a lease?
+recievedGrantLeaseAmount.heading.individual = How much did you receive for the grant of a lease?
+recievedGrantLeaseAmount.heading.agent = How much did your client receive for the grant of a lease?
+recievedGrantLeaseAmount.checkYourAnswersLabel = How much did you receive for the grant of a lease?
+recievedGrantLeaseAmount.error.nonNumeric = Enter your recievedGrantLeaseAmount using numbers
+recievedGrantLeaseAmount.error.required = Enter an amount for how much you received for the grant of a lease
+recievedGrantLeaseAmount.error.wholeNumber = Enter an amount for how much you received for the grant of a lease
+recievedGrantLeaseAmount.error.outOfRange = Enter an amount for how much you received for the grant of a lease between {0} and {1}
+recievedGrantLeaseAmount.change.hidden = Enter an amount for how much you received for the grant of a lease
+
+yearLeaseAmount.title = How many complete 12 month periods were in the term of the lease?
+yearLeaseAmount.heading = How many complete 12 month periods were in the term of the lease?
+yearLeaseAmount.checkYourAnswersLabel = How many complete 12 month periods were in the term of the lease?
+yearLeaseAmount.error.nonNumeric = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
+yearLeaseAmount.error.required = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
+yearLeaseAmount.error.wholeNumber = The term of the lease must only include whole numbers between {0} and {1}
+yearLeaseAmount.error.outOfRange = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
 yearLeaseAmount.change.hidden = YearLeaseAmount
 
 propertyIncomeStart.title = Property income

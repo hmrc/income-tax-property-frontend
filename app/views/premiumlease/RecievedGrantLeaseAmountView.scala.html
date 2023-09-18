@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import controllers.premiumlease.routes
+@import viewmodels.LabelSize
 
 @this(
     layout: templates.Layout,
@@ -38,7 +39,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("recievedGrantLeaseAmount.heading")).asPageHeading()
+                label = LabelViewModel(messages("recievedGrantLeaseAmount.heading")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10)
