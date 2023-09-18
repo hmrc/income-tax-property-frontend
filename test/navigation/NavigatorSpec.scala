@@ -80,6 +80,12 @@ class NavigatorSpec extends SpecBase {
           ClaimPropertyIncomeAllowancePage, taxYear, NormalMode, UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
       }
+
+      "must go from DeductingTax from non-UK landlords to IncomeFromPropertyRentals" in {
+        navigator.nextPage(
+          DeductingTaxPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+      }
     }
 
     "in Check mode" - {

@@ -24,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, individualOrAgent: String, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("incomeFromPropertyRentals.title"))) {
 
@@ -57,7 +57,10 @@
         </div>
 
         <div class="govuk-form-group">
-            <input class="govuk-input govuk-!-width-one-half" id="incomeReceived" name="incomeReceived" type="text" spellcheck="false">
+            <div class="govuk-input__wrapper">
+                <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                <input class="govuk-input govuk-input--width-10" id="incomeReceived" name="incomeReceived" type="text" spellcheck="false">
+            </div>
         </div>
 
         @govukButton(

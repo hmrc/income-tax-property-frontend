@@ -56,7 +56,7 @@ class IncomeFromPropertyRentalsController @Inject()(
         case None => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, mode, request.isAgentMessageKey, taxYear))
+      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +64,7 @@ class IncomeFromPropertyRentalsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.isAgentMessageKey, taxYear))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
         for {

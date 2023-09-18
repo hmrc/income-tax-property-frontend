@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 class IncomeFromPropertyRentalsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Int] =
+  def apply(): Form[String] =
     Form(
-      "incomeReceived" -> number
+      "IncomeReceived" -> nonEmptyText
     )
 }

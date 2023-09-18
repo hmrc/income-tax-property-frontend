@@ -205,19 +205,19 @@ premiumsGrantLease.error.wholeNumber = Enter your premiumsGrantLease using whole
 premiumsGrantLease.error.outOfRange = PremiumsGrantLease must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
 
-deductingTax.title = Deducting Tax from non-uk landlords
-deductingTax.heading = Deducting Tax from non-uk landlords
-deductingTax.checkYourAnswersLabel = deductingTax
-deductingTax.error.required = Select yes if deductingTax
+deductingTax.title = Deducting Tax from non-UK landlords
+deductingTax.heading = Deducting Tax from non-UK landlords
+deductingTax.checkYourAnswersLabel = DeductingTax
+deductingTax.error.required = Select yes if deducting tax
 deductingTax.change.hidden = DeductingTax
 deductingTax.legend = Did you have tax deducted?
 deductingTax.yes = Yes
 deductingTax.no = No
 deductingTax.yes.text = How much tax was deducted?
-deductingTax.link = Paying tax as a non-uk landlord
+deductingTax.link = Paying tax as a non-UK landlord
 
-incomeFromPropertyRentals.title = Income From Property Rentals
-incomeFromPropertyRentals.heading = Income From Property Rentals
+incomeFromPropertyRentals.title = Income from Property Rentals
+incomeFromPropertyRentals.heading = Income from Property Rentals
 incomeFromPropertyRentals.para1.individual = Rental income is the rent you get from your tenants. This includes any payments for:
 incomeFromPropertyRentals.para1.agent = Rental income is the rent your client gets from their tenants. This includes any payments for:
 incomeFromPropertyRentals.bullet1.individual = the use of furniture
