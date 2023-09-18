@@ -249,3 +249,13 @@ yearLeaseAmount.error.required = Enter your yearLeaseAmount
 yearLeaseAmount.error.wholeNumber = Enter your yearLeaseAmount using whole numbers
 yearLeaseAmount.error.outOfRange = YearLeaseAmount must be between {0} and {1}
 yearLeaseAmount.change.hidden = YearLeaseAmount
+
+propertyIncomeStart.title = Property income
+propertyIncomeStart.heading = Property income
+propertyIncomeStart.l1 = rental income
+propertyIncomeStart.l2 = other income from property
+propertyIncomeStart.p1.agent = In this section you’ll need to have these figures for all of your client’s properties:
+propertyIncomeStart.p1.individual = In this section you’ll need to have these figures for all of your properties:
+propertyIncomeStart.p2.agent = If their properties are jointly owned, only tell us about your portion of these figures.
+propertyIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your portion of these figures.
+propertyIncomeStart.button = Continue
