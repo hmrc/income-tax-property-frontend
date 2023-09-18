@@ -16,21 +16,27 @@
 
 package forms
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import play.api.data.Forms._
-import play.api.data._
-import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
+import forms.behaviours.IntFieldBehaviours
 
-class DeductingTaxFormProvider @Inject() extends Mappings {
+class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
 
-  def apply(): Form[DeductingTax] =
-    Form[DeductingTax](
-      mapping(
-      "taxDeductedYesNo" -> boolean("deductingTax.error.required"),
-      "taxDeductedAmount" -> mandatoryIfTrue("taxDeductedYesNo", nonEmptyText)
-      )(DeductingTax.apply)(DeductingTax.unapply)
+  val invalidKey = "error.boolean"
+  val minimum = 0
+  val maximum = 1000000000
+
+  val form = new IncomeFromPropertyRentalsFormProvider()()
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
+
+    behave like fieldThatBindsValidData(
+      form,
+      fieldName,
+      validDataGenerator
     )
-}
 
-case class DeductingTax(yesNo: Boolean, amount: Option[String])
+  }
+}

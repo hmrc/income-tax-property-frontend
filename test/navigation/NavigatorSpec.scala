@@ -48,7 +48,7 @@ class NavigatorSpec extends SpecBase {
       "must go from TotalIncomePage to the UK property select page" in {
         navigator.nextPage(
           TotalIncomePage, taxYear, NormalMode, UserAnswers("test")
-        ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear)
+        ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
 
       "most go from UKPropertySelectPage to the summary page" in {
@@ -79,6 +79,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ClaimPropertyIncomeAllowancePage, taxYear, NormalMode, UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from DeductingTax from non-UK landlords to IncomeFromPropertyRentals" in {
+        navigator.nextPage(
+          DeductingTaxPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
       }
     }
 

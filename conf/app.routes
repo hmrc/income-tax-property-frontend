@@ -32,6 +32,9 @@ POST        /:taxYear/changetotalIncome                                         
 
 GET         /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
 
 ############## Property rentals
 
@@ -74,3 +77,8 @@ GET        /:taxYear/deducting-tax                                              
 POST       /:taxYear/deducting-tax                                                  controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-deducting-tax                                           controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-deducting-tax                                           controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/income-from-property-rentals                                   controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/income-from-property-rentals                                   controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-income-from-property-rentals                            controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-income-from-property-rentals                            controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

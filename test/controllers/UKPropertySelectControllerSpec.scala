@@ -46,7 +46,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
   private val taxYear = LocalDate.now.getYear
 
-  lazy val ukPropertySelectRoute = routes.UKPropertySelectController.onPageLoad(taxYear).url
+  lazy val ukPropertySelectRoute = routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode).url
 
   "UKPropertySelectController" - {
 

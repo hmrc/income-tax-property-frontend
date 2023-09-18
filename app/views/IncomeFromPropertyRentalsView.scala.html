@@ -1,0 +1,71 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.Mode
+@import models.NormalMode
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("incomeFromPropertyRentals.title"))) {
+
+    @formHelper(action = routes.DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+        }
+        <p>
+            <h2 class="govuk-heading-l">@messages("incomeFromPropertyRentals.heading")</h2>
+        </p>
+
+        <p class="govuk-body">@messages(s"incomeFromPropertyRentals.para1.${individualOrAgent}")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages(s"incomeFromPropertyRentals.bullet1.${individualOrAgent}")</li>
+            <li>@messages(s"incomeFromPropertyRentals.bullet2.${individualOrAgent}")</li>
+        </ul>
+
+        <p class="govuk-body">
+            Read more about how to <a href="#" class="govuk-link">@messages("incomeFromPropertyRentals.link")</a>
+        </p>
+
+        <p>
+            <h3 class="govuk-heading-l">@messages(s"incomeFromPropertyRentals.para2.${individualOrAgent}")</h3>
+        </p>
+
+        <div id="income-deductions-hint" class="govuk-hint">
+            @messages(s"incomeFromPropertyRentals.deductions")
+        </div>
+
+        <div class="govuk-form-group">
+            <div class="govuk-input__wrapper">
+                <div class="govuk-input__prefix" aria-hidden="true">£</div>
+                <input class="govuk-input govuk-input--width-10" id="incomeReceived" name="incomeReceived" type="text" spellcheck="false">
+            </div>
+        </div>
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+
+    }
+}
