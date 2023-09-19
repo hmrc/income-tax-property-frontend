@@ -78,6 +78,32 @@ trait Formatters {
         baseFormatter.unbind(key, value.toString)
     }
 
+  private[mappings] def currencyFormatter(requiredKey: String, twoDecimalPlacesKey: String, nonNumericKey: String, args: Seq[String] = Seq.empty): Formatter[BigDecimal] =
+    new Formatter[BigDecimal] {
+
+      val decimalRegexp = """^[+-]?[0-9]*(\.[0-9]{0,2})?$"""
+
+      private val baseFormatter = stringFormatter(requiredKey, args)
+
+      override def bind(key: String, data: Map[String, String]) =
+        baseFormatter
+          .bind(key, data)
+          .map(_.replace(",", ""))
+          .flatMap {
+            s =>
+              nonFatalCatch
+                .either(BigDecimal(s))
+                .left.map(_ =>
+                Seq(FormError(key, nonNumericKey, args))).flatMap { res =>
+                if (res.toString().matches(decimalRegexp))
+                {Right(res)} else {Left(Seq(FormError(key, twoDecimalPlacesKey, args)))}
+              }
+          }
+
+      override def unbind(key: String, value: BigDecimal) =
+        baseFormatter.unbind(key, value.toString)
+    }
+
 
   private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String, args: Seq[String] = Seq.empty)(implicit ev: Enumerable[A]): Formatter[A] =
     new Formatter[A] {

@@ -45,7 +45,7 @@ class PremiumsGrantLeaseController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[Int] = request.userAnswers.get(RecievedGrantLeaseAmountPage)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(RecievedGrantLeaseAmountPage)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
@@ -57,13 +57,13 @@ class PremiumsGrantLeaseController @Inject()(
             case Some(value) => formProvider(request.isAgentMessageKey).fill(value)
           }
 
-          Ok(view(preparedForm, taxYear, amount, period, mode, request.isAgentMessageKey))
+          Ok(view(preparedForm, taxYear, period, amount, mode, request.isAgentMessageKey))
       }
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[Int] = request.userAnswers.get(RecievedGrantLeaseAmountPage)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(RecievedGrantLeaseAmountPage)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
@@ -72,7 +72,7 @@ class PremiumsGrantLeaseController @Inject()(
         case (Some(amount), Some(period)) =>
           formProvider(request.isAgentMessageKey).bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, amount, period, mode, request.isAgentMessageKey))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.isAgentMessageKey))),
 
             value =>
               for {

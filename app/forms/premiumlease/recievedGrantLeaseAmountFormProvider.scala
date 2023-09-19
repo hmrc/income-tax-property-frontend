@@ -23,12 +23,12 @@ import javax.inject.Inject
 
 class recievedGrantLeaseAmountFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Int] =
+  def apply(): Form[BigDecimal] =
     Form(
-      "value" -> int(
+      "value" -> currency(
         "recievedGrantLeaseAmount.error.required",
-        "recievedGrantLeaseAmount.error.wholeNumber",
+        "recievedGrantLeaseAmount.error.twoDecimalPlaces",
         "recievedGrantLeaseAmount.error.nonNumeric")
-          .verifying(inRange(0, 1000000, "recievedGrantLeaseAmount.error.outOfRange"))
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "recievedGrantLeaseAmount.error.outOfRange"))
     )
 }
