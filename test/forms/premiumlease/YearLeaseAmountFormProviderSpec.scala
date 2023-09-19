@@ -43,8 +43,8 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
     behave like intField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "yearLeaseAmount.error.nonNumeric", Seq(minimum, maximum)),
-      wholeNumberError = FormError(fieldName, "yearLeaseAmount.error.wholeNumber", Seq(minimum, maximum))
+      nonNumericError  = FormError(fieldName, "yearLeaseAmount.error.nonNumeric", Seq(minimum.toString, maximum.toString)),
+      wholeNumberError = FormError(fieldName, "yearLeaseAmount.error.wholeNumber", Seq(minimum.toString, maximum.toString))
     )
 
     behave like intFieldWithRange(
@@ -58,7 +58,7 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "yearLeaseAmount.error.required", Seq(minimum, maximum))
+      requiredError = FormError(fieldName, "yearLeaseAmount.error.required", Seq(minimum.toString, maximum.toString))
     )
   }
 }
