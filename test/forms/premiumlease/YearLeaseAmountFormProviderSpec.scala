@@ -19,9 +19,11 @@ package forms.premiumlease
 import forms.behaviours.IntFieldBehaviours
 import play.api.data.FormError
 
+import scala.collection.immutable.Seq
+
 class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new YearLeaseAmountFormProvider()("agent")
+  val form = new YearLeaseAmountFormProvider()()
 
   ".value" - {
 
@@ -41,8 +43,8 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
     behave like intField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "yearLeaseAmount.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "yearLeaseAmount.error.wholeNumber")
+      nonNumericError  = FormError(fieldName, "yearLeaseAmount.error.nonNumeric", Seq(minimum, maximum)),
+      wholeNumberError = FormError(fieldName, "yearLeaseAmount.error.wholeNumber", Seq(minimum, maximum))
     )
 
     behave like intFieldWithRange(
@@ -56,7 +58,7 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "yearLeaseAmount.error.required")
+      requiredError = FormError(fieldName, "yearLeaseAmount.error.required", Seq(minimum, maximum))
     )
   }
 }
