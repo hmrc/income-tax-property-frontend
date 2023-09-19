@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new YearLeaseAmountFormProvider()()
+  val form = new YearLeaseAmountFormProvider()("agent")
 
   ".value" - {
 
