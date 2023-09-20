@@ -241,7 +241,7 @@ recievedGrantLeaseAmount.heading.agent = How much did your client receive for th
 recievedGrantLeaseAmount.checkYourAnswersLabel = How much did you receive for the grant of a lease?
 recievedGrantLeaseAmount.error.nonNumeric = Enter an using numbers
 recievedGrantLeaseAmount.error.required = Enter an amount for how much you received for the grant of a lease
-recievedGrantLeaseAmount.error.twoDecimalPlaces = Enter an amount for how much you received for the grant of a lease
+recievedGrantLeaseAmount.error.twoDecimalPlaces = Enter the amount with two decimal places
 recievedGrantLeaseAmount.error.outOfRange = Enter an amount for how much you received for the grant of a lease between {0} and {1}
 recievedGrantLeaseAmount.change.hidden = Enter an amount for how much you received for the grant of a lease
 
