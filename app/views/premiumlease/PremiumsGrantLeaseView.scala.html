@@ -55,6 +55,8 @@
         @messages("premiumsGrantLease.calculation.years", periods.toString, "1" ,(periods - 1).toString)
     </p>
 
+    <p class="govuk-body">premiumsGrantLease.calculation.formula</p>
+
     <p class="govuk-body">
         <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span><span>£@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
     </p>
@@ -74,6 +76,7 @@
             .asNumeric()
             .withWidth(Fixed10)
             .withId("PremiumPayment")
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
         )
 
         @govukButton(

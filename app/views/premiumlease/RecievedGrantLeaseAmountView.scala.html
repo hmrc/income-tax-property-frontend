@@ -26,9 +26,9 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("recievedGrantLeaseAmount.title"))) {
+@layout(pageTitle = title(form, messages(s"recievedGrantLeaseAmount.title.${agentOrIndividual}"))) {
 
     @formHelper(action = routes.RecievedGrantLeaseAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
@@ -39,10 +39,11 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("recievedGrantLeaseAmount.heading")).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages(s"recievedGrantLeaseAmount.heading.${agentOrIndividual}")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10)
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
         )
 
         @govukButton(
