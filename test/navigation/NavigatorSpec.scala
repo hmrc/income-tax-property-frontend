@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
 import java.time.LocalDate
 
@@ -81,10 +81,24 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
       }
 
-      "must go from DeductingTax from non-UK landlords to IncomeFromPropertyRentals" in {
+      "must go from DeductingTax to IncomeFromPropertyRentalsPage" in {
         navigator.nextPage(
           DeductingTaxPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes" in {
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
+        navigator.nextPage(
+          IsNonUKLandlordPage, taxYear, NormalMode, userAnswers
         ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
+        navigator.nextPage(
+          IsNonUKLandlordPage, taxYear, NormalMode, userAnswers
+        ) mustBe controllers.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
       }
     }
 

@@ -70,7 +70,7 @@ class IncomeFromPropertyRentalsController @Inject()(
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeFromPropertyRentalsPage, value))
           _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(navigator.nextPage(UKPropertyDetailsPage, taxYear, mode, updatedAnswers))
+        } yield Redirect(navigator.nextPage(IncomeFromPropertyRentalsPage, taxYear, mode, updatedAnswers))
     )
   }
 }

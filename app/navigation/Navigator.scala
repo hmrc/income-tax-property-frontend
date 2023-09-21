@@ -23,6 +23,7 @@ import play.api.mvc.Call
 import controllers.routes
 import pages._
 import models._
+import pages.propertyrentals.IsNonUKLandlordPage
 
 @Singleton
 class Navigator @Inject()() {
@@ -38,8 +39,10 @@ class Navigator @Inject()() {
     case premiumlease.YearLeaseAmountPage => taxYear => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
-    case DeductingTaxPage => taxYear => _ => routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
-    case IncomeFromPropertyRentalsPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    case IsNonUKLandlordPage => taxYear => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
+    case DeductingTaxPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    case IncomeFromPropertyRentalsPage => taxYear => _ => routes.TotalIncomeController.onPageLoad(taxYear, NormalMode) // TODO: route to CYA page
+
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 
@@ -55,4 +58,10 @@ class Navigator @Inject()() {
     case CheckMode =>
       checkRouteMap(page)(taxYear)(userAnswers)
   }
+
+  private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(IsNonUKLandlordPage) match {
+      case Some(true) => routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+      case _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    }
 }
