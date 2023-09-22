@@ -16,12 +16,21 @@
 
 package pages.propertyrentals
 
-import pages.QuestionPage
+import models.UserAnswers
+import pages.{DeductingTaxPage, QuestionPage}
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object IsNonUKLandlordPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "isNonUKLandlord"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true  => super.cleanup(value, userAnswers)
+      case false => userAnswers.remove(DeductingTaxPage)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }
