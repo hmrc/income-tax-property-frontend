@@ -76,7 +76,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CalculatedFigureYourself(true, Some("1234"))), taxYear, NormalModere)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(CalculatedFigureYourself(true, Some("1234"))), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 

@@ -31,7 +31,5 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
       "calculatedFigureYourself" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent"),
       "calculatedFigureYourselfAmount" -> mandatoryIfTrue("calculatedFigureYourself", text("calculatedFigureYourselfAmount.error.required"))
     )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))
-
-    //not boolean plus option of amount because: could have invalid states with that, so actually better off storing as an option.
   }
 }
