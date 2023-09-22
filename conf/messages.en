@@ -205,7 +205,7 @@ premiumsGrantLease.checkYourAnswersLabel.agent = If you agree with the figure th
 premiumsGrantLease.error.nonNumeric = Enter the figure using numbers
 premiumsGrantLease.error.required.agent = Enter the figure that we’ve calculated for your client
 premiumsGrantLease.error.required.individual = Enter the figure that we’ve calculated for you
-premiumsGrantLease.error.twoDecimalPlaces = Enter the figure using with with two decimal places
+premiumsGrantLease.error.twoDecimalPlaces = Enter the figure using with two decimal places
 premiumsGrantLease.error.outOfRange = The figure must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
 
