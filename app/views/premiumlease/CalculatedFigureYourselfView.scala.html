@@ -15,13 +15,15 @@
  *@
 
 @import controllers.premiumlease.routes._
+@import viewmodels.govuk._
 
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    govukInput : GovukInput
 )
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
@@ -35,10 +37,19 @@
         }
 
         @govukRadios(
-            RadiosViewModel.yesNo(
-                field = form("value"),
-                legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading()
-            )
+                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                    field = form("calculatedFigureYourself"),
+                    legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(),
+                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                        field = form("calculatedFigureYourself"),
+                        conditionalYesHtml = Some(
+                            govukInput(InputViewModel(
+                                field = form("calculatedFigureYourselfAmount"),
+                                label = LabelViewModel(messages("calculatedFigureYourselfAmount.label"))
+                            ))
+                        )
+                    )
+                )
         )
 
         @govukButton(

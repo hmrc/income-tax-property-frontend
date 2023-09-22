@@ -167,6 +167,10 @@ calculatedFigureYourself.checkYourAnswersLabel = Have you calculated the figure 
 calculatedFigureYourself.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
+calculatedFigureYourself.amount.legend = Enter the figure
+calculatedFigureYourselfAmount.label = Enter the figure
+calculatedFigureYourselfAmount.error.required = blahblah
+calculatedFigureYourselfAmount.amount.error.invalid = blahblah
 
 leasePremiumPayment.title = Property income allowance
 leasePremiumPayment.heading = Premiums for the grant of a lease

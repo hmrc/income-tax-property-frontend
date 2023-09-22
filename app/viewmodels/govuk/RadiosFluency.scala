@@ -63,6 +63,38 @@ trait RadiosFluency {
         fieldset = FieldsetViewModel(legend)
       )
 
+    def yesNoItemsWithConditionalHtml(
+                                         field: Field,
+                                         conditionalYesHtml: Option[Html] = None,
+                                         conditionalNoHtml: Option[Html] = None
+                                       )(implicit messages: Messages) = Seq(
+      RadioItem(
+        id = Some(field.id),
+        value = Some("true"),
+        content = Text(messages("site.yes")),
+        conditionalHtml = conditionalYesHtml
+      ),
+      RadioItem(
+        id = Some(s"${field.id}-no"),
+        value = Some("false"),
+        content = Text(messages("site.no")),
+        conditionalHtml = conditionalNoHtml
+      )
+    )
+
+    def yesNoWithConditionalHtml(
+               field: Field,
+               legend: Legend,
+               items: Seq[RadioItem]
+             )(implicit messages: Messages): Radios = {
+
+      apply(
+        field = field,
+        fieldset = FieldsetViewModel(legend),
+        items = items
+      )
+    }
+
     def yesNo(
                field: Field,
                fieldset: Fieldset
@@ -110,44 +142,6 @@ trait RadiosFluency {
         fieldset = FieldsetViewModel(legend),
         items    = items
       ).inline()
-    }
-
-    def yesNoConditional(
-                          field: Field,
-                          legend: Legend,
-                          conditionalHtml: Option[Html] = None
-                        )(implicit messages: Messages): Radios =
-      yesNoConditional(
-        field = field,
-        fieldset = FieldsetViewModel(legend),
-        conditionalHtml = conditionalHtml
-      )
-
-    def yesNoConditional(
-                          field: Field,
-                          fieldset: Fieldset,
-                          conditionalHtml: Option[Html]
-                        )(implicit messages: Messages): Radios = {
-
-      val items = Seq(
-        RadioItem(
-          id = Some(field.id),
-          value = Some("true"),
-          content = Text(messages("site.yes")),
-          conditionalHtml = conditionalHtml
-        ),
-        RadioItem(
-          id = Some(s"${field.id}-no"),
-          value = Some("false"),
-          content = Text(messages("site.no"))
-        )
-      )
-
-      apply(
-        field = field,
-        fieldset = fieldset,
-        items = items
-      )
     }
   }
 
