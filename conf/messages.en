@@ -9,7 +9,8 @@ summary.aboutUKProperties.heading = About your UK Properties
 summary.aboutUKProperties = About
 
 summary.rentals.heading = Property Rentals
-summary.aboutRentals = About
+summary.about = About
+summary.income = Income
 
 site.back = Back
 site.remove = Remove
