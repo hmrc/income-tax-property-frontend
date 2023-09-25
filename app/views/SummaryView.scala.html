@@ -51,7 +51,19 @@
         <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad(taxYear)">@messages(s"summary.aboutRentals")</a>
+                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad(taxYear)">@messages(s"summary.about")</a>
+                    </span>
+                <span class="hmrc-status-tag">
+                        @{
+                            val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
+                            govukTag(tag)
+                        }
+                    </span>
+            </li>
+
+            <li class="app-task-list__item">
+                    <span class="app-task-list__task-name">
+                        <a class="govuk-link" id="about_income_link" href="@PropertyIncomeStartController.onPageLoad(taxYear)">@messages(s"summary.income")</a>
                     </span>
                 <span class="hmrc-status-tag">
                         @{
