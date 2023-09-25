@@ -25,7 +25,9 @@ import viewmodels.implicits._
 import controllers.premiumlease._
 object CalculatedFigureYourselfSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-//
-  ???
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    //TODO Implement allowing for the custom conditional input field for the amount once the
+    // CYA page is present and we have a design for how this should appear on the CYA page.
+    ???
+  }
 }
