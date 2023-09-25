@@ -91,7 +91,7 @@ class IncomeFromPropertyRentalsControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, incomeFromPropertyRentalsRoute)
-            .withFormUrlEncodedBody(("IncomeReceived", incomeAmount))
+            .withFormUrlEncodedBody(("incomeReceived", incomeAmount))
 
         val result = route(application, request).value
 
