@@ -27,7 +27,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_],taxYear: Int , periods: Int, premiumAmount: Int, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_],taxYear: Int , periods: Int, premiumAmount: BigDecimal, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("premiumsGrantLease.title"))) {
 
@@ -55,6 +55,8 @@
         @messages("premiumsGrantLease.calculation.years", periods.toString, "1" ,(periods - 1).toString)
     </p>
 
+    <p class="govuk-body">@messages("premiumsGrantLease.calculation.formula", premiumAmount.toString, (periods - 1).toString)</p>
+
     <p class="govuk-body">
         <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span><span>£@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
     </p>
@@ -74,6 +76,7 @@
             .asNumeric()
             .withWidth(Fixed10)
             .withId("PremiumPayment")
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
         )
 
         @govukButton(

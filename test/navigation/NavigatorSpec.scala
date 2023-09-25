@@ -69,6 +69,24 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage" in {
+        navigator.nextPage(
+          CalculatedFigureYourselfPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.premiumlease.routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
+        navigator.nextPage(
+          premiumlease.RecievedGrantLeaseAmountPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.premiumlease.routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from YearLeaseAmountPage to PremiumsGrantLeasePage" in {
+        navigator.nextPage(
+          premiumlease.YearLeaseAmountPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+      }
+
       "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
         navigator.nextPage(
           ExpensesLessThan1000Page, taxYear, NormalMode, UserAnswers("test")

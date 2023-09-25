@@ -66,6 +66,14 @@ trait Generators extends ModelGenerators {
       .suchThat(!_.isValidInt)
       .map("%f".format(_))
 
+
+  def decimalsNotTwoDecimalPlaces: Gen[String] =
+    arbitrary[BigDecimal]
+      .suchThat(_.abs < Int.MaxValue)
+      .suchThat(!_.abs.toString.matches("""^[0-9]*(\.[0-9]{0,2})?$"""))
+      .suchThat(!_.isValidInt)
+      .map("%f".format(_))
+
   def intsBelowValue(value: Int): Gen[Int] =
     arbitrary[Int] suchThat(_ < value)
 

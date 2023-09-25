@@ -16,10 +16,10 @@
 
 package forms.premiumlease
 
-import forms.behaviours.IntFieldBehaviours
+import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
+class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
 
 
   ".value for agent" - {
@@ -28,7 +28,7 @@ class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
     val fieldName = "value"
 
     val minimum = 0
-    val maximum = 1000000000
+    val maximum = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -38,14 +38,14 @@ class PremiumsGrantLeaseFormProviderSpec extends IntFieldBehaviours {
       validDataGenerator
     )
 
-    behave like intField(
+    behave like currencyField(
       form,
       fieldName,
       nonNumericError  = FormError(fieldName, "premiumsGrantLease.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "premiumsGrantLease.error.wholeNumber")
+      twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.twoDecimalPlaces")
     )
 
-    behave like intFieldWithRange(
+    behave like currencyFieldWithRange(
       form,
       fieldName,
       minimum       = minimum,
