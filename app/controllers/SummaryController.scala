@@ -19,6 +19,7 @@ package controllers
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UKPropertySelect
 import pages.UKPropertyPage
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -37,7 +38,9 @@ class SummaryController @Inject()(
     val containsPropertyRental = request.userAnswers
       .flatMap(_.get(UKPropertyPage))
       .exists(_.contains(UKPropertySelect.PropertyRentals))
-    val showPropertyRentals = containsPropertyRental
-    Ok(view(taxYear, showPropertyRentals))
+    val containsPropertyIncome = request.userAnswers
+      .flatMap(_.get(ClaimPropertyIncomeAllowancePage))
+      .isDefined
+    Ok(view(taxYear, containsPropertyRental, containsPropertyIncome))
   }
 }

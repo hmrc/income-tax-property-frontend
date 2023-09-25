@@ -45,7 +45,7 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(taxYear, false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, false, false)(request, messages(application)).toString
       }
     }
 
@@ -66,7 +66,7 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) must  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, true)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, true, false)(request, messages(application)).toString
       }
     }
 
@@ -87,7 +87,7 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustNot  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, false, false)(request, messages(application)).toString
       }
     }
   }
