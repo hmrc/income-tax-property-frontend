@@ -21,7 +21,7 @@
     govukTag: GovukTag
 )
 
-@(taxYear: Int, showPropertyRentals: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, showPropertyRentals: Boolean, showIncomeRentals: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("summary.title")),
@@ -60,7 +60,7 @@
                         }
                     </span>
             </li>
-
+            @if(showIncomeRentals){
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
                         <a class="govuk-link" id="about_income_link" href="@PropertyIncomeStartController.onPageLoad(taxYear)">@messages(s"summary.income")</a>
@@ -72,6 +72,7 @@
                         }
                     </span>
             </li>
+            }
         </ol>
     }
 }
