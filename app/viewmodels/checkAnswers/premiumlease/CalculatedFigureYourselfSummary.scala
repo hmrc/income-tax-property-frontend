@@ -25,19 +25,9 @@ import viewmodels.implicits._
 import controllers.premiumlease._
 object CalculatedFigureYourselfSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CalculatedFigureYourselfPage).map {
-      answer =>
-
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key = "calculatedFigureYourself.checkYourAnswersLabel",
-          value = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
-          )
-        )
-    }
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    //TODO Implement allowing for the custom conditional input field for the amount once the
+    // CYA page is present and we have a design for how this should appear on the CYA page.
+    ???
+  }
 }

@@ -17,14 +17,19 @@
 package forms.premiumlease
 
 import forms.mappings.Mappings
+import models.CalculatedFigureYourself
 import play.api.data.Form
+import play.api.data.Forms.{mapping, optional}
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import javax.inject.Inject
 
 class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[Boolean] =
-    Form(
-      "value" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent")
-    )
+  def apply(individualOrAgent: String): Form[CalculatedFigureYourself] = {
+    Form(mapping(
+      "calculatedFigureYourself" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent"),
+      "calculatedFigureYourselfAmount" -> mandatoryIfTrue("calculatedFigureYourself", text("calculatedFigureYourselfAmount.error.required"))
+    )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))
+  }
 }
