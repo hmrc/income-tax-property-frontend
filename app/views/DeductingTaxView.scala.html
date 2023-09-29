@@ -14,63 +14,61 @@
  * limitations under the License.
  *@
 
+@import controllers.premiumlease.routes
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
+@import viewmodels.govuk._
+
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    govukInput : GovukInput
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("deductingTax.title"))) {
+@layout(pageTitle = title(form, messages("deductingTax.legend"))) {
 
-    @formHelper(action = routes.DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    @messages("deductingTax.details.content.link.text")
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">@messages("deductingTax.details.content.link.href")</p>
+            </div>
+        </details>
 
-        <p>
-            <h2 class="govuk-heading-l">@messages("deductingTax.heading")</h2>
-            <a href="#" class="govuk-link">@messages("deductingTax.link")</a>
-        </p>
-
-        <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    <h3 class="govuk-fieldset__heading">
-                        @messages("deductingTax.legend")
-                    </h3>
-                </legend>
-                <div class="govuk-radios" data-module="govuk-radios">
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="taxDeductedYesNo" name="taxDeductedYesNo" type="radio" value=true data-aria-controls="taxDeductedYes">
-                        <label class="govuk-label govuk-radios__label" for="taxDeductedYesNo">
-                            @messages("deductingTax.yes")
-                        </label>
-                    </div>
-                    <div class="govuk-radios__conditional" id="taxDeductedYes">
-                        <div class="govuk-form-group">
-                            <label class="govuk-label" for="taxDeducted">
-                                @messages("deductingTax.yes.text")
-                            </label>
-                            <div class="govuk-input__wrapper">
-                                <div class="govuk-input__prefix" aria-hidden="true">£</div>
-                                <input class="govuk-input govuk-input--width-5" id="taxDeducted" name="taxDeductedAmount" type="text" spellcheck="false">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="taxDeductedNo" name="taxDeductedYesNo" type="radio" value=false data-aria-controls="taxDeductedNo">
-                        <label class="govuk-label govuk-radios__label" for="taxDeductedNo">
-                            @messages("deductingTax.no")
-                        </label>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
+        @govukRadios(
+                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                    field = form("taxDeductedYesNo"),
+                    legend = LegendViewModel(messages("deductingTax.legend")).asPageHeading(),
+                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                        field = form("deductingTax"),
+                        conditionalYesHtml = Some(
+                            govukInput(
+                                InputViewModel(
+                                    field = form("taxDeductedAmount"),
+                                    label = LabelViewModel(messages("deductingTax.yes.text"))
+                                )
+                                .asNumeric()
+                                .withWidth(Fixed10)
+                                .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            )
+                        )
+                    )
+                )
+        )
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")

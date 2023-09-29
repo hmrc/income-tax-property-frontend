@@ -18,6 +18,7 @@ package forms
 
 import javax.inject.Inject
 import forms.mappings.Mappings
+import models.DeductingTax
 import play.api.data.Forms._
 import play.api.data._
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
@@ -33,4 +34,3 @@ class DeductingTaxFormProvider @Inject() extends Mappings {
     )
 }
 
-case class DeductingTax(yesNo: Boolean, amount: Option[String])
