@@ -214,8 +214,12 @@ premiumsGrantLease.error.twoDecimalPlaces = Enter the figure using with two deci
 premiumsGrantLease.error.outOfRange = The figure must be between {0} and {1}
 premiumsGrantLease.change.hidden = PremiumsGrantLease
 
+
+deductingTax.details.content.link.text = Paying tax as a non-UK landlord (opens in a new tab)
+deductingTax.details.content.link.href = https://www.gov.uk/guidance/paying-tax-on-rent-to-landlords-abroad
 deductingTax.title = Deducting Tax from non-UK landlords
-deductingTax.heading = Deducting Tax from non-UK landlords
+deductingTax.heading.agent = Deducting Tax from non-UK landlords
+deductingTax.heading.individual = Deducting Tax from non-UK landlords
 deductingTax.checkYourAnswersLabel = DeductingTax
 deductingTax.error.required = Select yes if deducting tax
 deductingTax.change.hidden = DeductingTax
@@ -236,7 +240,7 @@ incomeFromPropertyRentals.bullet2.agent = charges for services your client provi
 incomeFromPropertyRentals.link = work out your rental income when you let property at GOV.UK (opens in new tab)
 incomeFromPropertyRentals.para2.individual = How much total income did you receive from all of your property rentals?
 incomeFromPropertyRentals.para2.agent = How much total income did your client receive from all of their property rentals?
-incomeFromPropertyRentals.deductions = This is the amount before any deductions have been made.
+incomeFromPropertyRentals.deductions.hint = This is the amount before any deductions have been made.
 
 
 recievedGrantLeaseAmount.title.individual = How much did you receive for the grant of a lease?

@@ -28,9 +28,9 @@ object DeductingTaxSummary  {
 
   def row(answers: UserAnswers, taxYear: Int)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DeductingTaxPage).map {
-      answer =>
+      deductingTax =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = if (deductingTax.taxDeductedYesNo) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
           key     = "deductingTax.checkYourAnswersLabel",

@@ -17,10 +17,10 @@
 package controllers
 
 import controllers.actions._
-import forms.{DeductingTax, DeductingTaxFormProvider}
+import forms.DeductingTaxFormProvider
 
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{DeductingTax, Mode, UserAnswers}
 import navigation.Navigator
 import pages.{DeductingTaxPage, IncomeFromPropertyRentalsPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -52,10 +52,10 @@ class DeductingTaxController @Inject()(
       if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
         case None => form
-        case Some(value) => form.fill(DeductingTax(value, None))
+        case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear))
+      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -63,11 +63,11 @@ class DeductingTaxController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value.yesNo))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, updatedAnswers))
       )

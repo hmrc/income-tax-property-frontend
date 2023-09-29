@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.{DeductingTax, DeductingTaxFormProvider}
-import models.{NormalMode, UserAnswers}
+import forms.DeductingTaxFormProvider
+import models.{DeductingTax, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -57,13 +57,13 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[DeductingTaxView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, DeductingTax(true, Some("100"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -75,7 +75,8 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, None)), NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, Some("100"))), taxYear,
+          NormalMode, "individual" )(request, messages(application)).toString
       }
     }
 
@@ -121,7 +122,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
