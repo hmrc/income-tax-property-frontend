@@ -42,7 +42,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new ReversePremiumsReceivedFormProvider()
   val form = formProvider()
 
-  lazy val reversePremiumsReceivedRoute = routes.ReversePremiumsReceivedController.onPageLoad(NormalMode).url
+  lazy val reversePremiumsReceivedRoute = routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode).url
 
   "ReversePremiumsReceived Controller" - {
 
