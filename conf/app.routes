@@ -73,6 +73,12 @@ POST       /:taxYear/property-rentals/income-from-property-rentals              
 GET        /:taxYear/property-rentals/change-income-from-property-rentals           controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/property-rentals/change-income-from-property-rentals           controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+
 ############## Premium lease
 
 # 3

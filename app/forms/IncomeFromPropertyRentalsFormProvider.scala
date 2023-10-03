@@ -17,15 +17,21 @@
 package forms
 
 import forms.mappings.Mappings
-import play.api.data.Forms._
 import play.api.data._
 
 import javax.inject.Inject
 
 class IncomeFromPropertyRentalsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  private val minValue = 0
+  private val maxValue = 100000000
+
+  def apply(agentOrIndividual: String): Form[BigDecimal] =
     Form(
-      "incomeReceived" -> nonEmptyText
+      "incomeFromPropertyRentals" -> currency(
+        s"incomeFromPropertyRentals.error.required.$agentOrIndividual",
+        "incomeFromPropertyRentals.error.twoDecimalPlaces",
+        "incomeFromPropertyRentals.error.nonNumeric")
+        .verifying(inRange(BigDecimal(minValue), BigDecimal(maxValue), "incomeFromPropertyRentals.error.outOfRange"))
     )
 }

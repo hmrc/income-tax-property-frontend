@@ -17,14 +17,15 @@
 package forms
 
 import forms.behaviours.IntFieldBehaviours
+import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
 
-class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
+class OtherIncomeFromPropertyFormProviderSpec extends IntFieldBehaviours {
 
   val invalidKey = "error.boolean"
   val minimum = 0
   val maximum = 1000000000
 
-  val form = new IncomeFromPropertyRentalsFormProvider()("agent")
+  val form = new OtherIncomeFromPropertyFormProvider()()
 
   ".value" - {
 

@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals
 
-import forms.behaviours.IntFieldBehaviours
+import forms.mappings.Mappings
+import play.api.data._
 
-class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
+import javax.inject.Inject
 
-  val invalidKey = "error.boolean"
-  val minimum = 0
-  val maximum = 1000000000
+class OtherIncomeFromPropertyFormProvider @Inject() extends Mappings {
 
-  val form = new IncomeFromPropertyRentalsFormProvider()("agent")
+  private val minValue = 0
+  private val maxValue = 100000000
 
-  ".value" - {
-
-    val fieldName = "value"
-
-    val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
-
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validDataGenerator
+  def apply(): Form[BigDecimal] =
+    Form(
+      "otherIncomeFromProperty" -> currency(
+        s"otherIncomeFromProperty.error.required",
+        "otherIncomeFromProperty.error.twoDecimalPlaces",
+        "otherIncomeFromProperty.error.nonNumeric")
+        .verifying(inRange(BigDecimal(minValue), BigDecimal(maxValue), "otherIncomeFromProperty.error.outOfRange"))
     )
-
-  }
 }

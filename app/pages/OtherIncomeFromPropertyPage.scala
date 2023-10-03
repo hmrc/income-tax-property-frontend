@@ -14,29 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.behaviours.IntFieldBehaviours
+import play.api.libs.json.JsPath
 
-class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
+case object OtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
 
-  val invalidKey = "error.boolean"
-  val minimum = 0
-  val maximum = 1000000000
+  override def path: JsPath = JsPath \ toString
 
-  val form = new IncomeFromPropertyRentalsFormProvider()("agent")
-
-  ".value" - {
-
-    val fieldName = "value"
-
-    val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
-
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validDataGenerator
-    )
-
-  }
+  override def toString: String = "otherIncomeFromProperty"
 }
