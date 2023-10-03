@@ -17,7 +17,7 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-import controllers.propertyrentals.routes.{ClaimPropertyIncomeAllowanceController, PropertyRentalsCheckYourAnswersController}
+import controllers.propertyrentals.routes.{ClaimPropertyIncomeAllowanceController, OtherIncomeFromPropertyController, PropertyRentalsCheckYourAnswersController}
 import controllers.premiumlease.routes._
 import play.api.mvc.Call
 import controllers.routes
@@ -42,7 +42,7 @@ class Navigator @Inject()() {
     case IsNonUKLandlordPage => taxYear => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
     case DeductingTaxPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage => taxYear => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
-
+    case LeasePremiumPaymentController => taxYear => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 

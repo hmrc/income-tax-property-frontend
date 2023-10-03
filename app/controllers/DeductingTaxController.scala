@@ -18,11 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.DeductingTaxFormProvider
-
-import javax.inject.Inject
-import models.{DeductingTax, Mode, UserAnswers}
+import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{DeductingTaxPage, IncomeFromPropertyRentalsPage}
+import pages.DeductingTaxPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,6 +28,7 @@ import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.DeductingTaxView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DeductingTaxController @Inject()(
