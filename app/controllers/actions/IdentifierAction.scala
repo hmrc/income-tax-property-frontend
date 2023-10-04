@@ -29,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.Logging
 
 trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
@@ -37,7 +38,7 @@ class AuthenticatedIdentifierAction @Inject()(
                                                config: FrontendAppConfig,
                                                val parser: BodyParsers.Default
                                              )
-                                             (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
+                                             (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
@@ -46,11 +47,14 @@ class AuthenticatedIdentifierAction @Inject()(
     authorised()
       .retrieve(
         Retrievals.affinityGroup and
-          Retrievals.internalId
+          Retrievals.internalId and
+          Retrievals.confidenceLevel
       ) {
-        case Some(Individual) ~ Some(internalId) =>
+        case Some(Individual) ~ _ ~ confidenceLevel if confidenceLevel < ConfidenceLevel.L250  =>
+          upliftIv
+        case Some(Individual) ~ Some(internalId) ~ _ =>
           block(IdentifierRequest(request, internalId, isAgent = false))
-        case Some(Agent) ~ Some(internalId) =>
+        case Some(Agent) ~ Some(internalId) ~ _ =>
           block(IdentifierRequest(request, internalId, isAgent = true))
       }.recoverWith {
       case _: NoActiveSession =>
@@ -60,6 +64,12 @@ class AuthenticatedIdentifierAction @Inject()(
       case _: AuthorisationException =>
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     }
+  }
+
+  private def upliftIv: Future[Result] = {
+    val logMessage = "[AuthorisedAction][individualAuthentication] User has confidence level below 250, routing user to IV uplift."
+    logger.info(logMessage)
+    Future(Redirect(config.incomeTaxSubmissionIvRedirect))
   }
 }
 
