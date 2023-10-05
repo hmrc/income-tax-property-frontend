@@ -47,7 +47,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -67,7 +67,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -87,7 +87,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -107,7 +107,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -115,6 +115,26 @@ class AuthActionSpec extends SpecBase {
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
+        }
+      }
+
+      "must be redirected to uplift their confidence level" in {
+        val application = applicationBuilder(userAnswers = None, true).build()
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+          val authAction = new AuthenticatedIdentifierAction(
+            new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L200),
+            appConfig,
+            bodyParsers
+          )
+
+          val controller = new Harness(authAction)
+          val result = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual "http://localhost:9302/update-and-submit-income-tax-return/iv-uplift"
         }
       }
     }
@@ -127,7 +147,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -147,7 +167,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -167,7 +187,7 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), appConfig, bodyParsers)
           val controller = new Harness(authAction)
@@ -187,9 +207,12 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
-          val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(Some(Agent) ~ Some("internal id")), appConfig, bodyParsers)
+          val authAction = new AuthenticatedIdentifierAction(
+            new FakeAuthConnector(Some(Agent) ~ Some("internal id") ~ ConfidenceLevel.L250),
+            appConfig,
+            bodyParsers)
           val controller = new Harness(authAction)
           val result = controller.onPageLoad()(FakeRequest())
 
@@ -206,9 +229,12 @@ class AuthActionSpec extends SpecBase {
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
-          val authAction = new AuthenticatedIdentifierAction(new FakeAuthConnector(Some(Individual) ~ Some("internal id")), appConfig, bodyParsers)
+          val authAction = new AuthenticatedIdentifierAction(
+            new FakeAuthConnector(Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250),
+            appConfig,
+            bodyParsers)
           val controller = new Harness(authAction)
           val result = controller.onPageLoad()(FakeRequest())
 

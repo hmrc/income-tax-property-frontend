@@ -41,6 +41,13 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/income-tax-property-frontend"
 
+  private lazy val incomeTaxSubmissionFrontendUrlKey = "microservice.services.income-tax-submission-frontend.url"
+  def incomeTaxSubmissionBaseUrl: String = configuration.get[String](incomeTaxSubmissionFrontendUrlKey) +
+    configuration.get[String]("microservice.services.income-tax-submission-frontend.context")
+
+  def incomeTaxSubmissionIvRedirect: String = incomeTaxSubmissionBaseUrl +
+    configuration.get[String]("microservice.services.income-tax-submission-frontend.iv-redirect")
+
   val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("features.welsh-translation")
 
