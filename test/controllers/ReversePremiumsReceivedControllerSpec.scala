@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.ReversePremiumsReceivedFormProvider
-import models.{CalculatedFigureYourself, NormalMode, ReversePremiumsReceived, UserAnswers}
+import models.{NormalMode, ReversePremiumsReceived, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{CalculatedFigureYourselfPage, ReversePremiumsReceivedPage}
+import pages.ReversePremiumsReceivedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -97,7 +97,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reversePremiumsReceivedRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
 
         val result = route(application, request).value
 
