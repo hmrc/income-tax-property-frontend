@@ -14,16 +14,20 @@
  * limitations under the License.
  *@
 
+@import viewmodels.govuk._
+@import controllers.routes._
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
+    govukInput : GovukInput,
     govukDetails: GovukDetails,
     govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("reversePremiumsReceived.title"))) {
 
@@ -51,14 +55,14 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("calculatedFigureYourself"),
-                legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(),
+                field = form("reversePremiumsReceived"),
+                legend = LegendViewModel(messages(s"reversePremiumsReceived.radio.legend.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("calculatedFigureYourself"),
+                    field = form("reversePremiumsReceived"),
                         conditionalYesHtml = Some(
                         govukInput(InputViewModel(
-                            field = form("calculatedFigureYourselfAmount"),
-                        label = LabelViewModel(messages("calculatedFigureYourselfAmount.label"))
+                            field = form("reversePremiumsReceivedAmount"),
+                            label = LabelViewModel(messages("reversePremiumsReceived.amount.label"))
                         ))
                      )
                 )

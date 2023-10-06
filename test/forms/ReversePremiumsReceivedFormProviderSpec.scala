@@ -17,29 +17,41 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import models.ReversePremiumsReceived
+import org.scalatest.OptionValues
 import play.api.data.FormError
 
-class ReversePremiumsReceivedFormProviderSpec extends BooleanFieldBehaviours {
+class ReversePremiumsReceivedFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
-  val requiredKey = "reversePremiumsReceived.error.required"
+  val requiredKey = "reversePremiumsReceived.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ReversePremiumsReceivedFormProvider()()
+  val form = new ReversePremiumsReceivedFormProvider()("individual")
 
-  ".value" - {
+  "reversePremiumsReceivedAmount" - {
+    "when reversePremiumsReceived is true" - {
+      "and an amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234"))
+        boundForm.value.value mustBe ReversePremiumsReceived(true, Some(12.34))
+        boundForm.errors mustBe empty
+      }
 
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+      "and no amount is entered, should fail to bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "true"))
+        boundForm.errors must contain(FormError("reversePremiumsReceivedAmount", "reversePremiumsReceived.error.required.amount.individual"))
+      }
+    }
+    "when reversePremiumsReceived is false" - {
+      "and an amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "false", "reversePremiumsReceivedAmount" -> "1234"))
+        boundForm.value.value mustBe ReversePremiumsReceived(false, None)
+        boundForm.errors mustBe empty
+      }
+      "and no amount is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "false"))
+        boundForm.value.value mustBe ReversePremiumsReceived(false, None)
+        boundForm.errors mustBe empty
+      }
+    }
   }
 }

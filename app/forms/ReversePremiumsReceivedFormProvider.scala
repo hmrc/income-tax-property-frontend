@@ -17,14 +17,27 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.ReversePremiumsReceived
 import play.api.data.Form
+import play.api.data.Forms.mapping
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 class ReversePremiumsReceivedFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("reversePremiumsReceived.error.required")
-    )
+
+  def apply(individualOrAgent: String): Form[ReversePremiumsReceived] = {
+    Form(mapping(
+      "reversePremiumsReceived" -> boolean(s"reversePremiumsReceived.error.required.$individualOrAgent"),
+      "reversePremiumsReceivedAmount" -> {
+        mandatoryIfTrue("reversePremiumsReceived",
+          currency(
+            s"reversePremiumsReceived.error.required.amount.$individualOrAgent",
+            "reversePremiumsReceived.error.twoDecimalPlaces",
+            "reversePremiumsReceived.error.nonNumeric")
+            .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "reversePremiumsReceived.error.outOfRange"))
+        )
+      }
+    )(ReversePremiumsReceived.apply)(ReversePremiumsReceived.unapply))
+  }
 }

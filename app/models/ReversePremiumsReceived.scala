@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.ReversePremiumsReceived
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object ReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsReceived] {
+final case class ReversePremiumsReceived(reversePremiumsReceived: Boolean, amount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "reversePremiumsReceived"
+object ReversePremiumsReceived {
+  implicit val format: Format[ReversePremiumsReceived] = Json.format
 }

@@ -109,7 +109,7 @@ POST        /:taxYear/premiums-grant-lease                                      
 GET         /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/reversePremiumsReceived                        controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/reversePremiumsReceived                        controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/changeReversePremiumsReceived                  controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/changeReversePremiumsReceived                  controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/reverse-premiums-received                                      controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/reverse-premiums-received                                      controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

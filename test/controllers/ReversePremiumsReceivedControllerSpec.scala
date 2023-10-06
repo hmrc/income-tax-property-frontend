@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.ReversePremiumsReceivedFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{CalculatedFigureYourself, NormalMode, ReversePremiumsReceived, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ReversePremiumsReceivedPage
+import pages.{CalculatedFigureYourselfPage, ReversePremiumsReceivedPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -40,7 +40,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
   private val taxYear = LocalDate.now.getYear
 
   val formProvider = new ReversePremiumsReceivedFormProvider()
-  val form = formProvider()
+  val form = formProvider("individual")
 
   lazy val reversePremiumsReceivedRoute = routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode).url
 
@@ -58,13 +58,13 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ReversePremiumsReceivedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReversePremiumsReceivedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReversePremiumsReceivedPage, ReversePremiumsReceived(true, Some(12.34))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -76,7 +76,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(ReversePremiumsReceived(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
@@ -122,7 +122,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
