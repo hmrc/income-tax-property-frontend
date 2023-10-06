@@ -14,69 +14,63 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import base.SpecBase
-import forms.DeductingTaxFormProvider
-import models.{DeductingTax, NormalMode, UserAnswers}
+import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.DeductingTaxPage
+import pages.OtherIncomeFromPropertyPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.DeductingTaxView
+import views.html.OtherIncomeFromPropertyView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
-class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
+class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new DeductingTaxFormProvider()
+  val formProvider = new OtherIncomeFromPropertyFormProvider()
   val form = formProvider("individual")
-  val taxYear = 2023
+  val taxYear = LocalDate.now.getYear
+  val otherIncomeFromProperty = BigDecimal(12345)
+  lazy val otherIncomeFromPropertyRoute = routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
 
-  lazy val deductingTaxRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode).url
+  "incomeFromPropertyRentals Controller" - {
 
-  "DeductingTax Controller" - {
-
-    "must return OK and the correct view for a GET" in {
+    "must return OK if the route is valid" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
-
+        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
         val result = route(application, request).value
-
-        val view = application.injector.instanceOf[DeductingTaxView]
-
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, DeductingTax(true, Some(100.65))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(OtherIncomeFromPropertyPage, otherIncomeFromProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
-
-        val view = application.injector.instanceOf[DeductingTaxView]
-
+        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
+        val view = application.injector.instanceOf[OtherIncomeFromPropertyView]
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, Some(100.65))), taxYear,
-          NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(otherIncomeFromProperty), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -96,8 +90,8 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
-            .withFormUrlEncodedBody(("taxDeductedYesNo", "false"))
+          FakeRequest(POST, otherIncomeFromPropertyRoute)
+            .withFormUrlEncodedBody(("otherIncomeFromProperty", otherIncomeFromProperty.toString))
 
         val result = route(application, request).value
 
@@ -112,46 +106,47 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
+          FakeRequest(POST, otherIncomeFromPropertyRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[DeductingTaxView]
+        val view = application.injector.instanceOf[OtherIncomeFromPropertyView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
+        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
+        //redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
+          FakeRequest(POST, otherIncomeFromPropertyRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

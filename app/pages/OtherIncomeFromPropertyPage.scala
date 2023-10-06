@@ -16,12 +16,11 @@
 
 package pages
 
-import models.DeductingTax
 import play.api.libs.json.JsPath
 
-case object DeductingTaxPage extends QuestionPage[DeductingTax] {
+case object OtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "deductingTax"
+  override def toString: String = "otherIncomeFromProperty"
 }

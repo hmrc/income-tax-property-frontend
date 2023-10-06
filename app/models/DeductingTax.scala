@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.DeductingTax
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object DeductingTaxPage extends QuestionPage[DeductingTax] {
+final case class DeductingTax(taxDeductedYesNo: Boolean, taxDeductedAmount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "deductingTax"
+object DeductingTax {
+  implicit val format: Format[DeductingTax] = Json.format
 }

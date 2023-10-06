@@ -24,7 +24,7 @@ class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
   val minimum = 0
   val maximum = 1000000000
 
-  val form = new IncomeFromPropertyRentalsFormProvider()()
+  val form = new IncomeFromPropertyRentalsFormProvider()("agent")
 
   ".value" - {
 

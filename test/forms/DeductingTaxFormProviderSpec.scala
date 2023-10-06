@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class DeductingTaxFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "deductingTax.error.required"
+  val requiredKey = "deductingTax.error.required.agent"
   val invalidKey = "error.boolean"
 
-  val form = new DeductingTaxFormProvider()()
+  val form = new DeductingTaxFormProvider()("agent")
 
   ".taxDeductedYesNo" - {
 

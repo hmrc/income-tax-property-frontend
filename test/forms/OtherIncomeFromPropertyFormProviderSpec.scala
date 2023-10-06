@@ -14,14 +14,30 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.DeductingTax
-import play.api.libs.json.JsPath
+import forms.behaviours.IntFieldBehaviours
+import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
 
-case object DeductingTaxPage extends QuestionPage[DeductingTax] {
+class OtherIncomeFromPropertyFormProviderSpec extends IntFieldBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  val invalidKey = "error.boolean"
+  val minimum = 0
+  val maximum = 1000000000
 
-  override def toString: String = "deductingTax"
+  val form = new OtherIncomeFromPropertyFormProvider()("agent")
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
+
+    behave like fieldThatBindsValidData(
+      form,
+      fieldName,
+      validDataGenerator
+    )
+
+  }
 }

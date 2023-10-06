@@ -20,14 +20,14 @@ import controllers.actions._
 import forms.IncomeFromPropertyRentalsFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{IncomeFromPropertyRentalsPage, UKPropertyDetailsPage}
+import pages.IncomeFromPropertyRentalsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-
 import views.html.IncomeFromPropertyRentalsView
+
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,10 +44,10 @@ class IncomeFromPropertyRentalsController @Inject()(
                                                      view: IncomeFromPropertyRentalsView
                                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
+      val form = formProvider(request.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
@@ -61,16 +61,16 @@ class IncomeFromPropertyRentalsController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form = formProvider(request.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeFromPropertyRentalsPage, value))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(navigator.nextPage(IncomeFromPropertyRentalsPage, taxYear, mode, updatedAnswers))
-    )
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeFromPropertyRentalsPage, value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(IncomeFromPropertyRentalsPage, taxYear, mode, updatedAnswers))
+      )
   }
 }

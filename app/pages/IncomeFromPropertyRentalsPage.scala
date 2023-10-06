@@ -18,7 +18,7 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object IncomeFromPropertyRentalsPage extends QuestionPage[String] {
+case object IncomeFromPropertyRentalsPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 

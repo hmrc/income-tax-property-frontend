@@ -14,45 +14,49 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals
 
 import controllers.actions._
-import forms.DeductingTaxFormProvider
+import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.DeductingTaxPage
+import pages.OtherIncomeFromPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.DeductingTaxView
+import views.html.OtherIncomeFromPropertyView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeductingTaxController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: DeductingTaxFormProvider,
-                                         sessionService: SessionService,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: DeductingTaxView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class OtherIncomeFromPropertyController @Inject()(
+                                                   override val messagesApi: MessagesApi,
+                                                   sessionRepository: SessionRepository,
+                                                   navigator: Navigator,
+                                                   identify: IdentifierAction,
+                                                   getData: DataRetrievalAction,
+                                                   requireData: DataRequiredAction,
+                                                   formProvider: OtherIncomeFromPropertyFormProvider,
+                                                   sessionService: SessionService,
+                                                   val controllerComponents: MessagesControllerComponents,
+                                                   view: OtherIncomeFromPropertyView
+                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val form = formProvider(request.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
+      if (request.userAnswers.isEmpty) {
+        sessionService.createNewEmptySession(request.userId)
+      }
+
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(OtherIncomeFromPropertyPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
-
       Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
   }
 
@@ -65,9 +69,9 @@ class DeductingTaxController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherIncomeFromPropertyPage, value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(OtherIncomeFromPropertyPage, taxYear, mode, updatedAnswers))
       )
   }
 }
