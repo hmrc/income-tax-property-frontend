@@ -44,10 +44,9 @@ class DeductingTaxController @Inject()(
                                          view: DeductingTaxView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
+      val form = formProvider(request.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
         case None => form
@@ -59,7 +58,7 @@ class DeductingTaxController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form = formProvider(request.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),

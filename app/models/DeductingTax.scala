@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class DeductingTax(taxDeductedYesNo: Boolean, taxDeductedAmount: Option[String])
+final case class DeductingTax(taxDeductedYesNo: Boolean, taxDeductedAmount: Option[BigDecimal])
 
 object DeductingTax {
   implicit val format: Format[DeductingTax] = Json.format

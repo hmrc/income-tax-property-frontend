@@ -40,7 +40,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new OtherIncomeFromPropertyFormProvider()
-  val form = formProvider()
+  val form = formProvider("individual")
   val taxYear = LocalDate.now.getYear
   val otherIncomeFromProperty = BigDecimal(12345)
   lazy val otherIncomeFromPropertyRoute = routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url

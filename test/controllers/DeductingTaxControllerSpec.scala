@@ -38,7 +38,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new DeductingTaxFormProvider()
-  val form = formProvider()
+  val form = formProvider("individual")
   val taxYear = 2023
 
   lazy val deductingTaxRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode).url
@@ -63,7 +63,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, DeductingTax(true, Some("100"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, DeductingTax(true, Some(100.65))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -75,8 +75,8 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, Some("100"))), taxYear,
-          NormalMode, "individual" )(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(DeductingTax(true, Some(100.65))), taxYear,
+          NormalMode, "individual")(request, messages(application)).toString
       }
     }
 

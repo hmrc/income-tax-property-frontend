@@ -44,10 +44,11 @@ class OtherIncomeFromPropertyController @Inject()(
                                                    view: OtherIncomeFromPropertyView
                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
+      val form = formProvider(request.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
@@ -61,7 +62,7 @@ class OtherIncomeFromPropertyController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form = formProvider(request.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),

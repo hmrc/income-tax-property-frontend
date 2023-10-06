@@ -88,6 +88,13 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from PremiumsGrantLeasePage to OtherIncomeFromPropertyPage" in {
+        navigator.nextPage(
+          premiumlease.PremiumsGrantLeasePage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+      }
+
+
       "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
         navigator.nextPage(
           ExpensesLessThan1000Page, taxYear, NormalMode, UserAnswers("test")

@@ -38,7 +38,7 @@ class IsNonUKLandlordPageSpec extends SpecBase {
 
     val answers = emptyUserAnswers.set(
       DeductingTaxPage,
-      DeductingTax(true, Some("100"))).success.value
+      DeductingTax(true, Some(120.45))).success.value
 
     val result = answers.set(IsNonUKLandlordPage, true).success.value
 
