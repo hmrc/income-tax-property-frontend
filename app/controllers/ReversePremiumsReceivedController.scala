@@ -52,7 +52,7 @@ class ReversePremiumsReceivedController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear))
+      Ok(view(preparedForm, mode, taxYear, request.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +60,7 @@ class ReversePremiumsReceivedController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear))),
+          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.isAgentMessageKey))),
 
         value =>
           for {

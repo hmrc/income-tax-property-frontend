@@ -323,8 +323,19 @@ isNonUKLandlord.l1 = lived abroad for more than six months of the year but rente
 isNonUKLandlord.l2 = had a usual place of residence outside the UK
 isNonUKLandlord.l3 = were a UK resident for tax purposes, but lived outside the UK
 isNonUKLandlord.button = Continue
-reversePremiumsReceived.title = reversePremiumsReceived
-reversePremiumsReceived.heading = reversePremiumsReceived
+
+reversePremiumsReceived.title = Reverse premiums received
+reversePremiumsReceived.heading = Reverse premiums received
+reversePremiumsReceived.details.heading = Understanding reverse premiums
+reversePremiumsReceived.details.line1 = A reverse premium is a sum paid to a tenant by a landlord in order to get that tenant to enter into the lease. Reverse premiums are common in the letting of commercial properties.
+reversePremiumsReceived.details.line2 = Read more about
+reversePremiumsReceived.details.line2.link.text = granting of a lease: reverse premiums at GOV.UK (opens in new tab)
+reversePremiumsReceived.details.line2.link.href = https://www.gov.uk/hmrc-internal-manuals/capital-gains-manual/cg70830#:~:text=A%20%27reverse%20premium%27%20is%20a,of%20lettings%20of%20commercial%20properties.
+reversePremiumsReceived.hint.individual = If you paid a reverse premium to someone you can enter this amount in other property expenses.
+reversePremiumsReceived.hint.agent = If your client paid a reverse premium to someone you can enter this amount in other property expenses.
+reversePremiumsReceived.radio.legend.individual = Did you receive a reverse premium?
+reversePremiumsReceived.radio.legend.agent = Did your client receive a reverse premium?
 reversePremiumsReceived.checkYourAnswersLabel = reversePremiumsReceived
-reversePremiumsReceived.error.required = Select yes if reversePremiumsReceived
+reversePremiumsReceived.error.required.agent = Select yes if you received a reverse premium
+reversePremiumsReceived.error.required.agent = Select yes if your client received a reverse premium
 reversePremiumsReceived.change.hidden = ReversePremiumsReceived

@@ -18,11 +18,12 @@
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
+    govukDetails: GovukDetails,
     govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("reversePremiumsReceived.title"))) {
 
@@ -32,10 +33,35 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                          @messages("reversePremiumsReceived.details.heading")
+                        </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
+                <p>@messages("reversePremiumsReceived.details.line2")
+                    <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("reversePremiumsReceived.details.line2.link.text")
+                    </a>
+                </p>
+            </div>
+        </details>
+
         @govukRadios(
-            RadiosViewModel.yesNo(
-                field = form("value"),
-                legend = LegendViewModel(messages("reversePremiumsReceived.heading")).asPageHeading()
+            radios.RadiosViewModel.yesNoWithConditionalHtml(
+                field = form("calculatedFigureYourself"),
+                legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(),
+                items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                    field = form("calculatedFigureYourself"),
+                        conditionalYesHtml = Some(
+                        govukInput(InputViewModel(
+                            field = form("calculatedFigureYourselfAmount"),
+                        label = LabelViewModel(messages("calculatedFigureYourselfAmount.label"))
+                        ))
+                     )
+                )
             )
         )
 
