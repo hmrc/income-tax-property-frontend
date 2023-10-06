@@ -23,6 +23,7 @@ import play.api.mvc.Call
 import controllers.routes
 import pages._
 import models._
+import pages.premiumlease.PremiumsGrantLeasePage
 import pages.propertyrentals.IsNonUKLandlordPage
 
 @Singleton
@@ -42,7 +43,7 @@ class Navigator @Inject()() {
     case IsNonUKLandlordPage => taxYear => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
     case DeductingTaxPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage => taxYear => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
-    case LeasePremiumPaymentController => taxYear => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+    case PremiumsGrantLeasePage => taxYear => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 
