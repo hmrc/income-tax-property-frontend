@@ -19,7 +19,7 @@ package forms.premiumlease
 import forms.mappings.Mappings
 import models.CalculatedFigureYourself
 import play.api.data.Form
-import play.api.data.Forms.{mapping, optional}
+import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import javax.inject.Inject
@@ -29,7 +29,16 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[CalculatedFigureYourself] = {
     Form(mapping(
       "calculatedFigureYourself" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent"),
-      "calculatedFigureYourselfAmount" -> mandatoryIfTrue("calculatedFigureYourself", text("calculatedFigureYourselfAmount.error.required"))
+      "calculatedFigureYourselfAmount" -> {
+        mandatoryIfTrue("calculatedFigureYourself",
+          currency(
+            s"calculatedFigureYourselfAmount.amount.error.required.$individualOrAgent",
+            s"calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.$individualOrAgent",
+            s"calculatedFigureYourselfAmount.amount.error.nonNumeric.$individualOrAgent")
+            .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
+              s"calculatedFigureYourselfAmount.amount.error.outOfRange"))
+        )
+      }
     )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))
   }
 }

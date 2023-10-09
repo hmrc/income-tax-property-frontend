@@ -16,13 +16,9 @@
 
 package viewmodels.checkAnswers.premiumlease
 
-import models.{CheckMode, UserAnswers}
-import pages.CalculatedFigureYourselfPage
+import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist._
-import viewmodels.implicits._
-import controllers.premiumlease._
 object CalculatedFigureYourselfSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {

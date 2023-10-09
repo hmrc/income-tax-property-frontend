@@ -30,13 +30,14 @@ class DeductingTaxFormProvider @Inject() extends Mappings {
     Form[DeductingTax](
       mapping(
         "taxDeductedYesNo" -> boolean(s"deductingTax.error.required.$individualOrAgent"),
-        "taxDeductedAmount" -> {mandatoryIfTrue("taxDeductedYesNo",
+        "taxDeductedAmount" -> {
+          mandatoryIfTrue("taxDeductedYesNo",
             currency(
               s"deductingTax.amount.error.required.$individualOrAgent",
               s"deductingTax.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"deductingTax.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                s"deductingTax.amount.error.outOfRange.$individualOrAgent"))
+                s"deductingTax.amount.error.outOfRange"))
           )
         }
       )(DeductingTax.apply)(DeductingTax.unapply)

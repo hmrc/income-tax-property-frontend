@@ -64,7 +64,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some("1234"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(3242.65))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -76,7 +76,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CalculatedFigureYourself(true, Some("1234"))), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(CalculatedFigureYourself(true, Some(3242.65))), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -97,7 +97,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, calculatedFigureYourselfRoute)
-            .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "1234")
+            .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
 
         val result = route(application, request).value
 
