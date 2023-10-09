@@ -21,7 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.propertyrentals.IsNonUKLandlordSummary
+import viewmodels.checkAnswers.propertyrentals.{IsNonUKLandlordSummary, IncomeFromPropertyRentalsSummary, OtherIncomeFromPropertySummary}
+import viewmodels.checkAnswers.premiumlease._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.CheckYourAnswersView
 
@@ -39,7 +40,10 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-          IsNonUKLandlordSummary.row(taxYear, request.userAnswers)
+          IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
+          IncomeFromPropertyRentalsSummary.row(taxYear, request.userAnswers),
+          LeasePremiumPaymentSummary.row(taxYear, request.userAnswers),
+          OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers)
         ).flatten
       )
 

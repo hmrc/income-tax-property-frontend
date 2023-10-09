@@ -245,6 +245,8 @@ deductingTax.link = Paying tax as a non-UK landlord
 
 incomeFromPropertyRentals.title = Income from Property Rentals
 incomeFromPropertyRentals.heading = Income from Property Rentals
+incomeFromPropertyRentals.checkYourAnswersLabel = Income from Property Rentals
+incomeFromPropertyRentals.change.hidden = incomeFromPropertyRentals
 incomeFromPropertyRentals.para1.individual = Rental income is the rent you get from your tenants. This includes any payments for:
 incomeFromPropertyRentals.para1.agent = Rental income is the rent your client gets from their tenants. This includes any payments for:
 incomeFromPropertyRentals.bullet1.individual = the use of furniture
@@ -263,6 +265,8 @@ incomeFromPropertyRentals.error.outOfRange = The figure must be between {0} and 
 
 otherIncomeFromProperty.title = Other income from property
 otherIncomeFromProperty.heading = Other income from property
+otherIncomeFromProperty.checkYourAnswersLabel = Other income from property
+otherIncomeFromProperty.change.hidden = otherIncomeFromProperty
 otherIncomeFromProperty.para1.individual = Other income from property can also include:
 otherIncomeFromProperty.bullet1.individual = rent charges and ground rents
 otherIncomeFromProperty.bullet2.individual = income from letting others tip waste on your land
