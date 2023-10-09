@@ -169,8 +169,14 @@ calculatedFigureYourself.error.required.individual = Select yes if you’ve calc
 calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
 calculatedFigureYourself.amount.legend = Enter the figure
 calculatedFigureYourselfAmount.label = Enter the figure
-calculatedFigureYourselfAmount.error.required = blahblah
-calculatedFigureYourselfAmount.amount.error.invalid = blahblah
+calculatedFigureYourselfAmount.amount.error.required.individual = Please enter a valid amount
+calculatedFigureYourselfAmount.amount.error.required.agent = Please enter a valid amount for your client
+calculatedFigureYourselfAmount.amount.error.nonNumeric.individual = Enter the calculated amount in numbers
+calculatedFigureYourselfAmount.amount.error.nonNumeric.agent = Enter the calculated amount in numbers for your client
+calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.individual = Enter the calculated amount with two decimal places
+calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.agent = Enter the calculated amount with two decimal places
+calculatedFigureYourselfAmount.amount.error.outOfRange = The figure must be between {0} and {1}
+
 
 leasePremiumPayment.title = Property income allowance
 leasePremiumPayment.heading = Premiums for the grant of a lease
@@ -229,8 +235,9 @@ deductingTax.amount.error.nonNumeric.individual = Enter the deducted amount in n
 deductingTax.amount.error.nonNumeric.agent = Enter the deducted amount in numbers for your client
 deductingTax.amount.error.twoDecimalPlaces.individual = Enter the deducted amount with two decimal places
 deductingTax.amount.error.twoDecimalPlaces.agent = Enter the deducted amount with two decimal places
+deductingTax.amount.error.outOfRange = The figure must be between {0} and {1}
 deductingTax.change.hidden = DeductingTax
-deductingTax.legend = Did you have tax deducted?
+deductingTax.legend = Deducting tax from non-UK landlords
 deductingTax.yes = Yes
 deductingTax.no = No
 deductingTax.yes.text = How much tax was deducted?

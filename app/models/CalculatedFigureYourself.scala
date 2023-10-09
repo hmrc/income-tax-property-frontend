@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class CalculatedFigureYourself(calculatedFigureYourself: Boolean, amount: Option[String])
+final case class CalculatedFigureYourself(calculatedFigureYourself: Boolean, amount: Option[BigDecimal])
 
 object CalculatedFigureYourself {
   implicit val format: Format[CalculatedFigureYourself] = Json.format
