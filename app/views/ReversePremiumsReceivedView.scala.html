@@ -74,9 +74,10 @@
                         govukInput(InputViewModel(
                             field = form("reversePremiumsReceivedAmount"),
                             label = LabelViewModel(messages("reversePremiumsReceived.amount.label"))
-                        ))
+                        )
                         .withWidth(Fixed10)
                         .withPrefix(PrefixOrSuffix(content = Text("£")))
+                        )
                      )
                 )
             )
