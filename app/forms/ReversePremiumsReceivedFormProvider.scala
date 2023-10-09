@@ -34,7 +34,7 @@ class ReversePremiumsReceivedFormProvider @Inject() extends Mappings {
           currency(
             s"reversePremiumsReceived.error.required.amount.$individualOrAgent",
             "reversePremiumsReceived.error.twoDecimalPlaces",
-            "reversePremiumsReceived.error.nonNumeric")
+            s"reversePremiumsReceived.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "reversePremiumsReceived.error.outOfRange"))
         )
       }

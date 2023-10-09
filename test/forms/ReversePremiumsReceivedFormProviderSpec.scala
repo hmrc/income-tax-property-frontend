@@ -31,7 +31,7 @@ class ReversePremiumsReceivedFormProviderSpec extends BooleanFieldBehaviours wit
   "reversePremiumsReceivedAmount" - {
     "when reversePremiumsReceived is true" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "12.34"))
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "tryoue", "reversePremiumsReceivedAmount" -> "12.34"))
         boundForm.value.value mustBe ReversePremiumsReceived(true, Some(12.34))
         boundForm.errors mustBe empty
       }

@@ -31,6 +31,9 @@
 
 @layout(pageTitle = title(form, messages("reversePremiumsReceived.title"))) {
 
+    <h1 class="govuk-heading-xl">@messages("reversePremiumsReceived.heading")</h1>
+
+
     @formHelper(action = routes.ReversePremiumsReceivedController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -53,10 +56,15 @@
             </div>
         </details>
 
+
+    <div class="govuk-hint">
+        @messages(s"reversePremiumsReceived.hint.$$individualOrAgent")
+    </div>
+
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("reversePremiumsReceived"),
-                legend = LegendViewModel(messages(s"reversePremiumsReceived.radio.legend.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                legend = LegendViewModel(messages(s"reversePremiumsReceived.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("reversePremiumsReceived"),
                         conditionalYesHtml = Some(
