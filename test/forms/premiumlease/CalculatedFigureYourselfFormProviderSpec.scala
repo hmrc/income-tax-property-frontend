@@ -21,6 +21,8 @@ import models.CalculatedFigureYourself
 import org.scalatest.OptionValues
 import play.api.data.FormError
 
+import scala.collection.immutable.ArraySeq
+
 class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
   val requiredKey = "calculatedFigureYourself.error.required.individual"
@@ -40,6 +42,25 @@ class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours wi
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true"))
         boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.required.individual"))
       }
+
+      "and a non numeric value is entered then should fail to bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "jdhfgdsgfzxmnbdv"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.nonNumeric.individual"))
+      }
+
+
+      "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "4534.6545"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.individual"))
+      }
+
+
+      "and an amount is entered that is out of range then should fail to bind" in {
+        val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "45334553534535345435345345434.65"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.outOfRange", ArraySeq(0, 100000000)))
+      }
+
+
     }
     "when calculatedFigureYourself is false" - {
       "and an amount is entered, should successfully bind" in {
