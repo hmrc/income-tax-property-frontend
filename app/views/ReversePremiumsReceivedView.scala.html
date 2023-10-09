@@ -58,7 +58,7 @@
 
 
     <div class="govuk-hint">
-        @messages(s"reversePremiumsReceived.hint.$$individualOrAgent")
+        @messages(s"reversePremiumsReceived.hint.$individualOrAgent")
     </div>
 
         @govukRadios(
@@ -71,7 +71,9 @@
                         govukInput(InputViewModel(
                             field = form("reversePremiumsReceivedAmount"),
                             label = LabelViewModel(messages("reversePremiumsReceived.amount.label"))
-                        ))
+                        )).asNumeric()
+                        .withWidth(Fixed10)
+                        .withPrefix(PrefixOrSuffix(content = Text("£")))
                      )
                 )
             )
