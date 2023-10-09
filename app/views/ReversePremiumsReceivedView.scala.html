@@ -17,6 +17,7 @@
 @import viewmodels.govuk._
 @import controllers.routes._
 @import viewmodels.LabelSize
+@import viewmodels.InputWidth._
 
 
 @this(
@@ -73,7 +74,7 @@
                         govukInput(InputViewModel(
                             field = form("reversePremiumsReceivedAmount"),
                             label = LabelViewModel(messages("reversePremiumsReceived.amount.label"))
-                        )).asNumeric()
+                        ))
                         .withWidth(Fixed10)
                         .withPrefix(PrefixOrSuffix(content = Text("£")))
                      )
