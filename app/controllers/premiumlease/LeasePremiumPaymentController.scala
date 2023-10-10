@@ -20,7 +20,8 @@ import controllers.actions._
 import forms.premiumlease.LeasePremiumPaymentFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.CalculatedFigureYourselfPage
+import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,7 +67,17 @@ class LeasePremiumPaymentController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
+            _              = if (!value) clearData
           } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage, taxYear, mode, updatedAnswers))
       )
+  }
+
+  private def clearData: Future[Unit] = {
+    for {
+      _ <- sessionRepository.clear(RecievedGrantLeaseAmountPage)
+      _ <- sessionRepository.clear(YearLeaseAmountPage)
+      _ <- sessionRepository.clear(PremiumsGrantLeasePage)
+      _ <- sessionRepository.clear(CalculatedFigureYourselfPage)
+    } yield ()
   }
 }

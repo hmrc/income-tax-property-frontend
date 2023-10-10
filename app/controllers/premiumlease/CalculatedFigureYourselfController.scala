@@ -21,6 +21,7 @@ import forms.premiumlease.CalculatedFigureYourselfFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.CalculatedFigureYourselfPage
+import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -64,7 +65,16 @@ class CalculatedFigureYourselfController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage, value))
             _              <- sessionRepository.set(updatedAnswers)
+            _              = if (value.calculatedFigureYourself) clearData
           } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage, taxYear, mode, updatedAnswers))
       )
+  }
+
+  private def clearData: Future[Unit] = {
+    for {
+      _ <- sessionRepository.clear(RecievedGrantLeaseAmountPage)
+      _ <- sessionRepository.clear(YearLeaseAmountPage)
+      _ <- sessionRepository.clear(PremiumsGrantLeasePage)
+    } yield ()
   }
 }
