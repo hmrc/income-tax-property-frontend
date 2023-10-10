@@ -16,15 +16,51 @@
 
 package viewmodels.checkAnswers
 
-import models.UserAnswers
+import controllers.routes
+import models.{CheckMode, ReversePremiumsReceived, UserAnswers}
+import pages.ReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.implicits._
+import viewmodels.govuk.summarylist._
 
 
-object ReversePremiumsReceivedSummary  {
+object ReversePremiumsReceivedSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-  //TODO Implement allowing for the custom conditional input field for the amount once the
-  // CYA page is present and we have a design for how this should appear on the CYA page.
-    ???
+  def rowBoolean(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+
+    answers.get(ReversePremiumsReceivedPage).map {
+      case ReversePremiumsReceived(false, _) =>
+        SummaryListRowViewModel(
+          key = "reversePremiumsReceived.checkYourAnswersLabel",
+          value = ValueViewModel("site.no"),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
+          )
+
+        )
+      case ReversePremiumsReceived(true, _) =>
+        SummaryListRowViewModel(
+          key = "reversePremiumsReceived.checkYourAnswersLabel",
+          value = ValueViewModel("site.yes"),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
+          ))
+    }
+
+  def rowAmount(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(ReversePremiumsReceivedPage).map {
+      case ReversePremiumsReceived(true, Some(amount)) =>
+        SummaryListRowViewModel(
+          key = "reversePremiumsReceived.checkYourAnswersLabel",
+          value = ValueViewModel(s"£$amount"),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
+          ))
+
+    }
+  }
 }
