@@ -21,6 +21,7 @@ import controllers.routes
 import controllers.premiumlease.routes._
 import pages._
 import models._
+import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
 import java.time.LocalDate
@@ -64,16 +65,36 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CheckYourAnswersController.onPageLoad
       }
 
-      "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage" in {
+      "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes" in {
+        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
+
         navigator.nextPage(
-          ExpensesLessThan1000Page, taxYear, NormalMode, UserAnswers("test")
+          ExpensesLessThan1000Page, taxYear, NormalMode, testUserAnswer
         ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage" in {
+      "must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no" in {
+        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
+
         navigator.nextPage(
-          CalculatedFigureYourselfPage, taxYear, NormalMode, UserAnswers("test")
+          ExpensesLessThan1000Page, taxYear, NormalMode, testUserAnswer
+        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
+        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(100))).get
+
+        navigator.nextPage(
+          CalculatedFigureYourselfPage, taxYear, NormalMode, testUserAnswer
         ) mustBe controllers.premiumlease.routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
+        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+
+        navigator.nextPage(
+          CalculatedFigureYourselfPage, taxYear, NormalMode, testUserAnswer
+        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
