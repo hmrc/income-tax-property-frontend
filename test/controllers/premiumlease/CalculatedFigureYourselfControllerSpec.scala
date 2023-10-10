@@ -86,6 +86,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
       val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(866.65))).get
 
@@ -114,6 +115,8 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+
 
       val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
 

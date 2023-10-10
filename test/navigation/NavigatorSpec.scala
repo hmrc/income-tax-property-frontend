@@ -70,7 +70,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           LeasePremiumPaymentPage, taxYear, NormalMode, testUserAnswer
-        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no" in {
