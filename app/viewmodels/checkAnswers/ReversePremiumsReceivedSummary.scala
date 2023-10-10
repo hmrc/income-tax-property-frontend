@@ -54,7 +54,7 @@ object ReversePremiumsReceivedSummary {
     answers.get(ReversePremiumsReceivedPage).map {
       case ReversePremiumsReceived(true, Some(amount)) =>
         SummaryListRowViewModel(
-          key = "reversePremiumsReceived.checkYourAnswersLabel",
+          key = "reversePremiumsReceived.amount.checkYourAnswersLabel",
           value = ValueViewModel(s"£$amount"),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
