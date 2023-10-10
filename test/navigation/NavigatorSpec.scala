@@ -69,20 +69,20 @@ class NavigatorSpec extends SpecBase {
         val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
 
         navigator.nextPage(
-          ExpensesLessThan1000Page, taxYear, NormalMode, testUserAnswer
-        ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+          LeasePremiumPaymentPage, taxYear, NormalMode, testUserAnswer
+        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no" in {
         val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
 
         navigator.nextPage(
-          ExpensesLessThan1000Page, taxYear, NormalMode, testUserAnswer
+          LeasePremiumPaymentPage, taxYear, NormalMode, testUserAnswer
         ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(100))).get
+        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
 
         navigator.nextPage(
           CalculatedFigureYourselfPage, taxYear, NormalMode, testUserAnswer
@@ -90,7 +90,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
-        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+        val testUserAnswer = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(100))).get
 
         navigator.nextPage(
           CalculatedFigureYourselfPage, taxYear, NormalMode, testUserAnswer
@@ -109,9 +109,9 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from PremiumsGrantLeasePage to OtherIncomeFromPropertyPage" in {
+      "must go from reverse to OtherIncomeFromPropertyPage" in {
         navigator.nextPage(
-          premiumlease.PremiumsGrantLeasePage, taxYear, NormalMode, UserAnswers("test")
+          ReversePremiumsReceivedPage, taxYear, NormalMode, UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
       }
 

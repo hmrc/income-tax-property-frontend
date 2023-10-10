@@ -36,7 +36,8 @@ import scala.concurrent.Future
 
 class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/received-grant-lease-amount")
+  def onwardRouteNo = Call("GET", "/received-grant-lease-amount")
+  def onwardRouteYes = Call("GET","/reverse-premiums-received")
 
   private val formProvider = new CalculatedFigureYourselfFormProvider()
   private val form = formProvider("individual")
@@ -80,16 +81,18 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page when valid data is submitted for yes" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
+      val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(866.65))).get
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = Some(userData), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -102,7 +105,35 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual onwardRouteYes.url
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted for no" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+
+      val application =
+        applicationBuilder(userAnswers = Some(userData), isAgent = false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, calculatedFigureYourselfRoute)
+            .withFormUrlEncodedBody("calculatedFigureYourself" -> "false")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRouteNo.url
       }
     }
 
