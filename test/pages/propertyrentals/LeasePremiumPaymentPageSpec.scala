@@ -18,7 +18,8 @@ class LeasePremiumPaymentPageSpec extends SpecBase {
 
     val result = userData.set(LeasePremiumPaymentPage, false).success.value
 
-    result.get(CalculatedFigureYourselfPage) must be(defined)
+    result.get(LeasePremiumPaymentPage) must be(defined)
+    result.get(CalculatedFigureYourselfPage) must not be defined
     result.get(RecievedGrantLeaseAmountPage) must not be defined
     result.get(YearLeaseAmountPage) must not be defined
     result.get(PremiumsGrantLeasePage) must not be defined
