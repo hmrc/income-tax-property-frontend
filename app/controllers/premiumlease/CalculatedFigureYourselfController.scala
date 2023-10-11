@@ -65,16 +65,7 @@ class CalculatedFigureYourselfController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-            _              = if (value.calculatedFigureYourself) clearData
           } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage, taxYear, mode, updatedAnswers))
       )
-  }
-
-  private def clearData: Future[Unit] = {
-    for {
-      _ <- sessionRepository.clear(RecievedGrantLeaseAmountPage)
-      _ <- sessionRepository.clear(YearLeaseAmountPage)
-      _ <- sessionRepository.clear(PremiumsGrantLeasePage)
-    } yield ()
   }
 }

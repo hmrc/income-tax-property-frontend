@@ -16,12 +16,24 @@
 
 package pages
 
-import models.CalculatedFigureYourself
+import models.{CalculatedFigureYourself, UserAnswers}
+import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYourself] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "calculatedFigureYourself"
+
+  override def cleanup(value: Option[CalculatedFigureYourself], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case CalculatedFigureYourself(false, _)  => super.cleanup(value, userAnswers)
+      case CalculatedFigureYourself(true, _) =>
+        userAnswers.remove(RecievedGrantLeaseAmountPage)
+        userAnswers.remove(YearLeaseAmountPage)
+        userAnswers.remove(PremiumsGrantLeasePage)
+    }.getOrElse(super.cleanup(value, userAnswers))
 }

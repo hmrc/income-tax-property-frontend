@@ -67,17 +67,7 @@ class LeasePremiumPaymentController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-            _              = if (!value) clearData
           } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage, taxYear, mode, updatedAnswers))
       )
-  }
-
-  private def clearData: Future[Unit] = {
-    for {
-      _ <- sessionRepository.clear(RecievedGrantLeaseAmountPage)
-      _ <- sessionRepository.clear(YearLeaseAmountPage)
-      _ <- sessionRepository.clear(PremiumsGrantLeasePage)
-      _ <- sessionRepository.clear(CalculatedFigureYourselfPage)
-    } yield ()
   }
 }
