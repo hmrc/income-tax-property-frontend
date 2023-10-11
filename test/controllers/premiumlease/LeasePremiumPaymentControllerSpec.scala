@@ -38,8 +38,8 @@ import scala.concurrent.Future
 
 class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute : Call = Call("GET", "/calculated-figure-yourself")
-
+  def onwardRouteYes : Call = Call("GET", "/calculated-figure-yourself")
+  def onwardRouteNo: Call = Call("GET", "/reverse-premiums-received")
   private val formProvider = new LeasePremiumPaymentFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
@@ -82,16 +82,17 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page when valid data is submitted - yes" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -104,7 +105,34 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual onwardRouteYes.url
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted - no" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, leasePremiumPaymentRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRouteNo.url
       }
     }
 

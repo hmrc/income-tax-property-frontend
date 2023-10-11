@@ -16,12 +16,27 @@
 
 package pages.premiumlease
 
-import pages.QuestionPage
+import models.UserAnswers
+import pages.{CalculatedFigureYourselfPage, QuestionPage}
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "leasePremiumPayment"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value.map {
+      case true  => super.cleanup(value, userAnswers)
+      case false =>
+        for {
+           rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+           yLAP <- rGLAP.remove(YearLeaseAmountPage)
+           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
+           cFYP <- pGLP.remove(CalculatedFigureYourselfPage)
+        } yield cFYP
+    }.getOrElse(super.cleanup(value, userAnswers))
 }
