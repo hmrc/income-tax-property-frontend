@@ -29,37 +29,39 @@ object ReversePremiumsReceivedSummary {
 
   def rowBoolean(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
 
-    answers.get(ReversePremiumsReceivedPage).map {
+    answers.get(ReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(false, _) =>
-        SummaryListRowViewModel(
+        Some(SummaryListRowViewModel(
           key = "reversePremiumsReceived.checkYourAnswersLabel",
           value = ValueViewModel("site.no"),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
           )
-
+        )
         )
       case ReversePremiumsReceived(true, _) =>
-        SummaryListRowViewModel(
+        Some(SummaryListRowViewModel(
           key = "reversePremiumsReceived.checkYourAnswersLabel",
           value = ValueViewModel("site.yes"),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
-          ))
+          )))
+      case _ => Option.empty[SummaryListRow]
     }
 
   def rowAmount(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(ReversePremiumsReceivedPage).map {
+    answers.get(ReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
-        SummaryListRowViewModel(
+        Some(SummaryListRowViewModel(
           key = "reversePremiumsReceived.amount.checkYourAnswersLabel",
           value = ValueViewModel(s"£$amount"),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
-          ))
+          )))
+      case _ => Option.empty[SummaryListRow]
 
     }
   }

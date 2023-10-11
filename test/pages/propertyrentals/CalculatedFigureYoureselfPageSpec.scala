@@ -1,20 +1,20 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.{CalculatedFigureYourself, DeductingTax}
+import models.CalculatedFigureYourself
 import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.{CalculatedFigureYourselfPage, DeductingTaxPage}
+import pages.CalculatedFigureYourselfPage
 
-class CalculatedFigureYoureselfPage extends SpecBase {
+class CalculatedFigureYoureselfPageSpec extends SpecBase {
 
   "must remove the correct data when the answer is yes" in {
 
     val userData = emptyUserAnswers
-                      .set(RecievedGrantLeaseAmountPage, BigDecimal(10.10)).get
+                      .set(RecievedGrantLeaseAmountPage, BigDecimal(10.11)).get
                       .set(YearLeaseAmountPage, 10).get
-                      .set(PremiumsGrantLeasePage, BigDecimal(10.10)).get
+                      .set(PremiumsGrantLeasePage, BigDecimal(10.12)).get
 
-    val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(10.10))).success.value
+    val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(10.13))).success.value
 
     result.get(CalculatedFigureYourselfPage)  must be(defined)
     result.get(RecievedGrantLeaseAmountPage)  must not be defined

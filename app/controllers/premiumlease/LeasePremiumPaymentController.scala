@@ -20,8 +20,7 @@ import controllers.actions._
 import forms.premiumlease.LeasePremiumPaymentFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.CalculatedFigureYourselfPage
-import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.LeasePremiumPaymentPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
