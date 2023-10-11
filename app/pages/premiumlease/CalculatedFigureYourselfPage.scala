@@ -32,8 +32,10 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
     value.map {
       case CalculatedFigureYourself(false, _)  => super.cleanup(value, userAnswers)
       case CalculatedFigureYourself(true, _) =>
-        userAnswers.remove(RecievedGrantLeaseAmountPage)
-        userAnswers.remove(YearLeaseAmountPage)
-        userAnswers.remove(PremiumsGrantLeasePage)
+        for {
+          rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+          yLAP <- rGLAP.remove(YearLeaseAmountPage)
+          pGLP <- yLAP.remove(PremiumsGrantLeasePage)
+        } yield pGLP
     }.getOrElse(super.cleanup(value, userAnswers))
 }

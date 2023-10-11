@@ -17,7 +17,7 @@
 package pages.premiumlease
 
 import models.UserAnswers
-import pages.{CalculatedFigureYourselfPage, DeductingTaxPage, QuestionPage}
+import pages.{CalculatedFigureYourselfPage, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -32,9 +32,11 @@ case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
     value.map {
       case true  => super.cleanup(value, userAnswers)
       case false =>
-        userAnswers.remove(RecievedGrantLeaseAmountPage)
-        userAnswers.remove(YearLeaseAmountPage)
-        userAnswers.remove(PremiumsGrantLeasePage)
-        userAnswers.remove(CalculatedFigureYourselfPage)
+        for {
+           rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+           yLAP <- rGLAP.remove(YearLeaseAmountPage)
+           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
+           cFYP <- pGLP.remove(CalculatedFigureYourselfPage)
+        } yield cFYP
     }.getOrElse(super.cleanup(value, userAnswers))
 }
