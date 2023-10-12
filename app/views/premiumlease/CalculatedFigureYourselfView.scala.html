@@ -29,7 +29,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("calculatedFigureYourself.title"))) {
+@layout(pageTitle = title(form, messages(s"calculatedFigureYourself.title.$individualOrAgent"))) {
 
     @formHelper(action = CalculatedFigureYourselfController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
