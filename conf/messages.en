@@ -160,7 +160,8 @@ claimPropertyIncomeAllowance.error.required.agent = Select yes if your client wa
 claimPropertyIncomeAllowance.error.required.individual = Select yes if you want to claim property income allowance
 claimPropertyIncomeAllowance.change.hidden = ClaimPropertyIncomeAllowance
 
-calculatedFigureYourself.title = Deducting tax from non-UK landlords
+calculatedFigureYourself.title.agent = Did your client calculate the figure themselves?
+calculatedFigureYourself.title.individual = Have you calculated the figure yourself?
 calculatedFigureYourself.heading.agent = Did your client calculate the figure themselves?
 calculatedFigureYourself.heading.individual = Have you calculated the figure yourself?
 calculatedFigureYourself.checkYourAnswersLabel = Have you calculated the figure yourself?
@@ -178,7 +179,7 @@ calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.agent = Enter the c
 calculatedFigureYourselfAmount.amount.error.outOfRange = The figure must be between {0} and {1}
 
 
-leasePremiumPayment.title = Property income allowance
+leasePremiumPayment.title = Premiums for the grant of a lease
 leasePremiumPayment.heading = Premiums for the grant of a lease
 leasePremiumPayment.checkYourAnswersLabel = Premiums for the grant of a lease
 leasePremiumPayment.details = Understanding premiums for the grant of a lease
