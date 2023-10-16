@@ -16,53 +16,39 @@
 
 package viewmodels.checkAnswers
 
-import controllers.routes
+import controllers.routes.ReversePremiumsReceivedController
 import models.{CheckMode, ReversePremiumsReceived, UserAnswers}
 import pages.ReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.implicits._
+import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
+import viewmodels.implicits._
 
 
 object ReversePremiumsReceivedSummary {
 
-  def rowBoolean(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-
-    answers.get(ReversePremiumsReceivedPage).flatMap {
-      case ReversePremiumsReceived(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = "reversePremiumsReceived.checkYourAnswersLabel",
-          value = ValueViewModel("site.no"),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
-          )
-        )
-        )
-      case ReversePremiumsReceived(true, _) =>
-        Some(SummaryListRowViewModel(
-          key = "reversePremiumsReceived.checkYourAnswersLabel",
-          value = ValueViewModel("site.yes"),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
-          )))
-      case _ => Option.empty[SummaryListRow]
-    }
-
-  def rowAmount(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(ReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
-          key = "reversePremiumsReceived.amount.checkYourAnswersLabel",
-          value = ValueViewModel(s"£$amount"),
+          key = "reversePremiumsReceived.checkYourAnswersAmountLabel",
+          value = ValueViewModel(bigDecimalCurrency(amount)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
           )))
+      case ReversePremiumsReceived(false, _) =>
+        Some(SummaryListRowViewModel(
+          key = "reversePremiumsReceived.checkYourAnswersQuestionLabel",
+          value = ValueViewModel("site.no"),
+          actions = Seq(
+            ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
+          )
+        ))
       case _ => Option.empty[SummaryListRow]
-
     }
   }
+
 }

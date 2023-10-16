@@ -17,10 +17,10 @@
 package navigation
 
 import base.SpecBase
-import controllers.routes
 import controllers.premiumlease.routes._
-import pages._
+import controllers.routes
 import models._
+import pages._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
@@ -152,6 +152,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, NormalMode, userAnswers
         ) mustBe controllers.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from OtherIncomeFromPropertyPage to PropertyIncomeCheckYourAnswersPage" in {
+        navigator.nextPage(
+          OtherIncomeFromPropertyPage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.propertyrentals.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
 

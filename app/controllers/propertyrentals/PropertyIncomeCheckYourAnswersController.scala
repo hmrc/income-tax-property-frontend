@@ -21,7 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.propertyrentals.{IsNonUKLandlordSummary, IncomeFromPropertyRentalsSummary, OtherIncomeFromPropertySummary}
+import viewmodels.checkAnswers.{DeductingTaxSummary, ReversePremiumsReceivedSummary}
+import viewmodels.checkAnswers.propertyrentals.{IncomeFromPropertyRentalsSummary, IsNonUKLandlordSummary, OtherIncomeFromPropertySummary}
 import viewmodels.checkAnswers.premiumlease._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.CheckYourAnswersView
@@ -41,8 +42,14 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
+          DeductingTaxSummary.row(taxYear, request.userAnswers),
           IncomeFromPropertyRentalsSummary.row(taxYear, request.userAnswers),
           LeasePremiumPaymentSummary.row(taxYear, request.userAnswers),
+          CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers),
+          RecievedGrantLeaseAmountSummary.row(taxYear, request.userAnswers),
+          YearLeaseAmountSummary.row(taxYear, request.userAnswers),
+          PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers),
+          ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers),
           OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers)
         ).flatten
       )

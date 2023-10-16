@@ -17,28 +17,37 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, DeductingTax, UserAnswers}
 import pages.DeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object DeductingTaxSummary  {
 
-  def row(answers: UserAnswers, taxYear: Int)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(DeductingTaxPage).map {
-      deductingTax =>
-
-        val value = if (deductingTax.taxDeductedYesNo) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key     = "deductingTax.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(DeductingTaxPage).flatMap {
+      case DeductingTax(true, Some(amount)) =>
+        Some(SummaryListRowViewModel(
+          key = "deductingTax.checkYourAnswersLabel",
+          value = ValueViewModel(bigDecimalCurrency(amount)),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
+          )))
+      case DeductingTax(false, _) =>
+        Some(SummaryListRowViewModel(
+          key = "deductingTax.checkYourAnswersLabel",
+          value = ValueViewModel("site.no"),
           actions = Seq(
             ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
+  }
+
 }
