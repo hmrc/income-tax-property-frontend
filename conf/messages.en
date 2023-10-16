@@ -1,6 +1,8 @@
 service.name = Update and submit an Income Tax Return
 
 common.notStarted = Not started
+common.inProgress = In progress
+common.completed = Completed
 
 summary.page.heading = Property
 summary.heading = About your UK Properties
@@ -11,6 +13,7 @@ summary.aboutUKProperties = About
 summary.rentals.heading = Property Rentals
 summary.about = About
 summary.income = Income
+summary.adjustments = Adjustments
 
 site.back = Back
 site.remove = Remove
