@@ -78,6 +78,8 @@ POST       /:taxYear/property-rentals/other-income-from-property                
 GET        /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET         /:taxYear/property-rentals/income-check-your-answers                    controllers.propertyrentals.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
+
 
 ############## Premium lease
 

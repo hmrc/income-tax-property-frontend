@@ -16,14 +16,37 @@
 
 package viewmodels.checkAnswers.premiumlease
 
-import models.UserAnswers
+import controllers.premiumlease.routes.CalculatedFigureYourselfController
+import models.{CalculatedFigureYourself, CheckMode, UserAnswers}
+import pages.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.govuk.summarylist._
+import viewmodels.implicits._
+
 object CalculatedFigureYourselfSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    //TODO Implement allowing for the custom conditional input field for the amount once the
-    // CYA page is present and we have a design for how this should appear on the CYA page.
-    ???
+    answers.get(CalculatedFigureYourselfPage).flatMap {
+      case CalculatedFigureYourself(true, Some(amount)) =>
+        Some(SummaryListRowViewModel(
+          key = "calculatedFigureYourself.checkYourAnswersAmountLabel",
+          value = ValueViewModel(bigDecimalCurrency(amount)),
+          actions = Seq(
+            ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
+          )))
+      case CalculatedFigureYourself(false, _) =>
+        Some(SummaryListRowViewModel(
+          key = "calculatedFigureYourself.checkYourAnswersQuestionLabel",
+          value = ValueViewModel("site.no"),
+          actions = Seq(
+            ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
+          )
+        ))
+      case _ => Option.empty[SummaryListRow]
+    }
   }
 }

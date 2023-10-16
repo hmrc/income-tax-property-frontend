@@ -16,15 +16,16 @@
 
 package navigation
 
-import javax.inject.{Inject, Singleton}
-import controllers.propertyrentals.routes.{ClaimPropertyIncomeAllowanceController, OtherIncomeFromPropertyController, PropertyRentalsCheckYourAnswersController}
 import controllers.premiumlease.routes._
-import play.api.mvc.Call
+import controllers.propertyrentals.routes._
 import controllers.routes
-import pages.{premiumlease, _}
 import models._
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage}
 import pages.propertyrentals.IsNonUKLandlordPage
+import pages._
+import play.api.mvc.Call
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class Navigator @Inject()() {
@@ -33,7 +34,7 @@ class Navigator @Inject()() {
     case UKPropertyDetailsPage => taxYear => _ => routes.TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage => taxYear => _ => routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
     case UKPropertySelectPage => taxYear => _ => routes.SummaryController.show(taxYear)
-    case UKPropertyPage => taxYear => _ => routes.CheckYourAnswersController.onPageLoad
+    case UKPropertyPage => _ => _ => routes.CheckYourAnswersController.onPageLoad
     case premiumlease.LeasePremiumPaymentPage => taxYear => userAnswers => leasePremiumPaymentNavigation(taxYear, userAnswers)
     case CalculatedFigureYourselfPage => taxYear => userAnswers => calculatedFigureYourselfNavigation(taxYear, userAnswers)
     case premiumlease.RecievedGrantLeaseAmountPage => taxYear => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
@@ -45,6 +46,7 @@ class Navigator @Inject()() {
     case DeductingTaxPage => taxYear => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage => taxYear => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
     case ReversePremiumsReceivedPage => taxYear => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+    case OtherIncomeFromPropertyPage => taxYear => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => routes.IndexController.onPageLoad
   }
 

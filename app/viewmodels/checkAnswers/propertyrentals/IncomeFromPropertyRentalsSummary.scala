@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.premiumlease
+package viewmodels.checkAnswers.propertyrentals
 
-import controllers.premiumlease.routes
+import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.premiumlease.PremiumsGrantLeasePage
+import pages.IncomeFromPropertyRentalsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object PremiumsGrantLeaseSummary {
+object IncomeFromPropertyRentalsSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PremiumsGrantLeasePage).map {
-      answer =>
+    def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+      answers.get(IncomeFromPropertyRentalsPage).map {
+        answer =>
 
-        SummaryListRowViewModel(
-          key = "premiumsGrantLease.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("premiumsGrantLease.change.hidden"))
+          SummaryListRowViewModel(
+            key = "incomeFromPropertyRentals.checkYourAnswersLabel",
+            value = ValueViewModel(bigDecimalCurrency(answer)),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))
+            )
           )
-        )
-    }
+      }
 }
