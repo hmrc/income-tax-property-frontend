@@ -16,10 +16,10 @@
 
 package viewmodels.summary
 
-sealed abstract class TaskListTag(comment: String)
+abstract class TaskListTag(message: String, cssClass: String)
 
 object TaskListTag {
-  case object InProgress extends TaskListTag(comment = "Section started from scratch by user but not completed")
-  case object NotStarted extends TaskListTag(comment = "No user entered data saved and no pre-populated data")
-  case object Completed extends TaskListTag(comment = "All fields completed, or marked as completed by the user.")
+  case object InProgress extends TaskListTag("inProgress", "govuk-tag--blue")
+  case object NotStarted extends TaskListTag("notStarted", "govuk-tag--grey")
+  case object Completed extends TaskListTag("completed", "govuk-tag--turquoise")
 }

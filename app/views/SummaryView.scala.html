@@ -16,7 +16,7 @@
 
 @import controllers.propertyrentals.routes._
 @import viewmodels.summary.TaskListItem
-@import viewmodels.summary.TaskListTag._
+@import viewmodels.summary.TaskListTag
 
 @this(
     layout: templates.Layout,
@@ -54,16 +54,13 @@
             @for(item <- ukPropertyRentalsRows){
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="@{item.content}_link" href="@item.call">@messages(s"item.content")</a>
+                        <a class="govuk-link" id="@{item.id}" href="@item.call">@messages(s"${item.content}")</a>
                     </span>
                 <span class="hmrc-status-tag">
-                @{
-                    val tag = item.taskListTag match {
-                        case Completed => Tag(content = Text(messages("common.completed")), classes = "govuk-tag--turquoise")
-                        case InProgress => Tag(content = Text(messages("common.inProgress")), classes = "govuk-tag--blue")
-                        case NotStarted => Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
+                    @{
+                    val tag = Tag(content = Text(messages(s"common.${item.tag.content}")), classes = s"{item.tag.cssClass}")
+                    govukTag(tag)
                     }
-                }
                 </span>
             </li>
             }

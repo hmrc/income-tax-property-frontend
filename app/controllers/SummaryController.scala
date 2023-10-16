@@ -17,14 +17,11 @@
 package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import models.UKPropertySelect
-import pages.{TotalIncomePage, UKPropertyPage}
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.SummaryPage.createUkPropertyRows
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
-import viewmodels.summary.{TaskListItem, TaskListTag}
 
 import javax.inject.Inject
 
@@ -36,28 +33,6 @@ class SummaryController @Inject()(
                                ) extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    val propertyRentalsAbout: TaskListItem = TaskListItem(
-      "summary.about",
-      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      if (request.userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted
-    )
-    val propertyRentalsIncome: TaskListItem = TaskListItem(
-      "summary.income",
-      controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-      if (request.userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted
-    )
-    val propertyRentalsAdjustments: TaskListItem = TaskListItem("summary.adjustments",
-      controllers.routes.SummaryController.show(taxYear), //to change to adjustments page
-      TaskListTag.NotStarted ///update based on first page
-    )
-
-    val ukPropertyRentalsRows: Seq[TaskListItem] = if(request.userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined)
-      {Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)}
-    else if (request.userAnswers.flatMap(_.get(UKPropertyPage)).exists(_.contains(UKPropertySelect.PropertyRentals)))
-      {Seq(propertyRentalsAbout)}
-    else {Seq.empty[TaskListItem]}
-
-
-    Ok(view(taxYear, ukPropertyRentalsRows))
+    Ok(view(taxYear, createUkPropertyRows(request.userAnswers, taxYear)))
   }
 }
