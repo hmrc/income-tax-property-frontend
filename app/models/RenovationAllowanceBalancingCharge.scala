@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.RenovationAllowanceBalancingCharge
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object RenovationAllowanceBalancingChargePage extends QuestionPage[RenovationAllowanceBalancingCharge] {
+final case class RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo: Boolean,
+                                                    renovationAllowanceBalancingChargeAmount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "renovationAllowanceBalancingCharge"
+object RenovationAllowanceBalancingCharge {
+  implicit val format: Format[DeductingTax] = Json.format
 }

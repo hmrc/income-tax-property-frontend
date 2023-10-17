@@ -116,7 +116,7 @@ POST       /:taxYear/reverse-premiums-received                                  
 GET        /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /renovationAllowanceBalancingCharge                        controllers.RenovationAllowanceBalancingChargeController.onPageLoad(mode: Mode = NormalMode)
-POST       /renovationAllowanceBalancingCharge                        controllers.RenovationAllowanceBalancingChargeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeRenovationAllowanceBalancingCharge                  controllers.RenovationAllowanceBalancingChargeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeRenovationAllowanceBalancingCharge                  controllers.RenovationAllowanceBalancingChargeController.onSubmit(mode: Mode = CheckMode)
+GET        /:taxYear/renovationAllowanceBalancingCharge                             controllers.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/renovationAllowanceBalancingCharge                             controllers.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/changeRenovationAllowanceBalancingCharge                  controllers.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/changeRenovationAllowanceBalancingCharge                  controllers.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
