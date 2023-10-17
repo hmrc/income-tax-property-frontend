@@ -30,7 +30,7 @@ object RenovationAllowanceBalancingChargeSummary  {
     answers.get(RenovationAllowanceBalancingChargePage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = if (answer.renovationAllowanceBalancingChargeYesNo) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
           key     = "renovationAllowanceBalancingCharge.checkYourAnswersLabel",

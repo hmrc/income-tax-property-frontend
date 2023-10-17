@@ -22,5 +22,5 @@ final case class RenovationAllowanceBalancingCharge(renovationAllowanceBalancing
                                                     renovationAllowanceBalancingChargeAmount: Option[BigDecimal])
 
 object RenovationAllowanceBalancingCharge {
-  implicit val format: Format[DeductingTax] = Json.format
+  implicit val format: Format[RenovationAllowanceBalancingCharge] = Json.format
 }

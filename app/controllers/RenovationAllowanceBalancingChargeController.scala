@@ -64,7 +64,7 @@ class RenovationAllowanceBalancingChargeController @Inject()(
       val form = formProvider(request.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
 
         value =>
           for {
