@@ -355,3 +355,9 @@ reversePremiumsReceived.error.outOfRange = The figure must be between {0} and {1
 reversePremiumsReceived.amount.legend = Enter the figure
 reversePremiumsReceived.amount.label = Enter the figure
 reversePremiumsReceived.change.hidden = Reverse Premiums Received
+
+renovationAllowanceBalancingCharge.title = renovationAllowanceBalancingCharge
+renovationAllowanceBalancingCharge.heading = renovationAllowanceBalancingCharge
+renovationAllowanceBalancingCharge.checkYourAnswersLabel = renovationAllowanceBalancingCharge
+renovationAllowanceBalancingCharge.error.required = Select yes if renovationAllowanceBalancingCharge
+renovationAllowanceBalancingCharge.change.hidden = RenovationAllowanceBalancingCharge
