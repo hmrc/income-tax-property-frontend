@@ -374,3 +374,22 @@ renovationAllowanceBalancingCharge.amount.error.nonNumeric.agent = Enter the ded
 renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.individual = Enter the deducted amount with two decimal places
 renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.agent = Enter the deducted amount with two decimal places
 renovationAllowanceBalancingCharge.amount.error.outOfRange = The figure must be between {0} and {1}
+
+residentialFinanceCost.title = Residential finance costs
+residentialFinanceCost.heading = Residential finance costs
+residentialFinanceCost.details.content.link.text = Understanding residential financial costs
+residentialFinanceCost.details.content.link.content = Residential finance costs include:
+residentialFinanceCost.details.l1 = mortgage interest
+residentialFinanceCost.details.l2 = interest on loans to buy furnishings
+residentialFinanceCost.details.l3 = fees incurred when taking out or repaying mortgages or loans
+
+residentialFinanceCost.legend = How much were your residential finance costs?
+residentialFinanceCost.checkYourAnswersLabel = ResidentialFinanceCost
+residentialFinanceCost.error.required.individual = Enter an amount in pounds for your residential finance costs
+residentialFinanceCost.error.required.agent = Enter an amount in pounds for your client's residential finance costs
+residentialFinanceCost.error.nonNumeric.individual = Enter an amount in pounds with no special characters for your residential finance costs
+residentialFinanceCost.error.nonNumeric.agent = Enter whole numbers with no special characters for your client's residential finance costs
+residentialFinanceCost.error.twoDecimalPlaces.individual = Enter the deducted amount with two decimal places
+residentialFinanceCost.error.twoDecimalPlaces.agent = Enter the deducted amount with two decimal places
+residentialFinanceCost.error.outOfRange = Residential finance cost must be between {0} and {1}
+residentialFinanceCost.change.hidden = ResidentialFinanceCost
