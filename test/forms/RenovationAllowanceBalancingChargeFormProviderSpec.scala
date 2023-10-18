@@ -21,21 +21,15 @@ import play.api.data.FormError
 
 class RenovationAllowanceBalancingChargeFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "renovationAllowanceBalancingCharge.error.required"
+  val requiredKey = "renovationAllowanceBalancingCharge.error.required.individual"
   val invalidKey = "error.boolean"
 
 
   val form = new RenovationAllowanceBalancingChargeFormProvider()("individual")
 
-  ".value" - {
+  ".renovationAllowanceBalancingChargeYesNo" - {
 
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
+    val fieldName = "renovationAllowanceBalancingChargeYesNo"
 
     behave like mandatoryField(
       form,

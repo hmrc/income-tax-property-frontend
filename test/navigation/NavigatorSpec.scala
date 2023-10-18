@@ -296,6 +296,12 @@ class NavigatorSpec extends SpecBase {
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
       }
+
+      "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test")
+        ) mustBe controllers.routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      }
     }
   }
 }

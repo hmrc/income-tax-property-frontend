@@ -16,10 +16,11 @@
 
 package forms
 
-import forms.behaviours.IntFieldBehaviours
+
+import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ResidentialFinanceCostFormProviderSpec extends IntFieldBehaviours {
+class ResidentialFinanceCostFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new ResidentialFinanceCostFormProvider()("individual")
 
@@ -38,14 +39,14 @@ class ResidentialFinanceCostFormProviderSpec extends IntFieldBehaviours {
       validDataGenerator
     )
 
-    behave like intField(
+    behave like currencyField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "residentialFinanceCost.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "residentialFinanceCost.error.wholeNumber")
+      nonNumericError  = FormError(fieldName, "residentialFinanceCost.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "residentialFinanceCost.error.twoDecimalPlaces.individual")
     )
 
-    behave like intFieldWithRange(
+    behave like currencyFieldWithRange(
       form,
       fieldName,
       minimum       = minimum,
@@ -56,7 +57,7 @@ class ResidentialFinanceCostFormProviderSpec extends IntFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "residentialFinanceCost.error.required")
+      requiredError = FormError(fieldName, "residentialFinanceCost.error.required.individual")
     )
   }
 }
