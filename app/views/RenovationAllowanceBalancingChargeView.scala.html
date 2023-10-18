@@ -16,8 +16,8 @@
 
 @import controllers.routes
 @import viewmodels.InputWidth._
-@import viewmodels.LabelSize
 @import viewmodels.govuk._
+@import viewmodels.LegendSize
 
 @this(
     layout: templates.Layout,
@@ -27,6 +27,7 @@
     govukButton: GovukButton,
     govukInput : GovukInput
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
@@ -46,14 +47,15 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <p class="govuk-body">@messages("renovationAllowanceBalancingCharge.details.content.link.content")</p>
+                <p class="govuk-body">@messages("renovationAllowanceBalancingCharge.details.content.link.content1")</p>
+                <p class="govuk-body">@messages("renovationAllowanceBalancingCharge.details.content.link.content2")</p>
             </div>
         </details>
 
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("renovationAllowanceBalancingChargeYesNo"),
-                    legend = LegendViewModel(messages("renovationAllowanceBalancingCharge.legend")),
+                    legend = LegendViewModel(messages("renovationAllowanceBalancingCharge.legend")).asPageHeading(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("renovationAllowanceBalancingCharge"),
                         conditionalYesHtml = Some(
