@@ -66,7 +66,7 @@ class UKPropertySelectController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UKPropertyPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UKPropertyPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UKPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

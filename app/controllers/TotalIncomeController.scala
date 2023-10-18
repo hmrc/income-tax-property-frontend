@@ -67,7 +67,7 @@ class TotalIncomeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomePage, value))
             _              <- sessionService.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TotalIncomePage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(TotalIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

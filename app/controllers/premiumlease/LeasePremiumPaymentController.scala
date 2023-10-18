@@ -66,7 +66,7 @@ class LeasePremiumPaymentController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

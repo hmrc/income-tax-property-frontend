@@ -67,7 +67,7 @@ class YearLeaseAmountController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(YearLeaseAmountPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(YearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

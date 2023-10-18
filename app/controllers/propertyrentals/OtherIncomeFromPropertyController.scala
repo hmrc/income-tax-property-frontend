@@ -71,7 +71,7 @@ class OtherIncomeFromPropertyController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherIncomeFromPropertyPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(OtherIncomeFromPropertyPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(OtherIncomeFromPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

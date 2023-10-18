@@ -68,7 +68,7 @@ class ExpensesLessThan1000Controller @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesLessThan1000Page, value))
             _              <- sessionService.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ExpensesLessThan1000Page, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

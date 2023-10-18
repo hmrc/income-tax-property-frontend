@@ -66,7 +66,7 @@ class ClaimPropertyIncomeAllowanceController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowancePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimPropertyIncomeAllowancePage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ClaimPropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

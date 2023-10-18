@@ -66,7 +66,7 @@ class RecievedGrantLeaseAmountController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(RecievedGrantLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RecievedGrantLeaseAmountPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(RecievedGrantLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
