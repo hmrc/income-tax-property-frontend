@@ -24,9 +24,9 @@ class ResidentialFinanceCostFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new ResidentialFinanceCostFormProvider()("individual")
 
-  ".value" - {
+  ".residentialFinanceCost" - {
 
-    val fieldName = "value"
+    val fieldName = "residentialFinanceCost"
 
     val minimum = 0
     val maximum = 100000000
