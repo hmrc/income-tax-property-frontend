@@ -393,3 +393,39 @@ residentialFinanceCost.error.twoDecimalPlaces.individual = Enter the deducted am
 residentialFinanceCost.error.twoDecimalPlaces.agent = Enter the deducted amount with two decimal places
 residentialFinanceCost.error.outOfRange = Residential finance cost must be between {0} and {1}
 residentialFinanceCost.change.hidden = ResidentialFinanceCost
+
+privateUseAdjustment.title.agent = Private use adjustment
+privateUseAdjustment.title.individual = Private use adjustment
+privateUseAdjustment.heading.agent = How much was your client's private use adjustment?
+privateUseAdjustment.heading.individual = Private use adjustment
+privateUseAdjustment.para.individual = Understanding private use adjustment
+privateUseAdjustment.para.agent = Understanding private use adjustment
+
+privateUseAdjustment.checkYourAnswersAmountLabel = Self calculated figure
+
+privateUseAdjustment.checkYourAnswersQuestionLabel = Have you calculated the figure yourself?
+privateUseAdjustment.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
+privateUseAdjustment.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
+privateUseAdjustment.change.hidden = Have you calculated the figure yourself?
+privateUseAdjustment.details.heading = Understanding private use adjustment
+privateUseAdjustment.details.line1 = Where there is private use of an asset by a sole trader or partner in a partnership, the asset is put in to a single-asset pool and allowances are restricted on the business to private-use ratio. The most common example of the private-use restriction is in relation to cars.
+privateUseAdjustment.details.line2.link.text = Not Required, will default to some value
+privateUseAdjustment.amount.legend = Enter the figure
+privateUseAdjustment.label = Enter the figure
+privateUseAdjustment.amount.error.required.individual = Please enter a valid amount
+privateUseAdjustment.amount.error.required.agent = Please enter a valid amount for your client
+privateUseAdjustment.amount.error.nonNumeric.individual = Enter the calculated amount in numbers
+privateUseAdjustment.amount.error.nonNumeric.agent = Enter the calculated amount in numbers for your client
+privateUseAdjustment.amount.error.twoDecimalPlaces.individual = Enter the calculated amount with two decimal places
+privateUseAdjustment.amount.error.twoDecimalPlaces.agent = Enter the calculated amount with two decimal places
+privateUseAdjustment.amount.error.outOfRange = The figure must be between {0} and {1}
+privateUseAdjustment.amount.legend = Enter the figure
+privateUseAdjustment.label = Enter the figure
+privateUseAdjustmentAmount.amount.error.required.individual = Please enter a valid amount
+privateUseAdjustmentAmount.amount.error.required.agent = Please enter a valid amount for your client
+privateUseAdjustmentAmount.amount.error.nonNumeric.individual = Enter the calculated amount in numbers
+privateUseAdjustmentAmount.amount.error.nonNumeric.agent = Enter the calculated amount in numbers for your client
+privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.individual = Enter the calculated amount with two decimal places
+privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.agent = Enter the calculated amount with two decimal places
+privateUseAdjustmentAmount.amount.error.outOfRange = The figure must be between {0} and {1}
+
