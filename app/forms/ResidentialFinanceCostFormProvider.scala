@@ -24,7 +24,7 @@ class ResidentialFinanceCostFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "residentialFinanceCost" -> currency(
         s"residentialFinanceCost.error.required.${individualOrAgent}",
         s"residentialFinanceCost.error.twoDecimalPlaces.${individualOrAgent}",
         s"residentialFinanceCost.error.nonNumeric.${individualOrAgent}")
