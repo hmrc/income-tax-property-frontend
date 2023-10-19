@@ -131,3 +131,8 @@ POST       /:taxYear/private-use-adjustment                                     
 GET        /:taxYear/change-private-use-adjustment                                  controllers.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-private-use-adjustment                                  controllers.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+
+GET        /:taxYear/balancing-charge                                               controllers.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/balancing-charge                                               controllers.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-balancing-charge                                        controllers.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-balancing-charge                                        controllers.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

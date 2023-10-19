@@ -1,0 +1,87 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.premiumlease.routes._
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
+@import viewmodels.govuk._
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton,
+    govukInput : GovukInput
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"balancingCharge.title.${individualOrAgent}"))) {
+
+    @formHelper(action = BalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+        }
+
+        <h1 class="govuk-heading-l">@messages(s"balancingCharge.heading.${individualOrAgent}")</h1>
+
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">
+                                  @messages("balancingCharge.details.heading")
+                                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">@messages("balancingCharge.details.line1") </p>
+                <p>@messages("reversePremiumsReceived.details.line2")
+                    <a href="@messages("balancingCharge.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("balancingCharge.details.line2.link.text")
+                    </a>
+                </p>
+            </div>
+        </details>
+
+
+
+        @govukRadios(
+                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                    field = form("balancingChargeYesNo"),
+                    legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                        field = form("balancingCharge"),
+                        conditionalYesHtml = Some(
+                            govukInput(
+                                InputViewModel(
+                                    field = form("balancingChargeAmount"),
+                                    label = LabelViewModel(messages("balancingCharge.radio.question.label"))
+                                )
+                                .asNumeric()
+                                .withWidth(Fixed10)
+                                .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            )
+                        )
+                    )
+                )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+
+    }
+}
