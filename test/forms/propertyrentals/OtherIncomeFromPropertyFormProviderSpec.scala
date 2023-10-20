@@ -16,19 +16,20 @@
 
 package forms.propertyrentals
 
-import forms.behaviours.IntFieldBehaviours
+import forms.behaviours.CurrencyFieldBehaviours
+import play.api.data.FormError
 
-class OtherIncomeFromPropertyFormProviderSpec extends IntFieldBehaviours {
+class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
 
   val invalidKey = "error.boolean"
   val minimum = 0
-  val maximum = 1000000000
+  val maximum = 100000000
 
-  val form = new OtherIncomeFromPropertyFormProvider()("agent")
+  val form = new OtherIncomeFromPropertyFormProvider()("individual")
 
-  ".value" - {
+  ".amount" - {
 
-    val fieldName = "value"
+    val fieldName = "amount"
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -36,6 +37,27 @@ class OtherIncomeFromPropertyFormProviderSpec extends IntFieldBehaviours {
       form,
       fieldName,
       validDataGenerator
+    )
+
+    behave like currencyField(
+      form,
+      fieldName,
+      nonNumericError = FormError(fieldName, "otherIncomeFromProperty.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "otherIncomeFromProperty.error.twoDecimalPlaces.individual")
+    )
+
+    behave like currencyFieldWithRange(
+      form,
+      fieldName,
+      minimum = minimum,
+      maximum = maximum,
+      expectedError = FormError(fieldName, "otherIncomeFromProperty.error.outOfRange.individual", Seq(minimum, maximum))
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, "otherIncomeFromProperty.error.required.individual")
     )
 
   }
