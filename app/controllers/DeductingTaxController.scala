@@ -67,7 +67,7 @@ class DeductingTaxController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

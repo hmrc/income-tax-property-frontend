@@ -64,7 +64,7 @@ class CalculatedFigureYourselfController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

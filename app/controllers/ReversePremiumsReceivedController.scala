@@ -65,7 +65,7 @@ class ReversePremiumsReceivedController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReversePremiumsReceivedPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReversePremiumsReceivedPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ReversePremiumsReceivedPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

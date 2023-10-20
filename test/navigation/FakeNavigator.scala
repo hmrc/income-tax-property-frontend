@@ -22,6 +22,6 @@ import models.{Mode, UserAnswers}
 
 class FakeNavigator(desiredRoute: Call) extends Navigator {
 
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, userAnswers: UserAnswers): Call =
+  override def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     desiredRoute
 }
