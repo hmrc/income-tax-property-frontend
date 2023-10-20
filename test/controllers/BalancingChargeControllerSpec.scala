@@ -17,34 +17,34 @@
 package controllers
 
 import base.SpecBase
-import forms.PrivateUseAdjustmentFormProvider
-import models.{NormalMode, PrivateUseAdjustment, UserAnswers}
+import forms.BalancingChargeFormProvider
+import models.{BalancingCharge, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PrivateUseAdjustmentPage
+import pages.BalancingChargePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.PrivateUseAdjustmentView
+import views.html.BalancingChargeView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
 class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/privateUseAdjustment")
+  def onwardRoute = Call("GET", "/balanceCharge")
 
-  val taxYear = LocalDate.now.getYear
-  lazy val totalIncomeRoute = routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode).url
+  val taxYear: Int = LocalDate.now.getYear
+  lazy val totalIncomeRoute: String = routes.BalancingChargeController.onPageLoad(taxYear, NormalMode).url
 
-  val formProvider = new PrivateUseAdjustmentFormProvider()
-  val form = formProvider("individual")
+  val formProvider = new BalancingChargeFormProvider()
+  val form = formProvider("agent")
 
-  "totalIncome Controller" - {
+  "BalancingCharge Controller" - {
 
     "must return OK and the correct view for a GET when an individual" in {
 
@@ -55,7 +55,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[PrivateUseAdjustmentView]
+        val view = application.injector.instanceOf[BalancingChargeView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
@@ -71,7 +71,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[PrivateUseAdjustmentView]
+        val view = application.injector.instanceOf[BalancingChargeView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "agent")(request, messages(application)).toString
@@ -80,19 +80,20 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PrivateUseAdjustmentPage, PrivateUseAdjustment(7689.23)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23))).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, totalIncomeRoute)
 
-        val view = application.injector.instanceOf[PrivateUseAdjustmentView]
+        val view = application.injector.instanceOf[BalancingChargeView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(PrivateUseAdjustment(7689.23)), taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          taxYear, NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -103,7 +104,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), true)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -113,7 +114,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, totalIncomeRoute)
-            .withFormUrlEncodedBody("privateUseAdjustmentAmount" -> "648.98")
+            .withFormUrlEncodedBody("balancingChargeYesNo" -> "false")
 
         val result = route(application, request).value
 
@@ -124,16 +125,16 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
           FakeRequest(POST, totalIncomeRoute)
-            .withFormUrlEncodedBody(("privateUseAdjustmentAmount", "87.858585"))
+            .withFormUrlEncodedBody(("balancingChargeAmount", "87.858585"))
 
-        val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "87.858585"))
+        val boundForm = form.bind(Map("balancingChargeAmount" -> "87.858585"))
 
-        val view = application.injector.instanceOf[PrivateUseAdjustmentView]
+        val view = application.injector.instanceOf[BalancingChargeView]
 
         val result = route(application, request).value
 
