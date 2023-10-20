@@ -33,7 +33,7 @@ object OtherIncomeFromPropertySummary {
 
           SummaryListRowViewModel(
             key = "otherIncomeFromProperty.checkYourAnswersLabel",
-            value = ValueViewModel(bigDecimalCurrency(answer)),
+            value = ValueViewModel(bigDecimalCurrency(answer.amount)),
             actions = Seq(
               ActionItemViewModel("site.change", routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, CheckMode).url)
                 .withVisuallyHiddenText(messages("otherIncomeFromProperty.change.hidden"))
