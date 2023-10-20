@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.premiumlease.YearLeaseAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,8 +32,8 @@ object YearLeaseAmountSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "yearLeaseAmount.checkYourAnswersLabel",
-          value = ValueViewModel(answer.toString),
+          key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
