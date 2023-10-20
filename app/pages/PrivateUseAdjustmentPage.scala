@@ -16,12 +16,12 @@
 
 package pages
 
-import models.OtherIncomeFromProperty
+import models.PrivateUseAdjustment
 import play.api.libs.json.JsPath
 
-case object OtherIncomeFromPropertyPage extends QuestionPage[OtherIncomeFromProperty] {
+case object PrivateUseAdjustmentPage extends QuestionPage[PrivateUseAdjustment] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "otherIncomeFromProperty"
+  override def toString: String = "privateUseAdjustment"
 }

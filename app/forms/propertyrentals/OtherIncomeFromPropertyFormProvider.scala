@@ -17,6 +17,8 @@
 package forms.propertyrentals
 
 import forms.mappings.Mappings
+import models.OtherIncomeFromProperty
+import play.api.data.Forms.mapping
 import play.api.data._
 
 import javax.inject.Inject
@@ -26,12 +28,14 @@ class OtherIncomeFromPropertyFormProvider @Inject() extends Mappings {
   private val minValue = 0
   private val maxValue = 100000000
 
-  def apply(individualOrAgent: String): Form[BigDecimal] =
-    Form(
-      "otherIncomeFromProperty" -> currency(
-        s"otherIncomeFromProperty.error.required.$individualOrAgent",
-        s"otherIncomeFromProperty.error.twoDecimalPlaces.$individualOrAgent",
-        s"otherIncomeFromProperty.error.nonNumeric.$individualOrAgent")
-        .verifying(inRange(BigDecimal(minValue), BigDecimal(maxValue), s"otherIncomeFromProperty.error.outOfRange.$individualOrAgent"))
+  def apply(individualOrAgent: String): Form[OtherIncomeFromProperty] =
+    Form[OtherIncomeFromProperty](
+      mapping(
+        "amount" -> currency(
+          s"otherIncomeFromProperty.error.required.$individualOrAgent",
+          s"otherIncomeFromProperty.error.twoDecimalPlaces.$individualOrAgent",
+          s"otherIncomeFromProperty.error.nonNumeric.$individualOrAgent")
+          .verifying(inRange(BigDecimal(minValue), BigDecimal(maxValue), s"otherIncomeFromProperty.error.outOfRange.$individualOrAgent"))
+      )(OtherIncomeFromProperty.apply)(OtherIncomeFromProperty.unapply)
     )
 }

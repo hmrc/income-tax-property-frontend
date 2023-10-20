@@ -14,11 +14,10 @@
  * limitations under the License.
  *@
 
-@import controllers.premiumlease.routes
+@import controllers.premiumlease.routes._
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 @import viewmodels.govuk._
-
 
 @this(
     layout: templates.Layout,
@@ -31,35 +30,45 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("deductingTax.legend"))) {
+@layout(pageTitle = title(form, messages(s"balancingCharge.title.${individualOrAgent}"))) {
 
-    @formHelper(action = DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = BalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
+
+        <h1 class="govuk-heading-l">@messages(s"balancingCharge.heading.${individualOrAgent}")</h1>
+
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    @messages("deductingTax.details.content.link.text")
-                </span>
+                                <span class="govuk-details__summary-text">
+                                  @messages("balancingCharge.details.heading")
+                                </span>
             </summary>
             <div class="govuk-details__text">
-                <p class="govuk-body">@messages("deductingTax.details.content.link.href")</p>
+                <p class="govuk-body">@messages("balancingCharge.details.line1") </p>
+                <p>@messages("reversePremiumsReceived.details.line2")
+                    <a href="@messages("balancingCharge.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("balancingCharge.details.line2.link.text")
+                    </a>
+                </p>
             </div>
         </details>
 
+
+
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("taxDeductedYesNo"),
-                    legend = LegendViewModel(messages(s"deductingTax.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                    field = form("balancingChargeYesNo"),
+                    legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                        field = form("deductingTax"),
+                        field = form("balancingCharge"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(
-                                    field = form("taxDeductedAmount"),
-                                    label = LabelViewModel(messages("deductingTax.radio.question.label"))
+                                    field = form("balancingChargeAmount"),
+                                    label = LabelViewModel(messages("balancingCharge.radio.question.label"))
                                 )
                                 .asNumeric()
                                 .withWidth(Fixed10)
@@ -73,5 +82,6 @@
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
+
     }
 }

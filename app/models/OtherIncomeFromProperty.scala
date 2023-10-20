@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.OtherIncomeFromProperty
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object OtherIncomeFromPropertyPage extends QuestionPage[OtherIncomeFromProperty] {
+final case class OtherIncomeFromProperty(amount: BigDecimal)
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "otherIncomeFromProperty"
+object OtherIncomeFromProperty {
+  implicit val format: Format[OtherIncomeFromProperty] = Json.format
 }
