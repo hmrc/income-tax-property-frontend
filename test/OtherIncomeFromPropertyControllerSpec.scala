@@ -1,7 +1,5 @@
-package controllers
-
 import base.SpecBase
-import forms.OtherIncomeFromPropertyFormProvider
+import controllers.routes
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
