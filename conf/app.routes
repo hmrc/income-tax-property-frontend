@@ -115,3 +115,13 @@ GET        /:taxYear/reverse-premiums-received                                  
 POST       /:taxYear/reverse-premiums-received                                      controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/renovation-allowance-balancing-charge                          controllers.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/renovation-allowance-balancing-charge                          controllers.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-renovation-allowance-balancing-charge                   controllers.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-renovation-allowance-balancing-charge                   controllers.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/residential-finance-cost                                       controllers.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/residential-finance-cost                                       controllers.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-residential-finance-cost                                controllers.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-residential-finance-cost                                controllers.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

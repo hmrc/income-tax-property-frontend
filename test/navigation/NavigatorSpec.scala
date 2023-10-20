@@ -139,7 +139,7 @@ class NavigatorSpec extends SpecBase {
       "must go from IncomeFromPropertyRentalsPage to LeasePremiumPaymentPage" in {
         navigator.nextPage(
           IncomeFromPropertyRentalsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes" in {
@@ -295,6 +295,12 @@ class NavigatorSpec extends SpecBase {
 
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+      }
+
+      "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
       }
     }
   }
