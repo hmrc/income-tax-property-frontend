@@ -52,14 +52,14 @@
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("taxDeductedYesNo"),
-                    legend = LegendViewModel(messages("deductingTax.legend")).asPageHeading(),
+                    legend = LegendViewModel(messages(s"deductingTax.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("deductingTax"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(
                                     field = form("taxDeductedAmount"),
-                                    label = LabelViewModel(messages("deductingTax.yes.text"))
+                                    label = LabelViewModel(messages("deductingTax.radio.question.label"))
                                 )
                                 .asNumeric()
                                 .withWidth(Fixed10)

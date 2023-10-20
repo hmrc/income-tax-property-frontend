@@ -25,9 +25,6 @@ import scala.collection.immutable.ArraySeq
 
 class PrivateUseAdjustmentFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
-  val requiredKey = "privateUseAdjustment.error.required.individual"
-  val invalidKey = "error.boolean"
-
   val form = new PrivateUseAdjustmentFormProvider()("individual")
 
   ".privateUseAdjustmentAmount" - {

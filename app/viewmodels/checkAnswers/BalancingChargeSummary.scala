@@ -17,8 +17,8 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.{CheckMode, PrivateUseAdjustment, UserAnswers}
-import pages.PrivateUseAdjustmentPage
+import models.{CheckMode, BalancingCharge, UserAnswers}
+import pages.BalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
@@ -28,21 +28,21 @@ import viewmodels.implicits._
 object BalancingChargeSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(PrivateUseAdjustmentPage).flatMap {
-      case PrivateUseAdjustment(amount) =>
+    answers.get(BalancingChargePage).flatMap {
+      case BalancingCharge(yesNo, amount) =>
         Some(SummaryListRowViewModel(
           key = "privateUseAdjustment.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount)),
+          value = ValueViewModel(bigDecimalCurrency(amount.get)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
-      case PrivateUseAdjustment(_) =>
+      case BalancingCharge(_, _) =>
         Some(SummaryListRowViewModel(
           key = "privateUseAdjustment.checkYourAnswersLabel",
           value = ValueViewModel("site.no"),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )
         ))
