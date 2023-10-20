@@ -48,7 +48,7 @@ class Navigator @Inject()() {
     case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     case ReversePremiumsReceivedPage => taxYear => _ => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case OtherIncomeFromPropertyPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
-    case RenovationAllowanceBalancingChargePage => taxYear => _ => routes.ResidentialFinanceCostController.onPageLoad(taxYear,NormalMode)
+    case RenovationAllowanceBalancingChargePage => taxYear => _ => _ => routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 

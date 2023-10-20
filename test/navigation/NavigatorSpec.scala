@@ -299,7 +299,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
         navigator.nextPage(
-          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test")
+          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
       }
     }

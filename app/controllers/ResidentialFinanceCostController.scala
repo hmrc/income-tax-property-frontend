@@ -70,7 +70,7 @@ class ResidentialFinanceCostController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ResidentialFinanceCostPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ResidentialFinanceCostPage, taxYear: Int, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ResidentialFinanceCostPage, taxYear: Int, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

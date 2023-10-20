@@ -70,7 +70,7 @@ class RenovationAllowanceBalancingChargeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(RenovationAllowanceBalancingChargePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RenovationAllowanceBalancingChargePage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(RenovationAllowanceBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
