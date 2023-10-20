@@ -64,7 +64,7 @@ class PrivateUseAdjustmentController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PrivateUseAdjustmentPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PrivateUseAdjustmentPage, taxYear, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(PrivateUseAdjustmentPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
