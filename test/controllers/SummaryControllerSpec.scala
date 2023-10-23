@@ -17,10 +17,8 @@
 package controllers
 
 import base.SpecBase
-import com.google.inject.Inject
 import models.UKPropertySelect
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
-import pages.{TotalIncomePage, UKPropertyPage}
+import pages.UKPropertyPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.summary.{TaskListItem, TaskListTag}

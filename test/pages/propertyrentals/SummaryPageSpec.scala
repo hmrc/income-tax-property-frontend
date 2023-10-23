@@ -38,7 +38,7 @@ class SummaryPageSpec extends SpecBase {
       val res = Seq(TaskListItem(
         "summary.about",
         controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-        TaskListTag.InProgress,
+        TaskListTag.NotStarted,
         "about_link"
       ), TaskListItem(
         "summary.income",
@@ -52,7 +52,7 @@ class SummaryPageSpec extends SpecBase {
       ))
 
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(3)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(res)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
 
     }
 
