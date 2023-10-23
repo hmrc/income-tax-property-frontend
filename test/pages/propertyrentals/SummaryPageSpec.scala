@@ -3,14 +3,14 @@ package pages.propertyrentals
 import base.SpecBase
 import models.UKPropertySelect
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
-import pages.{SummaryPage, TotalIncomePage, UKPropertyPage}
+import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 import java.time.LocalDate
 
 class SummaryPageSpec extends SpecBase {
 
-  "SummaryPageSpec createUkPropertyRows" should {
+  "SummaryPageSpec createUkPropertyRows" - {
     val taxYear = LocalDate.now.getYear
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear).length should be(0)
