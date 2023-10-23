@@ -55,11 +55,11 @@
             @for(item <- ukPropertyRentalsRows){
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="@{item.id}" href="@item.call">@messages(s"${item.content}")</a>
+                        <a class="govuk-link" id="@{item.id}" href="@{item.call}">@messages(s"${item.content}")</a>
                     </span>
                 <span class="hmrc-status-tag">
                     @{
-                        val tag = Tag(content = Text(messages(s"common.${item.tag.message}")), classes = s"{item.tag.cssClass}")
+                        val tag = Tag(content = Text(messages(s"common.${item.tag.message}")), classes = s"${item.tag.cssClass}")
                         govukTag(tag)
                     }
                 </span>
