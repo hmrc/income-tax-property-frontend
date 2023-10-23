@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.{DeductingTaxFormProvider, RenovationAllowanceBalancingChargeFormProvider}
+import forms.RenovationAllowanceBalancingChargeFormProvider
 import models.{NormalMode, RenovationAllowanceBalancingCharge, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any

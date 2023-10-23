@@ -59,11 +59,8 @@
                     </span>
                 <span class="hmrc-status-tag">
                     @{
-                        val tag = item.taskListTag match {
-                            case Completed => Tag(content = Text(messages("common.completed")), classes = "govuk-tag--turquoise")
-                            case InProgress => Tag(content = Text(messages("common.inProgress")), classes = "govuk-tag--blue")
-                            case NotStarted => Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
-                        }
+                        val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
+
                         govukTag(tag)
                     }
                 </span>
