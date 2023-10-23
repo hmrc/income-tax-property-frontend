@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import pages.SummaryPage.createUkPropertyRows
+import pages.SummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -33,6 +33,6 @@ class SummaryController @Inject()(
                                ) extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    Ok(view(taxYear, createUkPropertyRows(request.userAnswers, taxYear)))
+    Ok(view(taxYear, SummaryPage.createUkPropertyRows(request.userAnswers, taxYear)))
   }
 }

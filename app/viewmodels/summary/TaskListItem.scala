@@ -18,5 +18,5 @@ package viewmodels.summary
 
 import play.api.mvc.Call
 
-case class TaskListItem(content: String, call: Call, tag: TaskListTag, id: String) {
+case class TaskListItem(content: String, call: Call, taskListTag: TaskListTag, id: String) {
 }

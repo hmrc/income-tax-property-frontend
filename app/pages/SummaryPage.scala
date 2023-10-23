@@ -20,7 +20,7 @@ import models.{UKPropertySelect, UserAnswers}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
-object SummaryPage {
+case object SummaryPage {
   def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
     val propertyRentalsAbout: TaskListItem = TaskListItem(
       "summary.about",
