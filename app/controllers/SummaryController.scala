@@ -17,9 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import models.UKPropertySelect
-import pages.UKPropertyPage
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.SummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,12 +33,6 @@ class SummaryController @Inject()(
                                ) extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    val containsPropertyRental = request.userAnswers
-      .flatMap(_.get(UKPropertyPage))
-      .exists(_.contains(UKPropertySelect.PropertyRentals))
-    val containsPropertyIncome = request.userAnswers
-      .flatMap(_.get(ClaimPropertyIncomeAllowancePage))
-      .isDefined
-    Ok(view(taxYear, containsPropertyRental, containsPropertyIncome))
+    Ok(view(taxYear, SummaryPage.createUkPropertyRows(request.userAnswers, taxYear)))
   }
 }

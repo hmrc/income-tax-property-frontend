@@ -21,6 +21,7 @@ import models.UKPropertySelect
 import pages.UKPropertyPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import viewmodels.summary.{TaskListItem, TaskListTag}
 import views.html.SummaryView
 
 import java.time.LocalDate
@@ -45,12 +46,18 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(taxYear, false, false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
     "must display the property rentals section if property rentals is selected in the about section" in {
       val year = LocalDate.now().getYear
+      val propertyRentalsItems: Seq[TaskListItem] = Seq(TaskListItem(
+        "summary.about",
+        controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
+        "about_link"
+      ))
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
@@ -66,7 +73,7 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) must  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, true, false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, propertyRentalsItems)(request, messages(application)).toString
       }
     }
 
@@ -87,7 +94,7 @@ class SummaryControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustNot  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, false, false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
   }

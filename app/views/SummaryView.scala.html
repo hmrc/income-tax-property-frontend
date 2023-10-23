@@ -15,13 +15,16 @@
  *@
 
 @import controllers.propertyrentals.routes._
+@import viewmodels.summary.TaskListItem
+@import viewmodels.summary.TaskListTag._
+
 
 @this(
     layout: templates.Layout,
     govukTag: GovukTag
 )
 
-@(taxYear: Int, showPropertyRentals: Boolean, showIncomeRentals: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, ukPropertyRentalsRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("summary.title")),
@@ -45,32 +48,22 @@
         </li>
     </ol>
 
-    @if(showPropertyRentals){
-        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
 
+    @if(!ukPropertyRentalsRows.isEmpty){
+        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
         <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
+            @for(item <- ukPropertyRentalsRows){
             <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="about_rentals_link" href="@PropertyRentalsStartController.onPageLoad(taxYear)">@messages(s"summary.about")</a>
+                        <a class="govuk-link" id="@{item.id}" href="@{item.call}">@messages(s"${item.content}")</a>
                     </span>
                 <span class="hmrc-status-tag">
-                        @{
-                            val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
-                            govukTag(tag)
-                        }
-                    </span>
-            </li>
-            @if(showIncomeRentals){
-            <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="about_income_link" href="@PropertyIncomeStartController.onPageLoad(taxYear)">@messages(s"summary.income")</a>
-                    </span>
-                <span class="hmrc-status-tag">
-                        @{
-                            val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
-                            govukTag(tag)
-                        }
-                    </span>
+                    @{
+                        val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
+
+                        govukTag(tag)
+                    }
+                </span>
             </li>
             }
         </ol>
