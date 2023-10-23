@@ -21,7 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.IncomeFromPropertyRentalsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,8 +32,8 @@ object IncomeFromPropertyRentalsSummary  {
         answer =>
 
           SummaryListRowViewModel(
-            key = "incomeFromPropertyRentals.checkYourAnswersLabel",
-            value = ValueViewModel(bigDecimalCurrency(answer)),
+            key = KeyViewModel("incomeFromPropertyRentals.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
             actions = Seq(
               ActionItemViewModel("site.change", routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, CheckMode).url)
                 .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))

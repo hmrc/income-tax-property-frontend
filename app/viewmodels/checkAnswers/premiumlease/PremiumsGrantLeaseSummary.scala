@@ -21,7 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.premiumlease.PremiumsGrantLeasePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,8 +32,8 @@ object PremiumsGrantLeaseSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "premiumsGrantLease.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
+          key = KeyViewModel("premiumsGrantLease.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("premiumsGrantLease.change.hidden"))

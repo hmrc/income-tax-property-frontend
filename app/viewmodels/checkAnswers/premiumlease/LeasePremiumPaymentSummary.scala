@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.premiumlease.LeasePremiumPaymentPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -34,8 +35,8 @@ object LeasePremiumPaymentSummary {
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key = "leasePremiumPayment.checkYourAnswersLabel",
-          value = ValueViewModel(value),
+          key = KeyViewModel("leasePremiumPayment.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.LeasePremiumPaymentController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("leasePremiumPayment.change.hidden"))

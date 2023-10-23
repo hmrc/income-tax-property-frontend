@@ -30,7 +30,7 @@
     @govukSummaryList(list)
 
     @govukButton(
-        ButtonViewModel(messages("site.continue"))
+        ButtonViewModel(messages("site.saveAndContinue"))
             .asLink(controllers.routes.SummaryController.show(taxYear).url)
             .withId("continue")
     )

@@ -21,7 +21,7 @@ import models.{CheckMode, DeductingTax, UserAnswers}
 import pages.DeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,16 +31,16 @@ object DeductingTaxSummary  {
     answers.get(DeductingTaxPage).flatMap {
       case DeductingTax(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
-          key = "deductingTax.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount)),
+          key = KeyViewModel("deductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )))
       case DeductingTax(false, _) =>
         Some(SummaryListRowViewModel(
-          key = "deductingTax.checkYourAnswersLabel",
-          value = ValueViewModel("site.no"),
+          key = KeyViewModel("deductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))

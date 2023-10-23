@@ -21,7 +21,7 @@ import models.{CalculatedFigureYourself, CheckMode, UserAnswers}
 import pages.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,16 +31,16 @@ object CalculatedFigureYourselfSummary {
     answers.get(CalculatedFigureYourselfPage).flatMap {
       case CalculatedFigureYourself(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
-          key = "calculatedFigureYourself.checkYourAnswersAmountLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount)),
+          key = KeyViewModel("calculatedFigureYourself.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
           )))
       case CalculatedFigureYourself(false, _) =>
         Some(SummaryListRowViewModel(
-          key = "calculatedFigureYourself.checkYourAnswersQuestionLabel",
-          value = ValueViewModel("site.no"),
+          key = KeyViewModel("calculatedFigureYourself.checkYourAnswersQuestionLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))

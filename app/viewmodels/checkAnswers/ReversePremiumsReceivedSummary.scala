@@ -21,7 +21,7 @@ import models.{CheckMode, ReversePremiumsReceived, UserAnswers}
 import pages.ReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,16 +32,16 @@ object ReversePremiumsReceivedSummary {
     answers.get(ReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
-          key = "reversePremiumsReceived.checkYourAnswersAmountLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount)),
+          key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
           )))
       case ReversePremiumsReceived(false, _) =>
         Some(SummaryListRowViewModel(
-          key = "reversePremiumsReceived.checkYourAnswersQuestionLabel",
-          value = ValueViewModel("site.no"),
+          key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
