@@ -19,7 +19,7 @@ package viewmodels.summary
 abstract class TaskListTag(message: String, cssClass: String)
 
 object TaskListTag {
-  case object InProgress extends TaskListTag("inProgress", "govuk-tag--blue")
-  case object NotStarted extends TaskListTag("notStarted", "govuk-tag--grey")
-  case object Completed extends TaskListTag("completed", "govuk-tag--turquoise")
+  case object InProgress extends TaskListTag(message = "inProgress", cssClass = "govuk-tag--blue")
+  case object NotStarted extends TaskListTag(message = "notStarted", cssClass = "govuk-tag--grey")
+  case object Completed extends TaskListTag(message = "completed", cssClass = "govuk-tag--turquoise")
 }
