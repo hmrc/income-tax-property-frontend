@@ -398,8 +398,6 @@ residentialFinanceCost.error.twoDecimalPlaces.agent = Enter the deducted amount 
 residentialFinanceCost.error.outOfRange = Residential finance cost must be between {0} and {1}
 residentialFinanceCost.change.hidden = ResidentialFinanceCost
 
-privateUseAdjustment.title.agent = Private use adjustment
-privateUseAdjustment.title.individual = Private use adjustment
 privateUseAdjustment.heading.agent = Private use adjustment
 privateUseAdjustment.heading.individual = Private use adjustment
 privateUseAdjustment.title.agent = How much was your client's private use adjustment?
