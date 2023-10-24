@@ -430,7 +430,7 @@ balancingCharge.title.individual = Balancing Charge
 balancingCharge.heading.agent = How much was your client's balancing charge?
 balancingCharge.heading.individual = Balancing Charge
 balancingCharge.para.individual = Understanding balancing charge
-balancingCharge.para.agent = Understanding balancing charget
+balancingCharge.para.agent = Understanding balancing charge
 
 balancingCharge.checkYourAnswersAmountLabel = Self calculated figure
 
