@@ -38,6 +38,9 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages(s"deductingTax.heading.${individualOrAgent}")</h1>
+
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
@@ -46,6 +49,11 @@
             </summary>
             <div class="govuk-details__text">
                 <p class="govuk-body">@messages("deductingTax.details.content.link.href")</p>
+                <p>@messages("deductingTax.details.line2")
+                    <a href="@messages("deductingTax.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("deductingTax.details.line2.link.text")
+                    </a>
+                </p>
             </div>
         </details>
 
