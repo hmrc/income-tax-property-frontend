@@ -258,7 +258,7 @@ deductingTax.details.content.line3.agent = in full and pay tax through Self Asse
 deductingTax.details.content.line4.agent = with tax already deducted by their letting agent or tenant
 deductingTax.details.content.link.intro = Read more about
 deductingTax.details.content.link.text = tax on your UK income if you live abroad (opens in new tab)
-deductingTax.details.content.link.href = https://www.gov.uk/guidance
+deductingTax.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
 
 
 incomeFromPropertyRentals.title = Income from Property Rentals
