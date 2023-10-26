@@ -31,7 +31,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("deductingTax.legend"))) {
+@layout(pageTitle = title(form, messages("deductingTax.title"))) {
 
     @formHelper(action = DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
@@ -44,14 +44,19 @@
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
-                    @messages("deductingTax.details.content.link.text")
+                    @messages("deductingTax.details.title")
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <p class="govuk-body">@messages("deductingTax.details.content.link.href")</p>
-                <p>@messages("deductingTax.details.line2")
-                    <a href="@messages("deductingTax.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                    @messages("deductingTax.details.line2.link.text")
+                <p class="govuk-body">@messages(s"deductingTax.details.content.line1.${individualOrAgent}")</p>
+                <p class="govuk-body">@messages(s"deductingTax.details.content.line2.${individualOrAgent}")</p>
+                <ul id="list" class="govuk-list govuk-list--bullet" >
+                    <li>@messages(s"deductingTax.details.content.line3.${individualOrAgent}")</li>
+                    <li>@messages(s"deductingTax.details.content.line4.${individualOrAgent}")</li>
+                </ul>
+                <p class="govuk-body">@messages("deductingTax.details.content.link.intro")
+                    <a href="@messages("deductingTax.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("deductingTax.details.content.link.text")
                     </a>
                 </p>
             </div>
