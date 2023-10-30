@@ -135,3 +135,8 @@ GET        /:taxYear/balancing-charge                                           
 POST       /:taxYear/balancing-charge                                               controllers.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-balancing-charge                                        controllers.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-balancing-charge                                        controllers.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/unused-residential-finance-cost                               controllers.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/unused-residential-finance-cost                               controllers.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-unused-residential-finance-cost                        controllers.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-unused-residential-finance-cost                        controllers.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
