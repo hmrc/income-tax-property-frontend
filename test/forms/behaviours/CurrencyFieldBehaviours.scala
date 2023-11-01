@@ -21,9 +21,9 @@ import play.api.data.{Form, FormError}
 trait CurrencyFieldBehaviours extends FieldBehaviours {
 
   def currencyField(form: Form[_],
-               fieldName: String,
-               nonNumericError: FormError,
-               twoDecimalPlacesError: FormError): Unit = {
+                    fieldName: String,
+                    nonNumericError: FormError,
+                    twoDecimalPlacesError: FormError): Unit = {
 
     "not bind non-numeric numbers" in {
 
@@ -46,19 +46,49 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
 
 
   def currencyFieldWithRange(form: Form[_],
-                        fieldName: String,
-                        minimum: Int,
-                        maximum: Int,
-                        expectedError: FormError): Unit = {
+                             fieldName: String,
+                             minimum: Int,
+                             maximum: Int,
+                             expectedError: FormError): Unit = {
 
     s"not bind decimals outside under $minimum" in {
-          val result = form.bind(Map(fieldName -> (minimum-1).toString)).apply(fieldName)
-          result.errors must contain only expectedError
-      }
-
-    s"not bind decimals outside above $maximum" in {
-      val result = form.bind(Map(fieldName -> (maximum+1).toString)).apply(fieldName)
+      val result = form.bind(Map(fieldName -> (minimum - 1).toString)).apply(fieldName)
       result.errors must contain only expectedError
     }
+
+    s"not bind decimals outside above $maximum" in {
+      val result = form.bind(Map(fieldName -> (maximum + 1).toString)).apply(fieldName)
+      result.errors must contain only expectedError
     }
+  }
+
+  def currencyFieldWithMaximum(form: Form[_],
+                               fieldName: String,
+                               maximum: Int,
+                               expectedError: FormError): Unit = {
+
+    s"not bind integers above $maximum" in {
+
+      forAll(intsAboveValue(maximum) -> "intAboveMax") {
+        number: Int =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors must contain only expectedError
+      }
+    }
+  }
+
+  def currencyFieldWithMinimum(form: Form[_],
+                               fieldName: String,
+                               minimum: Int,
+                               expectedError: FormError): Unit = {
+
+    s"not bind integers below $minimum" in {
+
+      forAll(intsBelowValue(minimum) -> "intBelowMin") {
+        number: Int =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors must contain only expectedError
+      }
+    }
+  }
 }

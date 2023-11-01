@@ -188,4 +188,22 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
       }
     }
   }
+
+  "minimumValue with CustomArgs" - {
+
+    "must return Valid for a number greater than the threshold" in {
+      val result = minimumValueWithCustomArgument(1, "error.min", 2).apply(2)
+      result mustEqual Valid
+    }
+
+    "must return Valid for a number equal to the threshold" in {
+      val result = minimumValueWithCustomArgument(1, "error.min", 2).apply(1)
+      result mustEqual Valid
+    }
+
+    "must return Invalid for a number below the threshold" in {
+      val result = minimumValueWithCustomArgument(1, "error.min", 2).apply(0)
+      result mustEqual Invalid("error.min", 1, 2)
+    }
+  }
 }
