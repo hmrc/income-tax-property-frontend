@@ -37,6 +37,6 @@ class UKPropertyDetailsController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view(taxYear, request.isAgentMessageKey))
+      Ok(view(taxYear, request.user.isAgentMessageKey))
   }
 }

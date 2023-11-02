@@ -48,7 +48,7 @@ class ResidentialFinanceCostController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
@@ -62,7 +62,7 @@ class ResidentialFinanceCostController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, taxYear))),

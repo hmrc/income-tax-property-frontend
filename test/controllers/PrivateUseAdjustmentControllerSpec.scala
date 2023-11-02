@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.PrivateUseAdjustmentFormProvider
+import models.authorisation.SessionValues
 import models.{NormalMode, PrivateUseAdjustment, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -36,22 +37,22 @@ import scala.concurrent.Future
 
 class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/privateUseAdjustment")
+  def onwardRoute = Call("GET", "/private-use-adjustment")
 
   val taxYear = LocalDate.now.getYear
-  lazy val totalIncomeRoute = routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode).url
+  lazy val privateUseAdjustmentRoute = routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new PrivateUseAdjustmentFormProvider()
   val form = formProvider("individual")
 
-  "totalIncome Controller" - {
+  "PrivateUseAdjustmentController Controller" - {
 
     "must return OK and the correct view for a GET when an individual" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
+        val request = FakeRequest(GET, privateUseAdjustmentRoute)
 
         val result = route(application, request).value
 
@@ -67,7 +68,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
+        val request = FakeRequest(GET, privateUseAdjustmentRoute)
 
         val result = route(application, request).value
 
@@ -85,7 +86,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
+        val request = FakeRequest(GET, privateUseAdjustmentRoute)
 
         val view = application.injector.instanceOf[PrivateUseAdjustmentView]
 
@@ -112,7 +113,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, totalIncomeRoute)
+          FakeRequest(POST, privateUseAdjustmentRoute)
             .withFormUrlEncodedBody("privateUseAdjustmentAmount" -> "648.98")
 
         val result = route(application, request).value
@@ -128,7 +129,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, totalIncomeRoute)
+          FakeRequest(POST, privateUseAdjustmentRoute)
             .withFormUrlEncodedBody(("privateUseAdjustmentAmount", "87.858585"))
 
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "87.858585"))

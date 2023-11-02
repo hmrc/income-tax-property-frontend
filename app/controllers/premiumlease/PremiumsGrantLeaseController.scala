@@ -53,11 +53,11 @@ class PremiumsGrantLeaseController @Inject()(
         case (_, None) => Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode))
         case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage) match {
-            case None => formProvider(request.isAgentMessageKey)
-            case Some(value) => formProvider(request.isAgentMessageKey).fill(value)
+            case None => formProvider(request.user.isAgentMessageKey)
+            case Some(value) => formProvider(request.user.isAgentMessageKey).fill(value)
           }
 
-          Ok(view(preparedForm, taxYear, period, amount, mode, request.isAgentMessageKey))
+          Ok(view(preparedForm, taxYear, period, amount, mode, request.user.isAgentMessageKey))
       }
   }
 
@@ -70,9 +70,9 @@ class PremiumsGrantLeaseController @Inject()(
         case (None, _) => Future.successful(Redirect(routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
         case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
         case (Some(amount), Some(period)) =>
-          formProvider(request.isAgentMessageKey).bindFromRequest().fold(
+          formProvider(request.user.isAgentMessageKey).bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.isAgentMessageKey))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.user.isAgentMessageKey))),
 
             value =>
               for {

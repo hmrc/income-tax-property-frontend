@@ -17,16 +17,11 @@
 package models.requests
 
 import play.api.mvc.{Request, WrappedRequest}
-import models.UserAnswers
+import models.{User, UserAnswers}
 
 case class OptionalDataRequest[A](request: Request[A],
                                   userId: String,
-                                  isAgent: Boolean,
-                                  userAnswers: Option[UserAnswers]) extends WrappedRequest[A](request) {
+                                  user: User,
+                                  userAnswers: Option[UserAnswers]) extends WrappedRequest[A](request)
 
-  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
-}
-
-case class DataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers, isAgent: Boolean) extends WrappedRequest[A](request) {
-  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
-}
+case class DataRequest[A](request: Request[A], userId: String, user: User, userAnswers: UserAnswers) extends WrappedRequest[A](request)

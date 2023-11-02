@@ -52,7 +52,7 @@ class UKPropertySelectController @Inject()(
           case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +60,7 @@ class UKPropertySelectController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {
