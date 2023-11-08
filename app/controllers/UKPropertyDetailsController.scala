@@ -17,26 +17,37 @@
 package controllers
 
 import controllers.actions._
+import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.SessionService
+import service.{BusinessService, SessionService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.UKPropertyDetailsPage
 import views.html.UKPropertyDetailsView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
-class UKPropertyDetailsController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: UKPropertyDetailsView,
-                                       sessionService: SessionService
-                                           ) extends FrontendBaseController with I18nSupport {
+class UKPropertyDetailsController @Inject()(override val messagesApi: MessagesApi,
+                                            identify: IdentifierAction,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            view: UKPropertyDetailsView,
+                                            sessionService: SessionService,
+                                            businessService: BusinessService)
+                                           (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async {
     implicit request =>
-      Ok(view(taxYear, request.user.isAgentMessageKey))
+      businessService.getBusinessDetails(request.user).map {
+        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+          Ok(view(UKPropertyDetailsPage(taxYear, request.user.isAgentMessageKey, propertyData.tradingStartDate.get, propertyData.cashOrAccruals.get)))
+        case _ => Redirect(routes.SummaryController.show(taxYear))
+      }
   }
+
+  def existsUkProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains("uk-property")&& property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }

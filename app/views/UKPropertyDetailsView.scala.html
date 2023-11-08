@@ -16,23 +16,24 @@
 
 @import models.NormalMode
 @import routes.TotalIncomeController
+@import viewmodels.UKPropertyDetailsPage
 
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(page: UKPropertyDetailsPage)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages(s"uKPropertyDetails.title.${individualOrAgent}"))) {
+@layout(pageTitle = titleNoForm(messages(s"uKPropertyDetails.title.${page.individualOrAgent}"))) {
 
     <h1 class="govuk-heading-l">@messages("uKPropertyDetails.heading")</h1>
 
     <p class="govuk-body">@messages("uKPropertyDetails.para1")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-     <li>@messages(s"uKPropertyDetails.bullet1.${individualOrAgent}")</li>
-     <li>@messages(s"uKPropertyDetails.bullet2.${individualOrAgent}")</li>
+     <li>@messages(s"uKPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
+     <li>@messages(s"uKPropertyDetails.bullet2.${page.individualOrAgent}") @messages(s"${page.cashOrAccrualsMessageKey}")</li>
     </ul>
 
     <p class="govuk-body">@messages("uKPropertyDetails.para2.part1")
@@ -42,7 +43,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("uKPropertyDetails.button"))
-                .asLink(TotalIncomeController.onPageLoad(taxYear, NormalMode).url)
+                .asLink(TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
                 .withId("continue")
         )
     </p>

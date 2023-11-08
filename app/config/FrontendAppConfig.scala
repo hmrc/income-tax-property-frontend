@@ -48,6 +48,9 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   def incomeTaxSubmissionIvRedirect: String = incomeTaxSubmissionBaseUrl +
     configuration.get[String]("microservice.services.income-tax-submission-frontend.iv-redirect")
 
+  private lazy val propertyUrlKey = "microservice.services.income-tax-property.url"
+  lazy val propertyServiceBaseUrl: String = s"${configuration.get[String](propertyUrlKey)}/income-tax-property"
+
   val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("features.welsh-translation")
 

@@ -17,30 +17,53 @@
 package controllers
 
 import base.SpecBase
+import models.User
+import models.authorisation.Enrolment.Nino
+import models.authorisation.SessionValues
+import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.BusinessService
 import testHelpers.FakeAuthConnector
 import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
-import uk.gov.hmrc.auth.core.{AuthConnector, ConfidenceLevel}
+import uk.gov.hmrc.auth.core._
+import viewmodels.UKPropertyDetailsPage
 import views.html.UKPropertyDetailsView
 
 import java.time.LocalDate
+import scala.concurrent.Future
 
 
-class UKPropertyDetailsControllerSpec extends SpecBase {
+class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   private val taxYear = LocalDate.now.getYear
+
+  private val enrolments = Enrolments(Set(
+    Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
+    Enrolment(models.authorisation.Enrolment.Individual.key,
+      Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")), "Activated")))
 
   "UKPropertyDetails Controller" - {
 
     "must return OK and the correct view for an Individual" in {
-      val authConnector = new FakeAuthConnector(Some(Individual) ~ ConfidenceLevel.L200)
+      val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val businessService = mock[BusinessService]
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val businessDetails = BusinessDetails(List(propertyDetails))
+
+      when(businessService.getBusinessDetails(
+        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = false, affinityGroup = "affinityGroup")))(any())
+      ) thenReturn Future.successful(Right(businessDetails))
 
       val application =
-        applicationBuilder(None,isAgent = false)
+        applicationBuilder(None, isAgent = false)
           .overrides(bind[AuthConnector].toInstance(authConnector))
+          .overrides(bind[BusinessService].toInstance(businessService))
           .build()
 
       running(application) {
@@ -49,28 +72,64 @@ class UKPropertyDetailsControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[UKPropertyDetailsView]
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          UKPropertyDetailsPage(taxYear, "individual", propertyDetails.tradingStartDate.get, propertyDetails.cashOrAccruals.get)
+        )(request, messages(application)).toString
 
       }
     }
 
     "must return OK and the correct view for an Agent" in {
-       val authConnector = new FakeAuthConnector(Some(Agent) ~ ConfidenceLevel.L200)
+      val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val businessService = mock[BusinessService]
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val businessDetails = BusinessDetails(List(propertyDetails))
 
-        val application =
-          applicationBuilder(None,isAgent = true)
-            .overrides(bind[AuthConnector].toInstance(authConnector))
-            .build()
+      when(businessService.getBusinessDetails(
+        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = true, affinityGroup = "affinityGroup")))(any())
+      ) thenReturn Future.successful(Right(businessDetails))
+
+      val application =
+        applicationBuilder(None, isAgent = true)
+          .overrides(bind[AuthConnector].toInstance(authConnector))
+          .overrides(bind[BusinessService].toInstance(businessService))
+          .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad(taxYear).url)
+          .withSession(SessionValues.ClientMtdid -> "mtditid", SessionValues.ClientNino -> "nino")
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UKPropertyDetailsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          UKPropertyDetailsPage(taxYear, "agent", propertyDetails.tradingStartDate.get, propertyDetails.cashOrAccruals.get)
+        )(request, messages(application)).toString
       }
-     }
+    }
+
+    "must redirect to the overview if there is no result" in {
+      val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val businessService = mock[BusinessService]
+
+      when(businessService.getBusinessDetails(
+        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = false, affinityGroup = "affinityGroup")))(any())
+      ) thenReturn Future.successful(Left(HttpParserError(NOT_FOUND)))
+
+
+      val application =
+        applicationBuilder(None, isAgent = false)
+          .overrides(bind[AuthConnector].toInstance(authConnector))
+          .overrides(bind[BusinessService].toInstance(businessService))
+          .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad(taxYear).url)
+        val result = route(application, request).value
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result) mustEqual Some(routes.SummaryController.show(taxYear).url)
+      }
+    }
   }
 }

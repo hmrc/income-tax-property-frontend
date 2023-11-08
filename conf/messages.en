@@ -52,6 +52,10 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
+businessDetails.accruals = Traditional (accrual)
+businessDetails.cash = Cash basis
+
+
 index.title = income-tax-property-frontend
 index.heading = income-tax-property-frontend
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
@@ -103,8 +107,8 @@ uKPropertyDetails.heading = UK Property details
 uKPropertyDetails.para1 = You previously told us:
 uKPropertyDetails.bullet1.individual = You started renting your properties on {0}
 uKPropertyDetails.bullet1.agent = That your client started renting their properties on {0}
-uKPropertyDetails.bullet2.individual = Your accounting method is: Traditional (accrual)
-uKPropertyDetails.bullet2.agent = Their accounting method is: Traditional (accrual)
+uKPropertyDetails.bullet2.individual = Your accounting method is:
+uKPropertyDetails.bullet2.agent = Their accounting method is:
 uKPropertyDetails.para2.part1 = If these details are wrong you can
 uKPropertyDetails.para2.part2 = go back to your online account
 uKPropertyDetails.para2.part3 = to change them.
