@@ -140,3 +140,8 @@ GET        /:taxYear/unused-residential-finance-cost                            
 POST       /:taxYear/unused-residential-finance-cost                               controllers.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-unused-residential-finance-cost                        controllers.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-unused-residential-finance-cost                        controllers.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/property-income-allowance                                     controllers.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/property-income-allowance                                     controllers.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-property-income-allowance                              controllers.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-property-income-allowance                              controllers.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

@@ -109,4 +109,17 @@ trait Constraints {
       case _ =>
         Invalid(errorKey)
     }
+
+  protected def minimumValueWithCustomArgument[A](minimum: A, errorKey: String, arg: A)(implicit ev: Ordering[A]): Constraint[A] =
+    Constraint {
+      input =>
+
+        import ev._
+
+        if (input >= minimum) {
+          Valid
+        } else {
+          Invalid(errorKey, minimum, arg)
+        }
+    }
 }
