@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package models
 
-import models.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+case class User(mtditid: String,
+                nino: String,
+                affinityGroup: String,
+                isAgent: Boolean) {
 
-import scala.concurrent.{ExecutionContext, Future}
-
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
-
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
-    Future(OptionalDataRequest(request.request, request.userId, request.user, dataToReturn))
-
-  override protected implicit val executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
+  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
 }

@@ -19,6 +19,7 @@ package controllers.actions
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
+import models.authorisation.SessionValues
 import models.requests.IdentifierRequest
 import play.api.mvc.Results._
 import play.api.mvc._
@@ -28,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+
 import scala.concurrent.{ExecutionContext, Future}
 import play.api.Logging
 
@@ -48,14 +50,15 @@ class AuthenticatedIdentifierAction @Inject()(
       .retrieve(
         Retrievals.affinityGroup and
           Retrievals.internalId and
-          Retrievals.confidenceLevel
+          Retrievals.confidenceLevel and
+          Retrievals.allEnrolments
       ) {
-        case Some(Individual) ~ _ ~ confidenceLevel if confidenceLevel < ConfidenceLevel.L250  =>
+        case Some(Individual) ~ _ ~ confidenceLevel ~ _ if confidenceLevel < ConfidenceLevel.L250  =>
           upliftIv
-        case Some(Individual) ~ Some(internalId) ~ _ =>
-          block(IdentifierRequest(request, internalId, isAgent = false))
-        case Some(Agent) ~ Some(internalId) ~ _ =>
-          block(IdentifierRequest(request, internalId, isAgent = true))
+        case Some(Individual) ~ Some(internalId) ~ _ ~ enrolments =>
+          identifyIndividual(request, block, internalId, enrolments)
+        case Some(Agent) ~ Some(internalId) ~ _ ~ _ =>
+          identifyAgent(request, block, internalId)
       }.recoverWith {
       case _: NoActiveSession =>
         Future.successful(Redirect(config.loginUrl))
@@ -66,35 +69,43 @@ class AuthenticatedIdentifierAction @Inject()(
     }
   }
 
+  private def identifyIndividual[A](request: Request[A],
+                                    block: IdentifierRequest[A] => Future[Result],
+                                    internalId: String,
+                                    enrolments: Enrolments): Future[Result] = {
+    val optionalMtdItId: Option[String] =
+      enrolmentGetIdentifierValue(models.authorisation.Enrolment.Individual.key, models.authorisation.Enrolment.Individual.value, enrolments)
+    val optionalNino: Option[String] =
+      enrolmentGetIdentifierValue(models.authorisation.Enrolment.Nino.key, models.authorisation.Enrolment.Nino.value, enrolments)
+    (optionalMtdItId, optionalNino) match {
+      case (Some(mtdItId), Some(nino)) =>
+        block(IdentifierRequest(request, internalId, models.User(mtditid = mtdItId, nino = nino, affinityGroup = Individual.toString, isAgent = false)))
+      case _ => Future.successful(Redirect(config.loginUrl))
+    }
+  }
+
+  private def identifyAgent[A](request: Request[A], block: IdentifierRequest[A] => Future[Result], internalId: String): Future[Result] = {
+    val optionalNino = request.session.get(SessionValues.ClientNino)
+    val optionalMtdItId = request.session.get(SessionValues.ClientMtdid)
+    (optionalMtdItId, optionalNino) match {
+      case (Some(mtdItId), Some(nino)) =>
+        block(IdentifierRequest(request, internalId, models.User(mtditid = mtdItId, nino = nino, affinityGroup = Agent.toString, isAgent = true)))
+      case _ => Future.successful(Redirect(config.loginUrl))
+    }
+  }
+
+  private[actions] def enrolmentGetIdentifierValue(checkedKey: String,
+                                                   checkedIdentifier: String,
+                                                   enrolments: Enrolments
+                                                  ): Option[String] = enrolments.enrolments.collectFirst {
+    case Enrolment(`checkedKey`, enrolmentIdentifiers, _, _) => enrolmentIdentifiers.collectFirst {
+      case EnrolmentIdentifier(`checkedIdentifier`, identifierValue) => identifierValue
+    }
+  }.flatten
+
   private def upliftIv: Future[Result] = {
     val logMessage = "[AuthorisedAction][individualAuthentication] User has confidence level below 250, routing user to IV uplift."
     logger.info(logMessage)
     Future(Redirect(config.incomeTaxSubmissionIvRedirect))
-  }
-}
-
-class SessionIdentifierAction @Inject()(val authConnector: AuthConnector,
-                                        val parser: BodyParsers.Default
-                                       )
-                                       (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions {
-
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    authorised()
-        .retrieve(
-          Retrievals.affinityGroup
-        ) {
-          case Some(affinityGroup) =>
-            (affinityGroup, hc.sessionId) match {
-              case (Agent, Some(session)) =>
-                block(IdentifierRequest(request, session.value, isAgent = true))
-              case (Individual, Some(session)) =>
-                block(IdentifierRequest(request, session.value, isAgent = false))
-              case (_, None) =>
-                Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-            }
-          case _ => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-        }(hc, executionContext)
   }
 }

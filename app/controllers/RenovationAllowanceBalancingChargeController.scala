@@ -47,7 +47,7 @@ class RenovationAllowanceBalancingChargeController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
@@ -56,15 +56,15 @@ class RenovationAllowanceBalancingChargeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {

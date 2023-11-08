@@ -20,6 +20,8 @@ import base.SpecBase
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
+import models.authorisation.Enrolment.Nino
+import models.authorisation.SessionValues
 import play.api.mvc.BodyParsers
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,6 +37,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class AuthActionSpec extends SpecBase {
+
+  val enrolments = Enrolments(Set(
+    Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
+    Enrolment(models.authorisation.Enrolment.Individual.key,
+      Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")), "Activated")))
 
 
   "Auth Action" - {
@@ -125,7 +132,7 @@ class AuthActionSpec extends SpecBase {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
           val appConfig = application.injector.instanceOf[FrontendAppConfig]
           val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L200),
+            new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L200 ~ enrolments),
             appConfig,
             bodyParsers
           )
@@ -210,11 +217,11 @@ class AuthActionSpec extends SpecBase {
           val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Agent) ~ Some("internal id") ~ ConfidenceLevel.L250),
+            new FakeAuthConnector(Some(Agent) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolments),
             appConfig,
             bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result = controller.onPageLoad()(FakeRequest().withSession(SessionValues.ClientMtdid -> "mtditid", SessionValues.ClientNino -> "nino"))
 
           status(result) mustBe OK
         }
@@ -232,7 +239,7 @@ class AuthActionSpec extends SpecBase {
           val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250),
+            new FakeAuthConnector(Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolments),
             appConfig,
             bodyParsers)
           val controller = new Harness(authAction)

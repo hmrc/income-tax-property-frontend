@@ -16,10 +16,7 @@
 
 package models.requests
 
+import models.User
 import play.api.mvc.{Request, WrappedRequest}
 
-case class IdentifierRequest[A] (request: Request[A], userId: String, isAgent: Boolean) extends WrappedRequest[A](request) {
-
-  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
-
-}
+case class IdentifierRequest[A] (request: Request[A], userId: String, user: User) extends WrappedRequest[A](request)

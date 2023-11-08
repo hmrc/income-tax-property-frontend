@@ -45,21 +45,21 @@ class ReversePremiumsReceivedController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ReversePremiumsReceivedPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear, request.isAgentMessageKey))
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.isAgentMessageKey)
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
 
         value =>
           for {

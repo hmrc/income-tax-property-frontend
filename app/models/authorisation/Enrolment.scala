@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package models.authorisation
 
-import models.UserAnswers
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+sealed abstract class Enrolment(val key: String, val value: String)
 
-import scala.concurrent.{ExecutionContext, Future}
-
-class FakeDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends DataRetrievalAction {
-
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
-    Future(OptionalDataRequest(request.request, request.userId, request.user, dataToReturn))
-
-  override protected implicit val executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
+object Enrolment {
+  case object Individual extends Enrolment(key = "HMRC-MTD-IT", value = "MTDITID")
+  case object Agent extends Enrolment(key = "HMRC-AS-AGENT", value = "AgentReferenceNumber")
+  case object Nino extends Enrolment(key = "HMRC-NI", value = "NINO")
 }
+

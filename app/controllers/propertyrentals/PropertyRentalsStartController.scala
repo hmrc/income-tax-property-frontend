@@ -35,6 +35,6 @@ class PropertyRentalsStartController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(taxYear, request.isAgentMessageKey))
+      Ok(view(taxYear, request.user.isAgentMessageKey))
   }
 }
