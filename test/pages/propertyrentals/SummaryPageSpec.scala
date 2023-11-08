@@ -61,13 +61,18 @@ class SummaryPageSpec extends SpecBase {
         controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
          TaskListTag.InProgress,
         "income_link"
-      ), TaskListItem("summary.adjustments",
+      ), TaskListItem("summary.expenses",
+        controllers.routes.SummaryController.show(taxYear),
+        TaskListTag.NotStarted,
+        "expenses_link"
+      ),
+        TaskListItem("summary.adjustments",
         controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
         TaskListTag.NotStarted,
         "adjustments_link"
       ))
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(3)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(4)
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
 
     }

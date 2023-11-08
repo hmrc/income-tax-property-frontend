@@ -13,6 +13,7 @@ summary.aboutUKProperties = About
 summary.rentals.heading = Property Rentals
 summary.about = About
 summary.income = Income
+summary.expenses = Expenses
 summary.adjustments = Adjustments
 
 site.back = Back

@@ -35,6 +35,11 @@ case object SummaryPage {
       if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "income_link"
     )
+    val propertyRentalsExpenses: TaskListItem = TaskListItem("summary.expenses",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "expenses_link"
+    )
     val propertyRentalsAdjustments: TaskListItem = TaskListItem("summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
@@ -42,7 +47,7 @@ case object SummaryPage {
     )
 
     if(userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined)
-    {Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)}
+    {Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)}
     else if (userAnswers.flatMap(_.get(UKPropertyPage)).exists(_.contains(UKPropertySelect.PropertyRentals)))
     {Seq(propertyRentalsAbout)}
     else {Seq.empty[TaskListItem]}
