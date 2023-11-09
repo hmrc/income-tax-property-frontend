@@ -62,8 +62,8 @@ class SummaryPageSpec extends SpecBase {
          TaskListTag.InProgress,
         "income_link"
       ), TaskListItem("summary.adjustments",
-        controllers.routes.SummaryController.show(taxYear), //to change to adjustments page
-        TaskListTag.NotStarted, ///update based on first page
+        controllers.routes.AdjustmentsStartController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
         "adjustments_link"
       ))
 
