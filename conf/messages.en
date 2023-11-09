@@ -518,3 +518,10 @@ propertyIncomeAllowance.error.maxCapped.individual = The amount of property inco
 propertyIncomeAllowance.error.maxCapped.agent = The amount of property income allowance your client claims must not be more than £1,000
 propertyIncomeAllowance.error.outOfRange.individual = Enter a whole number more than {0} and up to £{1} for the amount of property income allowance that you want to claim
 propertyIncomeAllowance.error.outOfRange.agent = Enter a whole number more than {0} and up to £{1} for the amount of property income allowance that your client wants to claim
+
+adjustmentsStart.title = Adjustments
+adjustmentsStart.heading = Adjustments
+adjustmentsStart.details.content = In this section we're going to ask you about the following adjustments:
+adjustmentsStart.details.content.l1 = private use adjustment
+adjustmentsStart.details.content.l2 = balancing charge
+adjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
