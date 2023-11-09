@@ -48,7 +48,11 @@ class Navigator @Inject()() {
     case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     case ReversePremiumsReceivedPage => taxYear => _ => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case OtherIncomeFromPropertyPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    case PrivateUseAdjustmentPage => taxYear => _ => _ => routes.BalancingChargeController.onPageLoad(taxYear, NormalMode)
+    case BalancingChargePage => taxYear => _ => _ => routes.PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+    case PropertyIncomeAllowancePage => taxYear => _ => _ => routes.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
     case RenovationAllowanceBalancingChargePage => taxYear => _ => _ => routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+    case ResidentialFinanceCostPage => taxYear => _ => _ => routes.UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 
