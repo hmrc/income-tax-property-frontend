@@ -17,6 +17,7 @@
 package pages
 
 import models.{UKPropertySelect, UserAnswers}
+import pages.adjustments.PrivateUseAdjustmentPage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -35,7 +36,7 @@ case object SummaryPage {
       "income_link"
     )
     val propertyRentalsAdjustments: TaskListItem = TaskListItem("summary.adjustments",
-      controllers.routes.AdjustmentsStartController.onPageLoad(taxYear),
+      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "adjustments_link"
     )
