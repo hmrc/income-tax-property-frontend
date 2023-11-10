@@ -525,3 +525,6 @@ adjustmentsStart.details.content = In this section we're going to ask you about 
 adjustmentsStart.details.content.l1 = private use adjustment
 adjustmentsStart.details.content.l2 = balancing charge
 adjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
+
+adjustmentsCheckYourAnswers.title = adjustmentsCheckYourAnswers
+adjustmentsCheckYourAnswers.heading = adjustmentsCheckYourAnswers
