@@ -16,12 +16,20 @@
 
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("adjustmentsCheckYourAnswers.title"))) {
+    @layout(pageTitle = titleNoForm(messages("adjustmentsCheckYourAnswers.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("adjustmentsCheckYourAnswers.heading")</h1>
-}
+        <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+
+        @govukSummaryList(list)
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(SummaryController.show(taxYear).url).withId("continue")
+        )
+    }

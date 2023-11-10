@@ -55,6 +55,7 @@ class Navigator @Inject()() {
     case PropertyIncomeAllowancePage => taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
     case RenovationAllowanceBalancingChargePage => taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case ResidentialFinanceCostPage => taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+    case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 
@@ -74,8 +75,7 @@ class Navigator @Inject()() {
     case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case ReversePremiumsReceivedPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case OtherIncomeFromPropertyPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
-    case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-    case _ => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad()
+    case _ => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = mode match {

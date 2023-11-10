@@ -149,4 +149,4 @@ POST       /:taxYear/adjustments/unused-residential-finance-cost                
 GET        /:taxYear/adjustments/change-unused-residential-finance-cost             controllers.adjustments.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/adjustments/change-unused-residential-finance-cost             controllers.adjustments.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/check-your-answers                                 controllers.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)
+GET        /:taxYear/adjustments/check-your-answers                                 controllers.adjustments.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)

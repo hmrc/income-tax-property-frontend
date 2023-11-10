@@ -20,9 +20,12 @@ import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.adjustments.PrivateUseAdjustmentSummary
+import viewmodels.checkAnswers.adjustments.{
+  BalancingChargeSummary, PrivateUseAdjustmentSummary,
+  PropertyIncomeAllowanceSummary, RenovationAllowanceBalancingChargeSummary, ResidentialFinanceCostSummary, UnusedResidentialFinanceCostSummary
+}
 import viewmodels.govuk.summarylist._
-import views.html.AdjustmentsCheckYourAnswersView
+import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 
@@ -41,9 +44,14 @@ class AdjustmentsCheckYourAnswersController @Inject()(
       val list = SummaryListViewModel(
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers),
+          BalancingChargeSummary.row(taxYear, request.userAnswers),
+          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
+          RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
+          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers),
+          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers)
         ).flatten
       )
 
-      Ok(view(list))
+      Ok(view(list, taxYear))
   }
 }

@@ -21,29 +21,29 @@ import models.{BalancingCharge, CheckMode, UserAnswers}
 import pages.adjustments.BalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object BalancingChargeSummary  {
+object BalancingChargeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(BalancingChargePage).flatMap {
-      case BalancingCharge(yesNo, amount) =>
+      case BalancingCharge(true, amount) =>
         Some(SummaryListRowViewModel(
-          key = "privateUseAdjustment.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount.get)),
+          key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
-      case BalancingCharge(_, _) =>
+      case BalancingCharge(false, _) =>
         Some(SummaryListRowViewModel(
-          key = "privateUseAdjustment.checkYourAnswersLabel",
-          value = ValueViewModel("site.no"),
+          key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
+              .withVisuallyHiddenText(messages("balancingCharge.change.hidden"))
           )
         ))
       case _ => Option.empty[SummaryListRow]

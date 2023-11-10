@@ -399,6 +399,7 @@ renovationAllowanceBalancingCharge.amount.error.nonNumeric.agent = Enter the ded
 renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.individual = Enter the deducted amount with two decimal places
 renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.agent = Enter the deducted amount with two decimal places
 renovationAllowanceBalancingCharge.amount.error.outOfRange = The figure must be between {0} and {1}
+renovationAllowanceBalancingCharge.checkYourAnswersLabel = Business premises renovation allowance balancing charge
 
 residentialFinanceCost.title = Residential finance costs
 residentialFinanceCost.heading = Residential finance costs
@@ -425,8 +426,7 @@ privateUseAdjustment.title.agent = How much was your client's private use adjust
 privateUseAdjustment.title.individual = How much was your  private use adjustment?
 privateUseAdjustment.para.individual = Understanding private use adjustment
 privateUseAdjustment.para.agent = Understanding private use adjustment
-
-privateUseAdjustment.checkYourAnswersAmountLabel = Self calculated figure
+privateUseAdjustment.checkYourAnswersAmountLabel = Private use adjustment
 
 privateUseAdjustment.checkYourAnswersQuestionLabel = Have you calculated the figure yourself?
 privateUseAdjustment.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
@@ -455,7 +455,7 @@ balancingCharge.para.agent = Understanding balancing charge
 
 balancingCharge.checkYourAnswersAmountLabel = Self calculated figure
 
-balancingCharge.checkYourAnswersQuestionLabel = Have you calculated the figure yourself?
+balancingCharge.checkYourAnswersLabel = Balancing charge
 balancingCharge.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
 balancingCharge.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
 balancingCharge.change.hidden = Have you calculated the figure yourself?
@@ -518,6 +518,7 @@ propertyIncomeAllowance.error.maxCapped.individual = The amount of property inco
 propertyIncomeAllowance.error.maxCapped.agent = The amount of property income allowance your client claims must not be more than £1,000
 propertyIncomeAllowance.error.outOfRange.individual = Enter a whole number more than {0} and up to £{1} for the amount of property income allowance that you want to claim
 propertyIncomeAllowance.error.outOfRange.agent = Enter a whole number more than {0} and up to £{1} for the amount of property income allowance that your client wants to claim
+propertyIncomeAllowance.checkYourAnswersLabel = Your share of property income allowance
 
 adjustmentsStart.title = Adjustments
 adjustmentsStart.heading = Adjustments
