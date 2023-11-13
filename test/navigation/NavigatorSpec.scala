@@ -193,6 +193,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from UnusedResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
+        navigator.nextPage(
+          UnusedResidentialFinanceCostPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
     }
 
     "in Check mode" - {
@@ -329,10 +335,49 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(UnknownPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
       }
 
-      "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
+      "must go from PrivateUseAdjustmentPage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+          PrivateUseAdjustmentPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from BalancingChargePage to AdjustmentsCheckYourAnswersPage if no change in user-answers" in {
+        val userAnswers = UserAnswers("test").set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))).get
+        navigator.nextPage(
+          BalancingChargePage, taxYear, CheckMode, userAnswers, userAnswers
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from BalancingChargePage to PropertyIncomeAllowancePage if change in user-answers" in {
+        val previousUserAnswers = UserAnswers("test").set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))).get
+        val userAnswers = UserAnswers("test").set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = false, None)).get
+        navigator.nextPage(
+          BalancingChargePage, taxYear, CheckMode, previousUserAnswers, userAnswers
+        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from PropertyIncomeAllowancePage to AdjustmentsCheckYourAnswersPage" in {
+        navigator.nextPage(
+          PropertyIncomeAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from RenovationAllowanceBalancingChargePage to AdjustmentsCheckYourAnswersPage" in {
+        navigator.nextPage(
+          RenovationAllowanceBalancingChargePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
+        navigator.nextPage(
+          ResidentialFinanceCostPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from UnusedResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
+        navigator.nextPage(
+          UnusedResidentialFinanceCostPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
   }
