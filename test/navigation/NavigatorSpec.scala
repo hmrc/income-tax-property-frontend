@@ -162,6 +162,37 @@ class NavigatorSpec extends SpecBase {
           OtherIncomeFromPropertyPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
       }
+
+      "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
+        navigator.nextPage(
+          PrivateUseAdjustmentPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from BalancingChargePage to PropertyIncomeAllowancePage" in {
+        navigator.nextPage(
+          BalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage" in {
+        navigator.nextPage(
+          PropertyIncomeAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from ResidentialFinanceCostPage to UnusedResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          ResidentialFinanceCostPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
 
     "in Check mode" - {
