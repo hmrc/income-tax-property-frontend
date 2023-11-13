@@ -18,11 +18,12 @@ package navigation
 
 import base.SpecBase
 import controllers.premiumlease.routes._
-import controllers.propertyrentals.routes.PropertyIncomeCheckYourAnswersController
+import controllers.propertyrentals.routes._
+import controllers.adjustments.routes._
 import controllers.routes
-import controllers.routes.DeductingTaxController
 import models._
 import pages._
+import pages.adjustments._
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
@@ -146,7 +147,7 @@ class NavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), userAnswers
-        ) mustBe DeductingTaxController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
@@ -161,6 +162,37 @@ class NavigatorSpec extends SpecBase {
           OtherIncomeFromPropertyPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
       }
+
+      "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
+        navigator.nextPage(
+          PrivateUseAdjustmentPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from BalancingChargePage to PropertyIncomeAllowancePage" in {
+        navigator.nextPage(
+          BalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage" in {
+        navigator.nextPage(
+          PropertyIncomeAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from ResidentialFinanceCostPage to UnusedResidentialFinanceCostPage" in {
+        navigator.nextPage(
+          ResidentialFinanceCostPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
 
     "in Check mode" - {
@@ -198,7 +230,7 @@ class NavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, CheckMode, previousUserAnswers, userAnswers
-        ) mustBe DeductingTaxController.onPageLoad(taxYear, CheckMode)
+        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, CheckMode)
       }
 
       "must go from DeductingTax to CheckYourAnswers" in {
@@ -300,7 +332,7 @@ class NavigatorSpec extends SpecBase {
       "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
         navigator.nextPage(
           RenovationAllowanceBalancingChargePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+        ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
       }
     }
   }

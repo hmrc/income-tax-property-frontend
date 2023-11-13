@@ -62,7 +62,7 @@ class SummaryPageSpec extends SpecBase {
          TaskListTag.InProgress,
         "income_link"
       ), TaskListItem("summary.adjustments",
-        controllers.routes.AdjustmentsStartController.onPageLoad(taxYear),
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
         TaskListTag.NotStarted,
         "adjustments_link"
       ))
