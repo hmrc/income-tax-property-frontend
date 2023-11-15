@@ -28,9 +28,33 @@ class SummaryPageSpec extends SpecBase {
 
   "SummaryPageSpec createUkPropertyRows" - {
     val taxYear = LocalDate.now.getYear
+    val summaryItem = TaskListItem(
+      "summary.about",
+      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "about_link"
+    )
+    val incomeListItem = TaskListItem(
+      "summary.income",
+      controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
+      TaskListTag.InProgress,
+      "income_link"
+    )
+    val expenseListItem = TaskListItem("summary.expenses",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "expenses_link"
+    )
+    val adjustmentsListItem = TaskListItem("summary.adjustments",
+      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "adjustments_link"
+    )
+
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear).length should be(0)
     }
+
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
@@ -38,43 +62,31 @@ class SummaryPageSpec extends SpecBase {
       ).success.value
 
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(1)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).head should be(TaskListItem(
-        "summary.about",
-        controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-        TaskListTag.NotStarted,
-        "about_link"))
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).head should be(summaryItem)
 
     }
-    "createUkPropertyRows return all row when ClaimPropertyIncomeAllowancePage exist in the user data" in {
+    "should return all rows except expenses when ClaimPropertyIncomeAllowancePage exist in the user data" in {
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value.set(ClaimPropertyIncomeAllowancePage, true).success.value
 
-      val res = Seq(TaskListItem(
-        "summary.about",
-        controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-        TaskListTag.NotStarted,
-        "about_link"
-      ), TaskListItem(
-        "summary.income",
-        controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-         TaskListTag.InProgress,
-        "income_link"
-      ), TaskListItem("summary.expenses",
-        controllers.routes.SummaryController.show(taxYear),
-        TaskListTag.NotStarted,
-        "expenses_link"
-      ),
-        TaskListItem("summary.adjustments",
-        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
-        TaskListTag.NotStarted,
-        "adjustments_link"
-      ))
+      val res = Seq(summaryItem, incomeListItem, adjustmentsListItem)
+
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(3)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
+    }
+
+    "should return all rows when ClaimPropertyIncomeAllowance is false in the user data" in {
+      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+      ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
+
+      val res = Seq(summaryItem, incomeListItem, expenseListItem, adjustmentsListItem)
 
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(4)
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
-
     }
 
   }

@@ -46,10 +46,20 @@ case object SummaryPage {
       "adjustments_link"
     )
 
-    if(userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined)
-    {Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)}
-    else if (userAnswers.flatMap(_.get(UKPropertyPage)).exists(_.contains(UKPropertySelect.PropertyRentals)))
-    {Seq(propertyRentalsAbout)}
-    else {Seq.empty[TaskListItem]}
+
+    val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
+
+    if (claimPropertyIncomeAllowance.isDefined && !claimPropertyIncomeAllowance.get) {
+      Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)
+    }
+    else if (claimPropertyIncomeAllowance.isDefined && claimPropertyIncomeAllowance.get) {
+      Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
+    }
+    else if (userAnswers.flatMap(_.get(UKPropertyPage)).exists(_.contains(UKPropertySelect.PropertyRentals))) {
+      Seq(propertyRentalsAbout)
+    }
+    else {
+      Seq.empty[TaskListItem]
+    }
   }
 }
