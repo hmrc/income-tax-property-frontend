@@ -55,6 +55,7 @@ class Navigator @Inject()() {
     case PropertyIncomeAllowancePage => taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
     case RenovationAllowanceBalancingChargePage => taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case ResidentialFinanceCostPage => taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+    case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 
@@ -74,6 +75,11 @@ class Navigator @Inject()() {
     case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case ReversePremiumsReceivedPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case OtherIncomeFromPropertyPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+   // Adjustments
+    case PrivateUseAdjustmentPage | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage |
+         ResidentialFinanceCostPage | UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+    case BalancingChargePage => taxYear => previousUserAnswers => userAnswers =>
+          balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case _ => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
@@ -119,5 +125,12 @@ class Navigator @Inject()() {
       case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).map(_.calculatedFigureYourself).getOrElse(true) =>
         RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def balancingChargeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
+    (userAnswers.get(BalancingChargePage), previousUserAnswers.get(BalancingChargePage)) match {
+      case (Some(current), Some(previous)) if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
+        current.balancingChargeAmount == previous.balancingChargeAmount => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
     }
 }

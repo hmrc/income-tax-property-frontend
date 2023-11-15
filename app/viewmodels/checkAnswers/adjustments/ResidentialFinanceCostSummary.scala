@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.adjustments.ResidentialFinanceCostPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,8 +32,8 @@ object ResidentialFinanceCostSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "residentialFinanceCost.checkYourAnswersLabel",
-          value = ValueViewModel(answer.toString),
+          key = KeyViewModel("residentialFinanceCost.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ResidentialFinanceCostController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("residentialFinanceCost.change.hidden"))

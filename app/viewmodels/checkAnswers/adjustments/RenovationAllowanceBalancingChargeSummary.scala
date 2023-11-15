@@ -21,20 +21,25 @@ import models.{CheckMode, UserAnswers}
 import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object RenovationAllowanceBalancingChargeSummary  {
+object RenovationAllowanceBalancingChargeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RenovationAllowanceBalancingChargePage).map {
       answer =>
 
-        val value = if (answer.renovationAllowanceBalancingChargeYesNo) "site.yes" else "site.no"
+        val value = if (answer.renovationAllowanceBalancingChargeYesNo) {
+          ValueViewModel(bigDecimalCurrency(answer.renovationAllowanceBalancingChargeAmount.get))
+        } else {
+          ValueViewModel("site.no")
+        }
 
         SummaryListRowViewModel(
-          key     = "renovationAllowanceBalancingCharge.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = KeyViewModel("renovationAllowanceBalancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = value.withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("renovationAllowanceBalancingCharge.change.hidden"))

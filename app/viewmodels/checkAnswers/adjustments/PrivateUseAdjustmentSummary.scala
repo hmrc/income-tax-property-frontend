@@ -21,26 +21,26 @@ import models.{CheckMode, PrivateUseAdjustment, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object PrivateUseAdjustmentSummary  {
+object PrivateUseAdjustmentSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(PrivateUseAdjustmentPage).flatMap {
       case PrivateUseAdjustment(amount) =>
         Some(SummaryListRowViewModel(
-          key = "privateUseAdjustment.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(amount)),
+          key = KeyViewModel("privateUseAdjustment.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
       case PrivateUseAdjustment(_) =>
         Some(SummaryListRowViewModel(
-          key = "privateUseAdjustment.checkYourAnswersLabel",
-          value = ValueViewModel("site.no"),
+          key = KeyViewModel("privateUseAdjustment.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
