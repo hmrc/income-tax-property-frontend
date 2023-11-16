@@ -46,20 +46,14 @@ case object SummaryPage {
       "adjustments_link"
     )
 
-
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
+    val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
 
-    if (claimPropertyIncomeAllowance.isDefined && !claimPropertyIncomeAllowance.get) {
-      Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)
-    }
-    else if (claimPropertyIncomeAllowance.isDefined && claimPropertyIncomeAllowance.get) {
-      Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-    }
-    else if (userAnswers.flatMap(_.get(UKPropertyPage)).exists(_.contains(UKPropertySelect.PropertyRentals))) {
-      Seq(propertyRentalsAbout)
-    }
-    else {
-      Seq.empty[TaskListItem]
+    claimPropertyIncomeAllowance.collect {
+      case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
+      case false => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)
+    }.getOrElse {
+      if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
     }
   }
 }
