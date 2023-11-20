@@ -20,27 +20,27 @@ import controllers.actions._
 import models.requests.DataRequest
 import pages.premiumlease.PremiumsGrantLeasePage
 import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ExpensesStartOver85KIncomeView
+import views.html.ExpensesStartView
+
+import javax.inject.Inject
 
 class ExpensesStartController @Inject()(
-                                                      override val messagesApi: MessagesApi,
-                                                      identify: IdentifierAction,
-                                                      getData: DataRetrievalAction,
-                                                      requireData: DataRequiredAction,
-                                                      val controllerComponents: MessagesControllerComponents,
-                                                      view: ExpensesStartOver85KIncomeView
-                                                    ) extends FrontendBaseController with I18nSupport {
+                                         override val messagesApi: MessagesApi,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: ExpensesStartView
+                                       ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val totalIncomeCapped = 85000
       val isUnder85K = totalIncome(request) < BigDecimal(totalIncomeCapped)
-      Ok(view(taxYear, isUnder85K))
+      Ok(view(taxYear, request.user.isAgentMessageKey, isUnder85K))
   }
 
   private def totalIncome(request: DataRequest[AnyContent]): BigDecimal = {

@@ -19,13 +19,13 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, isUnder85K: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, individualOrAgent: String, isUnder85K: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("expensesStart.title"))) {
         <span class="govuk-caption-l">@messages("propertyRentals.caption", (taxYear - 1).toString, taxYear.toString)</span>
         <h1 class="govuk-heading-l">@messages("expensesStart.heading")</h1>
-        <p class="govuk-body">@messages("expensesStart.details.content1")</p>
-        <p class="govuk-body">@messages("expensesStart.details.content2")</p>
+        <p class="govuk-body">@messages(s"expensesStart.details.content1.$individualOrAgent")</p>
+        <p class="govuk-body">@messages(s"expensesStart.details.content2.$individualOrAgent")</p>
         <p class="govuk-body">@messages("expensesStart.details.content3")</p>
         <ul id="list" class="govuk-list govuk-list--bullet" >
             <li>@messages("expensesStart.details.content.l1")</li>
@@ -38,11 +38,11 @@
         </ul>
 
         @if(isUnder85K) {
-            <p class="govuk-body"> @messages("expensesStart.details.content4")
+            <p class="govuk-body"> @messages(s"expensesStart.details.content4.$individualOrAgent")
             <p class="govuk-body">
                 <a href="@messages("expensesStart.details.content5.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                 @messages("expensesStart.details.content5.link.text") </a>
-                @messages("expensesStart.details.content5")
+                @messages(s"expensesStart.details.content5.$individualOrAgent")
             </p>
             <p class="govuk-body"> @messages("expensesStart.details.content6")
             <p class="govuk-body">
