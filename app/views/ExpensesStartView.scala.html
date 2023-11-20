@@ -1,0 +1,62 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(taxYear: Int, isUnder85K: Boolean)(implicit request: Request[_], messages: Messages)
+
+    @layout(pageTitle = titleNoForm(messages("expensesStart.title"))) {
+        <span class="govuk-caption-l">@messages("propertyRentals.caption", (taxYear - 1).toString, taxYear.toString)</span>
+        <h1 class="govuk-heading-l">@messages("expensesStart.heading")</h1>
+        <p class="govuk-body">@messages("expensesStart.details.content1")</p>
+        <p class="govuk-body">@messages("expensesStart.details.content2")</p>
+        <p class="govuk-body">@messages("expensesStart.details.content3")</p>
+        <ul id="list" class="govuk-list govuk-list--bullet" >
+            <li>@messages("expensesStart.details.content.l1")</li>
+            <li>@messages("expensesStart.details.content.l2")</li>
+            <li>@messages("expensesStart.details.content.l3")</li>
+            <li>@messages("expensesStart.details.content.l4")</li>
+            <li>@messages("expensesStart.details.content.l5")</li>
+            <li>@messages("expensesStart.details.content.l6")</li>
+            <li>@messages("expensesStart.details.content.l7")</li>
+        </ul>
+
+        @if(isUnder85K) {
+            <p class="govuk-body"> @messages("expensesStart.details.content4")
+            <p class="govuk-body">
+                <a href="@messages("expensesStart.details.content5.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("expensesStart.details.content5.link.text") </a>
+                @messages("expensesStart.details.content5")
+            </p>
+            <p class="govuk-body"> @messages("expensesStart.details.content6")
+            <p class="govuk-body">
+                <a href="@messages("expensesStart.details.content7.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("expensesStart.details.content7.link.text")
+                </a>
+                @messages("expensesStart.details.content7")
+            </p>
+        }
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(routes.SummaryController.show(taxYear).url)
+            .withId("continue")
+        )
+
+    }
