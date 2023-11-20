@@ -17,15 +17,18 @@
 package controllers
 
 import base.SpecBase
+import models.{BalancingCharge, UserAnswers}
+import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage}
+import pages.adjustments.BalancingChargePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.ExpensesStartOver85KIncomeView
+import views.html.{ExpensesStartOver85KIncomeView, ExpensesStartView}
 
 class ExpensesStartControllerSpec extends SpecBase {
 
   "ExpensesStartOver85KIncome Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET if Total Income below is 85K" in {
       val taxYear = 2023
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
@@ -34,10 +37,28 @@ class ExpensesStartControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ExpensesStartOver85KIncomeView]
+        val view = application.injector.instanceOf[ExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, isUnder85K = true)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = true)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a GET if Total Income is over 85K" in {
+      val taxYear = 2023
+      val userAnswers = UserAnswers("test").set(IncomeFromPropertyRentalsPage, BigDecimal(90000)).get
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.ExpensesStartController.onPageLoad(taxYear).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ExpensesStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = false)(request, messages(application)).toString
       }
     }
   }
