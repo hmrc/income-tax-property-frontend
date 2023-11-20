@@ -17,12 +17,11 @@
 package controllers
 
 import base.SpecBase
-import models.{BalancingCharge, UserAnswers}
-import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage}
-import pages.adjustments.BalancingChargePage
+import models.UserAnswers
+import pages.IncomeFromPropertyRentalsPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.{ExpensesStartOver85KIncomeView, ExpensesStartView}
+import views.html.ExpensesStartView
 
 class ExpensesStartControllerSpec extends SpecBase {
 
