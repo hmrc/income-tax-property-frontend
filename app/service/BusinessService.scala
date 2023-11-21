@@ -18,9 +18,14 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.ApiError
-import models.User
+import models.{User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError}
+import models.requests.DataRequest
+import pages.adjustments.BalancingChargePage
+import pages.premiumlease.PremiumsGrantLeasePage
+import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
 import play.api.Logging
+import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
@@ -34,6 +39,21 @@ class BusinessService @Inject()(businessConnector: BusinessConnector)
       case Left(error: ApiError) => Left(HttpParserError(error.status))
       case Right(businessDetails) => Right(businessDetails)
     }
+  }
+
+  def totalIncome(userAnswers: UserAnswers): BigDecimal = {
+    val incomeFromPropertyRentals = userAnswers.get(IncomeFromPropertyRentalsPage).getOrElse(BigDecimal(0))
+    val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage).getOrElse(BigDecimal(0))
+    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).map(_.amount).getOrElse(BigDecimal(0))
+
+    incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
+  }
+
+  def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers): BigDecimal = {
+    val balancingCharge = userAnswers.get(BalancingChargePage).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
+    totalIncome(userAnswers) + balancingCharge
   }
 
 }

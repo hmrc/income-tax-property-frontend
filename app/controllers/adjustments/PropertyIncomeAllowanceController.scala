@@ -19,14 +19,12 @@ package controllers.adjustments
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
 import models.Mode
-import models.requests.DataRequest
 import navigation.Navigator
-import pages.premiumlease.PremiumsGrantLeasePage
-import pages._
-import pages.adjustments.{BalancingChargePage, PropertyIncomeAllowancePage}
+import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.adjustments.PropertyIncomeAllowanceView
 
@@ -42,12 +40,13 @@ class PropertyIncomeAllowanceController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: PropertyIncomeAllowanceFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
+                                        businessService: BusinessService,
                                         view: PropertyIncomeAllowanceView)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxAllowanceCombined(request))
+      val form = formProvider(request.user.isAgentMessageKey, businessService.maxPropertyIncomeAllowanceCombined(request.userAnswers))
       val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -58,7 +57,7 @@ class PropertyIncomeAllowanceController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxAllowanceCombined(request))
+      val form = formProvider(request.user.isAgentMessageKey, businessService.maxPropertyIncomeAllowanceCombined(request.userAnswers))
 
       form.bindFromRequest().fold(
         formWithErrors =>
@@ -70,17 +69,5 @@ class PropertyIncomeAllowanceController @Inject()(
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(PropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
-  }
-
-  private def maxAllowanceCombined(request: DataRequest[AnyContent]): BigDecimal = {
-    val incomeFromPropertyRentals = request.userAnswers.get(IncomeFromPropertyRentalsPage).getOrElse(BigDecimal(0))
-    val leasePremiumCalculated = request.userAnswers.get(CalculatedFigureYourselfPage).flatMap(cf => cf.amount).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived = request.userAnswers.get(ReversePremiumsReceivedPage).flatMap(cf => cf.amount).getOrElse(BigDecimal(0))
-    val premiumsGrantLease = request.userAnswers.get(PremiumsGrantLeasePage).getOrElse(BigDecimal(0))
-    val otherIncome = request.userAnswers.get(OtherIncomeFromPropertyPage).map(i => i.amount).getOrElse(BigDecimal(0))
-    val balancingCharge = request.userAnswers.get(BalancingChargePage).flatMap(bc => bc.balancingChargeAmount).getOrElse(BigDecimal(0))
-
-    val totalIncome = incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
-    totalIncome + balancingCharge
   }
 }
