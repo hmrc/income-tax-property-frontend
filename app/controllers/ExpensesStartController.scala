@@ -17,11 +17,9 @@
 package controllers
 
 import controllers.actions._
-import models.requests.DataRequest
-import pages.premiumlease.PremiumsGrantLeasePage
-import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ExpensesStartView
 
@@ -33,24 +31,14 @@ class ExpensesStartController @Inject()(
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
+                                         businessService: BusinessService,
                                          view: ExpensesStartView
                                        ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val totalIncomeCapped = 85000
-      val isUnder85K = totalIncome(request) < BigDecimal(totalIncomeCapped)
+      val isUnder85K = businessService.totalIncome(request.userAnswers) < BigDecimal(totalIncomeCapped)
       Ok(view(taxYear, request.user.isAgentMessageKey, isUnder85K))
-  }
-
-  private def totalIncome(request: DataRequest[AnyContent]): BigDecimal = {
-    val incomeFromPropertyRentals = request.userAnswers.get(IncomeFromPropertyRentalsPage).getOrElse(BigDecimal(0))
-    val leasePremiumCalculated = request.userAnswers.get(CalculatedFigureYourselfPage).flatMap(cf => cf.amount).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived = request.userAnswers.get(ReversePremiumsReceivedPage).flatMap(cf => cf.amount).getOrElse(BigDecimal(0))
-    val premiumsGrantLease = request.userAnswers.get(PremiumsGrantLeasePage).getOrElse(BigDecimal(0))
-    val otherIncome = request.userAnswers.get(OtherIncomeFromPropertyPage).map(i => i.amount).getOrElse(BigDecimal(0))
-
-    incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
-
   }
 }

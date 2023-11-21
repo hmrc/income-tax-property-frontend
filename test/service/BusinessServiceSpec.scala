@@ -18,12 +18,14 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.{ApiError, SingleErrorBody}
-import models.User
+import models.{BalancingCharge, User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.adjustments.BalancingChargePage
+import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage}
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -57,6 +59,26 @@ class BusinessServiceSpec extends AnyWordSpec
       when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(Right(businessDetails))
 
       await(underTest.getBusinessDetails(user)) shouldBe Right(businessDetails)
+    }
+  }
+
+  "Total Income" should {
+    "return sum of all income section" in {
+      val userAnswers = UserAnswers("test").set(IncomeFromPropertyRentalsPage, BigDecimal(80000)).get
+      val totalIncome = underTest.totalIncome(userAnswers)
+      totalIncome shouldEqual 80000
+    }
+  }
+
+  "Maximum Property Income Allowance Combined" should {
+    "return sum of all income section and balancing charge" in {
+      val userAnswers = UserAnswers("test")
+        .set(IncomeFromPropertyRentalsPage, BigDecimal(80000))
+        .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
+        .get
+
+      val totalIncome = underTest.maxPropertyIncomeAllowanceCombined(userAnswers)
+      totalIncome shouldEqual 90000
     }
   }
 
