@@ -159,3 +159,5 @@ GET        /:taxYear/consolidated-expenses                                      
 POST       /:taxYear/consolidated-expenses                                          controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/expenses/check-your-answers                                    controllers.ExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
