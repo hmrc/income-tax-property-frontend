@@ -378,8 +378,8 @@ reversePremiumsReceived.error.required.individual = Select yes if you received a
 reversePremiumsReceived.error.required.agent = Select yes if your client received a reverse premium
 reversePremiumsReceived.error.required.amount.individual = Enter an amount in pounds for reverse premium that you received
 reversePremiumsReceived.error.required.amount.agent = Enter an amount in pounds for reverse premium that your client received
-reversePremiumsReceived.error.nonNumeric.agent = Enter an amount in pounds with no special characters for the reverse premium that you received
-reversePremiumsReceived.error.nonNumeric.individual = Enter an amount in pounds with no special characters for the reverse premium that your client received
+reversePremiumsReceived.error.nonNumeric.individual= Enter an amount in pounds with no special characters for the reverse premium that you received
+reversePremiumsReceived.error.nonNumeric.agent = Enter an amount in pounds with no special characters for the reverse premium that your client received
 reversePremiumsReceived.error.twoDecimalPlaces = Enter the figure using two decimal places
 reversePremiumsReceived.error.outOfRange = The figure must be between {0} and {1}
 reversePremiumsReceived.amount.legend = Enter the figure
@@ -557,3 +557,34 @@ expensesStart.details.content6 = Or
 expensesStart.details.content7 = where you enter an amount for each separate expenses type.
 expensesStart.details.content7.link.text = Individual expenses (opens in new tab)
 expensesStart.details.content7.link.href = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
+
+consolidatedExpenses.title = Consolidated expenses
+consolidatedExpenses.heading = Consolidated expenses
+consolidatedExpenses.details.heading = Understanding consolidated property expenses
+consolidatedExpenses.details.line1.individual = If your total property income before expenses is less than £85,000, you can just add up all of these expenses and enter the total amount:
+consolidatedExpenses.details.line1.agent = If your client's total property income before expenses is less than £85,000, add up all of these expenses and enter the total amount:
+consolidatedExpenses.details.bullet1 = rents, rates, insurance and ground rents
+consolidatedExpenses.details.bullet2 = property repairs and maintenance
+consolidatedExpenses.details.bullet3 = loan interest or other financial costs
+consolidatedExpenses.details.bullet4 = legal, management and other professional fees
+consolidatedExpenses.details.bullet5 = costs of services provided, including wages
+consolidatedExpenses.details.bullet6 = property business travel costs
+consolidatedExpenses.details.bullet7 = other allowable property expenses
+consolidatedExpenses.details.line2 = Do not include the cost of buying, selling, improving or altering any land, property, equipment, furnishings or furniture. These are capital costs.
+consolidatedExpenses.details.line3.individual = If your rental is jointly let you only need to tell us about your share of the expenses for the property.
+consolidatedExpenses.details.line3.agent = If your client's rental is jointly let you only need to tell us about their share of the expenses for the property.
+
+consolidatedExpenses.checkYourAnswersLabel.individual = How much were your consolidated expenses?
+consolidatedExpenses.checkYourAnswersLabel.agent = How much were their consolidated expenses?
+
+consolidatedExpenses.radio.legend.individual = Do you want to claim consolidated expenses?
+consolidatedExpenses.error.required.individual = Select yes if you want to claim consolidated expenses
+
+consolidatedExpenses.radio.legend.agent = Does your client want to claim consolidated expenses?
+consolidatedExpenses.error.required.agent = Select yes if you want to claim consolidated expenses
+
+consolidatedExpenses.error.required.amount = Enter an amount in pounds
+consolidatedExpenses.error.nonNumeric = Enter an amount in pounds
+consolidatedExpenses.error.twoDecimalPlaces = Enter an amount in pounds
+consolidatedExpenses.error.outOfRange = The figure must be between {0} and {1}
+consolidatedExpenses.change.hidden = ConsolidatedExpenses

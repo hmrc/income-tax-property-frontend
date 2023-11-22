@@ -151,4 +151,11 @@ POST       /:taxYear/adjustments/change-unused-residential-finance-cost         
 
 GET        /:taxYear/adjustments/check-your-answers                                 controllers.adjustments.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)
 
+############## Expenses
+
 GET        /:taxYear/expenses-start                                                 controllers.ExpensesStartController.onPageLoad(taxYear : Int)
+
+GET        /:taxYear/consolidated-expenses                                          controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/consolidated-expenses                                          controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
