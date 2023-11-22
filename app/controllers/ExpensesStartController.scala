@@ -37,8 +37,6 @@ class ExpensesStartController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val totalIncomeCapped = 85000
-      val isUnder85K = businessService.totalIncome(request.userAnswers) < BigDecimal(totalIncomeCapped)
-      Ok(view(taxYear, request.user.isAgentMessageKey, isUnder85K))
+      Ok(view(taxYear, request.user.isAgentMessageKey, businessService.isTotalIncomeUnder85K(request.userAnswers)))
   }
 }

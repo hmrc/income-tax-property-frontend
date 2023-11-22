@@ -18,12 +18,13 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.ApiError
+import models.TotalIncome.{Between, Under}
 import models.{User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError}
 import models.requests.DataRequest
 import pages.adjustments.BalancingChargePage
 import pages.premiumlease.PremiumsGrantLeasePage
-import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage, TotalIncomePage}
 import play.api.Logging
 import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
@@ -49,6 +50,17 @@ class BusinessService @Inject()(businessConnector: BusinessConnector)
     val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).map(_.amount).getOrElse(BigDecimal(0))
 
     incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
+  }
+
+  def isTotalIncomeUnder85K(userAnswers: UserAnswers): Boolean = {
+    val totalIncomeCapped = 85000
+    userAnswers.get(IncomeFromPropertyRentalsPage) match {
+      case Some(_) =>
+        totalIncome(userAnswers) < BigDecimal(totalIncomeCapped)
+      case None =>
+        val userSelectedIncome = userAnswers.get(TotalIncomePage).get
+        userSelectedIncome == Under || userSelectedIncome == Between
+    }
   }
 
   def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers): BigDecimal = {

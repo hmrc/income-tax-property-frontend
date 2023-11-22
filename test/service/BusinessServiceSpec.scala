@@ -18,6 +18,7 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.{ApiError, SingleErrorBody}
+import models.TotalIncome.{Over, Under}
 import models.{BalancingCharge, User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.Mockito.when
@@ -25,7 +26,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.adjustments.BalancingChargePage
-import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage}
+import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, TotalIncomePage}
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -79,6 +80,25 @@ class BusinessServiceSpec extends AnyWordSpec
 
       val totalIncome = underTest.maxPropertyIncomeAllowanceCombined(userAnswers)
       totalIncome shouldEqual 90000
+    }
+  }
+
+  "Total income" should {
+    "under 85k if user selected total income is Under" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
+      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
+      isTotalIncomeUnder85K shouldBe true
+    }
+    "over 85k if user selected total income is Over" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
+      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
+      isTotalIncomeUnder85K shouldBe false
+    }
+    "under 85k if sum of all income section" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Over)
+        .flatMap(_.set(IncomeFromPropertyRentalsPage, BigDecimal(80000))).get
+      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
+      isTotalIncomeUnder85K shouldBe true
     }
   }
 
