@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import models.NormalMode
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
@@ -37,6 +38,13 @@ class ExpensesStartController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(taxYear, request.user.isAgentMessageKey, businessService.isTotalIncomeUnder85K(request.userAnswers)))
+      val isTotalIncomeUnder85K = businessService.isTotalIncomeUnder85K(request.userAnswers)
+      val under85KUrl = if (isTotalIncomeUnder85K) {
+        routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
+      }
+      else {
+        routes.SummaryController.show(taxYear).url
+      }
+      Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K, under85KUrl))
   }
 }
