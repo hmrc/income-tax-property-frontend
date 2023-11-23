@@ -28,7 +28,7 @@ class LoanInterestFormProviderSpec extends CurrencyFieldBehaviours {
     val fieldName = "loanInterestOrOtherFinancialCost"
 
     val minimum = 0
-    val maximum = 1000
+    val maximum = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 

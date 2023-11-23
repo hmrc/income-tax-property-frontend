@@ -37,7 +37,8 @@ import scala.concurrent.Future
 class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new LoanInterestFormProvider()
-  val form: Form[BigDecimal] = formProvider("individual")
+  private val individual = "individual"
+  val form: Form[BigDecimal] = formProvider(individual)
   val taxYear = 2023
 
   def onwardRoute: Call = Call("GET", "/foo")
@@ -60,7 +61,7 @@ class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[LoanInterestView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -78,7 +79,7 @@ class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -115,16 +116,16 @@ class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, loanInterestRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("otherProfessionalFees", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("otherProfessionalFees" -> "invalid value"))
 
         val view = application.injector.instanceOf[LoanInterestView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -149,7 +150,7 @@ class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, loanInterestRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("otherProfessionalFees", validAnswer.toString))
 
         val result = route(application, request).value
 
