@@ -198,6 +198,11 @@ class NavigatorSpec extends SpecBase {
           UnusedResidentialFinanceCostPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
+      "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
+        navigator.nextPage(
+          LoanInterestPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
+      }
 
     }
 
