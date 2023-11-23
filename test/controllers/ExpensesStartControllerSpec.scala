@@ -29,7 +29,8 @@ class ExpensesStartControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET if Total Income below is 85K" in {
       val taxYear = 2023
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val userAnswers = UserAnswers("test").set(IncomeFromPropertyRentalsPage, BigDecimal(80000)).get
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.ExpensesStartController.onPageLoad(taxYear).url)
