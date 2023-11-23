@@ -578,3 +578,29 @@ loanInterest.error.twoDecimalPlaces.individual = Enter the loan interest or othe
 loanInterest.error.twoDecimalPlaces.agent = Enter the loan interest or other financial costs with two decimal places
 loanInterest.error.outOfRange = Loan interest or other financial costs must be between {0} and {1}
 
+
+otherProfessionalFees.title =Legal, management or other professional fees
+otherProfessionalFees.heading = Legal, management or other professional fees
+otherProfessionalFees.checkYourAnswersLabel = Legal, management or other professional fees
+otherProfessionalFees.input.heading.individual = How much did you spend on legal, management or other professional fees?
+otherProfessionalFees.input.heading.agent = How much did your client spend on legal, management or other professional fees?
+otherProfessionalFees.details.content.link.text= Understanding legal, management or other professional fees
+otherProfessionalFees.details.content1.individual = You can claim:
+otherProfessionalFees.details.content1.agent = Your client can claim:
+otherProfessionalFees.details.content1.l1 = management fees paid to an agent for rent collection, advertising and administration
+otherProfessionalFees.details.content1.l2 = legal and professional fees for renewing a lease (if the lease is for less than 50 years)
+otherProfessionalFees.details.content1.l3 = professional fees paid to evict an unsatisfactory tenant in order to re-let the property
+otherProfessionalFees.details.content1.l4 = the costs of appealing against a compulsory purchase order
+otherProfessionalFees.details.content2.individual = You cannot claim:
+otherProfessionalFees.details.content2.agent = Your client cannot claim:
+otherProfessionalFees.details.content2.l1 = any costs for the first letting or subletting of a property for more than a year
+otherProfessionalFees.details.content2.l2 = the costs for agreeing and paying a premium on renewal of a lease
+otherProfessionalFees.details.content2.l3 = any fee paid for planning permission or registration of title on property purchase
+
+otherProfessionalFees.error.required.individual = Enter an amount for how much you spent on legal, management or other professional fees
+otherProfessionalFees.error.required.agent = Enter an amount for how much your client spent on legal, management or other professional fees
+otherProfessionalFees.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you spent on legal, management or other professional fees
+otherProfessionalFees.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client spent on legal, management or other professional fees
+otherProfessionalFees.error.twoDecimalPlaces.individual = Enter the legal, management or other professional fees with two decimal places
+otherProfessionalFees.error.twoDecimalPlaces.agent = Enter the legal, management or other professional fees with two decimal places
+otherProfessionalFees.error.outOfRange = Legal, management or other professional fees must be between {0} and {1}
