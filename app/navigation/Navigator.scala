@@ -18,6 +18,7 @@ package navigation
 
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
+import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.routes
 import controllers.routes._
@@ -28,6 +29,8 @@ import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
 import pages.adjustments.{PrivateUseAdjustmentPage,BalancingChargePage,PropertyIncomeAllowancePage,
   ResidentialFinanceCostPage, RenovationAllowanceBalancingChargePage, UnusedResidentialFinanceCostPage}
+import pages.adjustments._
+import pages.propertyrentals.expenses.RepairsAndMaintenanceCostsPage
 
 import javax.inject.{Inject, Singleton}
 
@@ -61,8 +64,9 @@ class Navigator @Inject()() {
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
     case LoanInterestPage => taxYear => _ => _ => routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
-    case OtherProfessionalFeesPage => taxYear => _ => _ => routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
-    case CostsOfServicesProvidedPage => taxYear => _ => _ => routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
+    case RepairsAndMaintenanceCostsPage => taxYear => _ => _ => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+    case OtherProfessionalFeesPage => taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
+    case CostsOfServicesProvidedPage => taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 

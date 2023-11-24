@@ -680,3 +680,37 @@ propertyBusinessTravelCosts.error.nonNumeric.agent = Enter an amount in pounds w
 propertyBusinessTravelCosts.error.twoDecimalPlaces.individual = Enter the property business travel costs with two decimal places
 propertyBusinessTravelCosts.error.twoDecimalPlaces.agent = Enter the property business travel costs with two decimal places
 propertyBusinessTravelCosts.error.outOfRange = Property business travel costs must be between {0} and {1}
+
+
+repairsAndMaintenanceCosts.title = Property repairs and maintenance
+repairsAndMaintenanceCosts.heading = Property repairs and maintenance
+repairsAndMaintenanceCosts.content.l2 = Understanding property repairs and maintenance
+repairsAndMaintenanceCosts.content.l2 = These are any expenses you paid to maintain your property, for example:
+repairsAndMaintenanceCosts.bulletPoint.l1 = exterior and interior painting, damp treatment, stone cleaning or roof repairs
+repairsAndMaintenanceCosts.bulletPoint.l2 = furniture repairs
+repairsAndMaintenanceCosts.bulletPoint.l3 = repairs to any kind of machinery supplied with the property
+repairsAndMaintenanceCosts.label = How much did you spend on property repairs and maintenance?
+repairsAndMaintenanceCosts.checkYourAnswersLabel = RepairsAndMaintenanceCosts
+repairsAndMaintenanceCosts.error.nonNumeric = Enter your RepairsAndMaintenanceCosts using numbers
+repairsAndMaintenanceCosts.error.required = Enter the amount in pounds for how much your client spent on property repairs and maintenance
+repairsAndMaintenanceCosts.error.outOfRange = The amount should not exceed £100,000,000
+repairsAndMaintenanceCosts.change.hidden = RepairsAndMaintenanceCosts
+
+rentsRatesAndInsurance.title = Legal, management or other professional fees
+rentsRatesAndInsurance.heading = Legal, management or other professional fees
+rentsRatesAndInsurance.details.summary = Understanding legal, management or other professional fees
+rentsRatesAndInsurance.details.content.heading = You can claim:
+rentsRatesAndInsurance.details.content.claim.bulletPoint.l1 = management fees paid to an agent for rent collection, advertising and administration
+rentsRatesAndInsurance.details.content.claim.bulletPoint.l2 = legal and professional fees for renewing a lease (if the lease is for less than 50 years)
+rentsRatesAndInsurance.details.content.claim.bulletPoint.l3 = professional fees paid to evict an unsatisfactory tenant in order to re-let the property
+rentsRatesAndInsurance.details.content.claim.bulletPoint.l4 = the costs of appealing against a compulsory purchase order
+rentsRatesAndInsurance.details.content.cannotClaim.heading = You cannot claim:
+rentsRatesAndInsurance.details.content.cannotClaim.bulletPoint.l1 = any costs for the first letting or subletting of a property for more than a year
+rentsRatesAndInsurance.details.content.cannotClaim.bulletPoint.l2 = the costs for agreeing and paying a premium on renewal of a lease
+rentsRatesAndInsurance.details.content.cannotClaim.bulletPoint.l3 = any fee paid for planning permission or registration of title on property purchase
+rentsRatesAndInsurance.label = How much did you spend on legal, management or other professional fees?
+rentsRatesAndInsurance.checkYourAnswersLabel = RentsRatesAndInsurance
+rentsRatesAndInsurance.error.nonNumeric = Enter your RentsRatesAndInsurance using numbers
+rentsRatesAndInsurance.error.required = Enter the amount for how much your client spent on rents, rates and insurance
+rentsRatesAndInsurance.error.outOfRange = RentsRatesAndInsurance must be between {0} and {1}
+rentsRatesAndInsurance.change.hidden = RentsRatesAndInsurance
