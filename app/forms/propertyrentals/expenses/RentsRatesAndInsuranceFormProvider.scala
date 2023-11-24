@@ -22,8 +22,7 @@ import play.api.data.Form
 import javax.inject.Inject
 
 class RentsRatesAndInsuranceFormProvider @Inject() extends Mappings {
-  private val minValue = BigDecimal(0)
-  private val maxValue = BigDecimal(100000000)
+
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
@@ -31,6 +30,6 @@ class RentsRatesAndInsuranceFormProvider @Inject() extends Mappings {
         s"RentsRatesAndInsurance.error.required.$individualOrAgent",
         s"RentsRatesAndInsurance.error.required.$individualOrAgent",
         s"RentsRatesAndInsurance.error.required.$individualOrAgent")
-          .verifying(inRange(minValue, maxValue, "RentsRatesAndInsurance.error.outOfRange"))
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "RentsRatesAndInsurance.error.outOfRange"))
     )
 }
