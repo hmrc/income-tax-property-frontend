@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import pages.adjustments.{PrivateUseAdjustmentPage,BalancingChargePage,PropertyIncomeAllowancePage,
   ResidentialFinanceCostPage, RenovationAllowanceBalancingChargePage, UnusedResidentialFinanceCostPage}
 import pages.adjustments._
-import pages.propertyrentals.expenses.RepairsAndMaintenanceCostsPage
+import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 
 import javax.inject.{Inject, Singleton}
 
