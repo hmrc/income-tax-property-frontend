@@ -31,7 +31,7 @@ class ConsolidatedExpensesFormProvider @Inject() extends Mappings {
       "consolidatedExpensesAmount" -> {
         mandatoryIfTrue("consolidatedExpenses",
           currency(
-            "consolidatedExpenses.error.required.amount",
+            s"consolidatedExpenses.error.required.amount.$individualOrAgent",
             "consolidatedExpenses.error.twoDecimalPlaces",
             "consolidatedExpenses.error.nonNumeric")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedExpenses.error.outOfRange"))

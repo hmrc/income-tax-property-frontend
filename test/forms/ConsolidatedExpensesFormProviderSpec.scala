@@ -38,7 +38,7 @@ class ConsolidatedExpensesFormProviderSpec extends BooleanFieldBehaviours with O
 
       "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map("consolidatedExpenses" -> "true"))
-        boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedExpenses.error.required.amount"))
+        boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedExpenses.error.required.amount.individual"))
       }
     }
     "when consolidatedExpenses is false" - {
