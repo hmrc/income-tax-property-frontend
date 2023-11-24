@@ -633,3 +633,26 @@ otherProfessionalFees.error.nonNumeric.agent = Enter an amount in pounds with no
 otherProfessionalFees.error.twoDecimalPlaces.individual = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.twoDecimalPlaces.agent = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.outOfRange = Legal, management or other professional fees must be between {0} and {1}
+
+costsOfServicesProvided.title = Costs of services provided, including wages
+costsOfServicesProvided.heading = Costs of services provided, including wages
+costsOfServicesProvided.checkYourAnswersLabel = Costs of services provided, including wages
+costsOfServicesProvided.input.heading.individual = How much did you spend on costs of services provided, including wages?
+costsOfServicesProvided.input.heading.agent = How much did your client spend on costs of services provided, including wages?
+costsOfServicesProvided.details.content.link.text= Understanding costs of services provided, including wages
+costsOfServicesProvided.details.content1.individual = Any services that you provide to your tenants such as:
+costsOfServicesProvided.details.content1.agent = Any services that your client provides to their tenants:
+costsOfServicesProvided.details.content.l1 = communal hot water
+costsOfServicesProvided.details.content.l2 = gardening
+costsOfServicesProvided.details.content.l3 = cleaning
+costsOfServicesProvided.details.content.l4 = wages paid out to employees
+costsOfServicesProvided.details.content2.individual = If you receive any income for the services that you provide, include this as property income.
+costsOfServicesProvided.details.content2.agent = If your client receives any income for the services that they provide, include this as property income.
+
+costsOfServicesProvided.error.required.individual = Enter an amount for how much you spent on costs of services provided, including wages
+costsOfServicesProvided.error.required.agent = Enter an amount for how much your client spent on costs of services provided, including wages
+costsOfServicesProvided.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you spent on costs of services provided, including wages
+costsOfServicesProvided.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client spent on costs of services provided, including wages
+costsOfServicesProvided.error.twoDecimalPlaces.individual = Enter the costs of services provided, including wages with two decimal places
+costsOfServicesProvided.error.twoDecimalPlaces.agent = Enter the costs of services provided, including wages with two decimal places
+costsOfServicesProvided.error.outOfRange = Costs of services provided, including wages must be between {0} and {1}
