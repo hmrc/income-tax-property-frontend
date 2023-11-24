@@ -60,7 +60,7 @@ class Navigator @Inject()() {
     case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
-
+    case LoanInterestPage => taxYear => _ => _ => routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 
