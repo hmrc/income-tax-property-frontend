@@ -634,3 +634,12 @@ otherProfessionalFees.error.nonNumeric.agent = Enter an amount in pounds with no
 otherProfessionalFees.error.twoDecimalPlaces.individual = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.twoDecimalPlaces.agent = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.outOfRange = Legal, management or other professional fees must be between {0} and {1}
+
+otherAllowablePropertyExpenses.title = OtherAllowablePropertyExpenses
+otherAllowablePropertyExpenses.heading = OtherAllowablePropertyExpenses
+otherAllowablePropertyExpenses.checkYourAnswersLabel = OtherAllowablePropertyExpenses
+otherAllowablePropertyExpenses.error.nonNumeric = Enter your otherAllowablePropertyExpenses using numbers
+otherAllowablePropertyExpenses.error.required = Enter your otherAllowablePropertyExpenses
+otherAllowablePropertyExpenses.error.wholeNumber = Enter your otherAllowablePropertyExpenses using whole numbers
+otherAllowablePropertyExpenses.error.outOfRange = OtherAllowablePropertyExpenses must be between {0} and {1}
+otherAllowablePropertyExpenses.change.hidden = OtherAllowablePropertyExpenses
