@@ -25,12 +25,12 @@ class RepairsAndMaintenanceCostsFormProvider @Inject() extends Mappings {
   private val minValue = BigDecimal(0)
   private val maxValue = BigDecimal(100000000)
 
-  def apply(): Form[BigDecimal] =
+  def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "RepairsAndMaintenanceCosts" -> currency(
-        "RepairsAndMaintenanceCosts.error.required",
-        "RepairsAndMaintenanceCosts.error.required",
-        "RepairsAndMaintenanceCosts.error.required")
-          .verifying(inRange(minValue, maxValue, "RepairsAndMaintenanceCosts.error.outOfRange"))
+        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent",
+        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent",
+        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent")
+        .verifying(inRange(minValue, maxValue, "RepairsAndMaintenanceCosts.error.outOfRange"))
     )
 }

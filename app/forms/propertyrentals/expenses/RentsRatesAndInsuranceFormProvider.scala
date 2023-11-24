@@ -25,12 +25,12 @@ class RentsRatesAndInsuranceFormProvider @Inject() extends Mappings {
   private val minValue = BigDecimal(0)
   private val maxValue = BigDecimal(100000000)
 
-  def apply(): Form[BigDecimal] =
+  def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "RentsRatesAndInsurance" -> currency(
-        "RentsRatesAndInsurance.error.required",
-        "RentsRatesAndInsurance.error.wholeNumber",
-        "RentsRatesAndInsurance.error.nonNumeric")
+        s"RentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"RentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"RentsRatesAndInsurance.error.required.$individualOrAgent")
           .verifying(inRange(minValue, maxValue, "RentsRatesAndInsurance.error.outOfRange"))
     )
 }
