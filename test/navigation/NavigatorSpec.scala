@@ -19,12 +19,14 @@ package navigation
 import base.SpecBase
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
+import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.routes
 import models._
 import pages._
 import pages.adjustments._
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
 import java.time.LocalDate
@@ -228,6 +230,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage" in {
+        navigator.nextPage(
+          RentsRatesAndInsurancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
       }
 
     }
