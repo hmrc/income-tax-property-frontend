@@ -20,12 +20,14 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
 import controllers.adjustments.routes._
 import controllers.routes
+import controllers.routes._
 import models._
 import pages._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
-import pages.adjustments._
+import pages.adjustments.{PrivateUseAdjustmentPage,BalancingChargePage,PropertyIncomeAllowancePage,
+  ResidentialFinanceCostPage, RenovationAllowanceBalancingChargePage, UnusedResidentialFinanceCostPage}
 
 import javax.inject.{Inject, Singleton}
 
@@ -56,6 +58,8 @@ class Navigator @Inject()() {
     case RenovationAllowanceBalancingChargePage => taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case ResidentialFinanceCostPage => taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+    // expenses
+    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
     case LoanInterestPage => taxYear => _ => _ => routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
@@ -126,6 +130,12 @@ class Navigator @Inject()() {
       case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).map(_.calculatedFigureYourself).getOrElse(true) =>
         RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(ConsolidatedExpensesPage) match {
+      case Some(ConsolidatedExpenses(true, _)) => routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(ConsolidatedExpenses(false, _)) => ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode)
     }
 
   private def balancingChargeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =

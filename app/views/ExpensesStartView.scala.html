@@ -19,7 +19,7 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, individualOrAgent: String, isUnder85K: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, individualOrAgent: String, isUnder85K: Boolean, under85KUrl: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("expensesStart.title"))) {
         <span class="govuk-caption-l">@messages("propertyRentals.caption", (taxYear - 1).toString, taxYear.toString)</span>
@@ -53,9 +53,10 @@
             </p>
         }
 
+
         @govukButton(
             ButtonViewModel(messages("site.continue"))
-            .asLink(routes.SummaryController.show(taxYear).url)
+            .asLink(under85KUrl)
             .withId("continue")
         )
 

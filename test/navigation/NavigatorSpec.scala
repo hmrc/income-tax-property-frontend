@@ -204,6 +204,22 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from ConsolidatedExpensesPage to RecievedGrantLeaseAmountPage when user selects no" in {
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
+
+        navigator.nextPage(
+          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+        ) mustBe controllers.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(100))).get
+
+        navigator.nextPage(
+          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+        ) mustBe controllers.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
     }
 
     "in Check mode" - {
