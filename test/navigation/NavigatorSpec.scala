@@ -203,6 +203,16 @@ class NavigatorSpec extends SpecBase {
           LoanInterestPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
       }
+      "must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage" in {
+        navigator.nextPage(
+          OtherProfessionalFeesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
+        navigator.nextPage(
+          CostsOfServicesProvidedPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
+      }
 
       "must go from ConsolidatedExpensesPage to RecievedGrantLeaseAmountPage when user selects no" in {
         val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
