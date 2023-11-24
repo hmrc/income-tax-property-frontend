@@ -28,9 +28,9 @@ class RepairsAndMaintenanceCostsFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "RepairsAndMaintenanceCosts" -> currency(
-        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent",
-        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent",
-        s"RepairsAndMaintenanceCosts.error.required.$individualOrAgent")
-        .verifying(inRange(minValue, maxValue, "RepairsAndMaintenanceCosts.error.outOfRange"))
+        s"repairsAndMaintenanceCosts.error.required.$individualOrAgent",
+        s"repairsAndMaintenanceCosts.error.required.$individualOrAgent",
+        s"repairsAndMaintenanceCosts.error.required.$individualOrAgent")
+        .verifying(inRange(minValue, maxValue, "repairsAndMaintenanceCosts.error.outOfRange"))
     )
 }

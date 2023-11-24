@@ -27,7 +27,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("RepairsAndMaintenanceCosts.title"))) {
+@layout(pageTitle = title(form, messages("repairsAndMaintenanceCosts.title"))) {
 
     @formHelper(action = RepairsAndMaintenanceCostsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
@@ -35,21 +35,21 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages("RepairsAndMaintenanceCosts.heading")</h1>
+        <h1 class="govuk-heading-l">@messages("repairsAndMaintenanceCosts.heading")</h1>
 
-        <p class="govuk-body">@messages("RepairsAndMaintenanceCosts.content.l1")</p>
-        <p class="govuk-body">@messages("RepairsAndMaintenanceCosts.content.l2")</p>
+        <p class="govuk-body">@messages("repairsAndMaintenanceCosts.content.l1")</p>
+        <p class="govuk-body">@messages(s"repairsAndMaintenanceCosts.content.l2.{individualOrAgent}")</p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>@messages(s"RepairsAndMaintenanceCosts.bulletPoint.l1")</li>
-            <li>@messages(s"RepairsAndMaintenanceCosts.bulletPoint.l2")</li>
-            <li>@messages(s"RepairsAndMaintenanceCosts.bulletPoint.l3")</li>
+            <li>@messages(s"repairsAndMaintenanceCosts.bulletPoint.l1")</li>
+            <li>@messages(s"repairsAndMaintenanceCosts.bulletPoint.l2")</li>
+            <li>@messages(s"repairsAndMaintenanceCosts.bulletPoint.l3")</li>
         </ul>
 
         @govukInput(
             InputViewModel(
                 field = form("RepairsAndMaintenanceCosts"),
-                label = LabelViewModel(messages(s"RepairsAndMaintenanceCosts.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
+                label = LabelViewModel(messages(s"repairsAndMaintenanceCosts.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
             )
             .asNumeric()
             .withWidth(Fixed10)

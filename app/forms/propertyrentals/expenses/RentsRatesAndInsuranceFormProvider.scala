@@ -27,9 +27,9 @@ class RentsRatesAndInsuranceFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "RentsRatesAndInsurance" -> currency(
-        s"RentsRatesAndInsurance.error.required.$individualOrAgent",
-        s"RentsRatesAndInsurance.error.required.$individualOrAgent",
-        s"RentsRatesAndInsurance.error.required.$individualOrAgent")
-          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "RentsRatesAndInsurance.error.outOfRange"))
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent")
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "rentsRatesAndInsurance.error.outOfRange"))
     )
 }

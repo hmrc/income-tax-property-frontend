@@ -28,7 +28,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"RentsRatesAndInsurance.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages(s"rentsRatesAndInsurance.title.${individualOrAgent}"))) {
 
     @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
@@ -36,7 +36,7 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"RentsRatesAndInsurance.heading.${individualOrAgent}")</h1>
+        <h1 class="govuk-heading-l">@messages(s"rentsRatesAndInsurance.heading.${individualOrAgent}")</h1>
 
 <details class="govuk-details" data-module="govuk-details">
     <summary class="govuk-details__summary">
@@ -44,13 +44,13 @@
     </summary>
     <div class="govuk-details__text">
         <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l1")</li>
+            <li>@messages(s"rentsRatesAndInsurance.details.bulletPoint.l1.${individualOrAgent}")</li>
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l2")</li>
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l3")</li>
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l4")</li>
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l5")</li>
         </ul>
-        <p class="govuk-body">@messages("rentsRatesAndInsurance.details.content.p1")</p>
+        <p class="govuk-body">@messages("rentsRatesAndInsurance.details.content.p1.${individualOrAgent}")</p>
         <p class="govuk-body">@messages(s"rentsRatesAndInsurance.details.content.p2.${individualOrAgent}")</p>
     </div>
 </details>
@@ -59,7 +59,7 @@
 @govukInput(
             InputViewModel(
                 field = form("RentsRatesAndInsurance"),
-                label = LabelViewModel(messages(s"RentsRatesAndInsurance.heading.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
+                label = LabelViewModel(messages(s"rentsRatesAndInsurance.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
             )
             .asNumeric()
             .withWidth(Fixed10)
