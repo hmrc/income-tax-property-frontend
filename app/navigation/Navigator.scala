@@ -85,6 +85,8 @@ class Navigator @Inject()() {
          ResidentialFinanceCostPage | UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage => taxYear => previousUserAnswers => userAnswers =>
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+    // expenses
+    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
   }
 
