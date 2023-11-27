@@ -45,6 +45,11 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "expenses_link"
     )
+    val propertyAllowances: TaskListItem = TaskListItem("summary.allowances",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "allowances_link"
+    )
     val adjustmentsListItem = TaskListItem("summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
@@ -83,9 +88,9 @@ class SummaryPageSpec extends SpecBase {
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
 
-      val res = Seq(summaryItem, incomeListItem, expenseListItem, adjustmentsListItem)
+      val res = Seq(summaryItem, incomeListItem, expenseListItem, propertyAllowances, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(4)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(5)
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
     }
 

@@ -14,6 +14,7 @@ summary.rentals.heading = Property Rentals
 summary.about = About
 summary.income = Income
 summary.expenses = Expenses
+summary.allowances = Allowances
 summary.adjustments = Adjustments
 
 site.back = Back
