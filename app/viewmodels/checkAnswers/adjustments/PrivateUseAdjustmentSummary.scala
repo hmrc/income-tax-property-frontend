@@ -37,7 +37,7 @@ object PrivateUseAdjustmentSummary {
             ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
-      case PrivateUseAdjustment(_) =>
+      case _ =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("privateUseAdjustment.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),

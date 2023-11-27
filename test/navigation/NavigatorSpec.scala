@@ -19,12 +19,14 @@ package navigation
 import base.SpecBase
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
+import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.routes
 import models._
 import pages._
 import pages.adjustments._
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
 import java.time.LocalDate
@@ -198,6 +200,37 @@ class NavigatorSpec extends SpecBase {
           UnusedResidentialFinanceCostPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
+
+      "must go from ConsolidatedExpensesPage to RentsRatesAndInsurancePage when user selects no" in {
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
+
+        navigator.nextPage(
+          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+        ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(100))).get
+
+        navigator.nextPage(
+          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+        ) mustBe controllers.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+
+      "must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage" in {
+        navigator.nextPage(
+          RentsRatesAndInsurancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
+      }
+
+
+      "must go from RepairsAndMaintenanceCostsPage to LoanInterestPage" in {
+        navigator.nextPage(
+          RepairsAndMaintenanceCostsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.LoanInterestController.onPageLoad(taxYear, NormalMode)
+      }
+
       "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
         navigator.nextPage(
           LoanInterestPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
@@ -212,22 +245,6 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CostsOfServicesProvidedPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
-      }
-
-      "must go from ConsolidatedExpensesPage to RecievedGrantLeaseAmountPage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
-
-        navigator.nextPage(
-          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode)
-      }
-
-      "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
-        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(100))).get
-
-        navigator.nextPage(
-          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
     }

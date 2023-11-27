@@ -1,0 +1,72 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import controllers.propertyrentals.expenses.routes._
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukDetails: GovukDetails,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"rentsRatesAndInsurance.title.${individualOrAgent}"))) {
+
+    @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <h1 class="govuk-heading-l">@messages(s"rentsRatesAndInsurance.heading.${individualOrAgent}")</h1>
+
+<details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+        @messages("rentsRatesAndInsurance.details.summary")
+    </summary>
+    <div class="govuk-details__text">
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages(s"rentsRatesAndInsurance.details.bulletPoint.l1.${individualOrAgent}")</li>
+            <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l2")</li>
+            <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l3")</li>
+            <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l4")</li>
+            <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l5")</li>
+        </ul>
+        <p class="govuk-body">@messages(s"rentsRatesAndInsurance.details.content.p1.${individualOrAgent}")</p>
+        <p class="govuk-body">@messages(s"rentsRatesAndInsurance.details.content.p2.${individualOrAgent}")</p>
+    </div>
+</details>
+
+
+@govukInput(
+            InputViewModel(
+                field = form("RentsRatesAndInsurance"),
+                label = LabelViewModel(messages(s"rentsRatesAndInsurance.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
+            )
+            .asNumeric()
+            .withWidth(Fixed10)
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+        )
+    }
+}

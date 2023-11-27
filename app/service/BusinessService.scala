@@ -21,12 +21,10 @@ import connectors.error.ApiError
 import models.TotalIncome.{Between, Under}
 import models.{User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError}
-import models.requests.DataRequest
 import pages.adjustments.BalancingChargePage
 import pages.premiumlease.PremiumsGrantLeasePage
 import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage, TotalIncomePage}
 import play.api.Logging
-import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
