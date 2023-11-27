@@ -162,6 +162,11 @@ POST       /:taxYear/change-consolidated-expenses                               
 
 GET        /:taxYear/expenses/check-your-answers                                    controllers.ExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
 
+GET        /:taxYear/costs-of-services-provided                                     controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/costs-of-services-provided                                     controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-costs-of-services-provided                              controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-costs-of-services-provided                              controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
 GET        /:taxYear/loan-interest                                                  controllers.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/loan-interest                                                  controllers.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-loan-interest                                           controllers.LoanInterestController.onPageLoad(taxYear: Int,mode: Mode = CheckMode)
@@ -171,3 +176,8 @@ GET        /:taxYear/other-professional-fees                                    
 POST       /:taxYear/other-professional-fees                                        controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/property-business-travel-costs                                 controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/property-business-travel-costs                                 controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
