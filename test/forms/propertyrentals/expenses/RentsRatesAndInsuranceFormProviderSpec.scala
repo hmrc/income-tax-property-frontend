@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals.expenses
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehaviours {
+import scala.collection.immutable.ArraySeq
 
-  val form = new OtherAllowablePropertyExpensesFormProvider()("individual")
 
-  ".otherAllowablePropertyExpenses" - {
+class RentsRatesAndInsuranceFormProviderSpec extends CurrencyFieldBehaviours {
 
-    val fieldName = "otherAllowablePropertyExpenses"
+  val form = new RentsRatesAndInsuranceFormProvider()("agent")
 
+  ".value" - {
     val minimum = 0
     val maximum = 100000000
-
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
+
+    val fieldName = "RentsRatesAndInsurance"
 
     behave like fieldThatBindsValidData(
       form,
@@ -41,8 +42,8 @@ class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehavi
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "otherAllowablePropertyExpenses.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "otherAllowablePropertyExpenses.error.twoDecimalPlaces.individual")
+      nonNumericError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent"),
+      twoDecimalPlacesError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent")
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +51,13 @@ class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehavi
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "otherAllowablePropertyExpenses.error.outOfRange", Seq(minimum, maximum))
+      expectedError = FormError(fieldName, "rentsRatesAndInsurance.error.outOfRange", ArraySeq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "otherAllowablePropertyExpenses.error.required.individual")
+      requiredError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent")
     )
   }
 }

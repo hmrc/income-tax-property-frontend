@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals.expenses
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
 
-class OtherAllowablePropertyExpensesFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  val minimum = 0;
-  val maximum = 100000000;
+class RentsRatesAndInsuranceFormProvider @Inject() extends Mappings {
+
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "otherAllowablePropertyExpenses" -> currency(
-        s"otherAllowablePropertyExpenses.error.required.${individualOrAgent}",
-        s"otherAllowablePropertyExpenses.error.twoDecimalPlaces.${individualOrAgent}",
-        s"otherAllowablePropertyExpenses.error.nonNumeric.${individualOrAgent}")
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "otherAllowablePropertyExpenses.error.outOfRange"))
+      "RentsRatesAndInsurance" -> currency(
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent",
+        s"rentsRatesAndInsurance.error.required.$individualOrAgent")
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "rentsRatesAndInsurance.error.outOfRange"))
     )
 }

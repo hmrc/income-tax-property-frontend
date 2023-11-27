@@ -20,17 +20,17 @@ import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class OtherAllowablePropertyExpensesFormProvider @Inject() extends Mappings {
+class CostsOfServicesProvidedFormProvider @Inject() extends Mappings {
 
   val minimum = 0;
   val maximum = 100000000;
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "otherAllowablePropertyExpenses" -> currency(
-        s"otherAllowablePropertyExpenses.error.required.${individualOrAgent}",
-        s"otherAllowablePropertyExpenses.error.twoDecimalPlaces.${individualOrAgent}",
-        s"otherAllowablePropertyExpenses.error.nonNumeric.${individualOrAgent}")
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "otherAllowablePropertyExpenses.error.outOfRange"))
+      "costsOfServicesProvided" -> currency(
+        s"costsOfServicesProvided.error.required.${individualOrAgent}",
+        s"costsOfServicesProvided.error.twoDecimalPlaces.${individualOrAgent}",
+        s"costsOfServicesProvided.error.nonNumeric.${individualOrAgent}")
+        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "costsOfServicesProvided.error.outOfRange"))
     )
 }

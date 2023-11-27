@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.propertyrentals.expenses
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object OtherAllowablePropertyExpensesPage extends QuestionPage[BigDecimal] {
+case object RentsRatesAndInsurancePage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "otherAllowablePropertyExpenses"
+  override def toString: String = "RentsRatesAndInsurance"
 }

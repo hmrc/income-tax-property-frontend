@@ -17,69 +17,68 @@
 package controllers
 
 import base.SpecBase
-import forms.OtherAllowablePropertyExpensesFormProvider
+import forms.PropertyBusinessTravelCostsFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.OtherAllowablePropertyExpensesPage
+import pages.PropertyBusinessTravelCostsPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.OtherAllowablePropertyExpensesView
+import views.html.PropertyBusinessTravelCostsView
 
 import scala.concurrent.Future
 
-class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with MockitoSugar {
+class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new OtherAllowablePropertyExpensesFormProvider()
-  private val individual = "individual"
-  val form: Form[BigDecimal] = formProvider(individual)
+  val formProvider = new PropertyBusinessTravelCostsFormProvider()
+  private val agent = "agent"
+  val form: Form[BigDecimal] = formProvider(agent)
   val taxYear = 2023
-
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val validAnswer: BigDecimal = 100
+  val validAnswer: BigDecimal = BigDecimal(0)
 
-  lazy val OtherAllowablePropertyExpensesRoute: String = routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode).url
+  lazy val propertyBusinessTravelCostsRoute: String = routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode).url
 
-  "OtherAllowablePropertyExpenses Controller" - {
+  "PropertyBusinessTravelCosts Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, OtherAllowablePropertyExpensesRoute)
+        val request = FakeRequest(GET, propertyBusinessTravelCostsRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[OtherAllowablePropertyExpensesView]
+        val view = application.injector.instanceOf[PropertyBusinessTravelCostsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(OtherAllowablePropertyExpensesPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PropertyBusinessTravelCostsPage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, OtherAllowablePropertyExpensesRoute)
+        val request = FakeRequest(GET, propertyBusinessTravelCostsRoute)
 
-        val view = application.injector.instanceOf[OtherAllowablePropertyExpensesView]
+        val view = application.injector.instanceOf[PropertyBusinessTravelCostsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -90,7 +89,7 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -99,8 +98,8 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val request =
-          FakeRequest(POST, OtherAllowablePropertyExpensesRoute)
-            .withFormUrlEncodedBody(("otherAllowablePropertyExpenses", validAnswer.toString))
+          FakeRequest(POST, propertyBusinessTravelCostsRoute)
+            .withFormUrlEncodedBody(("propertyBusinessTravelCosts", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -111,21 +110,21 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, OtherAllowablePropertyExpensesRoute)
-            .withFormUrlEncodedBody(("otherProfessionalFees", "invalid value"))
+          FakeRequest(POST, propertyBusinessTravelCostsRoute)
+            .withFormUrlEncodedBody(("propertyBusinessTravelCosts", "invalid value"))
 
-        val boundForm = form.bind(Map("otherProfessionalFees" -> "invalid value"))
+        val boundForm = form.bind(Map("propertyBusinessTravelCosts" -> "invalid value"))
 
-        val view = application.injector.instanceOf[OtherAllowablePropertyExpensesView]
+        val view = application.injector.instanceOf[PropertyBusinessTravelCostsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -134,7 +133,7 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, OtherAllowablePropertyExpensesRoute)
+        val request = FakeRequest(GET, propertyBusinessTravelCostsRoute)
 
         val result = route(application, request).value
 
@@ -149,8 +148,8 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val request =
-          FakeRequest(POST, OtherAllowablePropertyExpensesRoute)
-            .withFormUrlEncodedBody(("otherProfessionalFees", validAnswer.toString))
+          FakeRequest(POST, propertyBusinessTravelCostsRoute)
+            .withFormUrlEncodedBody(("propertyBusinessTravelCosts", validAnswer.toString))
 
         val result = route(application, request).value
 

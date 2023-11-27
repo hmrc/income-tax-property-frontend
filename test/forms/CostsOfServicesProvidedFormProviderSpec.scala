@@ -19,13 +19,13 @@ package forms
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehaviours {
+class CostsOfServicesProvidedFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new OtherAllowablePropertyExpensesFormProvider()("individual")
+  val form = new CostsOfServicesProvidedFormProvider()("individual")
 
-  ".otherAllowablePropertyExpenses" - {
+  ".costsOfServicesProvided" - {
 
-    val fieldName = "otherAllowablePropertyExpenses"
+    val fieldName = "costsOfServicesProvided"
 
     val minimum = 0
     val maximum = 100000000
@@ -41,8 +41,8 @@ class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehavi
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "otherAllowablePropertyExpenses.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "otherAllowablePropertyExpenses.error.twoDecimalPlaces.individual")
+      nonNumericError = FormError(fieldName, "costsOfServicesProvided.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "costsOfServicesProvided.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +50,13 @@ class OtherAllowablePropertyExpensesFormProviderSpec extends CurrencyFieldBehavi
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "otherAllowablePropertyExpenses.error.outOfRange", Seq(minimum, maximum))
+      expectedError = FormError(fieldName, "costsOfServicesProvided.error.outOfRange", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "otherAllowablePropertyExpenses.error.required.individual")
+      requiredError = FormError(fieldName, "costsOfServicesProvided.error.required.individual")
     )
   }
 }
