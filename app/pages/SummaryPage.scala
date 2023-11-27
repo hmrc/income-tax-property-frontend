@@ -40,6 +40,11 @@ case object SummaryPage {
       TaskListTag.NotStarted,
       "expenses_link"
     )
+    val propertyAllowances: TaskListItem = TaskListItem("summary.allowances",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "allowances_link"
+    )
     val propertyRentalsAdjustments: TaskListItem = TaskListItem("summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
@@ -51,7 +56,7 @@ case object SummaryPage {
 
     claimPropertyIncomeAllowance.collect {
       case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-      case false => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyRentalsAdjustments)
+      case false => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
     }.getOrElse {
       if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
     }
