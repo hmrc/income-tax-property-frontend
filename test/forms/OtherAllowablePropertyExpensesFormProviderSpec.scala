@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package forms
 
 import forms.behaviours.IntFieldBehaviours
@@ -5,11 +21,11 @@ import play.api.data.FormError
 
 class OtherAllowablePropertyExpensesFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new OtherAllowablePropertyExpensesFormProvider()()
+  val form = new OtherAllowablePropertyExpensesFormProvider()("individual")
 
-  ".value" - {
+  ".otherAllowablePropertyExpenses" - {
 
-    val fieldName = "value"
+    val fieldName = "otherAllowablePropertyExpenses"
 
     val minimum = 0
     val maximum = 100000000
@@ -25,22 +41,22 @@ class OtherAllowablePropertyExpensesFormProviderSpec extends IntFieldBehaviours 
     behave like intField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "otherAllowablePropertyExpenses.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "otherAllowablePropertyExpenses.error.wholeNumber")
+      nonNumericError = FormError(fieldName, "otherAllowablePropertyExpenses.error.nonNumeric.individual"),
+      wholeNumberError = FormError(fieldName, "otherAllowablePropertyExpenses.error.wholeNumber.individual")
     )
 
     behave like intFieldWithRange(
       form,
       fieldName,
-      minimum       = minimum,
-      maximum       = maximum,
+      minimum = minimum,
+      maximum = maximum,
       expectedError = FormError(fieldName, "otherAllowablePropertyExpenses.error.outOfRange", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "otherAllowablePropertyExpenses.error.required")
+      requiredError = FormError(fieldName, "otherAllowablePropertyExpenses.error.required.individual")
     )
   }
 }

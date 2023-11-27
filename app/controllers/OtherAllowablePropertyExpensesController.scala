@@ -17,11 +17,11 @@
 package controllers
 
 import controllers.actions._
-import forms.LoanInterestFormProvider
+import forms.OtherAllowablePropertyExpensesFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.LoanInterestPage
+import pages.OtherAllowablePropertyExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -37,7 +37,7 @@ class OtherAllowablePropertyExpensesController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: LoanInterestFormProvider,
+                                        formProvider: OtherAllowablePropertyExpensesFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: OtherAllowablePropertyExpensesView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

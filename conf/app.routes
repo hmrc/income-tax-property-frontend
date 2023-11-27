@@ -172,7 +172,7 @@ POST       /:taxYear/other-professional-fees                                    
 GET        /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /other-allowable-property-expenses                                       controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /other-allowable-property-expenses                                       controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /change-other-allowable-property-expenses                                controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /change-other-allowable-property-expenses                                controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/other-allowable-property-expenses                              controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/other-allowable-property-expenses                              controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-other-allowable-property-expenses                       controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-other-allowable-property-expenses                       controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
