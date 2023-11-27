@@ -20,7 +20,6 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
-import controllers.routes
 import controllers.routes._
 import models._
 import pages._
@@ -29,8 +28,7 @@ import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
 import pages.adjustments.{PrivateUseAdjustmentPage,BalancingChargePage,PropertyIncomeAllowancePage,
   ResidentialFinanceCostPage, RenovationAllowanceBalancingChargePage, UnusedResidentialFinanceCostPage}
-import pages.adjustments._
-import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
+import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 
 import javax.inject.{Inject, Singleton}
 
@@ -38,21 +36,21 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
-    case UKPropertyDetailsPage => taxYear => _ => _ => routes.TotalIncomeController.onPageLoad(taxYear, NormalMode)
-    case TotalIncomePage => taxYear => _ => _ => routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
-    case UKPropertySelectPage => taxYear => _ => _ => routes.SummaryController.show(taxYear)
-    case UKPropertyPage => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
+    case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomePage => taxYear => _ => _ => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
+    case UKPropertySelectPage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case UKPropertyPage => _ => _ => _ => CheckYourAnswersController.onPageLoad
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     // property income
     case IsNonUKLandlordPage => taxYear => _ => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
-    case DeductingTaxPage => taxYear => _ => _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    case DeductingTaxPage => taxYear => _ => _ => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage => taxYear => _ => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
     case premiumlease.LeasePremiumPaymentPage => taxYear => _ => userAnswers => leasePremiumPaymentNavigation(taxYear, userAnswers)
     case CalculatedFigureYourselfPage => taxYear => _ => userAnswers => calculatedFigureYourselfNavigation(taxYear, userAnswers)
     case premiumlease.RecievedGrantLeaseAmountPage => taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
     case premiumlease.YearLeaseAmountPage => taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
-    case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+    case premiumlease.PremiumsGrantLeasePage => taxYear => _ => _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     case ReversePremiumsReceivedPage => taxYear => _ => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case OtherIncomeFromPropertyPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case PrivateUseAdjustmentPage => taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode)
@@ -63,10 +61,11 @@ class Navigator @Inject()() {
     case UnusedResidentialFinanceCostPage => taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
-    case LoanInterestPage => taxYear => _ => _ => routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
-    case RepairsAndMaintenanceCostsPage => taxYear => _ => _ => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+    case LoanInterestPage => taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
+    case RentsRatesAndInsurancePage => taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
     case OtherProfessionalFeesPage => taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
     case CostsOfServicesProvidedPage => taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
+    case _ => _ => _ => _ => IndexController.onPageLoad
     case _ => _ => _ => _ => routes.IndexController.onPageLoad
   }
 
@@ -93,7 +92,7 @@ class Navigator @Inject()() {
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-    case _ => _ => _ => _ => routes.CheckYourAnswersController.onPageLoad
+    case _ => _ => _ => _ => CheckYourAnswersController.onPageLoad
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = mode match {
@@ -105,20 +104,20 @@ class Navigator @Inject()() {
 
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(IsNonUKLandlordPage) match {
-      case Some(true) => routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
-      case _ => routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode)
+      case _ => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     }
 
   private def isNonUKLandlordNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     userAnswers.get(IsNonUKLandlordPage) match {
-      case Some(true) if !previousUserAnswers.get(IsNonUKLandlordPage).getOrElse(false) => routes.DeductingTaxController.onPageLoad(taxYear, CheckMode)
+      case Some(true) if !previousUserAnswers.get(IsNonUKLandlordPage).getOrElse(false) => DeductingTaxController.onPageLoad(taxYear, CheckMode)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 
   private def leasePremiumPaymentNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(LeasePremiumPaymentPage) match {
       case Some(true) => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
-      case _ => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+      case _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     }
 
   private def leasePremiumPaymentNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
@@ -129,7 +128,7 @@ class Navigator @Inject()() {
 
   private def calculatedFigureYourselfNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(CalculatedFigureYourselfPage) match {
-      case Some(CalculatedFigureYourself(true, _)) => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+      case Some(CalculatedFigureYourself(true, _)) => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       case Some(CalculatedFigureYourself(false, _)) => RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
   }
 
@@ -143,7 +142,7 @@ class Navigator @Inject()() {
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ConsolidatedExpensesPage) match {
       case Some(ConsolidatedExpenses(true, _)) => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-      case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsurancePage.onPageLoad(taxYear, NormalMode)
+      case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
     }
 
   private def balancingChargeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =

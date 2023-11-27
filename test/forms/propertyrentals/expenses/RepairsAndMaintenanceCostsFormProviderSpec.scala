@@ -41,8 +41,8 @@ class RepairsAndMaintenanceCostsFormProviderSpec extends CurrencyFieldBehaviours
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "RepairsAndMaintenanceCosts.error.required.agent"),
-      twoDecimalPlacesError = FormError(fieldName, "RepairsAndMaintenanceCosts.error.required.agent")
+      nonNumericError = FormError(fieldName, "repairsAndMaintenanceCosts.error.required.agent"),
+      twoDecimalPlacesError = FormError(fieldName, "repairsAndMaintenanceCosts.error.required.agent")
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +50,13 @@ class RepairsAndMaintenanceCostsFormProviderSpec extends CurrencyFieldBehaviours
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "RepairsAndMaintenanceCosts.error.outOfRange", ArraySeq(minimum, maximum))
+      expectedError = FormError(fieldName, "repairsAndMaintenanceCosts.error.outOfRange", ArraySeq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "RepairsAndMaintenanceCosts.error.required.agent")
+      requiredError = FormError(fieldName, "repairsAndMaintenanceCosts.error.required.agent")
     )
   }
 }

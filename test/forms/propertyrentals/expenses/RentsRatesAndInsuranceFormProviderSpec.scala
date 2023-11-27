@@ -42,8 +42,8 @@ class RentsRatesAndInsuranceFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "RentsRatesAndInsurance.error.required.agent"),
-      twoDecimalPlacesError = FormError(fieldName, "RentsRatesAndInsurance.error.required.agent")
+      nonNumericError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent"),
+      twoDecimalPlacesError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent")
     )
 
     behave like currencyFieldWithRange(
@@ -51,13 +51,13 @@ class RentsRatesAndInsuranceFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "RentsRatesAndInsurance.error.outOfRange", ArraySeq(minimum, maximum))
+      expectedError = FormError(fieldName, "rentsRatesAndInsurance.error.outOfRange", ArraySeq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "RentsRatesAndInsurance.error.required.agent")
+      requiredError = FormError(fieldName, "rentsRatesAndInsurance.error.required.agent")
     )
   }
 }
