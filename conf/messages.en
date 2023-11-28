@@ -753,3 +753,19 @@ rentsRatesAndInsurance.error.required.individual = Enter the amount in pounds fo
 rentsRatesAndInsurance.error.outOfRange = The amount should not exceed £100,000,000
 rentsRatesAndInsurance.change.hidden = RentsRatesAndInsurance
 
+allowancesStart.title = Allowances
+allowancesStart.heading = Allowances
+allowancesStart.details.content1.individual = In this section we're going to ask you about your allowances. These are amounts that you can offset against what you've spent running your property rentals:
+allowancesStart.details.content1.agent = In this section we're going to ask you about allowances. These are amounts that your client can offset against what they've spent running their property rentals:
+allowancesStart.details.content2.individual = You told us previously that your accounting method is:
+allowancesStart.details.content2.agent = You told us previously that your client's accounting method is:
+allowancesStart.details.content3.individual = Based on this information you can claim the following:
+allowancesStart.details.content3.agent = Based on this information they can claim the following:
+
+allowancesStart.details.content.l1 = annual investment allowance
+allowancesStart.details.content.l2 = electric charge-point allowance
+allowancesStart.details.content.l3 = zero-emission car allowance
+allowancesStart.details.content.l4 = zero-emission goods vehicle allowance
+allowancesStart.details.content.l5 = business premises renovation allowance
+allowancesStart.details.content.l6 = replacing domestic goods
+allowancesStart.details.content.l7 = Capital allowances for a car
