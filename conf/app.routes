@@ -197,3 +197,6 @@ POST       /:taxYear/property-business-travel-costs                             
 GET        /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+##### Allowances
+
+GET        /:taxYear/allowances/allowances-start                                               controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
