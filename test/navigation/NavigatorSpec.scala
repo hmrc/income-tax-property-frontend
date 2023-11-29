@@ -247,6 +247,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage" in {
+        navigator.nextPage(
+          PropertyBusinessTravelCostsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
 
     "in Check mode" - {

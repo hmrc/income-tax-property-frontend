@@ -62,7 +62,7 @@
                 label = LabelViewModel(messages(s"rentsRatesAndInsurance.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
             )
             .asNumeric()
-            .withWidth(Fixed10)
+            .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
         )
 
         @govukButton(

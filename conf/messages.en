@@ -583,8 +583,8 @@ consolidatedExpenses.radio.legend.agent = Does your client want to claim consoli
 consolidatedExpenses.error.required.agent = Select yes if you want to claim consolidated expenses
 consolidatedExpenses.error.required.amount.individual = Enter the amount for your consolidated expenses
 consolidatedExpenses.error.required.amount.agent = Enter the amount for your client’s consolidated expenses
-consolidatedExpenses.error.nonNumeric = Enter an amount in pounds
-consolidatedExpenses.error.twoDecimalPlaces = Enter an amount in pounds
+consolidatedExpenses.error.nonNumeric = Enter an amount in pounds for your consolidated expenses
+consolidatedExpenses.error.twoDecimalPlaces = Enter an amount in pounds for your client’s consolidated expenses
 consolidatedExpenses.error.outOfRange = The figure must be between {0} and {1}
 consolidatedExpenses.change.hidden = ConsolidatedExpenses
 consolidatedExpenses.checkYourAnswersLabel = Consolidated expenses
@@ -635,6 +635,36 @@ otherProfessionalFees.error.nonNumeric.agent = Enter an amount in pounds with no
 otherProfessionalFees.error.twoDecimalPlaces.individual = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.twoDecimalPlaces.agent = Enter the legal, management or other professional fees with two decimal places
 otherProfessionalFees.error.outOfRange = Legal, management or other professional fees must be between {0} and {1}
+
+otherAllowablePropertyExpenses.title = Other allowable property expenses
+otherAllowablePropertyExpenses.heading = Other allowable property expenses
+otherAllowablePropertyExpenses.checkYourAnswersLabel = Other allowable property expenses
+otherAllowablePropertyExpenses.input.heading.individual = How much were your other allowable property expenses?
+otherAllowablePropertyExpenses.input.heading.agent = How much were your client's other allowable property expenses?
+otherAllowablePropertyExpenses.details.content.link.text.individual = What you can claim
+otherAllowablePropertyExpenses.details.content.link.text.agent = What your client can claim:
+
+otherAllowablePropertyExpenses.details.content.l1 = office costs, for example stationery or phone bills
+otherAllowablePropertyExpenses.details.content.l2 = clothing expenses, for example uniforms
+otherAllowablePropertyExpenses.details.content.l3.individual = things you buy to sell on, for example stock or raw materials
+otherAllowablePropertyExpenses.details.content.l3.agent = things they buy to sell on, for example stock or raw materials
+otherAllowablePropertyExpenses.details.content.l4 = financial costs, for example insurance or bank charges
+otherAllowablePropertyExpenses.details.content.l5.individual = costs of your business premises, for example heating, lighting, business rates
+otherAllowablePropertyExpenses.details.content.l5.agent = costs of their business premises, for example heating, lighting, business rates
+otherAllowablePropertyExpenses.details.content.l6 = advertising or marketing, for example website costs
+otherAllowablePropertyExpenses.details.content.l7.individual = training courses related to your business, for example refresher courses
+otherAllowablePropertyExpenses.details.content.l7.agent = training courses related to their business, for example refresher courses
+otherAllowablePropertyExpenses.details.link.href = https://www.gov.uk/expenses-if-youre-self-employed
+otherAllowablePropertyExpenses.details.link.text = Read more about allowable property expenses at GOV.UK (opens in new tab)
+
+
+otherAllowablePropertyExpenses.error.required.individual = Enter an amount for your other allowable property expenses
+otherAllowablePropertyExpenses.error.required.agent = Enter an amount for your client's other allowable property expenses
+otherAllowablePropertyExpenses.error.twoDecimalPlaces.individual = Enter an amount for your other allowable property expenses
+otherAllowablePropertyExpenses.error.twoDecimalPlaces.agent = Enter an amount for your client's other allowable property expenses
+otherAllowablePropertyExpenses.error.nonNumeric.individual = Enter an amount for your other allowable property expenses
+otherAllowablePropertyExpenses.error.nonNumeric.agent = Enter an amount for your client's other allowable property expenses
+otherAllowablePropertyExpenses.error.outOfRange = Amount entered must not be less than £{0} or more than £{1}
 
 costsOfServicesProvided.title = Costs of services provided, including wages
 costsOfServicesProvided.heading = Costs of services provided, including wages
@@ -722,3 +752,4 @@ rentsRatesAndInsurance.error.required.agent = Enter the amount for how much your
 rentsRatesAndInsurance.error.required.individual = Enter the amount in pounds for how much you spent on rents, rates and insurance
 rentsRatesAndInsurance.error.outOfRange = The amount should not exceed £100,000,000
 rentsRatesAndInsurance.change.hidden = RentsRatesAndInsurance
+
