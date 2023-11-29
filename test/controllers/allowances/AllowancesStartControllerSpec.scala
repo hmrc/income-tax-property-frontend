@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import base.SpecBase
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
@@ -25,7 +25,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.BusinessService
-import views.html.AllowancesStartView
+import views.html.allowances.AllowancesStartView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -73,7 +73,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.SummaryController.show(taxYear).url)
+        redirectLocation(result) mustBe Some(controllers.routes.SummaryController.show(taxYear).url)
       }
     }
   }

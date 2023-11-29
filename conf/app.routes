@@ -199,4 +199,4 @@ POST       /:taxYear/change-property-business-travel-costs                      
 
 ##### Allowances
 
-GET        /:taxYear/allowances-start                                               controllers.AllowancesStartController.onPageLoad(taxYear: Int)
+GET        /:taxYear/allowances/allowances-start                                               controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)

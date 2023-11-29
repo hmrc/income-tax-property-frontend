@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import controllers.actions._
+import controllers.routes
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.AllowancesStartView
+import views.html.allowances.AllowancesStartView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
