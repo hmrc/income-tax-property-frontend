@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Format, Json}
+import models.CapitalAllowancesForACar
+import play.api.libs.json.JsPath
 
-final case class ConsolidatedExpenses(consolidatedExpensesYesNo: Boolean, amount: Option[BigDecimal])
+case object CapitalAllowancesForACarPage extends QuestionPage[CapitalAllowancesForACar] {
 
-object ConsolidatedExpenses {
-  implicit val format: Format[ConsolidatedExpenses] = Json.format
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "capitalAllowancesForACar"
 }

@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import javax.inject.Inject
 import forms.mappings.Mappings
-import models.ConsolidatedExpenses
 import play.api.data.Form
+import models.CapitalAllowancesForACar
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
-class ConsolidatedExpensesFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[ConsolidatedExpenses] = {
+class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
+
+  val minimum = 0;
+  val maximum = 100000000;
+
+  def apply(individualOrAgent: String): Form[CapitalAllowancesForACar] = {
     Form(mapping(
-      "consolidatedExpenses" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
-      "consolidatedExpensesAmount" -> {
-        mandatoryIfTrue("consolidatedExpenses",
+      "yesNo" -> boolean(s"capitalAllowancesForACar.error.required.$individualOrAgent"),
+      "amount" -> {
+        mandatoryIfTrue("yesNo",
           currency(
-            s"consolidatedExpenses.error.required.amount.$individualOrAgent",
-            s"consolidatedExpenses.error.twoDecimalPlaces.$individualOrAgent",
-            s"consolidatedExpenses.error.nonNumeric.$individualOrAgent")
-            .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedExpenses.error.outOfRange"))
+            s"capitalAllowancesForACar.error.required.amount.$individualOrAgent",
+            "capitalAllowancesForACar.error.twoDecimalPlaces",
+            "capitalAllowancesForACar.error.nonNumeric")
+            .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "capitalAllowancesForACar.error.outOfRange"))
         )
       }
-    )(ConsolidatedExpenses.apply)(ConsolidatedExpenses.unapply))
+    )(CapitalAllowancesForACar.apply)(CapitalAllowancesForACar.unapply))
   }
 }

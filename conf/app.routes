@@ -200,3 +200,8 @@ POST       /:taxYear/change-property-business-travel-costs                      
 ##### Allowances
 
 GET        /:taxYear/allowances/allowances-start                                               controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
+
+GET        /:taxYear/allowances/capitalAllowancesForACar                                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/allowances/capitalAllowancesForACar                                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/allowances/changeCapitalAllowancesForACar                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/changeCapitalAllowancesForACar                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
