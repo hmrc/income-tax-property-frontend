@@ -791,3 +791,34 @@ capitalAllowancesForACar.error.twoDecimalPlaces = The amount spent on capital al
 capitalAllowancesForACar.error.outOfRange = The figure must be between £{0} and £{1}
 capitalAllowancesForACar.change.hidden = CapitalAllowancesForACar
 
+
+annualInvestmentAllowance.title = Annual investment allowance
+annualInvestmentAllowance.heading = Annual investment allowance
+annualInvestmentAllowance.checkYourAnswersLabel = Annual investment allowance
+annualInvestmentAllowance.input.heading.individual = How much annual investment allowance do you want to claim?
+annualInvestmentAllowance.input.heading.agent = How much annual investment allowance does your client want to claim?
+annualInvestmentAllowance.details.content.link.text= Understanding annual investment allowance (AIA)
+annualInvestmentAllowance.details.content1.individual = You can claim annual investment allowance on most plant and machinery up to £1 million.
+annualInvestmentAllowance.details.content1.agent = Your client can claim annual investment allowance on most plant and machinery up to £1 million.
+annualInvestmentAllowance.details.content2 = Plant and machinery includes:
+annualInvestmentAllowance.details.content2.l1 = items that you keep to use while running your property rental,
+annualInvestmentAllowance.details.content2.l1.subtext = including cars
+annualInvestmentAllowance.details.content2.l2 = costs of demolishing plant and machinery
+annualInvestmentAllowance.details.content2.l3 = parts of a building considered integral, known as ‘integral features’
+annualInvestmentAllowance.details.content2.l4 = some fixtures, for example fitted kitchens or bathroom suites
+annualInvestmentAllowance.details.content2.l5 = alterations to a building to install plant and machinery - this does not include repairs
+annualInvestmentAllowance.details.content3.individual = You cannot claim annual investment allowance on:
+annualInvestmentAllowance.details.content3.agent = Your client cannot claim annual investment allowance on:
+annualInvestmentAllowance.details.content.link.href = https://www.gov.uk/capital-allowances/business-cars
+annualInvestmentAllowance.details.content3.l1 = business cars
+annualInvestmentAllowance.details.content3.l2.individual = items you owned for another reason before you started using them in your business
+annualInvestmentAllowance.details.content3.l2.agent = items they owned for another reason before they started using them in their business
+annualInvestmentAllowance.details.content3.l3 = items given to you or your business
+
+annualInvestmentAllowance.error.required.individual = Enter an amount for how much annual investment allowance you want to claim
+annualInvestmentAllowance.error.required.agent = Enter an amount for how much annual investment allowance your client wants to claim
+annualInvestmentAllowance.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much annual investment allowance you want to claim
+annualInvestmentAllowance.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much annual investment allowance your client wants to claim
+annualInvestmentAllowance.error.twoDecimalPlaces.individual = Enter the annual investment allowance with two decimal places
+annualInvestmentAllowance.error.twoDecimalPlaces.agent = Enter the annual investment allowance with two decimal places
+annualInvestmentAllowance.error.outOfRange = Annual investment allowance must be between {0} and {1}
