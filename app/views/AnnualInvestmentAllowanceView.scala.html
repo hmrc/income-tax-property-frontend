@@ -71,7 +71,7 @@
         @govukInput(
             InputViewModel(
                 field = form("annualInvestmentAllowance"),
-                label = LabelViewModel(messages("annualInvestmentAllowance.heading")).asPageHeading(LabelSize.Medium)
+                label = LabelViewModel(messages(s"annualInvestmentAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
