@@ -822,3 +822,26 @@ annualInvestmentAllowance.error.nonNumeric.agent = Enter an amount in pounds wit
 annualInvestmentAllowance.error.twoDecimalPlaces.individual = Enter the annual investment allowance with two decimal places
 annualInvestmentAllowance.error.twoDecimalPlaces.agent = Enter the annual investment allowance with two decimal places
 annualInvestmentAllowance.error.outOfRange = Annual investment allowance must be between {0} and {1}
+
+electricChargePointAllowance.title = Electric charge-point allowance
+electricChargePointAllowance.heading = Electric charge-point allowance
+electricChargePointAllowance.details.content1.individual = If you have property income you can claim 100% of the cost of installing a charge-point for an electric car in the first year that you buy it.
+electricChargePointAllowance.details.content1.agent = If your client has property income they can claim 100% of the cost of installing a charge-point for an electric car in the first year that they buy it.
+electricChargePointAllowance.details.content2.text= Read more about
+electricChargePointAllowance.details.content2.lintText= first year allowances at GOV.UK (opens in new tab)
+electricChargePointAllowance.details.content.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
+electricChargePointAllowance.input.heading.individual = Did you buy and install a new electric charge-point for electrical vehicles?
+electricChargePointAllowance.input.heading.agent = Did your client buy and install a new electric charge-point for electrical vehicles?
+electricChargePointAllowance.radio.question.label.individual = How much electric charge-point allowance do you want to claim?
+electricChargePointAllowance.radio.question.label.agent = How much electric charge-point allowance does your client want to claim?
+electricChargePointAllowance.checkYourAnswersLabel = ElectricChargePointAllowance
+
+electricChargePointAllowance.error.required.individual = Select yes if you bought and installed an electric charge-point for electric vehicles
+electricChargePointAllowance.error.required.agent = Select yes if your client bought and installed an electric charge-point for electric vehicles
+electricChargePointAllowance.amount.error.required.individual = Enter an amount for how much electric charge-point allowance you want to claim
+electricChargePointAllowance.amount.error.required.agent = Enter an amount for how much electric charge-point allowance your client wants to claim
+electricChargePointAllowance.amount.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much electric charge-point allowance you want to claim
+electricChargePointAllowance.amount.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much electric charge-point allowance your client wants to claim
+electricChargePointAllowance.amount.error.twoDecimalPlaces.individual = Enter the electric charge-point allowance with two decimal places
+electricChargePointAllowance.amount.error.twoDecimalPlaces.agent = Enter the electric charge-point allowance with two decimal places
+electricChargePointAllowance.amount.error.outOfRange = Electric charge-point allowance must be between {0} and {1}

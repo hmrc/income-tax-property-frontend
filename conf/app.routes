@@ -210,3 +210,8 @@ GET        /:taxYear/annual-investment-allowance                                
 POST       /:taxYear/annual-investment-allowance                                    controllers.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/change-annual-investment-allowance                             controllers.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/change-annual-investment-allowance                             controllers.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/electric-charge-point-allowance                                controllers.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/electric-charge-point-allowance                                controllers.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-electric-charge-point-allowance                         controllers.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-electric-charge-point-allowance                         controllers.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
