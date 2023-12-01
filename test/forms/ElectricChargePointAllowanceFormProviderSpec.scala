@@ -16,12 +16,12 @@
 
 package forms
 
-import forms.behaviours.{BooleanFieldBehaviours, CurrencyFieldBehaviours}
+import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviours with BooleanFieldBehaviours {
+class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ElectricChargePointAllowanceFormProvider()("agent")
+  val form = new ElectricChargePointAllowanceFormProvider()("individual")
 
   ".yesOrNo" - {
 
@@ -30,7 +30,7 @@ class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviou
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "electricChargePointAllowance.error.required.agent")
+      requiredError = FormError(fieldName, "electricChargePointAllowance.error.required.individual")
     )
   }
 
@@ -47,6 +47,23 @@ class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviou
       form,
       fieldName,
       validDataGenerator
+    )
+
+    behave like currencyField(
+      form,
+      fieldName,
+      nonNumericError = FormError(fieldName, "electricChargePointAllowance.amount.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "electricChargePointAllowance.amount.error.twoDecimalPlaces.individual"),
+      ("yesOrNo", "true")
+    )
+
+    behave like currencyFieldWithRange(
+      form,
+      fieldName,
+      minimum = minimum,
+      maximum = maximum,
+      expectedError = FormError(fieldName, "electricChargePointAllowance.amount.error.outOfRange", Seq(minimum, maximum)),
+      ("yesOrNo", "true")
     )
   }
 }

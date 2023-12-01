@@ -23,13 +23,13 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
   def currencyField(form: Form[_],
                     fieldName: String,
                     nonNumericError: FormError,
-                    twoDecimalPlacesError: FormError): Unit = {
+                    twoDecimalPlacesError: FormError, defaultFields: (String, String)*): Unit = {
 
     "not bind non-numeric numbers" in {
 
       forAll(nonNumerics -> "nonNumeric") {
         nonNumeric =>
-          val result = form.bind(Map(fieldName -> nonNumeric)).apply(fieldName)
+          val result = form.bind(Map(fieldName -> nonNumeric) concat defaultFields).apply(fieldName)
           result.errors must contain only nonNumericError
       }
     }
@@ -38,7 +38,7 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
 
       forAll(decimalsNotTwoDecimalPlaces -> "decimal") {
         decimal =>
-          val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
+          val result = form.bind(Map(fieldName -> decimal) concat defaultFields).apply(fieldName)
           result.errors must contain only twoDecimalPlacesError
       }
     }
@@ -49,15 +49,15 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
                              fieldName: String,
                              minimum: Int,
                              maximum: Int,
-                             expectedError: FormError): Unit = {
+                             expectedError: FormError, defaultFields: (String, String)*): Unit = {
 
     s"not bind decimals outside under $minimum" in {
-      val result = form.bind(Map(fieldName -> (minimum - 1).toString)).apply(fieldName)
+      val result = form.bind(Map(fieldName -> (minimum - 1).toString) concat defaultFields).apply(fieldName)
       result.errors must contain only expectedError
     }
 
     s"not bind decimals outside above $maximum" in {
-      val result = form.bind(Map(fieldName -> (maximum + 1).toString)).apply(fieldName)
+      val result = form.bind(Map(fieldName -> (maximum + 1).toString) concat defaultFields).apply(fieldName)
       result.errors must contain only expectedError
     }
   }
