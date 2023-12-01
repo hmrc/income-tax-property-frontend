@@ -253,6 +253,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {
+        navigator.nextPage(
+          AnnualInvestmentAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
 
     "in Check mode" - {
