@@ -201,7 +201,7 @@ POST       /:taxYear/change-property-business-travel-costs                      
 
 GET        /:taxYear/allowances/allowances-start                                               controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
 
-GET        /:taxYear/allowances/capitalAllowancesForACar                                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/allowances/capitalAllowancesForACar                                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/changeCapitalAllowancesForACar                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/changeCapitalAllowancesForACar                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/allowances/capital-Allowances-For-A-Car                                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/allowances/capital-Allowances-For-A-Car                                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/allowances/change-Capital-Allowances-For-A-Car                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/change-Capital-Allowances-For-A-Car                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
