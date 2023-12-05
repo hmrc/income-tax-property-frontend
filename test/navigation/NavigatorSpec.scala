@@ -29,7 +29,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
 import java.time.LocalDate
@@ -234,7 +234,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+        ) mustBe controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
 
@@ -248,29 +248,29 @@ class NavigatorSpec extends SpecBase {
       "must go from RepairsAndMaintenanceCostsPage to LoanInterestPage" in {
         navigator.nextPage(
           RepairsAndMaintenanceCostsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.LoanInterestController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.LoanInterestController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
         navigator.nextPage(
           LoanInterestPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
       }
       "must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage" in {
         navigator.nextPage(
           OtherProfessionalFeesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
       }
       "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
         navigator.nextPage(
           CostsOfServicesProvidedPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage" in {
         navigator.nextPage(
           PropertyBusinessTravelCostsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {

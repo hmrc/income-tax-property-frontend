@@ -31,6 +31,7 @@ import play.api.mvc.Call
 import pages.adjustments._
 import pages.allowances._
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherAllowablePropertyExpensesPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 
 import javax.inject.{Inject, Singleton}
 

@@ -41,7 +41,7 @@ class SummaryPageSpec extends SpecBase {
       "income_link"
     )
     val expenseListItem = TaskListItem("summary.expenses",
-      controllers.routes.ExpensesStartController.onPageLoad(taxYear),
+      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "expenses_link"
     )
