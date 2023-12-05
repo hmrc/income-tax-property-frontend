@@ -16,13 +16,32 @@
 
 package pages.propertyrentals.expenses
 
-import models.ConsolidatedExpenses
+import models.{ConsolidatedExpenses, UserAnswers}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "consolidatedExpenses"
+
+  override def cleanup(value: Option[ConsolidatedExpenses], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value.map {
+      case ConsolidatedExpenses(false, _) => super.cleanup(value, userAnswers)
+
+      case ConsolidatedExpenses(true, _) =>
+        for {
+          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage)
+          rAMC <- userAnswers.remove(RepairsAndMaintenanceCostsPage)
+          cOSP <- userAnswers.remove(CostsOfServicesProvidedPage)
+          lI <- userAnswers.remove(LoanInterestPage)
+          pBTC <- userAnswers.remove(PropertyBusinessTravelCostsPage)
+          oPF <- userAnswers.remove(OtherProfessionalFeesPage)
+          oAPE <- userAnswers.remove(OtherAllowablePropertyExpensesPage)
+        } yield oAPE
+    }.getOrElse(super.cleanup(value, userAnswers))
+  }
 }
