@@ -17,10 +17,12 @@
 package controllers.propertyrentals.expenses
 
 import controllers.actions._
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.propertyrentals.expenses.ConsolidatedExpensesSummary
+import viewmodels.checkAnswers.propertyrentals.expenses._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
 
@@ -38,11 +40,22 @@ class ExpensesCheckYourAnswersController @Inject()(
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val list = SummaryListViewModel(
-        rows = Seq(
+      val rows: Seq[SummaryListRow] = if
+      (request.userAnswers.get(ConsolidatedExpensesPage).map(expenses => expenses.consolidatedExpenses).get)
+        Seq(
           ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)
+        ).flatten else  Seq(
+        ConsolidatedExpensesSummary.row(taxYear, request.userAnswers),
+        RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
+        RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
+        LoanInterestSummary.row(taxYear, request.userAnswers),
+        OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
+        CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
+        PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
+        OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten
-      )
+
+      val list = SummaryListViewModel(rows = rows)
 
       Ok(view(list, taxYear))
   }
