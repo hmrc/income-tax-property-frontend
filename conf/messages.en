@@ -213,11 +213,11 @@ premiumsGrantLease.line1.agent = You can work out your client’s taxable amount
 premiumsGrantLease.line2.part1 = Taxable amount =
 premiumsGrantLease.line2.part2 =  P
 premiumsGrantLease.line2.part3 =  x ((50 -
-premiumsGrantLease.line2.part4 = Y
+premiumsGrantLease.line2.part4 =  Y
 premiumsGrantLease.line2.part5 = ) / 50)
-premiumsGrantLease.line3.part1 = P
+premiumsGrantLease.line3.part1 =  P
 premiumsGrantLease.line3.part2 =  is the amount of the premium.
-premiumsGrantLease.line4.part1 = Y
+premiumsGrantLease.line4.part1 =  Y
 premiumsGrantLease.line4.part2 =  is the number of complete periods of 12 months (other than the first) for the length of the lease.
 premiumsGrantLease.calculation.subHeading = Your calculation:
 premiumsGrantLease.calculation.premium = Premium: £{0}

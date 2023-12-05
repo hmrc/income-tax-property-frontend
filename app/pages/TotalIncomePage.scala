@@ -18,6 +18,8 @@ package pages
 
 import models.TotalIncome.{Between, Over}
 import models.{TotalIncome, UserAnswers}
+import models.TotalIncome.Over
+import models.{ConsolidatedExpenses, TotalIncome, UserAnswers}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -28,10 +30,18 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
   override def toString: String = "totalIncome"
 
-  override def cleanup(value: Option[TotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value.map {
-      case Between | Over => userAnswers.remove(ReportPropertyIncomePage)
-      case _ => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))
+  override def cleanup(totalIncome: Option[TotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
+
+    val updatedUserAnswers = totalIncome.filter(income => income == Between || income == Over)
+      .map(_ => userAnswers.remove(ReportPropertyIncomePage))
+      .getOrElse(super.cleanup(totalIncome, userAnswers))
+
+    totalIncome match {
+      case Some(Over) => for {
+        consolidatedExpensesPage <- updatedUserAnswers.get.set(ConsolidatedExpensesPage, ConsolidatedExpenses(consolidatedExpensesYesNo = false, None))
+      } yield consolidatedExpensesPage
+      case _ => super.cleanup(totalIncome, userAnswers)
+    }
   }
+
 }

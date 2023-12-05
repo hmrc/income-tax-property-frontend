@@ -71,6 +71,7 @@ class Navigator @Inject()() {
     case CostsOfServicesProvidedPage => taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
     case PropertyBusinessTravelCostsPage => taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
     case AnnualInvestmentAllowancePage => taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+
     // allowances
     case CapitalAllowancesForACarPage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case AnnualInvestmentAllowancePage => taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
@@ -78,8 +79,12 @@ class Navigator @Inject()() {
     case ZeroEmissionCarAllowancePage => taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode)
     case ZeroEmissionGoodsVehicleAllowancePage => taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
     case BusinessPremisesRenovationPage => taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
+<<<<<<< HEAD
     case ReplacementOfDomesticGoodsPage => taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode)
     case OtherCapitalAllowancePage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+=======
+    case OtherAllowablePropertyExpensesPage => taxYear => _ => _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+>>>>>>> 38e07fa (fixes)
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -106,13 +111,17 @@ class Navigator @Inject()() {
     case BalancingChargePage => taxYear => previousUserAnswers => userAnswers =>
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     // expenses
-    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+//    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     // Allowances
     case CapitalAllowancesForACarPage | AnnualInvestmentAllowancePage | ElectricChargePointAllowancePage |
          ZeroEmissionCarAllowancePage | ZeroEmissionGoodsVehicleAllowancePage | BusinessPremisesRenovationPage |
          ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
-    case _ => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
+    // Expenses
+    case ConsolidatedExpensesPage | RentsRatesAndInsurancePage | RepairsAndMaintenanceCostsPage |
+      LoanInterestPage | OtherProfessionalFeesPage | CostsOfServicesProvidedPage |  PropertyBusinessTravelCostsPage |
+         OtherAllowablePropertyExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = mode match {
