@@ -19,14 +19,14 @@ package service
 import connectors.BusinessConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.{Over, Under}
-import models.{BalancingCharge, User, UserAnswers}
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
+import models.{BalancingCharge, User, UserAnswers}
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.adjustments.BalancingChargePage
-import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, TotalIncomePage}
+import pages.{IncomeFromPropertyRentalsPage, TotalIncomePage}
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier

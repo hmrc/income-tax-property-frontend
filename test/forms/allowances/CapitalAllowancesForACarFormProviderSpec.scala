@@ -16,11 +16,11 @@
 
 package forms.allowances
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.FieldBehaviours
 import models.CapitalAllowancesForACar
 import play.api.data.FormError
 
-class CapitalAllowancesForACarFormProviderSpec extends BooleanFieldBehaviours {
+class CapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
 
   val requiredKey = "capitalAllowancesForACar.error.required.individual"
   val invalidKey = "error.boolean"

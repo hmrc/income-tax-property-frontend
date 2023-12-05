@@ -203,5 +203,5 @@ GET        /:taxYear/allowances/allowances-start                                
 
 GET        /:taxYear/allowances/capital-allowances-for-a-car                                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/allowances/capital-allowances-for-a-car                                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/change-Capital-Allowances-For-A-Car                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/change-Capital-Allowances-For-A-Car                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/allowances/change-capital-allowances-for-a-car                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/change-capital-allowances-for-a-car                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
