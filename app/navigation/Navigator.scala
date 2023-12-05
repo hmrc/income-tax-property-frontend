@@ -25,8 +25,10 @@ import controllers.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
+import pages.adjustments._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
+import pages.propertyrentals.expenses._
 import play.api.mvc.Call
 import pages.adjustments._
 import pages.allowances._
@@ -173,6 +175,12 @@ class Navigator @Inject()() {
     userAnswers.get(ConsolidatedExpensesPage) match {
       case Some(ConsolidatedExpenses(true, _)) => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def consolidatedExpensesNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
+    (userAnswers.get(ConsolidatedExpensesPage), previousUserAnswers.get(ConsolidatedExpensesPage)) match {
+      case (Some(current), _) if current.consolidatedExpenses => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      case (Some(current), Some(previous)) if previous.consolidatedExpenses && !current.consolidatedExpenses =>RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode)
     }
 
   private def balancingChargeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =

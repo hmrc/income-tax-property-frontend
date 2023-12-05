@@ -28,7 +28,7 @@ case object PremiumsGrantLeasePage extends QuestionPage[BigDecimal] {
   override def toString: String = "premiumsGrantLease"
 
   def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal =
-    premiumAmount*(BigDecimal(50-minusOne(periods))/50).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    (premiumAmount*(BigDecimal(50-minusOne(periods))/50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
 
   def minusOne(periods: Int): Int = periods - 1
 }
