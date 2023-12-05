@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import forms.mappings.Mappings
 import models.ElectricChargePointAllowance
-
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
+
+import javax.inject.Inject
 
 class ElectricChargePointAllowanceFormProvider @Inject() extends Mappings {
   val minimum = 0;

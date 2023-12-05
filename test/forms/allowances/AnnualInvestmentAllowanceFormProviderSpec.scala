@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
+class AnnualInvestmentAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ElectricChargePointAllowanceFormProvider()("individual")
+  val form = new AnnualInvestmentAllowanceFormProvider()("individual")
 
-  ".yesOrNo" - {
+  ".annualInvestmentAllowance" - {
 
-    val fieldName = "yesOrNo"
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, "electricChargePointAllowance.error.required.individual")
-    )
-  }
-
-  ".electricChargePointAllowance" - {
-
-    val fieldName = "allowance"
+    val fieldName = "annualInvestmentAllowance"
 
     val minimum = 0
     val maximum = 100000000
@@ -52,9 +41,8 @@ class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviou
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "electricChargePointAllowance.amount.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "electricChargePointAllowance.amount.error.twoDecimalPlaces.individual"),
-      ("yesOrNo", "true")
+      nonNumericError = FormError(fieldName, "annualInvestmentAllowance.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "annualInvestmentAllowance.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
@@ -62,8 +50,13 @@ class ElectricChargePointAllowanceFormProviderSpec extends CurrencyFieldBehaviou
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "electricChargePointAllowance.amount.error.outOfRange", Seq(minimum, maximum)),
-      ("yesOrNo", "true")
+      expectedError = FormError(fieldName, "annualInvestmentAllowance.error.outOfRange", Seq(minimum, maximum))
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, "annualInvestmentAllowance.error.required.individual")
     )
   }
 }

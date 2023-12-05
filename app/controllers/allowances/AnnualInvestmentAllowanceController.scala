@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import controllers.actions._
-import forms.AnnualInvestmentAllowanceFormProvider
-import javax.inject.Inject
+import forms.allowances.AnnualInvestmentAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.AnnualInvestmentAllowancePage
+import pages.allowances.AnnualInvestmentAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.AnnualInvestmentAllowanceView
+import views.html.allowances.AnnualInvestmentAllowanceView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AnnualInvestmentAllowanceController @Inject()(

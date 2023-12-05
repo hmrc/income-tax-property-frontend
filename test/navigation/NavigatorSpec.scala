@@ -21,10 +21,12 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
+import controllers.allowances.routes._
 import controllers.routes
 import models._
 import pages._
 import pages.adjustments._
+import pages.allowances.AnnualInvestmentAllowancePage
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -256,7 +258,7 @@ class NavigatorSpec extends SpecBase {
       "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {
         navigator.nextPage(
           AnnualInvestmentAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+        ) mustBe ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
       }
 
     }

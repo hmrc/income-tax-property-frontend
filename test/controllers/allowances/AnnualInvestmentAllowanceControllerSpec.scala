@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import base.SpecBase
-import forms.AnnualInvestmentAllowanceFormProvider
+import controllers.allowances.routes
+import forms.allowances.AnnualInvestmentAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AnnualInvestmentAllowancePage
+import pages.allowances.AnnualInvestmentAllowancePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.AnnualInvestmentAllowanceView
+import views.html.allowances.AnnualInvestmentAllowanceView
 
 import scala.concurrent.Future
 
@@ -139,7 +140,7 @@ class AnnualInvestmentAllowanceControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -156,7 +157,7 @@ class AnnualInvestmentAllowanceControllerSpec extends SpecBase with MockitoSugar
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

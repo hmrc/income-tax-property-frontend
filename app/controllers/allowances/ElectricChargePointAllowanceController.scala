@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import controllers.actions._
-import forms.ElectricChargePointAllowanceFormProvider
-import javax.inject.Inject
+import forms.allowances.ElectricChargePointAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ElectricChargePointAllowancePage
+import pages.allowances.ElectricChargePointAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ElectricChargePointAllowanceView
+import views.html.allowances.ElectricChargePointAllowanceView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ElectricChargePointAllowanceController @Inject()(

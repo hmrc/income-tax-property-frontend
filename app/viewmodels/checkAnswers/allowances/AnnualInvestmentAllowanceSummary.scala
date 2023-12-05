@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.allowances
 
-import controllers.routes
+import controllers.allowances.routes
 import models.{CheckMode, UserAnswers}
-import pages.ElectricChargePointAllowancePage
+import pages.allowances.AnnualInvestmentAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ElectricChargePointAllowanceSummary  {
+object AnnualInvestmentAllowanceSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ElectricChargePointAllowancePage).map {
+    answers.get(AnnualInvestmentAllowancePage).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "electricChargePointAllowance.checkYourAnswersLabel",
+          key     = "annualInvestmentAllowance.checkYourAnswersLabel",
           value   = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("electricChargePointAllowance.change.hidden"))
+            ActionItemViewModel("site.change", routes.AnnualInvestmentAllowanceController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("annualInvestmentAllowance.change.hidden"))
           )
         )
     }

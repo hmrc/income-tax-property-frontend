@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.allowances
 
 import models.ElectricChargePointAllowance
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ElectricChargePointAllowancePage extends QuestionPage[ElectricChargePointAllowance] {

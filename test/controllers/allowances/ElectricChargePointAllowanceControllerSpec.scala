@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import base.SpecBase
-import forms.ElectricChargePointAllowanceFormProvider
+import controllers.allowances.routes
+import forms.allowances.ElectricChargePointAllowanceFormProvider
 import models.{ElectricChargePointAllowance, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ElectricChargePointAllowancePage
+import pages.allowances.ElectricChargePointAllowancePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ElectricChargePointAllowanceView
+import views.html.allowances.ElectricChargePointAllowanceView
 
 import scala.concurrent.Future
 
@@ -139,7 +140,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -156,7 +157,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
