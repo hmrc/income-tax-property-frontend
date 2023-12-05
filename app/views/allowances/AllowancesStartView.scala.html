@@ -14,36 +14,38 @@
  * limitations under the License.
  *@
 
+@import viewmodels.AllowancesStartPage
+
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(taxYear: Int, individualOrAgent: String, cashOrAccruals: Boolean, cashOrAccrualsMessage: String, cashOrAccrualsNextPage: String)(implicit request: Request[_], messages: Messages)
+@(page: AllowancesStartPage)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = titleNoForm(messages("allowancesStart.title"))) {
+@layout(pageTitle = titleNoForm(messages("allowancesStart.title"))) {
 
-        <h1 class="govuk-heading-l">@messages("allowancesStart.heading")</h1>
-        <p class="govuk-body">@messages(s"allowancesStart.details.content1.$individualOrAgent")</p>
-        <p class="govuk-body">@messages(s"allowancesStart.details.content2.$individualOrAgent") @messages(cashOrAccrualsMessage)</p>
-        <p class="govuk-body">@messages(s"allowancesStart.details.content3.$individualOrAgent")</p>
+    <h1 class="govuk-heading-l">@messages("allowancesStart.heading")</h1>
+    <p class="govuk-body">@messages(s"allowancesStart.details.content1.${page.individualOrAgent}")</p>
+    <p class="govuk-body">@messages(s"allowancesStart.details.content2.${page.individualOrAgent}") @messages(page.cashOrAccrualsMessageKey)</p>
+    <p class="govuk-body">@messages(s"allowancesStart.details.content3.${page.individualOrAgent}")</p>
 
-        <ul id="list" class="govuk-list govuk-list--bullet" >
-        @if(cashOrAccruals) {
-            <li>@messages("allowancesStart.details.content.l1")</li>
-            <li>@messages("allowancesStart.details.content.l2")</li>
-            <li>@messages("allowancesStart.details.content.l3")</li>
-            <li>@messages("allowancesStart.details.content.l4")</li>
-            <li>@messages("allowancesStart.details.content.l5")</li>
-            <li>@messages("allowancesStart.details.content.l6")</li>
-        } else {
-            <li>@messages("allowancesStart.details.content.l7")</li>
-        }
-        </ul>
-
-        @govukButton(
-            ButtonViewModel(messages("site.continue"))
-            .asLink(cashOrAccrualsNextPage)
-            .withId("continue")
-        )
+    <ul id="list" class="govuk-list govuk-list--bullet" >
+    @if(page.cashOrAccruals) {
+        <li>@messages("allowancesStart.details.content.l1")</li>
+        <li>@messages("allowancesStart.details.content.l2")</li>
+        <li>@messages("allowancesStart.details.content.l3")</li>
+        <li>@messages("allowancesStart.details.content.l4")</li>
+        <li>@messages("allowancesStart.details.content.l5")</li>
+        <li>@messages("allowancesStart.details.content.l6")</li>
+    } else {
+        <li>@messages("allowancesStart.details.content.l7")</li>
     }
+    </ul>
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+        .asLink(page.nextPageUrl)
+        .withId("continue")
+    )
+}
