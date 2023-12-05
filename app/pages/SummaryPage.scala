@@ -37,7 +37,7 @@ case object SummaryPage {
     )
     val propertyRentalsExpenses: TaskListItem = TaskListItem("summary.expenses",
       controllers.routes.ExpensesStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "expenses_link"
     )
     val propertyAllowances: TaskListItem = TaskListItem("summary.allowances",
