@@ -44,7 +44,7 @@ class AllowancesStartController @Inject()(
           val propertyData = businessDetails.propertyData.find(existsUkProperty).get
           val cashOrAccrualsMessage = if (propertyData.cashOrAccruals.get) "businessDetails.accruals" else "businessDetails.cash"
           val cashOrAccrualsNextPage = if (propertyData.cashOrAccruals.get) {
-            controllers.routes.SummaryController.show(taxYear).url
+            controllers.allowances.routes.AnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode).url
           } else {
             controllers.allowances.routes.CapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode).url
           }

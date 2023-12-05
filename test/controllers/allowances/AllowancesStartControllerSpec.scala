@@ -35,7 +35,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
   "AllowancesStart Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
 
       val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
       val businessDetails = BusinessDetails(List(propertyDetails))
@@ -57,6 +57,31 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(taxYear, "agent",  cashOrAccruals = false, "businessDetails.cash",
           "/update-and-submit-income-tax-return/property/2023/allowances/capital-allowances-for-a-car")(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
+
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(true))
+      val businessDetails = BusinessDetails(List(propertyDetails))
+
+      val businessService = mock[BusinessService]
+
+      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(bind[BusinessService].toInstance(businessService)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AllowancesStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(taxYear, "agent", cashOrAccruals = true, "businessDetails.accruals",
+          "/update-and-submit-income-tax-return/property/2023/allowances/annual-investment-allowance")(request, messages(application)).toString
       }
     }
 
