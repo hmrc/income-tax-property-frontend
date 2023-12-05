@@ -25,6 +25,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.BusinessService
+import viewmodels.AllowancesStartPage
 import views.html.allowances.AllowancesStartView
 
 import java.time.LocalDate
@@ -55,8 +56,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent",  cashOrAccruals = false, "businessDetails.cash",
-          "/update-and-submit-income-tax-return/property/2023/allowances/capital-allowances-for-a-car")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false))(request, messages(application)).toString
       }
     }
 
@@ -80,8 +80,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", cashOrAccruals = true, "businessDetails.accruals",
-          "/update-and-submit-income-tax-return/property/2023/allowances/annual-investment-allowance")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true))(request, messages(application)).toString
       }
     }
 
