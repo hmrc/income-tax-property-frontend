@@ -19,7 +19,7 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, individualOrAgent: String, cashOrAccruals: Boolean, cashOrAccrualsMessage: String)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, individualOrAgent: String, cashOrAccruals: Boolean, cashOrAccrualsMessage: String, cashOrAccrualsNextPage: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("allowancesStart.title"))) {
 
@@ -43,7 +43,7 @@
 
         @govukButton(
             ButtonViewModel(messages("site.continue"))
-            .asLink(controllers.routes.SummaryController.show(taxYear).url)
+            .asLink(cashOrAccrualsNextPage)
             .withId("continue")
         )
     }

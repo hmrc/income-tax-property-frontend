@@ -55,7 +55,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", cashOrAccruals = false, "businessDetails.cash")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent",  cashOrAccruals = false, "businessDetails.cash",
+          "/update-and-submit-income-tax-return/property/2023/allowances/capital-allowances-for-a-car")(request, messages(application)).toString
       }
     }
 
