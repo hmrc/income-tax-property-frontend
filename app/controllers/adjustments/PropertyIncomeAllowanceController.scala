@@ -19,6 +19,7 @@ package controllers.adjustments
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
 import models.Mode
+import models.TotalIncomeUtils.maxPropertyIncomeAllowanceCombined
 import navigation.Navigator
 import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -40,13 +41,12 @@ class PropertyIncomeAllowanceController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: PropertyIncomeAllowanceFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        businessService: BusinessService,
                                         view: PropertyIncomeAllowanceView)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, businessService.maxPropertyIncomeAllowanceCombined(request.userAnswers))
+      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
       val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -57,7 +57,7 @@ class PropertyIncomeAllowanceController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, businessService.maxPropertyIncomeAllowanceCombined(request.userAnswers))
+      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
 
       form.bindFromRequest().fold(
         formWithErrors =>

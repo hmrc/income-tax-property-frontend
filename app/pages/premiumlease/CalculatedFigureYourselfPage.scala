@@ -16,8 +16,10 @@
 
 package pages
 
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CalculatedFigureYourself, UserAnswers}
 import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -31,11 +33,13 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
   override def cleanup(value: Option[CalculatedFigureYourself], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
       case CalculatedFigureYourself(false, _)  => super.cleanup(value, userAnswers)
-      case CalculatedFigureYourself(true, _) =>
+      case CalculatedFigureYourself(true, amount) =>
         for {
           rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
           yLAP <- rGLAP.remove(YearLeaseAmountPage)
           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
-        } yield pGLP
+          if isTotalIncomeUnder85K(userAnswers) && (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpenses))
+          cE <- pGLP.remove(ConsolidatedExpensesPage)
+        } yield cE
     }.getOrElse(super.cleanup(value, userAnswers))
 }

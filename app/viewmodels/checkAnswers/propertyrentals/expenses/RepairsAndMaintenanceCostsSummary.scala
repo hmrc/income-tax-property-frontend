@@ -28,16 +28,16 @@ object RepairsAndMaintenanceCostsSummary {
   import viewmodels.implicits._
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RepairsAndMaintenanceCostsPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
+    answers.get(RepairsAndMaintenanceCostsPage) match {
+      case Some(answer) =>
+        Some(SummaryListRowViewModel(
           key = "RepairsAndMaintenanceCosts.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("RepairsAndMaintenanceCosts.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
 }

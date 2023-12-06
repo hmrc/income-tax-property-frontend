@@ -28,16 +28,16 @@ import viewmodels.implicits._
 object OtherProfessionalFeesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherProfessionalFeesPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
+    answers.get(OtherProfessionalFeesPage) match {
+      case Some(answer) =>
+        Some(SummaryListRowViewModel(
           key = "otherProfessionalFees.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.OtherProfessionalFeesController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("otherProfessionalFees.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
 }

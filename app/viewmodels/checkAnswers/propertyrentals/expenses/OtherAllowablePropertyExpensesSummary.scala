@@ -28,16 +28,17 @@ import viewmodels.implicits._
 object OtherAllowablePropertyExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherAllowablePropertyExpensesPage).map {
-      answer =>
-
+    answers.get(OtherAllowablePropertyExpensesPage) match {
+      case Some(answer) =>
+      Some(
         SummaryListRowViewModel(
           key = "otherAllowablePropertyExpenses.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("otherAllowablePropertyExpenses.change.hidden"))
-          )
+          ))
         )
+      case _ => Option.empty[SummaryListRow]
     }
 }

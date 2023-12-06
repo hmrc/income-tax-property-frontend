@@ -17,7 +17,7 @@
 package controllers.propertyrentals.expenses
 
 import base.SpecBase
-import controllers.routes
+import controllers.propertyrentals.expenses.routes._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
@@ -35,7 +35,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFl
       val taxYear = 2023
       running(application) {
 
-        val request = FakeRequest(GET, controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -50,7 +50,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFl
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 

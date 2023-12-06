@@ -27,16 +27,16 @@ import viewmodels.implicits._
 object LoanInterestSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LoanInterestPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
+    answers.get(LoanInterestPage)match {
+      case Some(answer) =>
+        Some(SummaryListRowViewModel(
           key = "loanInterest.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.LoanInterestController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("loanInterest.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
 }

@@ -28,9 +28,9 @@ import viewmodels.implicits._
 object PropertyBusinessTravelCostsSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PropertyBusinessTravelCostsPage).map {
-      answer =>
-
+    answers.get(PropertyBusinessTravelCostsPage)match {
+      case Some(answer) =>
+      Some(
         SummaryListRowViewModel(
           key = "propertyBusinessTravelCosts.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
@@ -38,6 +38,7 @@ object PropertyBusinessTravelCostsSummary {
             ActionItemViewModel("site.change", routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("propertyBusinessTravelCosts.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
 }

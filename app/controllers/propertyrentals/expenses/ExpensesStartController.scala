@@ -23,6 +23,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import controllers.routes
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import views.html.propertyrentals.expenses.ExpensesStartView
 
 import javax.inject.Inject
@@ -33,19 +34,17 @@ class ExpensesStartController @Inject()(
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
-                                         businessService: BusinessService,
                                          view: ExpensesStartView
                                        ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val isTotalIncomeUnder85K = businessService.isTotalIncomeUnder85K(request.userAnswers)
-      val under85KUrl = if (isTotalIncomeUnder85K) {
+      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers)) {
         controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
       }
       else {
         routes.SummaryController.show(taxYear).url
       }
-      Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K, under85KUrl))
+      Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers), under85KUrl))
   }
 }
