@@ -39,7 +39,7 @@ object TotalIncomeUtils {
       case Some(_) =>
         totalIncome(userAnswers) < BigDecimal(totalIncomeCapped)
       case None =>
-        val userSelectedIncome = userAnswers.get(TotalIncomePage).get
+        val userSelectedIncome = userAnswers.get(TotalIncomePage).getOrElse(0)
         userSelectedIncome == Under || userSelectedIncome == Between
     }
   }

@@ -34,12 +34,17 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
     value.map {
       case CalculatedFigureYourself(false, _)  => super.cleanup(value, userAnswers)
       case CalculatedFigureYourself(true, amount) =>
+        if (!isTotalIncomeUnder85K(userAnswers) && userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpenses))
+          for {
+            rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+            yLAP <- rGLAP.remove(YearLeaseAmountPage)
+            pGLP <- yLAP.remove(PremiumsGrantLeasePage)
+            cE <- pGLP.remove(ConsolidatedExpensesPage)
+          } yield cE else
         for {
           rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
           yLAP <- rGLAP.remove(YearLeaseAmountPage)
           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
-          if isTotalIncomeUnder85K(userAnswers) && (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpenses))
-          cE <- pGLP.remove(ConsolidatedExpensesPage)
-        } yield cE
+        } yield pGLP
     }.getOrElse(super.cleanup(value, userAnswers))
 }
