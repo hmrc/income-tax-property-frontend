@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package forms.allowances
+package forms
 
 import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
 
-import javax.inject.Inject
-
-class ZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
+class ZeroEmissionGoodsVehicleAllowanceFormProvider @Inject() extends Mappings {
 
   val minimum = 0;
   val maximum = 100000000;
-
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "amount" -> currency(
-        s"zeroEmissionCarAllowance.error.required.${individualOrAgent}",
-        "zeroEmissionCarAllowance.error.twoDecimalPlaces",
-        s"zeroEmissionCarAllowance.error.nonNumeric.${individualOrAgent}")
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "zeroEmissionCarAllowance.error.outOfRange"))
+      "value" -> currency(
+        "zeroEmissionGoodsVehicleAllowance.error.required",
+        "zeroEmissionGoodsVehicleAllowance.error.wholeNumber",
+        "zeroEmissionGoodsVehicleAllowance.error.nonNumeric")
+          .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "zeroEmissionGoodsVehicleAllowance.error.outOfRange"))
     )
 }

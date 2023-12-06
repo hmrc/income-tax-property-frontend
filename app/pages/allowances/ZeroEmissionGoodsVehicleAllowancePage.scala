@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.allowances
+
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
 import play.api.libs.json.JsPath
 
-case object ZeroEmissionCarAllowancePage extends QuestionPage[Int] {
+case object ZeroEmissionGoodsVehicleAllowancePage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "zeroEmissionCarAllowance"
+  override def toString: String = "zeroEmissionGoodsVehicleAllowance"
 }

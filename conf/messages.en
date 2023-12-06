@@ -857,9 +857,17 @@ zeroEmissionCarAllowance.details.link.text = Read more about first year allowanc
 
 zeroEmissionCarAllowance.error.required.individual = Enter the amount you want to claim for zero-emission car allowance
 zeroEmissionCarAllowance.error.required.agent = Enter an amount for how much your client wants to claim for zero-emission car allowance
-zeroEmissionCarAllowance.error.twoDecimalPlaces.individual = The claim for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
-zeroEmissionCarAllowance.error.twoDecimalPlaces.agent = The claim for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
+zeroEmissionCarAllowance.error.twoDecimalPlaces = The claim for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
 zeroEmissionCarAllowance.error.nonNumeric.individual = Enter the amount you want to claim for zero-emission car allowance
 zeroEmissionCarAllowance.error.nonNumeric.agent = Enter an amount for how much your client wants to claim for zero-emission car allowance
 zeroEmissionCarAllowance.error.outOfRange = Amount entered must not be less than £{0} or more than £{1}
 
+
+zeroEmissionGoodsVehicleAllowance.title = ZeroEmissionGoodsVehicleAllowance
+zeroEmissionGoodsVehicleAllowance.heading = ZeroEmissionGoodsVehicleAllowance
+zeroEmissionGoodsVehicleAllowance.checkYourAnswersLabel = ZeroEmissionGoodsVehicleAllowance
+zeroEmissionGoodsVehicleAllowance.error.nonNumeric = Enter your zeroEmissionGoodsVehicleAllowance using numbers
+zeroEmissionGoodsVehicleAllowance.error.required = Enter your zeroEmissionGoodsVehicleAllowance
+zeroEmissionGoodsVehicleAllowance.error.wholeNumber = Enter your zeroEmissionGoodsVehicleAllowance using whole numbers
+zeroEmissionGoodsVehicleAllowance.error.outOfRange = ZeroEmissionGoodsVehicleAllowance must be between {0} and {1}
+zeroEmissionGoodsVehicleAllowance.change.hidden = ZeroEmissionGoodsVehicleAllowance

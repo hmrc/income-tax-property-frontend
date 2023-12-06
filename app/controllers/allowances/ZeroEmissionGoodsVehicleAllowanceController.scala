@@ -17,36 +17,37 @@
 package controllers.allowances
 
 import controllers.actions._
-import forms.allowances.ZeroEmissionCarAllowanceFormProvider
+import forms.ZeroEmissionGoodsVehicleAllowanceFormProvider
+import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.allowances.ZeroEmissionCarAllowancePage
+import pages.allowances.ZeroEmissionGoodsVehicleAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.allowances.ZeroEmissionCarAllowanceView
+import views.html.allowances.ZeroEmissionGoodsVehicleAllowanceView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ZeroEmissionCarAllowanceController @Inject()(
+class ZeroEmissionGoodsVehicleAllowanceController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: ZeroEmissionCarAllowanceFormProvider,
+                                        formProvider: ZeroEmissionGoodsVehicleAllowanceFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ZeroEmissionCarAllowanceView
+                                        view: ZeroEmissionGoodsVehicleAllowanceView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
 
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ZeroEmissionCarAllowancePage) match {
+      val preparedForm = request.userAnswers.get(ZeroEmissionGoodsVehicleAllowancePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -63,9 +64,9 @@ class ZeroEmissionCarAllowanceController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionCarAllowancePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionGoodsVehicleAllowancePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ZeroEmissionCarAllowancePage, taxYear: Int, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ZeroEmissionGoodsVehicleAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

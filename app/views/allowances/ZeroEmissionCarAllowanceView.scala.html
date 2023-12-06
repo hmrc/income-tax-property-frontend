@@ -42,19 +42,12 @@ govukButton: GovukButton
 <details class="govuk-details" data-module="govuk-details">
     <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
-                @messages(s"zeroEmissionCarAllowance.details.content.link.text.$individualOrAgent")
+                @messages(s"zeroEmissionCarAllowance.details.content.link.text")
                 </span>
     </summary>
     <div class="govuk-details__text">
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("zeroEmissionCarAllowance.details.content.l1")</li>
-            <li>@messages("zeroEmissionCarAllowance.details.content.l2")</li>
-            <li>@messages(s"zeroEmissionCarAllowance.details.content.l3.$individualOrAgent")</li>
-            <li>@messages("zeroEmissionCarAllowance.details.content.l4")</li>
-            <li>@messages(s"zeroEmissionCarAllowance.details.content.l5.$individualOrAgent")</li>
-            <li>@messages("zeroEmissionCarAllowance.details.content.l6")</li>
-            <li>@messages(s"zeroEmissionCarAllowance.details.content.l7.$individualOrAgent")</li>
-        </ul>
+        <p>@messages("zeroEmissionCarAllowance.details.content.l1")</p>
+        <p>@messages("zeroEmissionCarAllowance.details.content.l2")</p>
         <a href="@messages("zeroEmissionCarAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
         @messages("zeroEmissionCarAllowance.details.link.text")
         </a>

@@ -201,10 +201,10 @@ POST       /:taxYear/change-property-business-travel-costs                      
 
 GET        /:taxYear/allowances/allowances-start                                    controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
 
-GET        /:taxYear/allowances/capital-allowances-for-a-car                                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/allowances/capital-allowances-for-a-car                                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/change-capital-allowances-for-a-car                                   controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/change-capital-allowances-for-a-car                                   controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/allowances/capital-allowances-for-a-car                        controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/allowances/capital-allowances-for-a-car                        controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/allowances/change-capital-allowances-for-a-car                 controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/change-capital-allowances-for-a-car                 controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/allowances/annual-investment-allowance                         controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/allowances/annual-investment-allowance                         controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -221,3 +221,7 @@ POST       /:taxYear/allowances/zero-emission-car-allowance                     
 GET        /:taxYear/allowances/change-zero-emission-car-allowance                  controllers.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/allowances/change-zero-emission-car-allowance                  controllers.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/zero-emission-goods-vehicle-allowance                          controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/zero-emission-goods-vehicle-allowance                          controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-zero-emission-goods-vehicle-allowance                   controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-zero-emission-goods-vehicle-allowance                   controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

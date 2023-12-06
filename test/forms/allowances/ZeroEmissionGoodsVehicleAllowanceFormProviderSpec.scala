@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms.allowances
+package forms
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
+class ZeroEmissionGoodsVehicleAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ZeroEmissionCarAllowanceFormProvider()("individual")
+  val form = new ZeroEmissionGoodsVehicleAllowanceFormProvider()("individual")
 
-  ".amount" - {
+  ".value" - {
 
-    val fieldName = "amount"
+    val fieldName = "value"
 
     val minimum = 0
     val maximum = 100000000
@@ -41,8 +41,8 @@ class ZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "zeroEmissionCarAllowance.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "zeroEmissionCarAllowance.error.twoDecimalPlaces")
+      nonNumericError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +50,13 @@ class ZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "zeroEmissionCarAllowance.error.outOfRange", Seq(minimum, maximum))
+      expectedError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.outOfRange", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "zeroEmissionCarAllowance.error.required.individual")
+      requiredError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.required.individual")
     )
   }
 }

@@ -14,75 +14,72 @@
  * limitations under the License.
  */
 
-package controllers.allowances
+package controllers
 
-
-import controllers.routes
-import controllers.allowances.routes._
 import base.SpecBase
-import forms.allowances.ZeroEmissionCarAllowanceFormProvider
+import forms.ZeroEmissionGoodsVehicleAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.allowances.ZeroEmissionCarAllowancePage
-import play.api.data.Form
+import pages.ZeroEmissionGoodsVehicleAllowancePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.data.Form
 import repositories.SessionRepository
-import views.html.allowances.ZeroEmissionCarAllowanceView
+import views.html.ZeroEmissionGoodsVehicleAllowanceView
 
 import scala.concurrent.Future
 
-class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class ZeroEmissionGoodsVehicleAllowanceControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ZeroEmissionCarAllowanceFormProvider()
-  private val individual = "individual"
-  val form: Form[BigDecimal] = formProvider(individual)
+  val formProvider = new ZeroEmissionGoodsVehicleAllowanceFormProvider()
+  private val isAgentMessageKey = "individual"
+  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
+
+  def onwardRoute = Call("GET", "/foo")
+
+  val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  lazy val zeroEmissionGoodsVehicleAllowanceRoute = routes.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode).url
 
-  val validAnswer: BigDecimal = 100
-
-  lazy val ZeroEmissionCarAllowanceRoute = ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode).url
-
-  "ZeroEmissionCarAllowance Controller" - {
+  "ZeroEmissionGoodsVehicleAllowance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, ZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, zeroEmissionGoodsVehicleAllowanceRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ZeroEmissionGoodsVehicleAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ZeroEmissionCarAllowancePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ZeroEmissionGoodsVehicleAllowancePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, ZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, zeroEmissionGoodsVehicleAllowanceRoute)
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ZeroEmissionGoodsVehicleAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -102,8 +99,8 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
       running(application) {
         val request =
-          FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", validAnswer.toString))
+          FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -118,26 +115,26 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
       running(application) {
         val request =
-          FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", "invalid value"))
+          FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = form.bind(Map("amount" -> "invalid value"))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ZeroEmissionGoodsVehicleAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, ZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, zeroEmissionGoodsVehicleAllowanceRoute)
 
         val result = route(application, request).value
 
@@ -148,12 +145,12 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", validAnswer.toString))
+          FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 
