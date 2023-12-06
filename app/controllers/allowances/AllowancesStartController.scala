@@ -18,12 +18,12 @@ package controllers.allowances
 
 import controllers.actions._
 import controllers.routes
-import models.NormalMode
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.AllowancesStartPage
 import views.html.allowances.AllowancesStartView
 
 import javax.inject.Inject
@@ -42,13 +42,7 @@ class AllowancesStartController @Inject()(
       businessService.getBusinessDetails(request.user).map {
         case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
           val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-          val cashOrAccrualsMessage = if (propertyData.cashOrAccruals.get) "businessDetails.accruals" else "businessDetails.cash"
-          val cashOrAccrualsNextPage = if (propertyData.cashOrAccruals.get) {
-            controllers.routes.SummaryController.show(taxYear).url
-          } else {
-            controllers.allowances.routes.CapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode).url
-          }
-          Ok(view(taxYear, request.user.isAgentMessageKey, propertyData.cashOrAccruals.get, cashOrAccrualsMessage, cashOrAccrualsNextPage))
+          Ok(view(AllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.cashOrAccruals.get)))
         case _ => Redirect(routes.SummaryController.show(taxYear))
       }
   }

@@ -20,6 +20,7 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
+import controllers.allowances.routes._
 import controllers.routes._
 import models._
 import pages._
@@ -27,6 +28,7 @@ import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
 import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage, RenovationAllowanceBalancingChargePage, ResidentialFinanceCostPage, UnusedResidentialFinanceCostPage}
+import pages.allowances.AnnualInvestmentAllowancePage
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 
 import javax.inject.{Inject, Singleton}
@@ -66,6 +68,7 @@ class Navigator @Inject()() {
     case OtherProfessionalFeesPage => taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
     case CostsOfServicesProvidedPage => taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
     case PropertyBusinessTravelCostsPage => taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
+    case AnnualInvestmentAllowancePage => taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 

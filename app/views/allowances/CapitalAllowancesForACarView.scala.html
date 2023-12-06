@@ -21,63 +21,63 @@
 
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukRadios: GovukRadios,
-govukButton: GovukButton,
-govukInput : GovukInput,
-govukDetails: GovukDetails
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton,
+        govukInput: GovukInput,
+        govukDetails: GovukDetails
 )
 
 @(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("capitalAllowancesForACar.title"))) {
+    @layout(pageTitle = title(form, messages("capitalAllowancesForACar.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("capitalAllowancesForACar.heading")</h1>
+        <h1 class="govuk-heading-l">@messages("capitalAllowancesForACar.heading")</h1>
 
-    @formHelper(action = CapitalAllowancesForACarController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = CapitalAllowancesForACarController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
-        @if(form.errors.nonEmpty) {
-        @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                                        <span class="govuk-details__summary-text">
-                                          @messages("capitalAllowancesForACar.details.heading")
-                                        </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages(s"capitalAllowancesForACar.details.line1.$individualOrAgent") </p>
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                    @messages("capitalAllowancesForACar.details.heading")
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p class="govuk-body">@messages(s"capitalAllowancesForACar.details.line1.$individualOrAgent") </p>
 
-                <a href="@messages("capitalAllowancesForACar.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                 @messages("capitalAllowancesForACar.details.link.text")
-                </a>
-            </div>
-        </details>
+                    <a href="@messages("capitalAllowancesForACar.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("capitalAllowancesForACar.details.link.text")
+                    </a>
+                </div>
+            </details>
 
-        @govukRadios(
-            radios.RadiosViewModel.yesNoWithConditionalHtml(
-            field = form("yesNo"),
-            legend = LegendViewModel(messages(s"capitalAllowancesForACar.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
-            items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                field = form("yesNo"),
-                conditionalYesHtml = Some(
-                    govukInput(InputViewModel(
-                    field = form("amount"),
-                    label = LabelViewModel(messages(s"capitalAllowancesForACar.checkYourAnswersLabel"))
+            @govukRadios(
+                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                    field = form("yesNo"),
+                    legend = LegendViewModel(messages(s"capitalAllowancesForACar.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                        field = form("yesNo"),
+                        conditionalYesHtml = Some(
+                            govukInput(InputViewModel(
+                                field = form("amount"),
+                                label = LabelViewModel(messages(s"capitalAllowancesForACar.checkYourAnswersLabel"))
+                            )
+                            .withWidth(Fixed10)
+                            .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            )
+                        )
+                    )
                 )
-                .withWidth(Fixed10)
-                .withPrefix(PrefixOrSuffix(content = Text("£")))
             )
-            )
-            )
-            )
-        )
 
-        @govukButton(
-        ButtonViewModel(messages("site.continue")).withId("continue")
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     }
-}
