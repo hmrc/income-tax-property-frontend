@@ -10,10 +10,10 @@ class $className$FormProvider @Inject() extends Mappings {
   val maximum = $maximum$;
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> int(
-        "$className;format="decap"$.error.required.${individualOrAgent}",
-        "$className;format="decap"$.error.wholeNumber.${individualOrAgent}",
-        "$className;format="decap"$.error.nonNumeric.${individualOrAgent}")
+      "value" -> currency(
+        "$className;format="decap"$.error.required",
+        "$className;format="decap"$.error.wholeNumber",
+        "$className;format="decap"$.error.nonNumeric")
           .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "$className;format="decap"$.error.outOfRange"))
     )
 }
