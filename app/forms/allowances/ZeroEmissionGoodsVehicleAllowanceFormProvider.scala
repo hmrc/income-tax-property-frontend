@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import forms.mappings.Mappings
 import javax.inject.Inject
@@ -27,9 +27,9 @@ class ZeroEmissionGoodsVehicleAllowanceFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "value" -> currency(
-        "zeroEmissionGoodsVehicleAllowance.error.required",
-        "zeroEmissionGoodsVehicleAllowance.error.wholeNumber",
-        "zeroEmissionGoodsVehicleAllowance.error.nonNumeric")
+        s"zeroEmissionGoodsVehicleAllowance.error.required.$individualOrAgent",
+        "zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces",
+        s"zeroEmissionGoodsVehicleAllowance.error.nonNumeric.$individualOrAgent")
           .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "zeroEmissionGoodsVehicleAllowance.error.outOfRange"))
     )
 }

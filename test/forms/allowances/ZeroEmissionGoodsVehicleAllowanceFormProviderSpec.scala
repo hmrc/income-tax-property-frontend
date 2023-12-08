@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
@@ -42,7 +42,7 @@ class ZeroEmissionGoodsVehicleAllowanceFormProviderSpec extends CurrencyFieldBeh
       form,
       fieldName,
       nonNumericError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces.individual")
+      twoDecimalPlacesError = FormError(fieldName, "zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces")
     )
 
     behave like currencyFieldWithRange(

@@ -26,7 +26,7 @@ import controllers.routes
 import models._
 import pages._
 import pages.adjustments._
-import pages.allowances.AnnualInvestmentAllowancePage
+import pages.allowances.{AnnualInvestmentAllowancePage, ZeroEmissionCarAllowancePage}
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -259,6 +259,11 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           AnnualInvestmentAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage" in {
+        navigator.nextPage(
+          ZeroEmissionCarAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode)
       }
 
     }

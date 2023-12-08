@@ -30,16 +30,21 @@
 
 @layout(pageTitle = title(form, messages("zeroEmissionGoodsVehicleAllowance.title"))) {
 
+    <h1 class="govuk-heading-l">@messages("zeroEmissionGoodsVehicleAllowance.heading")</h1>
+
     @formHelper(action = ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <p class="govuk-body">@messages(s"zeroEmissionCarAllowance.content.l1.$individualOrAgent")</p>
+
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("zeroEmissionGoodsVehicleAllowance.heading")).asPageHeading(LabelSize.Medium)
+                label = LabelViewModel(messages(s"zeroEmissionGoodsVehicleAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))

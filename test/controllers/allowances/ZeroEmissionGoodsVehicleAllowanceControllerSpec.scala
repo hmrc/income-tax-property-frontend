@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
+import controllers.routes
+import controllers.allowances.routes._
 import base.SpecBase
-import forms.ZeroEmissionGoodsVehicleAllowanceFormProvider
+import forms.allowances.ZeroEmissionGoodsVehicleAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ZeroEmissionGoodsVehicleAllowancePage
+import pages.allowances.ZeroEmissionGoodsVehicleAllowancePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.data.Form
 import repositories.SessionRepository
-import views.html.ZeroEmissionGoodsVehicleAllowanceView
+import views.html.allowances.ZeroEmissionGoodsVehicleAllowanceView
 
 import scala.concurrent.Future
 
@@ -45,7 +47,7 @@ class ZeroEmissionGoodsVehicleAllowanceControllerSpec extends SpecBase with Mock
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
 
-  lazy val zeroEmissionGoodsVehicleAllowanceRoute = routes.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val zeroEmissionGoodsVehicleAllowanceRoute = ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode).url
 
   "ZeroEmissionGoodsVehicleAllowance Controller" - {
 
