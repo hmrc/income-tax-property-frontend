@@ -789,6 +789,37 @@ capitalAllowancesForACar.error.twoDecimalPlaces = The amount spent on capital al
 capitalAllowancesForACar.error.outOfRange = The figure must be between £{0} and £{1}
 capitalAllowancesForACar.change.hidden = CapitalAllowancesForACar
 
+businessPremisesRenovation.title = Business premises renovation allowance
+businessPremisesRenovation.heading = Business premises renovation allowance
+businessPremisesRenovation.label.agent = How much is your client’s business premises renovation allowance?
+businessPremisesRenovation.label.individual = How much is your business premises renovation allowance?
+businessPremisesRenovation.details.summary = Understanding business premises renovation allowance (BPRA)
+businessPremisesRenovation.details.content.line1 = Business premises renovation allowance is a 100% tax allowance for certain spending when you’re converting or renovating unused qualifying business premises in a disadvantaged area. BPRA expired on 5 April 2017 for Income Tax customers and 31 March 2017 for Corporation Tax customers. However, money spent on or before these dates may qualify for BPRA
+businessPremisesRenovation.details.content.line2 = This is capital spending incurred when you:
+businessPremisesRenovation.details.content.line2.bullet1 = convert a building into business premises
+businessPremisesRenovation.details.content.line2.bullet2 = renovate a building that is, or will be, a business premises
+businessPremisesRenovation.details.content.line2.bullet3 = repair business premises
+businessPremisesRenovation.details.content.line2.part1 = Read more about
+businessPremisesRenovation.details.content.line2.part2 = business premises renovation allowance (BPRA) at GOV.UK
+
+replacementOfDomesticGoods.title = Replacement of domestic goods
+replacementOfDomesticGoods.heading = Replacement of domestic goods
+replacementOfDomesticGoods.label.agent = How much did your client spend on replacing domestic goods?
+replacementOfDomesticGoods.label.individual = How much did you spend on replacing domestic goods?
+replacementOfDomesticGoods.heading.details.summary = Understanding replacement of domestic goods
+replacementOfDomesticGoods.heading.details.content.line1.agent = If your client has a property rental they may be able to claim the cost of replacing domestic items such as:
+replacementOfDomesticGoods.heading.details.content.line1.individual = If you have a property rental you may be able to claim the cost of replacing domestic items such as:
+replacementOfDomesticGoods.heading.details.content.line1.bullet1 = movable furniture such as beds, free-standing wardrobes
+replacementOfDomesticGoods.heading.details.content.line1.bullet2 = furnishings like curtains and carpets
+replacementOfDomesticGoods.heading.details.content.line1.bullet3 = household appliances like TV's and fridges
+replacementOfDomesticGoods.heading.details.content.line1.bullet4 = crockery and cutlery
+replacementOfDomesticGoods.heading.details.content.line2.individual = You cannot claim this:
+replacementOfDomesticGoods.heading.details.content.line2.agent = They cannot claim this:
+replacementOfDomesticGoods.heading.details.content.line2.bullet1.individual = if you replace a domestic item in a property you can still claim capital allowances on these items
+replacementOfDomesticGoods.heading.details.content.line2.bullet1.agent = if your client replaces a domestic item in a property they can still claim capital allowances on these items
+replacementOfDomesticGoods.heading.details.content.line2.bullet2 = or the initial cost of buying domestic items for a house
+replacementOfDomesticGoods.heading.details.content.line2.part1 = Read more about
+replacementOfDomesticGoods.heading.details.content.line2.part2 = replacing domestic items at GOV.UK
 
 annualInvestmentAllowance.title = Annual investment allowance
 annualInvestmentAllowance.heading = Annual investment allowance
