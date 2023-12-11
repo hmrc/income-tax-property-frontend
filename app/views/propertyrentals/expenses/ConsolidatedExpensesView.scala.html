@@ -68,7 +68,7 @@
                 field = form("consolidatedExpenses"),
                 legend = LegendViewModel(messages(s"consolidatedExpenses.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("consolidatedExpenses"),
+                    field = form("consolidatedExpensesYesNo"),
                     conditionalYesHtml = Some(
                         govukInput(InputViewModel(
                             field = form("consolidatedExpensesAmount"),
