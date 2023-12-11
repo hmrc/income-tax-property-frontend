@@ -39,7 +39,7 @@ class CheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-          TotalIncomeSummary.row(taxYear, request.userAnswers),
+          TotalIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
           UKPropertySelectSummary.row(taxYear, request.userAnswers)
         ).flatten
       )

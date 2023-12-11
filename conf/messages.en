@@ -122,7 +122,8 @@ totalIncome.heading.agent = How much total income did your client get from all o
 totalIncome.under = Under £1,000
 totalIncome.between = Between £1,000 and £85,000
 totalIncome.over = Over £85,000
-totalIncome.checkYourAnswersLabel = How much total income did you get from your UK properties?
+totalIncome.checkYourAnswersLabel.individual = How much total income did you get from your UK properties?
+totalIncome.checkYourAnswersLabel.agent = How much total income did your client get from your UK properties?
 totalIncome.error.required = Select how much total income you got from your UK properties
 totalIncome.change.hidden = totalIncome
 

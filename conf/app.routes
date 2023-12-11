@@ -1,224 +1,224 @@
 # microservice specific routes
 
-->          /hmrc-frontend                                                          hmrcfrontend.Routes
+->          /hmrc-frontend                                                            hmrcfrontend.Routes
 
-GET         /                                                                       controllers.IndexController.onPageLoad
+GET         /                                                                         controllers.IndexController.onPageLoad
 
-GET         /assets/*file                                                           controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                                                             controllers.Assets.versioned(path="/public", file: Asset)
 
-GET         /language/:lang                                                         controllers.LanguageSwitchController.switchToLanguage(lang: String)
+GET         /language/:lang                                                           controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET         /refresh-session                                                        controllers.KeepAliveController.keepAlive
+GET         /refresh-session                                                          controllers.KeepAliveController.keepAlive
 
-GET         /there-is-a-problem                                                     controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
+GET         /there-is-a-problem                                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
-GET         /:taxYear/check-your-answers                                            controllers.CheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /account/sign-out-survey                                                  controllers.auth.AuthController.signOut
+GET         /account/sign-out                                                         controllers.auth.AuthController.signOutNoSurvey
+GET         /account/signed-out                                                       controllers.auth.SignedOutController.onPageLoad
 
-GET         /account/sign-out-survey                                                controllers.auth.AuthController.signOut
-GET         /account/sign-out                                                       controllers.auth.AuthController.signOutNoSurvey
-GET         /account/signed-out                                                     controllers.auth.SignedOutController.onPageLoad
+GET         /unauthorised                                                             controllers.UnauthorisedController.onPageLoad
 
-GET         /unauthorised                                                           controllers.UnauthorisedController.onPageLoad
+GET         /:taxYear/summary                                                         controllers.SummaryController.show(taxYear: Int)
 
-GET         /:taxYear/summary                                                       controllers.SummaryController.show(taxYear: Int)
+GET         /:taxYear/uk-property-details                                             controllers.UKPropertyDetailsController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/uk-property-details                                           controllers.UKPropertyDetailsController.onPageLoad(taxYear: Int)
+GET         /:taxYear/total-income                                                    controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/total-income                                                    controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
-GET         /:taxYear/total-income                                                  controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/total-income                                                  controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-total-income                                             controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-total-income                                             controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/change-total-income                                           controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-total-income                                           controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-property-select                                              controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-property-select                                              controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-uk-property-select                                       controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-uk-property-select                                       controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/report-property-income                                          controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/report-property-income                                          controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-report-property-income                                   controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-report-property-income                                   controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/report-property-income                                         controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/report-property-income                                         controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-report-property-income                                  controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-report-property-income                                  controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/check-your-answers                                              controllers.CheckYourAnswersController.onPageLoad(taxYear: Int)
 
 ############## Property rentals
 
 ## About
 
-GET         /:taxYear/property-rentals/property-rentals-start                       controllers.propertyrentals.PropertyRentalsStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/property-rentals/property-rentals-start                         controllers.propertyrentals.PropertyRentalsStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/property-rentals/expenses-less-than-1000                      controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/property-rentals/expenses-less-than-1000                      controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/property-rentals/change-expenses-less-than-1000               controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/property-rentals/change-expenses-less-than-1000               controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-expenses-less-than-1000                 controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-expenses-less-than-1000                 controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/property-rentals/claim-property-income-allowance              controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/property-rentals/claim-property-income-allowance              controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/property-rentals/change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/property-rentals/change-claim-property-income-allowance       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/claim-property-income-allowance                controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/claim-property-income-allowance                controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-claim-property-income-allowance         controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-claim-property-income-allowance         controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/property-rentals/check-your-answers                           controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /:taxYear/property-rentals/check-your-answers                             controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear: Int)
 
 ## Income
 
-GET         /:taxYear/property-rentals/property-income-start                        controllers.propertyrentals.PropertyIncomeStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/property-rentals/property-income-start                          controllers.propertyrentals.PropertyIncomeStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/property-rentals/is-non-uk-landlord                           controllers.propertyrentals.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/property-rentals/is-non-uk-landlord                           controllers.propertyrentals.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/property-rentals/change-is-non-uk-landlord                    controllers.propertyrentals.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/property-rentals/change-is-non-uk-landlord                    controllers.propertyrentals.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/is-non-uk-landlord                             controllers.propertyrentals.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/is-non-uk-landlord                             controllers.propertyrentals.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-is-non-uk-landlord                      controllers.propertyrentals.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-is-non-uk-landlord                      controllers.propertyrentals.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/property-rentals/deducting-tax                                 controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/property-rentals/deducting-tax                                 controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/property-rentals/change-deducting-tax                          controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/property-rentals/change-deducting-tax                          controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/deducting-tax                                  controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/deducting-tax                                  controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-deducting-tax                           controllers.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-deducting-tax                           controllers.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/property-rentals/income-from-property-rentals                  controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/property-rentals/income-from-property-rentals                  controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/property-rentals/change-income-from-property-rentals           controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/property-rentals/change-income-from-property-rentals           controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/income-from-property-rentals                   controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/income-from-property-rentals                   controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-income-from-property-rentals            controllers.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-income-from-property-rentals            controllers.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/property-rentals/other-income-from-property                    controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-rentals/other-income-from-property                     controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-rentals/other-income-from-property                     controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/property-rentals/change-other-income-from-property              controllers.propertyrentals.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/property-rentals/change-other-income-from-property              controllers.propertyrentals.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/property-rentals/income-check-your-answers                    controllers.propertyrentals.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /:taxYear/property-rentals/income-check-your-answers                      controllers.propertyrentals.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
 
 
 ############## Premium lease
 
 # 3
-GET         /:taxYear/lease-premium-payment                                         controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/lease-premium-payment                                         controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-lease-premium-payment                                  controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-lease-premium-payment                                  controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/lease-premium-payment                                           controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/lease-premium-payment                                           controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-lease-premium-payment                                    controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-lease-premium-payment                                    controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 # 4
-GET         /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/calculated-figure-yourself                                    controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-calculated-figure-yourself                             controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/calculated-figure-yourself                                      controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/calculated-figure-yourself                                      controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-calculated-figure-yourself                               controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-calculated-figure-yourself                               controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/received-grant-lease-amount                                    controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/received-grant-lease-amount                                    controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-received-grant-lease-amount                             controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-received-grant-lease-amount                             controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/received-grant-lease-amount                                     controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/received-grant-lease-amount                                     controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-received-grant-lease-amount                              controllers.premiumlease.RecievedGrantLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-received-grant-lease-amount                              controllers.premiumlease.RecievedGrantLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/year-lease-amount                                              controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/year-lease-amount                                              controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-year-lease-amount                                       controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-year-lease-amount                                       controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/year-lease-amount                                               controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/year-lease-amount                                               controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-year-lease-amount                                        controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-year-lease-amount                                        controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 #
-GET         /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/premiums-grant-lease                                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-premiums-grant-lease                                   controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/premiums-grant-lease                                            controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/premiums-grant-lease                                            controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-premiums-grant-lease                                     controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-premiums-grant-lease                                     controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/reverse-premiums-received                                      controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/reverse-premiums-received                                      controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-reverse-premiums-received                               controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/reverse-premiums-received                                       controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/reverse-premiums-received                                       controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-reverse-premiums-received                                controllers.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-reverse-premiums-received                                controllers.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 # Adjustments
-GET        /:taxYear/adjustments/adjustments-start                                  controllers.adjustments.AdjustmentsStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/adjustments/adjustments-start                                   controllers.adjustments.AdjustmentsStartController.onPageLoad(taxYear: Int)
 
-GET        /:taxYear/adjustments/private-use-adjustment                             controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/private-use-adjustment                             controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-private-use-adjustment                      controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-private-use-adjustment                      controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/private-use-adjustment                              controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/private-use-adjustment                              controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-private-use-adjustment                       controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-private-use-adjustment                       controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/balancing-charge                                   controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/balancing-charge                                   controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-balancing-charge                            controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-balancing-charge                            controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/balancing-charge                                    controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/balancing-charge                                    controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-balancing-charge                             controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-balancing-charge                             controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/property-income-allowance                          controllers.adjustments.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/property-income-allowance                          controllers.adjustments.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-property-income-allowance                   controllers.adjustments.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-property-income-allowance                   controllers.adjustments.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/property-income-allowance                           controllers.adjustments.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/property-income-allowance                           controllers.adjustments.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-property-income-allowance                    controllers.adjustments.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-property-income-allowance                    controllers.adjustments.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/renovation-allowance-balancing-charge              controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/renovation-allowance-balancing-charge              controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-renovation-allowance-balancing-charge       controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-renovation-allowance-balancing-charge       controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/renovation-allowance-balancing-charge               controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/renovation-allowance-balancing-charge               controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-renovation-allowance-balancing-charge        controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-renovation-allowance-balancing-charge        controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/residential-finance-cost                           controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/residential-finance-cost                           controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-residential-finance-cost                    controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-residential-finance-cost                    controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/residential-finance-cost                            controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/residential-finance-cost                            controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-residential-finance-cost                     controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-residential-finance-cost                     controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/unused-residential-finance-cost                    controllers.adjustments.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/adjustments/unused-residential-finance-cost                    controllers.adjustments.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/adjustments/change-unused-residential-finance-cost             controllers.adjustments.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/adjustments/change-unused-residential-finance-cost             controllers.adjustments.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/adjustments/unused-residential-finance-cost                     controllers.adjustments.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/adjustments/unused-residential-finance-cost                     controllers.adjustments.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/adjustments/change-unused-residential-finance-cost              controllers.adjustments.UnusedResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/adjustments/change-unused-residential-finance-cost              controllers.adjustments.UnusedResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/adjustments/check-your-answers                                 controllers.adjustments.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)
+GET         /:taxYear/adjustments/check-your-answers                                  controllers.adjustments.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)
 
 ############## Expenses
 
-GET        /:taxYear/expenses-start                                                 controllers.ExpensesStartController.onPageLoad(taxYear : Int)
+GET         /:taxYear/expenses-start                                                  controllers.ExpensesStartController.onPageLoad(taxYear : Int)
 
-GET        /:taxYear/consolidated-expenses                                          controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/consolidated-expenses                                          controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-consolidated-expenses                                   controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/consolidated-expenses                                           controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/consolidated-expenses                                           controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-consolidated-expenses                                    controllers.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-consolidated-expenses                                    controllers.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/expenses/check-your-answers                                    controllers.ExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /:taxYear/expenses/check-your-answers                                     controllers.ExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
 
-GET        /:taxYear/costs-of-services-provided                                     controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/costs-of-services-provided                                     controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-costs-of-services-provided                              controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-costs-of-services-provided                              controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/costs-of-services-provided                                      controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/costs-of-services-provided                                      controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-costs-of-services-provided                               controllers.CostsOfServicesProvidedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-costs-of-services-provided                               controllers.CostsOfServicesProvidedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/loan-interest                                                  controllers.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/loan-interest                                                  controllers.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-loan-interest                                           controllers.LoanInterestController.onPageLoad(taxYear: Int,mode: Mode = CheckMode)
-POST       /:taxYear/change-loan-interest                                           controllers.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/loan-interest                                                   controllers.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/loan-interest                                                   controllers.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-loan-interest                                            controllers.LoanInterestController.onPageLoad(taxYear: Int,mode: Mode = CheckMode)
+POST        /:taxYear/change-loan-interest                                            controllers.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/other-professional-fees                                        controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/other-professional-fees                                        controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-other-professional-fees                                 controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/other-professional-fees                                         controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/other-professional-fees                                         controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-other-professional-fees                                  controllers.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-other-professional-fees                                  controllers.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/other-allowable-property-expenses                              controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/other-allowable-property-expenses                              controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-other-allowable-property-expenses                       controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-other-allowable-property-expenses                       controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/other-allowable-property-expenses                               controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/other-allowable-property-expenses                               controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-other-allowable-property-expenses                        controllers.OtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-other-allowable-property-expenses                        controllers.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/expenses/rents-rates-and-insurance                             controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/expenses/rents-rates-and-insurance                             controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/expenses/change-rents-rates-and-insurance                      controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/expenses/change-rents-rates-and-insurance                      controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/expenses/rents-rates-and-insurance                              controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/expenses/rents-rates-and-insurance                              controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/expenses/change-rents-rates-and-insurance                       controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/expenses/change-rents-rates-and-insurance                       controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/expenses/repairs-and-maintenance-costs                         controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/expenses/repairs-and-maintenance-costs                         controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/expenses/change-repairs-and-maintenance-costs                  controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/expenses/change-repairs-and-maintenance-costs                  controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/expenses/repairs-and-maintenance-costs                          controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/expenses/repairs-and-maintenance-costs                          controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/expenses/change-repairs-and-maintenance-costs                   controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/expenses/change-repairs-and-maintenance-costs                   controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/property-business-travel-costs                                 controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/property-business-travel-costs                                 controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-property-business-travel-costs                          controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/property-business-travel-costs                                  controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/property-business-travel-costs                                  controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-property-business-travel-costs                           controllers.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-property-business-travel-costs                           controllers.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 ##### Allowances
 
-GET        /:taxYear/allowances/allowances-start                                    controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/allowances/allowances-start                                     controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
 
-GET        /:taxYear/allowances/capital-allowances-for-a-car                        controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/allowances/capital-allowances-for-a-car                        controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/change-capital-allowances-for-a-car                 controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/change-capital-allowances-for-a-car                 controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/allowances/capital-allowances-for-a-car                         controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/allowances/capital-allowances-for-a-car                         controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/allowances/change-capital-allowances-for-a-car                  controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/allowances/change-capital-allowances-for-a-car                  controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/allowances/annual-investment-allowance                         controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/allowances/annual-investment-allowance                         controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/change-annual-investment-allowance                  controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/change-annual-investment-allowance                  controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/allowances/annual-investment-allowance                          controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/allowances/annual-investment-allowance                          controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/allowances/change-annual-investment-allowance                   controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/allowances/change-annual-investment-allowance                   controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/allowances/electric-charge-point-allowance                     controllers.allowances.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/allowances/electric-charge-point-allowance                     controllers.allowances.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/allowances/change-electric-charge-point-allowance              controllers.allowances.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/allowances/change-electric-charge-point-allowance              controllers.allowances.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/allowances/electric-charge-point-allowance                      controllers.allowances.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/allowances/electric-charge-point-allowance                      controllers.allowances.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/allowances/change-electric-charge-point-allowance               controllers.allowances.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/allowances/change-electric-charge-point-allowance               controllers.allowances.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/allowances/zero-emission-car-allowance                         controllers.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/allowances/zero-emission-car-allowance                         controllers.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
