@@ -22,12 +22,14 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.routes._
+import models.TotalIncome.{Between, Under}
 import models._
 import pages._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
-import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage, RenovationAllowanceBalancingChargePage, ResidentialFinanceCostPage, UnusedResidentialFinanceCostPage}
+import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage,
+  RenovationAllowanceBalancingChargePage, ResidentialFinanceCostPage, UnusedResidentialFinanceCostPage}
 import pages.allowances.{AnnualInvestmentAllowancePage, ZeroEmissionCarAllowancePage}
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 
@@ -40,7 +42,7 @@ class Navigator @Inject()() {
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage => taxYear => _ => _ => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
     case UKPropertySelectPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case UKPropertyPage => _ => _ => _ => CheckYourAnswersController.onPageLoad
+    case UKPropertyPage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     // property income
@@ -77,6 +79,8 @@ class Navigator @Inject()() {
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+    case TotalIncomePage => taxYear => previousUserAnswers => userAnswers => totalIncomeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+    case ReportPropertyIncomePage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
     // property income
     case IsNonUKLandlordPage => taxYear => previousUserAnswers => userAnswers => isNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case DeductingTaxPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
@@ -97,7 +101,7 @@ class Navigator @Inject()() {
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-    case _ => _ => _ => _ => CheckYourAnswersController.onPageLoad
+    case _ => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = mode match {
@@ -155,5 +159,10 @@ class Navigator @Inject()() {
       case (Some(current), Some(previous)) if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
         current.balancingChargeAmount == previous.balancingChargeAmount => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
+    }
+  private def totalIncomeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
+    (previousUserAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
+      case (Some(Between), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, CheckMode)
+      case _ => CheckYourAnswersController.onPageLoad(taxYear)
     }
 }

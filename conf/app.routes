@@ -12,7 +12,7 @@ GET         /refresh-session                                                    
 
 GET         /there-is-a-problem                                                     controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
-GET         /check-your-answers                                                     controllers.CheckYourAnswersController.onPageLoad
+GET         /:taxYear/check-your-answers                                            controllers.CheckYourAnswersController.onPageLoad(taxYear: Int)
 
 GET         /account/sign-out-survey                                                controllers.auth.AuthController.signOut
 GET         /account/sign-out                                                       controllers.auth.AuthController.signOutNoSurvey
@@ -24,11 +24,11 @@ GET         /:taxYear/summary                                                   
 
 GET         /:taxYear/uk-property-details                                           controllers.UKPropertyDetailsController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/totalIncome                                                   controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/totalIncome                                                   controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/total-income                                                  controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/total-income                                                  controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
-GET         /:taxYear/changetotalIncome                                             controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/changetotalIncome                                             controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/change-total-income                                           controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-total-income                                           controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-property-select                                            controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

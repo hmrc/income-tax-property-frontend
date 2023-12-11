@@ -122,7 +122,7 @@ totalIncome.heading.agent = How much total income did your client get from all o
 totalIncome.under = Under £1,000
 totalIncome.between = Between £1,000 and £85,000
 totalIncome.over = Over £85,000
-totalIncome.checkYourAnswersLabel = This is the amount before any deductions have been made.
+totalIncome.checkYourAnswersLabel = How much total income did you get from your UK properties?
 totalIncome.error.required = Select how much total income you got from your UK properties
 totalIncome.change.hidden = totalIncome
 
@@ -136,7 +136,7 @@ ukPropertySelect.error.required.agent = Please select a valid UK Property option
 ukPropertySelect.property.rentals = Property rentals
 ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
-ukPropertySelect.checkYourAnswersLabel = Fill in these pages if you had rent and other income from UK land or property. Select all that apply
+ukPropertySelect.checkYourAnswersLabel = UK property types
 ukPropertySelect.change.hidden = UK Property
 
 expensesLessThan1000.title = Expenses less than £1,000
