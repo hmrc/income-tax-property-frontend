@@ -41,7 +41,7 @@ class ExpensesCheckYourAnswersController @Inject()(
     implicit request =>
 
       val rows: Seq[SummaryListRow] = if
-      (request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpenses))
+      (request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpensesYesNo))
         Seq(
           ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten else  Seq(

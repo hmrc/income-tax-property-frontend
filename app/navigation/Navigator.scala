@@ -113,6 +113,7 @@ class Navigator @Inject()() {
       previousUserAnswers =>
         userAnswers =>
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+<<<<<<< HEAD
     // expenses
 //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     // Allowances
@@ -124,6 +125,8 @@ class Navigator @Inject()() {
       LoanInterestPage | OtherProfessionalFeesPage | CostsOfServicesProvidedPage |  PropertyBusinessTravelCostsPage |
          OtherAllowablePropertyExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
+=======
+>>>>>>> fad0b43 (rebased with master)
     // expenses
     case RentsRatesAndInsurancePage | RepairsAndMaintenanceCostsPage |
          LoanInterestPage | OtherProfessionalFeesPage | CostsOfServicesProvidedPage | PropertyBusinessTravelCostsPage |
@@ -131,7 +134,8 @@ class Navigator @Inject()() {
     case ConsolidatedExpensesPage => taxYear =>
       previousUserAnswers =>
         userAnswers =>
-          consolidatedExpensesNavigationCheckMode(taxYear, userAnswers)
+          consolidatedExpensesNavigationCheckMode(taxYear, userAnswers, previousUserAnswers)
+    case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = mode match {
@@ -184,15 +188,11 @@ class Navigator @Inject()() {
       case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
     }
 
-  private def consolidatedExpensesNavigationCheckMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(ConsolidatedExpensesPage) match {
-      case Some(ConsolidatedExpenses(true, _)) => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-      case Some(ConsolidatedExpenses(false, _)) =>
-        if (userAnswers.get(OtherAllowablePropertyExpensesPage).isDefined) {
-          ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-        } else {
-          RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
-        }
+  private def consolidatedExpensesNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
+    previousUserAnswers.get(ConsolidatedExpensesPage) match {
+      case Some(ConsolidatedExpenses(true, _)) if userAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesNo).getOrElse(false) =>
+        RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode)
+      case _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     }
 
   private def balancingChargeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =

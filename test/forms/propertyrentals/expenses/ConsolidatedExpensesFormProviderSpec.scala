@@ -32,24 +32,24 @@ class ConsolidatedExpensesFormProviderSpec extends BooleanFieldBehaviours with O
   "consolidatedExpensesAmount" - {
     "when consolidatedExpenses is true" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpenses" -> "true", "consolidatedExpensesAmount" -> "12.34"))
+        val boundForm = form.bind(Map("consolidatedExpensesYesNo" -> "true", "consolidatedExpensesAmount" -> "12.34"))
         boundForm.value.value mustBe ConsolidatedExpenses(true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedExpenses" -> "true"))
+        val boundForm = form.bind(Map("consolidatedExpensesYesNo" -> "true"))
         boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedExpenses.error.required.amount.individual"))
       }
     }
     "when consolidatedExpenses is false" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpenses" -> "false", "consolidatedExpensesAmount" -> "1234"))
+        val boundForm = form.bind(Map("consolidatedExpensesYesNo" -> "false", "consolidatedExpensesAmount" -> "1234"))
         boundForm.value.value mustBe ConsolidatedExpenses(false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpenses" -> "false"))
+        val boundForm = form.bind(Map("consolidatedExpensesYesNo" -> "false"))
         boundForm.value.value mustBe ConsolidatedExpenses(false, None)
         boundForm.errors mustBe empty
       }
