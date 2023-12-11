@@ -31,7 +31,7 @@ object RepairsAndMaintenanceCostsSummary {
     answers.get(RepairsAndMaintenanceCostsPage) match {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
-          key = "RepairsAndMaintenanceCosts.checkYourAnswersLabel",
+          key = "repairsAndMaintenanceCosts.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode).url)

@@ -31,7 +31,7 @@ object RentsRatesAndInsuranceSummary {
     answers.get(RentsRatesAndInsurancePage) match {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
-          key = "RentsRatesAndInsurance.checkYourAnswersLabel",
+          key = "rentsRatesAndInsurance.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode).url)
