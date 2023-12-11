@@ -18,10 +18,11 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import pages.ReportPropertyIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.{TotalIncomeSummary, UKPropertySelectSummary}
+import viewmodels.checkAnswers.{ReportPropertyIncomeSummary, TotalIncomeSummary, UKPropertySelectSummary}
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
 
@@ -37,12 +38,17 @@ class CheckYourAnswersController @Inject()(
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val list = SummaryListViewModel(
-        rows = Seq(
-          TotalIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
-          UKPropertySelectSummary.row(taxYear, request.userAnswers)
-        ).flatten
-      )
+      val totalIncomeRow = TotalIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
+      val reportIncomeRow = ReportPropertyIncomeSummary.row(taxYear, request.userAnswers)
+      val ukPropertyRow = UKPropertySelectSummary.row(taxYear, request.userAnswers)
+
+      val propertyIncomeRows = if (request.userAnswers.get(ReportPropertyIncomePage).isDefined) {
+        Seq(totalIncomeRow, reportIncomeRow, ukPropertyRow)
+      } else {
+        Seq(totalIncomeRow, ukPropertyRow)
+      }
+
+      val list = SummaryListViewModel(rows = propertyIncomeRows.flatten)
 
       Ok(view(list))
   }

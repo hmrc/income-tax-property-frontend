@@ -42,7 +42,7 @@ class Navigator @Inject()() {
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage => taxYear => _ => _ => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
     case UKPropertySelectPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case UKPropertyPage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
+    case UKPropertyPage | ReportPropertyIncomePage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     // property income
@@ -80,7 +80,6 @@ class Navigator @Inject()() {
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomePage => taxYear => previousUserAnswers => userAnswers => totalIncomeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
-    case ReportPropertyIncomePage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
     // property income
     case IsNonUKLandlordPage => taxYear => previousUserAnswers => userAnswers => isNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case DeductingTaxPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
@@ -162,7 +161,7 @@ class Navigator @Inject()() {
     }
   private def totalIncomeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     (previousUserAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(Between), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, CheckMode)
+      case (Some(Between), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
       case _ => CheckYourAnswersController.onPageLoad(taxYear)
     }
 }

@@ -69,7 +69,13 @@ class NavigatorSpec extends SpecBase {
       "must go from UKPropertyPage to Check Your Answers" in {
         navigator.nextPage(
           UKPropertyPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe routes.CheckYourAnswersController.onPageLoad
+        ) mustBe routes.CheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ReportPropertyIncomePage to Check Your Answers" in {
+        navigator.nextPage(
+          ReportPropertyIncomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes" in {
@@ -270,6 +276,20 @@ class NavigatorSpec extends SpecBase {
 
     "in Check mode" - {
 
+      "must go from TotalIncomePage to CheckYourAnswersPage if no change in user answers" in {
+        navigator.nextPage(
+          TotalIncomePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from TotalIncomePage to ReportPropertyIncomePage if income changes from between to under" in {
+        val previousAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Between).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Under).get
+        navigator.nextPage(
+          TotalIncomePage, taxYear, CheckMode, previousAnswers, userAnswers
+        ) mustBe controllers.routes.ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      }
+
       "must go from ExpensesLessThan1000Page to CheckYourAnswersPage" in {
         navigator.nextPage(
           ExpensesLessThan1000Page, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
@@ -399,7 +419,7 @@ class NavigatorSpec extends SpecBase {
       "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad
+        navigator.nextPage(UnknownPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from PrivateUseAdjustmentPage to AdjustmentsCheckYourAnswersPage" in {
