@@ -35,6 +35,10 @@ POST        /:taxYear/uk-property-select                                        
 GET         /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/change-uk-property-select                                     controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/report-property-income                                         controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/report-property-income                                         controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/change-report-property-income                                  controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/change-report-property-income                                  controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 ############## Property rentals
 
