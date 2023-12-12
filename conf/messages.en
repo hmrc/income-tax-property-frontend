@@ -658,8 +658,6 @@ otherAllowablePropertyExpenses.details.content.l7.individual = training courses 
 otherAllowablePropertyExpenses.details.content.l7.agent = training courses related to their business, for example refresher courses
 otherAllowablePropertyExpenses.details.link.href = https://www.gov.uk/expenses-if-youre-self-employed
 otherAllowablePropertyExpenses.details.link.text = Read more about allowable property expenses at GOV.UK (opens in new tab)
-
-
 otherAllowablePropertyExpenses.error.required.individual = Enter an amount for your other allowable property expenses
 otherAllowablePropertyExpenses.error.required.agent = Enter an amount for your client's other allowable property expenses
 otherAllowablePropertyExpenses.error.twoDecimalPlaces.individual = Enter an amount for your other allowable property expenses
@@ -763,7 +761,6 @@ allowancesStart.details.content2.individual = You told us previously that your a
 allowancesStart.details.content2.agent = You told us previously that your client's accounting method is:
 allowancesStart.details.content3.individual = Based on this information you can claim the following:
 allowancesStart.details.content3.agent = Based on this information they can claim the following:
-
 allowancesStart.details.content.l1 = annual investment allowance
 allowancesStart.details.content.l2 = electric charge-point allowance
 allowancesStart.details.content.l3 = zero-emission car allowance
@@ -845,3 +842,38 @@ electricChargePointAllowance.amount.error.nonNumeric.agent = Enter an amount in 
 electricChargePointAllowance.amount.error.twoDecimalPlaces.individual = The amount for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowance.amount.error.twoDecimalPlaces.agent = The amount for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowance.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+
+zeroEmissionCarAllowance.title = Zero-emission car allowance
+zeroEmissionCarAllowance.heading = Zero-emission car allowance
+zeroEmissionCarAllowance.checkYourAnswersLabel = Zero-emission car allowance
+zeroEmissionCarAllowance.input.heading.individual = How much do you want to claim for zero-emission car allowance?
+zeroEmissionCarAllowance.input.heading.agent = How much does your client want to claim for zero-emission car allowance?
+zeroEmissionCarAllowance.details.content.link.text = Understanding zero-emission car allowance
+zeroEmissionCarAllowance.details.content.l1.individual = If you have property income, you can claim 100% of the cost of buying a new or unused zero-emission electric car. So if you use the car outside your business, you must reduce the claim in proportion to the non-business use.
+zeroEmissionCarAllowance.details.content.l1.agent = If your client has property income they can claim 100% of the cost of buying a new or unused zero-emission electric car. If they use the car outside of running their property rentals, they must reduce the claim by the amount of non-property rentals use.
+zeroEmissionCarAllowance.details.content.l2.individual = So, if you use your car for non-business use 20% of the time, then reduce the claim by 20%.
+zeroEmissionCarAllowance.details.content.l2.agent = So, if they use their car for non-property rental use 20% of the time, then reduce the claim by 20%.
+zeroEmissionCarAllowance.details.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
+zeroEmissionCarAllowance.details.link.text = Read more about first year allowances at GOV.UK (opens in new tab)
+zeroEmissionCarAllowance.error.required.individual = Enter the amount you want to claim for zero-emission car allowance
+zeroEmissionCarAllowance.error.required.agent = Enter an amount for how much your client wants to claim for zero-emission car allowance
+zeroEmissionCarAllowance.error.twoDecimalPlaces = The claim for zero-emission car allowance can only include pounds and pence, for example £600 or £600.20
+zeroEmissionCarAllowance.error.nonNumeric.individual = Enter the amount you want to claim for zero-emission car allowance
+zeroEmissionCarAllowance.error.nonNumeric.agent = Enter an amount for how much your client wants to claim for zero-emission car allowance
+zeroEmissionCarAllowance.error.outOfRange = Amount entered must not be less than £{0} or more than £{1}
+
+
+zeroEmissionGoodsVehicleAllowance.title = Zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.heading = Zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.checkYourAnswersLabel = Zero-emission goods vehicle allowance
+zeroEmissionCarAllowance.content.l1.individual = If you have property income and buy a new or unused zero-emission van, or goods vehicle, for your business you can claim a First Year Allowance of 100% against your tax bill.
+zeroEmissionCarAllowance.content.l1.agent = If your client has property income and buys a new or unused zero-emission van, or goods vehicle, for running their property rentals they can claim a First Year Allowance of 100% against their tax bill.
+zeroEmissionGoodsVehicleAllowance.input.heading.individual = How much do you want to claim for zero-emission goods vehicle allowance?
+zeroEmissionGoodsVehicleAllowance.input.heading.agent = How much does your client want to claim for zero-emission goods vehicle allowance?
+zeroEmissionGoodsVehicleAllowance.error.nonNumeric.individual = Enter the amount for how much you want to claim for zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.error.nonNumeric.agent = Enter an amount for how much your client wants to claim for zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.error.required.individual = Enter the amount for how much you want to claim for zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.error.required.agent = Enter an amount for how much your client wants to claim for zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces = The claim for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
+zeroEmissionGoodsVehicleAllowance.error.outOfRange = Amount entered must not be less than £{0} or more than £{1}
+zeroEmissionGoodsVehicleAllowance.change.hidden = Zero-emission goods vehicle allowance
