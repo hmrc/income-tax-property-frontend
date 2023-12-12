@@ -177,7 +177,7 @@ class Navigator @Inject()() {
 
   private def calculatedFigureYourselfNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     userAnswers.get(CalculatedFigureYourselfPage) match {
-      case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).forall(_.calculatedFigureYourself) =>
+      case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).map(_.calculatedFigureYourself).getOrElse(true) =>
         RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
@@ -190,7 +190,7 @@ class Navigator @Inject()() {
 
   private def consolidatedExpensesNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     previousUserAnswers.get(ConsolidatedExpensesPage) match {
-      case Some(ConsolidatedExpenses(true, _)) if userAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesNo).getOrElse(false) =>
+      case Some(ConsolidatedExpenses(false, _)) if userAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesNo).getOrElse(true) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode)
       case _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     }
