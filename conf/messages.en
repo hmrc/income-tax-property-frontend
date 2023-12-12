@@ -801,6 +801,14 @@ businessPremisesRenovation.details.content.line2.bullet2 = renovate a building t
 businessPremisesRenovation.details.content.line2.bullet3 = repair business premises
 businessPremisesRenovation.details.content.line2.part1 = Read more about
 businessPremisesRenovation.details.content.line2.part2 = business premises renovation allowance (BPRA) at GOV.UK
+businessPremisesRenovation.details.content.line2.href = https://www.gov.uk/guidance/business-premises-renovation-allowance-bpra
+businessPremisesRenovation.error.twoDecimalPlaces.agent = The amount your client can claim can only include pounds and pence, for example £600 or £600.20
+businessPremisesRenovation.error.required.agent = Enter an amount in pounds for how much your client wants to claim
+businessPremisesRenovation.error.twoDecimalPlaces.individual = The amount you can claim can only include pounds and pence, for example £600 or £600.20
+businessPremisesRenovation.error.required.individual = Enter the amount in pounds for how much allowance you want to claim
+businessPremisesRenovation.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you wants to claim
+replacementOfDomesticGoods.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client wants to claim
+businessPremisesRenovation.error.outOfRange = The amount should not exceed £100,000,000
 
 replacementOfDomesticGoods.title = Replacement of domestic goods
 replacementOfDomesticGoods.heading = Replacement of domestic goods
@@ -820,6 +828,14 @@ replacementOfDomesticGoods.heading.details.content.line2.bullet1.agent = if your
 replacementOfDomesticGoods.heading.details.content.line2.bullet2 = or the initial cost of buying domestic items for a house
 replacementOfDomesticGoods.heading.details.content.line2.part1 = Read more about
 replacementOfDomesticGoods.heading.details.content.line2.part2 = replacing domestic items at GOV.UK
+replacementOfDomesticGoods.heading.details.content.line2.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
+replacementOfDomesticGoods.error.twoDecimalPlaces.agent = The amount your client spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+replacementOfDomesticGoods.error.required.agent = Enter an amount in pounds for how much your client spent on replacing domestic goods
+replacementOfDomesticGoods.error.twoDecimalPlaces.individual = The amount you spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+replacementOfDomesticGoods.error.required.individual = Enter the amount in pounds for how much you spent on replacing domestic goods
+replacementOfDomesticGoods.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you spent on replacing domestic goods
+replacementOfDomesticGoods.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client spent on replacing domestic goods
+replacementOfDomesticGoods.error.outOfRange = The amount should not exceed £100,000,000
 
 annualInvestmentAllowance.title = Annual investment allowance
 annualInvestmentAllowance.heading = Annual investment allowance

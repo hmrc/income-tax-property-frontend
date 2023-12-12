@@ -234,3 +234,13 @@ GET        /:taxYear/allowances/other-capital-allowance                         
 POST       /:taxYear/allowances/other-capital-allowance                             controllers.OtherCapitalAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/allowances/change-other-capital-allowance                      controllers.OtherCapitalAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/allowances/change-other-capital-allowance                      controllers.OtherCapitalAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/allowances/business-premises-renovation                        controllers.allowances.BusinessPremisesRenovationController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/allowances/business-premises-renovation                        controllers.allowances.BusinessPremisesRenovationController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/allowances/change-business-premises-renovation                 controllers.allowances.BusinessPremisesRenovationController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/change-business-premises-renovation                 controllers.allowances.BusinessPremisesRenovationController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
+GET        /:taxYear/allowances/replacement-of-domestic-goods                       controllers.allowances.ReplacementOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/allowances/replacement-of-domestic-goods                       controllers.allowances.ReplacementOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/allowances/change-replacement-of-domestic-goods                controllers.allowances.ReplacementOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/allowances/change-replacement-of-domestic-goods                controllers.allowances.ReplacementOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
