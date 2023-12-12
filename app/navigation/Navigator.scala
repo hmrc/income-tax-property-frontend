@@ -22,7 +22,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.routes._
-import models.TotalIncome.{Between, Under}
+import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
 import pages.premiumlease.LeasePremiumPaymentPage
@@ -40,9 +40,10 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
-    case TotalIncomePage => taxYear => _ => _ => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomePage => taxYear => _ => userAnswers => totalIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertySelectPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case UKPropertyPage | ReportPropertyIncomePage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
+    case ReportPropertyIncomePage => taxYear => _ => userAnswers => reportIncomeNavigationNormalMode(taxYear, userAnswers)
+    case UKPropertyPage => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ExpensesLessThan1000Page => taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case propertyrentals.ClaimPropertyIncomeAllowancePage => taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     // property income
@@ -142,7 +143,7 @@ class Navigator @Inject()() {
 
   private def calculatedFigureYourselfNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     userAnswers.get(CalculatedFigureYourselfPage) match {
-      case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).map(_.calculatedFigureYourself).getOrElse(true) =>
+      case Some(CalculatedFigureYourself(false, _)) if previousUserAnswers.get(CalculatedFigureYourselfPage).forall(_.calculatedFigureYourself) =>
         RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
@@ -159,9 +160,23 @@ class Navigator @Inject()() {
         current.balancingChargeAmount == previous.balancingChargeAmount => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
     }
+
+  private def totalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(TotalIncomePage) match {
+      case Some(Under) => ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      case _ => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def reportIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(ReportPropertyIncomePage) match {
+      case Some(true) => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
+      case _ => CheckYourAnswersController.onPageLoad(taxYear)
+    }
+
   private def totalIncomeNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     (previousUserAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(Between), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      case (Some(Between), Some(Under)) | (Some(Over), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       case _ => CheckYourAnswersController.onPageLoad(taxYear)
     }
 }

@@ -23,6 +23,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.routes
+import models.TotalIncome.Under
 import models._
 import pages._
 import pages.adjustments._
@@ -59,6 +60,11 @@ class NavigatorSpec extends SpecBase {
           TotalIncomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
+      "must go from TotalIncomePage to Report property income page if total income is under" in {
+        navigator.nextPage(
+          TotalIncomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test").set(TotalIncomePage, Under).get
+        ) mustBe routes.ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      }
 
       "most go from UKPropertySelectPage to the summary page" in {
         navigator.nextPage(
@@ -76,6 +82,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ReportPropertyIncomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe routes.CheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ReportPropertyIncomePage to Property select page if user want to report income" in {
+        navigator.nextPage(
+          ReportPropertyIncomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test").set(ReportPropertyIncomePage, true).get
+        ) mustBe routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes" in {
@@ -288,6 +300,22 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           TotalIncomePage, taxYear, CheckMode, previousAnswers, userAnswers
         ) mustBe controllers.routes.ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from TotalIncomePage to Property Select page if income changes from under to over" in {
+        val previousAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Under).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Over).get
+        navigator.nextPage(
+          TotalIncomePage, taxYear, CheckMode, previousAnswers, userAnswers
+        ) mustBe controllers.routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from TotalIncomePage to check your answers page if no change in answers" in {
+        val previousAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Under).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, TotalIncome.Under).get
+        navigator.nextPage(
+          TotalIncomePage, taxYear, CheckMode, previousAnswers, userAnswers
+        ) mustBe controllers.routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from ExpensesLessThan1000Page to CheckYourAnswersPage" in {

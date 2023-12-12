@@ -16,12 +16,22 @@
 
 package pages
 
-import models.TotalIncome
+import models.TotalIncome.{Between, Over}
+import models.{TotalIncome, UserAnswers}
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "totalIncome"
+
+  override def cleanup(value: Option[TotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value.map {
+      case Between | Over => userAnswers.remove(ReportPropertyIncomePage)
+      case _ => super.cleanup(value, userAnswers)
+    }.getOrElse(super.cleanup(value, userAnswers))
+  }
 }
