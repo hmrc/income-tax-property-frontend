@@ -21,7 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.propertyrentals.expenses.CostsOfServicesProvidedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,7 +32,7 @@ object CostsOfServicesProvidedSummary {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
           key = "costsOfServicesProvided.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.CostsOfServicesProvidedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("costsOfServicesProvided.change.hidden"))
