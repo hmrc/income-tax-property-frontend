@@ -189,14 +189,10 @@ class Navigator @Inject()() {
     }
 
   private def consolidatedExpensesNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
-    previousUserAnswers.get(ConsolidatedExpensesPage) match {
-      case Some(ConsolidatedExpenses(true, _)) if userAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesNo).getOrElse(false) =>
-        println(s"hey tosin look here previous consildated was: ${previousUserAnswers.get(ConsolidatedExpensesPage).get.consolidatedExpensesYesNo}")
-        println(s"and the new expenses is ${userAnswers.get(ConsolidatedExpensesPage).get.consolidatedExpensesYesNo}")
+    userAnswers.get(ConsolidatedExpensesPage) match {
+      case Some(ConsolidatedExpenses(false, _)) if previousUserAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesNo).getOrElse(true) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
       case _ =>
-        println(s"hey tosin look here previous consildated was: ${previousUserAnswers.get(ConsolidatedExpensesPage).get.consolidatedExpensesYesNo}")
-        println(s"and the new expenses is ${userAnswers.get(ConsolidatedExpensesPage).get.consolidatedExpensesYesNo}")
         ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     }
 
