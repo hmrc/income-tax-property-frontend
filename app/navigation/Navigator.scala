@@ -107,6 +107,11 @@ class Navigator @Inject()() {
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    // Allowances
+    case CapitalAllowancesForACarPage | AnnualInvestmentAllowancePage | ElectricChargePointAllowancePage |
+         ZeroEmissionCarAllowancePage | ZeroEmissionGoodsVehicleAllowancePage | BusinessPremisesRenovationPage |
+         ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+
     case _ => taxYear => _ => _ => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
