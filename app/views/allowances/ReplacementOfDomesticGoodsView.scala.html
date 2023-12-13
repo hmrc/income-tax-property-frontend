@@ -57,8 +57,8 @@
 
             <p class="govuk-body">@messages(s"replacementOfDomesticGoods.details.content.line2.$individualOrAgent")</p>
             <ul id="list-2" class="govuk-list govuk-list--bullet" >
-                <li>@messages(s"replacementOfDomesticGoods.details.content.line1.bullet1.$individualOrAgent")</li>
-                <li>@messages("replacementOfDomesticGoods.details.content.line1.bullet2")</li>
+                <li>@messages(s"replacementOfDomesticGoods.details.content.line2.bullet1.$individualOrAgent")</li>
+                <li>@messages("replacementOfDomesticGoods.details.content.line2.bullet2")</li>
             </ul>
             <p class="govuk-body">@messages("replacementOfDomesticGoods.details.content.line2.part1")
                 <a href="@messages("replacementOfDomesticGoods.details.content.line2.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
@@ -70,7 +70,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("replacementOfDomesticGoods.label.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m")
+                label = LabelViewModel(messages(s"replacementOfDomesticGoods.label.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m")
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
