@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.allowances
 
-import controllers.routes
+import controllers.allowances.routes._
 import models.{CheckMode, UserAnswers}
-import pages.OtherCapitalAllowancePage
+import pages.allowances.OtherCapitalAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
@@ -34,7 +34,7 @@ object OtherCapitalAllowanceSummary  {
           key     = "otherCapitalAllowance.checkYourAnswersLabel",
           value   = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.OtherCapitalAllowanceController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", OtherCapitalAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("otherCapitalAllowance.change.hidden"))
           )
         )

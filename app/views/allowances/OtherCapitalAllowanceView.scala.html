@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
+@import controllers.allowances.routes._
 
 @this(
     layout: templates.Layout,
@@ -31,7 +32,7 @@
 
     <h1 class="govuk-heading-l">@messages("otherCapitalAllowance.heading")</h1>
 
-    @formHelper(action = routes.OtherCapitalAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = OtherCapitalAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

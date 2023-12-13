@@ -31,7 +31,7 @@ object ReplacementOfDomesticGoodsSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "replacementOfDomesticGoodsController.checkYourAnswersLabel",
+          key = "replacementOfDomesticGoods.checkYourAnswersLabel",
           value = ValueViewModel(answer.toString),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReplacementOfDomesticGoodsController.onPageLoad(taxYear, CheckMode).url)

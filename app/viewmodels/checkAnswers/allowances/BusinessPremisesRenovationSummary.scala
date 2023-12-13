@@ -31,7 +31,7 @@ object BusinessPremisesRenovationSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "businessPremisesRenovationController.checkYourAnswersLabel",
+          key = "businessPremisesRenovation.checkYourAnswersLabel",
           value = ValueViewModel(answer.toString),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BusinessPremisesRenovationController.onPageLoad(taxYear, CheckMode).url)

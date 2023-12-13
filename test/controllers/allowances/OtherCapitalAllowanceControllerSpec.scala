@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.allowances
 
 import base.SpecBase
-import forms.OtherCapitalAllowanceFormProvider
+import controllers.routes
+import controllers.allowances.routes._
+import forms.allowances.OtherCapitalAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.OtherCapitalAllowancePage
+import pages.allowances.OtherCapitalAllowancePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.data.Form
 import repositories.SessionRepository
-import views.html.allowances.OtherCapitalAllowanceView
 
 import scala.concurrent.Future
 
@@ -45,7 +46,7 @@ class OtherCapitalAllowanceControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
 
-  lazy val otherCapitalAllowanceRoute = routes.OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val otherCapitalAllowanceRoute = OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode).url
 
   "OtherCapitalAllowance Controller" - {
 
