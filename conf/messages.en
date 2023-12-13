@@ -912,5 +912,5 @@ reportPropertyIncome.details.input.hint.agent = Your client doesn’t need to re
 reportPropertyIncome.checkYourAnswersLabel.individual = Do you want to report your property income?
 reportPropertyIncome.checkYourAnswersLabel.agent = Do you want to report your client’s property income?
 reportPropertyIncome.error.required.individual = Select ‘I want to report my property income’, or ‘I do not want to report my property income’
-reportPropertyIncome.error.required.agent = Select ‘My client wants to report their income’ or ‘My client does not want to report their income’
+reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
