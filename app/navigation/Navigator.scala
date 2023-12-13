@@ -28,9 +28,8 @@ import pages._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import play.api.mvc.Call
-import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage,
-  RenovationAllowanceBalancingChargePage, ResidentialFinanceCostPage, UnusedResidentialFinanceCostPage}
-import pages.allowances.{AnnualInvestmentAllowancePage, ZeroEmissionCarAllowancePage}
+import pages.adjustments._
+import pages.allowances._
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 
 import javax.inject.{Inject, Singleton}
