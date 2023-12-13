@@ -26,9 +26,9 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object totalIncomeSummary  {
+object TotalIncomeSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(TotalIncomePage).map {
       answer =>
 
@@ -39,8 +39,8 @@ object totalIncomeSummary  {
         )
 
         SummaryListRowViewModel(
-          key     = "totalIncome.checkYourAnswersLabel",
-          value   = value,
+          key = s"totalIncome.checkYourAnswersLabel.$individualOrAgent",
+          value = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("totalIncome.change.hidden"))

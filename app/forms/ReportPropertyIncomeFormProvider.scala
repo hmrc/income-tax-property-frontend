@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import routes.SummaryController
+package forms
 
-@this(
-    layout: templates.Layout,
-    govukSummaryList: GovukSummaryList,
-    govukButton: GovukButton
-)
+import javax.inject.Inject
 
-@(list: SummaryList)(implicit request: Request[_], messages: Messages)
+import forms.mappings.Mappings
+import play.api.data.Form
 
-@layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
+class ReportPropertyIncomeFormProvider @Inject() extends Mappings {
 
-    <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-
-    @govukSummaryList(list)
-
-    @govukButton(
-        ButtonViewModel(messages("site.continue"))
-            .asLink(SummaryController.show(2023).url)
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "reportPropertyIncome" -> boolean(s"reportPropertyIncome.error.required.$individualOrAgent")
     )
 }
