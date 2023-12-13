@@ -24,17 +24,22 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ReportPropertyIncomeSummary  {
+object ReportPropertyIncomeSummary {
 
-  def row(taxYear:Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ReportPropertyIncomePage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = if (answer) {
+          s"reportPropertyIncome.details.input.yesText.$individualOrAgent"
+        }
+        else {
+          s"reportPropertyIncome.details.input.noText.$individualOrAgent"
+        }
 
         SummaryListRowViewModel(
-          key     = "reportPropertyIncome.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = s"reportPropertyIncome.checkYourAnswersLabel.$individualOrAgent",
+          value = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReportPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reportPropertyIncome.change.hidden"))
