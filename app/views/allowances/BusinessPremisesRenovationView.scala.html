@@ -65,7 +65,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages(s"businessPremisesRenovation.label.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                label = LabelViewModel(messages(s"businessPremisesRenovation.label.$individualOrAgent")).withCssClass("govuk-label govuk-label--m"),
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
