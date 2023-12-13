@@ -21,7 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.propertyrentals.expenses.OtherAllowablePropertyExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,7 +32,7 @@ object OtherAllowablePropertyExpensesSummary {
       case Some(answer) =>
       Some(
         SummaryListRowViewModel(
-          key = "otherAllowablePropertyExpenses.checkYourAnswersLabel",
+          key = KeyViewModel("otherAllowablePropertyExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode).url)

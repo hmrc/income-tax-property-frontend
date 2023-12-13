@@ -21,7 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,7 +31,7 @@ object RentsRatesAndInsuranceSummary {
     answers.get(RentsRatesAndInsurancePage) match {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
-          key = "rentsRatesAndInsurance.checkYourAnswersLabel",
+          key = KeyViewModel("rentsRatesAndInsurance.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode).url)
