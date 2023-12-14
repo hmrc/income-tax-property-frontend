@@ -36,7 +36,7 @@ object CapitalAllowancesForACarSummary {
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+              .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
           )))
       case CapitalAllowancesForACar(false, _) =>
         Some(SummaryListRowViewModel(

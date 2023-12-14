@@ -101,7 +101,7 @@ class CapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, capitalAllowancesForACarRoute)
-            .withFormUrlEncodedBody("yesNo" -> "true", "amount" -> "1234")
+            .withFormUrlEncodedBody("capitalAllowancesForACarYesNo" -> "true", "capitalAllowancesForACarAmount" -> "1234")
 
         val result = route(application, request).value
 

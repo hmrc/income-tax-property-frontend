@@ -23,9 +23,9 @@ class BusinessPremisesRenovationFormProviderSpec extends CurrencyFieldBehaviours
 
   val form = new BusinessPremisesRenovationFormProvider()("individual")
 
-  ".value" - {
+  ".businessPremisesRenovationAmount" - {
 
-    val fieldName = "value"
+    val fieldName = "businessPremisesRenovationAmount"
 
     val minimum = 0
     val maximum = 100000000

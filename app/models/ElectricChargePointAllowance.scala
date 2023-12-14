@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class ElectricChargePointAllowance(yesOrNo: Boolean, allowance: Option[BigDecimal])
+final case class ElectricChargePointAllowance(ElectricChargePointAllowanceYesNo: Boolean, ElectricChargePointAllowanceAmount: Option[BigDecimal])
 
 object ElectricChargePointAllowance {
   implicit val format: Format[ElectricChargePointAllowance] = Json.format

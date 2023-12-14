@@ -34,7 +34,7 @@
 
 <h1 class="govuk-heading-l">@messages("businessPremisesRenovation.heading")</h1>
 
-    @formHelper(action = BusinessPremisesRenovationController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = BusinessPremisesRenovationController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -64,7 +64,7 @@
 
         @govukInput(
             InputViewModel(
-                field = form("value"),
+                field = form("businessPremisesRenovationAmount"),
                 label = LabelViewModel(messages(s"businessPremisesRenovation.label.$individualOrAgent")).withCssClass("govuk-label govuk-label--m"),
             )
             .asNumeric()

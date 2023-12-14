@@ -23,9 +23,9 @@ class AnnualInvestmentAllowanceFormProviderSpec extends CurrencyFieldBehaviours 
 
   val form = new AnnualInvestmentAllowanceFormProvider()("individual")
 
-  ".annualInvestmentAllowance" - {
+  ".annualInvestmentAllowanceAmount" - {
 
-    val fieldName = "annualInvestmentAllowance"
+    val fieldName = "annualInvestmentAllowanceAmount"
 
     val minimum = 0
     val maximum = 100000000

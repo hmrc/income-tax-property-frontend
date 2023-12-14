@@ -27,7 +27,7 @@ import models.TotalIncome.Under
 import models._
 import pages._
 import pages.adjustments._
-import pages.allowances.{AnnualInvestmentAllowancePage, ZeroEmissionCarAllowancePage}
+import pages.allowances._
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -278,12 +278,36 @@ class NavigatorSpec extends SpecBase {
           AnnualInvestmentAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
       }
+      "must go from ElectricChargePointAllowancePage to ZeroEmissionCarAllowancePage" in {
+        navigator.nextPage(
+          ElectricChargePointAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
       "must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage" in {
         navigator.nextPage(
           ZeroEmissionCarAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode)
       }
-
+      "must go from ZeroEmissionGoodsVehicleAllowancePage to BusinessPremisesRenovationPage" in {
+        navigator.nextPage(
+          ZeroEmissionGoodsVehicleAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage" in {
+        navigator.nextPage(
+          BusinessPremisesRenovationPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage" in {
+        navigator.nextPage(
+          ReplacementOfDomesticGoodsPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          OtherCapitalAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
     }
 
     "in Check mode" - {
@@ -493,6 +517,41 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           UnusedResidentialFinanceCostPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from AnnualInvestmentAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          AnnualInvestmentAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from ElectricChargePointAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          ElectricChargePointAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          ZeroEmissionCarAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from ZeroEmissionGoodsVehicleAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          ZeroEmissionGoodsVehicleAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from BusinessPremisesRenovationPage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          BusinessPremisesRenovationPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          ReplacementOfDomesticGoodsPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+      "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
+        navigator.nextPage(
+          OtherCapitalAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
   }

@@ -102,7 +102,7 @@ class ZeroEmissionGoodsVehicleAllowanceControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionGoodsVehicleAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -118,9 +118,9 @@ class ZeroEmissionGoodsVehicleAllowanceControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("zeroEmissionGoodsVehicleAllowanceAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("zeroEmissionGoodsVehicleAllowanceAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ZeroEmissionGoodsVehicleAllowanceView]
 
@@ -152,7 +152,7 @@ class ZeroEmissionGoodsVehicleAllowanceControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, zeroEmissionGoodsVehicleAllowanceRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionGoodsVehicleAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.allowances.BusinessPremisesRenovationPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,11 +32,11 @@ object BusinessPremisesRenovationSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = "businessPremisesRenovation.checkYourAnswersLabel",
-          value = ValueViewModel(answer.toString),
+          key = KeyViewModel("businessPremisesRenovation.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.BusinessPremisesRenovationController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("businessPremisesRenovationController.change.hidden"))
+              .withVisuallyHiddenText(messages("businessPremisesRenovation.change.hidden"))
           )
         )
     }

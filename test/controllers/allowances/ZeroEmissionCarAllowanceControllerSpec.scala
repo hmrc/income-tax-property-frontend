@@ -103,7 +103,7 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionCarAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", "invalid value"))
+            .withFormUrlEncodedBody(("zeroEmissionCarAllowanceAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("amount" -> "invalid value"))
+        val boundForm = form.bind(Map("zeroEmissionCarAllowanceAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
 
@@ -153,7 +153,7 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, ZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("amount", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionCarAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

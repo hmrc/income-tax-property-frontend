@@ -32,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import views.html.allowances.OtherCapitalAllowanceView
 
 import scala.concurrent.Future
 
@@ -101,7 +102,7 @@ class OtherCapitalAllowanceControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, otherCapitalAllowanceRoute)
-            .withFormUrlEncodedBody(("otherCapitalAllowance", validAnswer.toString))
+            .withFormUrlEncodedBody(("otherCapitalAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -117,9 +118,9 @@ class OtherCapitalAllowanceControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, otherCapitalAllowanceRoute)
-            .withFormUrlEncodedBody(("otherCapitalAllowance", "invalid value"))
+            .withFormUrlEncodedBody(("otherCapitalAllowanceAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("otherCapitalAllowance" -> "invalid value"))
+        val boundForm = form.bind(Map("otherCapitalAllowanceAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[OtherCapitalAllowanceView]
 
@@ -151,7 +152,7 @@ class OtherCapitalAllowanceControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, otherCapitalAllowanceRoute)
-            .withFormUrlEncodedBody(("otherCapitalAllowance", validAnswer.toString))
+            .withFormUrlEncodedBody(("otherCapitalAllowanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

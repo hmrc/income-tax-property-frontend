@@ -100,7 +100,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, businessPremisesRenovationControllerRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("businessPremisesRenovationAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -116,9 +116,9 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, businessPremisesRenovationControllerRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("businessPremisesRenovationAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("businessPremisesRenovationAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[BusinessPremisesRenovationView]
 
@@ -150,7 +150,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, businessPremisesRenovationControllerRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("businessPremisesRenovationAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

@@ -48,14 +48,14 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("yesOrNo"),
+                field = form("electricChargePointAllowanceYesNo"),
                 legend = LegendViewModel(messages(s"electricChargePointAllowance.input.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("electricChargePointAllowance"),
+                    field = form("electricChargePointAllowanceYesNo"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(
-                                field = form("allowance"),
+                                field = form("electricChargePointAllowanceAmount"),
                                 label = LabelViewModel(messages(s"electricChargePointAllowance.radio.question.label.$individualOrAgent"))
                             )
                             .asNumeric()
