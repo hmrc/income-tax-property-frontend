@@ -17,6 +17,7 @@
 @import controllers.premiumlease.routes._
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
+@import viewmodels.LegendSize
 
 @this(
     layout: templates.Layout,
@@ -40,7 +41,7 @@
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("calculatedFigureYourself"),
-                    legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(),
+                    legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("calculatedFigureYourself"),
                         conditionalYesHtml = Some(
@@ -52,7 +53,8 @@
                             .withWidth(Fixed10)
                             .withPrefix(PrefixOrSuffix(content = Text("£")))
                             )
-                        )
+                        ),
+                        noText = "calculatedFigureYourself.radio.noText"
                     )
                 )
         )
