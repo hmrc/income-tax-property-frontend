@@ -43,7 +43,7 @@ class ExpensesStartController @Inject()(
         controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
       }
       else {
-        routes.SummaryController.show(taxYear).url
+        controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
       }
       Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers), under85KUrl))
   }

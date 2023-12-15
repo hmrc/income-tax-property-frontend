@@ -41,7 +41,8 @@ class ExpensesStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = true, "/update-and-submit-income-tax-return/property/2023/consolidated-expenses")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = true,
+          "/update-and-submit-income-tax-return/property/2023/consolidated-expenses")(request, messages(application)).toString
       }
     }
 
@@ -59,7 +60,8 @@ class ExpensesStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = false, "/update-and-submit-income-tax-return/property/2023/summary")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = false,
+          "/update-and-submit-income-tax-return/property/2023/expenses/rents-rates-and-insurance")(request, messages(application)).toString
       }
     }
   }
