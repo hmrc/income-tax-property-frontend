@@ -63,43 +63,4 @@ class BusinessServiceSpec extends AnyWordSpec
     }
   }
 
-  "Total Income" should {
-    "return sum of all income section" in {
-      val userAnswers = UserAnswers("test").set(IncomeFromPropertyRentalsPage, BigDecimal(80000)).get
-      val totalIncome = underTest.totalIncome(userAnswers)
-      totalIncome shouldEqual 80000
-    }
-  }
-
-  "Maximum Property Income Allowance Combined" should {
-    "return sum of all income section and balancing charge" in {
-      val userAnswers = UserAnswers("test")
-        .set(IncomeFromPropertyRentalsPage, BigDecimal(80000))
-        .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
-        .get
-
-      val totalIncome = underTest.maxPropertyIncomeAllowanceCombined(userAnswers)
-      totalIncome shouldEqual 90000
-    }
-  }
-
-  "Total income" should {
-    "under 85k if user selected total income is Under" in {
-      val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
-      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
-      isTotalIncomeUnder85K shouldBe true
-    }
-    "over 85k if user selected total income is Over" in {
-      val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
-      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
-      isTotalIncomeUnder85K shouldBe false
-    }
-    "under 85k if sum of all income section" in {
-      val userAnswers = UserAnswers("test").set(TotalIncomePage, Over)
-        .flatMap(_.set(IncomeFromPropertyRentalsPage, BigDecimal(80000))).get
-      val isTotalIncomeUnder85K = underTest.isTotalIncomeUnder85K(userAnswers)
-      isTotalIncomeUnder85K shouldBe true
-    }
-  }
-
 }

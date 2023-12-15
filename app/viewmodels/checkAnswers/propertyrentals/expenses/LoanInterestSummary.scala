@@ -14,31 +14,29 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.premiumlease
+package viewmodels.checkAnswers.propertyrentals.expenses
 
-import controllers.premiumlease.routes
+import controllers.propertyrentals.expenses.routes
 import models.{CheckMode, UserAnswers}
-import pages.premiumlease.RecievedGrantLeaseAmountPage
+import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-
-
-object RecievedGrantLeaseAmountSummary {
+object LoanInterestSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RecievedGrantLeaseAmountPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = KeyViewModel("recievedGrantLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+    answers.get(LoanInterestPage)match {
+      case Some(answer) =>
+        Some(SummaryListRowViewModel(
+          key = KeyViewModel("loanInterest.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("recievedGrantLeaseAmount.change.hidden"))
+            ActionItemViewModel("site.change", routes.LoanInterestController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("loanInterest.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
 }

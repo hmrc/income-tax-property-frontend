@@ -19,6 +19,7 @@ package pages
 import models.{UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -36,8 +37,8 @@ case object SummaryPage {
       "income_link"
     )
     val propertyRentalsExpenses: TaskListItem = TaskListItem("summary.expenses",
-      controllers.routes.ExpensesStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
+      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "expenses_link"
     )
     val propertyAllowances: TaskListItem = TaskListItem("summary.allowances",

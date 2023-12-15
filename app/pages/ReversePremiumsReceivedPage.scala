@@ -16,12 +16,24 @@
 
 package pages
 
-import models.ReversePremiumsReceived
+import models.{ReversePremiumsReceived, UserAnswers}
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object ReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsReceived] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "reversePremiumsReceived"
+
+  override def cleanup(value: Option[ReversePremiumsReceived], userAnswers: UserAnswers): Try[UserAnswers] =
+    if (isTotalIncomeUnder85K(userAnswers)) super.cleanup(value, userAnswers)
+    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+      userAnswers.remove(ConsolidatedExpensesPage)
+    else
+      super.cleanup(value, userAnswers)
+
 }

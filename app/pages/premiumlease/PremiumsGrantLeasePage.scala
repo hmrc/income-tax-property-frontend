@@ -16,10 +16,14 @@
 
 package pages.premiumlease
 
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import models.UserAnswers
 import pages.QuestionPage
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
 import scala.language.postfixOps
+import scala.util.Try
 
 case object PremiumsGrantLeasePage extends QuestionPage[BigDecimal] {
 
@@ -27,7 +31,16 @@ case object PremiumsGrantLeasePage extends QuestionPage[BigDecimal] {
 
   override def toString: String = "premiumsGrantLease"
 
-  def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal = premiumAmount*(BigDecimal(50-minusOne(periods))/50)
+  def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal =
+    (premiumAmount*(BigDecimal(50-minusOne(periods))/50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
 
   def minusOne(periods: Int): Int = periods - 1
+
+  override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
+    if (isTotalIncomeUnder85K(userAnswers))
+      super.cleanup(value, userAnswers)
+    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+      userAnswers.remove(ConsolidatedExpensesPage)
+    else
+      super.cleanup(value, userAnswers)
 }

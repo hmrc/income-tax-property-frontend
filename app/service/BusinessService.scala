@@ -39,31 +39,4 @@ class BusinessService @Inject()(businessConnector: BusinessConnector)
       case Right(businessDetails) => Right(businessDetails)
     }
   }
-
-  def totalIncome(userAnswers: UserAnswers): BigDecimal = {
-    val incomeFromPropertyRentals = userAnswers.get(IncomeFromPropertyRentalsPage).getOrElse(BigDecimal(0))
-    val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage).getOrElse(BigDecimal(0))
-    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).map(_.amount).getOrElse(BigDecimal(0))
-
-    incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
-  }
-
-  def isTotalIncomeUnder85K(userAnswers: UserAnswers): Boolean = {
-    val totalIncomeCapped = 85000
-    userAnswers.get(IncomeFromPropertyRentalsPage) match {
-      case Some(_) =>
-        totalIncome(userAnswers) < BigDecimal(totalIncomeCapped)
-      case None =>
-        val userSelectedIncome = userAnswers.get(TotalIncomePage).get
-        userSelectedIncome == Under || userSelectedIncome == Between
-    }
-  }
-
-  def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers): BigDecimal = {
-    val balancingCharge = userAnswers.get(BalancingChargePage).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
-    totalIncome(userAnswers) + balancingCharge
-  }
-
 }

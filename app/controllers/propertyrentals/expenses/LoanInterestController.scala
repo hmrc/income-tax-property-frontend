@@ -14,60 +14,59 @@
  * limitations under the License.
  */
 
-package controllers.adjustments
+package controllers.propertyrentals.expenses
 
 import controllers.actions._
-import forms.adjustments.PropertyIncomeAllowanceFormProvider
+import forms.LoanInterestFormProvider
 import models.Mode
-import models.TotalIncomeUtils.maxPropertyIncomeAllowanceCombined
 import navigation.Navigator
-import pages.adjustments.PropertyIncomeAllowancePage
+import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.adjustments.PropertyIncomeAllowanceView
+import views.html.propertyrentals.expenses.LoanInterestView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyIncomeAllowanceController @Inject()(
+class LoanInterestController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: PropertyIncomeAllowanceFormProvider,
+                                        formProvider: LoanInterestFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyIncomeAllowanceView)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                        view: LoanInterestView
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
 
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
-      val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
+      val form = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(LoanInterestPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
-
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyIncomeAllowancePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(LoanInterestPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(LoanInterestPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
