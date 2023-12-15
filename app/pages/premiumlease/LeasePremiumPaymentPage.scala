@@ -33,7 +33,7 @@ case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
       case true  => super.cleanup(value, userAnswers)
       case false =>
         for {
-           rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+           rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
            yLAP <- rGLAP.remove(YearLeaseAmountPage)
            pGLP <- yLAP.remove(PremiumsGrantLeasePage)
            cFYP <- pGLP.remove(CalculatedFigureYourselfPage)

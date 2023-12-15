@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package forms.premiumlease
+package pages.premiumlease
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
 
-class recievedGrantLeaseAmountFormProvider @Inject() extends Mappings {
+case object ReceivedGrantLeaseAmountPage extends QuestionPage[BigDecimal] {
 
-  def apply(): Form[BigDecimal] =
-    Form(
-      "value" -> currency(
-        "recievedGrantLeaseAmount.error.required",
-        "recievedGrantLeaseAmount.error.twoDecimalPlaces",
-        "recievedGrantLeaseAmount.error.nonNumeric")
-          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "recievedGrantLeaseAmount.error.outOfRange"))
-    )
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "receivedGrantLeaseAmount"
 }

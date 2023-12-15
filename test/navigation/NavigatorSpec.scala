@@ -28,7 +28,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 
@@ -124,7 +124,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
         navigator.nextPage(
-          premiumlease.RecievedGrantLeaseAmountPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+          premiumlease.ReceivedGrantLeaseAmountPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.premiumlease.routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
       }
 
@@ -419,7 +419,7 @@ class NavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
         navigator.nextPage(
           CalculatedFigureYourselfPage, taxYear, CheckMode, previousUserAnswers, userAnswers
-        ) mustBe RecievedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
+        ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
       }
 
       "must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects no and the previous answer was no" in {
@@ -440,7 +440,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmount" in {
         navigator.nextPage(
-          RecievedGrantLeaseAmountPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+          ReceivedGrantLeaseAmountPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe YearLeaseAmountController.onPageLoad(taxYear, CheckMode)
       }
 

@@ -18,7 +18,7 @@ package pages
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CalculatedFigureYourself, UserAnswers}
-import pages.premiumlease.{PremiumsGrantLeasePage, RecievedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
@@ -42,7 +42,7 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
             cE <- pGLP.remove(ConsolidatedExpensesPage)
           } yield cE else
         for {
-          rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+          rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
           yLAP <- rGLAP.remove(YearLeaseAmountPage)
           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
         } yield pGLP

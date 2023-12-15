@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class RecievedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new recievedGrantLeaseAmountFormProvider()()
+  val form = new ReceivedGrantLeaseAmountFormProvider()()
 
   ".value" - {
 

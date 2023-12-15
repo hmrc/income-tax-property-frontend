@@ -17,10 +17,11 @@
 package controllers.premiumlease
 
 import controllers.actions._
-import forms.premiumlease.recievedGrantLeaseAmountFormProvider
+import forms.premiumlease.ReceivedGrantLeaseAmountFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.premiumlease.RecievedGrantLeaseAmountPage
+import pages.premiumlease.ReceivedGrantLeaseAmountPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,24 +31,24 @@ import views.html.premiumlease.RecievedGrantLeaseAmountView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RecievedGrantLeaseAmountController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: recievedGrantLeaseAmountFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: RecievedGrantLeaseAmountView
+class ReceivedGrantLeaseAmountController @Inject()(
+                                                    override val messagesApi: MessagesApi,
+                                                    sessionRepository: SessionRepository,
+                                                    navigator: Navigator,
+                                                    identify: IdentifierAction,
+                                                    getData: DataRetrievalAction,
+                                                    requireData: DataRequiredAction,
+                                                    formProvider: ReceivedGrantLeaseAmountFormProvider,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    view: RecievedGrantLeaseAmountView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[BigDecimal] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(RecievedGrantLeaseAmountPage) match {
+      val preparedForm = request.userAnswers.get(ReceivedGrantLeaseAmountPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +65,9 @@ class RecievedGrantLeaseAmountController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RecievedGrantLeaseAmountPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReceivedGrantLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RecievedGrantLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ReceivedGrantLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

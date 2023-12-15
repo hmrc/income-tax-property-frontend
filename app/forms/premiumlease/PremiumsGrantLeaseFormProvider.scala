@@ -17,18 +17,28 @@
 package forms.premiumlease
 
 import forms.mappings.Mappings
+import models.PremiumsGrantLease
 import play.api.data.Form
+import play.api.data.Forms.mapping
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfFalse
 
 import javax.inject.Inject
 
 class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
 
-  def apply(agentOrIndividual: String): Form[BigDecimal] =
-    Form(
-      "value" -> currency(
-        s"premiumsGrantLease.error.required.$agentOrIndividual",
-        "premiumsGrantLease.error.twoDecimalPlaces",
-        "premiumsGrantLease.error.nonNumeric")
-          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumsGrantLease.error.outOfRange"))
+  def apply(individualOrAgent: String): Form[PremiumsGrantLease] =
+    Form[PremiumsGrantLease](
+      mapping(
+        "yesOrNo" -> boolean(s"premiumsGrantLease.error.required.$individualOrAgent"),
+        "premiumsGrantLease" -> {
+          mandatoryIfFalse("yesOrNo",
+            currency(
+              s"premiumsGrantLease.error.amount.required.$individualOrAgent",
+              "premiumsGrantLease.error.amount.twoDecimalPlaces",
+              s"premiumsGrantLease.error.amount.nonNumeric.$individualOrAgent")
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumsGrantLease.error.outOfRange"))
+          )
+        }
+      )(PremiumsGrantLease.apply)(PremiumsGrantLease.unapply)
     )
 }

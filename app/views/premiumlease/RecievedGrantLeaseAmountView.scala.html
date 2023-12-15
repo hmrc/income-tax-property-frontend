@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages(s"recievedGrantLeaseAmount.title.${agentOrIndividual}"))) {
 
-    @formHelper(action = routes.RecievedGrantLeaseAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ReceivedGrantLeaseAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
