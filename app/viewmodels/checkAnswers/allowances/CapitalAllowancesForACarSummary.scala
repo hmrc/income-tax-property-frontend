@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.allowances
 
 import controllers.allowances.routes.CapitalAllowancesForACarController
-import models.{CheckMode, CapitalAllowancesForACar, UserAnswers}
+import models.{CapitalAllowancesForACar, CheckMode, UserAnswers}
 import pages.CapitalAllowancesForACarPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -36,7 +36,7 @@ object CapitalAllowancesForACarSummary {
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+              .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
           )))
       case CapitalAllowancesForACar(false, _) =>
         Some(SummaryListRowViewModel(

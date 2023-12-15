@@ -23,9 +23,9 @@ class ZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new ZeroEmissionCarAllowanceFormProvider()("individual")
 
-  ".amount" - {
+  ".zeroEmissionCarAllowanceAmount" - {
 
-    val fieldName = "amount"
+    val fieldName = "zeroEmissionCarAllowanceAmount"
 
     val minimum = 0
     val maximum = 100000000

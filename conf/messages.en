@@ -777,7 +777,7 @@ capitalAllowancesForACar.details.line1.individual = You can claim capital allowa
 capitalAllowancesForACar.details.line1.agent = Your client can claim capital allowances on cars they buy and use for running their property rentals. This means they can deduct part of the value from their profits before they pay tax.
 capitalAllowancesForACar.details.link.href = https://www.gov.uk/capital-allowances/business-cars
 capitalAllowancesForACar.details.link.text = Read more about capital allowances for a car at GOV.UK (opens in new tab)
-capitalAllowancesForACar.checkYourAnswersLabel = Enter an amount:
+capitalAllowancesForACar.checkYourAnswersLabel = Capital allowances for a car
 capitalAllowancesForACar.radio.legend.individual = Do you want to claim capital allowance for a car?
 capitalAllowancesForACar.radio.legend.agent = Does your client want to claim capital allowance for a car?
 capitalAllowancesForACar.error.required.individual = Enter yes if you want to claim capital allowances for a car
@@ -807,8 +807,9 @@ businessPremisesRenovation.error.required.agent = Enter an amount in pounds for 
 businessPremisesRenovation.error.twoDecimalPlaces.individual = The amount you can claim can only include pounds and pence, for example £600 or £600.20
 businessPremisesRenovation.error.required.individual = Enter the amount in pounds for how much allowance you want to claim
 businessPremisesRenovation.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you wants to claim
-replacementOfDomesticGoods.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client wants to claim
+businessPremisesRenovation.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client wants to claim
 businessPremisesRenovation.error.outOfRange = The amount should not exceed £100,000,000
+businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance
 
 replacementOfDomesticGoods.title = Replacement of domestic goods
 replacementOfDomesticGoods.heading = Replacement of domestic goods
@@ -836,6 +837,7 @@ replacementOfDomesticGoods.error.required.individual = Enter the amount in pound
 replacementOfDomesticGoods.error.nonNumeric.individual = Enter an amount in pounds with no special characters for how much you spent on replacing domestic goods
 replacementOfDomesticGoods.error.nonNumeric.agent = Enter an amount in pounds with no special characters for how much your client spent on replacing domestic goods
 replacementOfDomesticGoods.error.outOfRange = The amount should not exceed £100,000,000
+replacementOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
 
 annualInvestmentAllowance.title = Annual investment allowance
 annualInvestmentAllowance.heading = Annual investment allowance
@@ -859,7 +861,6 @@ annualInvestmentAllowance.details.content3.l1 = business cars
 annualInvestmentAllowance.details.content3.l2.individual = items you owned for another reason before you started using them in your business
 annualInvestmentAllowance.details.content3.l2.agent = items they owned for another reason before they started using them in their business
 annualInvestmentAllowance.details.content3.l3 = items given to you or your business
-
 annualInvestmentAllowance.error.required.individual = Enter the amount in pounds for how much annual investment allowance you want to claim
 annualInvestmentAllowance.error.required.agent = Enter an amount in pounds for how much annual investment allowance your client wants to claim
 annualInvestmentAllowance.error.nonNumeric.individual = Enter the amount in pounds for how much annual investment allowance you want to claim
@@ -872,15 +873,14 @@ electricChargePointAllowance.title = Electric charge-point allowance
 electricChargePointAllowance.heading = Electric charge-point allowance
 electricChargePointAllowance.details.content1.individual = If you have property income you can claim 100% of the cost of installing a charge-point for an electric car in the first year that you buy it.
 electricChargePointAllowance.details.content1.agent = If your client has property income they can claim 100% of the cost of installing a charge-point for an electric car in the first year that they buy it.
-electricChargePointAllowance.details.content2.text= Read more about
-electricChargePointAllowance.details.content2.lintText= first year allowances at GOV.UK (opens in new tab)
+electricChargePointAllowance.details.content2.text = Read more about
+electricChargePointAllowance.details.content2.linkText = first year allowances at GOV.UK (opens in new tab)
 electricChargePointAllowance.details.content.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
 electricChargePointAllowance.input.heading.individual = Did you buy and install a new electric charge-point for electrical vehicles?
 electricChargePointAllowance.input.heading.agent = Did your client buy and install a new electric charge-point for electrical vehicles?
 electricChargePointAllowance.radio.question.label.individual = How much electric charge-point allowance do you want to claim?
 electricChargePointAllowance.radio.question.label.agent = How much electric charge-point allowance does your client want to claim?
 electricChargePointAllowance.checkYourAnswersLabel = Electric charge-point allowance
-
 electricChargePointAllowance.error.required.individual = Select yes if you bought and installed an electric charge-point for electric vehicles
 electricChargePointAllowance.error.required.agent = Select yes if your client bought and installed an electric charge-point for electric vehicles
 electricChargePointAllowance.amount.error.required.individual = Enter an amount for how much electric charge-point allowance you want to claim
@@ -890,6 +890,7 @@ electricChargePointAllowance.amount.error.nonNumeric.agent = Enter an amount in 
 electricChargePointAllowance.amount.error.twoDecimalPlaces.individual = The amount for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowance.amount.error.twoDecimalPlaces.agent = The amount for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowance.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+electricChargePointAllowance.checkYourAnswersLabel = Electric charge-point allowance
 
 zeroEmissionCarAllowance.title = Zero-emission car allowance
 zeroEmissionCarAllowance.heading = Zero-emission car allowance
@@ -961,3 +962,4 @@ reportPropertyIncome.checkYourAnswersLabel.agent = Do you want to report your cl
 reportPropertyIncome.error.required.individual = Select ‘I want to report my property income’, or ‘I do not want to report my property income’
 reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
+

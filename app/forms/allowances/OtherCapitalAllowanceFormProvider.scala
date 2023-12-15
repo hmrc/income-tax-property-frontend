@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package forms
+package forms.allowances
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
+
+import javax.inject.Inject
 
 class OtherCapitalAllowanceFormProvider @Inject() extends Mappings {
 
@@ -27,7 +28,7 @@ class OtherCapitalAllowanceFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "otherCapitalAllowance" -> currency(
+      "otherCapitalAllowanceAmount" -> currency(
         s"otherCapitalAllowance.error.required.${individualOrAgent}",
         s"otherCapitalAllowance.error.twoDecimalPlaces.${individualOrAgent}",
         s"otherCapitalAllowance.error.nonNumeric.${individualOrAgent}")

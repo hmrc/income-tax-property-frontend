@@ -23,9 +23,9 @@ class ReplacementOfDomesticGoodsFormProviderSpec extends CurrencyFieldBehaviours
 
   val form = new ReplacementOfDomesticGoodsFormProvider()("individual")
 
-  ".value" - {
+  ".replacementOfDomesticGoodsAmount" - {
 
-    val fieldName = "value"
+    val fieldName = "replacementOfDomesticGoodsAmount"
 
     val minimum = 0
     val maximum = 100000000

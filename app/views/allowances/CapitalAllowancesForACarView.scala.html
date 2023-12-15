@@ -59,13 +59,13 @@
 
             @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("yesNo"),
+                    field = form("capitalAllowancesForACarYesNo"),
                     legend = LegendViewModel(messages(s"capitalAllowancesForACar.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                        field = form("yesNo"),
+                        field = form("capitalAllowancesForACarYesNo"),
                         conditionalYesHtml = Some(
                             govukInput(InputViewModel(
-                                field = form("amount"),
+                                field = form("capitalAllowancesForACarAmount"),
                                 label = LabelViewModel(messages(s"capitalAllowancesForACar.checkYourAnswersLabel"))
                             )
                             .withWidth(Fixed10)

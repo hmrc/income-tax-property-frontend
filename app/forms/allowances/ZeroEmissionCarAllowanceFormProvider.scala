@@ -28,7 +28,7 @@ class ZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "amount" -> currency(
+      "zeroEmissionCarAllowanceAmount" -> currency(
         s"zeroEmissionCarAllowance.error.required.${individualOrAgent}",
         "zeroEmissionCarAllowance.error.twoDecimalPlaces",
         s"zeroEmissionCarAllowance.error.nonNumeric.${individualOrAgent}")

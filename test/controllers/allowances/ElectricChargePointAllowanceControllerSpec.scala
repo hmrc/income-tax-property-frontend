@@ -67,7 +67,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ElectricChargePointAllowancePage, ElectricChargePointAllowance(yesOrNo = false, None)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ElectricChargePointAllowancePage, ElectricChargePointAllowance(ElectricChargePointAllowanceYesNo = false, None)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -80,7 +80,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual
-          view(form.fill(ElectricChargePointAllowance(yesOrNo = false, None)), taxYear, agent, NormalMode)(request, messages(application)).toString
+          view(form.fill(ElectricChargePointAllowance(ElectricChargePointAllowanceYesNo = false, None)), taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -91,7 +91,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -101,7 +101,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("yesOrNo", "true"), ("allowance", "100"))
+            .withFormUrlEncodedBody(("electricChargePointAllowanceYesNo", "true"), ("electricChargePointAllowanceAmount", "100"))
 
         val result = route(application, request).value
 
@@ -117,9 +117,9 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("yesOrNo", "invalid value"))
+            .withFormUrlEncodedBody(("electricChargePointAllowanceAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("yesOrNo" -> "invalid value"))
+        val boundForm = form.bind(Map("electricChargePointAllowanceAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ElectricChargePointAllowanceView]
 
@@ -151,7 +151,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("yesOrNo", "true"))
+            .withFormUrlEncodedBody(("electricChargePointAllowanceYesNo", "true"))
 
         val result = route(application, request).value
 

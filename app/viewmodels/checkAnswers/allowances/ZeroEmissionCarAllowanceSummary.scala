@@ -21,18 +21,19 @@ import models.{CheckMode, UserAnswers}
 import pages.allowances.ZeroEmissionCarAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ZeroEmissionCarAllowanceSummary  {
+object ZeroEmissionCarAllowanceSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ZeroEmissionCarAllowancePage).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "zeroEmissionCarAllowance.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key = KeyViewModel("zeroEmissionCarAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ZeroEmissionCarAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("zeroEmissionCarAllowance.change.hidden"))
@@ -40,3 +41,4 @@ object ZeroEmissionCarAllowanceSummary  {
         )
     }
 }
+

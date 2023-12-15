@@ -27,7 +27,7 @@ class BusinessPremisesRenovationFormProvider @Inject() extends Mappings {
   val maximum = 100000000;
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "businessPremisesRenovationAmount" -> currency(
         s"businessPremisesRenovation.error.required.$individualOrAgent",
         s"businessPremisesRenovation.error.twoDecimalPlaces.$individualOrAgent",
         s"businessPremisesRenovation.error.nonNumeric.$individualOrAgent")

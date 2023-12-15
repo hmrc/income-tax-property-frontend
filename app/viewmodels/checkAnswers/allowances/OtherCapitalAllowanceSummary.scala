@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.allowances
 
-import controllers.routes
+import controllers.allowances.routes
 import models.{CheckMode, UserAnswers}
-import pages.OtherCapitalAllowancePage
+import pages.allowances.OtherCapitalAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object OtherCapitalAllowanceSummary  {
+object OtherCapitalAllowanceSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(OtherCapitalAllowancePage).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "otherCapitalAllowance.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key = KeyViewModel("otherCapitalAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.OtherCapitalAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("otherCapitalAllowance.change.hidden"))
