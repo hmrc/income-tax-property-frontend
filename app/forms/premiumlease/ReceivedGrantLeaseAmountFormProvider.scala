@@ -26,9 +26,9 @@ class ReceivedGrantLeaseAmountFormProvider @Inject() extends Mappings {
   def apply(): Form[BigDecimal] =
     Form(
       "value" -> currency(
-        "recievedGrantLeaseAmount.error.required",
-        "recievedGrantLeaseAmount.error.twoDecimalPlaces",
-        "recievedGrantLeaseAmount.error.nonNumeric")
-          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "recievedGrantLeaseAmount.error.outOfRange"))
+        "receivedGrantLeaseAmount.error.required",
+        "receivedGrantLeaseAmount.error.twoDecimalPlaces",
+        "receivedGrantLeaseAmount.error.nonNumeric")
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "receivedGrantLeaseAmount.error.outOfRange"))
     )
 }

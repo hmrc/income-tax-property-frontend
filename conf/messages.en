@@ -325,16 +325,16 @@ otherIncomeFromProperty.error.twoDecimalPlaces.agent = Enter the figure using wi
 otherIncomeFromProperty.error.outOfRange.individual = The figure must be between {0} and {1}
 otherIncomeFromProperty.error.outOfRange.agent = The figure must be between {0} and {1}
 
-recievedGrantLeaseAmount.title.individual = How much did you receive for the grant of a lease?
-recievedGrantLeaseAmount.title.agent = How much did your client receive for the grant of a lease?
-recievedGrantLeaseAmount.heading.individual = How much did you receive for the grant of a lease?
-recievedGrantLeaseAmount.heading.agent = How much did your client receive for the grant of a lease?
-recievedGrantLeaseAmount.checkYourAnswersLabel = How much did you receive for the grant of a lease?
-recievedGrantLeaseAmount.error.nonNumeric = Enter an using numbers
-recievedGrantLeaseAmount.error.required = Enter an amount for how much you received for the grant of a lease
-recievedGrantLeaseAmount.error.twoDecimalPlaces = Enter the amount with two decimal places
-recievedGrantLeaseAmount.error.outOfRange = Enter an amount for how much you received for the grant of a lease between {0} and {1}
-recievedGrantLeaseAmount.change.hidden = Premiums for the grant of a lease
+receivedGrantLeaseAmount.title.individual = How much did you receive for the grant of a lease?
+receivedGrantLeaseAmount.title.agent = How much did your client receive for the grant of a lease?
+receivedGrantLeaseAmount.heading.individual = How much did you receive for the grant of a lease?
+receivedGrantLeaseAmount.heading.agent = How much did your client receive for the grant of a lease?
+receivedGrantLeaseAmount.checkYourAnswersLabel = How much did you receive for the grant of a lease?
+receivedGrantLeaseAmount.error.nonNumeric = Enter an using numbers
+receivedGrantLeaseAmount.error.required = Enter an amount for how much you received for the grant of a lease
+receivedGrantLeaseAmount.error.twoDecimalPlaces = Enter the amount with two decimal places
+receivedGrantLeaseAmount.error.outOfRange = Enter an amount for how much you received for the grant of a lease between {0} and {1}
+receivedGrantLeaseAmount.change.hidden = Premiums for the grant of a lease
 
 yearLeaseAmount.title = How many complete 12 month periods were in the term of the lease?
 yearLeaseAmount.heading = How many complete 12 month periods were in the term of the lease?

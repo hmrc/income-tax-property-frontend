@@ -26,7 +26,7 @@ import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 
-object RecievedGrantLeaseAmountSummary {
+object ReceivedGrantLeaseAmountSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ReceivedGrantLeaseAmountPage).map {

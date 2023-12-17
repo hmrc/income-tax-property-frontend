@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.premiumlease.RecievedGrantLeaseAmountView
+import views.html.premiumlease.ReceivedGrantLeaseAmountView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -58,7 +58,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
@@ -74,7 +74,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request = FakeRequest(GET, recievedGrantLeaseAmountRoute)
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         val result = route(application, request).value
 
@@ -120,7 +120,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         val result = route(application, request).value
 
