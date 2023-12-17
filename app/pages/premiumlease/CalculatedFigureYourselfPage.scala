@@ -32,19 +32,19 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
 
   override def cleanup(value: Option[CalculatedFigureYourself], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
-      case CalculatedFigureYourself(false, _)  => super.cleanup(value, userAnswers)
+      case CalculatedFigureYourself(false, _) => super.cleanup(value, userAnswers)
       case CalculatedFigureYourself(true, amount) =>
         if (!isTotalIncomeUnder85K(userAnswers) && userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
           for {
-            rGLAP <- userAnswers.remove(RecievedGrantLeaseAmountPage)
+            rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
             yLAP <- rGLAP.remove(YearLeaseAmountPage)
             pGLP <- yLAP.remove(PremiumsGrantLeasePage)
             cE <- pGLP.remove(ConsolidatedExpensesPage)
           } yield cE else
-        for {
-          rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
-          yLAP <- rGLAP.remove(YearLeaseAmountPage)
-          pGLP <- yLAP.remove(PremiumsGrantLeasePage)
-        } yield pGLP
+          for {
+            rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
+            yLAP <- rGLAP.remove(YearLeaseAmountPage)
+            pGLP <- yLAP.remove(PremiumsGrantLeasePage)
+          } yield pGLP
     }.getOrElse(super.cleanup(value, userAnswers))
 }
