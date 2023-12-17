@@ -45,7 +45,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
   val validAnswer = BigDecimal(100)
 
-  lazy val recievedGrantLeaseAmountRoute = routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val recievedGrantLeaseAmountRoute = routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
 
   "recievedGrantLeaseAmount Controller" - {
 

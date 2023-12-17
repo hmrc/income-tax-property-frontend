@@ -111,7 +111,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           CalculatedFigureYourselfPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.premiumlease.routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {

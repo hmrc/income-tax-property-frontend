@@ -20,12 +20,23 @@ import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
 class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
+  val form = new PremiumsGrantLeaseFormProvider()("individual")
+
+  ".premiumsGrantLeaseYesNo" - {
+
+    val fieldName = "yesOrNo"
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, "premiumsGrantLease.error.required.individual")
+    )
+  }
+
+  ".premiumsGrantLease for agent" - {
 
 
-  ".value for agent" - {
-    val form = new PremiumsGrantLeaseFormProvider()("agent")
-
-    val fieldName = "value"
+    val fieldName = "premiumsGrantLease"
 
     val minimum = 0
     val maximum = 100000000
@@ -41,22 +52,18 @@ class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "premiumsGrantLease.error.nonNumeric"),
-      twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.twoDecimalPlaces")
+      nonNumericError = FormError(fieldName, "premiumsGrantLease.error.amount.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.amount.twoDecimalPlaces"),
+      defaultFields = ("yesOrNo", "false")
     )
 
     behave like currencyFieldWithRange(
       form,
       fieldName,
-      minimum       = minimum,
-      maximum       = maximum,
-      expectedError = FormError(fieldName, "premiumsGrantLease.error.outOfRange", Seq(minimum, maximum))
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, "premiumsGrantLease.error.required.agent")
+      minimum = minimum,
+      maximum = maximum,
+      expectedError = FormError(fieldName, "premiumsGrantLease.error.outOfRange", Seq(minimum, maximum)),
+      defaultFields = ("yesOrNo", "false")
     )
   }
 }

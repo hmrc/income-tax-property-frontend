@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import base.SpecBase
 import forms.premiumlease.PremiumsGrantLeaseFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, PremiumsGrantLease, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -74,7 +74,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userAnswersId)
         .set(ReceivedGrantLeaseAmountPage, BigDecimal(100)).success.value
         .set(YearLeaseAmountPage, 10).success.value
-        .set(PremiumsGrantLeasePage, validAnswer).success.value
+        .set(PremiumsGrantLeasePage,  PremiumsGrantLease(yesOrNo = true, Some(validAnswer))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
@@ -86,7 +86,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, 10, BigDecimal(100), NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(PremiumsGrantLease(yesOrNo = true, Some(validAnswer))), taxYear, 10, BigDecimal(100), NormalMode, "agent")(request, messages(application)).toString
       }
     }
 
@@ -103,7 +103,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.premiumlease.routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+        redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
       }
     }
 
@@ -145,7 +145,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, premiumsGrantLeaseRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString()))
+            .withFormUrlEncodedBody(("yesOrNo", "false"),("premiumsGrantLease", validAnswer.toString()))
 
         val result = route(application, request).value
 
@@ -179,7 +179,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.premiumlease.routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+        redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
       }
     }
 

@@ -17,7 +17,7 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.CalculatedFigureYourself
+import models.{CalculatedFigureYourself, PremiumsGrantLease}
 import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.CalculatedFigureYourselfPage
 
@@ -28,7 +28,7 @@ class CalculatedFigureYoureselfPageSpec extends SpecBase {
     val userData = emptyUserAnswers
                       .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).success.value
                       .set(YearLeaseAmountPage, 10).success.value
-                      .set(PremiumsGrantLeasePage, BigDecimal(10.12)).success.value
+                      .set(PremiumsGrantLeasePage, PremiumsGrantLease(yesOrNo = true, Some(BigDecimal(10.12)))).success.value
 
     val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(10.13))).success.value
 
@@ -44,7 +44,7 @@ class CalculatedFigureYoureselfPageSpec extends SpecBase {
     val userData = emptyUserAnswers
       .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.10)).get
       .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage, BigDecimal(10.10)).get
+      .set(PremiumsGrantLeasePage, PremiumsGrantLease(yesOrNo = true, Some(BigDecimal(10.12)))).get
 
     val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).success.value
 
