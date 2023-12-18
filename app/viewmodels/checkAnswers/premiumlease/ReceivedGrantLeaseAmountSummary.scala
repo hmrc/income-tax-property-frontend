@@ -33,11 +33,11 @@ object ReceivedGrantLeaseAmountSummary {
       answer =>
 
         SummaryListRowViewModel(
-          key = KeyViewModel("recievedGrantLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("receivedGrantLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("recievedGrantLeaseAmount.change.hidden"))
+              .withVisuallyHiddenText(messages("receivedGrantLeaseAmount.change.hidden"))
           )
         )
     }

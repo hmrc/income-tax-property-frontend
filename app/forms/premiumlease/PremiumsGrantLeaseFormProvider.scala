@@ -30,7 +30,7 @@ class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
     Form[PremiumsGrantLease](
       mapping(
         "yesOrNo" -> boolean(s"premiumsGrantLease.error.required.$individualOrAgent"),
-        "premiumsGrantLease" -> {
+        "premiumsGrantLeaseAmount" -> {
           mandatoryIfFalse("yesOrNo",
             currency(
               s"premiumsGrantLease.error.amount.required.$individualOrAgent",
