@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes._
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CheckMode, ConsolidatedExpenses, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.Messages
@@ -24,29 +25,33 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+
 object ConsolidatedExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(ConsolidatedExpensesPage).flatMap {
-      case ConsolidatedExpenses(true, Some(amount)) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
-          )))
-      case ConsolidatedExpenses(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
-          )
-        ))
-      case _ => Option.empty[SummaryListRow]
+    if (isTotalIncomeUnder85K(answers)) {
+      answers.get(ConsolidatedExpensesPage).flatMap {
+        case ConsolidatedExpenses(true, Some(amount)) =>
+          Some(SummaryListRowViewModel(
+            key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+            )))
+        case ConsolidatedExpenses(false, _) =>
+          Some(SummaryListRowViewModel(
+            key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no").withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+            )
+          ))
+        case _ => Option.empty[SummaryListRow]
+      }
+    } else {
+      Option.empty[SummaryListRow]
     }
   }
-
 }
