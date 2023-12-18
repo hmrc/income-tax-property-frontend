@@ -36,7 +36,7 @@ class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
   ".premiumsGrantLease for agent" - {
 
 
-    val fieldName = "premiumsGrantLease"
+    val fieldName = "premiumsGrantLeaseAmount"
 
     val minimum = 0
     val maximum = 100000000
