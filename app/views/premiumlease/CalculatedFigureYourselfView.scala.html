@@ -41,7 +41,7 @@
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("calculatedFigureYourself"),
-                    legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(LegendSize.Medium),
+                    legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(LegendSize.Large),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("calculatedFigureYourself"),
                         conditionalYesHtml = Some(
