@@ -29,8 +29,8 @@ class RepairsAndMaintenanceCostsFormProvider @Inject() extends Mappings {
     Form(
       "RepairsAndMaintenanceCosts" -> currency(
         s"repairsAndMaintenanceCosts.error.required.$individualOrAgent",
-        s"repairsAndMaintenanceCosts.error.required.$individualOrAgent",
-        s"repairsAndMaintenanceCosts.error.required.$individualOrAgent")
+        "repairsAndMaintenanceCosts.error.twoDecimalPlaces",
+        s"repairsAndMaintenanceCosts.error.nonNumeric.$individualOrAgent")
         .verifying(inRange(minValue, maxValue, "repairsAndMaintenanceCosts.error.outOfRange"))
     )
 }

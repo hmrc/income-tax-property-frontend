@@ -25,7 +25,6 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfFalse
 import javax.inject.Inject
 
 class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
-
   def apply(individualOrAgent: String): Form[PremiumsGrantLease] =
     Form[PremiumsGrantLease](
       mapping(

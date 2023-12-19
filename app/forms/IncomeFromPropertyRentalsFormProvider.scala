@@ -31,7 +31,7 @@ class IncomeFromPropertyRentalsFormProvider @Inject() extends Mappings {
       "incomeFromPropertyRentals" -> currency(
         s"incomeFromPropertyRentals.error.required.$agentOrIndividual",
         "incomeFromPropertyRentals.error.twoDecimalPlaces",
-        "incomeFromPropertyRentals.error.nonNumeric")
+        s"incomeFromPropertyRentals.error.nonNumeric.$agentOrIndividual")
         .verifying(inRange(BigDecimal(minValue), BigDecimal(maxValue), "incomeFromPropertyRentals.error.outOfRange"))
     )
 }
