@@ -28,9 +28,9 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"recievedGrantLeaseAmount.title.${agentOrIndividual}"))) {
+@layout(pageTitle = title(form, messages(s"receivedGrantLeaseAmount.title.${agentOrIndividual}"))) {
 
-    @formHelper(action = routes.RecievedGrantLeaseAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ReceivedGrantLeaseAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -39,7 +39,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages(s"recievedGrantLeaseAmount.heading.${agentOrIndividual}")).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages(s"receivedGrantLeaseAmount.heading.${agentOrIndividual}")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10)

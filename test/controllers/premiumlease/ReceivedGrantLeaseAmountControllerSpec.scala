@@ -17,26 +17,26 @@
 package controllers.premiumlease
 
 import base.SpecBase
-import forms.premiumlease.recievedGrantLeaseAmountFormProvider
+import forms.premiumlease.ReceivedGrantLeaseAmountFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.premiumlease.RecievedGrantLeaseAmountPage
+import pages.premiumlease.ReceivedGrantLeaseAmountPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.premiumlease.RecievedGrantLeaseAmountView
+import views.html.premiumlease.ReceivedGrantLeaseAmountView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class RecievedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
+class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new recievedGrantLeaseAmountFormProvider()
+  val formProvider = new ReceivedGrantLeaseAmountFormProvider()
   val form = formProvider()
   private val taxYear = LocalDate.now.getYear
 
@@ -45,7 +45,7 @@ class RecievedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
   val validAnswer = BigDecimal(100)
 
-  lazy val recievedGrantLeaseAmountRoute = routes.RecievedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val recievedGrantLeaseAmountRoute = routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
 
   "recievedGrantLeaseAmount Controller" - {
 
@@ -58,7 +58,7 @@ class RecievedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
@@ -67,14 +67,14 @@ class RecievedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RecievedGrantLeaseAmountPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReceivedGrantLeaseAmountPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, recievedGrantLeaseAmountRoute)
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         val result = route(application, request).value
 
@@ -120,7 +120,7 @@ class RecievedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RecievedGrantLeaseAmountView]
+        val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         val result = route(application, request).value
 

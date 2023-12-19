@@ -19,9 +19,9 @@ package forms.premiumlease
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class RecievedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
+class ReceivedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new recievedGrantLeaseAmountFormProvider()()
+  val form = new ReceivedGrantLeaseAmountFormProvider()()
 
   ".value" - {
 
@@ -41,8 +41,8 @@ class RecievedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "recievedGrantLeaseAmount.error.nonNumeric"),
-      twoDecimalPlacesError = FormError(fieldName, "recievedGrantLeaseAmount.error.twoDecimalPlaces")
+      nonNumericError  = FormError(fieldName, "receivedGrantLeaseAmount.error.nonNumeric"),
+      twoDecimalPlacesError = FormError(fieldName, "receivedGrantLeaseAmount.error.twoDecimalPlaces")
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +50,13 @@ class RecievedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       minimum       = minimum,
       maximum       = maximum,
-      expectedError = FormError(fieldName, "recievedGrantLeaseAmount.error.outOfRange", Seq(minimum, maximum))
+      expectedError = FormError(fieldName, "receivedGrantLeaseAmount.error.outOfRange", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "recievedGrantLeaseAmount.error.required")
+      requiredError = FormError(fieldName, "receivedGrantLeaseAmount.error.required")
     )
   }
 }

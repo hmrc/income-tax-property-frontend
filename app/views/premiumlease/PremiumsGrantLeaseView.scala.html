@@ -17,6 +17,8 @@
 @import viewmodels.InputWidth._
 @import controllers.premiumlease.routes._
 @import pages.premiumlease.PremiumsGrantLeasePage
+@import viewmodels.govuk._
+@import viewmodels.LegendSize
 
 
 @this(
@@ -24,7 +26,8 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukInput: GovukInput,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    govukRadios: GovukRadios
 )
 
 @(form: Form[_],taxYear: Int , periods: Int, premiumAmount: BigDecimal, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
@@ -32,20 +35,6 @@
 @layout(pageTitle = title(form, messages("premiumsGrantLease.title"))) {
 
     <h1 class="govuk-heading-l">@messages("premiumsGrantLease.heading")</h1>
-
-    <p class="govuk-body">@messages(s"premiumsGrantLease.line1.${agentOrIndividual}")</p>
-
-    <p class="govuk-body">
-        <span>@messages("premiumsGrantLease.line2.part1")</span> <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part2")</span><span>@messages("premiumsGrantLease.line2.part3")</span> <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part4")</span><span>@messages("premiumsGrantLease.line2.part5")</span>
-    </p>
-
-    <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line3.part1")</span> <span>@messages("premiumsGrantLease.line3.part2")</span>
-    </p>
-
-    <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line4.part1")</span> <span>@messages("premiumsGrantLease.line4.part2")</span>
-    </p>
 
     <p class="govuk-heading-m">@messages("premiumsGrantLease.calculation.subHeading")</p>
 
@@ -58,8 +47,32 @@
     <p class="govuk-body">@messages("premiumsGrantLease.calculation.formula", premiumAmount.toString, (periods - 1).toString)</p>
 
     <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span> <span>£@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
+        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span> <span> £@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
     </p>
+
+    <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+            @messages("premiumsGrantLease.details.content.link.text")
+            </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p class="govuk-body">@messages(s"premiumsGrantLease.line1.${agentOrIndividual}")</p>
+
+            <p class="govuk-body">
+                <span>@messages("premiumsGrantLease.line2.part1")</span><span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part2")</span><span>@messages("premiumsGrantLease.line2.part3")</span><span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line2.part4")</span><span>@messages("premiumsGrantLease.line2.part5")</span>
+            </p>
+
+            <p class="govuk-body">
+                <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line3.part1")</span> <span>@messages("premiumsGrantLease.line3.part2")</span>
+            </p>
+
+            <p class="govuk-body">
+                <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.line4.part1")</span> <span>@messages("premiumsGrantLease.line4.part2")</span>
+            </p>
+
+        </div>
+    </details>
 
 
 @formHelper(action = PremiumsGrantLeaseController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
@@ -68,16 +81,25 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages(s"premiumsGrantLease.checkYourAnswersLabel.${agentOrIndividual}")).withCssClass("govuk-label govuk-label--m")
+    @govukRadios(
+        radios.RadiosViewModel.yesNoWithConditionalHtml(
+            field = form("yesOrNo"),
+            legend = LegendViewModel(messages(s"premiumsGrantLease.checkYourAnswersLabel.${agentOrIndividual}")).asPageHeading(LegendSize.Medium),
+            items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                field = form("premiumsGrantLease"),
+                conditionalNoHtml = Some(
+                    govukInput(InputViewModel(
+                        field = form("premiumsGrantLeaseAmount"),
+                        label = LabelViewModel(messages("premiumsGrantLease.input.label"))
+                    )
+                    .asNumeric()
+                    .withWidth(Fixed10)
+                    .withPrefix(PrefixOrSuffix(content = Text("£")))
+                    )
+                )
             )
-            .asNumeric()
-            .withWidth(Fixed10)
-            .withId("PremiumPayment")
-            .withPrefix(PrefixOrSuffix(content = Text("£")))
         )
+    )
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")

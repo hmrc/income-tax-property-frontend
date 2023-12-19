@@ -66,18 +66,20 @@ trait RadiosFluency {
     def yesNoItemsWithConditionalHtml(
                                        field: Field,
                                        conditionalYesHtml: Option[Html] = None,
-                                       conditionalNoHtml: Option[Html] = None
-                                     )(implicit messages: Messages) = Seq(
+                                       conditionalNoHtml: Option[Html] = None,
+                                       yesText: String = "site.yes",
+                                       noText: String = "site.no"
+                                     )(implicit messages: Messages): Seq[RadioItem] = Seq(
       RadioItem(
         id = Some(field.id),
         value = Some("true"),
-        content = Text(messages("site.yes")),
+        content = Text(messages(yesText)),
         conditionalHtml = conditionalYesHtml
       ),
       RadioItem(
         id = Some(s"${field.id}-no"),
         value = Some("false"),
-        content = Text(messages("site.no")),
+        content = Text(messages(noText)),
         conditionalHtml = conditionalNoHtml
       )
     )

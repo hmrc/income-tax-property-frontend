@@ -16,6 +16,7 @@
 
 package pages.premiumlease
 
+import models.PremiumsGrantLease
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.UserAnswers
 import pages.QuestionPage
@@ -25,7 +26,7 @@ import play.api.libs.json.JsPath
 import scala.language.postfixOps
 import scala.util.Try
 
-case object PremiumsGrantLeasePage extends QuestionPage[BigDecimal] {
+case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
 
   override def path: JsPath = JsPath \ toString
 
@@ -36,11 +37,13 @@ case object PremiumsGrantLeasePage extends QuestionPage[BigDecimal] {
 
   def minusOne(periods: Int): Int = periods - 1
 
-  override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
-    if (isTotalIncomeUnder85K(userAnswers))
-      super.cleanup(value, userAnswers)
-    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
-      userAnswers.remove(ConsolidatedExpensesPage)
-    else
-      super.cleanup(value, userAnswers)
+  override def cleanup(value: Option[PremiumsGrantLease], userAnswers: UserAnswers): Try[UserAnswers] = {
+        if (isTotalIncomeUnder85K(userAnswers))
+          super.cleanup(value, userAnswers)
+        else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+          userAnswers.remove(ConsolidatedExpensesPage)
+        else
+          super.cleanup(value, userAnswers)
+  }
+
 }

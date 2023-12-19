@@ -33,7 +33,7 @@ object PremiumsGrantLeaseSummary {
 
         SummaryListRowViewModel(
           key = KeyViewModel("premiumsGrantLease.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer.premiumsGrantLease.get)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("premiumsGrantLease.change.hidden"))
