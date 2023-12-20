@@ -41,8 +41,8 @@ class RepairsAndMaintenanceCostsFormProviderSpec extends CurrencyFieldBehaviours
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "repairsAndMaintenanceCosts.error.required.agent"),
-      twoDecimalPlacesError = FormError(fieldName, "repairsAndMaintenanceCosts.error.required.agent")
+      nonNumericError = FormError(fieldName, "repairsAndMaintenanceCosts.error.nonNumeric.agent"),
+      twoDecimalPlacesError = FormError(fieldName, "repairsAndMaintenanceCosts.error.twoDecimalPlaces")
     )
 
     behave like currencyFieldWithRange(
