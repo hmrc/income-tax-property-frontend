@@ -37,7 +37,7 @@ class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
           currency(
             s"capitalAllowancesForACar.error.required.amount.$individualOrAgent",
             "capitalAllowancesForACar.error.twoDecimalPlaces",
-            "capitalAllowancesForACar.error.nonNumeric")
+            s"capitalAllowancesForACar.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "capitalAllowancesForACar.error.outOfRange"))
         )
       }
