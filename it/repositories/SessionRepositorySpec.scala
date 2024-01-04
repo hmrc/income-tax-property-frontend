@@ -32,6 +32,7 @@ class SessionRepositorySpec
 
   private val mockAppConfig = mock[FrontendAppConfig]
   when(mockAppConfig.cacheTtl) thenReturn 1
+  when(mockAppConfig.cacheTtlSecondsOrDays) thenReturn "Seconds"
 
   protected override val repository = new SessionRepository(
     mongoComponent = mongoComponent,
