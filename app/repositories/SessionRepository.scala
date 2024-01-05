@@ -45,7 +45,11 @@ class SessionRepository @Inject()(
         Indexes.ascending("lastUpdated"),
         IndexOptions()
           .name("lastUpdatedIdx")
-          .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+          .expireAfter(appConfig.cacheTtl, appConfig.cacheTtlSecondsOrDays.toLowerCase match {
+            case "seconds" => TimeUnit.SECONDS
+            case "days" => TimeUnit.DAYS
+            case _ => TimeUnit.SECONDS
+          })
       )
     )
   ) {
