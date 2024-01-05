@@ -342,7 +342,7 @@ yearLeaseAmount.checkYourAnswersLabel = How many complete 12 month periods were 
 yearLeaseAmount.error.nonNumeric = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
 yearLeaseAmount.error.required = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
 yearLeaseAmount.error.wholeNumber = The term of the lease must only include whole numbers between {0} and {1}
-yearLeaseAmount.error.outOfRange = Enter an amount between £{0} and £{1}
+yearLeaseAmount.error.outOfRange = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
 yearLeaseAmount.change.hidden = Year Lease Amount
 
 propertyIncomeStart.title = Property income
