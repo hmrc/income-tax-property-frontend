@@ -126,7 +126,7 @@ class Navigator @Inject()() {
     case ConsolidatedExpensesPage => taxYear =>
       previousUserAnswers =>
         userAnswers =>
-          consolidatedExpensesNavigationCheckMode(taxYear, userAnswers, previousUserAnswers)
+          consolidatedExpensesNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
