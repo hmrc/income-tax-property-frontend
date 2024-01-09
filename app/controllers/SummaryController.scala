@@ -22,17 +22,31 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
+import service.BusinessService
+import models.backend.PropertyDetails
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class SummaryController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  identify: IdentifierAction,
                                  getData: DataRetrievalAction,
-                                 view: SummaryView
-                               ) extends FrontendBaseController with I18nSupport {
+                                 view: SummaryView,
+                                 businessService: BusinessService
+                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    Ok(view(taxYear, SummaryPage.createUkPropertyRows(request.userAnswers, taxYear)))
+  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async {
+    implicit request =>
+      businessService.getBusinessDetails(request.user).map {
+        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+          Ok(view(taxYear, SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)))
+        case _ => Redirect(routes.SummaryController.show(taxYear))
+      }
   }
-}
+
+      private def existsUkProperty(property: PropertyDetails): Boolean =
+        property.incomeSourceType.contains("uk-property") && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
+  }
+

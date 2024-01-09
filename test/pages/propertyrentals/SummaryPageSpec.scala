@@ -28,6 +28,7 @@ class SummaryPageSpec extends SpecBase {
 
   "SummaryPageSpec createUkPropertyRows" - {
     val taxYear = LocalDate.now.getYear
+    val cashOrAccurals = true
     val summaryItem = TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
@@ -50,6 +51,11 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "allowances_link"
     )
+    val structuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.structuresAndBuildingAllowance",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "structuresAndBuildingAllowance_link"
+    )
     val adjustmentsListItem = TaskListItem("summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
@@ -57,7 +63,7 @@ class SummaryPageSpec extends SpecBase {
     )
 
     "return empty rows, given an empty user data" in {
-      SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear).length should be(0)
+      SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccurals).length should be(0)
     }
 
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
@@ -66,8 +72,8 @@ class SummaryPageSpec extends SpecBase {
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(1)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).head should be(summaryItem)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(1)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).head should be(summaryItem)
 
     }
     "should return all rows except expenses when ClaimPropertyIncomeAllowancePage exist in the user data" in {
@@ -78,20 +84,32 @@ class SummaryPageSpec extends SpecBase {
 
       val res = Seq(summaryItem, incomeListItem, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(3)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(3)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
     }
 
-    "should return all rows when ClaimPropertyIncomeAllowance is false in the user data" in {
+    "should return all rows when ClaimPropertyIncomeAllowance is false and CashOrAccurals is true in the user data" in {
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
 
+      val res = Seq(summaryItem, incomeListItem, expenseListItem, propertyAllowances, structuresAndBuildingAllowance, adjustmentsListItem)
+
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear,cashOrAccurals).length should be(6)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
+    }
+    "should return all rows except structuresAndBuildingAllowance when ClaimPropertyIncomeAllowance is false and CashOrAccurals is false in the user data" in {
+      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+      ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
+      val cashOrAccurals = false
+
       val res = Seq(summaryItem, incomeListItem, expenseListItem, propertyAllowances, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear).length should be(5)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear) should be(res)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(5)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
     }
 
   }
