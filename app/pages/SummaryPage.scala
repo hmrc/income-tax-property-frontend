@@ -62,21 +62,10 @@ case object SummaryPage {
 
     claimPropertyIncomeAllowance.collect {
       case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-      val resultSeq = claimPropertyIncomeAllowance.collect {
-  case true =>
-    Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-  case false if cashOrAccurals =>
-    Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, propertyRentalsAdjustments)
-  case false =>
-    Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
-}.getOrElse {
-  if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
-}
-        if (cashOrAccurals) {
-          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, propertyRentalsAdjustments)
-        }else{
-          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
-        }
+      case false if cashOrAccurals =>
+        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, propertyRentalsAdjustments)
+      case false =>
+        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
     }.getOrElse {
       if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
     }
