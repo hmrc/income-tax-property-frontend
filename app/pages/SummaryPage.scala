@@ -23,7 +23,7 @@ import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
-  def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
+  def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccurals: Boolean): Seq[TaskListItem] = {
     val propertyRentalsAbout: TaskListItem = TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
@@ -46,6 +46,11 @@ case object SummaryPage {
       TaskListTag.NotStarted,
       "allowances_link"
     )
+    val structuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.structuresAndBuildingAllowance",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "structuresAndBuildingAllowance_link"
+    )
     val propertyRentalsAdjustments: TaskListItem = TaskListItem("summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
@@ -57,7 +62,10 @@ case object SummaryPage {
 
     claimPropertyIncomeAllowance.collect {
       case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-      case false => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
+      case false if cashOrAccurals =>
+        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, propertyRentalsAdjustments)
+      case false =>
+        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
     }.getOrElse {
       if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
     }

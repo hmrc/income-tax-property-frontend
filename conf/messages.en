@@ -15,6 +15,7 @@ summary.about = About
 summary.income = Income
 summary.expenses = Expenses
 summary.allowances = Allowances
+summary.structuresAndBuildingAllowance = Structures and Buildings Allowance
 summary.adjustments = Adjustments
 
 site.back = Back
