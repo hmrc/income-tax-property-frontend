@@ -981,3 +981,8 @@ reportPropertyIncome.error.required.individual = Select ‘I want to report my p
 reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
 
+structureBuildingAllowance.title.individual = Structure Building Allowance
+structureBuildingAllowance.title.agent = Structure Building Allowance
+structureBuildingAllowance.heading = Structures and buildings allowance claims
+structureBuildingAllowance.para1 = Tell HMRC if you've paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be able to claim tax relief.
+structureBuildingAllowance.button = Add a claim

@@ -247,3 +247,6 @@ GET        /:taxYear/allowances/change-replacement-of-domestic-goods            
 POST       /:taxYear/allowances/change-replacement-of-domestic-goods                controllers.allowances.ReplacementOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/allowances/check-your-answers                                  controllers.allowances.AllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
+
+GET        /:taxYear/structure-building-allowance                                   controllers.StructureBuildingAllowanceController.onPageLoad(taxYear: Int)
+GET        /:taxYear/understanding-structure-building-allowance                     controllers.StructureBuildingAllowanceController.onPageLoad(taxYear: Int)

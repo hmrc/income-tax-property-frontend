@@ -18,12 +18,8 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.ApiError
-import models.TotalIncome.{Between, Under}
-import models.{User, UserAnswers}
+import models.User
 import models.backend.{BusinessDetails, HttpParserError}
-import pages.adjustments.BalancingChargePage
-import pages.premiumlease.PremiumsGrantLeasePage
-import pages.{CalculatedFigureYourselfPage, IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage, TotalIncomePage}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 
