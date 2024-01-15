@@ -82,6 +82,11 @@ class Navigator @Inject()() {
     case ReplacementOfDomesticGoodsPage => taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode)
     case OtherCapitalAllowancePage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case OtherAllowablePropertyExpensesPage => taxYear => _ => _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+
+    // Structured building allowance
+    case StructureBuildingAllowancePage => taxYear => _ => _ => StructureBuildingAllowanceController.onPageLoad(taxYear)
+    case ClaimStructureBuildingAllowancePage => taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
