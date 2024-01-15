@@ -59,7 +59,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -77,7 +77,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -123,7 +123,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm,  taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm,  taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 

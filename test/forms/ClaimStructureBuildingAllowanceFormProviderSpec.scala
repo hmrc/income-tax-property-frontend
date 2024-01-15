@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class ClaimStructureBuildingAllowanceFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "claimStructureBuildingAllowance.error.required"
+  val requiredKey = "claimStructureBuildingAllowance.error.required.agent"
   val invalidKey = "error.boolean"
 
   val form = new ClaimStructureBuildingAllowanceFormProvider()("agent")
