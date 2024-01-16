@@ -98,7 +98,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 
@@ -114,9 +114,9 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("claimStructureBuildingAllowance" -> ""))
 
         val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
@@ -148,7 +148,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 

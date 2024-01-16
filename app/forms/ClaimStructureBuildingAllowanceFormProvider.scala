@@ -25,6 +25,6 @@ class ClaimStructureBuildingAllowanceFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean(s"claimStructureBuildingAllowance.error.required.$individualOrAgent")
+      "claimStructureBuildingAllowance" -> boolean(s"claimStructureBuildingAllowance.error.required.$individualOrAgent")
     )
 }

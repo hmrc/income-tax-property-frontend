@@ -84,9 +84,8 @@ class Navigator @Inject()() {
     case OtherAllowablePropertyExpensesPage => taxYear => _ => _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
 
     // Structured building allowance
-    case ClaimStructureBuildingAllowancePage => taxYear => _ => _ => StructureBuildingAllowanceController.onPageLoad(taxYear)
+    case ClaimStructureBuildingAllowancePage => taxYear => _ => userAnswers => structureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case StructureBuildingAllowancePage => taxYear => _ => _ => StructureBuildingAllowanceController.onPageLoad(taxYear)
-
 
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
@@ -218,5 +217,11 @@ class Navigator @Inject()() {
       case (Some(Between), Some(Under)) | (Some(Over), Some(Under)) => ReportPropertyIncomeController.onPageLoad(taxYear, NormalMode)
       case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) => UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       case _ => CheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def structureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+  userAnswers.get(ClaimStructureBuildingAllowancePage) match {
+      case Some(true) => StructureBuildingAllowanceController.onPageLoad(taxYear)
+      case _ => SummaryController.show(taxYear)
     }
 }
