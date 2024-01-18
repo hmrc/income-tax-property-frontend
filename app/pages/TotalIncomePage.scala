@@ -17,8 +17,6 @@
 package pages
 
 import models.TotalIncome.{Between, Over}
-import models.{TotalIncome, UserAnswers}
-import models.TotalIncome.Over
 import models.{ConsolidatedExpenses, TotalIncome, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath

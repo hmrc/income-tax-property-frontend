@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
+import controllers.routes
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -28,12 +29,12 @@ import views.html.StructureBuildingAllowanceView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class StructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
-                                                     identify: IdentifierAction,
-                                                     val controllerComponents: MessagesControllerComponents,
-                                                     view: StructureBuildingAllowanceView,
-                                                     businessService: BusinessService)
-                                                    (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AddClaimStructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
+                                                             identify: IdentifierAction,
+                                                             val controllerComponents: MessagesControllerComponents,
+                                                             view: StructureBuildingAllowanceView,
+                                                             businessService: BusinessService)
+                                                            (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async {
     implicit request =>

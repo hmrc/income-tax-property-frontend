@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.ClaimStructureBuildingAllowanceFormProvider
@@ -31,17 +31,16 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimStructureBuildingAllowanceController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ClaimStructureBuildingAllowanceFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ClaimStructureBuildingAllowanceView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+                                                           override val messagesApi: MessagesApi,
+                                                           sessionRepository: SessionRepository,
+                                                           navigator: Navigator,
+                                                           identify: IdentifierAction,
+                                                           getData: DataRetrievalAction,
+                                                           requireData: DataRequiredAction,
+                                                           formProvider: ClaimStructureBuildingAllowanceFormProvider,
+                                                           val controllerComponents: MessagesControllerComponents,
+                                                           view: ClaimStructureBuildingAllowanceView
+                                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -51,7 +50,6 @@ class ClaimStructureBuildingAllowanceController @Inject()(
         case None => form
         case Some(value) => form.fill(value)
       }
-
       Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
@@ -65,8 +63,8 @@ class ClaimStructureBuildingAllowanceController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimStructureBuildingAllowancePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimStructureBuildingAllowancePage, taxYear, mode, request.userAnswers,updatedAnswers))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(ClaimStructureBuildingAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

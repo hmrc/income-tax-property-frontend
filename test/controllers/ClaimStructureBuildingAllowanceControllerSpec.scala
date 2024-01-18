@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
 import forms.ClaimStructureBuildingAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -43,7 +44,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
   val form: Form[Boolean] = formProvider(individual)
   val taxYear = 2023
 
-  lazy val claimStructureBuildingAllowanceRoute: String = routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val claimStructureBuildingAllowanceRoute: String = ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode).url
 
   "ClaimStructureBuildingAllowance Controller" - {
 
