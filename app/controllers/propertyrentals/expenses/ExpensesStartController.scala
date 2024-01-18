@@ -18,12 +18,10 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import models.NormalMode
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import controllers.routes
-import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import views.html.propertyrentals.expenses.ExpensesStartView
 
 import javax.inject.Inject

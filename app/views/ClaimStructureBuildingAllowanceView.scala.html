@@ -28,7 +28,7 @@
 
     <h1 class="govuk-heading-l">@messages("claimStructureBuildingAllowance.heading")</h1>
 
-    @formHelper(action = routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

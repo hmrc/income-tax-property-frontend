@@ -17,7 +17,6 @@
 package controllers.propertyrentals.expenses
 
 import base.SpecBase
-import controllers.routes
 import models.UserAnswers
 import pages.IncomeFromPropertyRentalsPage
 import play.api.test.FakeRequest

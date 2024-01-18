@@ -47,7 +47,7 @@ case object SummaryPage {
       "allowances_link"
     )
     val structuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.structuresAndBuildingAllowance",
-      controllers.routes.SummaryController.show(taxYear),
+      controllers.structuresbuildingallowance.routes.SummaryStartStructureBuildingAllowanceController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "structuresAndBuildingAllowance_link"
     )

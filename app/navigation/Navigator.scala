@@ -21,6 +21,7 @@ import controllers.allowances.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.routes._
+import controllers.structuresbuildingallowance.routes._
 import controllers.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
@@ -85,7 +86,7 @@ class Navigator @Inject()() {
 
     // Structured building allowance
     case ClaimStructureBuildingAllowancePage => taxYear => _ => userAnswers => structureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
-    case StructureBuildingAllowancePage => taxYear => _ => _ => StructureBuildingAllowanceController.onPageLoad(taxYear)
+    case StructureBuildingAllowancePage => taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
@@ -220,8 +221,8 @@ class Navigator @Inject()() {
     }
 
   private def structureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-  userAnswers.get(ClaimStructureBuildingAllowancePage) match {
-      case Some(true) => StructureBuildingAllowanceController.onPageLoad(taxYear)
+    userAnswers.get(ClaimStructureBuildingAllowancePage) match {
+      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
       case _ => SummaryController.show(taxYear)
     }
 }
