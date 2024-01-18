@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
@@ -24,12 +40,12 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
 
-  lazy val structureBuildingAllowanceClaimRoute = routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode).url
+  lazy val structureBuildingAllowanceClaimRoute: String = routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode).url
 
   "StructureBuildingAllowanceClaim Controller" - {
 
@@ -84,7 +100,7 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, structureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -100,9 +116,9 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, structureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("structureBuildingAllowanceClaim" -> "invalid value"))
 
         val view = application.injector.instanceOf[StructureBuildingAllowanceClaimView]
 
@@ -134,7 +150,7 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, structureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", validAnswer.toString))
 
         val result = route(application, request).value
 
