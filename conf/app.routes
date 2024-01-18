@@ -263,3 +263,8 @@ GET        /:taxYear/structure-building-allowance/allowance-claim               
 POST       /:taxYear/structure-building-allowance/allowance-claim                   controllers.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/structure-building-allowance/change-allowance-claim            controllers.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/structure-building-allowance/change-allowance-claim            controllers.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/structure-building-allowance/qualifying-date                   controllers.StructureBuildingQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/structure-building-allowance/qualifying-date                   controllers.StructureBuildingQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/structure-building-allowance/change-qualifying-date            controllers.StructureBuildingQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/structure-building-allowance/change-qualifying-date            controllers.StructureBuildingQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
