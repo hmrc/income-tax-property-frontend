@@ -1008,3 +1008,17 @@ claimStructureBuildingAllowance.checkYourAnswersLabel = Check your Answers
 claimStructureBuildingAllowance.error.required.agent = Select yes if your client wants to claim structures building allowance
 claimStructureBuildingAllowance.error.required.individual = Select yes if you want to claim structures building allowance
 claimStructureBuildingAllowance.change.hidden = Structures Buildings Allowance
+
+structureBuildingAllowanceClaim.title = How much is your structures and buildings allowance claim?
+structureBuildingAllowanceClaim.heading.individual = How much is your structures and buildings allowance claim?
+structureBuildingAllowanceClaim.heading.agent = How much is your client’s structures and buildings allowance claim?
+structureBuildingAllowanceClaim.legend.individual = Enter the amount that you’ve calculated for your allowance.
+structureBuildingAllowanceClaim.legend.agent = Enter the amount that you’ve calculated for your client's allowance.
+structureBuildingAllowanceClaim.checkYourAnswersLabel = Structure Building Allowance Claim
+structureBuildingAllowanceClaim.error.nonNumeric = Enter the amount for structures and buildings allowance claim
+structureBuildingAllowanceClaim.error.required.individual = Enter the amount for your structures and buildings allowance claim
+structureBuildingAllowanceClaim.error.required.agent = Enter the amount for your client's structures and buildings allowance claim
+structureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = The structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
+structureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = The structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
+structureBuildingAllowanceClaim.error.outOfRange = Enter an amount between £{0} and £{1}
+structureBuildingAllowanceClaim.change.hidden = Structures and Buildings Allowance Claim
