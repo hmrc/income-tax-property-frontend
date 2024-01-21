@@ -1044,3 +1044,18 @@ structureBuildingQualifyingDate.error.required = Qualifying date must include a 
 structureBuildingQualifyingDate.error.invalid = Enter the valid qualifying date
 structureBuildingQualifyingDate.error.maxDate = Qualifying date must be before September 2026
 structureBuildingQualifyingDate.change.hidden = Qualifying date
+
+structureBuildingQualifyingAmount.title = Qualifying amount
+structureBuildingQualifyingAmount.heading = Qualifying amount
+structureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
+structureBuildingQualifyingAmount.details.content.individual = You may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+structureBuildingQualifyingAmount.details.content.agent = Your client may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+structureBuildingQualifyingAmount.details.l1 = the date the structure first came into non-residential use
+structureBuildingQualifyingAmount.details.l2 = the date on which the qualifying expenditure is incurred
+structureBuildingQualifyingAmount.input.legend = What is the total qualifying amount?
+
+structureBuildingQualifyingAmount.error.nonNumeric = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
+structureBuildingQualifyingAmount.error.required = Enter the total qualifying amount for enhanced structures and buildings allowance
+structureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
+structureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
+structureBuildingQualifyingAmount.change.hidden = Qualifying amount
