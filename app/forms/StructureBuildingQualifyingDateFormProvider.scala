@@ -16,21 +16,25 @@
 
 package forms
 
-import java.time.LocalDate
-
+import java.time.{LocalDate, Month}
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import play.api.data.Form
 
 class StructureBuildingQualifyingDateFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  val MAX_DATE: LocalDate = LocalDate.of(2026, Month.SEPTEMBER, 1)
+
+  def apply(): Form[LocalDate] = {
+
     Form(
-      "value" -> localDate(
-        invalidKey     = "structureBuildingQualifyingDate.error.invalid",
+      "structureBuildingQualifyingDate" -> localDate(
+        invalidKey = "structureBuildingQualifyingDate.error.invalid",
         allRequiredKey = "structureBuildingQualifyingDate.error.required.all",
         twoRequiredKey = "structureBuildingQualifyingDate.error.required.two",
-        requiredKey    = "structureBuildingQualifyingDate.error.required"
-      )
+        requiredKey = "structureBuildingQualifyingDate.error.required"
+      ).verifying(maxDate(MAX_DATE, "structureBuildingQualifyingDate.error.maxDate"))
     )
+  }
 }

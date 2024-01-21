@@ -59,14 +59,14 @@
 
         @govukDateInput(
             DateViewModel(
-                field  = form("value"),
+                field  = form("structureBuildingQualifyingDate"),
                 legend = LegendViewModel(messages("structureBuildingQualifyingDate.legend")).asPageHeading(LegendSize.Medium)
             )
             .withHint(HintViewModel(messages("structureBuildingQualifyingDate.hint")))
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }
