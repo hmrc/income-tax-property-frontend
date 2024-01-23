@@ -17,6 +17,7 @@ summary.expenses = Expenses
 summary.allowances = Allowances
 summary.structuresAndBuildingAllowance = Structures and Buildings Allowance
 summary.adjustments = Adjustments
+summary.enhancedStructuresAndBuildingAllowance = Enhanced Structures and Buildings Allowance
 
 site.back = Back
 site.remove = Remove

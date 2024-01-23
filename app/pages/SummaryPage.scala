@@ -56,6 +56,11 @@ case object SummaryPage {
       if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "adjustments_link"
     )
+    val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
+      controllers.routes.SummaryController.show(taxYear), //Todo: Replace when enhanced controller is implemented
+      TaskListTag.NotStarted,
+      "enhancedStructuresAndBuildingAllowance_link"
+    )
 
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
     val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
@@ -63,7 +68,7 @@ case object SummaryPage {
     claimPropertyIncomeAllowance.collect {
       case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
       case false if cashOrAccurals =>
-        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, propertyRentalsAdjustments)
+        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
       case false =>
         Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
     }.getOrElse {
