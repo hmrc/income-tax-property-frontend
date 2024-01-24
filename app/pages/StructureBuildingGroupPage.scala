@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package pages
 
-import java.time.LocalDate
-
 import play.api.libs.json.JsPath
+import queries.Gettable
 
-case class StructureBuildingQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
+case object StructureBuildingGroupPage extends Gettable[Array[StructureBuildingGroup]] {
 
-  override def path: JsPath = JsPath \ "StructureBuildingGroupPage" \ index \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "structureBuildingQualifyingDate"
+  override def toString: String = "StructureBuildingGroupPage"
 }

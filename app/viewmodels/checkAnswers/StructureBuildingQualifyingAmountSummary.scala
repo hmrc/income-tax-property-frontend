@@ -24,17 +24,17 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object StructureBuildingQualifyingAmountSummary  {
+object StructureBuildingQualifyingAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingAmountPage).map {
+  def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(StructureBuildingQualifyingAmountPage(idx)).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
+          value = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx).url)
               .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))
           )
         )

@@ -46,11 +46,10 @@ class StructureBuildingQualifyingDateController @Inject()(
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[LocalDate] = formProvider()
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingDatePage) match {
+      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingDatePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -58,18 +57,18 @@ class StructureBuildingQualifyingDateController @Inject()(
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form: Form[LocalDate] = formProvider()
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear,request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingDatePage, taxYear, mode, updatedAnswers, request.userAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage(index), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingDatePage(index), taxYear, mode, index, updatedAnswers, request.userAnswers))
       )
   }
 }

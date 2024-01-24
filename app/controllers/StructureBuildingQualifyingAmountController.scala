@@ -21,7 +21,7 @@ import forms.StructureBuildingQualifyingAmountFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.StructureBuildingQualifyingAmountPage
+import pages.{StructureBuildingGroupPage, StructureBuildingQualifyingAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,10 +44,10 @@ class StructureBuildingQualifyingAmountController @Inject()(
 
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage) match {
+      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +55,7 @@ class StructureBuildingQualifyingAmountController @Inject()(
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
@@ -64,9 +64,9 @@ class StructureBuildingQualifyingAmountController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingAmountPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

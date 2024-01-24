@@ -26,19 +26,19 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object StructureBuildingQualifyingDateSummary  {
+object StructureBuildingQualifyingDateSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingDatePage).map {
+  def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(StructureBuildingQualifyingDatePage(idx)).map {
       answer =>
 
         val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
         SummaryListRowViewModel(
-          key     = "structureBuildingQualifyingDate.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
+          value = ValueViewModel(answer.format(dateFormatter)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode, idx).url)
               .withVisuallyHiddenText(messages("structureBuildingQualifyingDate.change.hidden"))
           )
         )

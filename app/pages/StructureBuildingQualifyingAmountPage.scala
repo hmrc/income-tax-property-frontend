@@ -18,9 +18,9 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object StructureBuildingQualifyingAmountPage extends QuestionPage[BigDecimal] {
+case class StructureBuildingQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ "StructureBuildingGroupPage" \ index \ toString
 
   override def toString: String = "structureBuildingQualifyingAmount"
 }
