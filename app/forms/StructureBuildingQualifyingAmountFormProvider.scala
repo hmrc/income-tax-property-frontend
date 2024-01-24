@@ -26,7 +26,7 @@ class StructureBuildingQualifyingAmountFormProvider @Inject() extends Mappings {
   val maximum = 100000000;
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "structureBuildingQualifyingAmount" -> currency(
         "structureBuildingQualifyingAmount.error.required",
         "structureBuildingQualifyingAmount.error.twoDecimalPlaces",
         "structureBuildingQualifyingAmount.error.nonNumeric")

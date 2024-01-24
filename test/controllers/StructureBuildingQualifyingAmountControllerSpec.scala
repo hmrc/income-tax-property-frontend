@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
@@ -24,12 +40,13 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
+  val index = 0
 
-  lazy val structureBuildingQualifyingAmountRoute = routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val structureBuildingQualifyingAmountRoute: String = routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
 
   "StructureBuildingQualifyingAmount Controller" - {
 
@@ -51,7 +68,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -84,7 +101,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("structureBuildingQualifyingAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
