@@ -61,7 +61,11 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "adjustments_link"
     )
-
+    val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
+      controllers.routes.SummaryController.show(taxYear), //Todo: Replace when enhanced controller is implemented
+      TaskListTag.NotStarted,
+      "enhancedStructuresAndBuildingAllowance_link"
+    )
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccurals).length should be(0)
     }
@@ -94,9 +98,17 @@ class SummaryPageSpec extends SpecBase {
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
 
-      val res = Seq(summaryItem, incomeListItem, expenseListItem, propertyAllowances, structuresAndBuildingAllowance, adjustmentsListItem)
+      val res = Seq(
+        summaryItem,
+        incomeListItem,
+        expenseListItem,
+        propertyAllowances,
+        structuresAndBuildingAllowance,
+        enhancedStructuresAndBuildingAllowance,
+        adjustmentsListItem
+      )
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear,cashOrAccurals).length should be(6)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(7)
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
     }
     "should return all rows except structuresAndBuildingAllowance when ClaimPropertyIncomeAllowance is false and CashOrAccurals is false in the user data" in {
