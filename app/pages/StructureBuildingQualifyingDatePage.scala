@@ -16,13 +16,14 @@
 
 package pages
 
-import java.time.LocalDate
+import pages.PageConstants.structureBuildingFormGroup
 
+import java.time.LocalDate
 import play.api.libs.json.JsPath
 
 case class StructureBuildingQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ "StructureBuildingGroupPage" \ index \ toString
+  override def path: JsPath = JsPath \ structureBuildingFormGroup \ index \ toString
 
   override def toString: String = "structureBuildingQualifyingDate"
 }

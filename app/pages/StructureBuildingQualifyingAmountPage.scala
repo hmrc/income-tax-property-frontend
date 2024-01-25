@@ -16,11 +16,12 @@
 
 package pages
 
+import pages.PageConstants.structureBuildingFormGroup
 import play.api.libs.json.JsPath
 
 case class StructureBuildingQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ "StructureBuildingGroupPage" \ index \ toString
+  override def path: JsPath = JsPath \ structureBuildingFormGroup \ index \ toString
 
   override def toString: String = "structureBuildingQualifyingAmount"
 }

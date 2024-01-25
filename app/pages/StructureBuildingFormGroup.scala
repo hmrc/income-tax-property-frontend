@@ -19,7 +19,11 @@ package pages
 import play.api.libs.json.JsPath
 import queries.Gettable
 
-case object StructureBuildingGroupPage extends Gettable[Array[StructureBuildingGroup]] {
+import java.time.LocalDate
+
+case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
+
+case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
 
   override def path: JsPath = JsPath \ toString
 

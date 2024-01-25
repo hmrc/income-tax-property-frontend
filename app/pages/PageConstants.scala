@@ -16,13 +16,8 @@
 
 package pages
 
-import play.api.libs.json.{Format, Json}
+object PageConstants {
 
-import java.time.LocalDate
+  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
 
-
-case class StructureBuildingGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
-
-object StructureBuildingGroup {
-  implicit val format: Format[StructureBuildingGroup] = Json.format
 }
