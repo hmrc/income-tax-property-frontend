@@ -25,6 +25,7 @@ import play.api.data.Form
 class StructureBuildingQualifyingDateFormProvider @Inject() extends Mappings {
 
   val MAX_DATE: LocalDate = LocalDate.of(2026, Month.SEPTEMBER, 1)
+  val MIN_DATE: LocalDate = LocalDate.of(2018, Month.OCTOBER, 29)
 
   def apply(): Form[LocalDate] = {
 
@@ -34,7 +35,8 @@ class StructureBuildingQualifyingDateFormProvider @Inject() extends Mappings {
         allRequiredKey = "structureBuildingQualifyingDate.error.required.all",
         twoRequiredKey = "structureBuildingQualifyingDate.error.required.two",
         requiredKey = "structureBuildingQualifyingDate.error.required"
-      ).verifying(maxDate(MAX_DATE, "structureBuildingQualifyingDate.error.maxDate"))
+      ).verifying(maxDate(MAX_DATE, "structureBuildingQualifyingDate.error.maxDate"),
+        minDate(MIN_DATE, "structureBuildingQualifyingDate.error.minDate"))
     )
   }
 }

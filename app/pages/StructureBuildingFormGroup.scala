@@ -27,5 +27,5 @@ case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingF
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "StructureBuildingGroupPage"
+  override def toString: String = PageConstants.structureBuildingFormGroup
 }
