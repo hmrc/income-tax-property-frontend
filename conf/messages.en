@@ -1063,3 +1063,16 @@ structureBuildingQualifyingAmount.error.required = Enter the total qualifying am
 structureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
 structureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
 structureBuildingQualifyingAmount.change.hidden = Qualifying amount
+
+structureBuildingAllowanceAddress.title = Where is the new structure or building located?
+structureBuildingAllowanceAddress.heading = Where is the new structure or building located?
+structureBuildingAllowanceAddress.caption = Structures and buildings allowance
+structureBuildingAllowanceAddress.buildingName.legend = Building name
+structureBuildingAllowanceAddress.buildingName.error.required  = Enter a building name for the structure or building
+structureBuildingAllowanceAddress.buildingName.error.max = Building name for the qualifying structure or building must not be more than 90 characters long
+structureBuildingAllowanceAddress.buildingNumber.legend = Building number
+structureBuildingAllowanceAddress.buildingNumber.error.required = Enter a building number for the structure or building
+structureBuildingAllowanceAddress.buildingNumber.error.max = Enter a number for the qualifying building or structure
+structureBuildingAllowanceAddress.postcode.legend = Postcode
+structureBuildingAllowanceAddress.postcode.error.required = Enter a postcode for the structure or building
+structureBuildingAllowanceAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying building or structure
