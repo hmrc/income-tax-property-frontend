@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import play.api.mvc.Call
-import pages._
-import models.{Mode, UserAnswers}
+import play.api.libs.json.JsPath
+import queries.Gettable
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+import java.time.LocalDate
 
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
-    desiredRoute
+case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
 
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, index: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
-    desiredRoute
+case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.structureBuildingFormGroup
 }

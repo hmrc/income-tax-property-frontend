@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import play.api.mvc.Call
-import pages._
-import models.{Mode, UserAnswers}
+object PageConstants {
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
 
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
-    desiredRoute
-
-  override def nextPage(page: Page, taxYear: Int, mode: Mode, index: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
-    desiredRoute
 }

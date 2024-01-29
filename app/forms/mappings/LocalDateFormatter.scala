@@ -16,11 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
 import play.api.data.FormError
 import play.api.data.format.Formatter
 
+import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
 private[mappings] class LocalDateFormatter(
@@ -28,6 +27,7 @@ private[mappings] class LocalDateFormatter(
                                             allRequiredKey: String,
                                             twoRequiredKey: String,
                                             requiredKey: String,
+                                            yearMinDigitKey: String,
                                             args: Seq[String] = Seq.empty
                                           ) extends Formatter[LocalDate] with Formatters {
 
@@ -54,8 +54,16 @@ private[mappings] class LocalDateFormatter(
       day   <- int.bind(s"$key.day", data)
       month <- int.bind(s"$key.month", data)
       year  <- int.bind(s"$key.year", data)
+      year  <- yearMinFourDigits(year)
       date  <- toDate(key, day, month, year)
     } yield date
+  }
+
+  private def yearMinFourDigits(year: Int) = {
+    year.toString match {
+      case s if s.length < 4 => Left(Seq(FormError("year", yearMinDigitKey, args)))
+      case _ => Right(year)
+    }
   }
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {

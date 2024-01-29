@@ -54,6 +54,7 @@ error.non_numeric = Give a value using only numbers
 error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
+error.year.invalid = Year must include 4 numbers
 
 businessDetails.accruals = Traditional (accrual)
 businessDetails.cash = Cash basis
@@ -1023,3 +1024,42 @@ structureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = The structur
 structureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = The structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
 structureBuildingAllowanceClaim.error.outOfRange = Enter an amount between £{0} and £{1}
 structureBuildingAllowanceClaim.change.hidden = Structures and Buildings Allowance Claim
+
+structureBuildingQualifyingDate.title = Qualifying date
+structureBuildingQualifyingDate.heading = Qualifying date
+structureBuildingQualifyingDate.legend = What is the qualifying date?
+structureBuildingQualifyingDate.hint = For example, 29 10 2018
+structureBuildingQualifyingDate.details.heading = Understanding structures and buildings allowance qualifying date
+structureBuildingQualifyingDate.details.content1.individual = Start your claim from whichever date is later:
+structureBuildingQualifyingDate.details.content1.agent = Start your client’s claim from whichever date is later:
+structureBuildingQualifyingDate.details.l1.individual = the date when you started using the structure for a qualifying activity
+structureBuildingQualifyingDate.details.l1.agent = the date when your client started using the structure for a qualifying activity
+structureBuildingQualifyingDate.details.l2.individual = the date that you’re due to pay for the structure or construction
+structureBuildingQualifyingDate.details.l2.agent = the date that your client is due to pay for the structure or construction
+structureBuildingQualifyingDate.details.content2.link.intro = Read more about
+structureBuildingQualifyingDate.details.content2.link.text = the structures and building allowance at GOV.UK (opens in new tab)
+structureBuildingQualifyingDate.details.content2.link.href = https://www.gov.uk/guidance/claiming-capital-allowances-for-structures-and-buildings#what-you-can-claim-the-allowance-on
+structureBuildingQualifyingDate.checkYourAnswersLabel = Qualifying date
+
+structureBuildingQualifyingDate.error.required.all = Enter the qualifying date for structures and building allowance
+structureBuildingQualifyingDate.error.required.two = Qualifying date for structures and buildings allowance must include a {0} and a {1}
+structureBuildingQualifyingDate.error.required = Qualifying date for structures and buildings allowance must include a {0}
+structureBuildingQualifyingDate.error.invalid = Qualifying date for structures and building allowance must include a date, month and a year in numbers
+structureBuildingQualifyingDate.error.maxDate = Qualifying date for structures and buildings allowance must be before September 2026
+structureBuildingQualifyingDate.error.minDate = Qualifying date for structures and buildings allowance must be after 29 October 2018
+structureBuildingQualifyingDate.change.hidden = Qualifying date
+
+structureBuildingQualifyingAmount.title = Qualifying amount
+structureBuildingQualifyingAmount.heading = Qualifying amount
+structureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
+structureBuildingQualifyingAmount.details.content.individual = You may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+structureBuildingQualifyingAmount.details.content.agent = Your client may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+structureBuildingQualifyingAmount.details.l1 = the date the structure first came into non-residential use
+structureBuildingQualifyingAmount.details.l2 = the date on which the qualifying expenditure is incurred
+structureBuildingQualifyingAmount.input.legend = What is the total qualifying amount?
+
+structureBuildingQualifyingAmount.error.nonNumeric = Enter the total qualifying amount for enhanced structures and buildings allowance
+structureBuildingQualifyingAmount.error.required = Enter the total qualifying amount for enhanced structures and buildings allowance
+structureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
+structureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
+structureBuildingQualifyingAmount.change.hidden = Qualifying amount
