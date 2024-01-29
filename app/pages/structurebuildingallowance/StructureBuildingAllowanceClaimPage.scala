@@ -16,12 +16,12 @@
 
 package pages.structurebuildingallowance
 
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object StructureBuildingAllowanceClaimPage extends QuestionPage[BigDecimal] {
+case class StructureBuildingAllowanceClaimPage(index: Int) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.structureBuildingFormGroup \ index \ toString
 
   override def toString: String = "structureBuildingAllowanceClaim"
 }

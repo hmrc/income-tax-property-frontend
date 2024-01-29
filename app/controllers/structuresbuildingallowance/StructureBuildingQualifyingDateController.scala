@@ -53,7 +53,7 @@ class StructureBuildingQualifyingDateController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
   }
 
   def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -61,7 +61,7 @@ class StructureBuildingQualifyingDateController @Inject()(
       val form: Form[LocalDate] = formProvider()
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
 
         value =>
           for {

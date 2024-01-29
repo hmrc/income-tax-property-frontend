@@ -73,7 +73,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
       }
     }
 
@@ -89,7 +89,8 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual
+          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
       }
     }
 
@@ -131,7 +132,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
 

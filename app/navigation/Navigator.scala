@@ -154,7 +154,7 @@ class Navigator @Inject()() {
   private def structureBuildingNormalRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                             previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode)
+    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
     case _ => IndexController.onPageLoad
   }
 
@@ -162,7 +162,7 @@ class Navigator @Inject()() {
   private def structureBuildingCheckModeRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                                previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode)
+    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index)
     case _ => IndexController.onPageLoad
   }
 
