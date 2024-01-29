@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structurebuildingallowance
 
 import base.SpecBase
-import forms.StructureBuildingQualifyingAmountFormProvider
+import controllers.structuresbuildingallowance.routes
+import forms.structurebuildingallowance.StructureBuildingAllowanceClaimFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.StructureBuildingQualifyingAmountPage
+import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.data.Form
 import repositories.SessionRepository
-import views.html.StructureBuildingQualifyingAmountView
+import views.html.structurebuildingallowance.StructureBuildingAllowanceClaimView
 
 import scala.concurrent.Future
 
-class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
+class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new StructureBuildingQualifyingAmountFormProvider()
+  val formProvider = new StructureBuildingAllowanceClaimFormProvider()
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
@@ -44,22 +45,21 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
-  val index = 0
 
-  lazy val structureBuildingQualifyingAmountRoute: String = routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val structureBuildingAllowanceClaimRoute: String = routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode).url
 
-  "StructureBuildingQualifyingAmount Controller" - {
+  "StructureBuildingAllowanceClaim Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, structureBuildingAllowanceClaimRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[StructureBuildingAllowanceClaimView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
@@ -68,14 +68,14 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingAllowanceClaimPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, structureBuildingAllowanceClaimRoute)
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[StructureBuildingAllowanceClaimView]
 
         val result = route(application, request).value
 
@@ -100,8 +100,8 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("structureBuildingQualifyingAmount", validAnswer.toString))
+          FakeRequest(POST, structureBuildingAllowanceClaimRoute)
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -116,12 +116,12 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+          FakeRequest(POST, structureBuildingAllowanceClaimRoute)
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("structureBuildingAllowanceClaim" -> "invalid value"))
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[StructureBuildingAllowanceClaimView]
 
         val result = route(application, request).value
 
@@ -135,12 +135,12 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, structureBuildingAllowanceClaimRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -150,14 +150,14 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+          FakeRequest(POST, structureBuildingAllowanceClaimRoute)
+            .withFormUrlEncodedBody(("structureBuildingAllowanceClaim", validAnswer.toString))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

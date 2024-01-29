@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.StructureBuildingAllowanceClaimFormProvider
-import javax.inject.Inject
+import forms.structurebuildingallowance.StructureBuildingQualifyingAmountFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.StructureBuildingAllowanceClaimPage
+import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.StructureBuildingAllowanceClaimView
+import views.html.structurebuildingallowance.StructureBuildingQualifyingAmountView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class StructureBuildingAllowanceClaimController @Inject()(
+class StructureBuildingQualifyingAmountController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: StructureBuildingAllowanceClaimFormProvider,
+                                        formProvider: StructureBuildingQualifyingAmountFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: StructureBuildingAllowanceClaimView
+                                        view: StructureBuildingQualifyingAmountView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage) match {
+      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -55,7 +55,7 @@ class StructureBuildingAllowanceClaimController @Inject()(
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
@@ -64,9 +64,9 @@ class StructureBuildingAllowanceClaimController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingAllowanceClaimPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingAmountPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

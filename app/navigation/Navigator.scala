@@ -31,6 +31,7 @@ import pages.allowances._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
+import pages.structurebuildingallowance.{StructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,42 +14,40 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.StructureBuildingQualifyingDateFormProvider
-
-import javax.inject.Inject
+import forms.structurebuildingallowance.StructureBuildingAllowanceClaimFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.StructureBuildingQualifyingDatePage
-import play.api.data.Form
+import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.StructureBuildingQualifyingDateView
+import views.html.structurebuildingallowance.StructureBuildingAllowanceClaimView
 
-import java.time.LocalDate
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class StructureBuildingQualifyingDateController @Inject()(
+class StructureBuildingAllowanceClaimController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: StructureBuildingQualifyingDateFormProvider,
+                                        formProvider: StructureBuildingAllowanceClaimFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: StructureBuildingQualifyingDateView
+                                        view: StructureBuildingAllowanceClaimView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form: Form[LocalDate] = formProvider()
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingDatePage(index)) match {
+      val form = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -57,18 +55,18 @@ class StructureBuildingQualifyingDateController @Inject()(
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form: Form[LocalDate] = formProvider()
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingDatePage(index), taxYear, mode, index, updatedAnswers, request.userAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(StructureBuildingAllowanceClaimPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

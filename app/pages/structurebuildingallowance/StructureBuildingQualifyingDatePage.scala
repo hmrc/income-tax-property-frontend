@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package pages.structurebuildingallowance
 
 import pages.PageConstants.structureBuildingFormGroup
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
 import java.time.LocalDate
-import play.api.libs.json.JsPath
 
 case class StructureBuildingQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
 

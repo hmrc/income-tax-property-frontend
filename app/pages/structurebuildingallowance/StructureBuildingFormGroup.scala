@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package pages.structurebuildingallowance
 
-object StructureBuildingAllowancePage extends Page {}
+import pages.PageConstants
+import play.api.libs.json.JsPath
+import queries.Gettable
+
+import java.time.LocalDate
+
+case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
+
+case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.structureBuildingFormGroup
+}
