@@ -27,8 +27,8 @@ class StructureBuildingQualifyingDateFormProviderSpec extends DateBehaviours {
   ".structureBuildingQualifyingDate" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = LocalDate.of(2018, 10, 29),
+      max = LocalDate.of(2026, 9, 1)
     )
 
     behave like dateField(form, "structureBuildingQualifyingDate", validData)
@@ -38,5 +38,9 @@ class StructureBuildingQualifyingDateFormProviderSpec extends DateBehaviours {
     behave like dateFieldWithMax(
       form, "structureBuildingQualifyingDate", LocalDate.of(2026, Month.SEPTEMBER, 1),
       FormError("structureBuildingQualifyingDate", "structureBuildingQualifyingDate.error.maxDate"))
+
+    behave like dateFieldWithMin(
+      form, "structureBuildingQualifyingDate", LocalDate.of(2018, Month.OCTOBER, 29),
+      FormError("structureBuildingQualifyingDate", "structureBuildingQualifyingDate.error.minDate"))
   }
 }
