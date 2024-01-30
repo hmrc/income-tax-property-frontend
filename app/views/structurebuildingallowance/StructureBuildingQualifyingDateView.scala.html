@@ -35,7 +35,7 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
-
+        <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
         <h1 class="govuk-heading-l">@messages("structureBuildingQualifyingDate.heading")</h1>
 
         <details class="govuk-details" data-module="govuk-details">

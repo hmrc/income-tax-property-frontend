@@ -34,6 +34,7 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+        <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
         <h1 class="govuk-heading-l">@messages(s"structureBuildingAllowanceClaim.heading.$individualOrAgent")</h1>
 
         @govukInput(
