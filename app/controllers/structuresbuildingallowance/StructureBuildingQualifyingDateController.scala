@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.StructureBuildingQualifyingDateFormProvider
-
-import javax.inject.Inject
+import forms.structurebuildingallowance.StructureBuildingQualifyingDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.StructureBuildingQualifyingDatePage
+import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.StructureBuildingQualifyingDateView
+import views.html.structurebuildingallowance.StructureBuildingQualifyingDateView
 
 import java.time.LocalDate
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class StructureBuildingQualifyingDateController @Inject()(
@@ -54,7 +53,7 @@ class StructureBuildingQualifyingDateController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
   }
 
   def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -62,7 +61,7 @@ class StructureBuildingQualifyingDateController @Inject()(
       val form: Form[LocalDate] = formProvider()
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
 
         value =>
           for {

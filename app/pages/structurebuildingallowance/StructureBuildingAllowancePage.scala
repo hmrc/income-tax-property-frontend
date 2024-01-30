@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package pages.structurebuildingallowance
 
-import pages.PageConstants.structureBuildingFormGroup
-import play.api.libs.json.JsPath
+import pages.Page
 
-case class StructureBuildingQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
-
-  override def path: JsPath = JsPath \ structureBuildingFormGroup \ index \ toString
-
-  override def toString: String = "structureBuildingQualifyingAmount"
-}
+object StructureBuildingAllowancePage extends Page {}

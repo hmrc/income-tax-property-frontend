@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
-
-import java.time.{LocalDate, ZoneOffset}
+package controllers.structurebuildingallowance
 
 import base.SpecBase
-import forms.StructureBuildingQualifyingDateFormProvider
+import controllers.structuresbuildingallowance.routes
+import forms.structurebuildingallowance.StructureBuildingQualifyingDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.StructureBuildingQualifyingDatePage
+import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.StructureBuildingQualifyingDateView
+import views.html.structurebuildingallowance.StructureBuildingQualifyingDateView
 
+import java.time.{LocalDate, ZoneOffset}
 import scala.concurrent.Future
 
 class StructureBuildingQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
@@ -73,7 +73,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
       }
     }
 
@@ -89,7 +89,8 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual
+          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
       }
     }
 
@@ -131,7 +132,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
 
@@ -143,7 +144,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, getRequest).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -155,7 +156,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

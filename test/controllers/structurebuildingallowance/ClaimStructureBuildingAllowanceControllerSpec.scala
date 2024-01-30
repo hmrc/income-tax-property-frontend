@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,73 +14,71 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structurebuildingallowance
 
 import base.SpecBase
-import forms.StructureBuildingQualifyingAmountFormProvider
+import controllers.structuresbuildingallowance.routes
+import forms.ClaimStructureBuildingAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.StructureBuildingQualifyingAmountPage
+import pages.ClaimStructureBuildingAllowancePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.data.Form
 import repositories.SessionRepository
-import views.html.StructureBuildingQualifyingAmountView
+import views.html.ClaimStructureBuildingAllowanceView
 
 import scala.concurrent.Future
 
-class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
-
-  val formProvider = new StructureBuildingQualifyingAmountFormProvider()
-  private val isAgentMessageKey = "individual"
-  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
+class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val validAnswer: BigDecimal = BigDecimal(0)
+  val formProvider = new ClaimStructureBuildingAllowanceFormProvider()
+  private val individual = "individual"
+  val form: Form[Boolean] = formProvider(individual)
   val taxYear = 2023
-  val index = 0
 
-  lazy val structureBuildingQualifyingAmountRoute: String = routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val claimStructureBuildingAllowanceRoute: String = routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode).url
 
-  "StructureBuildingQualifyingAmount Controller" - {
+  "ClaimStructureBuildingAllowance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimStructureBuildingAllowancePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -100,8 +98,8 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("structureBuildingQualifyingAmount", validAnswer.toString))
+          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 
@@ -116,48 +114,47 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", ""))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("claimStructureBuildingAllowance" -> ""))
 
-        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm,  taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
+            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

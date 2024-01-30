@@ -24,7 +24,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.StructureBuildingAllowancePage
-import views.html.StructureBuildingAllowanceView
+import views.html.structurebuildingallowance.StructureBuildingAllowanceView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext

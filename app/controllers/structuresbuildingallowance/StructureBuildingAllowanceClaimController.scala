@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.StructureBuildingAllowanceClaimFormProvider
-import javax.inject.Inject
+import forms.structurebuildingallowance.StructureBuildingAllowanceClaimFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.StructureBuildingAllowanceClaimPage
+import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.StructureBuildingAllowanceClaimView
+import views.html.structurebuildingallowance.StructureBuildingAllowanceClaimView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class StructureBuildingAllowanceClaimController @Inject()(
@@ -44,29 +44,29 @@ class StructureBuildingAllowanceClaimController @Inject()(
 
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage) match {
+      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingAllowanceClaimPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(StructureBuildingAllowanceClaimPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

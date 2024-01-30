@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.structuresbuildingallowance.routes
 
 @this(
     layout: templates.Layout,
@@ -25,16 +26,16 @@
 )
 
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("structureBuildingQualifyingDate.title"))) {
 
-    @formHelper(action = routes.StructureBuildingQualifyingDateController.onSubmit(taxYear, mode, 0), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.StructureBuildingQualifyingDateController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
-
+        <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
         <h1 class="govuk-heading-l">@messages("structureBuildingQualifyingDate.heading")</h1>
 
         <details class="govuk-details" data-module="govuk-details">

@@ -31,6 +31,7 @@ import pages.allowances._
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
+import pages.structurebuildingallowance.{StructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -153,7 +154,7 @@ class Navigator @Inject()() {
   private def structureBuildingNormalRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                             previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode)
+    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
     case _ => IndexController.onPageLoad
   }
 
@@ -161,7 +162,7 @@ class Navigator @Inject()() {
   private def structureBuildingCheckModeRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                                previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode)
+    case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index)
     case _ => IndexController.onPageLoad
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package forms.structurebuildingallowance
+
+import forms.mappings.Mappings
+import play.api.data.Form
 
 import java.time.{LocalDate, Month}
-import forms.mappings.Mappings
-
 import javax.inject.Inject
-import play.api.data.Form
 
 class StructureBuildingQualifyingDateFormProvider @Inject() extends Mappings {
 

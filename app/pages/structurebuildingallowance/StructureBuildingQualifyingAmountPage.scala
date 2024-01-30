@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.structurebuildingallowance
 
+import pages.PageConstants.structureBuildingFormGroup
+import pages.QuestionPage
 import play.api.libs.json.JsPath
-import queries.Gettable
 
-import java.time.LocalDate
+case class StructureBuildingQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
 
-case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
+  override def path: JsPath = JsPath \ structureBuildingFormGroup \ index \ toString
 
-case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = PageConstants.structureBuildingFormGroup
+  override def toString: String = "structureBuildingQualifyingAmount"
 }

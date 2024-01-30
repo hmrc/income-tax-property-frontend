@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.structurebuildingallowance
 
-object StructureBuildingAllowancePage extends Page {}
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
+
+case class StructureBuildingAllowanceClaimPage(index: Int) extends QuestionPage[BigDecimal] {
+
+  override def path: JsPath = JsPath \ PageConstants.structureBuildingFormGroup \ index \ toString
+
+  override def toString: String = "structureBuildingAllowanceClaim"
+}
