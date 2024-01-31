@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.structurebuildingallowance
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object ClaimStructureBuildingAllowancePage extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ toString
+class ClaimStructureBuildingAllowanceFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "claimStructureBuildingAllowance"
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "claimStructureBuildingAllowance" -> boolean(s"claimStructureBuildingAllowance.error.required.$individualOrAgent")
+    )
 }

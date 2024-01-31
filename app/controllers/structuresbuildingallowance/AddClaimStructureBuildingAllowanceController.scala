@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.StructureBuildingAllowancePage
+import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
 import views.html.structurebuildingallowance.StructureBuildingAllowanceView
 
 import javax.inject.Inject

@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{UKPropertySelect, UserAnswers}
+import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -57,7 +57,7 @@ case object SummaryPage {
       "adjustments_link"
     )
     val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
-      controllers.routes.SummaryController.show(taxYear), //Todo: Replace when enhanced controller is implemented
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
       "enhancedStructuresAndBuildingAllowance_link"
     )

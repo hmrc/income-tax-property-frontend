@@ -17,12 +17,12 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.ClaimStructureBuildingAllowanceFormProvider
+import forms.structurebuildingallowance.ClaimStructureBuildingAllowanceFormProvider
 import models.NormalMode
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ClaimStructureBuildingAllowanceView
+import views.html.structurebuildingallowance.ClaimStructureBuildingAllowanceView
 
 import javax.inject.Inject
 

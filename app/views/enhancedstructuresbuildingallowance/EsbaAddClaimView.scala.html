@@ -15,7 +15,7 @@
  *@
 
 @import models.NormalMode
-@import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
+@import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EnhancedSBAPage
 @import controllers.routes
 
 @this(
@@ -23,17 +23,17 @@
         govukButton: GovukButton
 )
 
-@(page: StructureBuildingAllowancePage)(implicit request: Request[_], messages: Messages)
+@(page: EnhancedSBAPage)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages(s"structureBuildingAllowance.title.${page.individualOrAgent}"))) {
+@layout(pageTitle = titleNoForm(messages("enhancedSBA.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("structureBuildingAllowance.heading")</h1>
+    <h1 class="govuk-heading-l">@messages(s"enhancedSBA.heading.${page.individualOrAgent}")</h1>
 
-    <p class="govuk-body">@messages("structureBuildingAllowance.para1")</p>
+    <p class="govuk-body">@messages("enhancedSBA.para1")</p>
 
     <p class="govuk-body">
         @govukButton(
-            ButtonViewModel(messages("structureBuildingAllowance.button"))
+            ButtonViewModel(messages("enhancedSBA.addclaim.button"))
                 .asLink(TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
                 .withId("continue")
         )

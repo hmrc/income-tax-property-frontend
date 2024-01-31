@@ -17,7 +17,7 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.UKPropertySelect
+import models.{NormalMode, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
@@ -62,7 +62,7 @@ class SummaryPageSpec extends SpecBase {
       "adjustments_link"
     )
     val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
-      controllers.routes.SummaryController.show(taxYear), //Todo: Replace when enhanced controller is implemented
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
       "enhancedStructuresAndBuildingAllowance_link"
     )

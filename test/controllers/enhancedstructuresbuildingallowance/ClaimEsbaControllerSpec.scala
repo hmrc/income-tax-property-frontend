@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,50 +14,48 @@
  * limitations under the License.
  */
 
-package controllers.structurebuildingallowance
+package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import controllers.structuresbuildingallowance.routes
-import forms.structurebuildingallowance.ClaimStructureBuildingAllowanceFormProvider
+import forms.enhancedstructuresbuildingallowance.ClaimEnhancedSBAFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.structurebuildingallowance.ClaimStructureBuildingAllowancePage
+import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.structurebuildingallowance.ClaimStructureBuildingAllowanceView
+import views.html.enhancedstructuresbuildingallowance.ClaimEnhancedSBAView
 
 import scala.concurrent.Future
 
-class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class ClaimEsbaControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ClaimStructureBuildingAllowanceFormProvider()
+  val formProvider = new ClaimEnhancedSBAFormProvider()
   private val individual = "individual"
   val form: Form[Boolean] = formProvider(individual)
   val taxYear = 2023
+  lazy val claimEnhancedSBAControllerRoute = routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode).url
 
-  lazy val claimStructureBuildingAllowanceRoute: String = routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode).url
-
-  "ClaimStructureBuildingAllowance Controller" - {
+  "ClaimEsbaController Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
+        val request = FakeRequest(GET, claimEnhancedSBAControllerRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
+        val view = application.injector.instanceOf[ClaimEnhancedSBAView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
@@ -66,19 +64,19 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimStructureBuildingAllowancePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimEsbaPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
+        val request = FakeRequest(GET, claimEnhancedSBAControllerRoute)
 
-        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
+        val view = application.injector.instanceOf[ClaimEnhancedSBAView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true) , taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -98,8 +96,8 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
+          FakeRequest(POST, claimEnhancedSBAControllerRoute)
+            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 
@@ -114,26 +112,26 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", ""))
+          FakeRequest(POST, claimEnhancedSBAControllerRoute)
+            .withFormUrlEncodedBody(("value", ""))
 
-        val boundForm = form.bind(Map("claimStructureBuildingAllowance" -> ""))
+        val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
+        val view = application.injector.instanceOf[ClaimEnhancedSBAView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm,  taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimStructureBuildingAllowanceRoute)
+        val request = FakeRequest(GET, claimEnhancedSBAControllerRoute)
 
         val result = route(application, request).value
 
@@ -144,12 +142,12 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, claimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("claimStructureBuildingAllowance", "true"))
+          FakeRequest(POST, claimEnhancedSBAControllerRoute)
+            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 

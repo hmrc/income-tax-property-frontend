@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package forms.structurebuildingallowance
+package forms.enhancedstructuresbuildingallowance
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class ClaimStructureBuildingAllowanceFormProviderSpec extends BooleanFieldBehaviours {
+class ClaimEnhancedSBAFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "claimStructureBuildingAllowance.error.required.agent"
+  val requiredKey = "claimEnhancedSBA.error.required.agent"
   val invalidKey = "error.boolean"
 
-  val form = new ClaimStructureBuildingAllowanceFormProvider()("agent")
+  val form = new ClaimEnhancedSBAFormProvider()("agent")
 
   ".value" - {
 
-    val fieldName = "claimStructureBuildingAllowance"
+    val fieldName = "claimEnhancedStructureBuildingAllowance"
 
     behave like booleanField(
       form,

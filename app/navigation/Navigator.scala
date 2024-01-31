@@ -18,21 +18,22 @@ package navigation
 
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
+import controllers.enhancedstructuresbuildingallowance.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.routes._
-import controllers.structuresbuildingallowance.routes._
 import controllers.routes._
+import controllers.structuresbuildingallowance.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
-import pages.structurebuildingallowance.{StructureBuildingAllowanceClaimPage, StructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
+import pages.structurebuildingallowance._
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -91,6 +92,8 @@ class Navigator @Inject()() {
     case StructureBuildingAllowancePage => taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
 
     // Enhanced structured building allowance
+    case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
+    //case EnhancedSBAPage => taxYear => _ => _ => ClaimEsbaController.onPageLoad(taxYear, NormalMode)
     case EsbaQualifyingDatePage => taxYear => _ => _ =>
       controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode)
     case EsbaQualifyingAmountPage => taxYear => _ => _ =>
@@ -262,6 +265,12 @@ class Navigator @Inject()() {
   private def structureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ClaimStructureBuildingAllowancePage) match {
       case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
+      case _ => SummaryController.show(taxYear)
+    }
+
+  private def enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(ClaimEsbaPage) match {
+      case Some(true) => EsbaAddClaimController.onPageLoad(taxYear)
       case _ => SummaryController.show(taxYear)
     }
 }

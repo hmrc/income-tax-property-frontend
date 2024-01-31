@@ -279,6 +279,15 @@ POST       /:taxYear/structure-building-allowance/:index/address                
 GET        /:taxYear/structure-building-allowance/:index/change-address             controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST       /:taxYear/structure-building-allowance/:index/change-address             controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
 
+##### Enhanced Structure Building Allowance
+
+GET        /:taxYear/enhanced-structure-building-allowance/claim-yes-no              controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/enhanced-structure-building-allowance/claim-yes-no              controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/enhanced-structure-building-allowance/change-claim-yes-no       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/enhanced-structure-building-allowance/change-claim-yes-no       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/enhanced-structure-building-allowance/add-claim                 controllers.enhancedstructuresbuildingallowance.EsbaAddClaimController.onPageLoad(taxYear: Int)
+
 GET        /:taxYear/enhanced-structure-building-allowance/qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/enhanced-structure-building-allowance/qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/enhanced-structure-building-allowance/change-qualifying-amount controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
@@ -293,3 +302,4 @@ GET        /:taxYear/enhanced-structure-building-allowance/claim-amount         
 POST       /:taxYear/enhanced-structure-building-allowance/claim-amount             controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/enhanced-structure-building-allowance/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/enhanced-structure-building-allowance/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
