@@ -273,3 +273,8 @@ GET        /:taxYear/structure-building-allowance/:index/qualifying-amount      
 POST       /:taxYear/structure-building-allowance/:index/qualifying-amount          controllers.structuresbuildingallowance.StructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
 GET        /:taxYear/structure-building-allowance/:index/change-qualifying-amount   controllers.structuresbuildingallowance.StructureBuildingQualifyingAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST       /:taxYear/structure-building-allowance/:index/change-qualifying-amount   controllers.structuresbuildingallowance.StructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
+
+GET        /:taxYear/structure-building-allowance/:index/address                    controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
+POST       /:taxYear/structure-building-allowance/:index/address                    controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
+GET        /:taxYear/structure-building-allowance/:index/change-address             controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
+POST       /:taxYear/structure-building-allowance/:index/change-address             controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
