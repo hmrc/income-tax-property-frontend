@@ -16,9 +16,9 @@
 
 package forms.mappings
 
+import models.Enumerable
 import play.api.data.FormError
 import play.api.data.format.Formatter
-import models.Enumerable
 
 import scala.util.control.Exception.nonFatalCatch
 
@@ -78,7 +78,12 @@ trait Formatters {
         baseFormatter.unbind(key, value.toString)
     }
 
-  private[mappings] def currencyFormatter(requiredKey: String, twoDecimalPlacesKey: String, nonNumericKey: String, args: Seq[String] = Seq.empty): Formatter[BigDecimal] =
+  private[mappings] def currencyFormatter(
+                                           requiredKey: String,
+                                           twoDecimalPlacesKey: String,
+                                           nonNumericKey: String,
+                                           args: Seq[String] = Seq.empty
+                                         ): Formatter[BigDecimal] =
     new Formatter[BigDecimal] {
 
       val decimalRegexp = """^[+-]?[0-9]*(\.[0-9]{0,2})?$"""
@@ -95,8 +100,11 @@ trait Formatters {
                 .either(BigDecimal(s))
                 .left.map(_ =>
                 Seq(FormError(key, nonNumericKey, args))).flatMap { res =>
-                if (res.toString().matches(decimalRegexp))
-                {Right(res)} else {Left(Seq(FormError(key, twoDecimalPlacesKey, args)))}
+                if (res.toString().matches(decimalRegexp)) {
+                  Right(res)
+                } else {
+                  Left(Seq(FormError(key, twoDecimalPlacesKey, args)))
+                }
               }
           }
 
