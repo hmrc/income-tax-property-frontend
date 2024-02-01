@@ -288,3 +288,8 @@ GET        /:taxYear/enhanced-structure-building-allowance/qualifying-date      
 POST       /:taxYear/enhanced-structure-building-allowance/qualifying-date          controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/enhanced-structure-building-allowance/change-qualifying-date   controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/enhanced-structure-building-allowance/change-qualifying-date   controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/enhanced-structure-building-allowance/claim-amount             controllers.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/enhanced-structure-building-allowance/claim-amount             controllers.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/enhanced-structure-building-allowance/change-claim-amount      controllers.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/enhanced-structure-building-allowance/change-claim-amount      controllers.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

@@ -1,0 +1,54 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import models.requests._
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("esbaClaimAmount.title"))) {
+
+    @formHelper(action = routes.EsbaClaimAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        <span class="govuk-caption-m">
+            @messages("esbaClaimAmount.span")
+        </span>
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        @govukInput(
+            InputViewModel(
+                field = form("value"),
+                label = LabelViewModel(messages(s"esbaClaimAmount.heading.${request.user.isAgentMessageKey}")).asPageHeading()
+            )
+            .asNumeric()
+            .withWidth(Fixed10)
+            .withHint(HintViewModel(messages(s"esbaClaimAmount.hint.${request.user.isAgentMessageKey}")))
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
