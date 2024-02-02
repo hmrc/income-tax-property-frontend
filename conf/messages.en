@@ -1078,7 +1078,7 @@ structureBuildingAllowanceAddress.postcode.error.required = Enter a postcode for
 structureBuildingAllowanceAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying building or structure
 
 esbaQualifyingAmount.title = Qualifying amount
-esbaQualifyingAmount.heading = Qualifying amount
+esbaQualifyingAmount.heading = What is the total qualifying amount?
 esbaQualifyingAmount.checkYourAnswersLabel = Qualifying amount
 esbaQualifyingAmount.error.nonNumeric = Enter your qualifying amount using numbers
 esbaQualifyingAmount.error.required = Enter your esbaQualifyingAmount
@@ -1099,7 +1099,7 @@ esbaQualifyingAmount.p4.a.text = enhanced structures and buildings allowance qua
 
 esbaQualifyingDate.title = Qualifying date
 esbaQualifyingDate.heading = What is the qualifying date
-esbaQualifyingDate.hint = For example, 31 3 1980
+esbaQualifyingDate.hint = For example, 01 1 2022
 esbaQualifyingDate.checkYourAnswersLabel = Qualifying date
 esbaQualifyingDate.error.required.all = Enter the qualifying date
 esbaQualifyingDate.error.required.two = Qualifying date must include a {0} and a {1}
@@ -1113,8 +1113,7 @@ esbaQualifyingDate.li1 = beginning construction on the building or structure whe
 esbaQualifyingDate.li2 = bringing the building or structure into qualifying use when it’s in a Freeport tax site and on or before 30 September 2026
 esbaQualifyingDate.li3 = incurring the qualifying expenditure on the building or structure when it’s in a Freeport tax site and on or before 30 September 2026
 esbaQualifyingDate.li4 = you must be registered for either Corporation Tax or Income Tax
-esbaQualifyingDate.error.maxDate = Qualifying date for enhanced structures and buildings allowance must be before September 2026
-esbaQualifyingDate.error.minDate = Qualifying date for enhanced structures and buildings allowance must be after 29 October 2018
+esbaQualifyingDate.error.maxDate = Qualifying date for enhanced structures and buildings allowance must be on or before September 2026
 
 esbaQualifyingAmount.error.nonNumeric = Enter the total qualifying amount for enhanced structures and buildings allowance
 esbaQualifyingAmount.error.required = Enter the total qualifying amount for enhanced structures and buildings allowance

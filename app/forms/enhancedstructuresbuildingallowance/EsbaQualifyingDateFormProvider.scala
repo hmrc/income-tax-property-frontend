@@ -24,7 +24,6 @@ import javax.inject.Inject
 
 class EsbaQualifyingDateFormProvider @Inject() extends Mappings {
   private val MAX_DATE: LocalDate = LocalDate.of(2026, Month.SEPTEMBER, 1)
-  private val MIN_DATE: LocalDate = LocalDate.of(2018, Month.OCTOBER, 29)
 
   def apply(): Form[LocalDate] =
     Form(
@@ -33,7 +32,6 @@ class EsbaQualifyingDateFormProvider @Inject() extends Mappings {
         allRequiredKey = "esbaQualifyingDate.error.required.all",
         twoRequiredKey = "esbaQualifyingDate.error.required.two",
         requiredKey = "esbaQualifyingDate.error.required"
-      ).verifying(maxDate(MAX_DATE, "esbaQualifyingDate.error.maxDate"),
-        minDate(MIN_DATE, "esbaQualifyingDate.error.minDate"))
+      ).verifying(maxDate(MAX_DATE, "esbaQualifyingDate.error.maxDate"))
     )
 }

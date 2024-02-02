@@ -38,10 +38,6 @@ class EsbaQualifyingDateFormProviderSpec extends DateBehaviours {
     behave like dateField(form, "value", validData)
     behave like mandatoryDateField(form, "value", "esbaQualifyingDate.error.required.all")
 
-    behave like dateFieldWithMin(
-      form, "value", minDate,
-      FormError("value", "esbaQualifyingDate.error.minDate"))
-
     behave like dateFieldWithMax(
       form, "value", maxDate,
       FormError("value", "esbaQualifyingDate.error.maxDate"))
