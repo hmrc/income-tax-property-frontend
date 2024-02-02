@@ -1130,5 +1130,5 @@ esbaClaimAmount.error.twoDecimalPlaces = The enhanced structures and buildings a
 esbaClaimAmount.error.outOfRange = Enter an amount between £{0} and £{1}
 esbaClaimAmount.change.hidden = EsbaClaimAmount
 esbaClaimAmount.span = Enhanced structures and buildings allowance
-esbaClaimAmount.hint.individual = Enter the amount that you’ve calculated for your allowance.
-esbaClaimAmount.hint.agent = Enter the amount that you’ve calculated for your client’s allowances.
+esbaClaimAmount.hint.individual = Enter the amount that you’ve calculated.
+esbaClaimAmount.hint.agent = Enter the amount that you’ve calculated for your client.
