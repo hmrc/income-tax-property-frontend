@@ -27,7 +27,7 @@ class EsbaClaimAmountFormProvider @Inject() extends Mappings {
       "value" -> currency(
         s"esbaClaimAmount.error.required.$individualOrAgent",
         "esbaClaimAmount.error.twoDecimalPlaces",
-        s"esbaClaimAmount.error.nonNumeric.$individualOrAgent")
+        s"esbaClaimAmount.error.nonNumeric")
           .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "esbaClaimAmount.error.outOfRange"))
     )
 }
