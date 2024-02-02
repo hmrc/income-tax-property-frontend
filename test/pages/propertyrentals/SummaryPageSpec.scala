@@ -52,7 +52,7 @@ class SummaryPageSpec extends SpecBase {
       "allowances_link"
     )
     val structuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.structuresAndBuildingAllowance",
-      controllers.structuresbuildingallowance.routes.SummaryStartStructureBuildingAllowanceController.onPageLoad(taxYear),
+      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
       "structuresAndBuildingAllowance_link"
     )

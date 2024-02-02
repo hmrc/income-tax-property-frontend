@@ -250,8 +250,6 @@ GET        /:taxYear/allowances/check-your-answers                              
 
 ##### Structure Building Allowance
 
-GET         /:taxYear/structure-building-allowance/start                            controllers.structuresbuildingallowance.SummaryStartStructureBuildingAllowanceController.onPageLoad(taxYear: Int)
-
 GET        /:taxYear/structure-building-allowance/claim-yes-no                      controllers.structuresbuildingallowance.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/structure-building-allowance/claim-yes-no                      controllers.structuresbuildingallowance.ClaimStructureBuildingAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/structure-building-allowance/change-claim-yes-no               controllers.structuresbuildingallowance.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)

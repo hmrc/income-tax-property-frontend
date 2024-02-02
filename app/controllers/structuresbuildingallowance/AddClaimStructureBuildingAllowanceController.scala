@@ -17,11 +17,8 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import controllers.routes
-import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
 import views.html.structurebuildingallowance.StructureBuildingAllowanceView
@@ -32,19 +29,12 @@ import scala.concurrent.ExecutionContext
 class AddClaimStructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
                                                              identify: IdentifierAction,
                                                              val controllerComponents: MessagesControllerComponents,
-                                                             view: StructureBuildingAllowanceView,
-                                                             businessService: BusinessService)
+                                                             view: StructureBuildingAllowanceView)
                                                             (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
     implicit request =>
-      businessService.getBusinessDetails(request.user).map {
-        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-          Ok(view(StructureBuildingAllowancePage(taxYear, request.user.isAgentMessageKey)))
-        case _ => Redirect(routes.SummaryController.show(taxYear))
-      }
+      Ok(view(StructureBuildingAllowancePage(taxYear, request.user.isAgentMessageKey)))
   }
-
-  def existsUkProperty(property: PropertyDetails): Boolean =
-    property.incomeSourceType.contains("uk-property") && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }
+

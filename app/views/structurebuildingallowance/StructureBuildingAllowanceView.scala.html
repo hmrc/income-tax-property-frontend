@@ -16,7 +16,7 @@
 
 @import models.NormalMode
 @import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
-@import controllers.routes
+@import controllers.structuresbuildingallowance.routes
 
 @this(
         layout: templates.Layout,
@@ -34,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("structureBuildingAllowance.button"))
-                .asLink(TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
+                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, 0).url)
                 .withId("continue")
         )
     </p>
