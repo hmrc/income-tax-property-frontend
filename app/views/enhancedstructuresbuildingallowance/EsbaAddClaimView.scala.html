@@ -15,7 +15,7 @@
  *@
 
 @import models.NormalMode
-@import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EnhancedSBAPage
+@import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
 @import controllers.routes
 
 @this(
@@ -23,7 +23,7 @@
         govukButton: GovukButton
 )
 
-@(page: EnhancedSBAPage)(implicit request: Request[_], messages: Messages)
+@(page: EsbaAddClaimPage)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("enhancedSBA.title"))) {
 

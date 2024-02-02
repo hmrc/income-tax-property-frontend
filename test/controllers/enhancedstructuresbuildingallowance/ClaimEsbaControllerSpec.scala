@@ -113,9 +113,9 @@ class ClaimEsbaControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimEnhancedSBAControllerRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("claimEnhancedStructureBuildingAllowance" -> ""))
 
         val view = application.injector.instanceOf[ClaimEnhancedSBAView]
 

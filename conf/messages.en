@@ -984,12 +984,6 @@ reportPropertyIncome.error.required.individual = Select ‘I want to report my p
 reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
 
-structureBuildingAllowance.title.individual = Structures Buildings Allowance
-structureBuildingAllowance.title.agent = Structures Buildings Allowance
-structureBuildingAllowance.heading = Structures and buildings allowance claims
-structureBuildingAllowance.para1 = Tell HMRC if you've paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be able to claim tax relief.
-structureBuildingAllowance.button = Add a claim
-
 claimStructureBuildingAllowance.title = Do you want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.title.agent = Does your client want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.heading = Structures and buildings allowance
@@ -1010,6 +1004,12 @@ claimStructureBuildingAllowance.checkYourAnswersLabel = Check your Answers
 claimStructureBuildingAllowance.error.required.agent = Select yes if your client wants to claim structures building allowance
 claimStructureBuildingAllowance.error.required.individual = Select yes if you want to claim structures building allowance
 claimStructureBuildingAllowance.change.hidden = Structures Buildings Allowance
+
+structureBuildingAllowance.title.individual = Structures Buildings Allowance
+structureBuildingAllowance.title.agent = Structures Buildings Allowance
+structureBuildingAllowance.heading = Structures and buildings allowance claims
+structureBuildingAllowance.para1 = Tell HMRC if you've paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be able to claim tax relief.
+structureBuildingAllowance.button = Add a claim
 
 structureBuildingAllowanceClaim.title = How much is your structures and buildings allowance claim?
 structureBuildingAllowanceClaim.heading.individual = How much is your structures and buildings allowance claim?
@@ -1130,9 +1130,9 @@ esbaClaimAmount.span = Enhanced structures and buildings allowance
 esbaClaimAmount.hint.individual = Enter the amount that you’ve calculated.
 esbaClaimAmount.hint.agent = Enter the amount that you’ve calculated for your client.
 
-enhancedSBA.title = Enhanced Structures Buildings Allowance
-enhancedSBA.heading.individual = Enhanced Structures and buildings allowance
-enhancedSBA.heading.agent = Enhanced Structures and buildings allowance
+enhancedSBA.title = Enhanced structures and buildings allowance claims
+enhancedSBA.heading.individual = Enhanced structures and buildings allowance claims
+enhancedSBA.heading.agent = Enhanced structures and buildings allowance claims
 enhancedSBA.para1 = Tell HMRC if you''ve paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be be able to claim tax relief.
 enhancedSBA.addclaim.button = Add a claim
 
@@ -1155,4 +1155,3 @@ claimEnhancedSBA.checkYourAnswersLabel = Check your Answers for Enhanced structu
 claimEnhancedSBA.error.required.agent = Select yes if your client wants to claim Enhanced structures building allowance
 claimEnhancedSBA.error.required.individual = Select yes if you want to claim Enhanced structures building allowance
 claimEnhancedSBA.change.hidden = Enhanced Structures Buildings Allowance
-

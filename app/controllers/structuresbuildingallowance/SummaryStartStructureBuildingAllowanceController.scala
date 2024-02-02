@@ -18,19 +18,26 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.ClaimStructureBuildingAllowanceFormProvider
-import models.NormalMode
+import models.{Mode, NormalMode}
+import navigation.Navigator
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
 import views.html.structurebuildingallowance.ClaimStructureBuildingAllowanceView
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class SummaryStartStructureBuildingAllowanceController @Inject()(
                                                                   override val messagesApi: MessagesApi,
+                                                                  sessionRepository: SessionRepository,
+                                                                  navigator: Navigator,
                                                                   identify: IdentifierAction,
                                                                   getData: DataRetrievalAction,
                                                                   requireData: DataRequiredAction,
+                                                                  formProvider: ClaimStructureBuildingAllowanceFormProvider,
                                                                   val controllerComponents: MessagesControllerComponents,
                                                                   view: ClaimStructureBuildingAllowanceView
                                                                 ) extends FrontendBaseController with I18nSupport {
@@ -42,4 +49,19 @@ class SummaryStartStructureBuildingAllowanceController @Inject()(
       val emptyForm = new ClaimStructureBuildingAllowanceFormProvider()(request.user.isAgentMessageKey)
       Ok(view(emptyForm, taxYear, NormalMode, request.user.isAgentMessageKey))
   }
+
+/*  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val form = formProvider(request.user.isAgentMessageKey)
+      form.bindFromRequest().fold(
+        formWithErrors =>
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
+
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowancePage(taxYear, request.user.isAgentMessageKey), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(StructureBuildingAllowancePage(), taxYear, mode, index, request.userAnswers, updatedAnswers))
+      )
+  }*/
 }

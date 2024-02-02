@@ -93,7 +93,7 @@ class Navigator @Inject()() {
 
     // Enhanced structured building allowance
     case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
-    //case EnhancedSBAPage => taxYear => _ => _ => ClaimEsbaController.onPageLoad(taxYear, NormalMode)
+    //case EsbaAddClaimPage => taxYear => _ => _ => ClaimEsbaController.onPageLoad(taxYear, NormalMode)
     case EsbaQualifyingDatePage => taxYear => _ => _ =>
       controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode)
     case EsbaQualifyingAmountPage => taxYear => _ => _ =>

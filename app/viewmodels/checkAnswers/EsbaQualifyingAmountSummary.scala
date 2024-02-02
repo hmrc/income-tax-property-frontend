@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingAmountPage
 import play.api.i18n.Messages

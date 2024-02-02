@@ -20,7 +20,7 @@ import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EnhancedSBAPage
+import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
 import views.html.enhancedstructuresbuildingallowance.EsbaAddClaimView
 
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
     implicit request =>
-          Ok(view(EnhancedSBAPage(taxYear, request.user.isAgentMessageKey)))
+          Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey)))
   }
 
 }

@@ -38,16 +38,23 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages(s"esbaClaimAmount.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Large)
-            )
-            .asNumeric()
-            .withWidth(Fixed10)
-            .withHint(HintViewModel(messages(s"esbaClaimAmount.hint.${request.user.isAgentMessageKey}")))
-            .withPrefix(PrefixOrSuffix(content = Text("£")))
-        )
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                          @messages("claimEnhancedSBA.details.summary")
+                        </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">@messages("claimEnhancedSBA.details.content")</p>
+                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p1")</p>
+                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p2")</p>
+                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p3")
+                    <a href="@messages("claimEnhancedSBA.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                    @messages("claimEnhancedSBA.details.content.link.text")
+                    </a>
+                </p>
+            </div>
+        </details>
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")

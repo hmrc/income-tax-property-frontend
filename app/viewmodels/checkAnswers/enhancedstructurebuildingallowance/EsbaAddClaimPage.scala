@@ -16,4 +16,4 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-case class EnhancedSBAPage(taxYear: Int, individualOrAgent: String)
+case class EsbaAddClaimPage(taxYear: Int, individualOrAgent: String)
