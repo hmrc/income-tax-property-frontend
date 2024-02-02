@@ -16,6 +16,8 @@
 
 @import viewmodels.InputWidth._
 @import models.requests._
+@import viewmodels.LabelSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -39,7 +41,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages(s"esbaClaimAmount.heading.${request.user.isAgentMessageKey}")).asPageHeading()
+                label = LabelViewModel(messages(s"esbaClaimAmount.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10)
