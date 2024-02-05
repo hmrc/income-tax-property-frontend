@@ -28,6 +28,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
+import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -307,6 +308,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           OtherCapitalAllowancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
+        navigator.nextPage(
+          EsbaQualifyingDatePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode)
       }
     }
 
