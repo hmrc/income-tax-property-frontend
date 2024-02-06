@@ -171,15 +171,17 @@ class Navigator @Inject()() {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
     case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
     case StructureBuildingAllowanceClaimPage(_) => StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
+    case StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }
 
 
   private def structureBuildingCheckModeRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                                previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
-    case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, CheckMode, index)
-    case StructuredBuildingAllowanceAddressPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index)
+    case StructureBuildingQualifyingDatePage(_)
+         | StructureBuildingQualifyingAmountPage(_)
+         | StructureBuildingAllowanceClaimPage(_)
+         | StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }
 

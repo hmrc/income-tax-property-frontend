@@ -1002,7 +1002,7 @@ claimStructureBuildingAllowance.details.content.link.href = https://www.gov.uk/g
 claimStructureBuildingAllowance.details.content.link.text = capital allowances for buildings and structures at GOV.UK (opens in new tab)
 claimStructureBuildingAllowance.yes = Yes
 claimStructureBuildingAllowance.no = No
-claimStructureBuildingAllowance.checkYourAnswersLabel = Check your Answers
+claimStructureBuildingAllowance.checkYourAnswersLabel = Do you want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.error.required.agent = Select yes if your client wants to claim structures building allowance
 claimStructureBuildingAllowance.error.required.individual = Select yes if you want to claim structures building allowance
 claimStructureBuildingAllowance.change.hidden = Structures Buildings Allowance
@@ -1018,7 +1018,7 @@ structureBuildingAllowanceClaim.heading.individual = How much is your structures
 structureBuildingAllowanceClaim.heading.agent = How much is your client’s structures and buildings allowance claim?
 structureBuildingAllowanceClaim.legend.individual = Enter the amount that you’ve calculated for your allowance.
 structureBuildingAllowanceClaim.legend.agent = Enter the amount that you’ve calculated for your client's allowance.
-structureBuildingAllowanceClaim.checkYourAnswersLabel = Structure Building Allowance Claim
+structureBuildingAllowanceClaim.checkYourAnswersLabel = Claim value
 structureBuildingAllowanceClaim.error.nonNumeric = Enter the amount for structures and buildings allowance claim
 structureBuildingAllowanceClaim.error.required.individual = Enter the amount for your structures and buildings allowance claim
 structureBuildingAllowanceClaim.error.required.agent = Enter the amount for your client's structures and buildings allowance claim
@@ -1078,6 +1078,8 @@ structureBuildingAllowanceAddress.buildingNumber.error.max = Enter a number for 
 structureBuildingAllowanceAddress.postcode.legend = Postcode
 structureBuildingAllowanceAddress.postcode.error.required = Enter a postcode for the structure or building
 structureBuildingAllowanceAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying building or structure
+structureBuildingAllowanceAddress.checkYourAnswersLabel = Address
+structureBuildingAllowanceAddress.change.hidden = Address
 
 
 esbaQualifyingAmount.title = Qualifying amount
@@ -1206,4 +1208,7 @@ fhlMoreThanOne.error.required.individual = Select yes if you have more than one 
 fhlMoreThanOne.error.required.agent = Select yes if your client has more than one furnished holiday letting
 fhlMoreThanOne.change.hidden = FhlMoreThanOne
 
+
+sbaCheckYourAnswers.title = sbaCheckYourAnswers
+sbaCheckYourAnswers.heading = sbaCheckYourAnswers
 
