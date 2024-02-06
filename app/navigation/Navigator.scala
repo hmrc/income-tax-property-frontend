@@ -28,7 +28,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
+import pages.enhancedstructuresbuildingallowance.{EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
@@ -93,7 +93,8 @@ class Navigator @Inject()() {
     // Enhanced structured building allowance
     case EsbaQualifyingDatePage => taxYear => _ => _ =>
       controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode)
-
+    case EsbaQualifyingAmountPage => taxYear => _ => _ =>
+      controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -143,6 +144,8 @@ class Navigator @Inject()() {
     // Enhanced structured building allowance
     case EsbaQualifyingDatePage => taxYear => _ => _ =>
       controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, CheckMode)
+    case EsbaQualifyingAmountPage => taxYear => _ => _ =>
+      controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode)
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
 

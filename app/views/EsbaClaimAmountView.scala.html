@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages("esbaClaimAmount.title"))) {
 
-    @formHelper(action = routes.EsbaClaimAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
         <span class="govuk-caption-m">
             @messages("esbaClaimAmount.span")
         </span>

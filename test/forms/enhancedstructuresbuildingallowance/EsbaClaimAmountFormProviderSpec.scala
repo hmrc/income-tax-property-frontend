@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.enhancedstructuresbuildingallowance
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError

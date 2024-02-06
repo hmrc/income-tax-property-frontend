@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package pages
+package forms.enhancedstructuresbuildingallowance
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object EsbaClaimAmountPage extends QuestionPage[BigDecimal] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ toString
+class EsbaClaimAmountFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "esbaClaimAmount"
+  def apply(individualOrAgent: String): Form[BigDecimal] =
+    Form(
+      "value" -> currency(
+        s"esbaClaimAmount.error.required.$individualOrAgent",
+        "esbaClaimAmount.error.twoDecimalPlaces",
+        s"esbaClaimAmount.error.nonNumeric")
+          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "esbaClaimAmount.error.outOfRange"))
+    )
 }

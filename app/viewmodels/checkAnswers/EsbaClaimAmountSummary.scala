@@ -16,26 +16,27 @@
 
 package viewmodels.checkAnswers
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.EsbaClaimAmountPage
+import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object EsbaClaimAmountSummary  {
+object EsbaClaimAmountSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EsbaClaimAmountPage).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "esbaClaimAmount.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key = "esbaClaimAmount.checkYourAnswersLabel",
+          value = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
+            ActionItemViewModel(
+              "site.change",
+              controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode).url
+            ).withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
           )
         )
     }
