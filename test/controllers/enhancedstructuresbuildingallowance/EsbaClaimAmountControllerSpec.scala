@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import forms.EsbaClaimAmountFormProvider
+import controllers.routes
+import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
 import models.requests.DataRequest
 import models.{NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.EsbaClaimAmountPage
+import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -43,7 +44,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer = BigDecimal(0)
   val taxYear = 2024
-  lazy val esbaClaimAmountRoute = routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode).url
   val user = User(
     "",
     "",

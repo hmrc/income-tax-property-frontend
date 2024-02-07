@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
-import forms.EsbaClaimAmountFormProvider
-import javax.inject.Inject
+import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.EsbaClaimAmountPage
+import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.EsbaClaimAmountView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EsbaClaimAmountController @Inject()(
