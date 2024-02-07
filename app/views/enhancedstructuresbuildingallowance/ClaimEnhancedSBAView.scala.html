@@ -14,29 +14,25 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
-@import models.requests._
-@import viewmodels.LabelSize
-
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
+    govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("esbaClaimAmount.title"))) {
+@layout(pageTitle = title(form, messages("claimEnhancedSBA.title"))) {
 
-    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
-        <span class="govuk-caption-m">
-            @messages("esbaClaimAmount.span")
-        </span>
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages(s"claimEnhancedSBA.heading.$individualOrAgent")</h1>
 
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -56,8 +52,16 @@
             </div>
         </details>
 
+
+        @govukRadios(
+            RadiosViewModel.yesNo(
+                field = form("claimEnhancedStructureBuildingAllowance"),
+                legend = LegendViewModel(messages(s"claimEnhancedSBA.legend.$individualOrAgent")).withCssClass("govuk-label govuk-label--m")
+            )
+        )
+
         @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
+            ButtonViewModel(messages("site.continue"))
         )
     }
 }

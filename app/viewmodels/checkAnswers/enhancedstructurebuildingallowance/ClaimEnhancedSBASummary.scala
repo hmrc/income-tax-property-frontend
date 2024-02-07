@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
+import controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
 import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
+import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-import java.time.format.DateTimeFormatter
-
-object EsbaQualifyingDateSummary  {
+object ClaimEnhancedSBASummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingDatePage).map {
+    answers.get(ClaimEsbaPage).map {
       answer =>
 
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+        val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "esbaQualifyingDate.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          key     = "claimEnhancedSBA.checkYourAnswersLabel",
+          value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
+            ActionItemViewModel("site.change", ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode).url)
+              .withVisuallyHiddenText(messages("claimEnhancedSBA.change.hidden"))
           )
         )
     }

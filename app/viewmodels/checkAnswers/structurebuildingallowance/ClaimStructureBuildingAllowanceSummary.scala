@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
 import models.{CheckMode, UserAnswers}
-import pages.ClaimStructureBuildingAllowancePage
+import pages.structurebuildingallowance.ClaimStructureBuildingAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._

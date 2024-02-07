@@ -15,26 +15,26 @@
  *@
 
 @import models.NormalMode
-@import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
-@import controllers.structuresbuildingallowance.routes
+@import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
+@import controllers.routes
 
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(page: StructureBuildingAllowancePage)(implicit request: Request[_], messages: Messages)
+@(page: EsbaAddClaimPage)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages(s"structureBuildingAllowance.title.${page.individualOrAgent}"))) {
+@layout(pageTitle = titleNoForm(messages("enhancedSBA.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("structureBuildingAllowance.heading")</h1>
+    <h1 class="govuk-heading-l">@messages(s"enhancedSBA.heading.${page.individualOrAgent}")</h1>
 
-    <p class="govuk-body">@messages("structureBuildingAllowance.para1")</p>
+    <p class="govuk-body">@messages("enhancedSBA.para1")</p>
 
     <p class="govuk-body">
         @govukButton(
-            ButtonViewModel(messages("structureBuildingAllowance.button"))
-                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, 0).url)
+            ButtonViewModel(messages("enhancedSBA.addclaim.button"))
+                .asLink(TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
                 .withId("continue")
         )
     </p>

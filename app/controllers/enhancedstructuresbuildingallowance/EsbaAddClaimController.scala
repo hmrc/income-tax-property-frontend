@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package controllers.structuresbuildingallowance
+package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
-import views.html.structurebuildingallowance.StructureBuildingAllowanceView
+import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
+import views.html.enhancedstructuresbuildingallowance.EsbaAddClaimView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class AddClaimStructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
-                                                             identify: IdentifierAction,
-                                                             val controllerComponents: MessagesControllerComponents,
-                                                             view: StructureBuildingAllowanceView)
-                                                            (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
+                                       identify: IdentifierAction,
+                                       val controllerComponents: MessagesControllerComponents,
+                                       view: EsbaAddClaimView)
+                                      (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view(StructureBuildingAllowancePage(taxYear, request.user.isAgentMessageKey)))
+          Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey)))
   }
-}
 
+}
