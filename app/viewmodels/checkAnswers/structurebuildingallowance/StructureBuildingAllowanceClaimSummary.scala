@@ -56,7 +56,7 @@ object StructureBuildingAllowanceClaimSummary  {
             ActionItemViewModel("site.remove", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
               .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
           ),
-          actionsCss = ""
+          actionsCss = "w-25"
         )
     }
 }

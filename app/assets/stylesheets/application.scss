@@ -1,8 +1,12 @@
 .js-visible {
   display: none !important;
 }
+
 .js-enabled .js-visible {
   display: inline-block !important;
 }
 
+.w-25 {
+  width: 25%;
+}
 
