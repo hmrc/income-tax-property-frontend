@@ -18,6 +18,7 @@ package viewmodels.govuk
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
+import viewmodels.WithCssClass
 
 object summarylist extends SummaryListFluency
 
@@ -61,6 +62,18 @@ trait SummaryListFluency {
         key     = key,
         value   = value,
         actions = Some(Actions(items = actions))
+      )
+
+    def apply(
+               key: Key,
+               value: Value,
+               actions: Seq[ActionItem],
+               actionsCss: String
+             ): SummaryListRow =
+      SummaryListRow(
+        key     = key,
+        value   = value,
+        actions = Some(Actions(items = actions, classes = actionsCss))
       )
   }
 

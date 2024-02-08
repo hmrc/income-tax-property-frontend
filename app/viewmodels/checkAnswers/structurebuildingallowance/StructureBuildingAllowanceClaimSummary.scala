@@ -20,7 +20,9 @@ import controllers.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -37,6 +39,24 @@ object StructureBuildingAllowanceClaimSummary  {
             ActionItemViewModel("site.change", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
               .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
           )
+        )
+    }
+
+  def claims(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(StructureBuildingAllowanceClaimPage(index)).map {
+      answer =>
+
+        val value = HtmlFormat.escape(bigDecimalCurrency(answer)).toString()
+        SummaryListRowViewModel(
+          key = KeyViewModel("structureBuildingAllowanceClaim.checkYourAnswersLabel"),
+          value = ValueViewModel(value),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
+              .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden")),
+            ActionItemViewModel("site.remove", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
+              .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
+          ),
+          actionsCss = ""
         )
     }
 }

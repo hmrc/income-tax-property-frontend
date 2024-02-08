@@ -304,6 +304,10 @@ POST       /:taxYear/enhanced-structure-building-allowance/change-claim-amount  
 
 GET        /:taxYear/structure-building-allowance/:index/check-your-answers         controllers.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
 
+GET        /:taxYear/structure-building-allowance/claims                            controllers.SbaClaimsController.onPageLoad(taxYear: Int)
+POST       /:taxYear/structure-building-allowance/claims                           controllers.SbaClaimsController.onSubmit(taxYear: Int)
+
+
 GET        /:taxYear/furnished-holiday-lettings/start                               controllers.furnishedholidaylettings.FhlIntroController.onPageLoad(taxYear: Int)
 
 GET        /:taxYear/furnished-holiday-lettings/more-than-one                       controllers.furnishedholidaylettings.FhlMoreThanOneController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
