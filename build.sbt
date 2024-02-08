@@ -1,55 +1,19 @@
 import play.sbt.routes.RoutesKeys
 import sbt.Def
+import uk.gov.hmrc.DefaultBuildSettings
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "income-tax-property-frontend"
 
-lazy val coverageSettings: Seq[Setting[?]] = {
-  import scoverage.ScoverageKeys
+ThisBuild / majorVersion := 0
+ThisBuild / scalaVersion := "2.13.12"
 
-  val excludedPackages = Seq(
-    "<empty>",
-    ".*Reverse.*",
-    ".*standardError*.*",
-    ".*govuk_wrapper*.*",
-    ".*main_template*.*",
-    "uk.gov.hmrc.BuildInfo",
-    "app.*",
-    "prod.*",
-    "config.*",
-    "testOnly.*",
-    "testOnlyDoNotUseInAppConf.*",
-    ".*feedback*.*",
-    "partials.*",
-    "controllers.testOnly.*",
-    "forms.validation.mappings",
-    "views.html.*[Tt]emplate.*",
-    "views.html.views.templates.helpers*",
-    "views.html.views.templates.inputs*",
-    "views.headerFooterTemplate"
-  )
-
-  Seq(
-    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*handlers.*;.*components.*;" +
-      ".*Routes.*;.*viewmodels.govuk.*;",
-    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimumStmtTotal := 78,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true,
-  )
-}
-
-lazy val root = (project in file("."))
+lazy val root = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(inConfig(Test)(testSettings) *)
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(itSettings) *)
-  .settings(majorVersion := 0)
   .settings(ThisBuild / useSuperShell := false)
   .settings(
-    scalaVersion := "2.13.12",
-    name := appName,
     RoutesKeys.routesImport ++= Seq(
       "models._",
       "uk.gov.hmrc.play.bootstrap.binders.RedirectUrl"
@@ -92,17 +56,53 @@ lazy val root = (project in file("."))
     uglify / includeFilter := GlobFilter("application.js")
   )
   .settings(coverageSettings *)
-  .settings(
-    // To resolve a bug with version 2.x.x of the scoverage plugin - https://github.com/sbt/sbt/issues/6997
-    libraryDependencySchemes ++= Seq("org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always)
+
+lazy val coverageSettings: Seq[Setting[?]] = {
+  import scoverage.ScoverageKeys
+
+  val excludedPackages = Seq(
+    "<empty>",
+    ".*Reverse.*",
+    ".*standardError*.*",
+    ".*govuk_wrapper*.*",
+    ".*main_template*.*",
+    "uk.gov.hmrc.BuildInfo",
+    "app.*",
+    "prod.*",
+    "config.*",
+    "testOnly.*",
+    "testOnlyDoNotUseInAppConf.*",
+    ".*feedback*.*",
+    "partials.*",
+    "controllers.testOnly.*",
+    "forms.validation.mappings",
+    "views.html.*[Tt]emplate.*",
+    "views.html.views.templates.helpers*",
+    "views.html.views.templates.inputs*",
+    "views.headerFooterTemplate"
   )
+
+  Seq(
+    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*handlers.*;.*components.*;" +
+      ".*Routes.*;.*viewmodels.govuk.*;",
+    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
+    ScoverageKeys.coverageMinimumStmtTotal := 78,
+    ScoverageKeys.coverageFailOnMinimum := true,
+    ScoverageKeys.coverageHighlighting := true,
+  )
+}
 
 lazy val testSettings: Seq[Def.Setting[?]] = Seq(
   fork := true,
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )
 
-lazy val itSettings = Defaults.itSettings ++ Seq(
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(root % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .settings(itSettings)
+
+lazy val itSettings = DefaultBuildSettings.itSettings() ++ Seq(
   unmanagedSourceDirectories := Seq(
     baseDirectory.value / "it",
     baseDirectory.value / "test-utils"
