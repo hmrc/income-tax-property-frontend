@@ -26,13 +26,13 @@
 
 @layout(pageTitle = title(form, messages("claimStructureBuildingAllowance.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("claimStructureBuildingAllowance.heading")</h1>
-
     @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages("claimStructureBuildingAllowance.heading")</h1>
 
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -61,7 +61,7 @@
         @govukRadios(
                 RadiosViewModel.yesNoWithOtherNames(
                 field = form("claimStructureBuildingAllowance"),
-                legend = LegendViewModel(messages(s"claimStructureBuildingAllowance.title")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                legend = LegendViewModel(messages(s"claimStructureBuildingAllowance.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 yesText = "claimStructureBuildingAllowance.yes",
                 noText = "claimStructureBuildingAllowance.no"
             )
