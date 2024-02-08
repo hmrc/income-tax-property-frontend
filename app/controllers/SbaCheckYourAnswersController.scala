@@ -40,7 +40,6 @@ class SbaCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-          ClaimStructureBuildingAllowanceSummary.row(taxYear, request.userAnswers),
           StructureBuildingQualifyingDateSummary.row(taxYear, index, request.userAnswers),
           StructureBuildingQualifyingAmountSummary.row(taxYear, index, request.userAnswers),
           StructureBuildingAllowanceClaimSummary.row(taxYear, index, request.userAnswers),

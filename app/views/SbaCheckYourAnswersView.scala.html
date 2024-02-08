@@ -22,14 +22,15 @@
 
 @(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
 
- @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
+@layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
-  <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
+    <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-  @govukSummaryList(list)
+    @govukSummaryList(list)
 
-  @govukButton(
-   ButtonViewModel(messages("site.continue"))
-   .asLink(SummaryController.show(taxYear).url).withId("continue")
-  )
- }
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+        .asLink(SbaClaimsController.onPageLoad(taxYear).url).withId("continue")
+    )
+}
