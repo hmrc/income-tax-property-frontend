@@ -1,0 +1,70 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.requests._
+
+@this(
+layout: templates.Layout,
+govukButton: GovukButton
+)
+
+@(taxYear: Int)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("fhlIntro.title"))) {
+
+<h1 class="govuk-heading-l">
+    @messages("fhlIntro.heading")</h1>
+<div class="govuk-form-group">
+    <div class="govuk-body">
+        @messages(s"fhlIntro.div.top.${request.user.isAgentMessageKey}")
+    </div>
+</div>
+<details class="govuk-details" data-module="govuk-details" open="">
+    <summary class="govuk-details__summary">
+                      <span class="govuk-details__summary-text">
+                          @messages("fhlIntro.summary")
+                    </span></summary>
+
+    <div class="govuk-details__text">
+        <div class="govuk-body">
+
+            <p>@messages(s"fhlIntro.p.${request.user.isAgentMessageKey}")</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>@messages(s"fhlIntro.li1.${request.user.isAgentMessageKey}")
+                </li>
+                <li>@messages(s"fhlIntro.li2.${request.user.isAgentMessageKey}")
+                </li>
+                <li>@messages(s"fhlIntro.li3.${request.user.isAgentMessageKey}")
+                </li>
+            </ul>
+
+            @messages("fhlIntro.div")
+
+            <a href='@messages("fhlIntro.a.href")'
+               class="govuk-link govuk-link--no-visited-state" target="_blank">
+                @messages("fhlIntro.a")
+            </a>
+        </div>
+
+    </div>
+</details>
+@govukButton(
+    ButtonViewModel(messages("site.continue"))
+        .withId("continue")
+        .asLink(controllers.furnishedholidaylettings.routes.FhlMoreThanOneController.onSubmit(taxYear, NormalMode).url)
+)
+}
