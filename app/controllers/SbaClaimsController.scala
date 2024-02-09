@@ -49,11 +49,11 @@ class SbaClaimsController @Inject()(
                                      view: SbaClaimsView
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
+
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
+      val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       val list: SummaryList = summaryList(taxYear, request)
 
       Ok(view(form, list, taxYear, request.user.isAgentMessageKey))
@@ -61,7 +61,7 @@ class SbaClaimsController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       val list: SummaryList = summaryList(taxYear, request)
 
       form.bindFromRequest().fold(
