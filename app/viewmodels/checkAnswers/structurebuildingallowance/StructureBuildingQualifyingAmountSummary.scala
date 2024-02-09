@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,7 +33,7 @@ object StructureBuildingQualifyingAmountSummary {
 
         SummaryListRowViewModel(
           key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
-          value = ValueViewModel(answer.toString),
+          value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx).url)
               .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))

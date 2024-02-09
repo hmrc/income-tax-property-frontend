@@ -34,7 +34,7 @@ object StructureBuildingAllowanceClaimSummary {
 
         SummaryListRowViewModel(
           key = "structureBuildingAllowanceClaim.checkYourAnswersLabel",
-          value = ValueViewModel(answer.toString),
+          value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
             ActionItemViewModel("site.change", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
               .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
