@@ -23,8 +23,8 @@ import play.api.data.Form
 
 class SbaClaimsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean("sbaClaims.error.required")
+      "anotherClaim" -> boolean(s"sbaClaims.error.required.$individualOrAgent")
     )
 }
