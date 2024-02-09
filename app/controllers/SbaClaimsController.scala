@@ -18,14 +18,18 @@ package controllers
 
 import controllers.actions._
 import forms.SbaClaimsFormProvider
+import models.requests.DataRequest
 
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.SbaClaimsPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import pages.structurebuildingallowance.StructureBuildingFormGroup
+import play.api.data.Form
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceClaimSummary
 import views.html.SbaClaimsView
@@ -34,44 +38,31 @@ import viewmodels.govuk.summarylist._
 import scala.concurrent.{ExecutionContext, Future}
 
 class SbaClaimsController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: SbaClaimsFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: SbaClaimsView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     override val messagesApi: MessagesApi,
+                                     sessionRepository: SessionRepository,
+                                     navigator: Navigator,
+                                     identify: IdentifierAction,
+                                     getData: DataRetrievalAction,
+                                     requireData: DataRequiredAction,
+                                     formProvider: SbaClaimsFormProvider,
+                                     val controllerComponents: MessagesControllerComponents,
+                                     view: SbaClaimsView
+                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SbaClaimsPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-      val list = SummaryListViewModel(
-        rows = Seq(
-          StructureBuildingAllowanceClaimSummary.claims(taxYear, 0, request.userAnswers),
-          StructureBuildingAllowanceClaimSummary.claims(taxYear, 0, request.userAnswers)
-        ).flatten
-      )
+      val list: SummaryList = summaryList(taxYear, request)
 
-      Ok(view(preparedForm, list, taxYear, request.user.isAgentMessageKey))
+      Ok(view(form, list, taxYear, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val list = SummaryListViewModel(
-        rows = Seq(
-          StructureBuildingAllowanceClaimSummary.row(taxYear, 0, request.userAnswers)
-        ).flatten
-      )
+      val list: SummaryList = summaryList(taxYear, request)
 
       form.bindFromRequest().fold(
         formWithErrors =>
@@ -80,8 +71,18 @@ class SbaClaimsController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )
   }
+
+  private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
+    val sbaForm = request.userAnswers.get(StructureBuildingFormGroup).getOrElse(Array())
+
+    val rows = sbaForm.zipWithIndex
+      .map(claim => StructureBuildingAllowanceClaimSummary.row(taxYear, claim._2, claim._1.structureBuildingAllowanceClaim))
+
+    SummaryListViewModel(rows)
+  }
+
 }

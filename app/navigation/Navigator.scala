@@ -90,6 +90,7 @@ class Navigator @Inject()() {
     // Structured building allowance
     case ClaimStructureBuildingAllowancePage => taxYear => _ => userAnswers => structureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case StructureBuildingAllowancePage => taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
+    case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
 
     // Enhanced structured building allowance
     case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
@@ -273,6 +274,12 @@ class Navigator @Inject()() {
   private def enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ClaimEsbaPage) match {
       case Some(true) => EsbaAddClaimController.onPageLoad(taxYear)
+      case _ => SummaryController.show(taxYear)
+    }
+
+  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(SbaClaimsPage) match {
+      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
       case _ => SummaryController.show(taxYear)
     }
 }
