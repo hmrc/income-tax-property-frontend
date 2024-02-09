@@ -1157,3 +1157,36 @@ claimEnhancedSBA.checkYourAnswersLabel = Check your Answers for Enhanced structu
 claimEnhancedSBA.error.required.agent = Select yes if your client wants to claim Enhanced structures building allowance
 claimEnhancedSBA.error.required.individual = Select yes if you want to claim Enhanced structures building allowance
 claimEnhancedSBA.change.hidden = Enhanced Structures Buildings Allowance
+
+fhlIntro.title = Furnished holiday lettings
+fhlIntro.heading = Furnished holiday lettings
+fhlIntro.summary = Understanding furnished holiday lettings
+
+fhlIntro.div.top.individual = You’ll need details of your expenses to answer the questions starting on the next page.
+fhlIntro.div.top.agent = You’ll need details of your client’s expenses to answer the questions starting on the next page.
+
+fhlIntro.p.individual = To qualify as a UK furnished holiday letting your property must be furnished and will also need to pass three occupancy conditions.
+fhlIntro.p.agent = To qualify as a UK furnished holiday letting your client’s property must be furnished and will also need to pass three occupancy conditions.
+
+fhlIntro.li1.individual = Pattern of occupation: The total of all lettings of more than 31 days must not be more than 155 days in a row.
+fhlIntro.li1.agent = Pattern of occupation: The total of all lettings of more than 31 days must not be more than 155 days in a row.
+
+fhlIntro.li2.individual = Availability: Your property must be available for letting for at least 210 days a year.
+fhlIntro.li2.agent = Availability: The property must be available for letting for at least 210 days a year.
+
+fhlIntro.li3.individual = Letting: You must let the property as a furnished holiday letting to the public for at least 105 days a year.
+fhlIntro.li3.agent = Letting: The property be must let as a furnished holiday letting to the public for at least 105 days a year.
+
+fhlIntro.a.href = https://www.gov.uk/government/publications/furnished-holiday-lettings-hs253-self-assessment-helpsheet/hs253-furnished-holiday-lettings-2020
+fhlIntro.a = Furnished Holiday Lettings at Gov.uk (opens in new tab)
+fhlIntro.div = Read more about
+fhlMoreThanOne.title.individual = Do you have more than one holiday furnished letting?
+fhlMoreThanOne.title.agent = Does your client have more than one furnished holiday letting?
+fhlMoreThanOne.heading.individual = Do you have more than one holiday furnished letting?
+fhlMoreThanOne.heading.agent = Does your client have more than one furnished holiday letting?
+fhlMoreThanOne.checkYourAnswersLabel.individual = Do you have more than one holiday furnished letting?
+fhlMoreThanOne.checkYourAnswersLabel.agent = Does your client have more than one furnished holiday letting?
+fhlMoreThanOne.error.required.individual = Select yes if you have more than one furnished holiday letting
+fhlMoreThanOne.error.required.agent = Select yes if your client has more than one furnished holiday letting
+fhlMoreThanOne.change.hidden = FhlMoreThanOne
+
