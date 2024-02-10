@@ -1205,3 +1205,8 @@ sbaClaims.heading.agent = Your client's structures and buildings allowance claim
 sbaClaims.error.required.individual = Select yes if you want to add another claim
 sbaClaims.error.required.agent = Select yes if your client wants to add another claim
 sbaClaims.legend = Do you want to add another claim?
+
+sbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
+sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim

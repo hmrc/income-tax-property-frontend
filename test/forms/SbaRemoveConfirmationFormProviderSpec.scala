@@ -17,18 +17,19 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
+import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
 import play.api.data.FormError
 
-class SbaClaimsFormProviderSpec extends BooleanFieldBehaviours {
+class SbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "sbaClaims.error.required.agent"
+  val requiredKey = "sbaRemoveConfirmation.error.required.agent"
   val invalidKey = "error.boolean"
 
-  val form = new SbaClaimsFormProvider()("agent")
+  val form = new SbaRemoveConfirmationFormProvider()("agent")
 
-  ".anotherClaim" - {
+  ".sbaRemoveConfirmation" - {
 
-    val fieldName = "anotherClaim"
+    val fieldName = "sbaRemoveConfirmation"
 
     behave like booleanField(
       form,

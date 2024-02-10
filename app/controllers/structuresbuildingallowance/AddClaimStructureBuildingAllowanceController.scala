@@ -17,6 +17,7 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
+import pages.structurebuildingallowance.StructureBuildingFormGroup
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -28,13 +29,16 @@ import scala.concurrent.ExecutionContext
 
 class AddClaimStructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
                                                              identify: IdentifierAction,
+                                                             getData: DataRetrievalAction,
+                                                             requireData: DataRequiredAction,
                                                              val controllerComponents: MessagesControllerComponents,
                                                              view: StructureBuildingAllowanceView)
                                                             (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(StructureBuildingAllowancePage(taxYear, request.user.isAgentMessageKey)))
+      val sbaForm = request.userAnswers.get(StructureBuildingFormGroup).getOrElse(Array())
+      Ok(view(StructureBuildingAllowancePage(taxYear, sbaForm.length, request.user.isAgentMessageKey)))
   }
 }
 

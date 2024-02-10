@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.structuresbuildingallowance.routes
 
 @this(
     layout: templates.Layout,
@@ -50,7 +51,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
+            ButtonViewModel(messages("site.saveAndContinue")).withId("continue")
         )
     }
 }

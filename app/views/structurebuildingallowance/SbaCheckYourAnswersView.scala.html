@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import controllers.structuresbuildingallowance.routes
 @this(
         layout: templates.Layout,
         govukButton: GovukButton,
@@ -30,7 +31,7 @@
     @govukSummaryList(list)
 
     @govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .asLink(SbaClaimsController.onPageLoad(taxYear).url).withId("continue")
+        ButtonViewModel(messages("site.saveAndContinue"))
+        .asLink(routes.SbaClaimsController.onPageLoad(taxYear).url).withId("continue")
     )
 }

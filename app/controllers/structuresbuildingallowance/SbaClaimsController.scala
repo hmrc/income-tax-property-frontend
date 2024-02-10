@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import forms.SbaClaimsFormProvider
+import forms.structurebuildingallowance.SbaClaimsFormProvider
+import models.NormalMode
 import models.requests.DataRequest
-
-import javax.inject.Inject
-import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.SbaClaimsPage
-import pages.structurebuildingallowance.StructureBuildingFormGroup
+import pages.structurebuildingallowance.{SbaClaimsPage, StructureBuildingFormGroup}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,9 +29,10 @@ import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceClaimSummary
-import views.html.SbaClaimsView
 import viewmodels.govuk.summarylist._
+import views.html.structurebuildingallowance.SbaClaimsView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class SbaClaimsController @Inject()(

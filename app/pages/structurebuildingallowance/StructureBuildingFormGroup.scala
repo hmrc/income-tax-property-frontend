@@ -18,7 +18,7 @@ package pages.structurebuildingallowance
 
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
@@ -30,6 +30,15 @@ case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingF
   implicit val format: Format[StructureBuildingFormGroup] = Json.format
 
   override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.structureBuildingFormGroup
+}
+
+case class StructureBuildingFormGroupWithIndex(index: Int) extends Settable[Array[StructureBuildingFormGroup]] {
+
+  implicit val format: Format[StructureBuildingFormGroup] = Json.format
+
+  override def path: JsPath = JsPath \ toString \ index
 
   override def toString: String = PageConstants.structureBuildingFormGroup
 }

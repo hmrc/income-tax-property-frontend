@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.structurebuildingallowance
 
-import models.StructuredBuildingAllowanceAddress
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case class StructuredBuildingAllowanceAddressPage(index: Int) extends QuestionPage[StructuredBuildingAllowanceAddress] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ "structuredBuildingAllowanceAddressFormGroup" \ index \ toString
-  override def toString: String = "structuredBuildingAllowanceAddress"
+class SbaClaimsFormProvider @Inject() extends Mappings {
 
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "anotherClaim" -> boolean(s"sbaClaims.error.required.$individualOrAgent")
+    )
 }
