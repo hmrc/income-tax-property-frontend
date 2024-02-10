@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structurebuildingallowance
 
 import base.SpecBase
-import forms.SbaClaimsFormProvider
-import models.{NormalMode, UserAnswers}
+import controllers.structuresbuildingallowance.routes
+import forms.structurebuildingallowance.SbaClaimsFormProvider
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.SbaClaimsPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -31,8 +30,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import views.html.SbaClaimsView
 import viewmodels.govuk.summarylist._
+import views.html.structurebuildingallowance.SbaClaimsView
 
 import scala.concurrent.Future
 
@@ -123,7 +122,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -139,7 +138,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

@@ -18,8 +18,7 @@ package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
-import pages.StructuredBuildingAllowanceAddressPage
-import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
+import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructuredBuildingAllowanceAddressPage}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
