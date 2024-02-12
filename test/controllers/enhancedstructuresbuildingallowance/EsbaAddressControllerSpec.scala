@@ -14,48 +14,56 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import forms.StructuredBuildingAllowanceAddressFormProvider
-import models.{NormalMode, StructuredBuildingAllowanceAddress, UserAnswers}
+import forms.enhancedstructuresbuildingallowance.EsbaAddressFormProvider
+import models.{EsbaAddress, NormalMode, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import navigation.{FakeNavigator, Navigator}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.StructuredBuildingAllowanceAddressPage
+import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.data.Form
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
+import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, route, running, status, writeableOf_AnyContentAsEmpty, writeableOf_AnyContentAsFormUrlEncoded}
-import views.html.StructuredBuildingAllowanceAddressView
-import controllers.structuresbuildingallowance.routes
+import repositories.SessionRepository
+import views.html.enhancedstructuresbuildingallowance.EsbaAddressView
+
+import scala.concurrent.Future
 
 
-class StructuredBuildingAllowanceAddressController extends SpecBase with MockitoSugar {
+class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new StructuredBuildingAllowanceAddressFormProvider
-  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider.apply
+  val formProvider = new EsbaAddressFormProvider
+  private def form: Form[EsbaAddress] = formProvider.apply
 
   val taxYear = 2024
   val index = 0
+  val validAnswer = "Building"
+  val validPostCode = "GV92 8VB"
   def onwardRoute: Call = Call("GET", "/foo")
   private val isAgentMessageKey = "individual"
 
-  lazy val structureBuildingAllowanceAddressDateRoute: String = routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val enhancedStructureBuildingAllowanceAddressDateRoute: String = routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index).url
 
   override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def getRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, structureBuildingAllowanceAddressDateRoute)
+    FakeRequest(GET, enhancedStructureBuildingAllowanceAddressDateRoute)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
+    FakeRequest(POST, enhancedStructureBuildingAllowanceAddressDateRoute)
       .withFormUrlEncodedBody(
         "buildingName"   -> "building-name",
         "buildingNumber" -> "building-number",
         "postcode"  -> "postcode"
       )
 
-  "StructureBuildingAllowanceAddress Controller" - {
+  "EsbaAddress Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -64,7 +72,7 @@ class StructuredBuildingAllowanceAddressController extends SpecBase with Mockito
       running(application) {
         val result = route(application, getRequest).value
 
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+        val view = application.injector.instanceOf[EsbaAddressView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, index)(getRequest, messages(application)).toString
@@ -73,17 +81,43 @@ class StructuredBuildingAllowanceAddressController extends SpecBase with Mockito
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructuredBuildingAllowanceAddressPage(index), StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaAddressPage(index), EsbaAddress("building-name", "building-number", "post-code")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+        val view = application.injector.instanceOf[EsbaAddressView]
 
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")), taxYear, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(EsbaAddress("building-name", "building-number", "post-code")), taxYear, NormalMode, index)(getRequest, messages(application)).toString
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, enhancedStructureBuildingAllowanceAddressDateRoute)
+            .withFormUrlEncodedBody(("buildingName", validAnswer),("buildingNumber", validAnswer),("postcode", validPostCode))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 
@@ -92,13 +126,13 @@ class StructuredBuildingAllowanceAddressController extends SpecBase with Mockito
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       val request =
-        FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
+        FakeRequest(POST, enhancedStructureBuildingAllowanceAddressDateRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+        val view = application.injector.instanceOf[EsbaAddressView]
 
         val result = route(application, request).value
 

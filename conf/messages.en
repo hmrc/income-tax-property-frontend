@@ -1079,6 +1079,7 @@ structureBuildingAllowanceAddress.postcode.legend = Postcode
 structureBuildingAllowanceAddress.postcode.error.required = Enter a postcode for the structure or building
 structureBuildingAllowanceAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying building or structure
 
+
 esbaQualifyingAmount.title = Qualifying amount
 esbaQualifyingAmount.heading = What is the total qualifying amount?
 esbaQualifyingAmount.checkYourAnswersLabel = Qualifying amount
@@ -1158,6 +1159,21 @@ claimEnhancedSBA.error.required.agent = Select yes if your client wants to claim
 claimEnhancedSBA.error.required.individual = Select yes if you want to claim Enhanced structures building allowance
 claimEnhancedSBA.change.hidden = Enhanced Structures Buildings Allowance
 
+esbaAddress.title = Where is the new enhanced structure or building located?
+esbaAddress.heading = Where is the new enhanced structure or building located?
+esbaAddress.caption = Enhanced structures and buildings allowance
+esbaAddress.buildingName.legend = Building name
+esbaAddress.buildingName.error.required  = Enter a building name for the enhanced structure or building
+esbaAddress.buildingName.error.max = Building name for the qualifying enhanced structure or building must not be more than 90 characters long
+esbaAddress.buildingNumber.legend = Building number
+esbaAddress.buildingNumber.error.required = Enter a building number for the enhanced structure or building
+esbaAddress.buildingNumber.error.max = Enter a number for the qualifying enhanced building or structure
+esbaAddress.postcode.legend = Postcode
+esbaAddress.postcode.error.required = Enter a postcode for the enhanced structure or building
+esbaAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying enhanced building or structure
+esbaAddress.checkYourAnswersLabel = Address
+esbaAddress.change.hidden = Enhanced structures and buildings allowance
+
 fhlIntro.title = Furnished holiday lettings
 fhlIntro.heading = Furnished holiday lettings
 fhlIntro.summary = Understanding furnished holiday lettings
@@ -1189,4 +1205,5 @@ fhlMoreThanOne.checkYourAnswersLabel.agent = Does your client have more than one
 fhlMoreThanOne.error.required.individual = Select yes if you have more than one furnished holiday letting
 fhlMoreThanOne.error.required.agent = Select yes if your client has more than one furnished holiday letting
 fhlMoreThanOne.change.hidden = FhlMoreThanOne
+
 
