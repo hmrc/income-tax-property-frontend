@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.structurebuildingallowance
 
 import base.SpecBase
+import controllers.structuresbuildingallowance.routes
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.SbaCheckYourAnswersView
 import viewmodels.govuk.summarylist._
+import views.html.structurebuildingallowance.SbaCheckYourAnswersView
 
 class SbaCheckYourAnswersControllerSpec extends SpecBase {
   val index = 1
@@ -54,7 +55,7 @@ class SbaCheckYourAnswersControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

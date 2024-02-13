@@ -17,15 +17,15 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.StructuredBuildingAllowanceAddressFormProvider
+import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.StructuredBuildingAllowanceAddressPage
+import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.StructuredBuildingAllowanceAddressView
+import views.html.structurebuildingallowance.StructuredBuildingAllowanceAddressView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.structurebuildingallowance
 
-import models.StructuredBuildingAllowanceAddress
-import play.api.libs.json.JsPath
-import queries.Gettable
+import forms.mappings.Mappings
+import play.api.data.Form
 
-object StructuredBuildingAddressFormGroup extends Gettable[Array[StructuredBuildingAllowanceAddress]] {
-  override def path: JsPath = JsPath \ toString
-  override def toString: String = "structuredBuildingAllowanceAddressFormGroup"
+import javax.inject.Inject
+
+class SbaRemoveConfirmationFormProvider @Inject() extends Mappings {
+
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "sbaRemoveConfirmation" -> boolean(s"sbaRemoveConfirmation.error.required.$individualOrAgent")
+    )
 }

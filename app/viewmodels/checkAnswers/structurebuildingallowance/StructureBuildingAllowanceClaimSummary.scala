@@ -49,9 +49,9 @@ object StructureBuildingAllowanceClaimSummary {
       key = KeyViewModel("structureBuildingAllowanceClaim.checkYourAnswersLabel"),
       value = ValueViewModel(value),
       actions = Seq(
-        ActionItemViewModel("site.change", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
+        ActionItemViewModel("site.change", routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
           .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden")),
-        ActionItemViewModel("site.remove", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index).url)
+        ActionItemViewModel("site.remove", routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index).url)
           .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
       ),
       actionsCss = "w-25"
