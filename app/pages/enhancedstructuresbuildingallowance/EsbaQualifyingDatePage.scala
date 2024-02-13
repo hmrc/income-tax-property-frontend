@@ -16,14 +16,15 @@
 
 package pages.enhancedstructuresbuildingallowance
 
+import pages.PageConstants.eSbaFormGroup
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-case object EsbaQualifyingDatePage extends QuestionPage[LocalDate] {
+case class EsbaQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ eSbaFormGroup \ index \ toString
 
   override def toString: String = "esbaQualifyingDate"
 }

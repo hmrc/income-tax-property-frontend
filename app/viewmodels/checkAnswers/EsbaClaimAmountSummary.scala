@@ -25,8 +25,8 @@ import viewmodels.implicits._
 
 object EsbaClaimAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaClaimAmountPage).map {
+  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EsbaClaimAmountPage(index)).map {
       answer =>
 
         SummaryListRowViewModel(
@@ -35,7 +35,7 @@ object EsbaClaimAmountSummary {
           actions = Seq(
             ActionItemViewModel(
               "site.change",
-              controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode).url
+              controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, CheckMode).url
             ).withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
           )
         )

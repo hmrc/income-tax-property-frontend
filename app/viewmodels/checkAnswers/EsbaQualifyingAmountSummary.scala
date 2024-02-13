@@ -25,15 +25,15 @@ import viewmodels.implicits._
 
 object EsbaQualifyingAmountSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingAmountPage).map {
+  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EsbaQualifyingAmountPage(index)).map {
       answer =>
 
         SummaryListRowViewModel(
           key     = "esbaQualifyingAmount.checkYourAnswersLabel",
           value   = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, CheckMode).url)
               .withVisuallyHiddenText(messages("esbaQualifyingAmount.change.hidden"))
           )
         )

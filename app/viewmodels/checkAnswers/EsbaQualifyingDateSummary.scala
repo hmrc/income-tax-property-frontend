@@ -27,8 +27,8 @@ import java.time.format.DateTimeFormatter
 
 object EsbaQualifyingDateSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingDatePage).map {
+  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EsbaQualifyingDatePage(index)).map {
       answer =>
 
         val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
@@ -37,7 +37,7 @@ object EsbaQualifyingDateSummary  {
           key     = "esbaQualifyingDate.checkYourAnswersLabel",
           value   = ValueViewModel(answer.format(dateFormatter)),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, index, CheckMode).url)
               .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
           )
         )

@@ -29,7 +29,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
@@ -96,10 +96,18 @@ class Navigator @Inject()() {
     // Enhanced structured building allowance
     case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     //case EsbaAddClaimPage => taxYear => _ => _ => ClaimEsbaController.onPageLoad(taxYear, NormalMode)
-    case EsbaQualifyingDatePage => taxYear => _ => _ =>
-      controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode)
-    case EsbaQualifyingAmountPage => taxYear => _ => _ =>
-      controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode)
+    case EsbaQualifyingDatePage(index) => taxYear =>
+      _ =>
+        _ =>
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode)
+    case EsbaQualifyingAmountPage(index) => taxYear =>
+      _ =>
+        _ =>
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode)
+    case EsbaClaimAmountPage(index) => taxYear =>
+      _ =>
+        _ =>
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index)
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -132,7 +140,7 @@ class Navigator @Inject()() {
         userAnswers =>
           balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     // expenses
-//    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     // Allowances
     case CapitalAllowancesForACarPage | AnnualInvestmentAllowancePage | ElectricChargePointAllowancePage |
          ZeroEmissionCarAllowancePage | ZeroEmissionGoodsVehicleAllowancePage | BusinessPremisesRenovationPage |
@@ -147,10 +155,16 @@ class Navigator @Inject()() {
           consolidatedExpensesNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
 
     // Enhanced structured building allowance
-    case EsbaQualifyingDatePage => taxYear => _ => _ =>
-      controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, CheckMode)
-    case EsbaQualifyingAmountPage => taxYear => _ => _ =>
-      controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode)
+    case EsbaQualifyingDatePage(index) => taxYear =>
+      _ =>
+        _ =>
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, CheckMode)
+    case EsbaQualifyingAmountPage(index) => taxYear =>
+      _ =>
+        _ =>
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, CheckMode)
+    case EsbaClaimAmountPage(index) => taxYear => _ => _ => controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index)
+
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
 
@@ -186,7 +200,6 @@ class Navigator @Inject()() {
          | StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }
-
 
 
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =

@@ -19,5 +19,5 @@ package pages
 object PageConstants {
 
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-
+  val eSbaFormGroup: String = "esba"
 }
