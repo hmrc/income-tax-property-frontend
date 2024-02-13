@@ -17,14 +17,17 @@
 package pages.structurebuildingallowance
 
 import pages.PageConstants
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
 import java.time.LocalDate
 
-case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate, structureBuildingQualifyingAmount: BigDecimal)
+case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate,
+                                      structureBuildingQualifyingAmount: BigDecimal, structureBuildingAllowanceClaim: BigDecimal)
 
 case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
+
+  implicit val format: Format[StructureBuildingFormGroup] = Json.format
 
   override def path: JsPath = JsPath \ toString
 

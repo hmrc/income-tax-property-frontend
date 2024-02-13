@@ -18,26 +18,31 @@ package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
+import pages.StructuredBuildingAllowanceAddressPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object StructureBuildingQualifyingAmountSummary {
+object StructuredBuildingAllowanceAddressSummary {
 
   def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingAmountPage(idx)).map {
+    answers.get(StructuredBuildingAllowanceAddressPage(idx)).map {
       answer =>
+        val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
+          HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 
         SummaryListRowViewModel(
-          key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
+          key = "structureBuildingAllowanceAddress.checkYourAnswersLabel",
+          value = ValueViewModel(HtmlContent(value)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx).url)
-              .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))
+            ActionItemViewModel("site.change", routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, CheckMode, idx).url)
+              .withVisuallyHiddenText(messages("structureBuildingAllowanceAddress.change.hidden"))
           )
         )
     }
+
 }

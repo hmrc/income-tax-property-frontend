@@ -90,6 +90,7 @@ class Navigator @Inject()() {
     // Structured building allowance
     case ClaimStructureBuildingAllowancePage => taxYear => _ => userAnswers => structureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case StructureBuildingAllowancePage => taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
+    case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
 
     // Enhanced structured building allowance
     case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
@@ -171,15 +172,17 @@ class Navigator @Inject()() {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
     case StructureBuildingQualifyingAmountPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
     case StructureBuildingAllowanceClaimPage(_) => StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
+    case StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }
 
 
   private def structureBuildingCheckModeRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                                previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
-    case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, index)
-    case StructureBuildingQualifyingAmountPage(_) => StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, CheckMode, index)
-    case StructuredBuildingAllowanceAddressPage(_) => StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index)
+    case StructureBuildingQualifyingDatePage(_)
+         | StructureBuildingQualifyingAmountPage(_)
+         | StructureBuildingAllowanceClaimPage(_)
+         | StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }
 
@@ -271,6 +274,12 @@ class Navigator @Inject()() {
   private def enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ClaimEsbaPage) match {
       case Some(true) => EsbaAddClaimController.onPageLoad(taxYear)
+      case _ => SummaryController.show(taxYear)
+    }
+
+  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(SbaClaimsPage) match {
+      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
       case _ => SummaryController.show(taxYear)
     }
 }
