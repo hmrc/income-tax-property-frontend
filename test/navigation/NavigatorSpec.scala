@@ -28,7 +28,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -322,6 +322,12 @@ class NavigatorSpec extends SpecBase {
           EsbaQualifyingAmountPage(index), taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode)
       }
+
+      "must go from EsbaClaimAmountPage to EsbaAddressPage" in {
+        navigator.nextPage(
+          EsbaQualifyingAmountPage(index), taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode)
+      }
     }
 
     "in Check mode" - {
@@ -577,6 +583,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           EsbaQualifyingAmountPage(index), taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, CheckMode)
+      }
+
+      "must go from EsbaClaimAmountPage to EsbaAddressPage" in {
+        navigator.nextPage(
+          EsbaClaimAmountPage(index), taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index)
       }
     }
   }
