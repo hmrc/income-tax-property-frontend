@@ -17,7 +17,6 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
-import models.requests.OptionalDataRequest
 import pages.enhancedstructuresbuildingallowance.EsbaInfo
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,22 +29,15 @@ import scala.concurrent.ExecutionContext
 
 class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       requireData: DataRequiredAction,
                                        getData: DataRetrievalAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: EsbaAddClaimView)
                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      withNumberOfEsbaEntriesSoFar(taxYear) { numberOfEsbaEntriesSoFar =>
-        Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey), numberOfEsbaEntriesSoFar))
-      }
-  }
-
-  private def withNumberOfEsbaEntriesSoFar[T, U](taxYear: Int)(block: Int => U)(implicit request: OptionalDataRequest[T]): U = {
-    val number: Int = request.userAnswers.map(ua => {
-      ua.get(EsbaInfo(taxYear)).fold(0)(_.size)
-    }).getOrElse(0)
-    block(number)
+      val numberOfEsbaEntries = request.userAnswers.get(EsbaInfo(taxYear)).fold(0)(_.length)
+      Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey), numberOfEsbaEntries))
   }
 }
