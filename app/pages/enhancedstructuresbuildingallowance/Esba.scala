@@ -16,13 +16,19 @@
 
 package pages.enhancedstructuresbuildingallowance
 
-import pages.PageConstants.eSbaFormGroup
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import pages.PageConstants
+import play.api.libs.json.{JsPath, Json}
+import queries.Gettable
 
-case class EsbaQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
+import java.time.LocalDate
 
-  override def path: JsPath = JsPath \ eSbaFormGroup \ index \ toString
+final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaimAmount: BigDecimal)
 
-  override def toString: String = "esbaQualifyingAmount"
+object Esba {
+  implicit val formatter = Json.format[Esba]
+}
+final case class EsbaInfo(taxYear: Int) extends Gettable[Array[Esba]] {
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.eSbaFormGroup
 }

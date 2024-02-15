@@ -17,6 +17,7 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
+import pages.enhancedstructuresbuildingallowance.EsbaInfo
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -28,13 +29,15 @@ import scala.concurrent.ExecutionContext
 
 class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       requireData: DataRequiredAction,
+                                       getData: DataRetrievalAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: EsbaAddClaimView)
                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-          Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey)))
+      val numberOfEsbaEntries = request.userAnswers.get(EsbaInfo(taxYear)).fold(0)(_.length)
+      Ok(view(EsbaAddClaimPage(taxYear, request.user.isAgentMessageKey), numberOfEsbaEntries))
   }
-
 }

@@ -23,7 +23,7 @@
         govukButton: GovukButton
 )
 
-@(page: EsbaAddClaimPage)(implicit request: Request[_], messages: Messages)
+@(page: EsbaAddClaimPage, numberOfEsbaEntriesSoFar: Int)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("enhancedSBA.title"))) {
 
@@ -34,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("enhancedSBA.addclaim.button"))
-                .asLink(TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
+                .asLink(controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(page.taxYear, numberOfEsbaEntriesSoFar, NormalMode).url)
                 .withId("continue")
         )
     </p>

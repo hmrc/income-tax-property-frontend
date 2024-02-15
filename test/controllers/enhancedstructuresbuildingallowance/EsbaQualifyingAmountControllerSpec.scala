@@ -43,7 +43,8 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer: BigDecimal = 0.12
   val taxYear = 2024
-  lazy val esbaQualifyingAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, NormalMode).url
+  val index = 0
+  lazy val esbaQualifyingAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode).url
 
   "EsbaQualifyingAmount Controller" - {
 
@@ -59,13 +60,13 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaQualifyingAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaQualifyingAmountPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaQualifyingAmountPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -77,7 +78,7 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -123,7 +124,7 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
       }
     }
 
