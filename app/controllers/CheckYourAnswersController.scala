@@ -50,6 +50,6 @@ class CheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(rows = propertyIncomeRows.flatten)
 
-      Ok(view(list))
+      Ok(view(taxYear, list))
   }
 }

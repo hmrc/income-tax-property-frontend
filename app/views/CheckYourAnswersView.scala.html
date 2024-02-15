@@ -22,7 +22,7 @@
     govukButton: GovukButton
 )
 
-@(list: SummaryList)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, list: SummaryList)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
@@ -32,6 +32,6 @@
 
     @govukButton(
         ButtonViewModel(messages("site.continue"))
-            .asLink(SummaryController.show(2023).url)
+            .asLink(SummaryController.show(taxYear).url)
     )
 }
