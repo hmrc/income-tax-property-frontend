@@ -19,20 +19,24 @@ package forms.furnishedholidaylettings
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class FhlMoreThanOneFormProviderSpec extends BooleanFieldBehaviours {
+class FhlJointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "fhlMoreThanOne.error.required"
   val invalidKey = "error.boolean"
 
+  val formProvider = new FhlJointlyLetFormProvider()
   val scenarios = Table[String](
     ("AgencyOrIndividual"),
     ("agent"),
     ("individual"))
 
   forAll(scenarios) { (agencyOrIndividual: String) => {
-    s".value for $agencyOrIndividual" - {
-      val fieldName = "fhlMoreThanOneFormProvider"
-      val form = new FhlMoreThanOneFormProvider()(agencyOrIndividual)
+    val form = formProvider(agencyOrIndividual)
+    val requiredKey = s"fhlJointlyLet.error.required.$agencyOrIndividual"
+
+    s".fhlJointlyLet $agencyOrIndividual" - {
+
+      val fieldName = "fhlJointlyLet"
+
       behave like booleanField(
         form,
         fieldName,
@@ -42,7 +46,7 @@ class FhlMoreThanOneFormProviderSpec extends BooleanFieldBehaviours {
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"$requiredKey.$agencyOrIndividual")
+        requiredError = FormError(fieldName, requiredKey)
       )
     }
   }

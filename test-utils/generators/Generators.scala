@@ -16,11 +16,13 @@
 
 package generators
 
-import java.time.{Instant, LocalDate, ZoneOffset}
+import models.EsbaAddress
 
+import java.time.{Instant, LocalDate, ZoneOffset}
 import org.scalacheck.Arbitrary._
 import org.scalacheck.Gen._
 import org.scalacheck.{Gen, Shrink}
+import pages.enhancedstructuresbuildingallowance.Esba
 
 trait Generators extends ModelGenerators {
 
@@ -124,5 +126,21 @@ trait Generators extends ModelGenerators {
       millis =>
         Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
     }
+  }
+
+  def genEsba(): Gen[Esba] = {
+    for {
+      esbaQualifyingDate <- arbitrary[LocalDate]
+      esbaQualifyingAmount <- arbitrary[BigDecimal]
+      esbaClaimAmount <- arbitrary[BigDecimal]
+    } yield Esba(esbaQualifyingDate, esbaQualifyingAmount, esbaClaimAmount)
+  }
+
+  def genEsbaAddress(): Gen[EsbaAddress] = {
+    for {
+      buildingName <- arbitrary[String]
+      buildingNumber <- arbitrary[String]
+      postCode <- arbitrary[String]
+    } yield EsbaAddress(buildingName, buildingNumber, postCode)
   }
 }
