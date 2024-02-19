@@ -16,10 +16,11 @@
 
 package pages.furnishedholidaylettings
 
+import models.FhlReliefOrExpenses
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object FhlReliefOrExpensesPage extends QuestionPage[Boolean] {
+case object FhlReliefOrExpensesPage extends QuestionPage[FhlReliefOrExpenses] {
 
   override def path: JsPath = JsPath \ toString
 

@@ -16,12 +16,11 @@
 
 package forms.furnishedholidaylettings
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.FhlReliefOrExpenses
 import play.api.data.FormError
 
-class FhlReliefOrExpensesFormProviderSpec extends BooleanFieldBehaviours {
-
-  val invalidKey = "error.boolean"
+class FhlReliefOrExpensesFormProviderSpec extends OptionFieldBehaviours {
 
   val formProvider = new FhlReliefOrExpensesFormProvider()
   val scenarios = Table[String](
@@ -31,16 +30,16 @@ class FhlReliefOrExpensesFormProviderSpec extends BooleanFieldBehaviours {
 
   forAll(scenarios) { (agencyOrIndividual: String) => {
     val form = formProvider(agencyOrIndividual)
+    val fieldName = "fhlReliefOrExpenses"
     val requiredKey = s"fhlReliefOrExpenses.error.required.$agencyOrIndividual"
 
     s".fhlReliefOrExpenses for $agencyOrIndividual" - {
 
-      val fieldName = "fhlReliefOrExpenses"
-
-      behave like booleanField(
+      behave like optionsField[FhlReliefOrExpenses](
         form,
         fieldName,
-        invalidError = FormError(fieldName, invalidKey)
+        validValues = FhlReliefOrExpenses.values,
+        invalidError = FormError(fieldName, "error.invalid")
       )
 
       behave like mandatoryField(

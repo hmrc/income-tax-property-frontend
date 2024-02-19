@@ -1292,3 +1292,7 @@ fhlReliefOrExpenses.error.required.individual = Select if your want to claim ren
 fhlReliefOrExpenses.error.required.agent = Select if your client wants to claim rent a room relief or expenses
 fhlReliefOrExpenses.change.hidden.individual = FhlReliefOrExpenses
 fhlReliefOrExpenses.change.hidden.agent = FhlReliefOrExpenses
+
+fhlReliefOrExpenses.rentARoomRelief = Rent a room relief
+fhlReliefOrExpenses.expenses = Expenses
+

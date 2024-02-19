@@ -17,14 +17,15 @@
 package forms.furnishedholidaylettings
 
 import forms.mappings.Mappings
+import models.FhlReliefOrExpenses
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class FhlReliefOrExpensesFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[FhlReliefOrExpenses] =
     Form(
-      "fhlReliefOrExpenses" -> boolean(s"fhlReliefOrExpenses.error.required.$individualOrAgent")
+      "fhlReliefOrExpenses" -> enumerable[FhlReliefOrExpenses](s"fhlReliefOrExpenses.error.required.$individualOrAgent")
     )
 }

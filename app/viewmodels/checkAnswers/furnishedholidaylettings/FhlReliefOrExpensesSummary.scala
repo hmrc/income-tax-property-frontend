@@ -20,6 +20,8 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.furnishedholidaylettings.FhlReliefOrExpensesPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
@@ -30,11 +32,15 @@ object FhlReliefOrExpensesSummary  {
     answers.get(FhlReliefOrExpensesPage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+        val value = ValueViewModel(
+          HtmlContent(
+            HtmlFormat.escape(messages(s"fhlReliefOrExpenses.$answer"))
+          )
+        )
 
         SummaryListRowViewModel(
           key     = "fhlReliefOrExpenses.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          value   = value,
           actions = Seq(
             ActionItemViewModel("site.change", controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("fhlReliefOrExpenses.change.hidden"))

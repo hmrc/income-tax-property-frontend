@@ -42,13 +42,15 @@
     @formHelper(action = controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
+            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("fhlReliefOrExpenses" -> "value_0")))
         }
 
+
         @govukRadios(
-            RadiosViewModel.yesNo(
+            RadiosViewModel(
                 field = form("fhlReliefOrExpenses"),
-                legend = LegendViewModel(messages(s"fhlReliefOrExpenses.heading2.${request.user.isAgentMessageKey}")).asPageHeading(LegendSize.Medium)
+                legend = LegendViewModel(messages(s"fhlReliefOrExpenses.heading2.${request.user.isAgentMessageKey}")).asPageHeading(LegendSize.Medium),
+                items  = FhlReliefOrExpenses.options
             )
         )
 

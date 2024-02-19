@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.furnishedholidaylettings.FhlReliefOrExpensesFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, User, UserAnswers}
+import models.{FhlReliefOrExpenses, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -33,7 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.furnishedholidaylettings.FhlReliefOrExpensesView
-
+import models.FhlReliefOrExpenses._
 import scala.concurrent.Future
 
 class FhlReliefOrExpensesControllerSpec extends SpecBase with MockitoSugar {
@@ -84,7 +84,7 @@ class FhlReliefOrExpensesControllerSpec extends SpecBase with MockitoSugar {
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = baseUserAnswers.flatMap(_.set(FhlReliefOrExpensesPage, true)).success.value
+        val userAnswers = baseUserAnswers.flatMap(_.set(FhlReliefOrExpensesPage, FhlReliefOrExpenses.values.head)).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgency).build()
 
@@ -96,7 +96,7 @@ class FhlReliefOrExpensesControllerSpec extends SpecBase with MockitoSugar {
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, relief)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(FhlReliefOrExpenses.values.head), taxYear, NormalMode, relief)(request, messages(application)).toString
         }
       }
 
@@ -117,7 +117,7 @@ class FhlReliefOrExpensesControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, fhlReliefOrExpensesRoute)
-              .withFormUrlEncodedBody(("fhlReliefOrExpenses", "true"))
+              .withFormUrlEncodedBody(("fhlReliefOrExpenses", FhlReliefOrExpenses.values.head.toString))
 
           val result = route(application, request).value
 
@@ -168,7 +168,7 @@ class FhlReliefOrExpensesControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, fhlReliefOrExpensesRoute)
-              .withFormUrlEncodedBody(("fhlReliefOrExpenses", "true"))
+              .withFormUrlEncodedBody(("fhlReliefOrExpenses", FhlReliefOrExpenses.values.head.toString))
 
           val result = route(application, request).value
 
