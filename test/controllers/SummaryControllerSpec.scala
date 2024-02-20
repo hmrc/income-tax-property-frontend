@@ -60,7 +60,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem])(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
@@ -93,7 +93,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) must  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, propertyRentalsItems)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, propertyRentalsItems, Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
@@ -120,8 +120,42 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustNot  include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem])(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
+
+    "must display the FHL section if fhl is selected in the about section" in {
+      val year = LocalDate.now().getYear
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val businessDetails = BusinessDetails(List(propertyDetails))
+      val businessService = mock[BusinessService]
+      val propertyFhlItems: Seq[TaskListItem] = Seq(TaskListItem(
+        "summary.about",
+        controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
+        "about_link"
+      ))
+      val userAnswersWithFhl = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
+      ).success.value
+      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithFhl), isAgent = false)
+        .overrides(bind[BusinessService].toInstance(businessService)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SummaryController.show(year).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[SummaryView]
+
+        status(result) mustEqual OK
+        contentAsString(result) must  include("UK furnished holiday lettings")
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], propertyFhlItems)(request, messages(application)).toString
+      }
+    }
+
   }
 }

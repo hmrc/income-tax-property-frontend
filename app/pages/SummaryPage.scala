@@ -68,7 +68,7 @@ case object SummaryPage {
           Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
         case false =>
           Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
-      }.getOrElse(Seq.empty[TaskListItem])
+      }.getOrElse(Seq(propertyRentalsAbout))
     } else {
       Seq.empty[TaskListItem]
     }
