@@ -18,12 +18,13 @@ package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
+import pages.furnishedholidaylettings.FhlMoreThanOnePage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
-  def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccurals: Boolean): Seq[TaskListItem] = {
+  def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
     val propertyRentalsAbout: TaskListItem = TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
@@ -67,12 +68,23 @@ case object SummaryPage {
 
     claimPropertyIncomeAllowance.collect {
       case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-      case false if cashOrAccurals =>
+      case false if cashOrAccruals =>
         Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
       case false =>
         Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
     }.getOrElse {
       if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
     }
+  }
+
+  def createFHLRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
+
+    val fhlAbout: TaskListItem = TaskListItem(
+      "summary.about",
+      controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
+      if (userAnswers.flatMap(_.get(FhlMoreThanOnePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      "about_link"
+    )
+    Seq(fhlAbout)
   }
 }
