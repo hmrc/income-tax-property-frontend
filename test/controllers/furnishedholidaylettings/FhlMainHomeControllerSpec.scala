@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package controllers.enhancedstructuresbuildingallowance
+package controllers.furnishedholidaylettings
 
 import base.SpecBase
 import controllers.routes
-import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
+import forms.furnishedholidaylettings.FhlMainHomeFormProvider
 import models.requests.DataRequest
 import models.{NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -26,33 +26,30 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
+import pages.furnishedholidaylettings.FhlMainHomePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.EsbaClaimAmountView
+import views.html.furnishedholidaylettings.FhlMainHomeView
 
 import scala.concurrent.Future
 
-class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
-
-  val formProvider = new EsbaClaimAmountFormProvider()
-  val form = formProvider("individual")
+class FhlMainHomeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = BigDecimal(0)
+  val formProvider = new FhlMainHomeFormProvider()
+
   val taxYear = 2024
+  lazy val fhlMainHomeRoute = controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode).url
 
-  val scenarios = Table[Int, Boolean, String](
-    ("index", "isAgency", "AgencyOrIndividual"),
-    (0, true, "agent"),
-    (1, false, "individual"))
-  forAll(scenarios) { (index: Int, isAgency: Boolean, agencyOrIndividual: String) => {
-    lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode).url
-
+  val scenarios = Table[Boolean, String](
+    ("isAgency", "AgencyOrIndividual"),
+    (true, "agent"),
+    (false, "individual"))
+  forAll(scenarios) { (isAgency: Boolean, agencyOrIndividual: String) => {
     val form = formProvider(agencyOrIndividual)
     val user = User(
       "",
@@ -60,40 +57,41 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
       "",
       isAgency
     )
-    s"EsbaClaimAmount Controller for index: $index for $agencyOrIndividual:" - {
+
+    s"FhlMainHome Controller for $agencyOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgency).build()
 
         running(application) {
-          val request = DataRequest(FakeRequest(GET, esbaClaimAmountRoute), "", user, emptyUserAnswers)
+          val fakeRequest = FakeRequest(GET, fhlMainHomeRoute)
+          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
+          val view = application.injector.instanceOf[FhlMainHomeView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
-        val userAnswersBase = UserAnswers(userAnswersId)
-        val userAnswers = (0 to index).toList.foldLeft[UserAnswers](userAnswersBase)((acc, idx) => acc.set(EsbaClaimAmountPage(idx), validAnswer).success.value)
+
+        val userAnswers = UserAnswers(userAnswersId).set(FhlMainHomePage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgency).build()
 
         running(application) {
-          val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
+          val fakeRequest = FakeRequest(GET, fhlMainHomeRoute)
           val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
+          val view = application.injector.instanceOf[FhlMainHomeView]
 
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -102,11 +100,9 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val mockSessionRepository = mock[SessionRepository]
 
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-        val userAnswers = (0 to index).toList
-          .foldLeft[UserAnswers](emptyUserAnswers)((acc, idx) => acc.set(EsbaClaimAmountPage(idx), validAnswer).success.value)
 
         val application =
-          applicationBuilder(userAnswers = Some(userAnswers), isAgency)
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgency)
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
@@ -114,10 +110,9 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
             .build()
 
         running(application) {
-          val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", validAnswer.toString))
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+          val request =
+            FakeRequest(POST, fhlMainHomeRoute)
+              .withFormUrlEncodedBody(("fhlMainHome", "true"))
 
           val result = route(application, request).value
 
@@ -132,18 +127,19 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", "invalid value"))
+            FakeRequest(POST, fhlMainHomeRoute)
+              .withFormUrlEncodedBody(("fhlMainHome", ""))
+
           val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
 
-          val boundForm = form.bind(Map("value" -> "invalid value"))
+          val boundForm = form.bind(Map("value" -> ""))
 
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
+          val view = application.injector.instanceOf[FhlMainHomeView]
 
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -152,8 +148,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None, isAgency).build()
 
         running(application) {
-          val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+          val request = FakeRequest(GET, fhlMainHomeRoute)
 
           val result = route(application, request).value
 
@@ -167,15 +162,13 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None, isAgency).build()
 
         running(application) {
-          val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", validAnswer.toString))
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+          val request =
+            FakeRequest(POST, fhlMainHomeRoute)
+              .withFormUrlEncodedBody(("fhlMainHome", "true"))
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-
           redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
         }
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package generators
+package pages.furnishedholidaylettings
 
-import models._
-import org.scalacheck.{Arbitrary, Gen}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait ModelGenerators {
+case object FhlMainHomePage extends QuestionPage[Boolean] {
 
-  implicit lazy val arbitraryFhlReliefOrExpenses: Arbitrary[FhlReliefOrExpenses] =
-    Arbitrary {
-      Gen.oneOf(FhlReliefOrExpenses.values.toSeq)
-    }
+  override def path: JsPath = JsPath \ toString
 
-  implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
-    Arbitrary {
-      Gen.oneOf(UKPropertySelect.values)
-    }
-
-  implicit lazy val arbitrarytotalIncome: Arbitrary[TotalIncome] =
-    Arbitrary {
-      Gen.oneOf(TotalIncome.values.toSeq)
-    }
+  override def toString: String = "fhlMainHome"
 }

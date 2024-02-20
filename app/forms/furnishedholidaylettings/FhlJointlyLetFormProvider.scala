@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package forms.furnishedholidaylettings
 
-import models._
-import org.scalacheck.{Arbitrary, Gen}
+import forms.mappings.Mappings
+import play.api.data.Form
 
-trait ModelGenerators {
+import javax.inject.Inject
 
-  implicit lazy val arbitraryFhlReliefOrExpenses: Arbitrary[FhlReliefOrExpenses] =
-    Arbitrary {
-      Gen.oneOf(FhlReliefOrExpenses.values.toSeq)
-    }
+class FhlJointlyLetFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
-    Arbitrary {
-      Gen.oneOf(UKPropertySelect.values)
-    }
-
-  implicit lazy val arbitrarytotalIncome: Arbitrary[TotalIncome] =
-    Arbitrary {
-      Gen.oneOf(TotalIncome.values.toSeq)
-    }
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "fhlJointlyLet" -> boolean(s"fhlJointlyLet.error.required.$individualOrAgent")
+    )
 }
