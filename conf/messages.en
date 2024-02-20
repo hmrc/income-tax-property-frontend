@@ -1296,3 +1296,45 @@ fhlReliefOrExpenses.change.hidden.agent = FhlReliefOrExpenses
 fhlReliefOrExpenses.rentARoomRelief = Rent a room relief
 fhlReliefOrExpenses.expenses = Expenses
 
+fhlClaimPiaOrExpenses.title.individual = Do you want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.title.agent = Does your client want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.heading.individual = Do you want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.heading.agent = Does your client want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.pia = Property income allowance
+fhlClaimPiaOrExpenses.expenses = Expenses
+fhlClaimPiaOrExpenses.checkYourAnswersLabel = Does your client want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.error.required.individual = Select if you want to claim property income allowance or expenses
+fhlClaimPiaOrExpenses.error.required.agent = Select if your client wants to claim property income allowance or expenses
+fhlClaimPiaOrExpenses.change.hidden = FhlClaimPiaOrExpenses
+
+fhlClaimPiaOrExpenses.div1.individual = The property income allowance is a tax relief if up to £1,000 per year which you can use against your total furnished holiday letting income.
+fhlClaimPiaOrExpenses.div1.agent = The property income allowance is a tax relief if up to £1,000 per year which your client can use against their total furnished holiday letting income.
+
+fhlClaimPiaOrExpenses.div2.title.individual = If you use the property income allowance, of up to £1,000, you cannot:
+fhlClaimPiaOrExpenses.div2.title.agent = If your client uses the property income allowance, of up to £1,000, they cannot:
+fhlClaimPiaOrExpenses.div2.li1.individual = deduct any expenses
+fhlClaimPiaOrExpenses.div2.li1.agent = deduct any expenses
+fhlClaimPiaOrExpenses.div2.li2.individual = claim any other allowances
+fhlClaimPiaOrExpenses.div2.li2.agent = claim any other allowances
+
+fhlClaimPiaOrExpenses.div3.individual = For example, if your total furnished holiday letting income is £750, the property income allowance would be capped at £750.
+fhlClaimPiaOrExpenses.div3.agent = For example, if your client's total furnished holiday letting income is £750, the property income allowance would be capped at £750.
+
+fhlClaimPiaOrExpenses.div4.title.individual = Some examples of expenses include:
+fhlClaimPiaOrExpenses.div4.title.agent = Some examples of expenses include:
+fhlClaimPiaOrExpenses.div4.li1.individual = rents, rates, insurance and ground rents
+fhlClaimPiaOrExpenses.div4.li1.agent = rents, rates, insurance and ground rents
+fhlClaimPiaOrExpenses.div4.li2.individual = property repairs and maintenance
+fhlClaimPiaOrExpenses.div4.li2.agent = property repairs and maintenance
+fhlClaimPiaOrExpenses.div4.li3.individual = loan interest or other financial costs
+fhlClaimPiaOrExpenses.div4.li3.agent = loan interest or other financial costs
+
+fhlClaimPiaOrExpenses.div5.title = Read more about
+fhlClaimPiaOrExpenses.div5.link.text = tax-free allowances on property and trading income (opens in new tab)
+fhlClaimPiaOrExpenses.div5.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+
+fhlClaimPiaOrExpenses.div6.title.individual = What do you want to do?
+fhlClaimPiaOrExpenses.div6.title.agent = What does your client want to do?
+fhlClaimPiaOrExpenses.div6.li1 = Use the property income allowance
+fhlClaimPiaOrExpenses.div6.separator = or
+fhlClaimPiaOrExpenses.div6.li2 = Declare expenses
