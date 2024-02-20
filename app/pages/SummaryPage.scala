@@ -25,12 +25,7 @@ import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
   def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
-    val propertyRentalsAbout: TaskListItem = TaskListItem(
-      "summary.about",
-      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
-      "about_link"
-    )
+    val propertyRentalsAbout: TaskListItem = propertyAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = TaskListItem(
       "summary.income",
       controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
@@ -66,15 +61,26 @@ case object SummaryPage {
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
     val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
 
-    claimPropertyIncomeAllowance.collect {
-      case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-      case false if cashOrAccruals =>
-        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
-      case false =>
-        Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
-    }.getOrElse {
-      if (isPropertyRentalsSelected) Seq(propertyRentalsAbout) else Seq.empty[TaskListItem]
+    if (isPropertyRentalsSelected) {
+      claimPropertyIncomeAllowance.collect {
+        case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
+        case false if cashOrAccruals =>
+          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance, enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
+        case false =>
+          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
+      }.getOrElse(Seq.empty[TaskListItem])
+    } else {
+      Seq.empty[TaskListItem]
     }
+  }
+
+  private def propertyAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+    TaskListItem(
+      "summary.about",
+      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
+      if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      "about_link"
+    )
   }
 
   def createFHLRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
@@ -85,6 +91,8 @@ case object SummaryPage {
       if (userAnswers.flatMap(_.get(FhlMoreThanOnePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
     )
-    Seq(fhlAbout)
+    val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
+
+    if (isPropertyRentalsSelected) Seq(fhlAbout) else Seq.empty[TaskListItem]
   }
 }
