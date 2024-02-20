@@ -130,7 +130,7 @@ totalIncome.over = Over £85,000
 totalIncome.checkYourAnswersLabel.individual = How much total income did you get from your UK properties?
 totalIncome.checkYourAnswersLabel.agent = How much total income did your client get from your UK properties?
 totalIncome.error.required = Select how much total income you got from your UK properties
-totalIncome.change.hidden = UK property income
+totalIncome.change.hidden = Change how much total income did you get from your UK properties?
 
 ukPropertySelect.title.individual = Select UK property
 ukPropertySelect.title.agent = Select UK property
@@ -143,7 +143,7 @@ ukPropertySelect.property.rentals = Property rentals
 ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = UK property types
-ukPropertySelect.change.hidden = UK Property
+ukPropertySelect.change.hidden = Change UK property types
 
 expensesLessThan1000.title = Expenses less than £1,000
 expensesLessThan1000.heading = Expenses less than £1,000
