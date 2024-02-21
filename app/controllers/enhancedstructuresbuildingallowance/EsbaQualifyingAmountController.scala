@@ -66,7 +66,7 @@ class EsbaQualifyingAmountController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaQualifyingAmountPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EsbaQualifyingAmountPage(index), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.esbaNextPage(EsbaQualifyingAmountPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

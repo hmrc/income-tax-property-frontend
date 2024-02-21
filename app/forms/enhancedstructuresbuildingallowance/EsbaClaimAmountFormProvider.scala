@@ -25,7 +25,7 @@ class EsbaClaimAmountFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "esbaClaim" -> currency(
         s"esbaClaimAmount.error.required.$individualOrAgent",
         "esbaClaimAmount.error.twoDecimalPlaces",
         s"esbaClaimAmount.error.nonNumeric")

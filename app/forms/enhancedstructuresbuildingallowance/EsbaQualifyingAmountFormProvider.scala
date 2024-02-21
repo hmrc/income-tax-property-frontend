@@ -25,7 +25,7 @@ class EsbaQualifyingAmountFormProvider @Inject() extends Mappings {
 
   def apply(): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "esbaQualifyingAmount" -> currency(
         "esbaQualifyingAmount.error.required",
         "esbaQualifyingAmount.error.twoDecimalPlaces",
         "esbaQualifyingAmount.error.nonNumeric")

@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
 import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingAmountPage
+import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object EsbaQualifyingAmountSummary  {
+object EsbaAddressSummary  {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingAmountPage(index)).map {
+    answers.get(EsbaAddressPage(index)).map {
       answer =>
+        val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
+          HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 
         SummaryListRowViewModel(
-          key     = "esbaQualifyingAmount.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = "esbaAddress.checkYourAnswersLabel",
+          value   = ValueViewModel(HtmlContent(value)),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, CheckMode).url)
-              .withVisuallyHiddenText(messages("esbaQualifyingAmount.change.hidden"))
+            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index).url)
+              .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))
           )
         )
     }

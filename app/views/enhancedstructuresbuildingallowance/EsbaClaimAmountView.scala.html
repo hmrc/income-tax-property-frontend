@@ -26,11 +26,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, index: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode,  index: Int)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("esbaClaimAmount.title"))) {
 
-    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onSubmit(taxYear, index, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
         <span class="govuk-caption-m">
             @messages("esbaClaimAmount.span")
         </span>
@@ -40,7 +40,7 @@
 
         @govukInput(
             InputViewModel(
-                field = form("value"),
+                field = form("esbaClaim"),
                 label = LabelViewModel(messages(s"esbaClaimAmount.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()

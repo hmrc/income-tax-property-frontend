@@ -66,7 +66,7 @@ class EsbaAddressController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaAddressPage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EsbaAddressPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.esbaNextPage(EsbaAddressPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }
