@@ -1296,10 +1296,10 @@ fhlReliefOrExpenses.change.hidden.agent = FhlReliefOrExpenses
 fhlReliefOrExpenses.rentARoomRelief = Rent a room relief
 fhlReliefOrExpenses.expenses = Expenses
 
-fhlClaimPiaOrExpenses.title.individual = Do you want to claim property income allowance or expenses?
-fhlClaimPiaOrExpenses.title.agent = Does your client want to claim property income allowance or expenses?
-fhlClaimPiaOrExpenses.heading.individual = Do you want to claim property income allowance or expenses?
-fhlClaimPiaOrExpenses.heading.agent = Does your client want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.title.individual = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.title.agent = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.heading.individual = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.heading.agent = Claim property income allowance or expenses
 fhlClaimPiaOrExpenses.pia = Property income allowance
 fhlClaimPiaOrExpenses.expenses = Expenses
 fhlClaimPiaOrExpenses.checkYourAnswersLabel = Does your client want to claim property income allowance or expenses?
