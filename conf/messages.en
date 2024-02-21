@@ -1300,8 +1300,8 @@ fhlClaimPiaOrExpenses.title.individual = Claim property income allowance or expe
 fhlClaimPiaOrExpenses.title.agent = Claim property income allowance or expenses
 fhlClaimPiaOrExpenses.heading.individual = Claim property income allowance or expenses
 fhlClaimPiaOrExpenses.heading.agent = Claim property income allowance or expenses
-fhlClaimPiaOrExpenses.pia = Property income allowance
-fhlClaimPiaOrExpenses.expenses = Expenses
+fhlClaimPiaOrExpenses.pia = Use the property income allowance
+fhlClaimPiaOrExpenses.expenses = Declare expenses
 fhlClaimPiaOrExpenses.checkYourAnswersLabel = Does your client want to claim property income allowance or expenses?
 fhlClaimPiaOrExpenses.error.required.individual = Select if you want to claim property income allowance or expenses
 fhlClaimPiaOrExpenses.error.required.agent = Select if your client wants to claim property income allowance or expenses
@@ -1333,8 +1333,6 @@ fhlClaimPiaOrExpenses.div5.title = Read more about
 fhlClaimPiaOrExpenses.div5.link.text = tax-free allowances on property and trading income (opens in new tab)
 fhlClaimPiaOrExpenses.div5.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
 
-fhlClaimPiaOrExpenses.div6.title.individual = What do you want to do?
-fhlClaimPiaOrExpenses.div6.title.agent = What does your client want to do?
-fhlClaimPiaOrExpenses.div6.li1 = Use the property income allowance
-fhlClaimPiaOrExpenses.div6.separator = or
-fhlClaimPiaOrExpenses.div6.li2 = Declare expenses
+fhlClaimPiaOrExpenses.form.title.individual = What do you want to do?
+fhlClaimPiaOrExpenses.form.title.agent = What does your client want to do?
+
