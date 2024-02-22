@@ -30,6 +30,8 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
+
 import pages.premiumlease.LeasePremiumPaymentPage
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
@@ -98,6 +100,11 @@ class Navigator @Inject()() {
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage => taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
+    // Furnished Holiday Lettings
+    case FhlMoreThanOnePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
+    case FhlMainHomePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
+    case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -154,6 +161,11 @@ class Navigator @Inject()() {
         _ =>
           controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode, index)
     case EsbaClaimAmountPage(index) => taxYear => _ => _ => controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index)
+
+    // Furnished Holiday Lettings
+    case FhlMoreThanOnePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
+    case FhlMainHomePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
+    case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
 
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }

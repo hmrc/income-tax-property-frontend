@@ -28,7 +28,7 @@ class SummaryPageSpec extends SpecBase {
 
   "SummaryPageSpec createUkPropertyRows" - {
     val taxYear = LocalDate.now.getYear
-    val cashOrAccurals = true
+    val cashOrAccruals = true
     val summaryItem = TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
@@ -67,7 +67,7 @@ class SummaryPageSpec extends SpecBase {
       "enhancedStructuresAndBuildingAllowance_link"
     )
     "return empty rows, given an empty user data" in {
-      SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccurals).length should be(0)
+      SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccruals).length should be(0)
     }
 
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
@@ -76,8 +76,8 @@ class SummaryPageSpec extends SpecBase {
         Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
       ).success.value
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(1)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).head should be(summaryItem)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(summaryItem)
 
     }
     "should return all rows except expenses when ClaimPropertyIncomeAllowancePage exist in the user data" in {
@@ -88,8 +88,8 @@ class SummaryPageSpec extends SpecBase {
 
       val res = Seq(summaryItem, incomeListItem, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(3)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(3)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
     }
 
     "should return all rows when ClaimPropertyIncomeAllowance is false and CashOrAccurals is true in the user data" in {
@@ -108,8 +108,8 @@ class SummaryPageSpec extends SpecBase {
         adjustmentsListItem
       )
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(7)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(7)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
     }
     "should return all rows except structuresAndBuildingAllowance when ClaimPropertyIncomeAllowance is false and CashOrAccurals is false in the user data" in {
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
@@ -122,6 +122,32 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(5)
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
+    }
+
+  }
+
+  "SummaryPageSpec createFHLRows" - {
+    val taxYear = LocalDate.now.getYear
+    val cashOrAccruals = true
+    val summaryItem = TaskListItem(
+      "summary.about",
+      controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "about_link"
+    )
+    "return empty rows, given an empty user data" in {
+      SummaryPage.createFHLRows(Some(emptyUserAnswers), taxYear, cashOrAccruals).length should be(0)
+    }
+
+    "createFHLRows return only one row when user has selected FHL" in {
+      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
+      ).success.value
+
+      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
+      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(summaryItem)
+
     }
 
   }

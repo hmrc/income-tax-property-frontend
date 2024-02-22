@@ -21,6 +21,16 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryFhlReliefOrExpenses: Arbitrary[FhlReliefOrExpenses] =
+    Arbitrary {
+      Gen.oneOf(FhlReliefOrExpenses.values.toSeq)
+    }
+
+  implicit lazy val arbitraryFhlClaimPiaOrExpenses: Arbitrary[FhlClaimPiaOrExpenses] =
+    Arbitrary {
+      Gen.oneOf(FhlClaimPiaOrExpenses.values.toSeq)
+    }
+
   implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
     Arbitrary {
       Gen.oneOf(UKPropertySelect.values)

@@ -16,13 +16,12 @@
 
 package forms.furnishedholidaylettings
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.FhlClaimPiaOrExpenses
 import play.api.data.FormError
 
-class FhlMoreThanOneFormProviderSpec extends BooleanFieldBehaviours {
+class FhlClaimPiaOrExpensesFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "fhlMoreThanOne.error.required"
-  val invalidKey = "error.boolean"
 
   val scenarios = Table[String](
     ("AgencyOrIndividual"),
@@ -30,19 +29,23 @@ class FhlMoreThanOneFormProviderSpec extends BooleanFieldBehaviours {
     ("individual"))
 
   forAll(scenarios) { (agencyOrIndividual: String) => {
-    s".value for $agencyOrIndividual" - {
-      val fieldName = "fhlMoreThanOneFormProvider"
-      val form = new FhlMoreThanOneFormProvider()(agencyOrIndividual)
-      behave like booleanField(
+    val form = new FhlClaimPiaOrExpensesFormProvider()(agencyOrIndividual)
+    s".fhlClaimPiaOrExpenses for $agencyOrIndividual" - {
+
+      val fieldName = "fhlClaimPiaOrExpenses"
+      val requiredKey = s"fhlClaimPiaOrExpenses.error.required.$agencyOrIndividual"
+
+      behave like optionsField[FhlClaimPiaOrExpenses](
         form,
         fieldName,
-        invalidError = FormError(fieldName, invalidKey)
+        validValues = FhlClaimPiaOrExpenses.values,
+        invalidError = FormError(fieldName, "error.invalid")
       )
 
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"$requiredKey.$agencyOrIndividual")
+        requiredError = FormError(fieldName, requiredKey)
       )
     }
   }

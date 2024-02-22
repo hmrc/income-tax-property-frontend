@@ -1,0 +1,79 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.requests._
+@import viewmodels.LegendSize
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"fhlClaimPiaOrExpenses.title.${request.user.isAgentMessageKey}"))) {
+
+<h1 class="govuk-heading-l">
+    @messages(s"fhlClaimPiaOrExpenses.heading.${request.user.isAgentMessageKey}")</h1>
+<div class="govuk-form-group">
+    <div class="govuk-body">
+        @messages(s"fhlClaimPiaOrExpenses.div1.${request.user.isAgentMessageKey}")
+    </div>
+
+    <div class="govuk-body">
+        @messages(s"fhlClaimPiaOrExpenses.div2.title.${request.user.isAgentMessageKey}")
+        <ul>
+            <li> @messages(s"fhlClaimPiaOrExpenses.div2.li1.${request.user.isAgentMessageKey}")</li>
+            <li> @messages(s"fhlClaimPiaOrExpenses.div2.li2.${request.user.isAgentMessageKey}")</li>
+        </ul>
+    </div>
+    <div class="govuk-body">
+        @messages(s"fhlClaimPiaOrExpenses.div3.${request.user.isAgentMessageKey}")
+    </div>
+    <div class="govuk-body">
+        @messages(s"fhlClaimPiaOrExpenses.div4.title.${request.user.isAgentMessageKey}")
+        <ul>
+            <li> @messages(s"fhlClaimPiaOrExpenses.div4.li1.${request.user.isAgentMessageKey}")</li>
+            <li> @messages(s"fhlClaimPiaOrExpenses.div4.li2.${request.user.isAgentMessageKey}")</li>
+            <li> @messages(s"fhlClaimPiaOrExpenses.div4.li3.${request.user.isAgentMessageKey}")</li>
+        </ul>
+    </div>
+    <div class="govuk-body">
+        @messages("fhlClaimPiaOrExpenses.div5.title")&nbsp;<a href='@messages("fhlClaimPiaOrExpenses.div5.link.href")' target="_blank" rel="noreferrer noopener">@messages("fhlClaimPiaOrExpenses.div5.link.text")</a>
+    </div>
+</div>
+    @formHelper(action = controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
+        }
+
+        @govukRadios(
+            RadiosViewModel(
+                field  = form("fhlClaimPiaOrExpenses"),
+                legend = LegendViewModel(messages(s"fhlClaimPiaOrExpenses.form.title.${request.user.isAgentMessageKey}")).asPageHeading(LegendSize.Medium),
+                items  = FhlClaimPiaOrExpenses.options
+            )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+        )
+    }
+}

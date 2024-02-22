@@ -28,10 +28,12 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{EsbaAddressPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
 import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
+import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 
 import java.time.LocalDate
 
@@ -311,6 +313,18 @@ class NavigatorSpec extends SpecBase {
         ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
+      "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
+        navigator.nextPage(
+          StructureBuildingQualifyingDatePage(index), taxYear, NormalMode, 0, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, 0)
+      }
+
+      "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
+        navigator.nextPage(
+          StructureBuildingQualifyingAmountPage(index), taxYear, NormalMode, 0, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, 0)
+      }
+
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
         navigator.esbaNextPage(
           EsbaQualifyingDatePage(index), taxYear, NormalMode, index, UserAnswers("test"), UserAnswers("test")
@@ -327,6 +341,24 @@ class NavigatorSpec extends SpecBase {
         navigator.esbaNextPage(
           EsbaQualifyingAmountPage(index), taxYear, NormalMode, index, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode, index)
+      }
+
+      "must go from FhlMoreThanOnePage to FhlMainHomePage" in {
+        navigator.nextPage(
+          FhlMoreThanOnePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from FhlMainHomePage to FhlJointlyLetPage" in {
+        navigator.nextPage(
+          FhlMainHomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
+        navigator.nextPage(
+          FhlJointlyLetPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
       }
     }
 
@@ -573,6 +605,19 @@ class NavigatorSpec extends SpecBase {
           OtherCapitalAllowancePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
+
+      "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
+        navigator.nextPage(
+          StructureBuildingQualifyingDatePage(index), taxYear, CheckMode, 0, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear,0)
+      }
+
+      "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
+        navigator.nextPage(
+          StructureBuildingQualifyingAmountPage(index), taxYear, CheckMode, 0, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear, 0)
+      }
+
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
         navigator.nextPage(
           EsbaQualifyingDatePage(index), taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
@@ -589,6 +634,24 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           EsbaClaimAmountPage(index), taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index)
+      }
+
+      "must go from FhlMoreThanOnePage to FhlMainHomePage" in {
+        navigator.nextPage(
+          FhlMoreThanOnePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from FhlMainHomePage to FhlJointlyLetPage" in {
+        navigator.nextPage(
+          FhlMainHomePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
+        navigator.nextPage(
+          FhlJointlyLetPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
       }
     }
   }

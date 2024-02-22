@@ -334,3 +334,22 @@ POST       /:taxYear/furnished-holiday-lettings/change-more-than-one            
 
 
 
+GET        /:taxYear/furnished-holiday-lettings/jointly-let                      controllers.furnishedholidaylettings.FhlJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/jointly-let                      controllers.furnishedholidaylettings.FhlJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/change-jointly-let               controllers.furnishedholidaylettings.FhlJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/change-jointly-let               controllers.furnishedholidaylettings.FhlJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/furnished-holiday-lettings/main-home                        controllers.furnishedholidaylettings.FhlMainHomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/main-home                        controllers.furnishedholidaylettings.FhlMainHomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/change-main-home                 controllers.furnishedholidaylettings.FhlMainHomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/change-main-home                 controllers.furnishedholidaylettings.FhlMainHomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/furnished-holiday-lettings/relief-or-expenses                        controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/relief-or-expenses                        controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/change-relief-or-expenses                 controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/change-relief-or-expenses                 controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/furnished-holiday-lettings/pia-or-expenses                     controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/pia-or-expenses                     controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/change-pia-or-expenses              controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/change-pia-or-expenses              controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

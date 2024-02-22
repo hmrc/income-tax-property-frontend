@@ -11,6 +11,7 @@ summary.aboutUKProperties.heading = About your UK Properties
 summary.aboutUKProperties = About
 
 summary.rentals.heading = Property Rentals
+summary.fhl.heading = UK furnished holiday lettings
 summary.about = About
 summary.income = Income
 summary.expenses = Expenses
@@ -129,7 +130,7 @@ totalIncome.over = Over £85,000
 totalIncome.checkYourAnswersLabel.individual = How much total income did you get from your UK properties?
 totalIncome.checkYourAnswersLabel.agent = How much total income did your client get from your UK properties?
 totalIncome.error.required = Select how much total income you got from your UK properties
-totalIncome.change.hidden = UK property income
+totalIncome.change.hidden = Change how much total income did you get from your UK properties?
 
 ukPropertySelect.title.individual = Select UK property
 ukPropertySelect.title.agent = Select UK property
@@ -142,7 +143,7 @@ ukPropertySelect.property.rentals = Property rentals
 ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = UK property types
-ukPropertySelect.change.hidden = UK Property
+ukPropertySelect.change.hidden = Change UK property types
 
 expensesLessThan1000.title = Expenses less than £1,000
 expensesLessThan1000.heading = Expenses less than £1,000
@@ -1240,3 +1241,113 @@ esbaClaims.heading.agent = Your client's enhanced structures and buildings allow
 esbaClaims.error.required.individual = Select yes if you want to add another claim
 esbaClaims.error.required.agent = Select yes if your client wants to add another claim
 esbaClaims.legend = Do you want to add another claim?
+
+fhlJointlyLet.title.individual = Is your furnished holiday letting jointly let?
+fhlJointlyLet.title.agent = Is your client’s furnished holiday letting jointly let?
+fhlJointlyLet.heading.individual = Is your furnished holiday letting jointly let?
+fhlJointlyLet.heading.agent = Is your client’s furnished holiday letting jointly let?
+fhlJointlyLet.checkYourAnswersLabel.individual = Is your furnished holiday letting jointly let?
+fhlJointlyLet.checkYourAnswersLabel.agent = Is your client’s furnished holiday letting jointly let?
+fhlJointlyLet.error.required.individual = Select yes if your furnished holiday letting is jointly let
+fhlJointlyLet.error.required.agent = Select yes if your client’s furnished holiday letting is jointly let
+fhlJointlyLet.change.hidden.individual = Is your furnished holiday letting jointly let?
+fhlJointlyLet.change.hidden.agent = Is your client’s furnished holiday letting jointly let?
+
+fhlMainHome.title = fhlMainHome
+fhlMainHome.heading = fhlMainHome
+fhlMainHome.checkYourAnswersLabel = fhlMainHome
+fhlMainHome.error.required.individual = Select yes if your main home is one of your furnished holiday lettings
+fhlMainHome.error.required.agent = Select yes if your client’s main home is one of their furnished holiday lettings
+fhlMainHome.change.hidden = FhlMainHome
+
+fhlMainHome.title.individual = Your main home
+fhlMainHome.title.agent = Your client’s main home
+fhlMainHome.heading1.individual = Your main home
+fhlMainHome.heading1.agent = Your client’s main home
+fhlMainHome.heading2.individual = Is your main home one of your furnished holiday lettings?
+fhlMainHome.heading2.agent = Is your client’s main home one of their furnished holiday lettings?
+fhlMainHome.summary = Understanding rent a room relief
+
+fhlMainHome.div.top.individual = If your furnished holiday letting is also your main home you may be able to claim rent a room relief.
+fhlMainHome.div.top.agent = If your client’s furnished holiday letting is also their main home they may be able to claim rent a room relief.
+
+fhlMainHome.p1.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free from letting out furnished accommodation in your home. This is halved if you share the income with your partner or someone else.
+fhlMainHome.p1.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free from letting out furnished accommodation in their home. This is halved if they share the income with their partner or someone else.
+
+fhlMainHome.p2.individual = In order for someone a to rent out an entire property and have it qualify for rent a room relief and furnished holiday letting rules, it must:
+fhlMainHome.p2.agent = In order for someone a to rent out an entire property and have it qualify for rent a room relief and furnished holiday letting rules, it must:
+
+fhlMainHome.li1.individual = be their only or main residence
+fhlMainHome.li1.agent = be their only or main residence
+
+fhlMainHome.li2.individual = be available to let to the public as furnished holiday accommodation for at least 210 days in the year
+fhlMainHome.li2.agent = be available to let to the public as furnished holiday accommodation for at least 210 days in the year
+
+fhlMainHome.a.href = https://www.gov.uk/rent-room-in-your-home/the-rent-a-room-scheme
+fhlMainHome.a = furnished holiday lettings at GOV.UK
+fhlMainHome.div = Read more about
+
+fhlReliefOrExpenses.title.individual = Rent a room relief or expenses
+fhlReliefOrExpenses.title.agent = Rent a room relief or expenses
+fhlReliefOrExpenses.heading1.individual = Rent a room relief or expenses
+fhlReliefOrExpenses.heading1.agent = Rent a room relief or expenses
+
+fhlReliefOrExpenses.heading2.individual = What would you like to claim on your main residence?
+fhlReliefOrExpenses.heading2.agent = What would your client like to claim on their main residence?
+
+fhlReliefOrExpenses.div.top.individual = If your furnished holiday lettings is your main residence you can claim the rent a room relief of up to {0}.
+fhlReliefOrExpenses.div.top.agent = If your client’s furnished holiday lettings is their main residence they can claim the rent a room relief of up to {0}.
+
+fhlReliefOrExpenses.div.bottom.individual = If you claim this relief you cannot also claim expenses.
+fhlReliefOrExpenses.div.bottom.agent = If your client claims this relief they cannot also claim expenses.
+
+fhlReliefOrExpenses.checkYourAnswersLabel.individual = fhlReliefOrExpenses
+fhlReliefOrExpenses.checkYourAnswersLabel.agent = fhlReliefOrExpenses
+fhlReliefOrExpenses.error.required.individual = Select if your want to claim rent a room relief or expenses
+fhlReliefOrExpenses.error.required.agent = Select if your client wants to claim rent a room relief or expenses
+fhlReliefOrExpenses.change.hidden.individual = FhlReliefOrExpenses
+fhlReliefOrExpenses.change.hidden.agent = FhlReliefOrExpenses
+
+fhlReliefOrExpenses.rentARoomRelief = Rent a room relief
+fhlReliefOrExpenses.expenses = Expenses
+
+fhlClaimPiaOrExpenses.title.individual = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.title.agent = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.heading.individual = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.heading.agent = Claim property income allowance or expenses
+fhlClaimPiaOrExpenses.pia = Use the property income allowance
+fhlClaimPiaOrExpenses.expenses = Declare expenses
+fhlClaimPiaOrExpenses.checkYourAnswersLabel = Does your client want to claim property income allowance or expenses?
+fhlClaimPiaOrExpenses.error.required.individual = Select if you want to claim property income allowance or expenses
+fhlClaimPiaOrExpenses.error.required.agent = Select if your client wants to claim property income allowance or expenses
+fhlClaimPiaOrExpenses.change.hidden = FhlClaimPiaOrExpenses
+
+fhlClaimPiaOrExpenses.div1.individual = The property income allowance is a tax relief if up to £1,000 per year which you can use against your total furnished holiday letting income.
+fhlClaimPiaOrExpenses.div1.agent = The property income allowance is a tax relief if up to £1,000 per year which your client can use against their total furnished holiday letting income.
+
+fhlClaimPiaOrExpenses.div2.title.individual = If you use the property income allowance, of up to £1,000, you cannot:
+fhlClaimPiaOrExpenses.div2.title.agent = If your client uses the property income allowance, of up to £1,000, they cannot:
+fhlClaimPiaOrExpenses.div2.li1.individual = deduct any expenses
+fhlClaimPiaOrExpenses.div2.li1.agent = deduct any expenses
+fhlClaimPiaOrExpenses.div2.li2.individual = claim any other allowances
+fhlClaimPiaOrExpenses.div2.li2.agent = claim any other allowances
+
+fhlClaimPiaOrExpenses.div3.individual = For example, if your total furnished holiday letting income is £750, the property income allowance would be capped at £750.
+fhlClaimPiaOrExpenses.div3.agent = For example, if your client's total furnished holiday letting income is £750, the property income allowance would be capped at £750.
+
+fhlClaimPiaOrExpenses.div4.title.individual = Some examples of expenses include:
+fhlClaimPiaOrExpenses.div4.title.agent = Some examples of expenses include:
+fhlClaimPiaOrExpenses.div4.li1.individual = rents, rates, insurance and ground rents
+fhlClaimPiaOrExpenses.div4.li1.agent = rents, rates, insurance and ground rents
+fhlClaimPiaOrExpenses.div4.li2.individual = property repairs and maintenance
+fhlClaimPiaOrExpenses.div4.li2.agent = property repairs and maintenance
+fhlClaimPiaOrExpenses.div4.li3.individual = loan interest or other financial costs
+fhlClaimPiaOrExpenses.div4.li3.agent = loan interest or other financial costs
+
+fhlClaimPiaOrExpenses.div5.title = Read more about
+fhlClaimPiaOrExpenses.div5.link.text = tax-free allowances on property and trading income (opens in new tab)
+fhlClaimPiaOrExpenses.div5.link.href = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+
+fhlClaimPiaOrExpenses.form.title.individual = What do you want to do?
+fhlClaimPiaOrExpenses.form.title.agent = What does your client want to do?
+
