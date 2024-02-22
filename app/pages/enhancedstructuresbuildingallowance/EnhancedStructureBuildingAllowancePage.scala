@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package pages.enhancedstructuresbuildingallowance
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import pages.PageConstants
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
-
-case class EsbaClaimAmountPage(index: Int) extends QuestionPage[BigDecimal] {
-
-  override def path: JsPath = JsPath \ PageConstants.esbaFormGroup \ index \ toString
-
-  override def toString: String = "esbaClaim"
-}
+case class EnhancedStructureBuildingAllowancePage(taxYear: Int, nextIndex: Int, individualOrAgent: String)

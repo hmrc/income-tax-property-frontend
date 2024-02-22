@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,67 +18,49 @@ package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import controllers.enhancedstructuresbuildingallowance.routes
-import forms.enhancedstructuresbuildingallowance.EsbaQualifyingAmountFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationFormProvider
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingAmountPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.enhancedstructuresbuildingallowance.EsbaQualifyingAmountView
+import views.html.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationView
 
 import scala.concurrent.Future
 
-class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
-
-  val formProvider = new EsbaQualifyingAmountFormProvider()
-  val form = formProvider()
+class EsbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val validAnswer: BigDecimal = BigDecimal(0)
+  val formProvider = new EsbaRemoveConfirmationFormProvider()
+  private val agent = "agent"
+  val form: Form[Boolean] = formProvider(agent)
   val taxYear = 2024
-  val index = 0
-  lazy val esbaQualifyingAmountRoute: String = routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode).url
+  val index = 1
 
-  "EsbaQualifyingAmount Controller" - {
+  lazy val esbaRemoveConfirmationRoute: String = routes.EsbaRemoveConfirmationController.onPageLoad(taxYear, index).url
+
+  "EsbaRemoveConfirmation Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, esbaQualifyingAmountRoute)
+        val request = FakeRequest(GET, esbaRemoveConfirmationRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[EsbaQualifyingAmountView]
+        val view = application.injector.instanceOf[EsbaRemoveConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaQualifyingAmountPage(index), validAnswer).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
-
-      running(application) {
-        val request = FakeRequest(GET, esbaQualifyingAmountRoute)
-
-        val view = application.injector.instanceOf[EsbaQualifyingAmountView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, "£0")(request, messages(application)).toString
       }
     }
 
@@ -89,7 +71,7 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -98,8 +80,8 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, esbaQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("esbaQualifyingAmount", validAnswer.toString))
+          FakeRequest(POST, esbaRemoveConfirmationRoute)
+            .withFormUrlEncodedBody(("esbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 
@@ -110,30 +92,30 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, esbaQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("esbaQualifyingAmount", "invalid value"))
+          FakeRequest(POST, esbaRemoveConfirmationRoute)
+            .withFormUrlEncodedBody(("esbaRemoveConfirmation", ""))
 
-        val boundForm = form.bind(Map("esbaQualifyingAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("esbaRemoveConfirmation" -> ""))
 
-        val view = application.injector.instanceOf[EsbaQualifyingAmountView]
+        val view = application.injector.instanceOf[EsbaRemoveConfirmationView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, "£0")(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, esbaQualifyingAmountRoute)
+        val request = FakeRequest(GET, esbaRemoveConfirmationRoute)
 
         val result = route(application, request).value
 
@@ -144,17 +126,16 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, esbaQualifyingAmountRoute)
-            .withFormUrlEncodedBody(("esbaQualifyingAmount", validAnswer.toString))
+          FakeRequest(POST, esbaRemoveConfirmationRoute)
+            .withFormUrlEncodedBody(("esbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }

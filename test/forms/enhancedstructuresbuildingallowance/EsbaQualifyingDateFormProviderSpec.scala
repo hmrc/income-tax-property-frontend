@@ -35,11 +35,11 @@ class EsbaQualifyingDateFormProviderSpec extends DateBehaviours {
       max = maxDate
     )
 
-    behave like dateField(form, "value", validData)
-    behave like mandatoryDateField(form, "value", "esbaQualifyingDate.error.required.all")
+    behave like dateField(form, "esbaQualifyingDate", validData)
+    behave like mandatoryDateField(form, "esbaQualifyingDate", "esbaQualifyingDate.error.required.all")
 
     behave like dateFieldWithMax(
-      form, "value", maxDate,
-      FormError("value", "esbaQualifyingDate.error.maxDate"))
+      form, "esbaQualifyingDate", maxDate,
+      FormError("esbaQualifyingDate", "esbaQualifyingDate.error.maxDate"))
   }
 }

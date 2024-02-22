@@ -30,7 +30,7 @@ class EsbaClaimAmountFormProviderSpec extends CurrencyFieldBehaviours {
     val form = new EsbaClaimAmountFormProvider()(agencyOrIndividual)
     s".value for $agencyOrIndividual" - {
 
-      val fieldName = "value"
+      val fieldName = "esbaClaim"
 
       val minimum = 0
       val maximum = 100000000

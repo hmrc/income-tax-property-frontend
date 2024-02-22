@@ -16,15 +16,30 @@
 
 package forms.enhancedstructuresbuildingallowance
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import javax.inject.Inject
+class EsbaClaimsFormProviderSpec extends BooleanFieldBehaviours {
 
-class EsbaClaimsFormProvider @Inject() extends Mappings {
+  val requiredKey = "esbaClaims.error.required.agent"
+  val invalidKey = "error.boolean"
 
-  def apply(individualOrAgent: String): Form[Boolean] =
-    Form(
-      "anotherClaim" -> boolean(s"esbaClaims.error.required.$individualOrAgent")
+  val form = new EsbaClaimsFormProvider()("agent")
+
+  ".anotherClaim" - {
+
+    val fieldName = "anotherClaim"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

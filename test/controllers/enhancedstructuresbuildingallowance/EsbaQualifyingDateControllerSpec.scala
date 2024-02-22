@@ -55,9 +55,9 @@ class EsbaQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, esbaQualifyingDateRoute)
       .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
+        "esbaQualifyingDate.day"   -> validAnswer.getDayOfMonth.toString,
+        "esbaQualifyingDate.month" -> validAnswer.getMonthValue.toString,
+        "esbaQualifyingDate.year"  -> validAnswer.getYear.toString
       )
 
   "EsbaQualifyingDate Controller" - {

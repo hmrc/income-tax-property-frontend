@@ -16,14 +16,14 @@
 
 @import models.NormalMode
 @import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
-@import controllers.routes
+@import controllers.enhancedstructuresbuildingallowance.routes
 
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(page: EsbaAddClaimPage, numberOfEsbaEntriesSoFar: Int)(implicit request: Request[_], messages: Messages)
+@(page: EsbaAddClaimPage)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("enhancedSBA.title"))) {
 
@@ -34,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("enhancedSBA.addclaim.button"))
-                .asLink(controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(page.taxYear, numberOfEsbaEntriesSoFar, NormalMode).url)
+                .asLink(routes.EsbaQualifyingDateController.onPageLoad(page.taxYear, page.nextIndex, NormalMode).url)
                 .withId("continue")
         )
     </p>

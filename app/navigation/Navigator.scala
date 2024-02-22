@@ -98,21 +98,7 @@ class Navigator @Inject()() {
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage => taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
-//    case ClaimEsbaPage => taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
-//    //case EsbaAddClaimPage => taxYear => _ => _ => ClaimEsbaController.onPageLoad(taxYear, NormalMode)
-//    case EsbaQualifyingDatePage(index) => taxYear =>
-//      _ =>
-//        _ =>
-//          controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode)
-//    case EsbaQualifyingAmountPage(index) => taxYear =>
-//      _ =>
-//        _ =>
-//          controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode)
-//    case EsbaClaimAmountPage(index) => taxYear =>
-//      _ =>
-//        _ =>
-//          controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index)
-//    case _ => _ => _ => _ => IndexController.onPageLoad
+    case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
@@ -337,7 +323,7 @@ class Navigator @Inject()() {
     }
 
   private def esbaRemoveConfirmationNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    (userAnswers.get(SbaRemoveConfirmationPage), userAnswers.get(EnhancedStructureBuildingFormGroup)) match {
+    (userAnswers.get(EsbaRemoveConfirmationPage), userAnswers.get(EnhancedStructureBuildingFormGroup)) match {
       case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear)
       case (_, Some(esbaForm)) if esbaForm.nonEmpty => EsbaClaimsController.onPageLoad(taxYear)
     }

@@ -31,13 +31,14 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.EsbaClaimAmountView
+import views.html.enhancedstructuresbuildingallowance.EsbaClaimAmountView
 
 import scala.concurrent.Future
 
 class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new EsbaClaimAmountFormProvider()
+  private val isAgentMessageKey = "individual"
   val form = formProvider("individual")
 
   def onwardRoute = Call("GET", "/foo")
@@ -45,7 +46,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer = BigDecimal(0)
   val taxYear = 2024
   val index = 0
-  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode).url
+  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode, index).url
   val user = User(
     "",
     "",
@@ -66,7 +67,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaClaimAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +86,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
 
@@ -106,7 +107,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val fakeRequest =
           FakeRequest(POST, esbaClaimAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("esbaClaim", validAnswer.toString))
         val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
 
         val result = route(application, request).value
@@ -133,7 +134,7 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
 
