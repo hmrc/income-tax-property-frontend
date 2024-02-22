@@ -25,19 +25,20 @@
     govukButton: GovukButton
 )
 
+
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"ukPropertySelect.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-            <h1 class="govuk-heading-l">@messages(s"ukPropertySelect.heading.${individualOrAgent}")</h1>
+        <h1 class="govuk-heading-l">@messages(s"ukPropertySelect.heading.${individualOrAgent}")</h1>
 
-            <p class="govuk-body">@messages("ukPropertySelect.heading.message")</p>
+        <div class="govuk-hint"> @messages("ukPropertySelect.heading.message") </div>
 
         @govukCheckboxes(
             CheckboxesViewModel(
