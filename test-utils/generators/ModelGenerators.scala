@@ -26,6 +26,11 @@ trait ModelGenerators {
       Gen.oneOf(FhlReliefOrExpenses.values.toSeq)
     }
 
+  implicit lazy val arbitraryFhlClaimPiaOrExpenses: Arbitrary[FhlClaimPiaOrExpenses] =
+    Arbitrary {
+      Gen.oneOf(FhlClaimPiaOrExpenses.values.toSeq)
+    }
+
   implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
     Arbitrary {
       Gen.oneOf(UKPropertySelect.values)
