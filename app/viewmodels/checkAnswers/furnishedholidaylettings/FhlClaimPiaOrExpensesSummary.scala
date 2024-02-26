@@ -28,7 +28,7 @@ import viewmodels.implicits._
 
 object FhlClaimPiaOrExpensesSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(FhlClaimPiaOrExpensesPage).map {
       answer =>
 
@@ -39,7 +39,7 @@ object FhlClaimPiaOrExpensesSummary  {
         )
 
         SummaryListRowViewModel(
-          key     = "fhlClaimPiaOrExpenses.checkYourAnswersLabel",
+          key     = s"fhlClaimPiaOrExpenses.checkYourAnswersLabel.$individualOrAgent",
           value   = value,
           actions = Seq(
             ActionItemViewModel("site.change", controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, CheckMode).url)

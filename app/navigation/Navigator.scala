@@ -30,8 +30,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
-
+import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
 import pages.premiumlease.{LeasePremiumPaymentPage, CalculatedFigureYourselfPage}
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
@@ -102,8 +101,11 @@ class Navigator @Inject()() {
 
     // Furnished Holiday Lettings
     case FhlMoreThanOnePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
-    case FhlMainHomePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
+    case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, NormalMode, userAnswers)
     case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
+
+    case FhlReliefOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+    case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
@@ -164,8 +166,10 @@ class Navigator @Inject()() {
 
     // Furnished Holiday Lettings
     case FhlMoreThanOnePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
-    case FhlMainHomePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
+    case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, CheckMode, userAnswers)
     case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
+    case FhlReliefOrExpensesPage => taxYear =>  _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+    case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
@@ -184,6 +188,14 @@ class Navigator @Inject()() {
       structureBuildingCheckModeRoutes(page, taxYear, mode, index, previousUserAnswers, userAnswers)
   }
 
+  private def flaYourMainHomeNextPage(taxYear: Int, mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(FhlMainHomePage) match {
+      case Some(true) => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, mode)
+      case Some(false) =>  controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, mode)
+      case None => IndexController.onPageLoad
+    }
+
+  }
   private def structureBuildingNormalRoutes(page: Page, taxYear: Int, mode: Mode, index: Int,
                                             previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = page match {
     case StructureBuildingQualifyingDatePage(_) => StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
