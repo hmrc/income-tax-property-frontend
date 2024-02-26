@@ -20,6 +20,8 @@ import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
 import models.{NormalMode, StructuredBuildingAllowanceAddress, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.data.Form
@@ -27,7 +29,12 @@ import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.structurebuildingallowance.StructuredBuildingAllowanceAddressView
+import play.api.inject.bind
+import navigation.{FakeNavigator, Navigator}
+
+import scala.concurrent.Future
 
 
 class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with MockitoSugar {
@@ -37,6 +44,8 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
 
   val taxYear = 2024
   val index = 0
+  val validAnswer = "Building"
+  val validPostCode = "GV92 8VB"
   def onwardRoute: Call = Call("GET", "/foo")
   private val isAgentMessageKey = "individual"
 
@@ -86,6 +95,31 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")),
           taxYear, NormalMode, index)(getRequest, messages(application)).toString
+      }
+    }
+    "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
+            .withFormUrlEncodedBody(("buildingName", validAnswer), ("buildingNumber", validAnswer), ("postcode", validPostCode))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 

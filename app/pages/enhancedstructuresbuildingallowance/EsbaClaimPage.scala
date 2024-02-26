@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.enhancedstructuresbuildingallowance
 
-object PageConstants {
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+case class EsbaClaimPage(index: Int) extends QuestionPage[BigDecimal] {
+
+  override def path: JsPath = JsPath \ PageConstants.esbaFormGroup \ index \ toString
+
+  override def toString: String = "esbaClaim"
 }

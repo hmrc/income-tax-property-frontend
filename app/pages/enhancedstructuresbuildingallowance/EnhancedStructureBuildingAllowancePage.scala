@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-package pages
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-object PageConstants {
-
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
-}
+case class EnhancedStructureBuildingAllowancePage(taxYear: Int, nextIndex: Int, individualOrAgent: String)

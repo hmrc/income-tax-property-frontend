@@ -66,7 +66,7 @@ class EsbaQualifyingDateController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaQualifyingDatePage(index), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EsbaQualifyingDatePage(index), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.esbaNextPage(EsbaQualifyingDatePage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

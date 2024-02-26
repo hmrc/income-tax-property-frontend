@@ -1126,7 +1126,7 @@ esbaQualifyingAmount.error.outOfRange = Enter an amount between £0 and £100,00
 esbaClaimAmount.title = How much is your enhanced structures and buildings allowance claim?
 esbaClaimAmount.heading.individual = How much is your enhanced structures and buildings allowance claim?
 esbaClaimAmount.heading.agent = How much is your client’s enhanced structures and buildings allowance claim?
-esbaClaimAmount.checkYourAnswersLabel = EsbaClaimAmount
+esbaClaimAmount.checkYourAnswersLabel = Claim value
 esbaClaimAmount.error.nonNumeric = The enhanced structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
 esbaClaimAmount.error.required.individual = Enter the amount for your enhanced structures and buildings allowance claim
 esbaClaimAmount.error.required.agent = Enter the amount for your client’s enhanced structures and buildings allowance claim
@@ -1227,6 +1227,20 @@ sbaRemoveConfirmation.title = Do you want to remove this structures and building
 sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
 sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
 sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
+
+esbaRemoveConfirmation.title = Do you want to remove this enhanced structures and buildings allowance {0} claim?
+esbaRemoveConfirmation.heading = Do you want to remove this enhanced structures and buildings allowance {0} claim?
+esbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
+esbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
+
+esbaClaims.title.individual = Your enhanced structures and buildings allowance claims
+esbaClaims.heading.individual = Your enhanced structures and buildings allowance claims
+esbaClaims.title.agent = Your client's enhanced structures and buildings allowance claims
+esbaClaims.heading.agent = Your client's enhanced structures and buildings allowance claims
+
+esbaClaims.error.required.individual = Select yes if you want to add another claim
+esbaClaims.error.required.agent = Select yes if your client wants to add another claim
+esbaClaims.legend = Do you want to add another claim?
 
 fhlJointlyLet.title.individual = Is your furnished holiday letting jointly let?
 fhlJointlyLet.title.agent = Is your client’s furnished holiday letting jointly let?

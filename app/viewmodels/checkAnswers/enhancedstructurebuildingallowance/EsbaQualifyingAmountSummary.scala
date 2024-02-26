@@ -14,31 +14,28 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
 import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
+import pages.enhancedstructuresbuildingallowance.EsbaQualifyingAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-import java.time.format.DateTimeFormatter
-
-object EsbaQualifyingDateSummary  {
+object EsbaQualifyingAmountSummary  {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingDatePage(index)).map {
+    answers.get(EsbaQualifyingAmountPage(index)).map {
       answer =>
 
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
         SummaryListRowViewModel(
-          key     = "esbaQualifyingDate.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
+          key     = "esbaQualifyingAmount.checkYourAnswersLabel",
+          value   = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, index, CheckMode).url)
-              .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
+            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, CheckMode).url)
+              .withVisuallyHiddenText(messages("esbaQualifyingAmount.change.hidden"))
           )
         )
     }

@@ -23,12 +23,15 @@ import javax.inject.Inject
 
 class EsbaClaimAmountFormProvider @Inject() extends Mappings {
 
+  val minimum = 0;
+  val maximum = 100000000;
+
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "value" -> currency(
+      "esbaClaim" -> currency(
         s"esbaClaimAmount.error.required.$individualOrAgent",
         "esbaClaimAmount.error.twoDecimalPlaces",
         s"esbaClaimAmount.error.nonNumeric")
-          .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "esbaClaimAmount.error.outOfRange"))
+          .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "esbaClaimAmount.error.outOfRange"))
     )
 }

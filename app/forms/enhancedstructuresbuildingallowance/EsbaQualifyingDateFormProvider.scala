@@ -27,7 +27,7 @@ class EsbaQualifyingDateFormProvider @Inject() extends Mappings {
 
   def apply(): Form[LocalDate] =
     Form(
-      "value" -> localDate(
+      "esbaQualifyingDate" -> localDate(
         invalidKey = "esbaQualifyingDate.error.invalid",
         allRequiredKey = "esbaQualifyingDate.error.required.all",
         twoRequiredKey = "esbaQualifyingDate.error.required.two",

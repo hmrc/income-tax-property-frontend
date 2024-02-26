@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,30 @@
 
 package forms.enhancedstructuresbuildingallowance
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import javax.inject.Inject
+class EsbaClaimsFormProviderSpec extends BooleanFieldBehaviours {
 
-class EsbaQualifyingAmountFormProvider @Inject() extends Mappings {
+  val requiredKey = "esbaClaims.error.required.agent"
+  val invalidKey = "error.boolean"
 
-  def apply(): Form[BigDecimal] =
-    Form(
-      "esbaQualifyingAmount" -> currency(
-        "esbaQualifyingAmount.error.required",
-        "esbaQualifyingAmount.error.twoDecimalPlaces",
-        "esbaQualifyingAmount.error.nonNumeric")
-        .verifying(inRange[BigDecimal](0, 100000000, "esbaQualifyingAmount.error.outOfRange"))
+  val form = new EsbaClaimsFormProvider()("agent")
+
+  ".anotherClaim" - {
+
+    val fieldName = "anotherClaim"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

@@ -25,161 +25,150 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.EsbaClaimAmountView
+import views.html.enhancedstructuresbuildingallowance.EsbaClaimAmountView
 
 import scala.concurrent.Future
 
 class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new EsbaClaimAmountFormProvider()
+  private val isAgentMessageKey = "individual"
   val form = formProvider("individual")
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = BigDecimal(0)
   val taxYear = 2024
+  val index = 0
+  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, NormalMode, index).url
+  val user = User(
+    "",
+    "",
+    "",
+    false
+  )
+  "EsbaClaimAmount Controller" - {
 
-  val scenarios = Table[Int, Boolean, String](
-    ("index", "isAgency", "AgencyOrIndividual"),
-    (0, true, "agent"),
-    (1, false, "individual"))
-  forAll(scenarios) { (index: Int, isAgency: Boolean, agencyOrIndividual: String) => {
-    lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController.onPageLoad(taxYear, index, NormalMode).url
+    "must return OK and the correct view for a GET" in {
 
-    val form = formProvider(agencyOrIndividual)
-    val user = User(
-      "",
-      "",
-      "",
-      isAgency
-    )
-    s"EsbaClaimAmount Controller for index: $index for $agencyOrIndividual:" - {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
-      "must return OK and the correct view for a GET" in {
+      running(application) {
+        val request = DataRequest(FakeRequest(GET, esbaClaimAmountRoute), "", user, emptyUserAnswers)
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgency).build()
+        val result = route(application, request).value
 
-        running(application) {
-          val request = DataRequest(FakeRequest(GET, esbaClaimAmountRoute), "", user, emptyUserAnswers)
+        val view = application.injector.instanceOf[EsbaClaimAmountView]
 
-          val result = route(application, request).value
-
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
-
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
-        }
-      }
-
-      "must populate the view correctly on a GET when the question has previously been answered" in {
-        val userAnswersBase = UserAnswers(userAnswersId)
-        val userAnswers = (0 to index).toList.foldLeft[UserAnswers](userAnswersBase)((acc, idx) => acc.set(EsbaClaimAmountPage(idx), validAnswer).success.value)
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgency).build()
-
-        running(application) {
-          val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
-
-          val result = route(application, request).value
-
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
-        }
-      }
-
-      "must redirect to the next page when valid data is submitted" in {
-
-        val mockSessionRepository = mock[SessionRepository]
-
-        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-        val userAnswers = (0 to index).toList
-          .foldLeft[UserAnswers](emptyUserAnswers)((acc, idx) => acc.set(EsbaClaimAmountPage(idx), validAnswer).success.value)
-
-        val application =
-          applicationBuilder(userAnswers = Some(userAnswers), isAgency)
-            .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[SessionRepository].toInstance(mockSessionRepository)
-            )
-            .build()
-
-        running(application) {
-          val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", validAnswer.toString))
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
-        }
-      }
-
-      "must return a Bad Request and errors when invalid data is submitted" in {
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgency).build()
-
-        running(application) {
-          val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", "invalid value"))
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val boundForm = form.bind(Map("value" -> "invalid value"))
-
-          val view = application.injector.instanceOf[EsbaClaimAmountView]
-
-          val result = route(application, request).value
-
-          status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
-        }
-      }
-
-      "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgency).build()
-
-        running(application) {
-          val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
-        }
-      }
-
-      "must redirect to Journey Recovery for a POST if no existing data is found" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgency).build()
-
-        running(application) {
-          val fakeRequest =
-            FakeRequest(POST, esbaClaimAmountRoute)
-              .withFormUrlEncodedBody(("value", validAnswer.toString))
-          val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
-        }
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
       }
     }
-  }
+
+    "must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaClaimAmountPage(index), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+
+      running(application) {
+        val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
+        val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+
+        val view = application.injector.instanceOf[EsbaClaimAmountView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val fakeRequest =
+          FakeRequest(POST, esbaClaimAmountRoute)
+            .withFormUrlEncodedBody(("esbaClaim", validAnswer.toString))
+        val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+
+      running(application) {
+        val fakeRequest =
+          FakeRequest(POST, esbaClaimAmountRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
+        val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+
+        val boundForm = form.bind(Map("value" -> "invalid value"))
+
+        val view = application.injector.instanceOf[EsbaClaimAmountView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+      }
+    }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, true).build()
+
+      running(application) {
+        val fakeRequest = FakeRequest(GET, esbaClaimAmountRoute)
+        val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, true).build()
+
+      running(application) {
+        val fakeRequest =
+          FakeRequest(POST, esbaClaimAmountRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
+        val request = DataRequest(fakeRequest, "", user, emptyUserAnswers)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
   }
 }

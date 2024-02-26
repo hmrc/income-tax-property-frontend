@@ -282,6 +282,8 @@ GET        /:taxYear/structure-building-allowance/:index/check-your-answers     
 GET        /:taxYear/structure-building-allowance/claims                            controllers.structuresbuildingallowance.SbaClaimsController.onPageLoad(taxYear: Int)
 POST       /:taxYear/structure-building-allowance/claims                            controllers.structuresbuildingallowance.SbaClaimsController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/structure-building-allowance/:index/remove-confirmation        controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST       /:taxYear/structure-building-allowance/:index/remove-confirmation        controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
 
 ##### Enhanced Structure Building Allowance
@@ -303,15 +305,25 @@ POST       /:taxYear/enhanced-structure-building-allowance/:index/qualifying-dat
 GET        /:taxYear/enhanced-structure-building-allowance/:index/change-qualifying-date   controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
 POST       /:taxYear/enhanced-structure-building-allowance/:index/change-qualifying-date   controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/enhanced-structure-building-allowance/:index/claim-amount             controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST       /:taxYear/enhanced-structure-building-allowance/:index/claim-amount             controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
-GET        /:taxYear/enhanced-structure-building-allowance/:index/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
-POST       /:taxYear/enhanced-structure-building-allowance/:index/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
+GET        /:taxYear/enhanced-structure-building-allowance/:index/claim-amount             controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
+POST       /:taxYear/enhanced-structure-building-allowance/:index/claim-amount             controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
+GET        /:taxYear/enhanced-structure-building-allowance/:index/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
+POST       /:taxYear/enhanced-structure-building-allowance/:index/change-claim-amount      controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
 
 GET        /:taxYear/enhanced-structure-building-allowance/:index/address           controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
 POST       /:taxYear/enhanced-structure-building-allowance/:index/address           controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
 GET        /:taxYear/enhanced-structure-building-allowance/:index/change-address    controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST       /:taxYear/enhanced-structure-building-allowance/:index/change-address    controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
+
+GET        /:taxYear/enhanced-structure-building-allowance/:index/check-your-answers         controllers.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
+
+GET        /:taxYear/enhanced-structure-building-allowance/claims                            controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onPageLoad(taxYear: Int)
+POST       /:taxYear/enhanced-structure-building-allowance/claims                            controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation        controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST       /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation        controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+
+##### FHL
 
 GET        /:taxYear/furnished-holiday-lettings/start                               controllers.furnishedholidaylettings.FhlIntroController.onPageLoad(taxYear: Int)
 
@@ -320,8 +332,7 @@ POST       /:taxYear/furnished-holiday-lettings/more-than-one                   
 GET        /:taxYear/furnished-holiday-lettings/change-more-than-one                controllers.furnishedholidaylettings.FhlMoreThanOneController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/furnished-holiday-lettings/change-more-than-one                controllers.furnishedholidaylettings.FhlMoreThanOneController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/structure-building-allowance/:index/remove-confirmation        controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST       /:taxYear/structure-building-allowance/:index/remove-confirmation        controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+
 
 GET        /:taxYear/furnished-holiday-lettings/jointly-let                      controllers.furnishedholidaylettings.FhlJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/furnished-holiday-lettings/jointly-let                      controllers.furnishedholidaylettings.FhlJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

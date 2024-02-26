@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
 import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
+import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object EsbaAddressSummary  {
+import java.time.format.DateTimeFormatter
+
+object EsbaQualifyingDateSummary  {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaAddressPage(index)).map {
+    answers.get(EsbaQualifyingDatePage(index)).map {
       answer =>
 
+        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+
         SummaryListRowViewModel(
-          key     = "esbaAddress.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = "esbaQualifyingDate.checkYourAnswersLabel",
+          value   = ValueViewModel(answer.format(dateFormatter)),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index).url)
-              .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))
+            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, index, CheckMode).url)
+              .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
           )
         )
     }

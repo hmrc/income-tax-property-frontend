@@ -26,7 +26,7 @@ class EsbaQualifyingAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
   ".value" - {
 
-    val fieldName = "value"
+    val fieldName = "esbaQualifyingAmount"
 
     val minimum = 0
     val maximum = 100000000

@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.enhancedstructuresbuildingallowance
 
-object PageConstants {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+import javax.inject.Inject
+
+class EsbaRemoveConfirmationFormProvider @Inject() extends Mappings {
+
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "esbaRemoveConfirmation" -> boolean(s"esbaRemoveConfirmation.error.required.$individualOrAgent")
+    )
 }

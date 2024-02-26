@@ -30,5 +30,5 @@ object Esba {
 final case class EsbaInfo(taxYear: Int) extends Gettable[Array[Esba]] {
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.eSbaFormGroup
+  override def toString: String = PageConstants.esbaFormGroup
 }
