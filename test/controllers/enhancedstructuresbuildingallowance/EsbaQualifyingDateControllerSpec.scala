@@ -72,7 +72,7 @@ class EsbaQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaQualifyingDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(getRequest(), messages(application)).toString
       }
     }
 
@@ -88,7 +88,7 @@ class EsbaQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(getRequest(), messages(application)).toString
       }
     }
 
@@ -139,7 +139,7 @@ class EsbaQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val result = route(application, getRequest).value
+        val result = route(application, getRequest()).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url

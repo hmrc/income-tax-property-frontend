@@ -22,8 +22,8 @@ import play.api.data.Form
 
 class PropertyBusinessTravelCostsFormProvider @Inject() extends Mappings {
 
-  val minimum = 0;
-  val maximum = 100000000;
+  val minimum = 0
+  val maximum = 100000000
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(

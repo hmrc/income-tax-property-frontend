@@ -25,8 +25,8 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 import javax.inject.Inject
 
 class ElectricChargePointAllowanceFormProvider @Inject() extends Mappings {
-  val minimum = 0;
-  val maximum = 100000000;
+  val minimum = 0
+  val maximum = 100000000
 
   def apply(individualOrAgent: String): Form[ElectricChargePointAllowance] =
     Form[ElectricChargePointAllowance](

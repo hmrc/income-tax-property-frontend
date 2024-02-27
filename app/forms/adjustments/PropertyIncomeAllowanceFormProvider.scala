@@ -24,7 +24,7 @@ import javax.inject.Inject
 class PropertyIncomeAllowanceFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String, totalIncomeAndBalancingCharge: BigDecimal): Form[BigDecimal] = {
-    val minimum = BigDecimal(0);
+    val minimum = BigDecimal(0)
     val maxCappedAllowance = BigDecimal(1000)
 
     val errorKey = if (totalIncomeAndBalancingCharge > maxCappedAllowance) {
