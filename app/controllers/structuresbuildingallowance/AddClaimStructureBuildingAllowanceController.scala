@@ -37,8 +37,8 @@ class AddClaimStructureBuildingAllowanceController @Inject()(override val messag
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val sbaForm = request.userAnswers.get(StructureBuildingFormGroup).getOrElse(Array())
-      Ok(view(StructureBuildingAllowancePage(taxYear, sbaForm.length, request.user.isAgentMessageKey)))
+      val nextIndex = request.userAnswers.get(StructureBuildingFormGroup).map(_.length).getOrElse(0)
+      Ok(view(StructureBuildingAllowancePage(taxYear, nextIndex, request.user.isAgentMessageKey)))
   }
 }
 
