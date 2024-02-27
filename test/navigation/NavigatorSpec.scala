@@ -30,7 +30,7 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaAddressPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
-import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
 import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}

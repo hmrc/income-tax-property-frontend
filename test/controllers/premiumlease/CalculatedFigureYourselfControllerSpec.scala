@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CalculatedFigureYourselfPage
+import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

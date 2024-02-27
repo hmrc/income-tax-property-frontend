@@ -32,7 +32,7 @@ import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
 
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.premiumlease.{LeasePremiumPaymentPage, CalculatedFigureYourselfPage}
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
 import pages.structurebuildingallowance._

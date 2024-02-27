@@ -17,7 +17,8 @@
 package pages.premiumlease
 
 import models.UserAnswers
-import pages.{CalculatedFigureYourselfPage, QuestionPage}
+import pages.QuestionPage
+import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try

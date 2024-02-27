@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.premiumlease
 
 import controllers.premiumlease.routes.CalculatedFigureYourselfController
 import models.{CalculatedFigureYourself, CheckMode, UserAnswers}
-import pages.CalculatedFigureYourselfPage
+import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}

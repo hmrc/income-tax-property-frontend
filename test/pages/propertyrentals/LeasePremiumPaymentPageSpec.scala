@@ -18,8 +18,7 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.{CalculatedFigureYourself, PremiumsGrantLease}
-import pages.CalculatedFigureYourselfPage
-import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 
 class LeasePremiumPaymentPageSpec extends SpecBase {
 
