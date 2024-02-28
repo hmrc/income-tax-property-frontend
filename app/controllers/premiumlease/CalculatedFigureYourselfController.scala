@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.premiumlease.CalculatedFigureYourselfFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.CalculatedFigureYourselfPage
+import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

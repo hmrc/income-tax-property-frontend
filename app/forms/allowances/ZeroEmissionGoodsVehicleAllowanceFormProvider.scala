@@ -22,8 +22,9 @@ import play.api.data.Form
 
 class ZeroEmissionGoodsVehicleAllowanceFormProvider @Inject() extends Mappings {
 
-  val minimum = 0;
-  val maximum = 100000000;
+  val minimum = 0
+  val maximum = 100000000
+
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "zeroEmissionGoodsVehicleAllowanceAmount" -> currency(

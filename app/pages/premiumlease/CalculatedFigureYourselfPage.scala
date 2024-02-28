@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.premiumlease
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CalculatedFigureYourself, UserAnswers}
+import pages.QuestionPage
 import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath

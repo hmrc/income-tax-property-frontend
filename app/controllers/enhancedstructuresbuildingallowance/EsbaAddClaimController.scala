@@ -37,7 +37,7 @@ class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val esbaForm = request.userAnswers.get(EnhancedStructureBuildingFormGroup).getOrElse(Array())
-      Ok(view(EsbaAddClaimPage(taxYear, esbaForm.length, request.user.isAgentMessageKey)))
+      val nextIndex = request.userAnswers.get(EnhancedStructureBuildingFormGroup).map(_.length).getOrElse(0)
+      Ok(view(EsbaAddClaimPage(taxYear, nextIndex, request.user.isAgentMessageKey)))
   }
 }

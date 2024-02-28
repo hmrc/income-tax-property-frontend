@@ -26,8 +26,8 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
 
-  val minimum = 0;
-  val maximum = 100000000;
+  val minimum = 0
+  val maximum = 100000000
 
   def apply(individualOrAgent: String): Form[CapitalAllowancesForACar] = {
     Form(mapping(
