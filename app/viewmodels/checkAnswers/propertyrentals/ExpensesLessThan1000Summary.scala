@@ -29,7 +29,6 @@ object ExpensesLessThan1000Summary {
   def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ExpensesLessThan1000Page).map {
       answer =>
-
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(

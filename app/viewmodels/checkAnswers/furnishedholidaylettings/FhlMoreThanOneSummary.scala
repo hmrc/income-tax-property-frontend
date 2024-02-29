@@ -26,14 +26,14 @@ import viewmodels.implicits._
 
 object FhlMoreThanOneSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(FhlMoreThanOnePage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "fhlMoreThanOne.checkYourAnswersLabel",
+          key     = s"fhlMoreThanOne.checkYourAnswersLabel.$individualOrAgent",
           value   = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.furnishedholidaylettings.routes.FhlMoreThanOneController.onPageLoad(taxYear, CheckMode).url)

@@ -29,7 +29,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaAddressPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
-import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage}
+import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
@@ -349,16 +349,34 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from FhlMainHomePage to FhlJointlyLetPage" in {
+      "must go from FhlMainHomePage to FhlJointlyLetPage when yes selected" in {
         navigator.nextPage(
-          FhlMainHomePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+          FhlMainHomePage, taxYear, NormalMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, true).get
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from FhlMainHomePage to FhlJointlyLetPage when no selected" in {
+        navigator.nextPage(
+          FhlMainHomePage, taxYear, NormalMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, false).get
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
         navigator.nextPage(
           FhlJointlyLetPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from FhlReliefOrExpensesPage to FhlCheckYourAnswersPage" in {
+        navigator.nextPage(
+          FhlReliefOrExpensesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from FhlClaimPiaOrExpensesPage to FhlCheckYourAnswersPage" in {
+        navigator.nextPage(
+          FhlClaimPiaOrExpensesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
 
@@ -642,16 +660,34 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
       }
 
-      "must go from FhlMainHomePage to FhlJointlyLetPage" in {
+      "must go from FhlMainHomePage to FhlJointlyLetPage when yes selected" in {
         navigator.nextPage(
-          FhlMainHomePage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+          FhlMainHomePage, taxYear, CheckMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, true).get
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from FhlMainHomePage to FhlJointlyLetPage when no selected" in {
+        navigator.nextPage(
+          FhlMainHomePage, taxYear, CheckMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, false).get
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, CheckMode)
       }
 
       "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
         navigator.nextPage(
           FhlJointlyLetPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from FhlReliefOrExpensesPage to FhlCheckYourAnswersPage" in {
+        navigator.nextPage(
+          FhlReliefOrExpensesPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from FhlClaimPiaOrExpensesPage to FhlCheckYourAnswersPage" in {
+        navigator.nextPage(
+          FhlClaimPiaOrExpensesPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
   }
