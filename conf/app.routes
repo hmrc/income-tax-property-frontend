@@ -360,3 +360,8 @@ GET        /:taxYear/furnished-holiday-lettings/deducting-tax                   
 POST       /:taxYear/furnished-holiday-lettings/deducting-tax                       controllers.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/furnished-holiday-lettings/change-deducting-tax                controllers.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/furnished-holiday-lettings/change-deducting-tax                controllers.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/furnished-holiday-lettings/is-non-uk-landlord                  controllers.FhlIsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/is-non-uk-landlord                  controllers.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord           controllers.FhlIsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord           controllers.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
