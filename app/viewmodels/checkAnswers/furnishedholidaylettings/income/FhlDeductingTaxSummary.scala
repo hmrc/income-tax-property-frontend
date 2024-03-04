@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.furnishedholidaylettings.income
 
-import controllers.routes
+import controllers.furnishedholidaylettings.income.routes
 import models.{CheckMode, UserAnswers}
-import pages.FhlIsNonUKLandlordPage
+import pages.furnishedholidaylettings.income.FhlDeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object FhlIsNonUKLandlordSummary  {
+object FhlDeductingTaxSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(FhlIsNonUKLandlordPage).map {
+    answers.get(FhlDeductingTaxPage).map {
       answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
-
         SummaryListRowViewModel(
-          key     = "fhlIsNonUKLandlord.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key     = "fhlDeductingTax.checkYourAnswersLabel",
+          value   = ValueViewModel(answer.toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.FhlIsNonUKLandlordController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("fhlIsNonUKLandlord.change.hidden"))
+            ActionItemViewModel("site.change", routes.FhlDeductingTaxController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("fhlDeductingTax.change.hidden"))
           )
         )
     }
