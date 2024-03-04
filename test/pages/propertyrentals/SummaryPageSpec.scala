@@ -17,8 +17,10 @@
 package pages.propertyrentals
 
 import base.SpecBase
+import models.TotalIncome.writes
 import models.{NormalMode, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import pages.furnishedholidaylettings.FhlJointlyLetPage
 import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -135,6 +137,12 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "about_link"
     )
+    val incomeListItem = TaskListItem(
+      "summary.income",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.InProgress,
+      "income_link"
+    )
     "return empty rows, given an empty user data" in {
       SummaryPage.createFHLRows(Some(emptyUserAnswers), taxYear, cashOrAccruals).length should be(0)
     }
@@ -148,6 +156,18 @@ class SummaryPageSpec extends SpecBase {
       SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
       SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(summaryItem)
 
+    }
+
+    "should return all rows when ClaimPropertyIncomeAllowancePage exist in the user data" in {
+      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
+      ).success.value.set(FhlJointlyLetPage, true).success.value
+
+      val res = Seq(summaryItem, incomeListItem)
+
+      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(2)
+      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
     }
 
   }

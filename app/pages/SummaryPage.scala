@@ -19,7 +19,7 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.furnishedholidaylettings.FhlMoreThanOnePage
+import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
@@ -60,9 +60,20 @@ case object SummaryPage {
       if (userAnswers.flatMap(_.get(FhlMoreThanOnePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
     )
-    val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
+    val fhlIncome: TaskListItem = fhlIncomeItem(userAnswers, taxYear)
 
-    if (isPropertyRentalsSelected) Seq(fhlAbout) else Seq.empty[TaskListItem]
+    val isFurnishedHolidayLettingsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
+    val fhlReliefOrExpenses = userAnswers.flatMap(_.get(FhlJointlyLetPage)).isDefined
+
+    if (isFurnishedHolidayLettingsSelected){
+      if (fhlReliefOrExpenses) {
+        Seq(fhlAbout, fhlIncome)
+      } else {
+        Seq(fhlAbout)
+      }
+    } else {
+      Seq.empty[TaskListItem]
+    }
   }
 
   private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
@@ -120,6 +131,15 @@ case object SummaryPage {
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
+    )
+  }
+
+  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+    TaskListItem(
+      "summary.income",
+      controllers.routes.SummaryController.show(taxYear),
+      if (userAnswers.flatMap(_.get(FhlJointlyLetPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      "income_link"
     )
   }
 
