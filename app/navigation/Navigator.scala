@@ -24,14 +24,16 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.furnishedholidaylettings.income.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
-import pages.premiumlease.{LeasePremiumPaymentPage, CalculatedFigureYourselfPage}
+import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
 import pages.structurebuildingallowance._
@@ -106,6 +108,8 @@ class Navigator @Inject()() {
 
     case FhlReliefOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
     case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+
+    case FhlIsNonUKLandlordPage => taxYear => _ => _ => FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
