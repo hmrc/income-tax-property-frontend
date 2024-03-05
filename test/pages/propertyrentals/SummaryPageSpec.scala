@@ -39,7 +39,7 @@ class SummaryPageSpec extends SpecBase {
     )
     val incomeListItem = TaskListItem(
       "summary.income",
-      controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
+      controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
       TaskListTag.InProgress,
       "income_link"
     )

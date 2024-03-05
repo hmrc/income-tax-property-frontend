@@ -21,9 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.{DeductingTaxSummary, ReversePremiumsReceivedSummary}
-import viewmodels.checkAnswers.propertyrentals.{IncomeFromPropertyRentalsSummary, IsNonUKLandlordSummary, OtherIncomeFromPropertySummary}
 import viewmodels.checkAnswers.premiumlease._
+import viewmodels.checkAnswers.propertyrentals.income.{DeductingTaxSummary, IncomeFromPropertyRentalsSummary, IsNonUKLandlordSummary, OtherIncomeFromPropertySummary, ReversePremiumsReceivedSummary}
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.CheckYourAnswersView
 

@@ -20,8 +20,9 @@ import base.SpecBase
 import models.TotalIncome.{Over, Under}
 import models.TotalIncomeUtils.{isTotalIncomeUnder85K, maxPropertyIncomeAllowanceCombined, totalIncome}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
-import pages.{IncomeFromPropertyRentalsPage, TotalIncomePage}
+import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
+import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
 
 class TotalIncomeUtilSpec extends SpecBase {
   "Total Income util" - {

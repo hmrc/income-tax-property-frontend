@@ -17,24 +17,25 @@
 package navigation
 
 import base.SpecBase
-import controllers.premiumlease.routes._
-import controllers.propertyrentals.routes._
-import controllers.propertyrentals.expenses.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
+import controllers.premiumlease.routes._
+import controllers.propertyrentals.expenses.routes._
+import controllers.propertyrentals.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaAddressPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
-import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
-import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page, IsNonUKLandlordPage}
-import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
+import pages.furnishedholidaylettings._
+import pages.premiumlease._
+import pages.propertyrentals.expenses._
+import pages.propertyrentals.income._
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 
 import java.time.LocalDate
 
@@ -108,7 +109,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           LeasePremiumPaymentPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
@@ -124,7 +125,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           CalculatedFigureYourselfPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
@@ -142,7 +143,7 @@ class NavigatorSpec extends SpecBase {
       "must go from reverse to OtherIncomeFromPropertyPage" in {
         navigator.nextPage(
           ReversePremiumsReceivedPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
       }
 
 
@@ -161,7 +162,7 @@ class NavigatorSpec extends SpecBase {
       "must go from DeductingTax to IncomeFromPropertyRentalsPage" in {
         navigator.nextPage(
           DeductingTaxPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from IncomeFromPropertyRentalsPage to LeasePremiumPaymentPage" in {
@@ -174,14 +175,14 @@ class NavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), userAnswers
-        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
         val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), userAnswers
-        ) mustBe controllers.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from OtherIncomeFromPropertyPage to PropertyIncomeCheckYourAnswersPage" in {
@@ -452,7 +453,7 @@ class NavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
         navigator.nextPage(
           IsNonUKLandlordPage, taxYear, CheckMode, previousUserAnswers, userAnswers
-        ) mustBe controllers.routes.DeductingTaxController.onPageLoad(taxYear, CheckMode)
+        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, CheckMode)
       }
 
       "must go from DeductingTax to CheckYourAnswers" in {

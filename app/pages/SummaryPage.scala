@@ -119,7 +119,7 @@ case object SummaryPage {
   private def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
     TaskListItem(
       "summary.income",
-      controllers.propertyrentals.routes.PropertyIncomeStartController.onPageLoad(taxYear),
+      controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "income_link"
     )

@@ -18,7 +18,7 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.DeductingTax
-import pages.DeductingTaxPage
+import pages.propertyrentals.income.{DeductingTaxPage, IsNonUKLandlordPage}
 
 class IsNonUKLandlordPageSpec extends SpecBase {
 
