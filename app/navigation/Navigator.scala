@@ -19,13 +19,13 @@ package navigation
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.enhancedstructuresbuildingallowance.routes._
+import controllers.furnishedholidaylettings.income.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
-import controllers.propertyrentals.routes._
 import controllers.propertyrentals.income.routes._
+import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
-import controllers.furnishedholidaylettings.income.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
@@ -33,12 +33,10 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
-import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
+import pages.furnishedholidaylettings._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
-import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
-import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
 import play.api.mvc.Call
 
