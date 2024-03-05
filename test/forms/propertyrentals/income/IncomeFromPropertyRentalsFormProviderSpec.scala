@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals.income
 
 import forms.behaviours.IntFieldBehaviours
-import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
 
 class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
 

@@ -14,67 +14,69 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals
+package controllers.propertyrentals.income
 
 import base.SpecBase
-import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
-import models.{NormalMode, OtherIncomeFromProperty, UserAnswers}
+import forms.propertyrentals.income.IsNonUKLandlordFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.income.OtherIncomeFromPropertyPage
-import play.api.data.Form
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.OtherIncomeFromPropertyView
+import views.html.propertyrentals.income.IsNonUKLandlordView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new OtherIncomeFromPropertyFormProvider()
-  val form: Form[OtherIncomeFromProperty] = formProvider("individual")
-  val taxYear: Int = LocalDate.now.getYear
-  val otherIncomeFromProperty: BigDecimal = BigDecimal(12345)
+  private val formProvider = new IsNonUKLandlordFormProvider()
+  private val form = formProvider("individual")
+  private val taxYear = LocalDate.now.getYear
 
-  lazy val otherIncomeFromPropertyRoute: String = routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
+  private lazy val isNonUKLandlordRoute = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode).url
 
-  "incomeFromPropertyRentals Controller" - {
+  "IsNonUKLandlord Controller" - {
 
-    "must return OK if the route is valid" in {
+    "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
+        val request = FakeRequest(GET, isNonUKLandlordRoute)
+
         val result = route(application, request).value
+
+        val view = application.injector.instanceOf[IsNonUKLandlordView]
+
         status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(OtherIncomeFromPropertyPage,
-        OtherIncomeFromProperty(otherIncomeFromProperty)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsNonUKLandlordPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
-        val view = application.injector.instanceOf[OtherIncomeFromPropertyView]
+        val request = FakeRequest(GET, isNonUKLandlordRoute)
+
+        val view = application.injector.instanceOf[IsNonUKLandlordView]
+
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(OtherIncomeFromProperty(otherIncomeFromProperty)), taxYear,
-          NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
       }
     }
 
@@ -94,8 +96,8 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
 
       running(application) {
         val request =
-          FakeRequest(POST, otherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("amount", otherIncomeFromProperty.toString))
+          FakeRequest(POST, isNonUKLandlordRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
@@ -110,12 +112,12 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
 
       running(application) {
         val request =
-          FakeRequest(POST, otherIncomeFromPropertyRoute)
+          FakeRequest(POST, isNonUKLandlordRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[OtherIncomeFromPropertyView]
+        val view = application.injector.instanceOf[IsNonUKLandlordView]
 
         val result = route(application, request).value
 
@@ -124,17 +126,17 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
       }
     }
 
-    "must redirect to recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, otherIncomeFromPropertyRoute)
+        val request = FakeRequest(GET, isNonUKLandlordRoute)
 
         val result = route(application, request).value
 
-        status(result) mustEqual OK
-        //redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -144,7 +146,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
 
       running(application) {
         val request =
-          FakeRequest(POST, otherIncomeFromPropertyRoute)
+          FakeRequest(POST, isNonUKLandlordRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

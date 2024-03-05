@@ -14,63 +14,69 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals.income
 
 import base.SpecBase
-import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.propertyrentals.income.ReversePremiumsReceivedFormProvider
+import models.{NormalMode, ReversePremiumsReceived, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
+import pages.propertyrentals.income.ReversePremiumsReceivedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.IncomeFromPropertyRentalsView
+import views.html.propertyrentals.income.ReversePremiumsReceivedView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class IncomeFromPropertyRentalsControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute = Call("GET", "/property-rentals/deducting-tax")
+  private val taxYear = LocalDate.now.getYear
 
-  val formProvider = new IncomeFromPropertyRentalsFormProvider()
+  val formProvider = new ReversePremiumsReceivedFormProvider()
   val form = formProvider("individual")
-  val taxYear = LocalDate.now.getYear
-  private val incomeFromPropertyRentals = BigDecimal(12345)
-  lazy val incomeFromPropertyRentalsRoute = routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode).url
 
-  "incomeFromPropertyRentals Controller" - {
+  lazy val reversePremiumsReceivedRoute = routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode).url
 
-    "must return OK if the route is valid" in {
+  "ReversePremiumsReceived Controller" - {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+    "must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeFromPropertyRentalsRoute)
+        val request = FakeRequest(GET, reversePremiumsReceivedRoute)
+
         val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ReversePremiumsReceivedView]
+
         status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IncomeFromPropertyRentalsPage, incomeFromPropertyRentals).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReversePremiumsReceivedPage, ReversePremiumsReceived(true, Some(12.34))).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeFromPropertyRentalsRoute)
-        val view = application.injector.instanceOf[IncomeFromPropertyRentalsView]
+        val request = FakeRequest(GET, reversePremiumsReceivedRoute)
+
+        val view = application.injector.instanceOf[ReversePremiumsReceivedView]
+
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(incomeFromPropertyRentals), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(ReversePremiumsReceived(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
@@ -81,7 +87,7 @@ class IncomeFromPropertyRentalsControllerSpec extends SpecBase with MockitoSugar
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -90,8 +96,8 @@ class IncomeFromPropertyRentalsControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeFromPropertyRentalsRoute)
-            .withFormUrlEncodedBody(("incomeFromPropertyRentals", incomeFromPropertyRentals.toString))
+          FakeRequest(POST, reversePremiumsReceivedRoute)
+            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
 
         val result = route(application, request).value
 
@@ -102,45 +108,45 @@ class IncomeFromPropertyRentalsControllerSpec extends SpecBase with MockitoSugar
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeFromPropertyRentalsRoute)
+          FakeRequest(POST, reversePremiumsReceivedRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[IncomeFromPropertyRentalsView]
+        val view = application.injector.instanceOf[ReversePremiumsReceivedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
       }
     }
 
-    "must redirect to recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeFromPropertyRentalsRoute)
+        val request = FakeRequest(GET, reversePremiumsReceivedRoute)
 
         val result = route(application, request).value
 
-        status(result) mustEqual OK
-        //redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeFromPropertyRentalsRoute)
+          FakeRequest(POST, reversePremiumsReceivedRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

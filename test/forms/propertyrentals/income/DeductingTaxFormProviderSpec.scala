@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals.income
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.propertyrentals.income.DeductingTaxFormProvider
 import play.api.data.FormError
 
 class DeductingTaxFormProviderSpec extends BooleanFieldBehaviours {

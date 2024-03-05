@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals
+package forms.propertyrentals.income
 
 import forms.behaviours.CurrencyFieldBehaviours
-import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
 import play.api.data.FormError
 
 class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals
+package forms.propertyrentals.income
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.propertyrentals.income.IsNonUKLandlordFormProvider
 import play.api.data.FormError
 
 class IsNonUKLandlordFormProviderSpec extends BooleanFieldBehaviours {

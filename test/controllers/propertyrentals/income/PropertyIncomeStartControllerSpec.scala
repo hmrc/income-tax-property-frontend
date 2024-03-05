@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals
+package controllers.propertyrentals.income
 
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.propertyrentals.PropertyIncomeStartView
+import views.html.propertyrentals.income.PropertyIncomeStartView
 
 import java.time.LocalDate
 
