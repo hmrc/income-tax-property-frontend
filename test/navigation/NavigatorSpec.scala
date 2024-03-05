@@ -29,6 +29,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaAddressPage, EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
@@ -377,6 +378,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           FhlClaimPiaOrExpensesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page" in {
+        navigator.nextPage(
+          FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.furnishedholidaylettings.income.routes.FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
       }
     }
 
