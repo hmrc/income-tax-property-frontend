@@ -22,6 +22,7 @@ import controllers.enhancedstructuresbuildingallowance.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.routes._
+import controllers.propertyrentals.income.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
 import controllers.furnishedholidaylettings.income.routes._
@@ -34,8 +35,10 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings.{FhlClaimPiaOrExpensesPage, FhlJointlyLetPage, FhlMainHomePage, FhlMoreThanOnePage, FhlReliefOrExpensesPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
-import pages.propertyrentals.IsNonUKLandlordPage
+import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.expenses._
+import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
 import play.api.mvc.Call
 

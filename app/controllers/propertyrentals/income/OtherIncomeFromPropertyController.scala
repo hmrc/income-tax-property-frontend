@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals
+package controllers.propertyrentals.income
 
 import controllers.actions._
-import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
+import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.OtherIncomeFromPropertyPage
+import pages.propertyrentals.income.OtherIncomeFromPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.OtherIncomeFromPropertyView
+import views.html.propertyrentals.income.OtherIncomeFromPropertyView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

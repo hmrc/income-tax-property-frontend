@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals
+package controllers.propertyrentals.income
 
 import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.propertyrentals.PropertyIncomeStartView
+import views.html.propertyrentals.income.PropertyIncomeStartView
 
 import javax.inject.Inject
 

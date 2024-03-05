@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package pages
+package pages.propertyrentals.income
 
-import models.{ReversePremiumsReceived, UserAnswers}
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import models.{ReversePremiumsReceived, UserAnswers}
+import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 

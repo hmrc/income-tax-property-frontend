@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import models.UserAnswers
-import pages.IncomeFromPropertyRentalsPage
+import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.propertyrentals.expenses.ExpensesStartView

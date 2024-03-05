@@ -17,6 +17,7 @@
 package forms.propertyrentals
 
 import forms.behaviours.BooleanFieldBehaviours
+import forms.propertyrentals.income.IsNonUKLandlordFormProvider
 import play.api.data.FormError
 
 class IsNonUKLandlordFormProviderSpec extends BooleanFieldBehaviours {

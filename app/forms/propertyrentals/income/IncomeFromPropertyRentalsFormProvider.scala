@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.propertyrentals.income
 
 import forms.mappings.Mappings
 import play.api.data._

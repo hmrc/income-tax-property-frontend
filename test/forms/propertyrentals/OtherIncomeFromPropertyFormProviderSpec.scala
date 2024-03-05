@@ -17,6 +17,7 @@
 package forms.propertyrentals
 
 import forms.behaviours.CurrencyFieldBehaviours
+import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
 import play.api.data.FormError
 
 class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {

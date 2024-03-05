@@ -14,58 +14,58 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals.income
 
 import controllers.actions._
-import forms.ReversePremiumsReceivedFormProvider
-import javax.inject.Inject
+import forms.propertyrentals.income.IsNonUKLandlordFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ReversePremiumsReceivedPage
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ReversePremiumsReceivedView
+import views.html.propertyrentals.income.IsNonUKLandlordView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReversePremiumsReceivedController @Inject()(
+class IsNonUKLandlordController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: ReversePremiumsReceivedFormProvider,
+                                         formProvider: IsNonUKLandlordFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ReversePremiumsReceivedView
+                                         view: IsNonUKLandlordView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ReversePremiumsReceivedPage) match {
+
+      val preparedForm = request.userAnswers.get(IsNonUKLandlordPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReversePremiumsReceivedPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsNonUKLandlordPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReversePremiumsReceivedPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(IsNonUKLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.propertyrentals.income
 
-import controllers.routes.ReversePremiumsReceivedController
 import models.{CheckMode, ReversePremiumsReceived, UserAnswers}
-import pages.ReversePremiumsReceivedPage
+import pages.propertyrentals.income.ReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+import controllers.propertyrentals.income.routes
 
 
 object ReversePremiumsReceivedSummary {
@@ -35,7 +35,7 @@ object ReversePremiumsReceivedSummary {
           key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
           )))
       case ReversePremiumsReceived(false, _) =>
@@ -43,7 +43,7 @@ object ReversePremiumsReceivedSummary {
           key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
           )
         ))

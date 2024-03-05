@@ -17,9 +17,10 @@
 package models
 
 import models.TotalIncome.{Between, Under}
-import pages.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage, TotalIncomePage}
+import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage}
+import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
 
 object TotalIncomeUtils {
 

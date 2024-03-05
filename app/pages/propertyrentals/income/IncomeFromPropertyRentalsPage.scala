@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals
+package pages.propertyrentals.income
 
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.UserAnswers
-import pages.{DeductingTaxPage, QuestionPage}
+import pages.QuestionPage
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object IsNonUKLandlordPage extends QuestionPage[Boolean] {
+case object IncomeFromPropertyRentalsPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "isNonUKLandlord"
+  override def toString: String = "incomeFromPropertyRentals"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => super.cleanup(value, userAnswers)
-      case false => userAnswers.remove(DeductingTaxPage)
-    }.getOrElse(super.cleanup(value, userAnswers))
+  override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] = {
+    if (isTotalIncomeUnder85K(userAnswers)) super.cleanup(value, userAnswers)
+    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+      userAnswers.remove(ConsolidatedExpensesPage)
+    else
+      super.cleanup(value, userAnswers)
+  }
 }

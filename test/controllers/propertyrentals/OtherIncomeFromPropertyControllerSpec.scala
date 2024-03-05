@@ -17,14 +17,14 @@
 package controllers.propertyrentals
 
 import base.SpecBase
-import forms.propertyrentals.OtherIncomeFromPropertyFormProvider
+import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
 import models.{NormalMode, OtherIncomeFromProperty, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.OtherIncomeFromPropertyPage
+import pages.propertyrentals.income.OtherIncomeFromPropertyPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call

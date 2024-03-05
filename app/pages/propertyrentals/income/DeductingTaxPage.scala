@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.propertyrentals.income
 
 import models.DeductingTax
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object DeductingTaxPage extends QuestionPage[DeductingTax] {

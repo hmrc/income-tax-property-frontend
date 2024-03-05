@@ -17,13 +17,13 @@
 package controllers
 
 import base.SpecBase
-import forms.ReversePremiumsReceivedFormProvider
+import forms.propertyrentals.income.ReversePremiumsReceivedFormProvider
 import models.{NormalMode, ReversePremiumsReceived, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ReversePremiumsReceivedPage
+import pages.propertyrentals.income.ReversePremiumsReceivedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

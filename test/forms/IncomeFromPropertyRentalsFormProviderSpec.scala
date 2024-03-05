@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.IntFieldBehaviours
+import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
 
 class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
 

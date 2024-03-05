@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.propertyrentals
+package viewmodels.checkAnswers.propertyrentals.income
 
-import controllers.propertyrentals.routes.IsNonUKLandlordController
 import models.{CheckMode, UserAnswers}
-import pages.propertyrentals.IsNonUKLandlordPage
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+import controllers.propertyrentals.income.routes
 
 object IsNonUKLandlordSummary {
 
@@ -37,7 +37,7 @@ object IsNonUKLandlordSummary {
           key = KeyViewModel("isNonUKLandlord.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", IsNonUKLandlordController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.IsNonUKLandlordController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("isNonUKLandlord.change.hidden"))
           )
         )

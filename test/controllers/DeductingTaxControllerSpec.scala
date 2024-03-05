@@ -17,13 +17,13 @@
 package controllers
 
 import base.SpecBase
-import forms.DeductingTaxFormProvider
+import forms.propertyrentals.income.DeductingTaxFormProvider
 import models.{DeductingTax, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.DeductingTaxPage
+import pages.propertyrentals.income.DeductingTaxPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

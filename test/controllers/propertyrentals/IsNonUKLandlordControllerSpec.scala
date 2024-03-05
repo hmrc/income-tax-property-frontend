@@ -18,13 +18,13 @@ package controllers.propertyrentals
 
 import base.SpecBase
 import controllers.{propertyrentals, routes}
-import forms.propertyrentals.IsNonUKLandlordFormProvider
+import forms.propertyrentals.income.IsNonUKLandlordFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.IsNonUKLandlordPage
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

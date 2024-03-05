@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.propertyrentals.income
 
-import controllers.routes
+import controllers.propertyrentals.income.routes
 import models.{CheckMode, DeductingTax, UserAnswers}
-import pages.DeductingTaxPage
+import pages.propertyrentals.income.DeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}

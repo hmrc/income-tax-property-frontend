@@ -14,60 +14,58 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.propertyrentals.income
 
 import controllers.actions._
-import forms.DeductingTaxFormProvider
-import models.{Mode, UserAnswers}
+import forms.propertyrentals.income.ReversePremiumsReceivedFormProvider
+import models.Mode
 import navigation.Navigator
-import pages.DeductingTaxPage
+import pages.propertyrentals.income.ReversePremiumsReceivedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.DeductingTaxView
+import views.html.propertyrentals.income.ReversePremiumsReceivedView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeductingTaxController @Inject()(
+class ReversePremiumsReceivedController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: DeductingTaxFormProvider,
-                                         sessionService: SessionService,
+                                         formProvider: ReversePremiumsReceivedFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: DeductingTaxView
+                                         view: ReversePremiumsReceivedView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
+
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage) match {
+      val preparedForm = request.userAnswers.get(ReversePremiumsReceivedPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReversePremiumsReceivedPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ReversePremiumsReceivedPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
