@@ -365,3 +365,8 @@ GET        /:taxYear/furnished-holiday-lettings/is-non-uk-landlord              
 POST       /:taxYear/furnished-holiday-lettings/is-non-uk-landlord                  controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord           controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord           controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/furnished-holiday-lettings/fhl-income                          controllers.FhlIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/furnished-holiday-lettings/fhl-income                          controllers.FhlIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/furnished-holiday-lettings/changeFhlIncome                     controllers.FhlIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/furnished-holiday-lettings/changeFhlIncome                     controllers.FhlIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
