@@ -20,7 +20,7 @@ import base.SpecBase
 import models.TotalIncome.writes
 import models.{NormalMode, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
-import pages.furnishedholidaylettings.FhlJointlyLetPage
+import pages.furnishedholidaylettings.FhlMainHomePage
 import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -162,7 +162,7 @@ class SummaryPageSpec extends SpecBase {
       val userAnswersWithPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
         Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
-      ).success.value.set(FhlJointlyLetPage, true).success.value
+      ).success.value.set(FhlMainHomePage, true).success.value
 
       val res = Seq(summaryItem, incomeListItem)
 
