@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package forms
+package forms.about
 
-import forms.behaviours.BooleanFieldBehaviours
-import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
+import forms.behaviours.OptionFieldBehaviours
+import models.TotalIncome
 import play.api.data.FormError
 
-class SbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviours {
+class TotalIncomeFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "sbaRemoveConfirmation.error.required.agent"
-  val invalidKey = "error.boolean"
+  val form = new TotalIncomeFormProvider()()
 
-  val form = new SbaRemoveConfirmationFormProvider()("agent")
+  ".value" - {
 
-  ".sbaRemoveConfirmation" - {
+    val fieldName = "value"
+    val requiredKey = "totalIncome.error.required"
 
-    val fieldName = "sbaRemoveConfirmation"
-
-    behave like booleanField(
+    behave like optionsField[TotalIncome](
       form,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      validValues  = TotalIncome.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(

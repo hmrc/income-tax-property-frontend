@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import base.SpecBase
 import models.User
@@ -33,7 +33,7 @@ import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core._
 import viewmodels.UKPropertyDetailsPage
-import views.html.UKPropertyDetailsView
+import views.html.about.UKPropertyDetailsView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -128,7 +128,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
         val request = FakeRequest(GET, routes.UKPropertyDetailsController.onPageLoad(taxYear).url)
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustEqual Some(routes.SummaryController.show(taxYear).url)
+        redirectLocation(result) mustEqual Some(controllers.routes.SummaryController.show(taxYear).url)
       }
     }
   }

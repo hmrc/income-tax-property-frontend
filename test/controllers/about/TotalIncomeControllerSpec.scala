@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import base.SpecBase
 import forms.about.TotalIncomeFormProvider
@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.TotalIncomeView
+import views.html.about.TotalIncomeView
 
 import java.time.LocalDate
 import scala.concurrent.Future

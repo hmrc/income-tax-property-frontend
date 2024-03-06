@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package forms
+package forms.structurebuildingallowance
 
-import forms.about.TotalIncomeFormProvider
-import forms.behaviours.OptionFieldBehaviours
-import models.TotalIncome
+import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class TotalIncomeFormProviderSpec extends OptionFieldBehaviours {
+class SbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviours {
 
-  val form = new TotalIncomeFormProvider()()
+  val requiredKey = "sbaRemoveConfirmation.error.required.agent"
+  val invalidKey = "error.boolean"
 
-  ".value" - {
+  val form = new SbaRemoveConfirmationFormProvider()("agent")
 
-    val fieldName = "value"
-    val requiredKey = "totalIncome.error.required"
+  ".sbaRemoveConfirmation" - {
 
-    behave like optionsField[TotalIncome](
+    val fieldName = "sbaRemoveConfirmation"
+
+    behave like booleanField(
       form,
       fieldName,
-      validValues  = TotalIncome.values,
-      invalidError = FormError(fieldName, "error.invalid")
+      invalidError = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(

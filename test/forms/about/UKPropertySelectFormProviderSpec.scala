@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package forms
+package forms.about
 
-import forms.about.UKPropertyFormProvider
 import forms.behaviours.CheckboxFieldBehaviours
 import models.UKPropertySelect
 import play.api.data.FormError

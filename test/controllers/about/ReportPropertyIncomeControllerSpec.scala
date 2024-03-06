@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import base.SpecBase
 import forms.about.ReportPropertyIncomeFormProvider
@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ReportPropertyIncomeView
+import views.html.about.ReportPropertyIncomeView
 
 import scala.concurrent.Future
 
@@ -137,7 +137,7 @@ class ReportPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -153,7 +153,7 @@ class ReportPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
