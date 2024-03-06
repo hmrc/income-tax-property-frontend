@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.about
+
+import forms.mappings.Mappings
+import models.TotalIncome
+import play.api.data.Form
 
 import javax.inject.Inject
 
-import forms.mappings.Mappings
-import play.api.data.Form
+class TotalIncomeFormProvider @Inject() extends Mappings {
 
-class ReportPropertyIncomeFormProvider @Inject() extends Mappings {
-
-  def apply(individualOrAgent: String): Form[Boolean] =
+  def apply(): Form[TotalIncome] =
     Form(
-      "reportPropertyIncome" -> boolean(s"reportPropertyIncome.error.required.$individualOrAgent")
+      "value" -> enumerable[TotalIncome]("totalIncome.error.required")
     )
 }

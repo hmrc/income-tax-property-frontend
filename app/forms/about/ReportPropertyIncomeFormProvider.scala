@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.about
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.data.Forms.set
-import models.UKPropertySelect
 
-class UKPropertyFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  def apply(): Form[Set[UKPropertySelect]] =
+class ReportPropertyIncomeFormProvider @Inject() extends Mappings {
+
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> set(enumerable[UKPropertySelect]("ukPropertySelect.error.required")).verifying(nonEmptySet("ukPropertySelect.error.required"))
+      "reportPropertyIncome" -> boolean(s"reportPropertyIncome.error.required.$individualOrAgent")
     )
 }

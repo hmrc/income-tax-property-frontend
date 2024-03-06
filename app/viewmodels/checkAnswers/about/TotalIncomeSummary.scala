@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.about
 
-import controllers.routes
+import controllers.about.routes
 import models.{CheckMode, UserAnswers}
 import pages.TotalIncomePage
 import play.api.i18n.Messages

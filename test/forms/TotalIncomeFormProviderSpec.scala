@@ -16,6 +16,7 @@
 
 package forms
 
+import forms.about.TotalIncomeFormProvider
 import forms.behaviours.OptionFieldBehaviours
 import models.TotalIncome
 import play.api.data.FormError

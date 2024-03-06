@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import controllers.actions._
-import forms.UKPropertyFormProvider
-import javax.inject.Inject
+import forms.about.UKPropertyFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.UKPropertyPage
@@ -26,8 +25,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.UKPropertySelectView
+import views.html.about.UKPropertySelectView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class UKPropertySelectController @Inject()(

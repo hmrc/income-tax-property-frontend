@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.UKPropertyFormProvider
+import forms.about.UKPropertyFormProvider
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any

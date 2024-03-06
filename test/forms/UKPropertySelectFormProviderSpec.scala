@@ -16,6 +16,7 @@
 
 package forms
 
+import forms.about.UKPropertyFormProvider
 import forms.behaviours.CheckboxFieldBehaviours
 import models.UKPropertySelect
 import play.api.data.FormError

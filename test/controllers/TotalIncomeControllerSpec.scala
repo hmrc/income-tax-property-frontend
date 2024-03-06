@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.TotalIncomeFormProvider
+import forms.about.TotalIncomeFormProvider
 import models.{NormalMode, TotalIncome, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
