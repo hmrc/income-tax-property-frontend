@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import base.SpecBase
-import forms.UKPropertyFormProvider
+import forms.about.UKPropertyFormProvider
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -33,7 +33,7 @@ import testHelpers.FakeAuthConnector
 import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.{AuthConnector, ConfidenceLevel}
-import views.html.UKPropertySelectView
+import views.html.about.UKPropertySelectView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -157,7 +157,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -178,7 +178,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

@@ -20,25 +20,25 @@ GET         /unauthorised                                                       
 
 GET         /:taxYear/summary                                                         controllers.SummaryController.show(taxYear: Int)
 
-GET         /:taxYear/uk-property-details                                             controllers.UKPropertyDetailsController.onPageLoad(taxYear: Int)
+GET         /:taxYear/uk-property-details                                             controllers.about.UKPropertyDetailsController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/total-income                                                    controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/total-income                                                    controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/total-income                                                    controllers.about.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/total-income                                                    controllers.about.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
-GET         /:taxYear/change-total-income                                             controllers.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-total-income                                             controllers.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/change-total-income                                             controllers.about.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-total-income                                             controllers.about.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/uk-property-select                                              controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-property-select                                              controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-uk-property-select                                       controllers.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-uk-property-select                                       controllers.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-property-select                                              controllers.about.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-property-select                                              controllers.about.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-uk-property-select                                       controllers.about.UKPropertySelectController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-uk-property-select                                       controllers.about.UKPropertySelectController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/report-property-income                                          controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/report-property-income                                          controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-report-property-income                                   controllers.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-report-property-income                                   controllers.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/report-property-income                                          controllers.about.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/report-property-income                                          controllers.about.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/change-report-property-income                                   controllers.about.ReportPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/change-report-property-income                                   controllers.about.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/check-your-answers                                              controllers.CheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /:taxYear/check-your-answers                                              controllers.about.CheckYourAnswersController.onPageLoad(taxYear: Int)
 
 ############## Property rentals
 
@@ -82,7 +82,7 @@ POST        /:taxYear/property-rentals/other-income-from-property               
 GET         /:taxYear/property-rentals/change-other-income-from-property              controllers.propertyrentals.income.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/property-rentals/change-other-income-from-property              controllers.propertyrentals.income.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/property-rentals/income-check-your-answers                      controllers.propertyrentals.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
+GET         /:taxYear/property-rentals/income-check-your-answers                      controllers.propertyrentals.income.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
 
 
 ############## Premium lease

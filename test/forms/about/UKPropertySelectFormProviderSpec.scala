@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package forms
+package forms.about
 
-import forms.behaviours.OptionFieldBehaviours
-import models.TotalIncome
+import forms.behaviours.CheckboxFieldBehaviours
+import models.UKPropertySelect
 import play.api.data.FormError
 
-class TotalIncomeFormProviderSpec extends OptionFieldBehaviours {
+class UKPropertySelectFormProviderSpec extends CheckboxFieldBehaviours {
 
-  val form = new TotalIncomeFormProvider()()
+  val form = new UKPropertyFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
-    val requiredKey = "totalIncome.error.required"
+    val requiredKey = "ukPropertySelect.error.required"
 
-    behave like optionsField[TotalIncome](
+    behave like checkboxField[UKPropertySelect](
       form,
       fieldName,
-      validValues  = TotalIncome.values,
-      invalidError = FormError(fieldName, "error.invalid")
+      validValues  = UKPropertySelect.values,
+      invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like mandatoryField(
+    behave like mandatoryCheckboxField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      requiredKey
     )
   }
 }

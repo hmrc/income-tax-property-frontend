@@ -25,6 +25,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
+import controllers.about.routes._
 import controllers.structuresbuildingallowance.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._

@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.about
 
 import controllers.actions._
-import forms.TotalIncomeFormProvider
-
-import javax.inject.Inject
+import forms.about.TotalIncomeFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.TotalIncomePage
@@ -27,8 +25,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.TotalIncomeView
+import views.html.about.TotalIncomeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TotalIncomeController @Inject()(
