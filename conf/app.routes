@@ -374,4 +374,4 @@ POST       /:taxYear/furnished-holiday-lettings/change-fhl-income               
 GET        /:taxYear/furnished-holiday-lettings/fhl-income-intro                    controllers.FhlIncomeIntroController.onPageLoad(taxYear: Int)
 
 
-GET        /:taxYear/furnished-holiday-lettings/income-check-your-answers           controllers.FhlIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
+GET        /:taxYear/furnished-holiday-lettings/income-check-your-answers           controllers.furnishedholidaylettings.income.FhlIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)

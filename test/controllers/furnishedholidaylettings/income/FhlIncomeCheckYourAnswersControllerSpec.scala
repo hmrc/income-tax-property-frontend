@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.furnishedholidaylettings.income
 
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
-import views.html.FhlIncomeCheckYourAnswersView
+import views.html.furnishedholidaylettings.income.FhlIncomeCheckYourAnswersView
 
 class FhlIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
