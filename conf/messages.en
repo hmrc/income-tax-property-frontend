@@ -1404,6 +1404,26 @@ fhlIsNonUKLandlord.details.content.link.intro = Read more about
 fhlIsNonUKLandlord.details.content.link.text = tax on your UK income if you live abroad (opens in new tab)
 fhlIsNonUKLandlord.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
 
+fhlIncome.title = FhlIncome
+fhlIncome.heading = Furnished holiday lettings income
+fhlIncome.checkYourAnswersLabel = Furnished holiday lettings income
+fhlIncome.div.content.individual = If your furnished holiday letting is jointly owned just tell us about your portion of the rental income. Include any payouts that you received from insurance policies.
+fhlIncome.div.content.agent = If your client's furnished holiday letting is jointly owned just tell us about their portion of the rental income. Include any payouts that your client received from insurance policies.
+fhlIncome.details.content.link.intro = Read more about
+fhlIncome.details.content.link.href = https://www.gov.uk/government/publications/furnished-holiday-lettings-hs253-self-assessment-helpsheet/hs253-furnished-holiday-lettings-2021
+fhlIsNonUKLandlord.details.content.link.text = furnished holiday lettings at GOV.UK (opens in new tab).
+fhlIncome.input.heading.individual = How much total income did you receive from all of your furnished holiday lettings?
+fhlIncome.input.heading.agent = How much total income did your client receive from all of their furnished holiday lettings?
+fhlIncome.hint.individual = This is your gross income before any deductions
+fhlIncome.hint.agent = This is your client's gross income before any deductions
+fhlIncome.error.nonNumeric.individual = Your total income from property rentals can only include pounds and pence, for example £600 or £600.20
+fhlIncome.error.nonNumeric.agent = The amount that your client received from all of their furnished holiday lettings can only include pounds and pence, for example £600 or £600.20
+fhlIncome.error.required.individual = Enter the amount for your total income from property rentals
+fhlIncome.error.required.agent = Enter the amount for your total income from property rentals
+fhlIncome.error.outOfRange.individual = Enter an amount between {0} and {1}
+fhlIncome.error.outOfRange.agent = Enter an amount between {0} and {1}
+fhlIncome.change.hidden = FhlIncome
+
 fhlIncomeIntro.title = Furnished holiday lettings income
 fhlIncomeIntro.heading = Furnished holiday lettings income
 fhlIncomeIntro.content.para1.individual = In this section you'll need to have these figures for all of your properties:
@@ -1411,3 +1431,4 @@ fhlIncomeIntro.content.para1.agent = In this section you'll need to have these f
 fhlIncomeIntro.details.l1 = rental income
 fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
 fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.
+

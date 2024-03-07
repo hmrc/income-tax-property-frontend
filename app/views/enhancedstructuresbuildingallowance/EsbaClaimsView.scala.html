@@ -29,7 +29,7 @@
 
 @(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"EsbaClaims.title.$individualOrAgent"))) {
+@layout(pageTitle = title(form, messages(s"esbaClaims.title.$individualOrAgent"))) {
 
     @formHelper(action = routes.EsbaClaimsController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
