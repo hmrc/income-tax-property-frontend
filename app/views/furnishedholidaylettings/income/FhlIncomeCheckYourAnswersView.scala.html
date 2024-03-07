@@ -24,6 +24,8 @@
 
     @layout(pageTitle = titleNoForm(messages("checkYourAnswers.heading"))) {
 
+        <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
+
         <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
         @govukSummaryList(list)
 
