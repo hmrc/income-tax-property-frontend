@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package forms.about
+
+import forms.mappings.Mappings
+import models.UKPropertySelect
+import play.api.data.Form
+import play.api.data.Forms.set
 
 import javax.inject.Inject
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.TotalIncome
+class UKPropertyFormProvider @Inject() extends Mappings {
 
-class TotalIncomeFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[TotalIncome] =
+  def apply(): Form[Set[UKPropertySelect]] =
     Form(
-      "value" -> enumerable[TotalIncome]("totalIncome.error.required")
+      "value" -> set(enumerable[UKPropertySelect]("ukPropertySelect.error.required")).verifying(nonEmptySet("ukPropertySelect.error.required"))
     )
 }

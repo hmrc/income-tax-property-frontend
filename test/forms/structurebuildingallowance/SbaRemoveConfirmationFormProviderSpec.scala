@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package forms
+package forms.structurebuildingallowance
 
-import forms.behaviours.CheckboxFieldBehaviours
-import models.UKPropertySelect
+import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class UKPropertySelectFormProviderSpec extends CheckboxFieldBehaviours {
+class SbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviours {
 
-  val form = new UKPropertyFormProvider()()
+  val requiredKey = "sbaRemoveConfirmation.error.required.agent"
+  val invalidKey = "error.boolean"
 
-  ".value" - {
+  val form = new SbaRemoveConfirmationFormProvider()("agent")
 
-    val fieldName = "value"
-    val requiredKey = "ukPropertySelect.error.required"
+  ".sbaRemoveConfirmation" - {
 
-    behave like checkboxField[UKPropertySelect](
+    val fieldName = "sbaRemoveConfirmation"
+
+    behave like booleanField(
       form,
       fieldName,
-      validValues  = UKPropertySelect.values,
-      invalidError = FormError(s"$fieldName[0]", "error.invalid")
+      invalidError = FormError(fieldName, invalidKey)
     )
 
-    behave like mandatoryCheckboxField(
+    behave like mandatoryField(
       form,
       fieldName,
-      requiredKey
+      requiredError = FormError(fieldName, requiredKey)
     )
   }
 }

@@ -14,43 +14,37 @@
  * limitations under the License.
  *@
 
-@import models.Mode
-@import models.NormalMode
+@import controllers.about.routes
+
 
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukCheckboxes: GovukCheckboxes,
+    govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"ukPropertySelect.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages(s"totalIncome.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.UKPropertySelectController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.TotalIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"ukPropertySelect.heading.${individualOrAgent}")</h1>
-
-        <div class="govuk-hint"> @messages("ukPropertySelect.heading.message") </div>
-
-        @govukCheckboxes(
-            CheckboxesViewModel(
-                form   = form,
-                name   = "value",
-                legend = LegendViewModel("").asPageHeading(),
-                items  = UKPropertySelect.checkboxItems
+        @govukRadios(
+            RadiosViewModel(
+                field  = form("value"),
+                legend = LegendViewModel(messages(s"totalIncome.heading.${individualOrAgent}")).asPageHeading(),
+                items  = TotalIncome.options
             )
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }
