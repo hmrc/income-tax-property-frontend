@@ -16,12 +16,21 @@
 
 package pages.furnishedholidaylettings.income
 
+import models.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object FhlIsNonUKLandlordPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "fhlIsNonUKLandlord"
+
+    override def cleanup(nonUkLandlord: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    nonUkLandlord.fold(super.cleanup(nonUkLandlord, userAnswers)) {
+      case true  => super.cleanup(nonUkLandlord, userAnswers)
+      case false => userAnswers.remove(FhlDeductingTaxPage)
+    }
 }
