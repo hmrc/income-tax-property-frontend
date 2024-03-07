@@ -1403,3 +1403,11 @@ fhlIsNonUKLandlord.l3 = were a UK resident for tax purposes, but lived outside t
 fhlIsNonUKLandlord.details.content.link.intro = Read more about
 fhlIsNonUKLandlord.details.content.link.text = tax on your UK income if you live abroad (opens in new tab)
 fhlIsNonUKLandlord.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
+
+fhlIncomeIntro.title = Furnished holiday lettings income
+fhlIncomeIntro.heading = Furnished holiday lettings income
+fhlIncomeIntro.content.para1.individual = In this section you'll need to have these figures for all of your properties:
+fhlIncomeIntro.content.para1.agent = In this section you'll need to have these figures for all of your client's properties:
+fhlIncomeIntro.details.l1 = rental income
+fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
+fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.

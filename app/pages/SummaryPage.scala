@@ -19,7 +19,7 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlMoreThanOnePage}
+import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
@@ -63,10 +63,10 @@ case object SummaryPage {
     val fhlIncome: TaskListItem = fhlIncomeItem(userAnswers, taxYear)
 
     val isFurnishedHolidayLettingsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
-    val fhlReliefOrExpenses = userAnswers.flatMap(_.get(FhlJointlyLetPage)).isDefined
+    val fhlFhlMainHome = userAnswers.flatMap(_.get(FhlMainHomePage)).isDefined
 
     if (isFurnishedHolidayLettingsSelected){
-      if (fhlReliefOrExpenses) {
+      if (fhlFhlMainHome) {
         Seq(fhlAbout, fhlIncome)
       } else {
         Seq(fhlAbout)
@@ -138,7 +138,7 @@ case object SummaryPage {
     TaskListItem(
       "summary.income",
       controllers.routes.SummaryController.show(taxYear),
-      if (userAnswers.flatMap(_.get(FhlJointlyLetPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(FhlMainHomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "income_link"
     )
   }
