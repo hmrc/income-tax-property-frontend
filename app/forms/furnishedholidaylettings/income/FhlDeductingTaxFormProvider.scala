@@ -40,7 +40,7 @@ class FhlDeductingTaxFormProvider @Inject() extends Mappings {
               s"fhlDeductingTax.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"fhlDeductingTax.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum),
-                s"fhlDeductingTax.amount.error.outOfRange"))
+                "fhlDeductingTax.amount.error.outOfRange"))
           )
         }
       )(DeductingTax.apply)(DeductingTax.unapply)

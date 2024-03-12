@@ -33,7 +33,7 @@ class PrivateUseAdjustmentFormProvider @Inject() extends Mappings {
             s"privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.$individualOrAgent",
             s"privateUseAdjustmentAmount.amount.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-              s"privateUseAdjustmentAmount.amount.error.outOfRange"))
+              "privateUseAdjustmentAmount.amount.error.outOfRange"))
     )(PrivateUseAdjustment.apply)(PrivateUseAdjustment.unapply))
   }
 }

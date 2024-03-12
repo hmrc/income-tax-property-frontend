@@ -36,7 +36,7 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
             s"calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.$individualOrAgent",
             s"calculatedFigureYourselfAmount.amount.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-              s"calculatedFigureYourselfAmount.amount.error.outOfRange"))
+              "calculatedFigureYourselfAmount.amount.error.outOfRange"))
         )
       }
     )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))

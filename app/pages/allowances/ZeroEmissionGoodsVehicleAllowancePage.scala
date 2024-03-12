@@ -17,7 +17,6 @@
 package pages.allowances
 
 import pages.QuestionPage
-import play.api.libs.json.JsPath
 
 import play.api.libs.json.JsPath
 

@@ -16,7 +16,6 @@
 
 package pages.enhancedstructuresbuildingallowance
 
-import pages.PageConstants
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 

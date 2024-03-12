@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import navigation.Navigator
 import pages.furnishedholidaylettings.{FhlJointlyLetPage, FhlReliefOrExpensesPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.furnishedholidaylettings.FhlReliefOrExpensesView

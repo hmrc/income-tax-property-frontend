@@ -21,7 +21,7 @@ import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
 import models.Mode
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingFormGroupWithIndex, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage, StructuredBuildingAllowanceAddressPage}
+import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingFormGroupWithIndex}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

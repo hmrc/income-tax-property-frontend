@@ -37,7 +37,7 @@ class DeductingTaxFormProvider @Inject() extends Mappings {
               s"deductingTax.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"deductingTax.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                s"deductingTax.amount.error.outOfRange"))
+                "deductingTax.amount.error.outOfRange"))
           )
         }
       )(DeductingTax.apply)(DeductingTax.unapply)

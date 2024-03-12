@@ -39,7 +39,7 @@ class ElectricChargePointAllowanceFormProvider @Inject() extends Mappings {
               s"electricChargePointAllowance.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"electricChargePointAllowance.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum),
-                s"electricChargePointAllowance.amount.error.outOfRange"))
+                "electricChargePointAllowance.amount.error.outOfRange"))
           )
         }
       )(ElectricChargePointAllowance.apply)(ElectricChargePointAllowance.unapply)
