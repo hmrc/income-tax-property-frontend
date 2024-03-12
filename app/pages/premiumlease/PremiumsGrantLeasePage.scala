@@ -23,7 +23,6 @@ import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
-import scala.language.postfixOps
 import scala.util.Try
 
 case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {

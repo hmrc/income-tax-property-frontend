@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.furnishedholidaylettings
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.furnishedholidaylettings.FhlMoreThanOnePage
 import play.api.i18n.Messages

@@ -37,7 +37,7 @@ class RenovationAllowanceBalancingChargeFormProvider @Inject() extends Mappings 
               s"renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"renovationAllowanceBalancingCharge.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                s"renovationAllowanceBalancingCharge.amount.error.outOfRange"))
+                "renovationAllowanceBalancingCharge.amount.error.outOfRange"))
           )
         }
       )(RenovationAllowanceBalancingCharge.apply)(RenovationAllowanceBalancingCharge.unapply)

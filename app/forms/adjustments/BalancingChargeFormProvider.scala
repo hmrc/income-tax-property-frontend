@@ -37,7 +37,7 @@ class BalancingChargeFormProvider @Inject() extends Mappings {
               s"balancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"balancingCharge.amount.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                s"balancingCharge.amount.error.outOfRange"))
+                "balancingCharge.amount.error.outOfRange"))
           )
         }
       )(BalancingCharge.apply)(BalancingCharge.unapply)
