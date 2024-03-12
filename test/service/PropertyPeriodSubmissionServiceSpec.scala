@@ -50,7 +50,7 @@ class PropertyPeriodSubmissionServiceSpec extends SpecBase {
       }
     }
 
-    "return failure when connector returns failure" in {
+    "return FetchedPropertyData with empty JsObject when connector returns failure" in {
       val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
 
       when(
@@ -61,8 +61,9 @@ class PropertyPeriodSubmissionServiceSpec extends SpecBase {
 
       whenReady(resultFromService) { result =>
         result match {
-          case Right(_) => fail("Service should return failure when connector returns failure")
-          case Left(error) => error mustBe resultFromConnector
+          case Right(r) if r.fetchedData.value.isEmpty => succeed
+          case Right(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+          case Left(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
         }
       }
     }
