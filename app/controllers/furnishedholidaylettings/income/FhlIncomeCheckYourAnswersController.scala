@@ -43,7 +43,7 @@ class FhlIncomeCheckYourAnswersController @Inject()(
         rows = Seq(
           FhlIsNonUKLandlordSummary.row(taxYear, request.userAnswers),
           FhlDeductingTaxSummary.row(taxYear, request.userAnswers),
-          FhlIncomeSummary.row(taxYear, request.userAnswers),
+          FhlIncomeSummary.row(taxYear, request.userAnswers)
         ).flatten
       )
 
