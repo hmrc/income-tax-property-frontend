@@ -17,38 +17,51 @@
 package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import pages.SummaryPage
+import controllers.session.PropertyPeriodSessionRecovery
+import models.backend.PropertyDetails
+import models.requests.OptionalDataRequest
+import pages._
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.SessionRepository
+import service.{BusinessService, PropertyPeriodSubmissionService}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
-import service.BusinessService
-import models.backend.PropertyDetails
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class SummaryController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 identify: IdentifierAction,
-                                 getData: DataRetrievalAction,
-                                 view: SummaryView,
-                                 businessService: BusinessService
-                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                   val controllerComponents: MessagesControllerComponents,
+                                   identify: IdentifierAction,
+                                   getData: DataRetrievalAction,
+                                   sessionRecovery: PropertyPeriodSessionRecovery,
+                                   view: SummaryView,
+                                   propertyPeriodSubmissionService: PropertyPeriodSubmissionService,
+                                   sessionRepository: SessionRepository,
+                                   businessService: BusinessService
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
-      businessService.getBusinessDetails(request.user).map {
-        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-          val propertyRentalsRows = SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-          val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-          Ok(view(taxYear, propertyRentalsRows, fhlRows))
-        case _ => Redirect(routes.SummaryController.show(taxYear))
-      }
+      withUpdatedData(taxYear) {
+        businessService.getBusinessDetails(request.user).map {
+          case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+            val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+            val propertyRentalsRows = SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+            val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+            Ok(view(taxYear, propertyRentalsRows, fhlRows))
+          case _ => Redirect(routes.SummaryController.show(taxYear))
+        }
+      }(request, controllerComponents.executionContext, hc)
   }
 
-      private def existsUkProperty(property: PropertyDetails): Boolean =
-        property.incomeSourceType.contains("uk-property") && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
-  }
+  private def existsUkProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains("uk-property") && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 
+  private def withUpdatedData(taxYear: Int)(block: => Future[Result])
+                             (implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
+    sessionRecovery.withUpdatedData(taxYear)(block)
+  }
+}
