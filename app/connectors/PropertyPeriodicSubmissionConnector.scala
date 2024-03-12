@@ -41,7 +41,7 @@ class PropertyPeriodicSubmissionConnector @Inject()(httpClient: HttpClient,
       .map { response: GetPropertyPeriodicSubmissionResponse =>
         if (response.result.isLeft) {
           val correlationId = response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
-          logger.error(s"Error getting business details from the Integration Framework:" +
+          logger.error(s"Error getting property periodic submission from the Integration Framework:" +
             s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}")
         }
         response.result
