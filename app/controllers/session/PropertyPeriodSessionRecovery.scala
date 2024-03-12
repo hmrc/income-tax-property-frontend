@@ -17,20 +17,20 @@
 package controllers.session
 
 import com.google.inject.Inject
+import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models.UserAnswers
 import models.requests.OptionalDataRequest
 import play.api.mvc.{AnyContent, Result}
 import repositories.SessionRepository
 import service.PropertyPeriodSubmissionService
-import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyPeriodSessionRecovery @Inject()(
-                                 propertyPeriodSubmissionService: PropertyPeriodSubmissionService,
-                                 sessionRepository: SessionRepository,
-                               ) {
+                                               propertyPeriodSubmissionService: PropertyPeriodSubmissionService,
+                                               sessionRepository: SessionRepository
+                                             ) {
   def withUpdatedData(taxYear: Int)(block: => Future[Result])
                      (implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
     val currentUserAnswers = request
