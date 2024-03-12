@@ -17,26 +17,36 @@
 package viewmodels.checkAnswers.furnishedholidaylettings.income
 
 import controllers.furnishedholidaylettings.income.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, DeductingTax, UserAnswers}
 import pages.furnishedholidaylettings.income.FhlDeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object FhlDeductingTaxSummary  {
+object FhlDeductingTaxSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(FhlDeductingTaxPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = "fhlDeductingTax.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(FhlDeductingTaxPage).flatMap {
+      case DeductingTax(true, Some(amount)) =>
+        Some(SummaryListRowViewModel(
+          key = KeyViewModel("fhlDeductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.FhlDeductingTaxController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("fhlDeductingTax.change.hidden"))
+          )))
+      case DeductingTax(false, _) =>
+        Some(SummaryListRowViewModel(
+          key = KeyViewModel("fhlDeductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.FhlDeductingTaxController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("fhlDeductingTax.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
+  }
 }

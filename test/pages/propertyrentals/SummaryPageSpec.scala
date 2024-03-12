@@ -139,8 +139,8 @@ class SummaryPageSpec extends SpecBase {
     )
     val incomeListItem = TaskListItem(
       "summary.income",
-      controllers.routes.SummaryController.show(taxYear),
-      TaskListTag.InProgress,
+      controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
       "income_link"
     )
     "return empty rows, given an empty user data" in {

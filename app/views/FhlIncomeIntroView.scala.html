@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import controllers.furnishedholidaylettings.income.routes
+
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
@@ -23,15 +25,16 @@
 
 @layout(pageTitle = titleNoForm(messages("fhlIncomeIntro.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages(s"fhlIncomeIntro.heading")</h1>
-        <p class="govuk-body">@messages(s"fhlIncomeIntro.content.para1.${individualOrAgent}")</p>
-        <ul class="govuk-body">
-            <li>@messages(s"fhlIncomeIntro.details.l1")</li>
-        </ul>
-        <p class="govuk-body">@messages(s"fhlIncomeIntro.content.para2.${individualOrAgent}")</p>
+    <h1 class="govuk-heading-l">@messages(s"fhlIncomeIntro.heading")</h1>
+    <p class="govuk-body">@messages(s"fhlIncomeIntro.content.para1.${individualOrAgent}")</p>
+    <ul class="govuk-body">
+        <li>@messages(s"fhlIncomeIntro.details.l1")</li>
+    </ul>
+    <p class="govuk-body">@messages(s"fhlIncomeIntro.content.para2.${individualOrAgent}")</p>
+
     @govukButton(
         ButtonViewModel(messages("site.continue"))
         .withId("continue")
-        .asLink(controllers.routes.SummaryController.show(taxYear).url)
+        .asLink(routes.FhlIsNonUKLandlordController.onPageLoad(taxYear, NormalMode).url)
     )
 }

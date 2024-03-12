@@ -381,11 +381,20 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
       }
 
-      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page" in {
+      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is true" in {
+        val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, true).get
         navigator.nextPage(
-          FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+          FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.furnishedholidaylettings.income.routes.FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
       }
+
+      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is false" in {
+        val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, false).get
+        navigator.nextPage(
+          FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+        ) mustBe controllers.routes.FhlIncomeController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
 
     "in Check mode" - {

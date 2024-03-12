@@ -33,7 +33,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
+import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.furnishedholidaylettings._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.expenses._
@@ -111,7 +111,9 @@ class Navigator @Inject()() {
     case FhlReliefOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
     case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
 
-    case FhlIsNonUKLandlordPage => taxYear => _ => _ => FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
+    case FhlIsNonUKLandlordPage => taxYear => _ => userAnswers => isFhlNonUKLandlordNavigation(taxYear, userAnswers)
+    case FhlDeductingTaxPage => taxYear => _ => _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
+    case FhlIncomePage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
@@ -176,6 +178,15 @@ class Navigator @Inject()() {
     case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
     case FhlReliefOrExpensesPage => taxYear =>  _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
     case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
+
+
+    case FhlIsNonUKLandlordPage => taxYear =>
+      previousUserAnswers =>
+        userAnswers =>
+          isFhlNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+
+    case FhlDeductingTaxPage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    case FhlIncomePage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }
@@ -357,4 +368,17 @@ class Navigator @Inject()() {
       case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear)
       case (_, Some(esbaForm)) if esbaForm.nonEmpty => EsbaClaimsController.onPageLoad(taxYear)
     }
+
+  private def isFhlNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(FhlIsNonUKLandlordPage) match {
+      case Some(true) => FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
+      case _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def isFhlNonUKLandlordNavigationCheckMode(taxYear: Int, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
+    userAnswers.get(FhlIsNonUKLandlordPage) match {
+      case Some(true) if !previousUserAnswers.get(FhlIsNonUKLandlordPage).getOrElse(false) => FhlDeductingTaxController.onPageLoad(taxYear, CheckMode)
+      case _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
 }

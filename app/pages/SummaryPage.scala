@@ -19,6 +19,7 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
+import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -137,8 +138,8 @@ case object SummaryPage {
   private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
     TaskListItem(
       "summary.income",
-      controllers.routes.SummaryController.show(taxYear),
-      if (userAnswers.flatMap(_.get(FhlMainHomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
+      if (userAnswers.flatMap(_.get(FhlIsNonUKLandlordPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "income_link"
     )
   }
