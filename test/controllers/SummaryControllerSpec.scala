@@ -17,16 +17,17 @@
 package controllers
 
 import base.SpecBase
-import models.UKPropertySelect
 import models.backend.{BusinessDetails, PropertyDetails}
+import models.{FetchedPropertyData, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.inject.bind
 import pages.UKPropertyPage
+import play.api.inject.bind
+import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.BusinessService
+import service.{BusinessService, PropertyPeriodSubmissionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 import views.html.SummaryView
 
@@ -36,6 +37,11 @@ import scala.concurrent.Future
 class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
   private val taxYear = LocalDate.now.getYear
+  val propertyPeriodSubmissionService = mock[PropertyPeriodSubmissionService]
+
+  when(
+    propertyPeriodSubmissionService.getPropertyPeriodicSubmission(any(), any())(any())
+  ) thenReturn Future.successful(Right(FetchedPropertyData(new JsObject(Map()))))
 
   "Summary Controller" - {
 
@@ -49,7 +55,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.SummaryController.show(year).url)
@@ -82,7 +89,9 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithPropertyRentals), isAgent = false)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService)).build()
+
 
       running(application) {
         val request = FakeRequest(GET, routes.SummaryController.show(year).url)
@@ -92,7 +101,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SummaryView]
 
         status(result) mustEqual OK
-        contentAsString(result) must  include("Property Rentals")
+        contentAsString(result) must include("Property Rentals")
         contentAsString(result) mustEqual view(taxYear, propertyRentalsItems, Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
@@ -109,7 +118,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithoutPropertyRentals), isAgent = false)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.SummaryController.show(year).url)
@@ -119,7 +129,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SummaryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustNot  include("Property Rentals")
+        contentAsString(result) mustNot include("Property Rentals")
         contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
@@ -142,7 +152,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithFhl), isAgent = false)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.SummaryController.show(year).url)
@@ -152,7 +163,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SummaryView]
 
         status(result) mustEqual OK
-        contentAsString(result) must  include("UK furnished holiday lettings")
+        contentAsString(result) must include("UK furnished holiday lettings")
         contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], propertyFhlItems)(request, messages(application)).toString
       }
     }
