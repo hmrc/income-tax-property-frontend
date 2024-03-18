@@ -16,8 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
+import forms.enhancedstructuresbuildingallowance.EsbaAddressFormProvider.EsbaAddressExtension
+import models.{EsbaAddress, UserAnswers}
 
+import java.time.LocalDate
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints {
@@ -121,5 +123,16 @@ trait Constraints {
         } else {
           Invalid(errorKey, minimum, arg)
         }
+    }
+
+  def checkIfAddressAlreadyEntered(allEsbaAddresses: List[EsbaAddress], errorKey: String): Constraint[EsbaAddress] =
+    Constraint[EsbaAddress] {
+      esbaAddress: EsbaAddress => {
+        if (allEsbaAddresses.exists(ea => ea.checkAddresses(esbaAddress))) {
+          Invalid(errorKey)
+        } else {
+          Valid
+        }
+      }
     }
 }

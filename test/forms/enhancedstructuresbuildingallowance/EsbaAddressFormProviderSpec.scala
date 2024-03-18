@@ -16,12 +16,19 @@
 
 package forms.enhancedstructuresbuildingallowance
 
+import base.SpecBase
 import forms.behaviours.StringFieldBehaviours
+import models.EsbaAddress
+import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.data.FormError
 
-class EsbaAddressFormProviderSpec extends StringFieldBehaviours {
+class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
-  val form = new EsbaAddressFormProvider()()
+  val buildingName = "name"
+  val buildingNumber = "1"
+  val postCode = "HT45 9GD"
+  val ua = emptyUserAnswers.set(EsbaAddressPage(0), EsbaAddress("name", "1", "HT45 9GD")).get
+  val form = new EsbaAddressFormProvider()(ua)
 
   ".buildingName" - {
 
@@ -86,5 +93,13 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+  }
+
+  "existing address" - {
+    "should give duplicate error" in {
+      val requiredError = "esbaAddress.duplicate"
+      val result = form.bind(Map("postcode" -> postCode, "buildingName" -> buildingName, "buildingNumber" -> buildingNumber))
+      result.errors.head.messages.head mustEqual requiredError
+    }
   }
 }

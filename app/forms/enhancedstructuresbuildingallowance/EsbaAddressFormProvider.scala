@@ -17,7 +17,8 @@
 package forms.enhancedstructuresbuildingallowance
 
 import forms.mappings.Mappings
-import models.EsbaAddress
+import models.{EsbaAddress, UserAnswers}
+import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.Constraints.pattern
@@ -28,13 +29,38 @@ import scala.util.matching.Regex
 class EsbaAddressFormProvider @Inject() extends Mappings {
   val postcodeRegex: Regex = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
 
-  def apply(): Form[EsbaAddress] =
+  def apply(userAnswers: UserAnswers): Form[EsbaAddress] =
     Form(mapping(
       "buildingName" -> text("esbaAddress.buildingName.error.required")
         .verifying(maxLength(90, "esbaAddress.buildingName.error.max")),
       "buildingNumber" -> text("esbaAddress.buildingNumber.error.required"),
       "postcode" -> text("esbaAddress.postcode.error.required").verifying(
         pattern(postcodeRegex, "PostCode", "esbaAddress.postcode.error.invalid")))
-      (EsbaAddress.apply)(EsbaAddress.unapply
-    ))
+    (EsbaAddress.apply)(EsbaAddress.unapply
+    ).verifying(
+      checkIfAddressAlreadyEntered(
+        getAddresses(0, userAnswers, Nil),
+        "esbaAddress.duplicate")
+    )
+    )
+
+  private def getAddresses(index: Int, userAnswers: UserAnswers, addresses: List[EsbaAddress]): List[EsbaAddress] = {
+    userAnswers.get(EsbaAddressPage(index)) match {
+      case Some(ea) => getAddresses(index + 1, userAnswers, ea :: addresses)
+      case None => addresses
+    }
+  }
 }
+
+object EsbaAddressFormProvider {
+  implicit class EsbaAddressExtension(esbaAddress: EsbaAddress) {
+    private def standardise(info: String): String = info.trim.toLowerCase().filterNot(_.isSpaceChar)
+
+    def checkAddresses(other: EsbaAddress): Boolean = {
+      standardise(esbaAddress.postCode).equals(standardise(other.postCode)) &&
+        standardise(esbaAddress.buildingName).equals(standardise(other.buildingName)) &&
+        standardise(esbaAddress.buildingNumber).equals(standardise(other.buildingNumber))
+    }
+  }
+}
+
