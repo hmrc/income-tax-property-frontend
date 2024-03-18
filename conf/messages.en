@@ -1178,6 +1178,7 @@ esbaAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying
 esbaAddress.checkYourAnswersLabel = Address
 esbaAddress.change.hidden = Enhanced structures and buildings allowance
 esbaAddress.duplicate = The address for this claim has already been added.
+esbaAddress.hint = You can only add one address per claim
 
 fhlIntro.title = Furnished holiday lettings
 fhlIntro.heading = Furnished holiday lettings
