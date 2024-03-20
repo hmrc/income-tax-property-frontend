@@ -18,18 +18,32 @@ package forms.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import forms.behaviours.StringFieldBehaviours
-import models.EsbaAddress
+import models.{EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
+import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.data.FormError
 
 class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
-  val buildingName = "name"
-  val buildingNumber = "1"
-  val postCode = "HT45 9GD"
-  val ua = emptyUserAnswers.set(EsbaAddressPage(0), EsbaAddress("name", "1", "HT45 9GD")).get
-  val form = new EsbaAddressFormProvider()(ua)
+  val buildingNameInEsba = "name"
+  val buildingNumberInEsba = "1"
+  val postCodeInEsba = "HT45 9GD"
 
+  val buildingNameInSba = "name2"
+  val buildingNumberInSba = "1"
+  val postCodeInSba = "HT45 9GD"
+
+  val uaDuplicateInEsba: UserAnswers = emptyUserAnswers.set(
+    EsbaAddressPage(0),
+    EsbaAddress(buildingNameInEsba, buildingNumberInEsba, postCodeInEsba)
+  ).get
+
+  val uaDuplicateInSba: UserAnswers = emptyUserAnswers.set(
+        StructuredBuildingAllowanceAddressPage(0),
+        StructuredBuildingAllowanceAddress(buildingNameInSba, buildingNumberInSba, postCodeInSba)
+    ).get
+
+  val form = new EsbaAddressFormProvider()(emptyUserAnswers)
   ".buildingName" - {
 
     val fieldName = "buildingName"
@@ -96,9 +110,17 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
   }
 
   "existing address" - {
-    "should give duplicate error" in {
-      val requiredError = "esbaAddress.duplicate"
-      val result = form.bind(Map("postcode" -> postCode, "buildingName" -> buildingName, "buildingNumber" -> buildingNumber))
+    "should give duplicate error for same address within ESBA" in {
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba)
+      val requiredError = "esbaAddress.duplicateEsba"
+      val result = formDuplicateInEsba.bind(Map("postcode" -> postCodeInEsba, "buildingName" -> buildingNameInEsba, "buildingNumber" -> buildingNumberInEsba))
+      result.errors.head.messages.head mustEqual requiredError
+    }
+
+    "should give duplicate error for same address within SBA" in {
+      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba)
+      val requiredError = "esbaAddress.duplicateSba"
+      val result = formDuplicateInSba.bind(Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba))
       result.errors.head.messages.head mustEqual requiredError
     }
   }

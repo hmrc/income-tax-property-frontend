@@ -16,8 +16,7 @@
 
 package forms.mappings
 
-import forms.enhancedstructuresbuildingallowance.EsbaAddressFormProvider.EsbaAddressExtension
-import models.{EsbaAddress, UserAnswers}
+import models.{Addressable, EsbaAddress, UserAnswers}
 
 import java.time.LocalDate
 import play.api.data.validation.{Constraint, Invalid, Valid}
@@ -125,10 +124,10 @@ trait Constraints {
         }
     }
 
-  def checkIfAddressAlreadyEntered(allEsbaAddresses: List[EsbaAddress], errorKey: String): Constraint[EsbaAddress] =
+  def checkIfAddressAlreadyEntered[T](allAddresses: List[T], errorKey: String)(implicit a: Addressable[T]): Constraint[EsbaAddress] =
     Constraint[EsbaAddress] {
       esbaAddress: EsbaAddress => {
-        if (allEsbaAddresses.exists(ea => ea.checkAddresses(esbaAddress))) {
+        if (allAddresses.exists(ea => Addressable.checkAddresses[EsbaAddress, T](esbaAddress, ea))) {
           Invalid(errorKey)
         } else {
           Valid

@@ -17,8 +17,8 @@
 package forms.enhancedstructuresbuildingallowance
 
 import forms.mappings.Mappings
-import models.{EsbaAddress, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
+import models.Addressable._
+import models.{Addressable, EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.Constraints.pattern
@@ -39,28 +39,14 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
     (EsbaAddress.apply)(EsbaAddress.unapply
     ).verifying(
       checkIfAddressAlreadyEntered(
-        getAddresses(0, userAnswers, Nil),
-        "esbaAddress.duplicate")
+        getAddresses[EsbaAddress](0, userAnswers, List[EsbaAddress]()),
+        "esbaAddress.duplicateEsba")
+    ).verifying(
+      checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress](
+        getAddresses[StructuredBuildingAllowanceAddress](0, userAnswers, List[StructuredBuildingAllowanceAddress]()),
+        "esbaAddress.duplicateSba")
     )
     )
-
-  private def getAddresses(index: Int, userAnswers: UserAnswers, addresses: List[EsbaAddress]): List[EsbaAddress] = {
-    userAnswers.get(EsbaAddressPage(index)) match {
-      case Some(ea) => getAddresses(index + 1, userAnswers, ea :: addresses)
-      case None => addresses
-    }
-  }
 }
 
-object EsbaAddressFormProvider {
-  implicit class EsbaAddressExtension(esbaAddress: EsbaAddress) {
-    private def standardise(info: String): String = info.trim.toLowerCase().filterNot(_.isSpaceChar)
-
-    def checkAddresses(other: EsbaAddress): Boolean = {
-      standardise(esbaAddress.postCode).equals(standardise(other.postCode)) &&
-        standardise(esbaAddress.buildingName).equals(standardise(other.buildingName)) &&
-        standardise(esbaAddress.buildingNumber).equals(standardise(other.buildingNumber))
-    }
-  }
-}
 
