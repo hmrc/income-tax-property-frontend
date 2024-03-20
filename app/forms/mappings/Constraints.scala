@@ -16,10 +16,10 @@
 
 package forms.mappings
 
-import models.{Addressable, EsbaAddress, UserAnswers}
+import models.Addressable
+import play.api.data.validation.{Constraint, Invalid, Valid}
 
 import java.time.LocalDate
-import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints {
 
@@ -124,7 +124,8 @@ trait Constraints {
         }
     }
 
-  def checkIfAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)(implicit b: Addressable[T], a: Addressable[U]): Constraint[T] =
+  def checkIfAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)
+                                        (implicit addressableChecked: Addressable[T], addressableInList: Addressable[U]): Constraint[T] =
     Constraint[T] {
       address: T => {
         if (allAddresses.exists(a => Addressable.checkAddresses[T, U](address, a))) {
