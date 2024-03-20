@@ -16,9 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
+import models.Addressable
 import play.api.data.validation.{Constraint, Invalid, Valid}
+
+import java.time.LocalDate
 
 trait Constraints {
 
@@ -121,5 +122,17 @@ trait Constraints {
         } else {
           Invalid(errorKey, minimum, arg)
         }
+    }
+
+  def checkIfAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)
+                                        (implicit addressableChecked: Addressable[T], addressableInList: Addressable[U]): Constraint[T] =
+    Constraint[T] {
+      address: T => {
+        if (allAddresses.exists(a => Addressable.checkAddresses[T, U](address, a))) {
+          Invalid(errorKey)
+        } else {
+          Valid
+        }
+      }
     }
 }

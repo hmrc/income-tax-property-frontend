@@ -17,7 +17,8 @@
 package forms.enhancedstructuresbuildingallowance
 
 import forms.mappings.Mappings
-import models.EsbaAddress
+import models.Addressable._
+import models.{Addressable, EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.Constraints.pattern
@@ -28,13 +29,24 @@ import scala.util.matching.Regex
 class EsbaAddressFormProvider @Inject() extends Mappings {
   val postcodeRegex: Regex = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
 
-  def apply(): Form[EsbaAddress] =
+  def apply(userAnswers: UserAnswers): Form[EsbaAddress] =
     Form(mapping(
       "buildingName" -> text("esbaAddress.buildingName.error.required")
         .verifying(maxLength(90, "esbaAddress.buildingName.error.max")),
       "buildingNumber" -> text("esbaAddress.buildingNumber.error.required"),
       "postcode" -> text("esbaAddress.postcode.error.required").verifying(
         pattern(postcodeRegex, "PostCode", "esbaAddress.postcode.error.invalid")))
-      (EsbaAddress.apply)(EsbaAddress.unapply
-    ))
+    (EsbaAddress.apply)(EsbaAddress.unapply
+    ).verifying(
+      checkIfAddressAlreadyEntered[EsbaAddress, EsbaAddress](
+        getAddresses[EsbaAddress](0, userAnswers, List[EsbaAddress]()),
+        "esbaAddress.duplicateEsba")
+    ).verifying(
+      checkIfAddressAlreadyEntered[EsbaAddress, StructuredBuildingAllowanceAddress](
+        getAddresses[StructuredBuildingAllowanceAddress](0, userAnswers, List[StructuredBuildingAllowanceAddress]()),
+        "esbaAddress.duplicateSba")
+    )
+    )
 }
+
+

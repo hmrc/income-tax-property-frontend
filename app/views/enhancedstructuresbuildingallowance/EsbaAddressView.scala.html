@@ -30,6 +30,7 @@
 
     @layout(pageTitle = title(form, messages("esbaAddress.title"))) {
         <h1 class="govuk-heading-l">@messages("esbaAddress.heading")</h1>
+        <div class="govuk-hint"> @messages("esbaAddress.hint") </div>
 
         @formHelper(action = routes.EsbaAddressController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
 
