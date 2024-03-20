@@ -124,10 +124,10 @@ trait Constraints {
         }
     }
 
-  def checkIfAddressAlreadyEntered[T](allAddresses: List[T], errorKey: String)(implicit a: Addressable[T]): Constraint[EsbaAddress] =
-    Constraint[EsbaAddress] {
-      esbaAddress: EsbaAddress => {
-        if (allAddresses.exists(ea => Addressable.checkAddresses[EsbaAddress, T](esbaAddress, ea))) {
+  def checkIfAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)(implicit b: Addressable[T], a: Addressable[U]): Constraint[T] =
+    Constraint[T] {
+      address: T => {
+        if (allAddresses.exists(a => Addressable.checkAddresses[T, U](address, a))) {
           Invalid(errorKey)
         } else {
           Valid

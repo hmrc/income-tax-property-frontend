@@ -38,11 +38,11 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
         pattern(postcodeRegex, "PostCode", "esbaAddress.postcode.error.invalid")))
     (EsbaAddress.apply)(EsbaAddress.unapply
     ).verifying(
-      checkIfAddressAlreadyEntered(
+      checkIfAddressAlreadyEntered[EsbaAddress, EsbaAddress](
         getAddresses[EsbaAddress](0, userAnswers, List[EsbaAddress]()),
         "esbaAddress.duplicateEsba")
     ).verifying(
-      checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress](
+      checkIfAddressAlreadyEntered[EsbaAddress, StructuredBuildingAllowanceAddress](
         getAddresses[StructuredBuildingAllowanceAddress](0, userAnswers, List[StructuredBuildingAllowanceAddress]()),
         "esbaAddress.duplicateSba")
     )
