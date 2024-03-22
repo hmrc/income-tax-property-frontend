@@ -1082,6 +1082,9 @@ structureBuildingAllowanceAddress.postcode.error.required = Enter a postcode for
 structureBuildingAllowanceAddress.postcode.error.invalid = Enter a full UK postcode for the qualifying building or structure
 structureBuildingAllowanceAddress.checkYourAnswersLabel = Address
 structureBuildingAllowanceAddress.change.hidden = Address
+structureBuildingAllowanceAddress.duplicateSba = The address for this claim has already been added
+structureBuildingAllowanceAddress.duplicateEsba = The address for this claim has already been added in enhanced structures and buildings allowance
+structureBuildingAllowanceAddress.hint = You can only add one address per claim
 
 
 esbaQualifyingAmount.title = Qualifying amount

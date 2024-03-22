@@ -46,7 +46,7 @@ class StructuredBuildingAllowanceAddressController @Inject()(
 
     def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
       implicit request =>
-        val form = formProvider.apply
+        val form = formProvider(request.userAnswers)
         val preparedForm = request.userAnswers.get(StructuredBuildingAllowanceAddressPage(index)) match {
           case None => form
           case Some(value) => form.fill(value)
@@ -57,7 +57,7 @@ class StructuredBuildingAllowanceAddressController @Inject()(
 
     def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
       implicit request =>
-        val form = formProvider.apply
+        val form = formProvider(request.userAnswers)
         form.bindFromRequest().fold(
           formWithErrors =>
             Future.successful(BadRequest(view(formWithErrors, taxYear, mode, index))),

@@ -40,7 +40,7 @@ import scala.concurrent.Future
 class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new StructuredBuildingAllowanceAddressFormProvider
-  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider.apply
+  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider(emptyUserAnswers)
 
   val taxYear = 2024
   val index = 0
