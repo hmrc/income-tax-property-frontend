@@ -124,4 +124,5 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
       result.errors.head.messages.head mustEqual requiredError
     }
   }
+
 }
