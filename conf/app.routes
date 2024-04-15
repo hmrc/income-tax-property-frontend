@@ -39,6 +39,7 @@ GET         /:taxYear/change-report-property-income                             
 POST        /:taxYear/change-report-property-income                                   controllers.about.ReportPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/check-your-answers                                              controllers.about.CheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/check-your-answers                                              controllers.about.CheckYourAnswersController.onSubmit(taxYear: Int)
 
 ############## Property rentals
 

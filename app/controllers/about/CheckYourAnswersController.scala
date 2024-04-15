@@ -16,9 +16,11 @@
 
 package controllers.about
 
+import audit.{AuditService, PropertyAbout, PropertyAboutAudit}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import pages.ReportPropertyIncomePage
+import controllers.routes
+import pages.{ReportPropertyIncomePage, TotalIncomePage, UKPropertyPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -26,14 +28,17 @@ import viewmodels.checkAnswers.about.{ReportPropertyIncomeSummary, TotalIncomeSu
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
 
+import scala.concurrent.{ExecutionContext, Future}
+
 class CheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
                                             val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView
-                                          ) extends FrontendBaseController with I18nSupport {
+                                            view: CheckYourAnswersView,
+                                            audit: AuditService,
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -51,5 +56,20 @@ class CheckYourAnswersController @Inject()(
       val list = SummaryListViewModel(rows = propertyIncomeRows.flatten)
 
       Ok(view(taxYear, list))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+
+      val totalIncome = request.userAnswers.get(TotalIncomePage)
+      val reportIncome = request.userAnswers.get(ReportPropertyIncomePage)
+      val ukPropertyTypes = request.userAnswers.get(UKPropertyPage)
+      val propertyAbout = PropertyAbout(totalIncome.get, ukPropertyTypes.get, reportIncome)
+      val propertyAboutAudit = PropertyAboutAudit(request.user.nino, request.user.affinityGroup, request.user.mtditid,
+        taxYear, isUpdate = false, "PropertyAbout", propertyAbout)
+
+      audit.sendPropertyAboutAudit(propertyAboutAudit)
+
+      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 }
