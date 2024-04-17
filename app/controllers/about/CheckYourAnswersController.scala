@@ -20,7 +20,8 @@ import audit.{AuditService, PropertyAbout, PropertyAboutAudit}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
-import pages.{ReportPropertyIncomePage, TotalIncomePage, UKPropertyPage}
+import pages.ReportPropertyIncomePage
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -38,7 +39,7 @@ class CheckYourAnswersController @Inject()(
                                             val controllerComponents: MessagesControllerComponents,
                                             view: CheckYourAnswersView,
                                             audit: AuditService,
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -61,10 +62,20 @@ class CheckYourAnswersController @Inject()(
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val propertyAbout = request.userAnswers.get(PropertyAbout)
-      val propertyAboutAudit = PropertyAboutAudit(request.user.nino, request.user.affinityGroup, request.user.mtditid,
-        taxYear, isUpdate = false, "PropertyAbout", propertyAbout.get)
+      val propertyAbout = request.userAnswers.get(PropertyAbout).getOrElse {
+        logger.error("PropertyAbout Section is not present in userAnswers")
+        throw new IllegalStateException("PropertyAbout Section is not present in userAnswers.")
+      }
 
+      val propertyAboutAudit = PropertyAboutAudit(
+        request.user.nino,
+        request.user.affinityGroup,
+        request.user.mtditid,
+        taxYear,
+        isUpdate = false,
+        "PropertyAbout",
+        propertyAbout
+      )
       audit.sendPropertyAboutAudit(propertyAboutAudit)
 
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
