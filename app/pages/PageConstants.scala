@@ -20,4 +20,7 @@ object PageConstants {
 
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
   val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+
+  val propertyAbout: String = "propertyAbout"
+
 }

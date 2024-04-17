@@ -17,10 +17,17 @@
 package audit
 
 import models.{TotalIncome, UKPropertySelect}
-import play.api.libs.json.{Json, OFormat}
+import pages.PageConstants
+import play.api.libs.json.{JsPath, Json, OFormat}
+import queries.Gettable
 
 case class PropertyAbout(totalIncome: TotalIncome, ukProperty: Set[UKPropertySelect], reportPropertyIncome: Option[Boolean])
 
-object PropertyAbout {
+case object PropertyAbout extends Gettable[PropertyAbout] {
+
   implicit val formats: OFormat[PropertyAbout] = Json.format[PropertyAbout]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.propertyAbout
 }

@@ -61,12 +61,9 @@ class CheckYourAnswersController @Inject()(
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val totalIncome = request.userAnswers.get(TotalIncomePage)
-      val reportIncome = request.userAnswers.get(ReportPropertyIncomePage)
-      val ukPropertyTypes = request.userAnswers.get(UKPropertyPage)
-      val propertyAbout = PropertyAbout(totalIncome.get, ukPropertyTypes.get, reportIncome)
+      val propertyAbout = request.userAnswers.get(PropertyAbout)
       val propertyAboutAudit = PropertyAboutAudit(request.user.nino, request.user.affinityGroup, request.user.mtditid,
-        taxYear, isUpdate = false, "PropertyAbout", propertyAbout)
+        taxYear, isUpdate = false, "PropertyAbout", propertyAbout.get)
 
       audit.sendPropertyAboutAudit(propertyAboutAudit)
 
