@@ -20,10 +20,12 @@ import audit.{AuditService, PropertyAbout, PropertyAboutAudit}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
+import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.about.{ReportPropertyIncomeSummary, TotalIncomeSummary, UKPropertySelectSummary}
 import viewmodels.govuk.summarylist._
@@ -62,22 +64,25 @@ class CheckYourAnswersController @Inject()(
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val propertyAbout = request.userAnswers.get(PropertyAbout).getOrElse {
-        logger.error("PropertyAbout Section is not present in userAnswers")
-        throw new IllegalStateException("PropertyAbout Section is not present in userAnswers.")
+      request.userAnswers.get(PropertyAbout) match {
+        case Some(propertyAbout) =>
+          auditCYA(taxYear, request, propertyAbout)
+        case None =>
+          logger.error("PropertyAbout Section is not present in userAnswers")
       }
-
-      val propertyAboutAudit = PropertyAboutAudit(
-        request.user.nino,
-        request.user.affinityGroup,
-        request.user.mtditid,
-        taxYear,
-        isUpdate = false,
-        "PropertyAbout",
-        propertyAbout
-      )
-      audit.sendPropertyAboutAudit(propertyAboutAudit)
-
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit hc: HeaderCarrier): Unit = {
+    val propertyAboutAudit = PropertyAboutAudit(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "PropertyAbout",
+      propertyAbout
+    )
+    audit.sendPropertyAboutAudit(propertyAboutAudit)
   }
 }
