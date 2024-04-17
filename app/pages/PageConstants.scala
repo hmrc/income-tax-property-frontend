@@ -22,5 +22,6 @@ object PageConstants {
   val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
 
   val propertyAbout: String = "propertyAbout"
+  val propertyRentalsAbout: String = "propertyRentalsAbout"
 
 }

@@ -31,4 +31,8 @@ class AuditService @Inject()(auditConnector: AuditConnector) {
   def sendPropertyAboutAudit(event: PropertyAboutAudit)(implicit hc: HeaderCarrier, ec: ExecutionContext, writes: Writes[PropertyAboutAudit]): Unit = {
     auditConnector.sendExplicitAudit(auditType, event)
   }
+
+  def sendPropertyAboutAudit[T](event: AuditModel[T])(implicit hc: HeaderCarrier, ec: ExecutionContext, writes: Writes[AuditModel[T]]): Unit = {
+    auditConnector.sendExplicitAudit(auditType, event)
+  }
 }

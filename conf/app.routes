@@ -58,6 +58,7 @@ GET         /:taxYear/property-rentals/change-claim-property-income-allowance   
 POST        /:taxYear/property-rentals/change-claim-property-income-allowance         controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/property-rentals/check-your-answers                             controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/property-rentals/check-your-answers                             controllers.propertyrentals.PropertyRentalsCheckYourAnswersController.onSubmit(taxYear: Int)
 
 ## Income
 

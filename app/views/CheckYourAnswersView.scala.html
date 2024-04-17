@@ -32,7 +32,7 @@
         @govukSummaryList(list)
 
         @govukButton(
-            ButtonViewModel(messages("site.continue")).preventingDoubleClick()
+            ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
         )
     }
 }
