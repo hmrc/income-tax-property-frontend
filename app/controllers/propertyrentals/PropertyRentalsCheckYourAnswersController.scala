@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals
 
-import audit.{AuditModel, AuditService, PropertyAbout, PropertyAboutAudit, PropertyRentalsAbout}
+import audit.{AuditModel, AuditService, PropertyRentalsAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes

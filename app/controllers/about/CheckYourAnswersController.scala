@@ -16,7 +16,7 @@
 
 package controllers.about
 
-import audit.{AuditService, PropertyAbout, PropertyAboutAudit}
+import audit.{AuditModel, AuditService, PropertyAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
@@ -74,7 +74,7 @@ class CheckYourAnswersController @Inject()(
   }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit hc: HeaderCarrier): Unit = {
-    val propertyAboutAudit = PropertyAboutAudit(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
@@ -83,6 +83,6 @@ class CheckYourAnswersController @Inject()(
       "PropertyAbout",
       propertyAbout
     )
-    audit.sendPropertyAboutAudit(propertyAboutAudit)
+    audit.sendPropertyAboutAudit(auditModel)
   }
 }
