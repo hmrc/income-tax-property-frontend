@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import pages.PageConstants
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.Gettable
 
-case class PropertyAbout(totalIncome: TotalIncome, ukProperty: Set[UKPropertySelect], reportPropertyIncome: Option[Boolean])
+case class PropertyAbout(totalIncome: TotalIncome, ukProperty: Seq[UKPropertySelect], reportPropertyIncome: Option[Boolean])
 
 case object PropertyAbout extends Gettable[PropertyAbout] {
 

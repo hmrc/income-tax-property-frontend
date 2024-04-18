@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class AuditService @Inject()(auditConnector: AuditConnector) {
+class AuditService @Inject()(auditConnector: AuditConnector)(implicit ec: ExecutionContext) {
 
   private val auditType = "CreateOrAmendRentalsUpdate"
 
-  def sendPropertyAboutAudit[T](event: AuditModel[T])(implicit hc: HeaderCarrier, ec: ExecutionContext, writes: Writes[AuditModel[T]]): Unit = {
+  def sendPropertyAboutAudit[T](event: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit = {
     auditConnector.sendExplicitAudit(auditType, event)
   }
 }
