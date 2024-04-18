@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object UKPropertyPage extends QuestionPage[Set[UKPropertySelect]] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyAbout \ toString
 
   override def toString: String = "ukProperty"
 }

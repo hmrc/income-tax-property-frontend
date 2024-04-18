@@ -17,6 +17,10 @@
 package controllers.about
 
 import base.SpecBase
+import models.TotalIncome.Under
+import models.UserAnswers
+import pages.TotalIncomePage
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
@@ -25,6 +29,9 @@ import views.html.CheckYourAnswersView
 class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = 2023
+
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2023/summary")
+
   "Check Your Answers Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -57,5 +64,20 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
+
+    "must return OK and the correct view for a POST (onSubmit)" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.CheckYourAnswersController.onSubmit(taxYear).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
   }
 }

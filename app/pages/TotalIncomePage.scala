@@ -25,7 +25,7 @@ import scala.util.Try
 
 case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyAbout \ toString
 
   override def toString: String = "totalIncome"
 

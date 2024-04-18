@@ -14,12 +14,13 @@
  * limitations under the License.
  *@
 
-@import routes.SummaryController
+@import controllers.about.routes._
 
 @this(
-    layout: templates.Layout,
-    govukSummaryList: GovukSummaryList,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukSummaryList: GovukSummaryList,
+        govukButton: GovukButton
 )
 
 @(taxYear: Int, list: SummaryList)(implicit request: Request[_], messages: Messages)
@@ -27,11 +28,11 @@
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    @formHelper(action = CheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @govukSummaryList(list)
 
-    @govukSummaryList(list)
-
-    @govukButton(
-        ButtonViewModel(messages("site.continue"))
-            .asLink(SummaryController.show(taxYear).url)
-    )
+        @govukButton(
+            ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+        )
+    }
 }

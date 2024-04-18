@@ -30,14 +30,18 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import java.time.LocalDate
 
 class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoSugar {
-  val data =
+  val data: String =
     """{
-      |        "totalIncome" : "between",
-      |        "ukProperty" : [
-      |            "property.rentals"
-      |        ],
-      |        "expensesLessThan1000" : false,
-      |        "claimPropertyIncomeAllowance" : false,
+      |       "propertyAbout": {
+      |             "totalIncome" : "between",
+      |             "ukProperty" : [
+      |                "property.rentals"
+      |                  ]
+      |        },
+      |       "propertyRentalsAbout": {
+      |              "expensesLessThan1000" : false,
+      |              "claimPropertyIncomeAllowance" : false
+      |        },
       |        "consolidatedExpenses" : {
       |            "consolidatedExpensesYesNo" : false
       |        },

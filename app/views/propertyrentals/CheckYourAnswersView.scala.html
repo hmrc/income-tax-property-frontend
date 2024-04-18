@@ -14,10 +14,13 @@
  * limitations under the License.
  *@
 
+@import controllers.propertyrentals.routes._
+
 @this(
-    layout: templates.Layout,
-    govukButton: GovukButton,
-    govukSummaryList: GovukSummaryList
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukButton: GovukButton,
+        govukSummaryList: GovukSummaryList
 )
 
 @(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
@@ -26,12 +29,11 @@
 
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    @formHelper(action = PropertyRentalsCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @govukSummaryList(list)
 
-    @govukSummaryList(list)
-
-    @govukButton(
-        ButtonViewModel(messages("site.saveAndContinue"))
-            .asLink(controllers.routes.SummaryController.show(taxYear).url)
-            .withId("continue")
-    )
+        @govukButton(
+            ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+        )
+    }
 }

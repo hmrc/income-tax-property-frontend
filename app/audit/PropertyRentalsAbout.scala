@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals
+package audit
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import pages.PageConstants
+import play.api.libs.json.{JsPath, Json, OFormat}
+import queries.Gettable
 
-case object ClaimPropertyIncomeAllowancePage extends QuestionPage[Boolean] {
+case class PropertyRentalsAbout(expensesLessThan1000: Boolean, claimPropertyIncomeAllowance: Boolean)
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
+case object PropertyRentalsAbout extends Gettable[PropertyRentalsAbout] {
 
-  override def toString: String = "claimPropertyIncomeAllowance"
+  implicit val formats: OFormat[PropertyRentalsAbout] = Json.format[PropertyRentalsAbout]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.propertyRentalsAbout
 }

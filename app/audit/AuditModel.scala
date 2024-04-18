@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals
+package audit
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json, OFormat}
 
-case object ClaimPropertyIncomeAllowancePage extends QuestionPage[Boolean] {
+case class AuditModel[T](nino: String,
+                         userType: String,
+                         mtdItId: String,
+                         taxYear: Int,
+                         isUpdate: Boolean,
+                         transactionName: String,
+                         rentalDetails: T)
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
-
-  override def toString: String = "claimPropertyIncomeAllowance"
+object AuditModel {
+  implicit def format[T](implicit rentalFormat: Format[T]): OFormat[AuditModel[T]] = Json.format[AuditModel[T]]
 }

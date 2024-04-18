@@ -16,15 +16,22 @@
 
 package controllers.about
 
+import audit.{AuditModel, AuditService, PropertyAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.routes
+import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.about.{ReportPropertyIncomeSummary, TotalIncomeSummary, UKPropertySelectSummary}
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
@@ -32,8 +39,9 @@ class CheckYourAnswersController @Inject()(
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
                                             val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView
-                                          ) extends FrontendBaseController with I18nSupport {
+                                            view: CheckYourAnswersView,
+                                            audit: AuditService
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -51,5 +59,30 @@ class CheckYourAnswersController @Inject()(
       val list = SummaryListViewModel(rows = propertyIncomeRows.flatten)
 
       Ok(view(taxYear, list))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      request.userAnswers.get(PropertyAbout) match {
+        case Some(propertyAbout) =>
+          auditCYA(taxYear, request, propertyAbout)
+        case None =>
+          logger.error("PropertyAbout Section is not present in userAnswers")
+      }
+      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit hc: HeaderCarrier): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "PropertyAbout",
+      propertyAbout
+    )
+
+    audit.sendPropertyAboutAudit(auditModel)
   }
 }
