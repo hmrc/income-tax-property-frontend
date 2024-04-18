@@ -40,7 +40,7 @@ class CheckYourAnswersController @Inject()(
                                             requireData: DataRequiredAction,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: CheckYourAnswersView,
-                                            audit: AuditService,
+                                            audit: AuditService
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -63,7 +63,6 @@ class CheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       request.userAnswers.get(PropertyAbout) match {
         case Some(propertyAbout) =>
           auditCYA(taxYear, request, propertyAbout)
@@ -81,7 +80,8 @@ class CheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       "PropertyAbout",
-      propertyAbout)
+      propertyAbout
+    )
 
     audit.sendPropertyAboutAudit(auditModel)
   }

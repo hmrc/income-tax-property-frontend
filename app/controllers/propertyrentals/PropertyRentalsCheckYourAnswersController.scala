@@ -39,7 +39,7 @@ class PropertyRentalsCheckYourAnswersController @Inject()(
                                                            requireData: DataRequiredAction,
                                                            val controllerComponents: MessagesControllerComponents,
                                                            view: CheckYourAnswersView,
-                                                           audit: AuditService,
+                                                           audit: AuditService
                                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
