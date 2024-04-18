@@ -81,8 +81,8 @@ class CheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       "PropertyAbout",
-      propertyAbout,
-    )
+      propertyAbout)
+
     audit.sendPropertyAboutAudit(auditModel)
   }
 }
