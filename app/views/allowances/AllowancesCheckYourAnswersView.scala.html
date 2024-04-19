@@ -14,8 +14,11 @@
  * limitations under the License.
  *@
 
+@import controllers.allowances.routes._
+
 @this(
   layout: templates.Layout,
+  formHelper: FormWithCSRF,
   govukButton: GovukButton,
   govukSummaryList: GovukSummaryList,
 )
@@ -26,10 +29,8 @@
 
 <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-@govukSummaryList(list)
-
-@govukButton(
-  ButtonViewModel(messages("site.continue"))
-  .asLink(SummaryController.show(taxYear).url).withId("continue")
-  )
+@formHelper(action = AllowancesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @govukSummaryList(list)
+    @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
+}
 }
