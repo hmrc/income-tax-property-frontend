@@ -55,19 +55,21 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        "capitalAllowancesForACar" : {
       |            "CapitalAllowancesForACarYesNo" : false
       |        },
-      |        "privateUseAdjustment" : {
-      |            "amount" : 4
+      |        "adjustments": {
+      |            "privateUseAdjustment" : {
+      |                "amount" : 4
+      |            },
+      |            "balancingCharge" : {
+      |                "balancingChargeYesNo" : false
+      |            },
+      |            "propertyIncomeAllowance" : 0,
+      |            "renovationAllowanceBalancingCharge" : {
+      |                "renovationAllowanceBalancingChargeYesNo" : true,
+      |                "renovationAllowanceBalancingChargeAmount" : 6
+      |            },
+      |            "residentialFinanceCost" : 4,
+      |            "unusedResidentialFinanceCost" : 3
       |        },
-      |        "balancingCharge" : {
-      |            "balancingChargeYesNo" : false
-      |        },
-      |        "propertyIncomeAllowance" : 0,
-      |        "renovationAllowanceBalancingCharge" : {
-      |            "renovationAllowanceBalancingChargeYesNo" : true,
-      |            "renovationAllowanceBalancingChargeAmount" : 6
-      |        },
-      |        "residentialFinanceCost" : 4,
-      |        "unusedResidentialFinanceCost" : 3,
       |        "claimStructureBuildingAllowance" : true,
       |        "structureBuildingFormGroup" : [
       |            {

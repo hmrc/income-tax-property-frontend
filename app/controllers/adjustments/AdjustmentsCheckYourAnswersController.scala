@@ -16,27 +16,31 @@
 
 package controllers.adjustments
 
+import audit.Adjustments._
+import audit.{Adjustments, AuditModel, AuditService}
 import controllers.actions._
+import models.requests.DataRequest
+import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.adjustments.{
-  BalancingChargeSummary, PrivateUseAdjustmentSummary,
-  PropertyIncomeAllowanceSummary, RenovationAllowanceBalancingChargeSummary, ResidentialFinanceCostSummary, UnusedResidentialFinanceCostSummary
-}
+import viewmodels.checkAnswers.adjustments._
 import viewmodels.govuk.summarylist._
 import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class AdjustmentsCheckYourAnswersController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AdjustmentsCheckYourAnswersView
-                                     ) extends FrontendBaseController with I18nSupport {
+                                                       override val messagesApi: MessagesApi,
+                                                       identify: IdentifierAction,
+                                                       getData: DataRetrievalAction,
+                                                       requireData: DataRequiredAction,
+                                                       val controllerComponents: MessagesControllerComponents,
+                                                       audit: AuditService,
+                                                       view: AdjustmentsCheckYourAnswersView
+                                                     ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -53,5 +57,30 @@ class AdjustmentsCheckYourAnswersController @Inject()(
       )
 
       Ok(view(list, taxYear))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      request.userAnswers.get(Adjustments) match {
+        case Some(propertyAbout) =>
+          auditCYA(taxYear, request, propertyAbout)
+        case None =>
+          logger.error("Adjustments Section is not present in userAnswers")
+      }
+      Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: Adjustments)(implicit hc: HeaderCarrier): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentalsAdjustments",
+      adjustments
+    )
+
+    audit.sendPropertyAboutAudit(auditModel)
   }
 }

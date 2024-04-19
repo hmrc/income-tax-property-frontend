@@ -22,6 +22,7 @@ import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
 import models.NormalMode
 import models.requests.DataRequest
 import navigation.Navigator
+import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger
@@ -34,23 +35,22 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaClaimAmountSummary
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
-import pages.enhancedstructuresbuildingallowance.Esba._
+
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EsbaClaimsController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     sessionRepository: SessionRepository,
-                                     navigator: Navigator,
-                                     identify: IdentifierAction,
-                                     getData: DataRetrievalAction,
-                                     requireData: DataRequiredAction,
-                                     formProvider: EsbaClaimsFormProvider,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     audit: AuditService,
-                                     view: EsbaClaimsView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+                                      override val messagesApi: MessagesApi,
+                                      sessionRepository: SessionRepository,
+                                      navigator: Navigator,
+                                      identify: IdentifierAction,
+                                      getData: DataRetrievalAction,
+                                      requireData: DataRequiredAction,
+                                      formProvider: EsbaClaimsFormProvider,
+                                      val controllerComponents: MessagesControllerComponents,
+                                      audit: AuditService,
+                                      view: EsbaClaimsView
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -66,22 +66,24 @@ class EsbaClaimsController @Inject()(
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       val list: SummaryList = summaryList(taxYear, request)
 
-      request.userAnswers.get(Esbas) match {
-        case Some(esbas) =>
-          auditCYA(taxYear, request, esbas)
-        case None =>
-          logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
-      }
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
 
-        value =>
+        value => {
+          request.userAnswers.get(Esbas) match {
+            case Some(esbas) if value == false =>
+              auditCYA(taxYear, request, esbas)
+            case None =>
+              logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
+            case _ => ()
+          }
+          
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
+        }
       )
   }
 
