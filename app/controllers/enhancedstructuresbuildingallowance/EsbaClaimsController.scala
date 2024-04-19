@@ -16,6 +16,7 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
 import models.NormalMode
@@ -23,15 +24,17 @@ import models.requests.DataRequest
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance._
 import play.api.data.Form
+import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaClaimAmountSummary
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
-
+import pages.enhancedstructuresbuildingallowance.Esba._
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,6 +47,7 @@ class EsbaClaimsController @Inject()(
                                      requireData: DataRequiredAction,
                                      formProvider: EsbaClaimsFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
+                                     audit: AuditService,
                                      view: EsbaClaimsView
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -62,6 +66,13 @@ class EsbaClaimsController @Inject()(
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       val list: SummaryList = summaryList(taxYear, request)
 
+      request.userAnswers.get(Esbas) match {
+        case Some(esbas) =>
+          auditCYA(taxYear, request, esbas)
+        case None =>
+          logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
+      }
+
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
@@ -74,6 +85,20 @@ class EsbaClaimsController @Inject()(
       )
   }
 
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbas: List[Esba])(implicit hc: HeaderCarrier): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentalsESBA",
+      esbas
+    )
+
+    audit.sendPropertyAboutAudit(auditModel)
+  }
+
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
     val esbaForm = request.userAnswers.get(EnhancedStructureBuildingFormGroup).getOrElse(Array())
 
@@ -84,3 +109,4 @@ class EsbaClaimsController @Inject()(
   }
 
 }
+

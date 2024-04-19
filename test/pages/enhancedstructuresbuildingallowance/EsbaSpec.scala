@@ -38,7 +38,8 @@ class EsbaSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks w
           val json = Json.obj(
             "esbaQualifyingDate" -> esba.esbaQualifyingDate,
             "esbaQualifyingAmount" -> esba.esbaQualifyingAmount,
-            "esbaClaimAmount" -> esba.esbaClaimAmount
+            "esbaClaimAmount" -> esba.esbaClaimAmount,
+            "esbaAddress" -> esba.esbaAddress
           )
           Json.toJson(esba) mustBe json
           json.validate[Esba] mustBe JsSuccess(esba)

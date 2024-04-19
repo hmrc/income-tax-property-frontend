@@ -19,10 +19,12 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import controllers.enhancedstructuresbuildingallowance.EsbaClaimsController
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
+import models.UserAnswers
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.enhancedstructuresbuildingallowance.{Esba, Esbas}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -67,13 +69,14 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid data is submitted" in {
+      val userAnswers = emptyUserAnswers.set(Esbas, List[Esba]()).get
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
