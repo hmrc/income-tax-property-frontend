@@ -28,8 +28,7 @@ import viewmodels.govuk.summarylist._
 import views.html.allowances.AllowancesCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class AllowancesCheckYourAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -39,7 +38,7 @@ class AllowancesCheckYourAnswersController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AllowancesCheckYourAnswersView,
                                        auditService: AuditService
-                                     ) extends FrontendBaseController with I18nSupport with Logging {
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
       implicit request =>
