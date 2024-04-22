@@ -19,18 +19,18 @@ package audit
 import models.ElectricChargePointAllowance
 import pages.PageConstants
 import play.api.libs.json.{JsPath, Json, OFormat}
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 case class Allowance(
                       annualInvestmentAllowance: Option[BigDecimal],
                       electricChargePointAllowance: ElectricChargePointAllowance,
                       zeroEmissionCarAllowance: Option[BigDecimal],
                       zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
-                      businessPremisesRenovationController: Option[BigDecimal],
-                      replacementOfDomesticGoodsController: Option[BigDecimal],
+                      businessPremisesRenovation: Option[BigDecimal],
+                      replacementOfDomesticGoods: Option[BigDecimal],
                       otherCapitalAllowance: Option[BigDecimal])
 
-case object Allowance extends Gettable[Allowance] {
+case object Allowance extends Gettable[Allowance] with Settable[Allowance]{
   implicit val format: OFormat[Allowance] = Json.format[Allowance]
 
   override def path: JsPath = JsPath \ toString

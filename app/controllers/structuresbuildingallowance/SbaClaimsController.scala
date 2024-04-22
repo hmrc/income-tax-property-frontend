@@ -91,10 +91,10 @@ class SbaClaimsController @Inject()(
             mtdItId = request.user.mtditid,
             taxYear = taxYear,
             isUpdate = false,
-            transactionName = Allowance.toString,
+            transactionName = "PropertyRentalsSBA",
             rentalDetails = structureBuildingAllowances
           )
-          auditService.sendAllowanceAudit(event)
+          auditService.sendPropertyAboutAudit(event)
         }
       }
     }

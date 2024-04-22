@@ -16,7 +16,10 @@
 
 package controllers.allowances
 
+import audit.Allowance
 import base.SpecBase
+import models.{ElectricChargePointAllowance, UserAnswers}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
@@ -27,6 +30,30 @@ import java.time.LocalDate
 class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = LocalDate.now.getYear
+
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val annualInvestmentAllowanceSummaryValue = 100
+  val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
+
+  val otherCapitalAllowanceValue = 700
+  val otherCapitalAllowance = BigDecimal.valueOf(otherCapitalAllowanceValue)
+
+  val replacementOfDomesticGoodsValue = 600
+  val replacementOfDomesticGoods = BigDecimal.valueOf(replacementOfDomesticGoodsValue)
+
+  val businessPremisesRenovationValue = 500
+  val businessPremisesRenovation = BigDecimal.valueOf(businessPremisesRenovationValue)
+
+  val zeroEmissionGoodsVehicleAllowanceValue = 400
+  val zeroEmissionGoodsVehicleAllowance = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
+
+  val zeroEmissionCarAllowanceValue = 300
+  val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
+
+  val electricChargePointAllowanceValue = 200
+  val electricChargePointAllowance = ElectricChargePointAllowance(
+    electricChargePointAllowanceYesNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
+  )
 
   "Check Your Answers Controller" - {
 
@@ -60,5 +87,30 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+
+      val userAnswers = UserAnswers("allowances-user-answers").set(Allowance, Allowance(
+        annualInvestmentAllowance =  Some(annualInvestmentAllowanceSummary),
+        electricChargePointAllowance = electricChargePointAllowance,
+        zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+        zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
+        businessPremisesRenovation = Some(businessPremisesRenovation),
+        replacementOfDomesticGoods = Some(replacementOfDomesticGoods),
+        otherCapitalAllowance = Some(otherCapitalAllowance)
+      )).toOption
+
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.AllowancesCheckYourAnswersController.onSubmit(taxYear).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
   }
+
 }
