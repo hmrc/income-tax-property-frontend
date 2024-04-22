@@ -18,7 +18,7 @@ package audit
 
 import models.StructuredBuildingAllowanceAddress
 import pages.PageConstants
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
@@ -31,7 +31,7 @@ case class StructureBuildingsAllowance(
                                       )
 
 case object StructureBuildingsAllowance extends Gettable[List[StructureBuildingsAllowance]] with Settable[List[StructureBuildingsAllowance]]{
-  implicit val format = Json.format[StructureBuildingsAllowance]
+  implicit val format: OFormat[StructureBuildingsAllowance] = Json.format[StructureBuildingsAllowance]
 
   override def path: JsPath = JsPath \ toString
 
