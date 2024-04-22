@@ -62,8 +62,8 @@ class AdjustmentsCheckYourAnswersController @Inject()(
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(Adjustments) match {
-        case Some(propertyAbout) =>
-          auditCYA(taxYear, request, propertyAbout)
+        case Some(adjustments) =>
+          auditCYA(taxYear, request, adjustments)
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
       }

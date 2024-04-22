@@ -18,18 +18,20 @@ package audit
 
 import models.{BalancingCharge, PrivateUseAdjustment, RenovationAllowanceBalancingCharge}
 import pages.PageConstants
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.Gettable
 
-final case class Adjustments(privateAdjustment: PrivateUseAdjustment,
+final case class Adjustments(privateUseAdjustment: PrivateUseAdjustment,
                              balancingCharge: BalancingCharge,
                              propertyIncomeAllowance: BigDecimal,
                              renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
-                             residentialFinancialCost: BigDecimal,
-                             unusedResidencialFinanceCost: BigDecimal)
+                             residentialFinanceCost: BigDecimal,
+                             unusedResidentialFinanceCost: BigDecimal)
 
 object Adjustments extends Gettable[Adjustments] {
-  implicit val format = Json.format[Adjustments]
+  implicit val format: OFormat[Adjustments] = Json.format[Adjustments]
 
-  override def path: JsPath = JsPath \ PageConstants.adjustments
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.adjustments
 }

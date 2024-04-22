@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaimAmount: BigDecimal, esbaAddress: EsbaAddress)
+final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal, esbaAddress: EsbaAddress)
 
 object Esba {
   implicit val formatter = Json.format[Esba]
