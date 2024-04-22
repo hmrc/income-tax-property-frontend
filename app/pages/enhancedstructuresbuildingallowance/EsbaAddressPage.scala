@@ -17,12 +17,13 @@
 package pages.enhancedstructuresbuildingallowance
 
 import models.EsbaAddress
+import pages.PageConstants.esbaFormGroup
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case class EsbaAddressPage(index: Int) extends QuestionPage[EsbaAddress] {
 
-  override def path: JsPath = JsPath \ "esbaAddressFormGroup" \ index \ toString
+  override def path: JsPath = JsPath \ esbaFormGroup \ index \ toString
   override def toString: String = "esbaAddress"
 
 }

@@ -133,7 +133,8 @@ trait Generators extends ModelGenerators {
       esbaQualifyingDate <- arbitrary[LocalDate]
       esbaQualifyingAmount <- arbitrary[BigDecimal]
       esbaClaimAmount <- arbitrary[BigDecimal]
-    } yield Esba(esbaQualifyingDate, esbaQualifyingAmount, esbaClaimAmount)
+      esbaAddress <- genEsbaAddress()
+    } yield Esba(esbaQualifyingDate, esbaQualifyingAmount, esbaClaimAmount, esbaAddress)
   }
 
   def genEsbaAddress(): Gen[EsbaAddress] = {

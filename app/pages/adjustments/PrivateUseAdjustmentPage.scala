@@ -17,12 +17,12 @@
 package pages.adjustments
 
 import models.PrivateUseAdjustment
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object PrivateUseAdjustmentPage extends QuestionPage[PrivateUseAdjustment] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.adjustments \ toString
 
   override def toString: String = "privateUseAdjustment"
 }

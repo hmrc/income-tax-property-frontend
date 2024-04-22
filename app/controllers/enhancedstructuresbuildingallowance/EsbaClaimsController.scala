@@ -16,17 +16,21 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
 import models.NormalMode
 import models.requests.DataRequest
 import navigation.Navigator
+import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
 import play.api.data.Form
+import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaClaimAmountSummary
 import viewmodels.govuk.summarylist._
@@ -36,17 +40,17 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EsbaClaimsController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     sessionRepository: SessionRepository,
-                                     navigator: Navigator,
-                                     identify: IdentifierAction,
-                                     getData: DataRetrievalAction,
-                                     requireData: DataRequiredAction,
-                                     formProvider: EsbaClaimsFormProvider,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     view: EsbaClaimsView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+                                      override val messagesApi: MessagesApi,
+                                      sessionRepository: SessionRepository,
+                                      navigator: Navigator,
+                                      identify: IdentifierAction,
+                                      getData: DataRetrievalAction,
+                                      requireData: DataRequiredAction,
+                                      formProvider: EsbaClaimsFormProvider,
+                                      val controllerComponents: MessagesControllerComponents,
+                                      audit: AuditService,
+                                      view: EsbaClaimsView
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -66,12 +70,35 @@ class EsbaClaimsController @Inject()(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
 
-        value =>
+        value => {
+          request.userAnswers.get(Esbas) match {
+            case Some(esbas) if value == false =>
+              auditCYA(taxYear, request, esbas)
+            case None =>
+              logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
+            case _ => ()
+          }
+          
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
+        }
       )
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbas: List[Esba])(implicit hc: HeaderCarrier): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentalsESBA",
+      esbas
+    )
+
+    audit.sendPropertyAboutAudit(auditModel)
   }
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
@@ -84,3 +111,4 @@ class EsbaClaimsController @Inject()(
   }
 
 }
+

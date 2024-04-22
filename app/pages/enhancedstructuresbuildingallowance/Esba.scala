@@ -16,19 +16,23 @@
 
 package pages.enhancedstructuresbuildingallowance
 
+import models.EsbaAddress
 import pages.PageConstants
 import play.api.libs.json.{JsPath, Json}
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaimAmount: BigDecimal)
+final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal, esbaAddress: EsbaAddress)
 
 object Esba {
   implicit val formatter = Json.format[Esba]
 }
-final case class EsbaInfo(taxYear: Int) extends Gettable[Array[Esba]] {
+
+object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
+
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = PageConstants.esbaFormGroup
 }
+
