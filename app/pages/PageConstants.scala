@@ -25,4 +25,5 @@ object PageConstants {
   val propertyRentalsAbout: String = "propertyRentalsAbout"
 
   val allowancesFormGroup: String = "allowancesFormGroup"
+  val adjustments: String = "adjustments"
 }
