@@ -16,7 +16,10 @@
 
 package controllers.allowances
 
+import audit.{Allowance, AuditModel, AuditService}
 import controllers.actions._
+import controllers.routes
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -25,6 +28,7 @@ import viewmodels.govuk.summarylist._
 import views.html.allowances.AllowancesCheckYourAnswersView
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class AllowancesCheckYourAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -32,8 +36,9 @@ class AllowancesCheckYourAnswersController @Inject()(
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: AllowancesCheckYourAnswersView
-                                     ) extends FrontendBaseController with I18nSupport {
+                                       view: AllowancesCheckYourAnswersView,
+                                       auditService: AuditService
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
       implicit request =>
@@ -52,5 +57,28 @@ class AllowancesCheckYourAnswersController @Inject()(
         )
 
         Ok(view(list, taxYear))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+   implicit request =>
+
+     request.userAnswers.get(Allowance).fold {
+       logger.error("Allowances not found in userAnswers")
+     }{
+       allowance: Allowance => {
+
+        val event = AuditModel[Allowance](
+          nino = request.user.nino,
+          userType = request.user.affinityGroup,
+          mtdItId = request.user.mtditid,
+          taxYear = taxYear,
+          isUpdate = false,
+          transactionName = "PropertyRentalsAllowance",
+          rentalDetails = allowance
+        )
+       auditService.sendPropertyAboutAudit(event)
+      }
+  }
+     Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 }

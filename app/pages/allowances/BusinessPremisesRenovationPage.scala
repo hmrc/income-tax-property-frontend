@@ -16,12 +16,13 @@
 
 package pages.allowances
 
+import pages.PageConstants.allowancesFormGroup
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object BusinessPremisesRenovationPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ allowancesFormGroup \ toString
 
-  override def toString: String = "businessPremisesRenovationController"
+  override def toString: String = "businessPremisesRenovation"
 }

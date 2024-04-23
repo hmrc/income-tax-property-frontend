@@ -22,7 +22,7 @@ case class AuditModel[T](nino: String,
                          userType: String,
                          mtdItId: String,
                          taxYear: Int,
-                         isUpdate: Boolean,
+                         isUpdate: Boolean ,
                          transactionName: String,
                          rentalDetails: T)
 

@@ -16,17 +16,20 @@
 
 package controllers.structuresbuildingallowance
 
+import audit.{Allowance, AuditModel, AuditService, StructureBuildingsAllowance}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.NormalMode
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.structurebuildingallowance.{SbaClaimsPage, StructureBuildingFormGroup}
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceClaimSummary
 import viewmodels.govuk.summarylist._
@@ -44,8 +47,9 @@ class SbaClaimsController @Inject()(
                                      requireData: DataRequiredAction,
                                      formProvider: SbaClaimsFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
-                                     view: SbaClaimsView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     view: SbaClaimsView,
+                                     auditService: AuditService
+                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
 
 
@@ -65,13 +69,35 @@ class SbaClaimsController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
-
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
+            _ <- if(!value) auditSBAClaims(taxYear, request) else Future.successful(())
           } yield Redirect(navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )
+  }
+
+  private def auditSBAClaims(taxYear: Int, request: DataRequest[AnyContent])(implicit hc: HeaderCarrier) = {
+    Future {
+      request.userAnswers.get(StructureBuildingsAllowance).fold {
+        logger.error("Structure and Building Allowance not found in userAnswers")
+      } {
+        structureBuildingAllowances: List[StructureBuildingsAllowance] => {
+
+          val event = AuditModel[List[StructureBuildingsAllowance]](
+            nino = request.user.nino,
+            userType = request.user.affinityGroup,
+            mtdItId = request.user.mtditid,
+            taxYear = taxYear,
+            isUpdate = false,
+            transactionName = "PropertyRentalsSBA",
+            rentalDetails = structureBuildingAllowances
+          )
+          auditService.sendPropertyAboutAudit(event)
+        }
+      }
+    }
   }
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {

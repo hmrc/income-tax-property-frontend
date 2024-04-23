@@ -25,7 +25,7 @@ import java.time.LocalDate
 case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate,
                                       structureBuildingQualifyingAmount: BigDecimal, structureBuildingAllowanceClaim: BigDecimal)
 
-case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] {
+case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] with Settable[Array[StructureBuildingFormGroup]] {
 
   implicit val format: Format[StructureBuildingFormGroup] = Json.format
 

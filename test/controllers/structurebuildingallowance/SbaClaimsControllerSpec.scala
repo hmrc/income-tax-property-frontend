@@ -16,13 +16,16 @@
 
 package controllers.structurebuildingallowance
 
+import audit.StructureBuildingsAllowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaClaimsFormProvider
+import models.{StructuredBuildingAllowanceAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.Application
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -33,11 +36,13 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaClaimsView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRouteAddClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
+  def onwardRouteNoOtherClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   val formProvider = new SbaClaimsFormProvider()
   val form: Form[Boolean] = formProvider("agent")
@@ -47,6 +52,9 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   val list: SummaryList = SummaryListViewModel(Seq.empty)
 
   lazy val sbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear).url
+
+  val structureBuildingQualifyingAmount = 100
+  val structureBuildingAllowanceClaim = 200
 
   "SbaClaims Controller" - {
 
@@ -75,7 +83,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteAddClaim)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -88,7 +96,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual onwardRouteAddClaim.url
       }
     }
 
@@ -139,6 +147,46 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+
+      val userAnswers: Option[UserAnswers] =
+        UserAnswers("sba-user-answers")
+          .set(
+            page = StructureBuildingsAllowance,
+            value = List(
+              StructureBuildingsAllowance(
+                structureBuildingQualifyingDate = LocalDate.now,
+                structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
+                structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,
+                structuredBuildingAllowanceAddress =
+                  StructuredBuildingAllowanceAddress(
+                    buildingName = "Park View",
+                    buildingNumber = "9",
+                    postCode = "SE13 5FG"
+                  )
+              )
+            )
+      ).toOption
+
+      val application: Application = applicationBuilder(userAnswers = userAnswers, isAgent = false).build()
+
+      running(application) {
+        val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url).withFormUrlEncodedBody(("anotherClaim", "true"))
+
+        val addOtherClaimResult = route(application, addOtherClaimRequest).value
+
+        status(addOtherClaimResult) mustEqual SEE_OTHER
+        redirectLocation(addOtherClaimResult).value mustEqual onwardRouteAddClaim.url
+
+        val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url).withFormUrlEncodedBody(("anotherClaim", "false"))
+
+        val noOtherClaimResult = route(application, noOtherClaimRequest).value
+
+        status(noOtherClaimResult) mustEqual SEE_OTHER
+        redirectLocation(noOtherClaimResult).value mustEqual onwardRouteNoOtherClaim.url
       }
     }
   }
