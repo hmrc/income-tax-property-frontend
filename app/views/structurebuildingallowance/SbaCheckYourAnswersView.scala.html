@@ -32,6 +32,6 @@
 
     @govukButton(
         ButtonViewModel(messages("site.saveAndContinue"))
-        .asLink(routes.SbaClaimsController.onSubmit(taxYear).url).withId("continue")
+        .asLink(routes.SbaClaimsController.onPageLoad(taxYear).url).withId("continue")
     )
 }

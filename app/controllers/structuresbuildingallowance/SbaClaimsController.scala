@@ -73,7 +73,7 @@ class SbaClaimsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-            _ <- auditSBAClaims(taxYear, request)
+            _ <- if(!value) auditSBAClaims(taxYear, request) else Future.successful(())
           } yield Redirect(navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )
   }
