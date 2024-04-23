@@ -21,10 +21,10 @@ import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.Gettable
 
 case class PropertyRentalsIncome(calculatedFigureYourself: Option[Boolean],
+                                 calculatedFigureYourselfAmount: Option[BigDecimal],
                                  isNonUKLandlord: Option[BigDecimal],
                                  incomeFromPropertyRentals: Option[BigDecimal],
                                  leaseGrant: Option[BigDecimal],
-                                 calculatedFigureYourselfAmount: Option[BigDecimal],
                                  leasePeriodInMonths: Option[BigDecimal],
                                  premiumTaxableAmount: Option[BigDecimal],
                                  reversePremiumsReceived: Option[BigDecimal],

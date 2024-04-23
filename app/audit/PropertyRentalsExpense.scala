@@ -21,6 +21,7 @@ import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.Gettable
 
 case class PropertyRentalsExpense(consolidatedExpensesYesNo: Option[Boolean],
+                                  consolidatedExpensesAmount: Option[BigDecimal],
                                   rentsRatesAndInsurance: Option[BigDecimal],
                                   repairsAndMaintenanceCosts: Option[BigDecimal],
                                   loanInterestOrOtherFinancialCost: Option[BigDecimal],

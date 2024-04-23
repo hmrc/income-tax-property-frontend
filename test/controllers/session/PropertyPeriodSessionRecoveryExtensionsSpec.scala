@@ -21,7 +21,9 @@ import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models.{BalancingCharge, CapitalAllowancesForACar, ConsolidatedExpenses, FetchedPropertyData, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, StructuredBuildingAllowanceAddress, TotalIncome, UKPropertySelect}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
+import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses._
+import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.{CapitalAllowancesForACarPage, TotalIncomePage, UKPropertyPage}
@@ -41,6 +43,17 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |       "propertyRentalsAbout": {
       |              "expensesLessThan1000" : false,
       |              "claimPropertyIncomeAllowance" : false
+      |        },
+      |        "propertyRentalsIncome": {
+      |           "isNonUKLandlord" : true,
+      |           "deductingTax" : 9,
+      |           "incomeFromPropertyRentals" : 8,
+      |           "leasePremiumPayment" : 7,
+      |           "receivedGrantLeaseAmount" : 6,
+      |           "yearLeaseAmount" : 5,
+      |           "premiumsGrantLease" : 4,
+      |           "reversePremiumsReceived": 3,
+      |           "calculatedFigureYourself" : false
       |        },
       |        "propertyRentalsExpense": {
       |           "consolidatedExpenses" : {
@@ -109,6 +122,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
       updated.get(ExpensesLessThan1000Page).get mustBe false
       updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
+      updated.get(IsNonUKLandlordPage).get mustBe true
+      updated.get(IncomeFromPropertyRentalsPage).get mustBe 8
+      updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
+      updated.get(YearLeaseAmountPage).get mustBe 5
       updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
       updated.get(RentsRatesAndInsurancePage).get mustBe 5
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 4
