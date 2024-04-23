@@ -18,6 +18,7 @@ package controllers.propertyrentals.expenses
 
 import audit.{AuditModel, AuditService, PropertyRentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.routes
 import models.requests.DataRequest
 import pages.PageConstants
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -74,23 +75,23 @@ class ExpensesCheckYourAnswersController @Inject()(
     implicit request =>
 
       request.userAnswers.get(PropertyRentalsExpense) match {
-        case Some(propertyIncomeExpenses) =>
-          auditCYA(taxYear, request, propertyIncomeExpenses)
+        case Some(propertyRentalsExpense) =>
+          auditCYA(taxYear, request, propertyRentalsExpense)
         case None =>
-          logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
+          logger.error(s"${PageConstants.propertyRentalsExpense} section is not present in userAnswers")
       }
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyRentalsExpense)(implicit hc: HeaderCarrier): Unit = {
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(implicit hc: HeaderCarrier): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       taxYear,
       isUpdate = false,
-      PageConstants.propertyRentalsIncome,
-      propertyAbout)
+      PageConstants.propertyRentalsExpense,
+      propertyRentalsExpense)
 
     audit.sendPropertyAboutAudit(auditModel)
   }

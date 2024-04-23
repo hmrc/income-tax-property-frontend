@@ -19,6 +19,7 @@ package controllers.propertyrentals.income
 import audit.{AuditModel, AuditService, PropertyRentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.routes
 import models.requests.DataRequest
 import pages.PageConstants
 import play.api.Logging
@@ -68,15 +69,15 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
     implicit request =>
 
       request.userAnswers.get(PropertyRentalsIncome) match {
-        case Some(propertyIncomeExpenses) =>
-          auditCYA(taxYear, request, propertyIncomeExpenses)
+        case Some(propertyRentalsIncome) =>
+          auditCYA(taxYear, request, propertyRentalsIncome)
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyRentalsIncome)(implicit hc: HeaderCarrier): Unit = {
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(implicit hc: HeaderCarrier): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
@@ -84,7 +85,7 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       PageConstants.propertyRentalsIncome,
-      propertyAbout)
+      propertyRentalsIncome)
 
     audit.sendPropertyAboutAudit(auditModel)
   }
