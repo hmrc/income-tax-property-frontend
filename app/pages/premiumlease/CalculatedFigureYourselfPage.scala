@@ -18,7 +18,7 @@ package pages.premiumlease
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CalculatedFigureYourself, UserAnswers}
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
@@ -27,7 +27,7 @@ import scala.util.Try
 
 case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYourself] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
 
   override def toString: String = "calculatedFigureYourself"
 

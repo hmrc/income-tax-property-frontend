@@ -42,16 +42,18 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |              "expensesLessThan1000" : false,
       |              "claimPropertyIncomeAllowance" : false
       |        },
-      |        "consolidatedExpenses" : {
+      |        "propertyRentalsExpense": {
+      |           "consolidatedExpenses" : {
       |            "consolidatedExpensesYesNo" : false
+      |           },
+      |           "RentsRatesAndInsurance" : 5,
+      |           "RepairsAndMaintenanceCosts" : 4,
+      |           "loanInterest" : 5,
+      |           "otherProfessionalFees" : 4,
+      |           "costsOfServicesProvided" : 5,
+      |           "propertyBusinessTravelCosts" : 4,
+      |           "otherAllowablePropertyExpenses" : 5
       |        },
-      |        "RentsRatesAndInsurance" : 5,
-      |        "RepairsAndMaintenanceCosts" : 4,
-      |        "loanInterest" : 5,
-      |        "otherProfessionalFees" : 4,
-      |        "costsOfServicesProvided" : 5,
-      |        "propertyBusinessTravelCosts" : 4,
-      |        "otherAllowablePropertyExpenses" : 5,
       |        "capitalAllowancesForACar" : {
       |            "CapitalAllowancesForACarYesNo" : false
       |        },

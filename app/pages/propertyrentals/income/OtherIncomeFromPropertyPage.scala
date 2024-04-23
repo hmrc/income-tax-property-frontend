@@ -18,23 +18,24 @@ package pages.propertyrentals.income
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{OtherIncomeFromProperty, UserAnswers}
-import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
 case object OtherIncomeFromPropertyPage extends QuestionPage[OtherIncomeFromProperty] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
 
   override def toString: String = "otherIncomeFromProperty"
 
   override def cleanup(value: Option[OtherIncomeFromProperty], userAnswers: UserAnswers): Try[UserAnswers] =
-    if (isTotalIncomeUnder85K(userAnswers))
+    if (isTotalIncomeUnder85K(userAnswers)) {
       super.cleanup(value, userAnswers)
-    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo)) {
       userAnswers.remove(ConsolidatedExpensesPage)
-    else
+    } else {
       super.cleanup(value, userAnswers)
+    }
 }
