@@ -30,7 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.premiumlease._
 import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
-import views.html.propertyrentals.CheckYourAnswersView
+import views.html.propertyrentals.income.IncomeCheckYourAnswersView
 
 import scala.concurrent.Future
 
@@ -40,7 +40,7 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
                                                           getData: DataRetrievalAction,
                                                           requireData: DataRequiredAction,
                                                           val controllerComponents: MessagesControllerComponents,
-                                                          view: CheckYourAnswersView,
+                                                          view: IncomeCheckYourAnswersView,
                                                           audit: AuditService
                                                         ) extends FrontendBaseController with I18nSupport with Logging {
 

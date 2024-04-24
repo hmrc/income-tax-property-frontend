@@ -16,20 +16,14 @@
 
 package audit
 
+import models.DeductingTax
 import pages.PageConstants
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.Gettable
 
-case class PropertyRentalsIncome(calculatedFigureYourself: Option[Boolean],
-                                 calculatedFigureYourselfAmount: Option[BigDecimal],
-                                 isNonUKLandlord: Option[BigDecimal],
-                                 incomeFromPropertyRentals: Option[BigDecimal],
-                                 leaseGrant: Option[BigDecimal],
-                                 leasePeriodInMonths: Option[BigDecimal],
-                                 premiumTaxableAmount: Option[BigDecimal],
-                                 reversePremiumsReceived: Option[BigDecimal],
-                                 reversePremiumsReceivedAmount: Option[BigDecimal],
-                                 otherIncomeFromProperty: Option[BigDecimal])
+case class PropertyRentalsIncome(isNonUKLandlord: Boolean,
+                                 deductingTax: DeductingTax,
+                                 incomeFromPropertyRentals: BigDecimal)
 
 case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] {
 

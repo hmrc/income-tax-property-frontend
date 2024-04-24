@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 import java.time.LocalDate
 
 case class EnhancedStructureBuildingFormGroup(esbaQualifyingDate: LocalDate,
-                                              esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal)
+                                                esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal)
 
 case object EnhancedStructureBuildingFormGroup extends Gettable[Array[EnhancedStructureBuildingFormGroup]] {
 
