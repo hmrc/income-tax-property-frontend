@@ -16,24 +16,33 @@
 
 package controllers.propertyrentals.income
 
+import audit.{AuditModel, AuditService, PropertyRentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.routes
+import models.requests.DataRequest
+import pages.PageConstants
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.premiumlease._
 import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
-import views.html.propertyrentals.CheckYourAnswersView
+import views.html.propertyrentals.income.IncomeCheckYourAnswersView
+
+import scala.concurrent.Future
 
 class PropertyIncomeCheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView
-                                          ) extends FrontendBaseController with I18nSupport {
+                                                          override val messagesApi: MessagesApi,
+                                                          identify: IdentifierAction,
+                                                          getData: DataRetrievalAction,
+                                                          requireData: DataRequiredAction,
+                                                          val controllerComponents: MessagesControllerComponents,
+                                                          view: IncomeCheckYourAnswersView,
+                                                          audit: AuditService
+                                                        ) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -54,5 +63,30 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       )
 
       Ok(view(list, taxYear))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+
+      request.userAnswers.get(PropertyRentalsIncome) match {
+        case Some(propertyRentalsIncome) =>
+          auditCYA(taxYear, request, propertyRentalsIncome)
+        case None =>
+          logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
+      }
+      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(implicit hc: HeaderCarrier): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      PageConstants.propertyRentalsIncome,
+      propertyRentalsIncome)
+
+    audit.sendPropertyAboutAudit(auditModel)
   }
 }

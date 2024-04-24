@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.income
+package audit
 
 import models.DeductingTax
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import pages.PageConstants
+import play.api.libs.json.{JsPath, Json, OFormat}
+import queries.Gettable
 
-case object DeductingTaxPage extends QuestionPage[DeductingTax] {
+case class PropertyRentalsIncome(isNonUKLandlord: Boolean,
+                                 deductingTax: DeductingTax,
+                                 incomeFromPropertyRentals: BigDecimal)
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
+case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] {
 
-  override def toString: String = "deductingTax"
+  implicit val formats: OFormat[PropertyRentalsIncome] = Json.format[PropertyRentalsIncome]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.propertyRentalsIncome
 }

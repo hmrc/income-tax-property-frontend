@@ -17,14 +17,14 @@
 package pages.propertyrentals.expenses
 
 import models.{ConsolidatedExpenses, UserAnswers}
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
 case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsExpense \toString
 
   override def toString: String = "consolidatedExpenses"
 

@@ -17,14 +17,14 @@
 package pages.propertyrentals.income
 
 import models.UserAnswers
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
 case object IsNonUKLandlordPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
 
   override def toString: String = "isNonUKLandlord"
 

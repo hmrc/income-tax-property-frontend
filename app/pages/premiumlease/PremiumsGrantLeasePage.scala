@@ -16,33 +16,33 @@
 
 package pages.premiumlease
 
-import models.PremiumsGrantLease
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.UserAnswers
-import pages.QuestionPage
+import models.{PremiumsGrantLease, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
 case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
 
   override def toString: String = "premiumsGrantLease"
 
   def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal =
-    (premiumAmount*(BigDecimal(50-minusOne(periods))/50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    (premiumAmount * (BigDecimal(50 - minusOne(periods)) / 50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
 
   def minusOne(periods: Int): Int = periods - 1
 
   override def cleanup(value: Option[PremiumsGrantLease], userAnswers: UserAnswers): Try[UserAnswers] = {
-        if (isTotalIncomeUnder85K(userAnswers))
-          super.cleanup(value, userAnswers)
-        else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
-          userAnswers.remove(ConsolidatedExpensesPage)
-        else
-          super.cleanup(value, userAnswers)
+    if (isTotalIncomeUnder85K(userAnswers)) {
+      super.cleanup(value, userAnswers)
+    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo)) {
+      userAnswers.remove(ConsolidatedExpensesPage)
+    } else {
+      super.cleanup(value, userAnswers)
+    }
   }
 
 }
