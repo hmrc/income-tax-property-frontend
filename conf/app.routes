@@ -367,7 +367,7 @@ POST       /:taxYear/furnished-holiday-lettings/pia-or-expenses                 
 GET        /:taxYear/furnished-holiday-lettings/change-pia-or-expenses              controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/furnished-holiday-lettings/change-pia-or-expenses              controllers.furnishedholidaylettings.FhlClaimPiaOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/furnished-holiday-lettings/check-your-answers                  controllers.furnishedholidaylettings.FhlCheckYourAnswersController.onPageLoad(taxYear: Int)
+
 
 GET        /:taxYear/furnished-holiday-lettings/deducting-tax                       controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/furnished-holiday-lettings/deducting-tax                       controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

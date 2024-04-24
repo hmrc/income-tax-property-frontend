@@ -108,9 +108,6 @@ class Navigator @Inject()() {
     case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, NormalMode, userAnswers)
     case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
 
-    case FhlReliefOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-    case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-
     case FhlIsNonUKLandlordPage => taxYear => _ => userAnswers => isFhlNonUKLandlordNavigation(taxYear, userAnswers)
     case FhlDeductingTaxPage => taxYear => _ => _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
     case FhlIncomePage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
@@ -176,8 +173,6 @@ class Navigator @Inject()() {
     case FhlMoreThanOnePage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
     case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, CheckMode, userAnswers)
     case FhlJointlyLetPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
-    case FhlReliefOrExpensesPage => taxYear =>  _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-    case FhlClaimPiaOrExpensesPage => taxYear => _ => _ => controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
 
 
     case FhlIsNonUKLandlordPage => taxYear =>
@@ -185,8 +180,6 @@ class Navigator @Inject()() {
         userAnswers =>
           isFhlNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
 
-    case FhlDeductingTaxPage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
-    case FhlIncomePage => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => taxYear => _ => userAnswers => CheckYourAnswersController.onPageLoad(taxYear)
   }

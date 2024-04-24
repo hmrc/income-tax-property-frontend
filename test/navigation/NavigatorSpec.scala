@@ -369,18 +369,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from FhlReliefOrExpensesPage to FhlCheckYourAnswersPage" in {
-        navigator.nextPage(
-          FhlReliefOrExpensesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from FhlClaimPiaOrExpensesPage to FhlCheckYourAnswersPage" in {
-        navigator.nextPage(
-          FhlClaimPiaOrExpensesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
       "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is true" in {
         val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, true).get
         navigator.nextPage(
@@ -694,18 +682,6 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           FhlJointlyLetPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
-      }
-
-      "must go from FhlReliefOrExpensesPage to FhlCheckYourAnswersPage" in {
-        navigator.nextPage(
-          FhlReliefOrExpensesPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from FhlClaimPiaOrExpensesPage to FhlCheckYourAnswersPage" in {
-        navigator.nextPage(
-          FhlClaimPiaOrExpensesPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
   }
