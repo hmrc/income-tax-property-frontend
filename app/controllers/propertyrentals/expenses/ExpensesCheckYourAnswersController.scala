@@ -90,7 +90,7 @@ class ExpensesCheckYourAnswersController @Inject()(
       request.user.mtditid,
       taxYear,
       isUpdate = false,
-      PageConstants.propertyRentalsExpense,
+      "PropertyRentalsExpense",
       propertyRentalsExpense)
 
     audit.sendRentalsAuditEvent(auditModel)
