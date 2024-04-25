@@ -38,10 +38,10 @@ import scala.concurrent.Future
 
 class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val formProvider = new OtherIncomeFromPropertyFormProvider()
-  val form: Form[OtherIncomeFromProperty] = formProvider("individual")
+  val form: Form[BigDecimal] = formProvider("individual")
   val taxYear: Int = LocalDate.now.getYear
   val otherIncomeFromProperty: BigDecimal = BigDecimal(12345)
 
@@ -63,7 +63,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(OtherIncomeFromPropertyPage,
-        OtherIncomeFromProperty(otherIncomeFromProperty)).success.value
+        otherIncomeFromProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -73,7 +73,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(OtherIncomeFromProperty(otherIncomeFromProperty)), taxYear,
+        contentAsString(result) mustEqual view(form.fill(otherIncomeFromProperty), taxYear,
           NormalMode, "individual")(request, messages(application)).toString
       }
     }

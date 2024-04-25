@@ -29,7 +29,7 @@ object TotalIncomeUtils {
     val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage).flatMap(_.amount).getOrElse(BigDecimal(0))
     val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage).flatMap(_.amount).getOrElse(BigDecimal(0))
     val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
-    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).map(_.amount).getOrElse(BigDecimal(0))
+    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).getOrElse(BigDecimal(0))
 
     incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
   }
