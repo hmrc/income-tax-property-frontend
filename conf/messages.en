@@ -1439,3 +1439,15 @@ fhlIncomeIntro.details.l1 = rental income
 fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
 fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.
 
+
+ukRentARoomJointlyLet.title.individual = Is your rent a room jointly let?
+ukRentARoomJointlyLet.heading.individual = Is your rent a room jointly let?
+ukRentARoomJointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
+ukRentARoomJointlyLet.error.required.individual = Select yes if your rent a room is jointly let
+ukRentARoomJointlyLet.change.hidden.individual = RentARoomJointlyLet
+
+ukRentARoomJointlyLet.title.agent = Is your client's rent a room jointly let?
+ukRentARoomJointlyLet.heading.agent = Is your client's rent a room jointly let?
+ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client's rent a room jointly let?
+ukRentARoomJointlyLet.error.required.agent = Select yes if your client's rent a room is jointly let
+ukRentARoomJointlyLet.change.hidden.agent = RentARoomJointlyLet
