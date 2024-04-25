@@ -28,7 +28,7 @@ class AuditService @Inject()(auditConnector: AuditConnector)(implicit ec: Execut
 
   private val auditType = "CreateOrAmendRentalsUpdate"
 
-  def sendPropertyAboutAudit[T](event: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit = {
+  def sendRentalsAuditEvent[T](event: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit = {
     auditConnector.sendExplicitAudit(auditType, event)
   }
 

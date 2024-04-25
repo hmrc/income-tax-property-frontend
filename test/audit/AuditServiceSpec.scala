@@ -38,7 +38,7 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
     val propertyAbout = PropertyAbout(TotalIncome.Under, UKPropertySelect.values, Some(true))
     val auditModel = AuditModel("NINO", "Agent", "mtdItId", 2024, isUpdate = false, "PropertyAbout", propertyAbout)
 
-    service.sendPropertyAboutAudit(auditModel)(hc, implicitly[Writes[AuditModel[PropertyAbout]]])
+    service.sendRentalsAuditEvent(auditModel)(hc, implicitly[Writes[AuditModel[PropertyAbout]]])
 
     verify(mockAuditConnector, times(1)).sendExplicitAudit(eqTo("CreateOrAmendRentalsUpdate"), eqTo(auditModel))(eqTo(hc), any(), any())
 

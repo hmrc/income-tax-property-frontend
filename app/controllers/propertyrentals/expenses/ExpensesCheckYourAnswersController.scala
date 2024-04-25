@@ -93,6 +93,6 @@ class ExpensesCheckYourAnswersController @Inject()(
       PageConstants.propertyRentalsExpense,
       propertyRentalsExpense)
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }

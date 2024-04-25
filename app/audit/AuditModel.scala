@@ -22,9 +22,9 @@ case class AuditModel[T](nino: String,
                          userType: String,
                          mtdItId: String,
                          taxYear: Int,
-                         isUpdate: Boolean ,
-                         transactionName: String,
-                         rentalDetails: T)
+                         isUpdate: Boolean,
+                         sectionName: String,
+                         enteredRentalDetails: T)
 
 object AuditModel {
   implicit def format[T](implicit rentalFormat: Format[T]): OFormat[AuditModel[T]] = Json.format[AuditModel[T]]

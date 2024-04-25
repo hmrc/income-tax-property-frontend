@@ -81,6 +81,6 @@ class AdjustmentsCheckYourAnswersController @Inject()(
       adjustments
     )
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }

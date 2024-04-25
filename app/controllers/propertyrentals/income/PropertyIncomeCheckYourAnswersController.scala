@@ -87,6 +87,6 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       PageConstants.propertyRentalsIncome,
       propertyRentalsIncome)
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }
