@@ -27,17 +27,16 @@ import viewmodels.implicits._
 
 object OtherIncomeFromPropertySummary {
 
-    def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-      answers.get(OtherIncomeFromPropertyPage).map {
-        answer =>
-
-          SummaryListRowViewModel(
-            key = KeyViewModel("otherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel(bigDecimalCurrency(answer.amount)).withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel("site.change", routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("otherIncomeFromProperty.change.hidden"))
-            )
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(OtherIncomeFromPropertyPage).map {
+      answer =>
+        SummaryListRowViewModel(
+          key = KeyViewModel("otherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("otherIncomeFromProperty.change.hidden"))
           )
-      }
+        )
+    }
 }

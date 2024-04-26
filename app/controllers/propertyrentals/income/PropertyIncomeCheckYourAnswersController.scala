@@ -84,9 +84,9 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       request.user.mtditid,
       taxYear,
       isUpdate = false,
-      PageConstants.propertyRentalsIncome,
+      "PropertyRentalsIncome",
       propertyRentalsIncome)
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }
