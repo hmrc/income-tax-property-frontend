@@ -58,7 +58,7 @@ class TotalIncomeAmountFormProviderSpec extends CurrencyFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "iukrentaroom.income.totalIncomeAmount.error.required.individual")
+      requiredError = FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.required.individual")
     )
   }
 }
