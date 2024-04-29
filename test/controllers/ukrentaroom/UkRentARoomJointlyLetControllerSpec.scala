@@ -112,7 +112,7 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("value", "true"))
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", "true"))
 
           val result = route(application, request).value
 
