@@ -1439,3 +1439,12 @@ fhlIncomeIntro.details.l1 = rental income
 fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
 fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.
 
+
+claimExpensesOrRRR.title = ClaimExpensesOrRRR
+claimExpensesOrRRR.heading = ClaimExpensesOrRRR
+claimExpensesOrRRR.checkYourAnswersLabel = ClaimExpensesOrRRR
+claimExpensesOrRRR.error.nonNumeric = Enter your claimExpensesOrRRR using numbers
+claimExpensesOrRRR.error.required = Enter your claimExpensesOrRRR
+claimExpensesOrRRR.error.wholeNumber = Enter your claimExpensesOrRRR using whole numbers
+claimExpensesOrRRR.error.outOfRange = ClaimExpensesOrRRR must be between {0} and {1}
+claimExpensesOrRRR.change.hidden = ClaimExpensesOrRRR
