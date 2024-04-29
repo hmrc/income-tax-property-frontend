@@ -24,6 +24,7 @@ import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -72,6 +73,17 @@ case object SummaryPage {
       } else {
         Seq(fhlAbout)
       }
+    } else {
+      Seq.empty[TaskListItem]
+    }
+  }
+
+  def createUkRentARoom(userAnswers: Option[UserAnswers], taxYear: Int) = {
+    val ukRentARoom: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
+    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+
+    if (isRentARoomSelected) {
+      Seq(ukRentARoom)
     } else {
       Seq.empty[TaskListItem]
     }
@@ -131,6 +143,15 @@ case object SummaryPage {
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      "about_link"
+    )
+  }
+
+  private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+    TaskListItem(
+      "summary.about",
+      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
+      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
     )
   }
