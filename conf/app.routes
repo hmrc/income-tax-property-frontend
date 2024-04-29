@@ -389,3 +389,8 @@ GET        /:taxYear/uk-rent-a-room/total-income-amount                         
 POST       /:taxYear/uk-rent-a-room/total-income-amount                             controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/total-income-amount                             controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/total-income-amount                             controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/jointly-let                        controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/jointly-let                        controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/change-jointly-let                 controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/change-jointly-let                 controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

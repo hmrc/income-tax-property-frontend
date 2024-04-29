@@ -12,6 +12,7 @@ summary.aboutUKProperties = About
 
 summary.rentals.heading = Property Rentals
 summary.fhl.heading = UK furnished holiday lettings
+summary.rentARoom.heading = UK rent a room
 summary.about = About
 summary.income = Income
 summary.expenses = Expenses
@@ -1409,3 +1410,17 @@ ukrentaroom.income.totalIncomeAmount.error.required.agent=Enter how much total r
 ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.income.totalIncomeAmount.error.nonNumeric.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent=Enter an amount between £0 and £1,000,000,000
+
+ukRentARoomJointlyLet.title.individual = Jointly let rent a room
+ukRentARoomJointlyLet.heading.individual = Is your rent a room jointly let?
+ukRentARoomJointlyLet.p.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
+ukRentARoomJointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
+ukRentARoomJointlyLet.error.required.individual = Select yes if your rent a room is jointly let
+ukRentARoomJointlyLet.change.hidden.individual = RentARoomJointlyLet
+
+ukRentARoomJointlyLet.title.agent = Jointly let rent a room
+ukRentARoomJointlyLet.heading.agent = Is your client’s rent a room jointly let?
+ukRentARoomJointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
+ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
+ukRentARoomJointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
+ukRentARoomJointlyLet.change.hidden.agent = RentARoomJointlyLet
