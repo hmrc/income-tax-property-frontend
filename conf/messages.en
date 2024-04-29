@@ -1451,4 +1451,4 @@ totalIncomeAmount.heading.agent=How much total rent a room income did your clien
 totalIncomeAmount.error.required.agent=Enter how much total rent a room income your client received
 totalIncomeAmount.error.twoDecimalPlaces.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
 totalIncomeAmount.error.nonNumeric.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
-totalIncomeAmount.error.outOfRange.agent=Enter an amount between £0 and £100,000,000,000
+totalIncomeAmount.error.outOfRange.agent=Enter an amount between £0 and £1,000,000,000
