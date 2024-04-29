@@ -78,7 +78,7 @@ class EsbaClaimsController @Inject()(
               logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
             case _ => ()
           }
-          
+
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
@@ -98,7 +98,7 @@ class EsbaClaimsController @Inject()(
       esbas
     )
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {

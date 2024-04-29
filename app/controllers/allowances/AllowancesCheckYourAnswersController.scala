@@ -73,10 +73,10 @@ class AllowancesCheckYourAnswersController @Inject()(
           mtdItId = request.user.mtditid,
           taxYear = taxYear,
           isUpdate = false,
-          transactionName = "PropertyRentalsAllowance",
-          rentalDetails = allowance
+          sectionName = "PropertyRentalsAllowance",
+          enteredRentalDetails = allowance
         )
-       auditService.sendPropertyAboutAudit(event)
+       auditService.sendRentalsAuditEvent(event)
       }
   }
      Future.successful(Redirect(routes.SummaryController.show(taxYear)))

@@ -83,6 +83,6 @@ class CheckYourAnswersController @Inject()(
       propertyAbout
     )
 
-    audit.sendPropertyAboutAudit(auditModel)
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }
