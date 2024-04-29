@@ -36,7 +36,7 @@ trait SpecBase
     with ScalaFutures
     with IntegrationPatience {
 
-  val userAnswersId: String = "id"
+  val userAnswersId: String = "totalIncomeAmountUserAnswerId"
 
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 

@@ -1439,3 +1439,16 @@ fhlIncomeIntro.details.l1 = rental income
 fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
 fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.
 
+totalIncomeAmount.title.individual=How much total rent a room income did you receive?
+totalIncomeAmount.heading.individual=How much total rent a room income did you receive?
+totalIncomeAmount.error.required.individual=Enter the the total rent a room income received
+totalIncomeAmount.error.twoDecimalPlaces.individual=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+totalIncomeAmount.error.nonNumeric.individual=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+totalIncomeAmount.error.outOfRange.individual=Enter an amount between £0 and £1,000,000,000
+
+totalIncomeAmount.title.agent=How much total rent a room income did your client receive?
+totalIncomeAmount.heading.agent=How much total rent a room income did your client receive?
+totalIncomeAmount.error.required.agent=Enter how much total rent a room income your client received
+totalIncomeAmount.error.twoDecimalPlaces.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+totalIncomeAmount.error.nonNumeric.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+totalIncomeAmount.error.outOfRange.agent=Enter an amount between £0 and £100,000,000,000
