@@ -1449,8 +1449,8 @@ ukRentARoomJointlyLet.error.required.individual = Select yes if your rent a room
 ukRentARoomJointlyLet.change.hidden.individual = RentARoomJointlyLet
 
 ukRentARoomJointlyLet.title.agent = Jointly let rent a room
-ukRentARoomJointlyLet.heading.agent = Is your client's rent a room jointly let?
-ukRentARoomJointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client's rent a room is jointly let they can claim a maximum of £3,750 tax free.
-ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client's rent a room jointly let?
-ukRentARoomJointlyLet.error.required.agent = Select yes if your client's rent a room is jointly let
+ukRentARoomJointlyLet.heading.agent = Is your client’s rent a room jointly let?
+ukRentARoomJointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
+ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
+ukRentARoomJointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
 ukRentARoomJointlyLet.change.hidden.agent = RentARoomJointlyLet
