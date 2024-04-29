@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.backend.{BusinessDetails, PropertyDetails}
-import models.{FetchedPropertyData, UKPropertySelect}
+import models.{FetchedPropertyData, NormalMode, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -67,7 +67,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
@@ -102,7 +102,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) must include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, propertyRentalsItems, Seq.empty[TaskListItem])(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, propertyRentalsItems, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
@@ -113,7 +113,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val businessService = mock[BusinessService]
       val userAnswersWithoutPropertyRentals = emptyUserAnswers.set(
         UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.RentARoom)
+        Set[UKPropertySelect]()
       ).success.value
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
@@ -130,7 +130,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustNot include("Property Rentals")
-        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem], Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
@@ -164,9 +164,45 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) must include("UK furnished holiday lettings")
-        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], propertyFhlItems)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], propertyFhlItems, Seq.empty[TaskListItem])(request, messages(application)).toString
       }
     }
 
+    "must display the UK rent a room section if rent a room is selected in the about section" in {
+      val year = LocalDate.now().getYear
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val businessDetails = BusinessDetails(List(propertyDetails))
+      val businessService = mock[BusinessService]
+
+      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+
+      val ukRentARoomItems: Seq[TaskListItem] = Seq(TaskListItem(
+        "summary.about",
+        controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
+        TaskListTag.NotStarted,
+        "about_link"
+      ))
+
+      val userAnswersWithUkRentARoom = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.RentARoom)
+      ).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithUkRentARoom), isAgent = false)
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SummaryController.show(year).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[SummaryView]
+
+        status(result) mustEqual OK
+        contentAsString(result) must include("UK rent a room")
+        contentAsString(result) mustEqual view(taxYear, Seq.empty[TaskListItem], Seq.empty[TaskListItem], ukRentARoomItems)(request, messages(application)).toString
+      }
+    }
   }
 }
