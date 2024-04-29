@@ -34,7 +34,7 @@ class UkRentARoomJointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
     s".value $agencyOrIndividual" - {
 
-      val fieldName = "value"
+      val fieldName = "ukRentARoomJointlyLet"
 
       behave like booleanField(
         form,
