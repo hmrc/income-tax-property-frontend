@@ -124,7 +124,6 @@ object PropertyPeriodSessionRecoveryExtensions {
     def updateFhlPages(fetchedData: JsObject): UserAnswers = {
       userAnswers.updatePage(FhlDeductingTaxPage, fetchedData: JsObject)
         .updatePage(FhlIsNonUKLandlordPage, fetchedData: JsObject)
-        .updatePage(FhlClaimPiaOrExpensesPage, fetchedData: JsObject)
         .updatePage(FhlJointlyLetPage, fetchedData: JsObject)
         .updatePage(FhlMainHomePage, fetchedData: JsObject)
         .updatePage(FhlMoreThanOnePage, fetchedData: JsObject)

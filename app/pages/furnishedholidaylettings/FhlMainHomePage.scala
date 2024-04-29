@@ -27,16 +27,4 @@ case object FhlMainHomePage extends QuestionPage[Boolean] {
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "fhlMainHome"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value.map {
-      case false =>
-        for {
-          jointlyLetRemovedAnswers <- userAnswers.remove(FhlJointlyLetPage)
-          bothRemovedAnswers <- jointlyLetRemovedAnswers.remove(FhlReliefOrExpensesPage)
-        } yield bothRemovedAnswers
-
-      case _ => userAnswers.remove(FhlClaimPiaOrExpensesPage)
-    }.getOrElse(super.cleanup(value, userAnswers))
-  }
 }
