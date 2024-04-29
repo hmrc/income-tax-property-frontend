@@ -201,7 +201,6 @@ class Navigator @Inject()() {
   private def flaYourMainHomeNextPage(taxYear: Int, mode: Mode, userAnswers: UserAnswers): Call = {
     userAnswers.get(FhlMainHomePage) match {
       case Some(true) => controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, mode)
-      case Some(false) =>  controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, mode)
       case None => IndexController.onPageLoad
     }
 

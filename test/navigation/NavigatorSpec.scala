@@ -357,12 +357,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from FhlMainHomePage to FhlJointlyLetPage when no selected" in {
-        navigator.nextPage(
-          FhlMainHomePage, taxYear, NormalMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, false).get
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, NormalMode)
-      }
-
       "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
         navigator.nextPage(
           FhlJointlyLetPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
@@ -672,11 +666,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
       }
 
-      "must go from FhlMainHomePage to FhlJointlyLetPage when no selected" in {
-        navigator.nextPage(
-          FhlMainHomePage, taxYear, CheckMode, emptyUserAnswers, emptyUserAnswers.set(FhlMainHomePage, false).get
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlClaimPiaOrExpensesController.onPageLoad(taxYear, CheckMode)
-      }
 
       "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
         navigator.nextPage(
