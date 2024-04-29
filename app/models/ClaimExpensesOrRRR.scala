@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.ClaimExpensesOrRRR
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object ClaimExpensesOrRRRPage extends QuestionPage[ClaimExpensesOrRRR] {
+final case class ClaimExpensesOrRRR(claimExpensesOrRRR: Boolean, rentARoomAmount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "claimExpensesOrRRR"
+object ClaimExpensesOrRRR {
+  implicit val format: Format[ClaimExpensesOrRRR] = Json.format
 }
