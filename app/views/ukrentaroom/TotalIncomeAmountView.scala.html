@@ -27,7 +27,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"totalIncomeAmount.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages(s"ukrentaroom.income.totalIncomeAmount.title.${individualOrAgent}"))) {
 
     @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
@@ -38,7 +38,7 @@
         @govukInput(
             InputViewModel(
                 field = form("totalIncomeAmount"),
-                label = LabelViewModel(messages(s"totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading()
+                label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading()
             )
             .asNumeric()
             .withWidth(Fixed10)

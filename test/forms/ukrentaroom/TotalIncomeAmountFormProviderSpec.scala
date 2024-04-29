@@ -41,22 +41,24 @@ class TotalIncomeAmountFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "totalIncomeAmount.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "totalIncomeAmount.error.twoDecimalPlaces.individual")
+      nonNumericError = FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.nonNumeric.individual"),
+      twoDecimalPlacesError =
+        FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
       form,
       fieldName,
-      minimum       = minimum,
-      maximum       = maximum,
-      expectedError = FormError(fieldName, "totalIncomeAmount.error.outOfRange.individual", Seq(minimum, maximum))
+      minimum = minimum,
+      maximum = maximum,
+      expectedError =
+        FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.outOfRange.individual", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "totalIncomeAmount.error.required.individual")
+      requiredError = FormError(fieldName, "iukrentaroom.income.totalIncomeAmount.error.required.individual")
     )
   }
 }

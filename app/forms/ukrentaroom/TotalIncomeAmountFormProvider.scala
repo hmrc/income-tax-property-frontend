@@ -30,14 +30,14 @@ class TotalIncomeAmountFormProvider @Inject() extends Mappings {
     Form(
       "totalIncomeAmount" ->
         currency(
-          requiredKey = s"totalIncomeAmount.error.required.${individualOrAgent}",
-          twoDecimalPlacesKey = s"totalIncomeAmount.error.twoDecimalPlaces.${individualOrAgent}",
-          nonNumericKey = s"totalIncomeAmount.error.nonNumeric.${individualOrAgent}"
+          requiredKey = s"ukrentaroom.income.totalIncomeAmount.error.required.${individualOrAgent}",
+          twoDecimalPlacesKey = s"ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.${individualOrAgent}",
+          nonNumericKey = s"ukrentaroom.income.totalIncomeAmount.error.nonNumeric.${individualOrAgent}"
         ).verifying(
           inRange(
             minimum = BigDecimal(minTotalIncomeAmount),
             maximum = BigDecimal(maxTotalIncomeAmount),
-            errorKey = s"totalIncomeAmount.error.outOfRange.${individualOrAgent}"
+            errorKey = s"ukrentaroom.income.totalIncomeAmount.error.outOfRange.${individualOrAgent}"
           )
         )
     )
