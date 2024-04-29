@@ -25,6 +25,6 @@ class UkRentARoomJointlyLetFormProvider @Inject() extends Mappings {
 
   def apply(agentOrIndividual: String): Form[Boolean] =
     Form(
-      "value" -> boolean(s"ukRentARoomJointlyLet.error.required.$agentOrIndividual")
+      "ukRentARoomJointlyLet" -> boolean(s"ukRentARoomJointlyLet.error.required.$agentOrIndividual")
     )
 }
