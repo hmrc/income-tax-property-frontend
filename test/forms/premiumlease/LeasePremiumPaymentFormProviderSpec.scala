@@ -26,9 +26,9 @@ class LeasePremiumPaymentFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new LeasePremiumPaymentFormProvider()("individual")
 
-  ".leasePremiumPayment" - {
+  ".leasePremiumPaymentYesOrNo" - {
 
-    val fieldName = "leasePremiumPayment"
+    val fieldName = "leasePremiumPaymentYesOrNo"
 
     behave like booleanField(
       form,
