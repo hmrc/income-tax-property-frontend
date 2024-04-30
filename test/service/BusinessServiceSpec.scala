@@ -32,9 +32,7 @@ import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class BusinessServiceSpec extends AnyWordSpec
-  with FutureAwaits with DefaultAwaitTimeout
-  with Matchers {
+class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwaitTimeout with Matchers {
 
   implicit private val hc: HeaderCarrier = HeaderCarrier()
 
@@ -43,16 +41,20 @@ class BusinessServiceSpec extends AnyWordSpec
   private val underTest = new BusinessService(mockBusinessConnector)
 
   "getBusinessDetails" should {
-    val user = User("mtditid", "nino", "group", true)
+    val user = User("mtditid", "nino", "group", isAgent = true)
 
     "return error when fails to get data" in {
-      when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
+      when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(
+        Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
+      )
 
       await(underTest.getBusinessDetails(user)) shouldBe Left(HttpParserError(INTERNAL_SERVER_ERROR))
     }
 
     "return data" in {
-      val businessDetails = BusinessDetails(List(PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false))))
+      val businessDetails = BusinessDetails(
+        List(PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId"))
+      )
 
       when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(Right(businessDetails))
 

@@ -38,7 +38,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
 
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]
@@ -46,7 +47,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
@@ -56,13 +58,17 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false))(request, messages(application)).toString
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false))(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
 
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(true))
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(true), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]
@@ -70,7 +76,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
@@ -80,17 +87,23 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true))(request, messages(application)).toString
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true))(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to the overview if there is no result" in {
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Left(HttpParserError(NOT_FOUND)))
+      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(
+        Left(HttpParserError(NOT_FOUND))
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-        .overrides(bind[BusinessService].toInstance(businessService)).build()
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)

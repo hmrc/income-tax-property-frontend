@@ -53,7 +53,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the correct view for an Individual" in {
       val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       when(businessService.getBusinessDetails(
@@ -82,7 +82,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the correct view for an Agent" in {
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       when(businessService.getBusinessDetails(

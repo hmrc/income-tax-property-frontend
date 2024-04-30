@@ -27,7 +27,6 @@ import uk.gov.hmrc.http.HttpResponse
 
 import java.time.LocalDate
 
-
 class GetBusinessDetailsResponseSpec extends AnyWordSpec with Matchers {
 
   private val anyHeaders: Map[String, Seq[String]] = Map.empty
@@ -39,7 +38,8 @@ class GetBusinessDetailsResponseSpec extends AnyWordSpec with Matchers {
   "GetBusinessDetailsResponse" should {
     "convert JsValue to GetBusinessDetailsResponse" when {
       "status is OK and valid jsValue" in {
-        val propertyDetails = PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false))
+        val propertyDetails =
+          PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
         val businessDetails = BusinessDetails(List(propertyDetails))
         val jsValue: JsValue = Json.toJson(businessDetails)
 
@@ -52,10 +52,9 @@ class GetBusinessDetailsResponseSpec extends AnyWordSpec with Matchers {
       }
 
       "status is OK and invalid jsValue" in {
-        val jsValue: JsValue = Json.parse(
-          """
-            |{}
-            |""".stripMargin)
+        val jsValue: JsValue = Json.parse("""
+                                            |{}
+                                            |""".stripMargin)
 
         val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)
 
@@ -66,10 +65,9 @@ class GetBusinessDetailsResponseSpec extends AnyWordSpec with Matchers {
       }
 
       "status is NOT_FOUND and any jsValue" in {
-        val jsValue: JsValue = Json.parse(
-          """
-            |{}
-            |""".stripMargin)
+        val jsValue: JsValue = Json.parse("""
+                                            |{}
+                                            |""".stripMargin)
 
         val httpResponse: HttpResponse = HttpResponse.apply(NOT_FOUND, jsValue, anyHeaders)
 
