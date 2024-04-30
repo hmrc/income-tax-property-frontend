@@ -55,7 +55,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("value"),
+                field = form("leasePremiumPaymentYesOrNo"),
                 legend = LegendViewModel(messages(s"leasePremiumPayment.question.$individualOrAgent")).withSize(LegendSize.Medium)
             )
         )

@@ -39,11 +39,8 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
   val formProvider = new ReceivedGrantLeaseAmountFormProvider()
   val form = formProvider()
   private val taxYear = LocalDate.now.getYear
-
-
-  def onwardRoute = Call("GET", "/year-lease-amount")
-
-  val validAnswer = BigDecimal(100)
+  private val validAnswer = BigDecimal(100)
+  private def onwardRoute = Call("GET", "/year-lease-amount")
 
   lazy val recievedGrantLeaseAmountRoute = routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
 
@@ -61,7 +58,10 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -79,7 +79,10 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -100,7 +103,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, recievedGrantLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("receivedGrantLeaseAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -116,16 +119,19 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, recievedGrantLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("receivedGrantLeaseAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("receivedGrantLeaseAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -150,7 +156,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, recievedGrantLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("receivedGrantLeaseAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

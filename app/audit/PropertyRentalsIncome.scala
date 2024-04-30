@@ -16,18 +16,26 @@
 
 package audit
 
-import models.DeductingTax
+import models.{CalculatedFigureYourself, DeductingTax, PremiumsGrantLease, ReversePremiumsReceived}
 import pages.PageConstants
-import play.api.libs.json.{JsPath, Json, OFormat}
+import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
-case class PropertyRentalsIncome(isNonUKLandlord: Boolean,
-                                 deductingTax: DeductingTax,
-                                 incomeFromPropertyRentals: BigDecimal)
+case class PropertyRentalsIncome(
+  isNonUKLandlord: Boolean,
+  incomeFromPropertyRentals: BigDecimal,
+  otherIncomeFromProperty: BigDecimal,
+  deductingTax: Option[DeductingTax],
+  calculatedFigureYourself: Option[CalculatedFigureYourself],
+  yearLeaseAmount: Option[BigDecimal],
+  receivedGrantLeaseAmount: Option[BigDecimal],
+  premiumsGrantLease: Option[PremiumsGrantLease],
+  reversePremiumsReceived: Option[ReversePremiumsReceived]
+)
 
 case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] {
 
-  implicit val formats: OFormat[PropertyRentalsIncome] = Json.format[PropertyRentalsIncome]
+  implicit val formats: Format[PropertyRentalsIncome] = Json.format[PropertyRentalsIncome]
 
   override def path: JsPath = JsPath \ toString
 

@@ -27,7 +27,7 @@ class LeasePremiumPaymentPageSpec extends SpecBase {
     val userData = emptyUserAnswers
       .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).get
       .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage, PremiumsGrantLease(yesOrNo = true, Some(BigDecimal(10.12)))).get
+      .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).get
       .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
 
     val result = userData.set(LeasePremiumPaymentPage, false).success.value
@@ -44,7 +44,7 @@ class LeasePremiumPaymentPageSpec extends SpecBase {
 
     val userData = emptyUserAnswers.set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).get
       .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage,  PremiumsGrantLease(yesOrNo = true, Some(BigDecimal(10.12)))).get
+      .set(PremiumsGrantLeasePage,  PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).get
       .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
 
     val result = userData.set(LeasePremiumPaymentPage, true).success.value

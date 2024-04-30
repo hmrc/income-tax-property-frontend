@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class OtherIncomeFromProperty(amount: BigDecimal)
+final case class OtherIncomeFromProperty(otherIncomeFromProperty: BigDecimal)
 
 object OtherIncomeFromProperty {
   implicit val format: Format[OtherIncomeFromProperty] = Json.format

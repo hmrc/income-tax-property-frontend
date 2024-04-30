@@ -20,7 +20,6 @@ import connectors.Parser
 import connectors.error.ApiError
 import models.FetchedPropertyData
 import play.api.http.Status._
-import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 final case class GetPropertyPeriodicSubmissionResponse(httpResponse: HttpResponse, result: Either[ApiError, FetchedPropertyData])

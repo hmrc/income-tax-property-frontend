@@ -25,9 +25,9 @@ class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
 
   val form = new YearLeaseAmountFormProvider()()
 
-  ".value" - {
+  ".yearLeaseAmount" - {
 
-    val fieldName = "value"
+    val fieldName = "yearLeaseAmount"
 
     val minimum = 2
     val maximum = 50
