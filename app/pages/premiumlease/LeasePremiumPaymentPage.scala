@@ -27,7 +27,7 @@ case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
 
-  override def toString: String = "leasePremiumPayment"
+  override def toString: String = "leasePremiumPaymentYesOrNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {

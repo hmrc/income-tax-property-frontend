@@ -100,7 +100,7 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("yearLeaseAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -116,9 +116,9 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("yearLeaseAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("yearLeaseAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[YearLeaseAmountView]
 
@@ -150,7 +150,7 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("yearLeaseAmount", validAnswer.toString))
 
         val result = route(application, request).value
 

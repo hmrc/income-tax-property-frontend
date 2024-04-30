@@ -27,9 +27,9 @@ class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new OtherIncomeFromPropertyFormProvider()("individual")
 
-  ".amount" - {
+  ".otherIncomeFromProperty" - {
 
-    val fieldName = "amount"
+    val fieldName = "otherIncomeFromProperty"
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 

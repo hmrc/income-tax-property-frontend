@@ -25,6 +25,6 @@ class LeasePremiumPaymentFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean(s"leasePremiumPayment.error.required.$individualOrAgent")
+      "leasePremiumPaymentYesOrNo" -> boolean(s"leasePremiumPayment.error.required.$individualOrAgent")
     )
 }

@@ -77,7 +77,7 @@ class PremiumsGrantLeaseController @Inject()(
             value =>
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumsGrantLeasePage,
-                  PremiumsGrantLease(value.yesOrNo, Some(value.premiumsGrantLease.getOrElse(PremiumsGrantLeasePage.calculateTaxableAmount(amount, period))))))
+                  PremiumsGrantLease(value.premiumsGrantLeaseYesOrNo, Some(value.premiumsGrantLease.getOrElse(PremiumsGrantLeasePage.calculateTaxableAmount(amount, period))))))
                 _ <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(PremiumsGrantLeasePage, taxYear, mode, request.userAnswers, updatedAnswers))
           )

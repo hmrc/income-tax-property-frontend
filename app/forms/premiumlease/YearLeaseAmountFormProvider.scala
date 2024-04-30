@@ -25,7 +25,7 @@ class YearLeaseAmountFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Int] =
     Form(
-      "value" -> int(
+      "yearLeaseAmount" -> int(
         "yearLeaseAmount.error.required",
         "yearLeaseAmount.error.wholeNumber",
         "yearLeaseAmount.error.nonNumeric", Seq(2.toString, 50.toString))

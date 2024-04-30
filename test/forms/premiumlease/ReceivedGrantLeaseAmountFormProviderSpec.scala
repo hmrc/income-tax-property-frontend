@@ -23,9 +23,9 @@ class ReceivedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new ReceivedGrantLeaseAmountFormProvider()()
 
-  ".value" - {
+  ".receivedGrantLeaseAmount" - {
 
-    val fieldName = "value"
+    val fieldName = "receivedGrantLeaseAmount"
 
     val minimum = 0
     val maximum = 100000000
