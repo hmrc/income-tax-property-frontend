@@ -28,7 +28,7 @@ class TotalIncomeAmountFormProviderSpec extends CurrencyFieldBehaviours {
     val fieldName = "totalIncomeAmount"
 
     val minimum: Int = 0
-    val maximum: Int = 1000000000
+    val maximum: Int = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 

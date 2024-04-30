@@ -24,20 +24,20 @@ import javax.inject.Inject
 class TotalIncomeAmountFormProvider @Inject() extends Mappings {
 
   private val minTotalIncomeAmount: Int = 0
-  private val maxTotalIncomeAmount: Int = 1000000000
+  private val maxTotalIncomeAmount: Int = 100000000
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "totalIncomeAmount" ->
         currency(
-          requiredKey = s"ukrentaroom.income.totalIncomeAmount.error.required.${individualOrAgent}",
-          twoDecimalPlacesKey = s"ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.${individualOrAgent}",
-          nonNumericKey = s"ukrentaroom.income.totalIncomeAmount.error.nonNumeric.${individualOrAgent}"
+          requiredKey = s"ukrentaroom.income.totalIncomeAmount.error.required.$individualOrAgent",
+          twoDecimalPlacesKey = s"ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.$individualOrAgent",
+          nonNumericKey = s"ukrentaroom.income.totalIncomeAmount.error.nonNumeric.$individualOrAgent"
         ).verifying(
           inRange(
             minimum = BigDecimal(minTotalIncomeAmount),
             maximum = BigDecimal(maxTotalIncomeAmount),
-            errorKey = s"ukrentaroom.income.totalIncomeAmount.error.outOfRange.${individualOrAgent}"
+            errorKey = s"ukrentaroom.income.totalIncomeAmount.error.outOfRange.$individualOrAgent"
           )
         )
     )
