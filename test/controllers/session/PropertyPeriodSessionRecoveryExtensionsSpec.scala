@@ -18,12 +18,12 @@ package controllers.session
 
 import base.SpecBase
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
-import models.{BalancingCharge, CapitalAllowancesForACar, ConsolidatedExpenses, FetchedPropertyData, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, StructuredBuildingAllowanceAddress, TotalIncome, UKPropertySelect}
+import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
-import pages.premiumlease.{LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.premiumlease.{ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.{CapitalAllowancesForACarPage, TotalIncomePage, UKPropertyPage}
@@ -57,15 +57,15 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "propertyRentalsExpense": {
       |           "consolidatedExpenses" : {
-      |            "consolidatedExpensesYesNo" : false
+      |            "consolidatedExpensesYesOrNo" : false
       |           },
-      |           "RentsRatesAndInsurance" : 5,
-      |           "RepairsAndMaintenanceCosts" : 4,
-      |           "loanInterest" : 5,
-      |           "otherProfessionalFees" : 4,
-      |           "costsOfServicesProvided" : 5,
-      |           "propertyBusinessTravelCosts" : 4,
-      |           "otherAllowablePropertyExpenses" : 5
+      |           "rentsRatesAndInsurance" : 8,
+      |           "repairsAndMaintenanceCosts" : 7,
+      |           "loanInterestOrOtherFinancialCost" : 6,
+      |           "otherProfessionalFees" : 5,
+      |           "costsOfServicesProvided" : 4,
+      |           "propertyBusinessTravelCosts" : 3,
+      |           "otherAllowablePropertyExpenses" : 2
       |        },
       |        "capitalAllowancesForACar" : {
       |            "CapitalAllowancesForACarYesNo" : false
@@ -114,7 +114,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
-      val fetchedData: FetchedPropertyData = FetchedPropertyData(JsObject(Json.parse(data).as[Map[String, JsValue]].toSeq))
+      val fetchedData: FetchedPropertyData =
+        FetchedPropertyData(JsObject(Json.parse(data).as[Map[String, JsValue]].toSeq))
       val updated = emptyUserAnswers
         .update(fetchedData)
 
@@ -127,13 +128,13 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
       updated.get(YearLeaseAmountPage).get mustBe 5
       updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
-      updated.get(RentsRatesAndInsurancePage).get mustBe 5
-      updated.get(RepairsAndMaintenanceCostsPage).get mustBe 4
-      updated.get(LoanInterestPage).get mustBe 5
-      updated.get(OtherProfessionalFeesPage).get mustBe 4
-      updated.get(CostsOfServicesProvidedPage).get mustBe 5
-      updated.get(PropertyBusinessTravelCostsPage).get mustBe 4
-      updated.get(OtherAllowablePropertyExpensesPage).get mustBe 5
+      updated.get(RentsRatesAndInsurancePage).get mustBe 8
+      updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
+      updated.get(LoanInterestPage).get mustBe 6
+      updated.get(OtherProfessionalFeesPage).get mustBe 5
+      updated.get(CostsOfServicesProvidedPage).get mustBe 4
+      updated.get(PropertyBusinessTravelCostsPage).get mustBe 3
+      updated.get(OtherAllowablePropertyExpensesPage).get mustBe 2
       updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
       updated.get(PrivateUseAdjustmentPage).get mustBe PrivateUseAdjustment(4)
       updated.get(BalancingChargePage).get mustBe BalancingCharge(false, None)
@@ -142,11 +143,19 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ResidentialFinanceCostPage).get mustBe 4
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3
       updated.get(ClaimStructureBuildingAllowancePage).get mustBe true
-      updated.get(StructuredBuildingAllowanceAddressPage(0)).get mustBe StructuredBuildingAllowanceAddress("12", "12", "EH1 AB1")
+      updated.get(StructuredBuildingAllowanceAddressPage(0)).get mustBe StructuredBuildingAllowanceAddress(
+        "12",
+        "12",
+        "EH1 AB1"
+      )
       updated.get(StructureBuildingQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-02-02")
       updated.get(StructureBuildingQualifyingAmountPage(0)).get mustBe 22
       updated.get(StructureBuildingAllowanceClaimPage(0)).get mustBe 22
-      updated.get(StructuredBuildingAllowanceAddressPage(1)).get mustBe StructuredBuildingAllowanceAddress("123", "231", "EH1 AB1")
+      updated.get(StructuredBuildingAllowanceAddressPage(1)).get mustBe StructuredBuildingAllowanceAddress(
+        "123",
+        "231",
+        "EH1 AB1"
+      )
       updated.get(StructureBuildingQualifyingDatePage(1)).get mustBe LocalDate.parse("2023-02-23")
       updated.get(StructureBuildingQualifyingAmountPage(1)).get mustBe 12
       updated.get(StructureBuildingAllowanceClaimPage(1)).get mustBe 23

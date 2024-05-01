@@ -27,7 +27,7 @@ class RepairsAndMaintenanceCostsFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "RepairsAndMaintenanceCosts" -> currency(
+      "repairsAndMaintenanceCosts" -> currency(
         s"repairsAndMaintenanceCosts.error.required.$individualOrAgent",
         "repairsAndMaintenanceCosts.error.twoDecimalPlaces",
         s"repairsAndMaintenanceCosts.error.nonNumeric.$individualOrAgent")

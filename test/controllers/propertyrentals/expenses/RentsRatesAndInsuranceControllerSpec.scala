@@ -98,7 +98,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, rentsRoute)
-            .withFormUrlEncodedBody("RentsRatesAndInsurance" -> "1234")
+            .withFormUrlEncodedBody("rentsRatesAndInsurance" -> "1234")
 
         val result = route(application, request).value
 

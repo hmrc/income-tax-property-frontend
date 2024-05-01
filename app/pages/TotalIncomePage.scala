@@ -37,7 +37,7 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
     totalIncome match {
       case Some(Over) => for {
-        consolidatedExpensesPage <- updatedUserAnswers.get.set(ConsolidatedExpensesPage, ConsolidatedExpenses(consolidatedExpensesYesNo = false, None))
+        consolidatedExpensesPage <- updatedUserAnswers.get.set(ConsolidatedExpensesPage, ConsolidatedExpenses(consolidatedExpensesYesOrNo = false, None))
       } yield consolidatedExpensesPage
       case _ => super.cleanup(totalIncome, userAnswers)
     }

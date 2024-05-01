@@ -18,7 +18,7 @@ package forms.enhancedstructuresbuildingallowance
 
 import forms.mappings.Mappings
 import models.Addressable._
-import models.{Addressable, EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
+import models.{EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.Constraints.pattern

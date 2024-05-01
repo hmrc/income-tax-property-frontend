@@ -99,7 +99,7 @@ class RepairsAndMaintenanceCostControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, rentsRoute)
-            .withFormUrlEncodedBody("RepairsAndMaintenanceCosts" -> "1234")
+            .withFormUrlEncodedBody("repairsAndMaintenanceCosts" -> "1234")
 
         val result = route(application, request).value
 
