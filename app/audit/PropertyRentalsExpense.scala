@@ -21,9 +21,16 @@ import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
-
-
-case class PropertyRentalsExpense(consolidatedExpenses: ConsolidatedExpenses)
+case class PropertyRentalsExpense(
+  consolidatedExpenses: Option[ConsolidatedExpenses],
+  rentsRatesAndInsurance: Option[BigDecimal],
+  repairsAndMaintenanceCosts: Option[BigDecimal],
+  loanInterestOrOtherFinancialCost: Option[BigDecimal],
+  otherProfessionalFees: Option[BigDecimal],
+  costsOfServicesProvided: Option[BigDecimal],
+  propertyBusinessTravelCosts: Option[BigDecimal],
+  otherAllowablePropertyExpenses: Option[BigDecimal]
+)
 
 case object PropertyRentalsExpense extends Gettable[PropertyRentalsExpense] {
 
@@ -33,4 +40,3 @@ case object PropertyRentalsExpense extends Gettable[PropertyRentalsExpense] {
 
   override def toString: String = PageConstants.propertyRentalsExpense
 }
-

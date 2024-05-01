@@ -16,7 +16,7 @@
 
 package controllers.structuresbuildingallowance
 
-import audit.{Allowance, AuditModel, AuditService, StructureBuildingsAllowance}
+import audit.{AuditModel, AuditService, StructureBuildingsAllowance}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.NormalMode

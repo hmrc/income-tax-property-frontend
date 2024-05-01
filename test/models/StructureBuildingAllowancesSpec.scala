@@ -16,7 +16,7 @@
 
 package models
 
-import audit.{Allowance, StructureBuildingsAllowance}
+import audit.StructureBuildingsAllowance
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers

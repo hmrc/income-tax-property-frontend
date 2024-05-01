@@ -38,7 +38,7 @@ case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
   override def cleanup(value: Option[PremiumsGrantLease], userAnswers: UserAnswers): Try[UserAnswers] = {
     if (isTotalIncomeUnder85K(userAnswers)) {
       super.cleanup(value, userAnswers)
-    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo)) {
+    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo)) {
       userAnswers.remove(ConsolidatedExpensesPage)
     } else {
       super.cleanup(value, userAnswers)

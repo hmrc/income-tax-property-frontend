@@ -23,7 +23,7 @@ import models.User
 import models.backend.BusinessDetails
 import play.api.Logging
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, StringContextOps}
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import java.util.UUID
 import javax.inject.Inject
