@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukrentaroom
 
 import models.ClaimExpensesOrRRR
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ClaimExpensesOrRRRPage extends QuestionPage[ClaimExpensesOrRRR] {

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.routes
+import controllers.ukrentaroom.routes
 import models.{CheckMode, UserAnswers}
-import pages.ClaimExpensesOrRRRPage
+import pages.ukrentaroom.ClaimExpensesOrRRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._

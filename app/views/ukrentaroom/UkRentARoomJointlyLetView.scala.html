@@ -39,8 +39,8 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("value"),
-                legend = LegendViewModel(messages(s"ukRentARoomJointlyLet.heading.${request.user.isAgentMessageKey}")).asPageHeading()
+                field = form("ukRentARoomJointlyLet"),
+                legend = LegendViewModel(messages(s"ukRentARoomJointlyLet.heading.${request.user.isAgentMessageKey}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m")
             )
         )
 

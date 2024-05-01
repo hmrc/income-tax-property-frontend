@@ -383,14 +383,15 @@ GET        /:taxYear/furnished-holiday-lettings/fhl-income-intro                
 
 GET        /:taxYear/furnished-holiday-lettings/income-check-your-answers           controllers.furnishedholidaylettings.income.FhlIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
 
+##### UK RENT A ROOM
 
 GET        /:taxYear/uk-rent-a-room/jointly-let                                     controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/jointly-let                                     controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/change-jointly-let                              controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/change-jointly-let                              controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/claim-expenses-or-rrr                                          controllers.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/claim-expenses-or-rrr                                          controllers.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-claim-expenses-or-rrr                                   controllers.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-claim-expenses-or-rrr                                   controllers.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/uk-rent-a-room/claim-expenses-or-rrr                           controllers.ukrentaroom.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/claim-expenses-or-rrr                           controllers.ukrentaroom.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/change-claim-expenses-or-rrr                    controllers.ukrentaroom.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/change-claim-expenses-or-rrr                    controllers.ukrentaroom.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
