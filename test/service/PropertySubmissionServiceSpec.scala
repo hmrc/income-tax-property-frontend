@@ -17,7 +17,7 @@
 package service
 
 import base.SpecBase
-import connectors.PropertyPeriodicSubmissionConnector
+import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.{FetchedPropertyData, User}
 import play.api.libs.json.JsObject
@@ -27,12 +27,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 
-class PropertyPeriodSubmissionServiceSpec extends SpecBase {
-  val propertyPeriodicSubmissionConnector = mock[PropertyPeriodicSubmissionConnector]
+class PropertySubmissionServiceSpec extends SpecBase {
+  val propertyPeriodicSubmissionConnector = mock[PropertySubmissionConnector]
   val taxYear = 2024
   val user = User("", "", "", false)
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val propertyPeriodSubmissionService = new PropertyPeriodSubmissionService(propertyPeriodicSubmissionConnector)
+  val propertyPeriodSubmissionService = new PropertySubmissionService(propertyPeriodicSubmissionConnector)
 
   "PropertyPeriodSubmissionService" - {
     "return success when connector returns success" in {

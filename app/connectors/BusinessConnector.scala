@@ -33,13 +33,15 @@ class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: Frontend
   ec: ExecutionContext
 ) extends Logging {
 
-  def getBusinessDetails(user: User)(implicit hc: HeaderCarrier): Future[Either[ApiError, BusinessDetails]] = {
+  def getBusinessDetails(nino: String, mtditid: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ApiError, BusinessDetails]] = {
 
-    val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/business-details/nino/${user.nino}"
+    val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/business-details/nino/$nino"
 
     httpClient
       .get(url"$propertyBEUrl")
-      .setHeader("mtditid" -> user.mtditid)
+      .setHeader("mtditid" -> mtditid)
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .execute[GetBusinessDetailsResponse]
       .map { response: GetBusinessDetailsResponse =>

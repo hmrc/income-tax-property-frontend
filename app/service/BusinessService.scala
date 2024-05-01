@@ -19,20 +19,32 @@ package service
 import connectors.BusinessConnector
 import connectors.error.ApiError
 import models.User
-import models.backend.{BusinessDetails, HttpParserError}
+import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class BusinessService @Inject()(businessConnector: BusinessConnector)
-                               (implicit val ec: ExecutionContext) extends Logging {
+class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit val ec: ExecutionContext)
+    extends Logging {
 
-  def getBusinessDetails(user: User)(implicit hc: HeaderCarrier): Future[Either[HttpParserError, BusinessDetails]] = {
-    businessConnector.getBusinessDetails(user).map {
-      case Left(error: ApiError) => Left(HttpParserError(error.status))
+  def getBusinessDetails(user: User)(implicit hc: HeaderCarrier): Future[Either[HttpParserError, BusinessDetails]] =
+    businessConnector.getBusinessDetails(user.nino, user.mtditid).map {
+      case Left(error: ApiError)  => Left(HttpParserError(error.status))
       case Right(businessDetails) => Right(businessDetails)
     }
-  }
+
+  def getUkPropertyDetails(nino: String, mtditid: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ApiError, Option[PropertyDetails]]] =
+    businessConnector.getBusinessDetails(nino, mtditid).map {
+      case Left(error: ApiError)  => Left(error)
+      case Right(businessDetails) => Right(businessDetails.propertyData.find(isUkProperty))
+    }
+
+  private def isUkProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains(
+      "uk-property"
+    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }

@@ -20,3 +20,4 @@ trait ServiceError
 
 case class HttpParserError(status: Int) extends ServiceError
 
+case class PropertyDataError() extends ServiceError

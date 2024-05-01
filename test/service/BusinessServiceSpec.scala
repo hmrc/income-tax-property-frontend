@@ -44,7 +44,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
     val user = User("mtditid", "nino", "group", isAgent = true)
 
     "return error when fails to get data" in {
-      when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(
+      when(mockBusinessConnector.getBusinessDetails(user, _.mtditid, _.nino)()) thenReturn Future(
         Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
       )
 
@@ -56,7 +56,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
         List(PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId"))
       )
 
-      when(mockBusinessConnector.getBusinessDetails(user)) thenReturn Future(Right(businessDetails))
+      when(mockBusinessConnector.getBusinessDetails(user, _.mtditid, _.nino)()) thenReturn Future(Right(businessDetails))
 
       await(underTest.getBusinessDetails(user)) shouldBe Right(businessDetails)
     }

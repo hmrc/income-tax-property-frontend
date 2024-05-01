@@ -27,14 +27,14 @@ import play.api.mvc.AnyContent
 import play.api.mvc.Results.Redirect
 import play.api.test.FakeRequest
 import repositories.SessionRepository
-import service.PropertyPeriodSubmissionService
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar {
-  val propertyPeriodSubmissionService = mock[PropertyPeriodSubmissionService]
+  val propertyPeriodSubmissionService = mock[PropertySubmissionService]
   val sessionRepository = mock[SessionRepository]
 
   val propertyPeriodSessionRecovery = new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
