@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,58 +17,56 @@
 package controllers.ukrentaroom
 
 import controllers.actions._
-import forms.ukrentaroom.TotalIncomeAmountFormProvider
+import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.RentARoomAboutSectionCompletePage
-import pages.ukrentaroom.TotalIncomeAmountPage
+import pages.{RentARoomAboutSectionCompletePage, UKPropertySelectPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.TotalIncomeAmountView
+import views.html.ukrentaroom.AboutSectionCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TotalIncomeAmountController @Inject() (
+class AboutSectionCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: TotalIncomeAmountFormProvider,
+  formProvider: AboutSectionCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: TotalIncomeAmountView
+  view: AboutSectionCompleteView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
+  val form = formProvider()
+
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(TotalIncomeAmountPage) match {
+      val preparedForm = request.userAnswers.get(RentARoomAboutSectionCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomeAmountPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RentARoomAboutSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(TotalIncomeAmountPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

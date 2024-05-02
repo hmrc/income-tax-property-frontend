@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.requests._
+@import controllers.ukrentaroom.routes._
 
 @this(
     layout: templates.Layout,
@@ -24,28 +24,23 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("rentARoomJointlyLet.title"))) {
-    <h1 class="govuk-heading-xl">@messages(s"ukRentARoomJointlyLet.title.${request.user.isAgentMessageKey}")</h1>
-
-    <p class="govuk-body">@messages(s"ukRentARoomJointlyLet.p.${request.user.isAgentMessageKey}")</p>
-
-    @formHelper(action = controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
-
+@layout(pageTitle = title(form, messages("ukrentaroom.aboutSectionComplete.title"))) {
+    @formHelper(action = AboutSectionCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("ukRentARoomJointlyLet"),
-                legend = LegendViewModel(messages(s"ukRentARoomJointlyLet.heading.${request.user.isAgentMessageKey}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m")
+                field = form("value"),
+                legend = LegendViewModel(messages("ukrentaroom.aboutSectionComplete.heading")).asPageHeading()
             )
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick()
+            ButtonViewModel(messages("site.continue"))
         )
     }
 }
