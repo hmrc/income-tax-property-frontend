@@ -17,6 +17,7 @@
 package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
+import pages.SummaryPage.ukRentARoomExpensesItem
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
@@ -99,12 +100,14 @@ case object SummaryPage {
     }
   }
 
-  def createUkRentARoom(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
-    val ukRentARoom: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
-    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
 
+  def createUkRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int) = {
+    val ukRentARoomAbout: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
+    val ukRentARoomExpenses: TaskListItem = ukRentARoomExpensesItem(userAnswers, taxYear)
+    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+    //ToDo: Should be updated when expenses selection page ticket is merged.
     if (isRentARoomSelected) {
-      Seq(ukRentARoom)
+      Seq(ukRentARoomAbout, ukRentARoomExpenses)
     } else {
       Seq.empty[TaskListItem]
     }
@@ -203,8 +206,9 @@ case object SummaryPage {
       },
       "about_link"
     )
-
+  
   private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+
     TaskListItem(
       "summary.income",
       controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),

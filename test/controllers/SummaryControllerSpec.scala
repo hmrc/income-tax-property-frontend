@@ -23,6 +23,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
+import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import play.api.inject.bind
 import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
@@ -223,6 +224,12 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
           controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
           TaskListTag.NotStarted,
           "about_link"
+        ),
+        TaskListItem(
+          "summary.expenses",
+          controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "expenses_link"
         )
       )
 

@@ -127,7 +127,37 @@ class SummaryPageSpec extends SpecBase {
     }
 
   }
+  "SummaryPageSpec createUkRentARoomRows" - {
+    val taxYear = LocalDate.now.getYear
+    val cashOrAccruals = true
+    val summaryAboutItem = TaskListItem(
+      "summary.about",
+      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
+      TaskListTag.NotStarted,
+      "about_link"
+    )
+    val summaryExpensesItem = TaskListItem(
+      "summary.expenses",
+      controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "expenses_link"
+    )
+    "return empty rows, given an empty user data" in {
+      SummaryPage.createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
+    }
 
+    "createUkRentARoomRows return only one row when user has selected Rent a room" in {
+      val userAnswersWithUkRentARoom = emptyUserAnswers.set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.RentARoom)
+      ).success.value
+
+      //ToDo: Should be updated when expenses selection page ticket is merged.
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(2)
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(Seq(summaryAboutItem, summaryExpensesItem))
+
+    }
+  }
   "SummaryPageSpec createFHLRows" - {
     val taxYear = LocalDate.now.getYear
     val cashOrAccruals = true

@@ -33,11 +33,11 @@ object UkRentARoomJointlyLetSummary  {
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "ukRentARoomJointlyLet.checkYourAnswersLabel",
+          key     = "ukRentARoom.jointlyLet.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("ukRentARoomJointlyLet.change.hidden"))
+              .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
           )
         )
     }

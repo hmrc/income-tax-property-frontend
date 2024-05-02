@@ -1422,20 +1422,59 @@ ukrentaroom.aboutSectionComplete.title = Have you completed this section?
 ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
 rentARoomJointlyLet.title = Jointly let rent a room
-ukRentARoomJointlyLet.title.individual = Jointly let rent a room
-ukRentARoomJointlyLet.heading.individual = Is your rent a room jointly let?
-ukRentARoomJointlyLet.p.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
-ukRentARoomJointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
-ukRentARoomJointlyLet.error.required.individual = Select yes if your rent a room is jointly let
-ukRentARoomJointlyLet.change.hidden.individual = RentARoomJointlyLet
+ukRentARoom.jointlyLet.title.individual = Jointly let rent a room
+ukRentARoom.jointlyLet.heading.individual = Is your rent a room jointly let?
+ukRentARoom.jointlyLet.p.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
+ukRentARoom.jointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
+ukRentARoom.jointlyLet.error.required.individual = Select yes if your rent a room is jointly let
+ukRentARoom.jointlyLet.change.hidden.individual = RentARoomJointlyLet
 
-ukRentARoomJointlyLet.title.agent = Jointly let rent a room
-ukRentARoomJointlyLet.heading.agent = Is your client’s rent a room jointly let?
-ukRentARoomJointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
-ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
-ukRentARoomJointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
-ukRentARoomJointlyLet.change.hidden.agent = RentARoomJointlyLet
+ukRentARoom.jointlyLet.title.agent = Jointly let rent a room
+ukRentARoom.jointlyLet.heading.agent = Is your client’s rent a room jointly let?
+ukRentARoom.jointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
+ukRentARoom.jointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
+ukRentARoom.jointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
+ukRentARoom.jointlyLet.change.hidden.agent = RentARoomJointlyLet
 
+ukRentARoom.expensesIntro.title = Rent a room expenses
+ukRentARoom.expensesIntro.heading = Rent a room expenses
+
+ukRentARoom.expensesIntro.p1.individual = In this section we're going to ask you about your allowable expenses. These are the things that you spend money on to run your rent a room. Just tell us about the proportion of the expenses that relate to the room that you're renting out:
+ukRentARoom.expensesIntro.p1.agent = In this section we're going to ask you about your client's expenses. These are the things that your client spends money on to run their rent a room. Just tell us about the proportion of the expenses that relate to the room that your client is renting out:
+
+ukRentARoom.expensesIntro.li1.individual = rents, rates and insurance
+ukRentARoom.expensesIntro.li2.individual = property repairs and maintenance
+ukRentARoom.expensesIntro.li3.individual = legal, management or other professional fees
+ukRentARoom.expensesIntro.li4.individual = costs of services, including wages
+ukRentARoom.expensesIntro.li5.individual = residential property financial costs
+ukRentARoom.expensesIntro.li6.individual = unused residential property finance costs brought forward
+ukRentARoom.expensesIntro.li7.individual = other allowable property expenses
+
+
+ukRentARoom.expensesIntro.li1.agent = rents, rates and insurance
+ukRentARoom.expensesIntro.li2.agent = property repairs and maintenance
+ukRentARoom.expensesIntro.li3.agent = legal, management or other professional fees
+ukRentARoom.expensesIntro.li4.agent = costs of services, including wages
+ukRentARoom.expensesIntro.li5.agent = residential property financial costs
+ukRentARoom.expensesIntro.li6.agent = unused residential property finance costs brought forward
+ukRentARoom.expensesIntro.li7.agent = other allowable property expenses
+
+ukRentARoom.expensesIntro.p2.individual = You can claim either:
+ukRentARoom.expensesIntro.p2.agent = Your client can claim either:
+
+ukRentARoom.expensesIntro.p3.individual = , if your total property income before expenses was less than £85,000. You can add up all of your expenses and enter the total amount.
+ukRentARoom.expensesIntro.p3.agent = , if their total property income before expenses was less than £85,000. You can add up all of their expenses and enter the total amount.
+
+ukRentARoom.expensesIntro.p4.individual = or
+ukRentARoom.expensesIntro.p4.agent = or
+
+ukRentARoom.expensesIntro.href.link.consolidated = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
+ukRentARoom.expensesIntro.href.link.individual = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
+ukRentARoom.expensesIntro.href.label.consolidated = Consolidated expenses (opens in new tab)
+ukRentARoom.expensesIntro.href.label.individual = Individual expenses (opens in new tab)
+
+ukRentARoom.expensesIntro.p5.individual = , where you enter an amount for each separate expenses type.
+ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separate expenses type.
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
