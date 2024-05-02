@@ -100,12 +100,11 @@ case object SummaryPage {
     }
   }
 
-
-  def createUkRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  def createUkRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
     val ukRentARoomAbout: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
     val ukRentARoomExpenses: TaskListItem = ukRentARoomExpensesItem(userAnswers, taxYear)
     val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
-    //ToDo: Should be updated when expenses selection page ticket is merged.
+    // ToDo: Should be updated when expenses selection page ticket is merged.
     if (isRentARoomSelected) {
       Seq(ukRentARoomAbout, ukRentARoomExpenses)
     } else {
@@ -206,9 +205,20 @@ case object SummaryPage {
       },
       "about_link"
     )
-  
-  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
 
+  private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.expenses",
+      controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
+      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
+      "expenses_link"
+    )
+
+  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
       controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
