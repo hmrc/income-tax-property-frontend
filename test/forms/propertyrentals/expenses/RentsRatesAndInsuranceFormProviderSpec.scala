@@ -31,7 +31,7 @@ class RentsRatesAndInsuranceFormProviderSpec extends CurrencyFieldBehaviours {
     val maximum = 100000000
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
-    val fieldName = "RentsRatesAndInsurance"
+    val fieldName = "rentsRatesAndInsurance"
 
     behave like fieldThatBindsValidData(
       form,

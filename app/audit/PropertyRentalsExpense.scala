@@ -16,25 +16,27 @@
 
 package audit
 
+import models.ConsolidatedExpenses
 import pages.PageConstants
-import play.api.libs.json.{Format, JsPath, Json, OFormat}
+import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
-
-final case class ConsolidatedExpenses(consolidatedExpensesYesNo: Boolean, amount: BigDecimal)
-
-object ConsolidatedExpenses {
-  implicit val format: Format[ConsolidatedExpenses] = Json.format
-}
-
-case class PropertyRentalsExpense(consolidatedExpenses: ConsolidatedExpenses)
+case class PropertyRentalsExpense(
+  consolidatedExpenses: Option[ConsolidatedExpenses],
+  rentsRatesAndInsurance: Option[BigDecimal],
+  repairsAndMaintenanceCosts: Option[BigDecimal],
+  loanInterestOrOtherFinancialCost: Option[BigDecimal],
+  otherProfessionalFees: Option[BigDecimal],
+  costsOfServicesProvided: Option[BigDecimal],
+  propertyBusinessTravelCosts: Option[BigDecimal],
+  otherAllowablePropertyExpenses: Option[BigDecimal]
+)
 
 case object PropertyRentalsExpense extends Gettable[PropertyRentalsExpense] {
 
-  implicit val formats: OFormat[PropertyRentalsExpense] = Json.format[PropertyRentalsExpense]
+  implicit val formats: Format[PropertyRentalsExpense] = Json.format[PropertyRentalsExpense]
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = PageConstants.propertyRentalsExpense
 }
-

@@ -31,7 +31,7 @@ class PropertyPeriodSubmissionServiceSpec extends SpecBase {
   val propertyPeriodicSubmissionConnector = mock[PropertyPeriodicSubmissionConnector]
   val taxYear = 2024
   val user = User("", "", "", false)
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
   val propertyPeriodSubmissionService = new PropertyPeriodSubmissionService(propertyPeriodicSubmissionConnector)
 
   "PropertyPeriodSubmissionService" - {

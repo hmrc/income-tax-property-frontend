@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
-import models.{NormalMode, OtherIncomeFromProperty, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -95,7 +95,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
       running(application) {
         val request =
           FakeRequest(POST, otherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("amount", otherIncomeFromProperty.toString))
+            .withFormUrlEncodedBody(("otherIncomeFromProperty", otherIncomeFromProperty.toString))
 
         val result = route(application, request).value
 
@@ -111,9 +111,9 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
       running(application) {
         val request =
           FakeRequest(POST, otherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("otherIncomeFromProperty", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("otherIncomeFromProperty" -> ""))
 
         val view = application.injector.instanceOf[OtherIncomeFromPropertyView]
 
@@ -145,7 +145,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
       running(application) {
         val request =
           FakeRequest(POST, otherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("otherIncomeFromProperty", "non-numeric-value"))
 
         val result = route(application, request).value
 

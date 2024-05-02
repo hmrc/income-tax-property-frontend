@@ -23,46 +23,48 @@ import models.requests.OptionalDataRequest
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import repositories.SessionRepository
-import service.{BusinessService, PropertyPeriodSubmissionService}
+import service.BusinessService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.SummaryView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SummaryController @Inject()(
-                                   val controllerComponents: MessagesControllerComponents,
-                                   identify: IdentifierAction,
-                                   getData: DataRetrievalAction,
-                                   sessionRecovery: PropertyPeriodSessionRecovery,
-                                   view: SummaryView,
-                                   propertyPeriodSubmissionService: PropertyPeriodSubmissionService,
-                                   sessionRepository: SessionRepository,
-                                   businessService: BusinessService
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SummaryController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRecovery: PropertyPeriodSessionRecovery,
+  view: SummaryView,
+  businessService: BusinessService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async {
-    implicit request =>
-      withUpdatedData(taxYear) {
-        businessService.getBusinessDetails(request.user).map {
-          case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-            val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-            val propertyRentalsRows = SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-            val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-            val ukRentARoomRows = SummaryPage.createUkRentARoom(request.userAnswers, taxYear)
-            Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows))
-          case _ => Redirect(routes.SummaryController.show(taxYear))
-        }
-      }(request, controllerComponents.executionContext, hc)
+  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+    withUpdatedData(taxYear) {
+      val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      businessService.getBusinessDetails(request.user)(hc).map {
+        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+          val propertyRentalsRows =
+            SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+          val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+          val ukRentARoomRows = SummaryPage.createUkRentARoom(request.userAnswers, taxYear)
+          Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows))
+        case _ => Redirect(routes.SummaryController.show(taxYear))
+      }
+    }(request, controllerComponents.executionContext, hc)
   }
 
   private def existsUkProperty(property: PropertyDetails): Boolean =
-    property.incomeSourceType.contains("uk-property") && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
+    property.incomeSourceType.contains(
+      "uk-property"
+    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 
-  private def withUpdatedData(taxYear: Int)(block: => Future[Result])
-                             (implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
+  private def withUpdatedData(taxYear: Int)(
+    block: => Future[Result]
+  )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
     sessionRecovery.withUpdatedData(taxYear)(block)
-  }
 }

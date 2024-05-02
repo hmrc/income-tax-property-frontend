@@ -30,55 +30,53 @@ import views.html.allowances.AllowancesCheckYourAnswersView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AllowancesCheckYourAnswersController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AllowancesCheckYourAnswersView,
-                                       auditService: AuditService
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class AllowancesCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: AllowancesCheckYourAnswersView,
+  auditService: AuditService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-      implicit request =>
+    implicit request =>
+      val list = SummaryListViewModel(
+        rows = Seq(
+          CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers),
+          AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers),
+          ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
+          ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers),
+          ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
+          BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers),
+          ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
+          OtherCapitalAllowanceSummary.row(taxYear, request.userAnswers)
+        ).flatten
+      )
 
-        val list = SummaryListViewModel(
-          rows = Seq(
-            CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers),
-            AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers),
-            ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
-            ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers),
-            ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
-            BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers),
-            ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
-            OtherCapitalAllowanceSummary.row(taxYear, request.userAnswers)
-          ).flatten
-        )
-
-        Ok(view(list, taxYear))
+      Ok(view(list, taxYear))
   }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-   implicit request =>
-
-     request.userAnswers.get(Allowance).fold {
-       logger.error("Allowances not found in userAnswers")
-     }{
-       allowance: Allowance => {
-
-        val event = AuditModel[Allowance](
-          nino = request.user.nino,
-          userType = request.user.affinityGroup,
-          mtdItId = request.user.mtditid,
-          taxYear = taxYear,
-          isUpdate = false,
-          sectionName = "PropertyRentalsAllowance",
-          enteredRentalDetails = allowance
-        )
-       auditService.sendRentalsAuditEvent(event)
-      }
-  }
-     Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+    implicit request =>
+      request.userAnswers
+        .get(Allowance)
+        .fold {
+          logger.error("Allowances not found in userAnswers")
+        } { allowance: Allowance =>
+          val event = AuditModel[Allowance](
+            nino = request.user.nino,
+            userType = request.user.affinityGroup,
+            mtdItId = request.user.mtditid,
+            taxYear = taxYear,
+            isUpdate = false,
+            sectionName = "PropertyRentalsAllowance",
+            enteredRentalDetails = allowance
+          )
+          auditService.sendRentalsAuditEvent(event)
+        }
+      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 }

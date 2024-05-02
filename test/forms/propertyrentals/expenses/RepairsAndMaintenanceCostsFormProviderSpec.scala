@@ -25,12 +25,12 @@ class RepairsAndMaintenanceCostsFormProviderSpec extends CurrencyFieldBehaviours
 
   val form = new RepairsAndMaintenanceCostsFormProvider()("agent")
 
-  ".value" - {
+  ".repairsAndMaintenanceCosts" - {
     val minimum = 0
     val maximum = 100000000
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
-    val fieldName = "RepairsAndMaintenanceCosts"
+    val fieldName = "repairsAndMaintenanceCosts"
 
     behave like fieldThatBindsValidData(
       form,

@@ -22,32 +22,37 @@ import connectors.response.GetBusinessDetailsResponse
 import models.User
 import models.backend.BusinessDetails
 import play.api.Logging
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
+import java.util.UUID
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class BusinessConnector @Inject()(httpClient: HttpClient,
-                                  appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) extends Logging {
+class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
+  ec: ExecutionContext
+) extends Logging {
 
-  def getBusinessDetails(user: User)
-                        (implicit hc: HeaderCarrier): Future[Either[ApiError, BusinessDetails]] = {
+  def getBusinessDetails(user: User)(implicit hc: HeaderCarrier): Future[Either[ApiError, BusinessDetails]] = {
 
     val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/business-details/nino/${user.nino}"
 
-    httpClient.GET[GetBusinessDetailsResponse](propertyBEUrl)(
-      implicitly[HttpReads[GetBusinessDetailsResponse]],
-      hc.withExtraHeaders(headers = "mtditid" -> user.mtditid),
-      ec)
+    httpClient
+      .get(url"$propertyBEUrl")
+      .setHeader("mtditid" -> user.mtditid)
+      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
+      .execute[GetBusinessDetailsResponse]
       .map { response: GetBusinessDetailsResponse =>
-        if(response.result.isLeft) {
-          val correlationId = response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
-          logger.error("Error getting business details from the Integration Framework:" +
-            s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}")
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            "Error getting business details from the Integration Framework:" +
+              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
         }
         response.result
       }
   }
-
 
 }

@@ -17,8 +17,6 @@
 package forms.propertyrentals.income
 
 import forms.mappings.Mappings
-import models.OtherIncomeFromProperty
-import play.api.data.Forms.mapping
 import play.api.data._
 
 import javax.inject.Inject
@@ -30,7 +28,7 @@ class OtherIncomeFromPropertyFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "amount" -> currency(
+      "otherIncomeFromProperty" -> currency(
         s"otherIncomeFromProperty.error.required.$individualOrAgent",
         s"otherIncomeFromProperty.error.twoDecimalPlaces.$individualOrAgent",
         s"otherIncomeFromProperty.error.nonNumeric.$individualOrAgent")

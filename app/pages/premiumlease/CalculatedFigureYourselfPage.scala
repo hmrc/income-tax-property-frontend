@@ -35,7 +35,7 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
     value.map {
       case CalculatedFigureYourself(false, _) => super.cleanup(value, userAnswers)
       case CalculatedFigureYourself(true, amount) =>
-        if (!isTotalIncomeUnder85K(userAnswers) && userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesNo))
+        if (!isTotalIncomeUnder85K(userAnswers) && userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo))
           for {
             rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
             yLAP <- rGLAP.remove(YearLeaseAmountPage)

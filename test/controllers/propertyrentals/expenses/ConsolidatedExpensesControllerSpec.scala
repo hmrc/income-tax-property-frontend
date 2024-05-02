@@ -99,7 +99,7 @@ import scala.concurrent.Future
         running(application) {
           val request =
             FakeRequest(POST, consolidatedExpensesRoute)
-              .withFormUrlEncodedBody("consolidatedExpensesYesNo" -> "true", "consolidatedExpensesAmount" -> "1234")
+              .withFormUrlEncodedBody("consolidatedExpensesYesOrNo" -> "true", "consolidatedExpensesAmount" -> "1234")
 
           val result = route(application, request).value
 

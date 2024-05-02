@@ -18,13 +18,11 @@ package pages.enhancedstructuresbuildingallowance
 
 import generators.Generators
 import models.EsbaAddress
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsError, JsString, JsSuccess, Json}
+import play.api.libs.json.{JsSuccess, Json}
 
 import java.time.LocalDate
 
@@ -43,22 +41,23 @@ class EsbaSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks w
                    |        ]""".stripMargin
   "esba" - {
     "must deserialise from json" in {
-      Json.parse(esbaJson).validate[List[Esba]] mustBe JsSuccess(List(Esba(LocalDate.parse("2024-02-02"), 2, 2, EsbaAddress("2", "2", "EH1 2QH"))))
+      Json.parse(esbaJson).validate[List[Esba]] mustBe JsSuccess(
+        List(Esba(LocalDate.parse("2024-02-02"), 2, 2, EsbaAddress("2", "2", "EH1 2QH")))
+      )
     }
     "must deserialise valid values" in {
 
       val gen = genEsba()
 
-      forAll(gen) {
-        esba =>
-          val json = Json.obj(
-            "esbaQualifyingDate" -> esba.esbaQualifyingDate,
-            "esbaQualifyingAmount" -> esba.esbaQualifyingAmount,
-            "esbaClaim" -> esba.esbaClaim,
-            "esbaAddress" -> esba.esbaAddress
-          )
-          Json.toJson(esba) mustBe json
-          json.validate[Esba] mustBe JsSuccess(esba)
+      forAll(gen) { esba =>
+        val json = Json.obj(
+          "esbaQualifyingDate"   -> esba.esbaQualifyingDate,
+          "esbaQualifyingAmount" -> esba.esbaQualifyingAmount,
+          "esbaClaim"            -> esba.esbaClaim,
+          "esbaAddress"          -> esba.esbaAddress
+        )
+        Json.toJson(esba) mustBe json
+        json.validate[Esba] mustBe JsSuccess(esba)
       }
     }
   }

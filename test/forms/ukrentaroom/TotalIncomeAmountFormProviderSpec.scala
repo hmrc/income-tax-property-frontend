@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals.income
+package forms.ukrentaroom
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
+class TotalIncomeAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val invalidKey = "error.boolean"
-  val minimum = 0
-  val maximum = 100000000
+  val form = new TotalIncomeAmountFormProvider()("individual")
 
-  val form = new OtherIncomeFromPropertyFormProvider()("individual")
+  ".totalIncomeAmount" - {
 
-  ".otherIncomeFromProperty" - {
+    val fieldName = "totalIncomeAmount"
 
-    val fieldName = "otherIncomeFromProperty"
+    val minimum: Int = 0
+    val maximum: Int = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -42,8 +41,9 @@ class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "otherIncomeFromProperty.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "otherIncomeFromProperty.error.twoDecimalPlaces.individual")
+      nonNumericError = FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.nonNumeric.individual"),
+      twoDecimalPlacesError =
+        FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
@@ -51,14 +51,14 @@ class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "otherIncomeFromProperty.error.outOfRange.individual", Seq(minimum, maximum))
+      expectedError =
+        FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.outOfRange.individual", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "otherIncomeFromProperty.error.required.individual")
+      requiredError = FormError(fieldName, "ukrentaroom.income.totalIncomeAmount.error.required.individual")
     )
-
   }
 }

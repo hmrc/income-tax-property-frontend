@@ -22,7 +22,7 @@ class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
 
   val invalidKey = "error.boolean"
   val minimum = 0
-  val maximum = 1000000000
+  val maximum = 100000000
 
   val form = new IncomeFromPropertyRentalsFormProvider()("agent")
 

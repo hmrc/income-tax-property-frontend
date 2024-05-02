@@ -23,29 +23,43 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import viewmodels.UKPropertyDetailsPage
 import views.html.about.UKPropertyDetailsView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class UKPropertyDetailsController @Inject()(override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: UKPropertyDetailsView,
-                                            businessService: BusinessService)
-                                           (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UKPropertyDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: UKPropertyDetailsView,
+  businessService: BusinessService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async {
-    implicit request =>
-      businessService.getBusinessDetails(request.user).map {
-        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-          Ok(view(UKPropertyDetailsPage(taxYear, request.user.isAgentMessageKey, propertyData.tradingStartDate.get, propertyData.cashOrAccruals.get)))
-        case _ => Redirect(routes.SummaryController.show(taxYear))
-      }
+  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async { implicit request =>
+    val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    businessService.getBusinessDetails(request.user)(hc).map {
+      case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+        val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+        Ok(
+          view(
+            UKPropertyDetailsPage(
+              taxYear,
+              request.user.isAgentMessageKey,
+              propertyData.tradingStartDate.get,
+              propertyData.cashOrAccruals.get
+            )
+          )
+        )
+      case _ => Redirect(routes.SummaryController.show(taxYear))
+    }
   }
 
   def existsUkProperty(property: PropertyDetails): Boolean =
-    property.incomeSourceType.contains("uk-property")&& property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
+    property.incomeSourceType.contains(
+      "uk-property"
+    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }
