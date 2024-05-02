@@ -1411,6 +1411,9 @@ ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.agent=The total amou
 ukrentaroom.income.totalIncomeAmount.error.nonNumeric.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent=Enter an amount between £{0} and £{1}
 
+############ UK RENT A ROOM ############
+
+rentARoomJointlyLet.title = Jointly let rent a room
 ukRentARoomJointlyLet.title.individual = Jointly let rent a room
 ukRentARoomJointlyLet.heading.individual = Is your rent a room jointly let?
 ukRentARoomJointlyLet.p.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
@@ -1424,3 +1427,32 @@ ukRentARoomJointlyLet.p.agent = The Rent a Room Scheme lets your client earn up 
 ukRentARoomJointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
 ukRentARoomJointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
 ukRentARoomJointlyLet.change.hidden.agent = RentARoomJointlyLet
+
+claimExpensesOrRRR.title = Claim expenses or rent a room relief
+claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
+claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
+claimExpensesOrRRR.checkYourAnswersLabel = Claim expenses or rent a room relief
+claimExpensesOrRRR.legend.individual = Which one do you want to claim?
+claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
+
+claimExpensesOrRRR.error.required.individual = Select if you want to claim rent a room relief or expenses
+claimExpensesOrRRR.error.required.agent = Select if your client wants to claim rent a room relief or expenses
+claimExpensesOrRRR.amount.error.required.individual = Enter the amount of rent a room relief you want to claim
+claimExpensesOrRRR.amount.error.required.agent = Enter the amount of rent a room relief your client wants to claim
+claimExpensesOrRRR.amount.error.nonNumeric.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRRR.amount.error.nonNumeric.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRRR.amount.error.twoDecimalPlaces.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRRR.amount.error.twoDecimalPlaces.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRRR.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+claimExpensesOrRRR.change.hidden = Claim expenses or rent a room relief
+
+claimExpensesOrRRR.rentARoom = Rent a room
+claimExpensesOrRRR.expenses = Expenses
+claimExpensesOrRRR.radio.question.label.individual = How much did you pay?
+claimExpensesOrRRR.radio.question.label.agent = How much did your client pay?
+
+claimExpensesOrRRR.para1.jointlyLet.individual = You can earn up to £3,750 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
+claimExpensesOrRRR.para1.notJointlyLet.individual = You can earn up to £7,500 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
+
+claimExpensesOrRRR.para1.jointlyLet.agent = Your client can earn up to £3,750 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
+claimExpensesOrRRR.para1.notJointlyLet.agent = Your client can earn up to £7,500 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
