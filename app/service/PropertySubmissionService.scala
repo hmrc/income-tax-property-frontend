@@ -16,13 +16,12 @@
 
 package service
 
-import audit.PropertyAbout
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
 import models.{FetchedPropertyData, JourneyContext, User}
 import play.api.Logging
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
@@ -45,16 +44,16 @@ class PropertySubmissionService @Inject() (
       case Right(r) => Right(r)
     }
 
-  def savePropertyAboutJourneyAnswers(
+  def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,
-    body: PropertyAbout
+    body: A
   )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
     businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
-      case Right(incomeTaxUserData) =>
-        incomeTaxUserData
-          .map { it =>
-            propertyConnector.saveJourneyAnswers[PropertyAbout](ctx, it.incomeSourceId, body).map {
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            propertyConnector.saveJourneyAnswers(ctx, ukProperty.incomeSourceId, body).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }

@@ -69,11 +69,11 @@ class CheckYourAnswersController @Inject() (
     implicit request =>
       val propertyAbout = request.userAnswers.get(PropertyAbout).getOrElse {
         logger.error("PropertyAbout Section is not present in userAnswers")
-        throw new IllegalStateException("PropertyAbout Section is not present in userAnswers")
+        throw new NoSuchElementException("PropertyAbout Section is not present in userAnswers")
       }
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
 
-      propertySubmissionService.savePropertyAboutJourneyAnswers(context, propertyAbout).map {
+      propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
         case Right(_) =>
           auditCYA(taxYear, request, propertyAbout)
           Redirect(routes.SummaryController.show(taxYear))
