@@ -1,0 +1,49 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.requests._
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(incomeEqualOrMoreThanEightyThousand: Boolean)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("ukRentARoom.expensesIntro.title"))) {
+
+    <h1 class="govuk-heading-xl">@messages("ukRentARoom.expensesIntro.heading")</h1>
+    <p class="govuk-body">@messages(s"ukRentARoom.expensesIntro.p1.${request.user.isAgentMessageKey}")</p>
+    <ul class="govuk-list govuk-list--bullet" >
+         <li>@messages(s"ukRentARoom.expensesIntro.li1.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li2.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li3.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li4.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li5.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li6.${request.user.isAgentMessageKey}")</li>
+         <li>@messages(s"ukRentARoom.expensesIntro.li7.${request.user.isAgentMessageKey}")</li>
+    </ul>
+    @if(incomeEqualOrMoreThanEightyThousand) {
+     <p class="govuk-body">@messages(s"ukRentARoom.expensesIntro.p2.${request.user.isAgentMessageKey}")</p>
+     <p class="govuk-body"> <a href='@messages("ukRentARoom.expensesIntro.href.link.consolidated")' class="govuk-link" target="_blank" rel="noreferrer noopener">
+      @messages("ukRentARoom.expensesIntro.href.label.consolidated")</a>@messages(s"ukRentARoom.expensesIntro.p3.${request.user.isAgentMessageKey}")</p>
+     <p class="govuk-body">@messages(s"ukRentARoom.expensesIntro.p4.${request.user.isAgentMessageKey}")</p>
+     <p class="govuk-body"> <a href='@messages("ukRentARoom.expensesIntro.href.link.individual")' class="govuk-link" target="_blank" rel="noreferrer noopener">@messages("ukRentARoom.expensesIntro.href.label.individual")</a>@messages(s"ukRentARoom.expensesIntro.p5.${request.user.isAgentMessageKey}")</p>
+    }
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick()
+    )
+}

@@ -30,7 +30,7 @@ class UkRentARoomJointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
   forAll(scenarios) { (agencyOrIndividual: String) =>
     val form = new UkRentARoomJointlyLetFormProvider()(agencyOrIndividual)
-    val requiredKey = s"ukRentARoomJointlyLet.error.required.$agencyOrIndividual"
+    val requiredKey = s"ukRentARoom.jointlyLet.error.required.$agencyOrIndividual"
 
     s".value $agencyOrIndividual" - {
 

@@ -51,7 +51,7 @@ class SummaryController @Inject() (
           val propertyRentalsRows =
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-          val ukRentARoomRows = SummaryPage.createUkRentARoom(request.userAnswers, taxYear)
+          val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
           Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows))
         case _ => Redirect(routes.SummaryController.show(taxYear))
       }

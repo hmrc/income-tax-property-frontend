@@ -401,3 +401,5 @@ POST       /:taxYear/uk-rent-a-room/total-income-amount                         
 GET        /:taxYear/uk-rent-a-room/total-income-amount                             controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/total-income-amount                             controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+
+GET        /:taxYear/uk-rent-a-room/expenses-intro                     controllers.ukrentaroom.UkRentARoomExpensesIntroController.onPageLoad(taxYear: Int)
