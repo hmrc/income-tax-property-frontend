@@ -16,37 +16,45 @@
 
 package service
 
+import audit.PropertyAbout
 import base.SpecBase
 import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
-import models.{FetchedPropertyData, User}
-import play.api.libs.json.JsObject
-import uk.gov.hmrc.http.HeaderCarrier
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import models.TotalIncome.Under
+import models.backend.{HttpParserError, PropertyDetails}
+import models.{FetchedPropertyData, JourneyContext, UKPropertySelect, User}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.libs.json.JsObject
+import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
+import uk.gov.hmrc.http.HeaderCarrier
 
-class PropertySubmissionServiceSpec extends SpecBase {
-  val propertyPeriodicSubmissionConnector = mock[PropertySubmissionConnector]
+import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with DefaultAwaitTimeout {
+  val propertyPeriodicSubmissionConnector: PropertySubmissionConnector = mock[PropertySubmissionConnector]
+  val mockBusinessConnector: BusinessService = mock[BusinessService]
   val taxYear = 2024
-  val user = User("", "", "", false)
+  val user: User = User("mtditid", "nino", "individual", isAgent = false)
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val propertyPeriodSubmissionService = new PropertySubmissionService(propertyPeriodicSubmissionConnector)
+  val propertyPeriodSubmissionService =
+    new PropertySubmissionService(propertyPeriodicSubmissionConnector, mockBusinessConnector)
 
-  "PropertyPeriodSubmissionService" - {
+  "getPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
       val resultFromConnector = FetchedPropertyData(new JsObject(Map()))
       when(
-        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)) thenReturn Future.successful(Right(resultFromConnector))
+        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
+      ) thenReturn Future.successful(Right(resultFromConnector))
 
       val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
 
-      whenReady(resultFromService) { result =>
-        result match {
-          case Right(r) => r mustBe resultFromConnector
-          case Left(_) => fail("Service should return success when connector returns success")
-        }
+      whenReady(resultFromService) {
+        case Right(r) => r mustBe resultFromConnector
+        case Left(_) => fail("Service should return success when connector returns success")
       }
     }
 
@@ -59,13 +67,60 @@ class PropertySubmissionServiceSpec extends SpecBase {
 
       val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
 
-      whenReady(resultFromService) { result =>
-        result match {
-          case Right(r) if r.fetchedData.value.isEmpty => succeed
-          case Right(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
-          case Left(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
-        }
+      whenReady(resultFromService) {
+        case Right(r) if r.fetchedData.value.isEmpty => succeed
+        case Right(_) =>
+          fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+        case Left(_) =>
+          fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
       }
     }
   }
+
+  "saveJourneyAnswers" - {
+    val user = User("mtditid", "nino", "group", isAgent = true)
+    val taxYear = 2024
+    val context =
+      JourneyContext(taxYear = taxYear, mtditid = user.mtditid, nino = user.nino, journeyName = "property-about")
+    val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
+
+    "return error when fails to get property data" in {
+      when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
+        Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
+      )
+
+      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Left(
+        HttpParserError(INTERNAL_SERVER_ERROR)
+      )
+    }
+
+    "return empty for successful save" in {
+      val details =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+
+      when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
+
+      when(
+        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, "incomeSourceId", propertyAbout)
+      ) thenReturn Future(Right())
+
+      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Right()
+    }
+
+    "return error for failure save" in {
+      val details =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+
+      when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
+
+      when(
+        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, "incomeSourceId", propertyAbout)
+      ) thenReturn Future(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
+
+      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Left(
+        HttpParserError(INTERNAL_SERVER_ERROR)
+      )
+    }
+  }
+
 }
