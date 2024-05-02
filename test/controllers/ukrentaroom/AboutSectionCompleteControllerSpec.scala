@@ -39,7 +39,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RentARoomAboutSectionCompletePage
+import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -79,7 +79,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RentARoomAboutSectionCompletePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AboutSectionCompletePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

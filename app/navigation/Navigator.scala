@@ -40,7 +40,7 @@ import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -170,7 +170,7 @@ class Navigator @Inject() () {
     case FhlIncomePage          => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomeAmountPage  => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
-    case RentARoomAboutSectionCompletePage =>
+    case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
     case UkRentARoomJointlyLetPage => taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
     case ClaimExpensesOrRRRPage =>

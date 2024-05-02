@@ -19,7 +19,7 @@ package pages.ukrentaroom
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object RentARoomSummaryPage extends QuestionPage[BigDecimal] {
+case object AboutSectionCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 

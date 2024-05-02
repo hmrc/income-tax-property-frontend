@@ -20,7 +20,8 @@ import controllers.actions._
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{RentARoomAboutSectionCompletePage, UKPropertySelectPage}
+import pages.UKPropertySelectPage
+import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,7 +48,7 @@ class AboutSectionCompleteController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(RentARoomAboutSectionCompletePage) match {
+      val preparedForm = request.userAnswers.get(AboutSectionCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -63,7 +64,7 @@ class AboutSectionCompleteController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RentARoomAboutSectionCompletePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)

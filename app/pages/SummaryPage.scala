@@ -25,7 +25,7 @@ import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
+import pages.ukrentaroom.{AboutSectionCompletePage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -193,7 +193,7 @@ case object SummaryPage {
     TaskListItem(
       "summary.about",
       controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode), {
-        val sectionFinished = userAnswers.flatMap(_.get(RentARoomAboutSectionCompletePage))
+        val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
