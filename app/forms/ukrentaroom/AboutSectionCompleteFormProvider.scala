@@ -25,6 +25,6 @@ class AboutSectionCompleteFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("ukrentaroom.about.section.complete.error.required")
+      "rentARoomIsSectionCompleteYesOrNo" -> boolean("ukrentaroom.about.section.complete.error.required")
     )
 }
