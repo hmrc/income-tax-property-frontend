@@ -20,7 +20,7 @@
         govukButton: GovukButton
 )
 
-@(incomeEqualOrMoreThanEightyThousand: Boolean)(implicit request: DataRequest[_], messages: Messages)
+@(incomeLessThanEightyThousand: Boolean)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("ukRentARoom.expensesIntro.title"))) {
 
@@ -35,7 +35,7 @@
          <li>@messages(s"ukRentARoom.expensesIntro.li6.${request.user.isAgentMessageKey}")</li>
          <li>@messages(s"ukRentARoom.expensesIntro.li7.${request.user.isAgentMessageKey}")</li>
     </ul>
-    @if(incomeEqualOrMoreThanEightyThousand) {
+    @if(incomeLessThanEightyThousand) {
      <p class="govuk-body">@messages(s"ukRentARoom.expensesIntro.p2.${request.user.isAgentMessageKey}")</p>
      <p class="govuk-body"> <a href='@messages("ukRentARoom.expensesIntro.href.link.consolidated")' class="govuk-link" target="_blank" rel="noreferrer noopener">
       @messages("ukRentARoom.expensesIntro.href.label.consolidated")</a>@messages(s"ukRentARoom.expensesIntro.p3.${request.user.isAgentMessageKey}")</p>
