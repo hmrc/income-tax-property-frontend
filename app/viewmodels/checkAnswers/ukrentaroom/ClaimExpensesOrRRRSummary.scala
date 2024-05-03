@@ -17,26 +17,36 @@
 package viewmodels.checkAnswers.ukrentaroom
 
 import controllers.ukrentaroom.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, ClaimExpensesOrRRR, UserAnswers}
 import pages.ukrentaroom.ClaimExpensesOrRRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ClaimExpensesOrRRRSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ClaimExpensesOrRRRPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = "claimExpensesOrRRR.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(ClaimExpensesOrRRRPage).flatMap {
+      case ClaimExpensesOrRRR(true, Some(amount)) =>
+        Some(SummaryListRowViewModel(
+          key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+              .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
+          )))
+      case ClaimExpensesOrRRR(false, _) =>
+        Some(SummaryListRowViewModel(
+          key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel("site.no").withCssClass(valueCssClass),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )
-        )
+        ))
+      case _ => Option.empty[SummaryListRow]
     }
+  }
 }
