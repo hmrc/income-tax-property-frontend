@@ -25,28 +25,32 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ClaimExpensesOrRRRSummary  {
+object ClaimExpensesOrRRRSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ClaimExpensesOrRRRPage).flatMap {
       case ClaimExpensesOrRRR(true, Some(amount)) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
-          )))
-      case ClaimExpensesOrRRR(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+            )
           )
-        ))
+        )
+      case ClaimExpensesOrRRR(false, _) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no"),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+            )
+          )
+        )
       case _ => Option.empty[SummaryListRow]
     }
-  }
 }
