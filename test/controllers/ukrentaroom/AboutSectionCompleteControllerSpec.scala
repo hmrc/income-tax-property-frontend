@@ -115,7 +115,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, aboutSectionCompleteRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
