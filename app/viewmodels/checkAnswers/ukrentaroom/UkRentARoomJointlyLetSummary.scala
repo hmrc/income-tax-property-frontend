@@ -24,21 +24,22 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UkRentARoomJointlyLetSummary  {
+object UkRentARoomJointlyLetSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkRentARoomJointlyLetPage).map {
-      answer =>
+  def row(taxYear: Int, answers: UserAnswers, userType: String)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(UkRentARoomJointlyLetPage).map { answer =>
+      val value = if (answer) "site.yes" else "site.no"
 
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key     = "ukRentARoom.jointlyLet.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
+      SummaryListRowViewModel(
+        key = s"ukRentARoom.jointlyLet.checkYourAnswersLabel.$userType",
+        value = ValueViewModel(value),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
         )
+      )
     }
 }
