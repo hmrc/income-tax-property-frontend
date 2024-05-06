@@ -1478,9 +1478,13 @@ ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separa
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
-claimExpensesOrRRR.checkYourAnswersLabel = Claim expenses or rent a room relief
+claimExpensesOrRRR.checkYourAnswersLabel.amount = How much did you pay?
+claimExpensesOrRRR.checkYourAnswersLabel.type = Claim expenses or rent a room relief
+claimExpensesOrRRR.no = Expenses
+claimExpensesOrRRR.yes = Rent a Room
 claimExpensesOrRRR.legend.individual = Which one do you want to claim?
 claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
+
 
 claimExpensesOrRRR.error.required.individual = Select if you want to claim rent a room relief or expenses
 claimExpensesOrRRR.error.required.agent = Select if your client wants to claim rent a room relief or expenses

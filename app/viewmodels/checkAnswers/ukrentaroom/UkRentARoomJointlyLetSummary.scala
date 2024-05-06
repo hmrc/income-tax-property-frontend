@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,8 +32,8 @@ object UkRentARoomJointlyLetSummary {
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = s"ukRentARoom.jointlyLet.checkYourAnswersLabel.$userType",
-        value = ValueViewModel(value),
+        key = KeyViewModel(s"ukRentARoom.jointlyLet.checkYourAnswersLabel.$userType").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

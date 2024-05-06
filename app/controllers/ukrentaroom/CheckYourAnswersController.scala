@@ -39,12 +39,14 @@ class CheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val ukRentARoomJointlyLetSummary =
+        UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+      val totalIncomeAmountSummary =
+        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+      val claimExpensesOrRRRSummary = ClaimExpensesOrRRRSummary.rows(taxYear, request.userAnswers)
+
       val list = SummaryListViewModel(
-        rows = Seq(
-          UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          ClaimExpensesOrRRRSummary.row(taxYear, request.userAnswers)
-        ).flatten
+        rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrRRRSummary).flatten
       )
 
       Ok(view(list, taxYear))
