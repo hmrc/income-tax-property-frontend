@@ -38,23 +38,23 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
   val withNoLinks = "Rent a room expenses"
 
   val scenarios = Table[Boolean, String, UserAnswers, Option[(Boolean, String)]](
-    ("Is Agent", "AgencyOrIndividual", "Property Income", "IsMoreThanEightyFiveThousandWithContainingString"),
+    ("Is Agent", "AgencyOrIndividual", "Property Income", "IsLessThanEightyFiveThousandWithContainingString"),
     (true, "agent", userAnswersWithoutPropertyIncome, None),
-    (true, "agent", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((true, withLinks))),
-    (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((false, withNoLinks))),
+    (true, "agent", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
+    (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks))),
     (false, "individual", userAnswersWithoutPropertyIncome, None),
-    (false, "individual", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((true, withLinks))),
-    (false, "individual", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((false, withNoLinks)))
+    (false, "individual", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
+    (false, "individual", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)))
   )
 
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String, userAnswers: UserAnswers, isMoreThanEightyFiveThousandWithContainingString: Option[(Boolean, String)]) => {
+  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String, userAnswers: UserAnswers, isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)]) => {
     val user = User(
       "",
       "",
       "",
       isAgent
     )
-    s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${(isMoreThanEightyFiveThousandWithContainingString.fold("Does not contain")(r => if (r._1) "More" else "Less"))}" - {
+    s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${(isLessThanEightyFiveThousandWithContainingString.fold("Does not contain")(r => if (r._1) "More" else "Less"))}" - {
 
       "must return OK and the correct view for a GET" in {
 
@@ -68,12 +68,12 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
 
           val view = application.injector.instanceOf[UkRentARoomExpensesIntroView]
 
-          isMoreThanEightyFiveThousandWithContainingString.fold({
+          isLessThanEightyFiveThousandWithContainingString.fold({
             status(result) mustEqual SEE_OTHER
           })(r => {
-            val (isMoreThanEightyFiveThousand, containingString) = r
+            val (isLessThanEightyFiveThousand, containingString) = r
             status(result) mustEqual OK
-            contentAsString(result) mustEqual view(isMoreThanEightyFiveThousand)(dataRequest, messages(application)).toString
+            contentAsString(result) mustEqual view(isLessThanEightyFiveThousand)(dataRequest, messages(application)).toString
             contentAsString(result).contains(containingString) mustBe true
           })
 

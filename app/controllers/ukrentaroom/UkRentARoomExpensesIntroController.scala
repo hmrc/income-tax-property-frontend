@@ -40,7 +40,7 @@ class UkRentARoomExpensesIntroController @Inject()(
     implicit request =>
       request.userAnswers.get((TotalIncomePage)) match {
         case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
-        case Some(value) => Ok(view(value == TotalIncome.Over))
+        case Some(value) => Ok(view(value != TotalIncome.Over))
       }
   }
 }
