@@ -33,7 +33,7 @@ import viewmodels.checkAnswers.about.{ReportPropertyIncomeSummary, TotalIncomeSu
 import viewmodels.govuk.summarylist._
 import views.html.CheckYourAnswersView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -67,19 +67,26 @@ class CheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val propertyAbout = request.userAnswers.get(PropertyAbout).getOrElse {
-        logger.error("PropertyAbout Section is not present in userAnswers")
-        throw new NoSuchElementException("PropertyAbout Section is not present in userAnswers")
-      }
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
+      request.userAnswers
+        .get(PropertyAbout)
+        .map(propertyAbout => savePropertyAbout(taxYear, request, propertyAbout))
+        .getOrElse {
+          logger.error("PropertyAbout Section is not present in userAnswers")
+          Future.failed(NotFoundException)
+        }
+  }
 
-      propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
-        case Right(_) =>
-          auditCYA(taxYear, request, propertyAbout)
-          Redirect(routes.SummaryController.show(taxYear))
-        case Left(_) => InternalServerError
-      }
+  private def savePropertyAbout(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
+                                                                                                              hc: HeaderCarrier
+  ) = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
 
+    propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
+      case Right(_) =>
+        auditCYA(taxYear, request, propertyAbout)
+        Redirect(routes.SummaryController.show(taxYear))
+      case Left(_) => InternalServerError
+    }
   }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
@@ -98,3 +105,5 @@ class CheckYourAnswersController @Inject() (
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
+
+case object NotFoundException extends Exception("PropertyAbout Section is not present in userAnswers")
