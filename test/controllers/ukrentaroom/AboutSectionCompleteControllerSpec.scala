@@ -15,89 +15,97 @@
  */
 
 package controllers.ukrentaroom
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import base.SpecBase
-import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{ClaimExpensesOrRRR, NormalMode, UserAnswers}
+import controllers.ukrentaroom.routes.AboutSectionCompleteController
+import forms.ukrentaroom.AboutSectionCompleteFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.ClaimExpensesOrRRRView
+import views.html.ukrentaroom.AboutSectionCompleteView
 
 import scala.concurrent.Future
 
-class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
+class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  private def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ClaimExpensesOrRRRFormProvider()
-  val form = formProvider("individual")
+  val formProvider = new AboutSectionCompleteFormProvider()
+  val form = formProvider()
   val taxYear = 2023
 
-  lazy val claimExpensesOrRRRRoute = routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode).url
+  lazy val aboutSectionCompleteRoute = AboutSectionCompleteController.onPageLoad(taxYear).url
 
-  "ClaimExpensesOrRRR Controller" - {
+  "RentARoomAboutSectionComplete Controller" - {
 
     "must return OK and the correct view for a GET" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
 
-      val application = applicationBuilder(userAnswers = Some(answers), isAgent = false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
+        val request = FakeRequest(GET, aboutSectionCompleteRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
+        val view = application.injector.instanceOf[AboutSectionCompleteView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", "jointlyLet")(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+      }
+    }
+
+    "must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(AboutSectionCompletePage, true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, aboutSectionCompleteRoute)
+
+        val view = application.injector.instanceOf[AboutSectionCompleteView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(
           request,
           messages(application)
         ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers =
-        UserAnswers(userAnswersId).set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(true, Some(100.65))).success.value
-      val completeAnswers = userAnswers.set(UkRentARoomJointlyLetPage, true).get
-      val application = applicationBuilder(userAnswers = Some(completeAnswers), isAgent = false).build()
-
-      running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
-
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          form.fill(ClaimExpensesOrRRR(true, Some(100.65))),
-          taxYear,
-          NormalMode,
-          "individual",
-          "jointlyLet"
-        )(request, messages(application)).toString
-      }
-    }
-
     "must redirect to the next page when valid data is submitted" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
+
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(answers), isAgent = false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -106,8 +114,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", "false"))
+          FakeRequest(POST, aboutSectionCompleteRoute)
+            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
@@ -117,34 +125,31 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
-      val application = applicationBuilder(userAnswers = Some(answers), isAgent = false).build()
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", ""))
+          FakeRequest(POST, aboutSectionCompleteRoute)
+            .withFormUrlEncodedBody(("value", ""))
 
-        val boundForm = form.bind(Map("claimExpensesOrRRR" -> ""))
+        val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
+        val view = application.injector.instanceOf[AboutSectionCompleteView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", "jointlyLet")(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+      val application = applicationBuilder(userAnswers = None, false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
+        val request = FakeRequest(GET, aboutSectionCompleteRoute)
 
         val result = route(application, request).value
 
@@ -155,12 +160,12 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", "true"))
+          FakeRequest(POST, aboutSectionCompleteRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 

@@ -1397,21 +1397,29 @@ fhlIncomeIntro.details.l1 = rental income
 fhlIncomeIntro.content.para2.individual = If your properties are jointly owned, only tell us about your share of these figures.
 fhlIncomeIntro.content.para2.agent = If your client's properties are jointly owned, only tell us about their share of these figures.
 
-ukrentaroom.income.totalIncomeAmount.title.individual=How much total rent a room income did you receive?
-ukrentaroom.income.totalIncomeAmount.heading.individual=How much total rent a room income did you receive?
-ukrentaroom.income.totalIncomeAmount.error.required.individual=Enter the the total rent a room income received
-ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.individual=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.income.totalIncomeAmount.error.nonNumeric.individual=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.income.totalIncomeAmount.error.outOfRange.individual=Enter an amount between £{0} and £{1}
-
-ukrentaroom.income.totalIncomeAmount.title.agent=How much total rent a room income did your client receive?
-ukrentaroom.income.totalIncomeAmount.heading.agent=How much total rent a room income did your client receive?
-ukrentaroom.income.totalIncomeAmount.error.required.agent=Enter how much total rent a room income your client received
-ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.income.totalIncomeAmount.error.nonNumeric.agent=The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent=Enter an amount between £{0} and £{1}
 
 ############ UK RENT A ROOM ############
+
+ukrentaroom.income.totalIncomeAmount.title.individual = How much total rent a room income did you receive?
+ukrentaroom.income.totalIncomeAmount.heading.individual = How much total rent a room income did you receive?
+ukrentaroom.income.totalIncomeAmount.error.required.individual = Enter the the total rent a room income received
+ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.individual = The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.income.totalIncomeAmount.error.nonNumeric.individual = The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.income.totalIncomeAmount.error.outOfRange.individual = Enter an amount between £{0} and £{1}
+ukrentaroom.income.totalIncomeAmount.change.hidden.individual = How much total rent a room income did you receive?
+ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.individual = How much total rent a room income did you receive?
+
+ukrentaroom.income.totalIncomeAmount.title.agent = How much total rent a room income did your client receive?
+ukrentaroom.income.totalIncomeAmount.heading.agent = How much total rent a room income did your client receive?
+ukrentaroom.income.totalIncomeAmount.error.required.agent = Enter how much total rent a room income your client received
+ukrentaroom.income.totalIncomeAmount.error.twoDecimalPlaces.agent = The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.income.totalIncomeAmount.error.nonNumeric.agent = The total amount of rent a room income received can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent = Enter an amount between £{0} and £{1}
+ukrentaroom.income.totalIncomeAmount.change.hidden.agent = How much total rent a room income did your client receive?
+ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.agent = How much total rent a room income did your client receive?
+
+ukrentaroom.aboutSectionComplete.title = Have you completed this section?
+ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
 rentARoomJointlyLet.title = Jointly let rent a room
 ukRentARoom.jointlyLet.title.individual = Jointly let rent a room
@@ -1470,9 +1478,13 @@ ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separa
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
-claimExpensesOrRRR.checkYourAnswersLabel = Claim expenses or rent a room relief
+claimExpensesOrRRR.checkYourAnswersLabel.amount = How much did you pay?
+claimExpensesOrRRR.checkYourAnswersLabel.type = Claim expenses or rent a room relief
+claimExpensesOrRRR.no = Expenses
+claimExpensesOrRRR.yes = Rent a Room
 claimExpensesOrRRR.legend.individual = Which one do you want to claim?
 claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
+
 
 claimExpensesOrRRR.error.required.individual = Select if you want to claim rent a room relief or expenses
 claimExpensesOrRRR.error.required.agent = Select if your client wants to claim rent a room relief or expenses
@@ -1495,3 +1507,8 @@ claimExpensesOrRRR.para1.notJointlyLet.individual = You can earn up to £7,500 a
 
 claimExpensesOrRRR.para1.jointlyLet.agent = Your client can earn up to £3,750 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
 claimExpensesOrRRR.para1.notJointlyLet.agent = Your client can earn up to £7,500 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
+ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
+
+ukrentaroom.aboutSectionComplete.title = Have you finished this section?
+ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
+ukrentaroom.about.section.complete.error.required = Please select whether you have completed this section or not

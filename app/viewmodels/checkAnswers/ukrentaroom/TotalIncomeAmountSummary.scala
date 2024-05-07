@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,28 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.routes
+import controllers.ukrentaroom.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
+import pages.ukrentaroom.TotalIncomeAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UkRentARoomJointlyLetSummary {
+object TotalIncomeAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, userType: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkRentARoomJointlyLetPage).map { answer =>
-      val value = if (answer) "site.yes" else "site.no"
-
+  def row(taxYear: Int, answers: UserAnswers, isAgentMessageKey: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(TotalIncomeAmountPage).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel(s"ukRentARoom.jointlyLet.checkYourAnswersLabel.$userType").withCssClass(keyCssClass),
-        value = ValueViewModel(value).withCssClass(valueCssClass),
+        key = KeyViewModel(s"ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.$isAgentMessageKey")
+          .withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
-          ActionItemViewModel(
-            "site.change",
-            controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode).url
-          )
-            .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
+          ActionItemViewModel("site.change", routes.TotalIncomeAmountController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages("ukrentaroom.income.totalIncomeAmount.change.hidden"))
         )
       )
     }

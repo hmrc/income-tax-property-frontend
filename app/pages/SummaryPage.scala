@@ -25,11 +25,15 @@ import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
+import pages.ukrentaroom.{AboutSectionCompletePage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
-  def createUkPropertyRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
+  def createUkPropertyRows(
+    userAnswers: Option[UserAnswers],
+    taxYear: Int,
+    cashOrAccruals: Boolean
+  ): Seq[TaskListItem] = {
     val propertyRentalsAbout: TaskListItem = propertyAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = propertyRentalsIncomeItem(userAnswers, taxYear)
     val propertyRentalsExpenses: TaskListItem = propertyRentalsExpensesItem(userAnswers, taxYear)
@@ -39,17 +43,33 @@ case object SummaryPage {
     val enhancedStructuresAndBuildingAllowance: TaskListItem = rentalsEsbaItem(userAnswers, taxYear)
 
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
-    val isPropertyRentalsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
+    val isPropertyRentalsSelected =
+      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
 
     if (isPropertyRentalsSelected) {
-      claimPropertyIncomeAllowance.collect {
-        case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-        case false if cashOrAccruals =>
-          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, structuresAndBuildingAllowance,
-            enhancedStructuresAndBuildingAllowance, propertyRentalsAdjustments)
-        case false =>
-          Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsExpenses, propertyAllowances, propertyRentalsAdjustments)
-      }.getOrElse(Seq(propertyRentalsAbout))
+      claimPropertyIncomeAllowance
+        .collect {
+          case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
+          case false if cashOrAccruals =>
+            Seq(
+              propertyRentalsAbout,
+              propertyRentalsIncome,
+              propertyRentalsExpenses,
+              propertyAllowances,
+              structuresAndBuildingAllowance,
+              enhancedStructuresAndBuildingAllowance,
+              propertyRentalsAdjustments
+            )
+          case false =>
+            Seq(
+              propertyRentalsAbout,
+              propertyRentalsIncome,
+              propertyRentalsExpenses,
+              propertyAllowances,
+              propertyRentalsAdjustments
+            )
+        }
+        .getOrElse(Seq(propertyRentalsAbout))
     } else {
       Seq.empty[TaskListItem]
     }
@@ -65,10 +85,11 @@ case object SummaryPage {
     )
     val fhlIncome: TaskListItem = fhlIncomeItem(userAnswers, taxYear)
 
-    val isFurnishedHolidayLettingsSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
+    val isFurnishedHolidayLettingsSelected =
+      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
     val fhlFhlMainHome = userAnswers.flatMap(_.get(FhlMainHomePage)).isDefined
 
-    if (isFurnishedHolidayLettingsSelected){
+    if (isFurnishedHolidayLettingsSelected) {
       if (fhlFhlMainHome) {
         Seq(fhlAbout, fhlIncome)
       } else {
@@ -79,11 +100,11 @@ case object SummaryPage {
     }
   }
 
-  def createUkRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  def createUkRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
     val ukRentARoomAbout: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
     val ukRentARoomExpenses: TaskListItem = ukRentARoomExpensesItem(userAnswers, taxYear)
     val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
-    //ToDo: Should be updated when expenses selection page ticket is merged.
+    // ToDo: Should be updated when expenses selection page ticket is merged.
     if (isRentARoomSelected) {
       Seq(ukRentARoomAbout, ukRentARoomExpenses)
     } else {
@@ -91,90 +112,122 @@ case object SummaryPage {
     }
   }
 
-  private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
-    TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
+  private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.enhancedStructuresAndBuildingAllowance",
       controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
-      if (userAnswers.flatMap(_.get(EsbaQualifyingDatePage(0))).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(EsbaQualifyingDatePage(0))).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "enhancedStructuresAndBuildingAllowance_link"
     )
-  }
 
-  private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
-    TaskListItem("summary.adjustments",
+  private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "adjustments_link"
     )
-  }
 
-  private def structuresAndBuildingAllowanceItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
-    TaskListItem("summary.structuresAndBuildingAllowance",
-      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode),
-      if (userAnswers.flatMap(_.get(StructureBuildingQualifyingDatePage(0))).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+  private def structuresAndBuildingAllowanceItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.structuresAndBuildingAllowance",
+      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
+        .onPageLoad(taxYear, NormalMode),
+      if (userAnswers.flatMap(_.get(StructureBuildingQualifyingDatePage(0))).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "structuresAndBuildingAllowance_link"
     )
-  }
 
-  private def propertyAllowancesItem(taxYear: Int) = {
-    TaskListItem("summary.allowances",
+  private def propertyAllowancesItem(taxYear: Int) =
+    TaskListItem(
+      "summary.allowances",
       controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "allowances_link"
     )
-  }
 
-  private def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
-    TaskListItem("summary.expenses",
+  private def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "expenses_link"
     )
-  }
 
-  private def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  private def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
       controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "income_link"
     )
-  }
 
-  private def propertyAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  private def propertyAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
     )
-  }
 
-  private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
-      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode), {
+        val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
+
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "about_link"
     )
-  }
 
-  private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
       controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "expenses_link"
     )
-  }
 
-  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) = {
+  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
       controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(FhlIsNonUKLandlordPage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(FhlIsNonUKLandlordPage)).isDefined) {
+        TaskListTag.InProgress
+      } else {
+        TaskListTag.NotStarted
+      },
       "income_link"
     )
-  }
-
 
 }
