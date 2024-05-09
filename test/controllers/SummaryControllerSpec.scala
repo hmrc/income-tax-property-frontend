@@ -28,7 +28,7 @@ import play.api.inject.bind
 import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertyPeriodSubmissionService}
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 import views.html.SummaryView
 
@@ -38,7 +38,7 @@ import scala.concurrent.Future
 class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
   private val taxYear = LocalDate.now.getYear
-  val propertyPeriodSubmissionService = mock[PropertyPeriodSubmissionService]
+  val propertyPeriodSubmissionService = mock[PropertySubmissionService]
 
   when(
     propertyPeriodSubmissionService.getPropertyPeriodicSubmission(any(), any())(any())
@@ -58,7 +58,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
       running(application) {
@@ -104,7 +104,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithPropertyRentals), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
       running(application) {
@@ -142,7 +142,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithoutPropertyRentals), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
       running(application) {
@@ -188,7 +188,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithFhl), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
       running(application) {
@@ -243,7 +243,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithUkRentARoom), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertyPeriodSubmissionService].toInstance(propertyPeriodSubmissionService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
       running(application) {

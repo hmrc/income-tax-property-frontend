@@ -28,14 +28,14 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertySubmissionService @Inject() (
-                                            propertyConnector: PropertySubmissionConnector,
-                                            businessService: BusinessService
-                                          )(implicit
-                                            val ec: ExecutionContext
-                                          ) extends Logging {
+  propertyConnector: PropertySubmissionConnector,
+  businessService: BusinessService
+)(implicit
+  val ec: ExecutionContext
+) extends Logging {
 
   def getPropertyPeriodicSubmission(taxYear: Int, user: User)(implicit
-                                                              hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedPropertyData]] =
     propertyConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user).map {
       case Left(_) =>
@@ -45,9 +45,9 @@ class PropertySubmissionService @Inject() (
     }
 
   def saveJourneyAnswers[A: Writes](
-                                     ctx: JourneyContext,
-                                     body: A
-                                   )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
+    ctx: JourneyContext,
+    body: A
+  )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
     businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
       case Right(propertyDetails) =>

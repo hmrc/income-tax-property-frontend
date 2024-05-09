@@ -30,11 +30,11 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
-                                                                                           ec: ExecutionContext
+  ec: ExecutionContext
 ) extends Logging {
 
   def getBusinessDetails(nino: String, mtditid: String)(implicit
-                                                        hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ApiError, BusinessDetails]] = {
 
     val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/business-details/nino/$nino"

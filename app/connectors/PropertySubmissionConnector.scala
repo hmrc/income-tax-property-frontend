@@ -30,11 +30,11 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
-                                                                                                     ec: ExecutionContext
+  ec: ExecutionContext
 ) extends Logging {
 
   def getPropertyPeriodicSubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
-                                                                                      hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedPropertyData]] = {
     val propertyPeriodicSubmissionUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/submissions/annual/taxyear/$taxYear/nino/${user.nino}/incomesourceid/$incomeSourceId"
@@ -57,12 +57,12 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
   }
 
   def saveJourneyAnswers[A: Writes](
-                                     ctx: JourneyContext,
-                                     incomeSourceId: String,
-                                     body: A
-                                   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
+    ctx: JourneyContext,
+    incomeSourceId: String,
+    body: A
+  )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
     val propertyUrl =
-      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/${incomeSourceId}/${ctx.journeyName}/${ctx.nino}/answers"
+      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/${ctx.journeyName}/${ctx.nino}/answers"
 
     httpClient
       .post(url"$propertyUrl")

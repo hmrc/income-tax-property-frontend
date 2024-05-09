@@ -20,11 +20,13 @@ import audit.{AuditModel, AuditService, PropertyAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
+import models.JourneyContext
 import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.about.{ReportPropertyIncomeSummary, TotalIncomeSummary, UKPropertySelectSummary}
@@ -33,21 +35,23 @@ import views.html.CheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView,
-                                            audit: AuditService
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class CheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckYourAnswersView,
+  audit: AuditService,
+  propertySubmissionService: PropertySubmissionService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val totalIncomeRow = TotalIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
-      val reportIncomeRow = ReportPropertyIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
+      val reportIncomeRow =
+        ReportPropertyIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
       val ukPropertyRow = UKPropertySelectSummary.row(taxYear, request.userAnswers)
 
       val propertyIncomeRows = if (request.userAnswers.get(ReportPropertyIncomePage).isDefined) {
@@ -63,16 +67,31 @@ class CheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(PropertyAbout) match {
-        case Some(propertyAbout) =>
-          auditCYA(taxYear, request, propertyAbout)
-        case None =>
+      request.userAnswers
+        .get(PropertyAbout)
+        .map(propertyAbout => savePropertyAbout(taxYear, request, propertyAbout))
+        .getOrElse {
           logger.error("PropertyAbout Section is not present in userAnswers")
-      }
-      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+          Future.failed(NotFoundException)
+        }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit hc: HeaderCarrier): Unit = {
+  private def savePropertyAbout(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
+                                                                                                              hc: HeaderCarrier
+  ) = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
+
+    propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
+      case Right(_) =>
+        auditCYA(taxYear, request, propertyAbout)
+        Redirect(routes.SummaryController.show(taxYear))
+      case Left(_) => InternalServerError
+    }
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
@@ -86,3 +105,5 @@ class CheckYourAnswersController @Inject()(
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
+
+case object NotFoundException extends Exception("PropertyAbout Section is not present in userAnswers")

@@ -17,8 +17,8 @@
 package models
 
 final case class JourneyContext(
-                                 taxYear: Int,
-                                 mtditid: String,
-                                 nino: String,
-                                 journeyName: String
-                               )
+  taxYear: Int,
+  mtditid: String,
+  nino: String,
+  journeyName: String
+)
