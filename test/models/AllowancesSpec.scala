@@ -45,7 +45,7 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
+    electricChargePointAllowanceYesOrNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)

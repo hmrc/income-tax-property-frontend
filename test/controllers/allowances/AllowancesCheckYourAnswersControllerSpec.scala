@@ -52,7 +52,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
+    electricChargePointAllowanceYesOrNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
 
   "Check Your Answers Controller" - {

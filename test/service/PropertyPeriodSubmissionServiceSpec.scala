@@ -17,7 +17,6 @@
 package service
 
 import base.SpecBase
-import connectors.PropertyPeriodicSubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.{FetchedPropertyData, User}
 import play.api.libs.json.JsObject

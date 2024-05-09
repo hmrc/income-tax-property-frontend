@@ -16,7 +16,7 @@
 
 package service
 
-import connectors.PropertyPeriodicSubmissionConnector
+import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.{FetchedPropertyData, User}
 import play.api.Logging
@@ -26,10 +26,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyPeriodSubmissionService @Inject()(propertyPeriodicSubmissionConnector: PropertyPeriodicSubmissionConnector)
+class PropertyPeriodSubmissionService @Inject()(propertySubmissionConnector: PropertySubmissionConnector)
                                                (implicit val ec: ExecutionContext) extends Logging {
   def getPropertyPeriodicSubmission(taxYear: Int, user: User)(implicit hc: HeaderCarrier): Future[Either[ApiError, FetchedPropertyData]] = {
-    propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user).map({
+    propertySubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user).map({
       case Left(_) => {
         logger.error("PropertyPeriodicSubmissionConnector endpoint is unreachable.")
         Right(FetchedPropertyData(new JsObject(Map())))
