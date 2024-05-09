@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package audit
+package models
 
-import pages.PageConstants
-import play.api.libs.json.{Format, JsPath, Json}
-import queries.Gettable
-
-case class PropertyRentalsAbout(expensesLessThan1000: Boolean, claimPropertyIncomeAllowance: Boolean)
-
-case object PropertyRentalsAbout extends Gettable[PropertyRentalsAbout] {
-
-  implicit val formats: Format[PropertyRentalsAbout] = Json.format[PropertyRentalsAbout]
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = PageConstants.propertyRentalsAbout
-}
+final case class JourneyContext(
+  taxYear: Int,
+  mtditid: String,
+  nino: String,
+  journeyName: String
+)

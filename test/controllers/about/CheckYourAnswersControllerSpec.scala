@@ -16,19 +16,31 @@
 
 package controllers.about
 
+import audit.PropertyAbout
 import base.SpecBase
 import models.TotalIncome.Under
-import models.UserAnswers
-import pages.TotalIncomePage
+import models.{JourneyContext, UKPropertySelect, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import pages.{ReportPropertyIncomePage, TotalIncomePage, UKPropertyPage}
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.CheckYourAnswersView
 
-class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
   val taxYear = 2023
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
 
   def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2023/summary")
 
@@ -66,8 +78,26 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
+
       val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val updated = userAnswers.set(ReportPropertyIncomePage, true).get
+      val ans = updated.set(UKPropertyPage, UKPropertySelect.values.toSet).get
+
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-about")
+      val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyAbout))(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(ans), isAgent = false)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.CheckYourAnswersController.onSubmit(taxYear).url)

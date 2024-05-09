@@ -22,13 +22,13 @@ import models.UserAnswers
 import models.requests.OptionalDataRequest
 import play.api.mvc.{AnyContent, Result}
 import repositories.SessionRepository
-import service.PropertyPeriodSubmissionService
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyPeriodSessionRecovery @Inject()(
-                                               propertyPeriodSubmissionService: PropertyPeriodSubmissionService,
+                                               propertyPeriodSubmissionService: PropertySubmissionService,
                                                sessionRepository: SessionRepository
                                              ) {
   def withUpdatedData(taxYear: Int)(block: => Future[Result])
