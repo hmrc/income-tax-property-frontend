@@ -67,19 +67,18 @@ class AllowancesCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers
-        .get(Allowance)
-        .fold {
-          logger.error("Allowance in property rentals is not present in userAnswers")
-        } { allowance: Allowance =>
+      request.userAnswers.get(Allowance) match {
+        case Some(allowance) =>
           saveAllowanceForPropertyRentals(taxYear, request, allowance).map {
             case Left(_) => InternalServerError
-            case Right(_) =>
+            case Right(_: Unit) =>
               auditAllowanceCYA(taxYear, request, allowance)
               Redirect(routes.SummaryController.show(taxYear))
           }
-        }
-      Future.failed(NotFoundException)
+        case None =>
+          logger.error("Allowance in property rentals is not present in userAnswers")
+          Future.failed(NotFoundException)
+      }
   }
 
   private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(implicit

@@ -17,34 +17,37 @@
 package service
 
 import base.SpecBase
+import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.{FetchedPropertyData, User}
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 class PropertyPeriodSubmissionServiceSpec extends SpecBase {
-  val propertyPeriodicSubmissionConnector = mock[PropertyPeriodicSubmissionConnector]
+  val propertySubmissionConnector = mock[PropertySubmissionConnector]
   val taxYear = 2024
   val user = User("", "", "", false)
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val propertyPeriodSubmissionService = new PropertyPeriodSubmissionService(propertyPeriodicSubmissionConnector)
+  val propertyPeriodSubmissionService = new PropertyPeriodSubmissionService(propertySubmissionConnector)
 
   "PropertyPeriodSubmissionService" - {
     "return success when connector returns success" in {
       val resultFromConnector = FetchedPropertyData(new JsObject(Map()))
       when(
-        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)) thenReturn Future.successful(Right(resultFromConnector))
+        propertySubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
+      ) thenReturn Future.successful(Right(resultFromConnector))
 
       val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
 
       whenReady(resultFromService) { result =>
         result match {
           case Right(r) => r mustBe resultFromConnector
-          case Left(_) => fail("Service should return success when connector returns success")
+          case Left(_)  => fail("Service should return success when connector returns success")
         }
       }
     }
@@ -53,7 +56,7 @@ class PropertyPeriodSubmissionServiceSpec extends SpecBase {
       val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
 
       when(
-        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
+        propertySubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
       ).thenReturn(Future.successful(Left(resultFromConnector)))
 
       val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
@@ -61,8 +64,10 @@ class PropertyPeriodSubmissionServiceSpec extends SpecBase {
       whenReady(resultFromService) { result =>
         result match {
           case Right(r) if r.fetchedData.value.isEmpty => succeed
-          case Right(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
-          case Left(_) => fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+          case Right(_) =>
+            fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+          case Left(_) =>
+            fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
         }
       }
     }
