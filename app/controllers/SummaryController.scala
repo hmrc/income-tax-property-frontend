@@ -23,7 +23,7 @@ import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.BusinessService
-import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.SummaryView
@@ -44,15 +44,15 @@ class SummaryController @Inject() (
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     withUpdatedData(taxYear) {
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).map {
+      businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows))
+          Future.successful(Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows)))
         case _ =>
-          throw new InternalServerException("Encountered an issue retrieving property data from the business API")
+          Future.failed(PropertyDataError)
       }
     }(request, controllerComponents.executionContext, hc)
   }
@@ -62,3 +62,5 @@ class SummaryController @Inject() (
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
     sessionRecovery.withUpdatedData(taxYear)(block)
 }
+
+case object PropertyDataError extends Exception("Encountered an issue retrieving property data from the business API")
