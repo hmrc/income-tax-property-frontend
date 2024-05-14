@@ -26,7 +26,7 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
-import pages.{CapitalAllowancesForACarPage, TotalIncomePage, UKPropertyPage}
+import pages.{CapitalAllowancesForACarPage, PageConstants, TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.{JsObject, JsValue, Json}
 
 import java.time.LocalDate
@@ -128,7 +128,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
       updated.get(YearLeaseAmountPage).get mustBe 5
       updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
-      updated.get(RentsRatesAndInsurancePage).get mustBe 8
+      updated.get(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense)).get mustBe 8
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
       updated.get(LoanInterestPage).get mustBe 6
       updated.get(OtherProfessionalFeesPage).get mustBe 5

@@ -110,7 +110,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         .updatePage(OtherAllowablePropertyExpensesPage, fetchedData)
         .updatePage(OtherProfessionalFeesPage, fetchedData)
         .updatePage(PropertyBusinessTravelCostsPage, fetchedData)
-        .updatePage(RentsRatesAndInsurancePage, fetchedData)
+        .updatePage(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense), fetchedData)
         .updatePage(RepairsAndMaintenanceCostsPage, fetchedData)
         .updatePage(DeductingTaxPage, fetchedData)
         .updatePage(IncomeFromPropertyRentalsPage, fetchedData)

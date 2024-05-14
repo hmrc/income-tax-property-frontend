@@ -16,6 +16,7 @@
 
 package navigation
 
+import controllers.about.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.enhancedstructuresbuildingallowance.routes._
@@ -24,18 +25,17 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
-import controllers.ukrentaroom.routes._
 import controllers.routes._
-import controllers.about.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.furnishedholidaylettings._
+import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -96,7 +96,7 @@ class Navigator @Inject() () {
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // expenses
     case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
-    case RentsRatesAndInsurancePage =>
+    case RentsRatesAndInsurancePage(_) =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
     case RepairsAndMaintenanceCostsPage => taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode)
     case LoanInterestPage => taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
@@ -239,7 +239,7 @@ class Navigator @Inject() () {
           _ =>
             AllowancesCheckYourAnswersController.onPageLoad(taxYear)
         // Expenses
-    case RentsRatesAndInsurancePage | RepairsAndMaintenanceCostsPage | LoanInterestPage | OtherProfessionalFeesPage |
+    case RentsRatesAndInsurancePage(_) | RepairsAndMaintenanceCostsPage | LoanInterestPage | OtherProfessionalFeesPage |
         CostsOfServicesProvidedPage | PropertyBusinessTravelCostsPage | OtherAllowablePropertyExpensesPage =>
       taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case ConsolidatedExpensesPage =>
@@ -450,7 +450,7 @@ class Navigator @Inject() () {
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ConsolidatedExpensesPage) match {
       case Some(ConsolidatedExpenses(true, _))  => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-      case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+      case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
     }
 
   private def consolidatedExpensesNavigationCheckMode(
@@ -460,8 +460,8 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(ConsolidatedExpensesPage) match {
       case Some(ConsolidatedExpenses(false, _))
-          if previousUserAnswers.get(ConsolidatedExpensesPage).map(_.consolidatedExpensesYesOrNo).getOrElse(true) =>
-        RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+        if previousUserAnswers.get(ConsolidatedExpensesPage).forall(_.consolidatedExpensesYesOrNo) =>
+        RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
       case _ =>
         ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     }

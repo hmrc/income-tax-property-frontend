@@ -17,8 +17,8 @@
 package controllers.propertyrentals.expenses
 
 import controllers.actions._
-import models.NormalMode
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import models.{NormalMode, Rentals}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -41,7 +41,7 @@ class ExpensesStartController @Inject()(
         controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
       }
       else {
-        controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
+        controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals).url
       }
       Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers), under85KUrl))
   }

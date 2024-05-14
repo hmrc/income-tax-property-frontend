@@ -18,38 +18,40 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import forms.propertyrentals.expenses.RentsRatesAndInsuranceFormProvider
-import models.{NormalMode, UserAnswers}
-import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
-import play.api.http.Status.OK
-import play.api.mvc.Call
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout, route, running, status}
-import repositories.SessionRepository
-import views.html.propertyrentals.expenses.RentsRatesAndInsuranceView
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import pages.PageConstants
+import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
+import play.api.data.Form
+import play.api.http.Status.OK
 import play.api.inject.bind
+import play.api.mvc.Call
+import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
+import views.html.propertyrentals.expenses.RentsRatesAndInsuranceView
+
 import java.time.LocalDate
 import scala.concurrent.Future
 
 class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/expenses/repairs-and-maintenance-costs")
+  def onwardRoute: Call = Call("GET", "/expenses/repairs-and-maintenance-costs")
   private val taxYear = LocalDate.now.getYear
 
   val formProvider = new RentsRatesAndInsuranceFormProvider()
-  val form = formProvider("individual")
+  val form: Form[BigDecimal] = formProvider("individual")
 
-  lazy val rentsRoute = routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentsRoute: String = routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   "RentsRatesAndInsurance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, rentsRoute)
@@ -59,15 +61,21 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[RentsRatesAndInsuranceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode,"individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, Rentals, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RentsRatesAndInsurancePage, BigDecimal(12.34)).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense), BigDecimal(12.34))
+        .success
+        .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, rentsRoute)
@@ -77,7 +85,13 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(BigDecimal(12.34)), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(BigDecimal(12.34)),
+          taxYear,
+          NormalMode,
+          Rentals,
+          "individual"
+        )(request, messages(application)).toString
       }
     }
 
@@ -88,7 +102,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -109,7 +123,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
@@ -123,13 +137,16 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, Rentals, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, rentsRoute)
@@ -143,7 +160,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =

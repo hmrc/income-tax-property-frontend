@@ -34,7 +34,7 @@ case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] 
 
       case ConsolidatedExpenses(true, _) =>
         for {
-          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage)
+          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense))
           rAMC <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
           cOSP <- rAMC.remove(CostsOfServicesProvidedPage)
           lI <- cOSP.remove(LoanInterestPage)

@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.propertyrentals.expenses.routes._
+@import viewmodels.InputWidth._
 
 @this(
     layout: templates.Layout,
@@ -26,11 +26,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"rentsRatesAndInsurance.title.${individualOrAgent}"))) {
 
-    @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

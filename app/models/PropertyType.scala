@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.expenses
+package models
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.mvc.JavascriptLiteral
 
-case class RentsRatesAndInsurancePage(context: String) extends QuestionPage[BigDecimal] {
+trait PropertyType
 
-  override def path: JsPath = JsPath \ context \ toString
+case object Rentals extends PropertyType
+case object RentARoom extends PropertyType
 
-  override def toString: String = "rentsRatesAndInsurance"
+object PropertyType {
+
+  implicit val jsLiteral: JavascriptLiteral[PropertyType] = {
+    case Rentals   => "Rentals"
+    case RentARoom => "RentARoom"
+  }
 }

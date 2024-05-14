@@ -21,7 +21,6 @@ import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
-import controllers.propertyrentals.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
@@ -29,8 +28,8 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
-import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings._
+import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -232,7 +231,7 @@ class NavigatorSpec extends SpecBase {
 
         navigator.nextPage(
           ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
-        ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
@@ -246,7 +245,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage" in {
         navigator.nextPage(
-          RentsRatesAndInsurancePage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+          RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense), taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
       }
 
