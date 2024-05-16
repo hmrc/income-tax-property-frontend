@@ -19,7 +19,7 @@ package controllers.structuresbuildingallowance
 import audit.{AuditModel, AuditService, StructureBuildingsAllowance}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
-import models.NormalMode
+import models.{JourneyContext, NormalMode}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.structurebuildingallowance.{SbaClaimsPage, StructureBuildingFormGroup}
@@ -28,6 +28,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,6 +49,7 @@ class SbaClaimsController @Inject()(
                                      formProvider: SbaClaimsFormProvider,
                                      val controllerComponents: MessagesControllerComponents,
                                      view: SbaClaimsView,
+                                     propertySubmissionService: PropertySubmissionService,
                                      auditService: AuditService
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
@@ -73,32 +75,43 @@ class SbaClaimsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-            _ <- if(!value) auditSBAClaims(taxYear, request) else Future.successful(())
+            _ <- if(!value) saveSBAClaims(taxYear, request) else Future.successful(())
           } yield Redirect(navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )
   }
 
-  private def auditSBAClaims(taxYear: Int, request: DataRequest[AnyContent])(implicit hc: HeaderCarrier) = {
+  private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent])(implicit hc: HeaderCarrier) = {
     Future {
       request.userAnswers.get(StructureBuildingsAllowance).fold {
         logger.error("Structure and Building Allowance not found in userAnswers")
       } {
         structureBuildingAllowances: List[StructureBuildingsAllowance] => {
 
-          val event = AuditModel[List[StructureBuildingsAllowance]](
-            nino = request.user.nino,
-            userType = request.user.affinityGroup,
-            mtdItId = request.user.mtditid,
-            taxYear = taxYear,
-            isUpdate = false,
-            sectionName = "PropertyRentalsSBA",
-            enteredRentalDetails = structureBuildingAllowances
-          )
-          auditService.sendRentalsAuditEvent(event)
+        val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-sba")
+        propertySubmissionService.saveJourneyAnswers(context, structureBuildingAllowances).map {
+          case Right(_) =>
+            auditCYA(taxYear, request, structureBuildingAllowances)
+          case Left(_) => InternalServerError
+        }
         }
       }
     }
   }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], structureBuildingAllowances: List[StructureBuildingsAllowance])(implicit
+                                                                                                     hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = AuditModel[List[StructureBuildingsAllowance]](
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = "PropertyRentalsSBA",
+      enteredRentalDetails = structureBuildingAllowances
+    )
+    auditService.sendRentalsAuditEvent(auditModel)
+}
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
     val sbaForm = request.userAnswers.get(StructureBuildingFormGroup).getOrElse(Array())
