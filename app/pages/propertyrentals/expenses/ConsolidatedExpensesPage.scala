@@ -17,14 +17,14 @@
 package pages.propertyrentals.expenses
 
 import models.{ConsolidatedExpenses, UserAnswers}
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] {
+case class ConsolidatedExpensesPage(context: String) extends QuestionPage[ConsolidatedExpenses] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsExpense \toString
+  override def path: JsPath = JsPath \ context \toString
 
   override def toString: String = "consolidatedExpenses"
 
@@ -34,7 +34,7 @@ case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] 
 
       case ConsolidatedExpenses(true, _) =>
         for {
-          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense))
+          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage(context))
           rAMC <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
           cOSP <- rAMC.remove(CostsOfServicesProvidedPage)
           lI <- cOSP.remove(LoanInterestPage)

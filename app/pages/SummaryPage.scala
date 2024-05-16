@@ -161,7 +161,7 @@ case object SummaryPage {
     TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) {
+      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage("Rentals"))).isDefined) {
         TaskListTag.InProgress
       } else {
         TaskListTag.NotStarted

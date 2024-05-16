@@ -127,7 +127,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(IncomeFromPropertyRentalsPage).get mustBe 8
       updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
       updated.get(YearLeaseAmountPage).get mustBe 5
-      updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
+      updated.get(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense)).get mustBe ConsolidatedExpenses(false, None)
       updated.get(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense)).get mustBe 8
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
       updated.get(LoanInterestPage).get mustBe 6

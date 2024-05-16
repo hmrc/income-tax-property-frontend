@@ -32,8 +32,8 @@ case object ReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsRece
 
   override def cleanup(value: Option[ReversePremiumsReceived], userAnswers: UserAnswers): Try[UserAnswers] =
     if (isTotalIncomeUnder85K(userAnswers)) super.cleanup(value, userAnswers)
-    else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo))
-      userAnswers.remove(ConsolidatedExpensesPage)
+    else if (userAnswers.get(ConsolidatedExpensesPage("Rentals")).fold(false)(data => data.consolidatedExpensesYesOrNo))
+      userAnswers.remove(ConsolidatedExpensesPage("Rentals"))
     else
       super.cleanup(value, userAnswers)
 

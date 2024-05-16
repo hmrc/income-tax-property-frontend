@@ -95,7 +95,7 @@ class Navigator @Inject() () {
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // expenses
-    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
+    case ConsolidatedExpensesPage(_)  => taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers)
     case RentsRatesAndInsurancePage(_) =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
     case RepairsAndMaintenanceCostsPage => taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode)
@@ -242,7 +242,7 @@ class Navigator @Inject() () {
     case RentsRatesAndInsurancePage(_) | RepairsAndMaintenanceCostsPage | LoanInterestPage | OtherProfessionalFeesPage |
         CostsOfServicesProvidedPage | PropertyBusinessTravelCostsPage | OtherAllowablePropertyExpensesPage =>
       taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-    case ConsolidatedExpensesPage =>
+    case ConsolidatedExpensesPage(_)  =>
       taxYear =>
         previousUserAnswers =>
           userAnswers =>
@@ -448,7 +448,7 @@ class Navigator @Inject() () {
     }
 
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(ConsolidatedExpensesPage) match {
+    userAnswers.get(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense) ) match {
       case Some(ConsolidatedExpenses(true, _))  => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
     }
@@ -458,9 +458,9 @@ class Navigator @Inject() () {
     previousUserAnswers: UserAnswers,
     userAnswers: UserAnswers
   ): Call =
-    userAnswers.get(ConsolidatedExpensesPage) match {
+    userAnswers.get(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense)) match {
       case Some(ConsolidatedExpenses(false, _))
-        if previousUserAnswers.get(ConsolidatedExpensesPage).forall(_.consolidatedExpensesYesOrNo) =>
+        if previousUserAnswers.get(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense)).forall(_.consolidatedExpensesYesOrNo) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
       case _ =>
         ExpensesCheckYourAnswersController.onPageLoad(taxYear)
