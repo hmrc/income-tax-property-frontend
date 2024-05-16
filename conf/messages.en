@@ -1294,30 +1294,6 @@ fhlMainHome.a.href = https://www.gov.uk/rent-room-in-your-home/the-rent-a-room-s
 fhlMainHome.a = furnished holiday lettings at GOV.UK
 fhlMainHome.div = Read more about
 
-fhlReliefOrExpenses.title.individual = Rent a room relief or expenses
-fhlReliefOrExpenses.title.agent = Rent a room relief or expenses
-fhlReliefOrExpenses.heading1.individual = Rent a room relief or expenses
-fhlReliefOrExpenses.heading1.agent = Rent a room relief or expenses
-
-fhlReliefOrExpenses.heading2.individual = What would you like to claim on your main residence?
-fhlReliefOrExpenses.heading2.agent = What would your client like to claim on their main residence?
-
-fhlReliefOrExpenses.div.top.individual = If your furnished holiday lettings is your main residence you can claim the rent a room relief of up to {0}.
-fhlReliefOrExpenses.div.top.agent = If your client’s furnished holiday lettings is their main residence they can claim the rent a room relief of up to {0}.
-
-fhlReliefOrExpenses.div.bottom.individual = If you claim this relief you cannot also claim expenses.
-fhlReliefOrExpenses.div.bottom.agent = If your client claims this relief they cannot also claim expenses.
-
-fhlReliefOrExpenses.checkYourAnswersLabel.individual = Rent a room relief or expenses
-fhlReliefOrExpenses.checkYourAnswersLabel.agent = Rent a room relief or expenses
-fhlReliefOrExpenses.error.required.individual = Select if your want to claim rent a room relief or expenses
-fhlReliefOrExpenses.error.required.agent = Select if your client wants to claim rent a room relief or expenses
-fhlReliefOrExpenses.change.hidden.individual = Rent a room relief or expenses
-fhlReliefOrExpenses.change.hidden.agent = Rent a room relief or expenses
-
-fhlReliefOrExpenses.rentARoomRelief = Rent a room relief
-fhlReliefOrExpenses.expenses = Expenses
-
 
 fhlDeductingTax.title = Deducting Tax from non-UK landlords
 fhlDeductingTax.heading.agent = Deducting Tax from non-UK landlords

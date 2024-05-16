@@ -357,12 +357,6 @@ POST       /:taxYear/furnished-holiday-lettings/main-home                       
 GET        /:taxYear/furnished-holiday-lettings/change-main-home                 controllers.furnishedholidaylettings.FhlMainHomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/furnished-holiday-lettings/change-main-home                 controllers.furnishedholidaylettings.FhlMainHomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/furnished-holiday-lettings/relief-or-expenses                        controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/furnished-holiday-lettings/relief-or-expenses                        controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/furnished-holiday-lettings/change-relief-or-expenses                 controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/furnished-holiday-lettings/change-relief-or-expenses                 controllers.furnishedholidaylettings.FhlReliefOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
-
 GET        /:taxYear/furnished-holiday-lettings/deducting-tax                       controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/furnished-holiday-lettings/deducting-tax                       controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/furnished-holiday-lettings/change-deducting-tax                controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
