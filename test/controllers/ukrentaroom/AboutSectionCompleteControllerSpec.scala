@@ -53,8 +53,6 @@ import scala.concurrent.Future
 
 class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  private def onwardRoute = Call("GET", "/foo")
-  private def summaryOnwardRoute = Call("GET", "/2023/summary")
   private def putOnwardRoute =
     Call("PUT", "/income-tax-property/completed-section/mtditid/rent-a-room/2023")
 
