@@ -114,8 +114,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
-      val fetchedData: FetchedPropertyData =
-        FetchedPropertyData(JsObject(Json.parse(data).as[Map[String, JsValue]].toSeq))
+      val fetchedData: FetchedBackendData =
+        FetchedBackendData(JsObject(Json.parse(data).as[Map[String, JsValue]].toSeq))
       val updated = emptyUserAnswers
         .update(fetchedData)
 

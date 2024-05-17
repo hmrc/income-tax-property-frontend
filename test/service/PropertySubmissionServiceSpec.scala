@@ -22,7 +22,7 @@ import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.Under
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedPropertyData, JourneyContext, UKPropertySelect, User}
+import models.{FetchedBackendData, JourneyContext, UKPropertySelect, User}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -45,7 +45,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
   "getPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val resultFromConnector = FetchedPropertyData(new JsObject(Map()))
+      val resultFromConnector = FetchedBackendData(new JsObject(Map()))
       when(
         propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
       ) thenReturn Future.successful(Right(resultFromConnector))

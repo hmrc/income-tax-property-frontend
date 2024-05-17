@@ -18,8 +18,8 @@ package models
 
 import play.api.libs.json.{JsObject, Json}
 
-final case class FetchedPropertyData(fetchedData: JsObject)
+final case class FetchedBackendData(fetchedData: JsObject)
 
-object FetchedPropertyData {
-  implicit val format = Json.format[FetchedPropertyData]
+object FetchedBackendData {
+  implicit val format = Json.format[FetchedBackendData]
 }

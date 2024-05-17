@@ -16,7 +16,7 @@
 
 package service
 
-import connectors.PropertySubmissionConnector
+import connectors.{JourneyAnswersConnector, PropertySubmissionConnector}
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
 import models.{FetchedBackendData, JourneyContext, User}
@@ -27,39 +27,19 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertySubmissionService @Inject() (
-  propertyConnector: PropertySubmissionConnector,
-  businessService: BusinessService
+class JourneyAnswersService @Inject() (
+  journeyAnswersConnector: JourneyAnswersConnector
 )(implicit
   val ec: ExecutionContext
 ) extends Logging {
 
-  def getPropertyPeriodicSubmission(taxYear: Int, user: User)(implicit
+  def setStatus(taxYear: Int, journeyName: String, status: String, user: User)(implicit
     hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedBackendData]] =
-    propertyConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user).map {
+    journeyAnswersConnector.setStatus(taxYear, user.mtditid, journeyName, status, user).map {
       case Left(_) =>
-        logger.error("PropertyPeriodicSubmissionConnector endpoint is unreachable.")
+        logger.error("Unable to access the endpoint that allows the update of the journey status$")
         Right(FetchedBackendData(new JsObject(Map())))
       case Right(r) => Right(r)
     }
-
-  def saveJourneyAnswers[A: Writes](
-    ctx: JourneyContext,
-    body: A
-  )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
-    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
-      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
-      case Right(propertyDetails) =>
-        propertyDetails
-          .map { ukProperty =>
-            propertyConnector.saveJourneyAnswers(ctx, ukProperty.incomeSourceId, body).map {
-              case Left(error) => Left(HttpParserError(error.status))
-              case Right(_)    => Right(())
-            }
-          }
-          .getOrElse(Future.successful(Left(PropertyDataError())))
-
-    }
-
 }
