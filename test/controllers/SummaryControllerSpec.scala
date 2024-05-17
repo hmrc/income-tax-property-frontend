@@ -17,13 +17,14 @@
 package controllers
 
 import base.SpecBase
+
 import models.backend.{BusinessDetails, PropertyDetails}
 import models.{FetchedBackendData, NormalMode, UKPropertySelect}
+
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import play.api.inject.bind
 import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
@@ -38,7 +39,7 @@ import scala.concurrent.Future
 class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
   private val taxYear = LocalDate.now.getYear
-  val propertyPeriodSubmissionService = mock[PropertySubmissionService]
+  val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
 
   when(
     propertyPeriodSubmissionService.getPropertyPeriodicSubmission(any(), any())(any())
@@ -51,10 +52,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val year = LocalDate.now().getYear
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
@@ -83,7 +85,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val year = LocalDate.now().getYear
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
       val businessService = mock[BusinessService]
       val propertyRentalsItems: Seq[TaskListItem] = Seq(
         TaskListItem(
@@ -100,7 +101,9 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         )
         .success
         .value
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithPropertyRentals), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
@@ -129,7 +132,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val year = LocalDate.now().getYear
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
       val businessService = mock[BusinessService]
       val userAnswersWithoutPropertyRentals = emptyUserAnswers
         .set(
@@ -138,7 +140,9 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         )
         .success
         .value
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithoutPropertyRentals), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
@@ -167,7 +171,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val year = LocalDate.now().getYear
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
       val businessService = mock[BusinessService]
       val propertyFhlItems: Seq[TaskListItem] = Seq(
         TaskListItem(
@@ -184,7 +187,9 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
         )
         .success
         .value
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithFhl), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
@@ -213,10 +218,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
       val year = LocalDate.now().getYear
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val ukRentARoomItems: Seq[TaskListItem] = Seq(
         TaskListItem(

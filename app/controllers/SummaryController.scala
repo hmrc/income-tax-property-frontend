@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.PropertyPeriodSessionRecovery
-import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
 import pages._
 import play.api.i18n.I18nSupport
@@ -45,26 +44,23 @@ class SummaryController @Inject() (
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     withUpdatedData(taxYear) {
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      businessService.getBusinessDetails(request.user)(hc).map {
-        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+      businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
+        case Right(Some(propertyData)) =>
           val propertyRentalsRows =
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows))
-        case _ => Redirect(routes.SummaryController.show(taxYear))
+          Future.successful(Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows)))
+        case _ =>
+          Future.failed(PropertyDataError)
       }
     }(request, controllerComponents.executionContext, hc)
   }
-
-  private def existsUkProperty(property: PropertyDetails): Boolean =
-    property.incomeSourceType.contains(
-      "uk-property"
-    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 
   private def withUpdatedData(taxYear: Int)(
     block: => Future[Result]
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
     sessionRecovery.withUpdatedData(taxYear)(block)
 }
+
+case object PropertyDataError extends Exception("Encountered an issue retrieving property data from the business API")
