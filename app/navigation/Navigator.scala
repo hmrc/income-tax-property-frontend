@@ -99,10 +99,10 @@ class Navigator @Inject() () {
     case RentsRatesAndInsurancePage(_) =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
     case RepairsAndMaintenanceCostsPage => taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode)
-    case LoanInterestPage => taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
-    case OtherProfessionalFeesPage =>
-      taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
-    case CostsOfServicesProvidedPage =>
+    case LoanInterestPage => taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, Rentals)
+    case OtherProfessionalFeesPage(_) =>
+      taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode, Rentals)
+    case CostsOfServicesProvidedPage(_) =>
       taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
     case PropertyBusinessTravelCostsPage =>
       taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
@@ -239,8 +239,8 @@ class Navigator @Inject() () {
           _ =>
             AllowancesCheckYourAnswersController.onPageLoad(taxYear)
         // Expenses
-    case RentsRatesAndInsurancePage(_) | RepairsAndMaintenanceCostsPage | LoanInterestPage | OtherProfessionalFeesPage |
-        CostsOfServicesProvidedPage | PropertyBusinessTravelCostsPage | OtherAllowablePropertyExpensesPage =>
+    case RentsRatesAndInsurancePage(_) | RepairsAndMaintenanceCostsPage | LoanInterestPage | OtherProfessionalFeesPage(_) |
+        CostsOfServicesProvidedPage(_) | PropertyBusinessTravelCostsPage | OtherAllowablePropertyExpensesPage =>
       taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case ConsolidatedExpensesPage =>
       taxYear =>

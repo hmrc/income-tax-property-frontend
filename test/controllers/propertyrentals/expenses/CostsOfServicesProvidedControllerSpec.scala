@@ -18,11 +18,12 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import forms.CostsOfServicesProvidedFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.PageConstants
 import pages.propertyrentals.expenses.CostsOfServicesProvidedPage
 import play.api.data.Form
 import play.api.inject.bind
@@ -45,7 +46,7 @@ class CostsOfServicesProvidedControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer: BigDecimal = BigDecimal(1000)
 
-  lazy val costsOfServicesProvidedRoute: String = routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode).url
+  lazy val costsOfServicesProvidedRoute: String = routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   "CostsOfServicesProvided Controller" - {
 
@@ -61,13 +62,13 @@ class CostsOfServicesProvidedControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[CostsOfServicesProvidedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, Rentals, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CostsOfServicesProvidedPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CostsOfServicesProvidedPage(PageConstants.propertyRentalsExpense), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -79,7 +80,7 @@ class CostsOfServicesProvidedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, Rentals, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -125,7 +126,7 @@ class CostsOfServicesProvidedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, Rentals, agent, NormalMode)(request, messages(application)).toString
       }
     }
 

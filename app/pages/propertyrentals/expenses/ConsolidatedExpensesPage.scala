@@ -36,10 +36,10 @@ case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] 
         for {
           rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage(PageConstants.propertyRentalsExpense))
           rAMC <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
-          cOSP <- rAMC.remove(CostsOfServicesProvidedPage)
+          cOSP <- rAMC.remove(CostsOfServicesProvidedPage(PageConstants.propertyRentalsExpense))
           lI <- cOSP.remove(LoanInterestPage)
           pBTC <- lI.remove(PropertyBusinessTravelCostsPage)
-          oPF <- pBTC.remove(OtherProfessionalFeesPage)
+          oPF <- pBTC.remove(OtherProfessionalFeesPage(PageConstants.propertyRentalsExpense))
           oAPE <- oPF.remove(OtherAllowablePropertyExpensesPage)
         } yield oAPE
     }.getOrElse(super.cleanup(value, userAnswers))

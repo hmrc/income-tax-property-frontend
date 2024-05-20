@@ -18,8 +18,9 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.CostsOfServicesProvidedFormProvider
-import models.Mode
+import models.{Mode, PropertyType, Rentals}
 import navigation.Navigator
+import pages.PageConstants
 import pages.propertyrentals.expenses.CostsOfServicesProvidedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -31,42 +32,47 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CostsOfServicesProvidedController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: CostsOfServicesProvidedFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CostsOfServicesProvidedView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                   override val messagesApi: MessagesApi,
+                                                   sessionRepository: SessionRepository,
+                                                   navigator: Navigator,
+                                                   identify: IdentifierAction,
+                                                   getData: DataRetrievalAction,
+                                                   requireData: DataRequiredAction,
+                                                   formProvider: CostsOfServicesProvidedFormProvider,
+                                                   val controllerComponents: MessagesControllerComponents,
+                                                   view: CostsOfServicesProvidedView
+                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(CostsOfServicesProvidedPage) match {
+      val context = getContext(propertyType)
+      val preparedForm = request.userAnswers.get(CostsOfServicesProvidedPage(context)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, propertyType, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
+      val context = getContext(propertyType)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors,taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, propertyType, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CostsOfServicesProvidedPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CostsOfServicesProvidedPage, taxYear, mode, request.userAnswers, updatedAnswers))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CostsOfServicesProvidedPage(context), value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(CostsOfServicesProvidedPage(context), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
+
+  private def getContext(propertyType: PropertyType) =
+    if (propertyType == Rentals) PageConstants.propertyRentalsExpense else PageConstants.rentARoomExpense
+
 }

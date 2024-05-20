@@ -259,16 +259,16 @@ class NavigatorSpec extends SpecBase {
       "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
         navigator.nextPage(
           LoanInterestPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage" in {
         navigator.nextPage(
-          OtherProfessionalFeesPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode)
+          OtherProfessionalFeesPage(PageConstants.propertyRentalsExpense), taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
         navigator.nextPage(
-          CostsOfServicesProvidedPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+          CostsOfServicesProvidedPage(PageConstants.propertyRentalsExpense), taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
         ) mustBe controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
       }
 
