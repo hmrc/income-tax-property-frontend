@@ -407,5 +407,10 @@ POST       /:taxYear/uk-rent-a-room/about-section-complete-yes-no               
 GET         /:taxYear/uk-rent-a-room/check-your-answers                             controllers.ukrentaroom.CheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/uk-rent-a-room/check-your-answers                             controllers.ukrentaroom.CheckYourAnswersController.onSubmit(taxYear: Int)
 
-GET        /:taxYear/uk-rent-a-room/expenses-intro                     controllers.ukrentaroom.UkRentARoomExpensesIntroController.onPageLoad(taxYear: Int)
+GET        /:taxYear/uk-rent-a-room/expenses-intro                                  controllers.ukrentaroom.UkRentARoomExpensesIntroController.onPageLoad(taxYear: Int)
 
+
+GET        /:taxYear/uk-rent-a-room/consolidated-rr-expenses                         controllers.ConsolidatedRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/consolidated-rr-expenses                         controllers.ConsolidatedRRExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                  controllers.ConsolidatedRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                  controllers.ConsolidatedRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
