@@ -18,11 +18,11 @@ package connectors.response
 
 import connectors.Parser
 import connectors.error.ApiError
-import models.FetchedPropertyData
+import models.FetchedBackendData
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-final case class GetPropertyPeriodicSubmissionResponse(httpResponse: HttpResponse, result: Either[ApiError, FetchedPropertyData])
+final case class GetPropertyPeriodicSubmissionResponse(httpResponse: HttpResponse, result: Either[ApiError, FetchedBackendData])
 
 object GetPropertyPeriodicSubmissionResponse {
 
@@ -38,9 +38,9 @@ object GetPropertyPeriodicSubmissionResponse {
         case _ => GetPropertyPeriodicSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
       }
 
-      private def extractResult(response: HttpResponse): Either[ApiError, FetchedPropertyData] = {
-        response.json.validate[FetchedPropertyData]
-          .fold[Either[ApiError, FetchedPropertyData]](_ => badSuccessJsonResponse, parsedModel => Right(parsedModel))
+      private def extractResult(response: HttpResponse): Either[ApiError, FetchedBackendData] = {
+        response.json.validate[FetchedBackendData]
+          .fold[Either[ApiError, FetchedBackendData]](_ => badSuccessJsonResponse, parsedModel => Right(parsedModel))
       }
     }
 }
