@@ -1489,3 +1489,27 @@ ukrentaroom.aboutSectionComplete.title = Have you finished this section?
 ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
 ukrentaroom.about.section.complete.error.required = Select whether you ’ve completed this section
+
+ukrentaroom.expenses.residentialPropertyFinanceCosts.title.agent = Residential property finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.agent = Residential property finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.label.agent = How much did your client spend on residential property finance costs?
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.required.agent = Enter how much your client spent on residential finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.nonNumeric.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.twoDecimalPlaces.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.outOfRange.agent = Enter an amount between £{0} and £{1}
+ukrentaroom.expenses.residentialPropertyFinanceCosts.change.hidden.agent = Enter how much your client spent on residential finance costs
+
+ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.label.individual = How much did you spend on residential property finance costs?
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.required.individual = Enter how much you spent on residential finance costs
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.nonNumeric.individual = The amount you spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.twoDecimalPlaces.individual = The amount you spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.residentialPropertyFinanceCosts.error.outOfRange.individual = Enter an amount between £{0} and £{1}
+ukrentaroom.expenses.residentialPropertyFinanceCosts.change.hidden.individual = Enter how much you spent on residential finance costs
+
+ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet1 = mortgage interest
+ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet2 = interest on loans to buy furnishings
+ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet3 = fees when taking out or repaying mortgages or loans
+
+ukrentaroom.expenses.residentialPropertyFinanceCosts.para1 = Residential finance costs include:
