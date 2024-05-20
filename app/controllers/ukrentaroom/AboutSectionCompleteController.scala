@@ -25,6 +25,7 @@ import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.AboutSectionCompleteView
 
@@ -38,6 +39,7 @@ class AboutSectionCompleteController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  journeyAnswersService: JourneyAnswersService,
   formProvider: AboutSectionCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: AboutSectionCompleteView
@@ -66,6 +68,8 @@ class AboutSectionCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
+              _ <- journeyAnswersService
+                     .setStatus(taxYear, "rent-a-room", if (value) "completed" else "inProgress", request.user)
             } yield Redirect(
               navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )

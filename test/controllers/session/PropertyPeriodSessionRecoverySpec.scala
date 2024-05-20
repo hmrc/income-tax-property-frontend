@@ -18,7 +18,7 @@ package controllers.session
 
 import base.SpecBase
 import models.requests.OptionalDataRequest
-import models.{FetchedPropertyData, User}
+import models.{FetchedBackendData, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -49,7 +49,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar {
       implicit val hc = HeaderCarrier()
 
       when(propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)).thenReturn(Future.successful(
-        Right(FetchedPropertyData(new JsObject(Map())))
+        Right(FetchedBackendData(new JsObject(Map())))
       ))
 
       when(sessionRepository.set(any())).thenReturn(Future.successful(true))

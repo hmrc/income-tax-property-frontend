@@ -16,6 +16,7 @@
 
 package navigation
 
+import controllers.about.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.enhancedstructuresbuildingallowance.routes._
@@ -24,18 +25,17 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
-import controllers.ukrentaroom.routes._
 import controllers.routes._
-import controllers.about.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.furnishedholidaylettings._
+import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -160,10 +160,6 @@ class Navigator @Inject() () {
       taxYear =>
         _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
     case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, NormalMode, userAnswers)
-    case FhlJointlyLetPage =>
-      taxYear =>
-        _ =>
-          _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
 
     case FhlIsNonUKLandlordPage => taxYear => _ => userAnswers => isFhlNonUKLandlordNavigation(taxYear, userAnswers)
     case FhlDeductingTaxPage    => taxYear => _ => _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
@@ -273,10 +269,6 @@ class Navigator @Inject() () {
       taxYear =>
         _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
     case FhlMainHomePage => taxYear => _ => userAnswers => flaYourMainHomeNextPage(taxYear, CheckMode, userAnswers)
-    case FhlJointlyLetPage =>
-      taxYear =>
-        _ =>
-          _ => controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
 
     case FhlIsNonUKLandlordPage =>
       taxYear =>

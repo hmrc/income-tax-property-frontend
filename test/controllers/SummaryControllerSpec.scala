@@ -17,8 +17,10 @@
 package controllers
 
 import base.SpecBase
-import models.backend.PropertyDetails
-import models.{FetchedPropertyData, NormalMode, UKPropertySelect}
+
+import models.backend.{BusinessDetails, PropertyDetails}
+import models.{FetchedBackendData, NormalMode, UKPropertySelect}
+
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -41,7 +43,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar {
 
   when(
     propertyPeriodSubmissionService.getPropertyPeriodicSubmission(any(), any())(any())
-  ) thenReturn Future.successful(Right(FetchedPropertyData(new JsObject(Map()))))
+  ) thenReturn Future.successful(Right(FetchedBackendData(new JsObject(Map()))))
 
   "Summary Controller" - {
 

@@ -32,15 +32,17 @@ package controllers.ukrentaroom
  */
 
 import base.SpecBase
+import connectors.JourneyAnswersConnector
 import controllers.ukrentaroom.routes.AboutSectionCompleteController
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FetchedBackendData, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -51,7 +53,8 @@ import scala.concurrent.Future
 
 class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  private def onwardRoute = Call("GET", "/foo")
+  private def putOnwardRoute =
+    Call("PUT", "/income-tax-property/completed-section/mtditid/rent-a-room/2023")
 
   val formProvider = new AboutSectionCompleteFormProvider()
   val form = formProvider()
@@ -101,36 +104,49 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersConnector = mock[JourneyAnswersConnector]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(
+        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
+      ).thenReturn(Future.successful(Right(FetchedBackendData(Json.obj()))))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(putOnwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersConnector].toInstance(mockJourneyAnswersConnector)
           )
           .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, aboutSectionCompleteRoute)
+          FakeRequest(POST, AboutSectionCompleteController.onSubmit(taxYear).url)
             .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual putOnwardRoute.url
       }
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
+      val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersConnector = mock[JourneyAnswersConnector]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(
+        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
+      ).thenReturn(Future.successful(Right(FetchedBackendData(Json.obj()))))
+
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, aboutSectionCompleteRoute)
+          FakeRequest(POST, AboutSectionCompleteController.onSubmit(taxYear).url)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))

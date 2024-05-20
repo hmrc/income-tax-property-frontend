@@ -16,7 +16,7 @@
 
 package controllers.session
 
-import models.{FetchedPropertyData, UserAnswers}
+import models.{FetchedBackendData, UserAnswers}
 import pages._
 import pages.adjustments._
 import pages.allowances._
@@ -34,7 +34,7 @@ import queries.Gettable
 object PropertyPeriodSessionRecoveryExtensions {
 
   implicit class UserAnswersExtension(userAnswers: UserAnswers) {
-    def update(fetchedPropertyData: FetchedPropertyData): UserAnswers = {
+    def update(fetchedPropertyData: FetchedBackendData): UserAnswers = {
       val fetchedData = fetchedPropertyData.fetchedData
       userAnswers.updatePage(CapitalAllowancesForACarPage, fetchedData)
         .updatePage(UKPropertyPage, fetchedData)
@@ -127,7 +127,6 @@ object PropertyPeriodSessionRecoveryExtensions {
         .updatePage(FhlJointlyLetPage, fetchedData: JsObject)
         .updatePage(FhlMainHomePage, fetchedData: JsObject)
         .updatePage(FhlMoreThanOnePage, fetchedData: JsObject)
-        .updatePage(FhlReliefOrExpensesPage, fetchedData: JsObject)
     }
 
     def updateStructureBuildingPages(fetchedData: JsObject): UserAnswers = {

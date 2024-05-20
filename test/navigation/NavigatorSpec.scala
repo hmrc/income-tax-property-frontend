@@ -21,7 +21,6 @@ import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
-import controllers.propertyrentals.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
@@ -29,8 +28,8 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
-import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.furnishedholidaylettings._
+import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -357,12 +356,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
-        navigator.nextPage(
-          FhlJointlyLetPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, NormalMode)
-      }
-
       "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is true" in {
         val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, true).get
         navigator.nextPage(
@@ -666,12 +659,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.furnishedholidaylettings.routes.FhlJointlyLetController.onPageLoad(taxYear, CheckMode)
       }
 
-
-      "must go from FhlJointlyLetPage to FhlReliefOrExpensesPage" in {
-        navigator.nextPage(
-          FhlJointlyLetPage, taxYear, CheckMode, UserAnswers("test"), UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlReliefOrExpensesController.onPageLoad(taxYear, CheckMode)
-      }
     }
   }
 }
