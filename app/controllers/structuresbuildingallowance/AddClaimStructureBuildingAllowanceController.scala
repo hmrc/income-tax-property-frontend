@@ -27,13 +27,15 @@ import views.html.structurebuildingallowance.StructureBuildingAllowanceView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class AddClaimStructureBuildingAllowanceController @Inject()(override val messagesApi: MessagesApi,
-                                                             identify: IdentifierAction,
-                                                             getData: DataRetrievalAction,
-                                                             requireData: DataRequiredAction,
-                                                             val controllerComponents: MessagesControllerComponents,
-                                                             view: StructureBuildingAllowanceView)
-                                                            (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AddClaimStructureBuildingAllowanceController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: StructureBuildingAllowanceView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -41,4 +43,3 @@ class AddClaimStructureBuildingAllowanceController @Inject()(override val messag
       Ok(view(StructureBuildingAllowancePage(taxYear, nextIndex, request.user.isAgentMessageKey)))
   }
 }
-

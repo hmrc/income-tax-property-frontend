@@ -16,18 +16,18 @@
 
 package models
 
-import audit.StructureBuildingsAllowance
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.structurebuildingallowance.StructureBuildingFormGroup
 import play.api.libs.json.{JsSuccess, Json}
 
 import java.time.LocalDate
 
-class StructureBuildingAllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class StructureBuildingFormGroupSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val structureBuildingAllowancesJson =
+  val structureBuildingFormGroupJson =
     """
       |[{
       |	"structureBuildingQualifyingDate" : "2024-04-22",
@@ -50,17 +50,21 @@ class StructureBuildingAllowancesSpec extends AnyFreeSpec with Matchers with Sca
 
   "Structure Building Allowances" - {
     "must deserialise from json" in {
-      Json.parse(structureBuildingAllowancesJson).validate[List[StructureBuildingsAllowance]]
-      Json.parse(structureBuildingAllowancesJson).validate[List[StructureBuildingsAllowance]] mustBe JsSuccess(
+      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingFormGroup]]
+      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingFormGroup]] mustBe JsSuccess(
         List(
-        StructureBuildingsAllowance(
-          structureBuildingQualifyingDate = LocalDate.of(year, month, day),
-          structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
-          structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,
-          structuredBuildingAllowanceAddress = StructuredBuildingAllowanceAddress(
-            buildingName = "Building One", buildingNumber = "10", postCode = "SE13 5FG"
+          StructureBuildingFormGroup(
+            structureBuildingQualifyingDate = LocalDate.of(year, month, day),
+            structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
+            structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,
+            structuredBuildingAllowanceAddress = StructuredBuildingAllowanceAddress(
+              buildingName = "Building One",
+              buildingNumber = "10",
+              postCode = "SE13 5FG"
+            )
           )
-      )))
+        )
+      )
     }
   }
 
