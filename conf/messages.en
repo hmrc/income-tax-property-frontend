@@ -1524,6 +1524,7 @@ consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
 consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
 
 ukrentaroom.about.section.complete.error.required = Select whether you ’ve completed this section
+
 rentsRatesAndInsuranceRR.title.agent=Rents, rates and insurance for your client’s property
 rentsRatesAndInsuranceRR.heading.agent=Rents, rates and insurance for your client’s property
 rentsRatesAndInsuranceRR.title.individual=Rents, rates and insurance
@@ -1549,6 +1550,7 @@ rentsRatesAndInsuranceRR.error.required.agent=Enter how much your client spent o
 rentsRatesAndInsuranceRR.error.required.individual=Enter how much you spent on rents, rates and insurance for your property
 rentsRatesAndInsuranceRR.error.outOfRange=Enter an amount between £{0} and £{1}
 rentsRatesAndInsuranceRR.change.hidden=Rents, rates and insurance
+
 repairsAndMaintenanceCostsRR.title=Property repairs and maintenance
 repairsAndMaintenanceCostsRR.heading=Property repairs and maintenance
 repairsAndMaintenanceCostsRR.content.individual=These are any expenses you paid to maintain your property, for example:
