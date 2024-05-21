@@ -103,7 +103,7 @@ class AllowancesCheckYourAnswersController @Inject() (
       taxYear = taxYear,
       mtditid = request.user.mtditid,
       nino = request.user.nino,
-      journeyName = "property-rentals-allowance"
+      journeyName = "property-rental-allowances"
     )
 
     propertySubmissionService.saveJourneyAnswers[Allowance](context, allowance)

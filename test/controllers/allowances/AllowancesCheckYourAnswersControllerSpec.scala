@@ -107,8 +107,8 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
             electricChargePointAllowance = electricChargePointAllowance,
             zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
             zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
-            businessPremisesRenovation = Some(businessPremisesRenovation),
-            replacementOfDomesticGoods = Some(replacementOfDomesticGoods),
+            businessPremisesRenovationAllowance = Some(businessPremisesRenovation),
+            replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
             otherCapitalAllowance = Some(otherCapitalAllowance)
           )
         )

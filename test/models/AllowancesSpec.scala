@@ -35,8 +35,8 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
       |	},
       |	"zeroEmissionCarAllowance" :300,
       |	"zeroEmissionGoodsVehicleAllowance" : 400,
-      |	"businessPremisesRenovation" :500,
-      |	"replacementOfDomesticGoods" : 600,
+      |	"businessPremisesRenovationAllowance" :500,
+      |	"replacementOfDomesticGoodsAllowance" : 600,
       |	"otherCapitalAllowance" :700
       |}""".stripMargin
 
@@ -71,8 +71,8 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
           electricChargePointAllowance = electricChargePointAllowance,
           zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
           zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
-          businessPremisesRenovation = Some(businessPremisesRenovation),
-          replacementOfDomesticGoods = Some(replacementOfDomesticGoods),
+          businessPremisesRenovationAllowance = Some(businessPremisesRenovation),
+          replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
           otherCapitalAllowance = Some(otherCapitalAllowance)
         )
       )
