@@ -78,6 +78,11 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
             "Error posting journey answers to income-tax-property:" +
               s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
           )
+        } else {
+          logger.info(
+            "Journey answers successfully posted to income-tax-property:" +
+              s" status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
         }
         response.result
       }

@@ -16,6 +16,7 @@
 
 package pages.structurebuildingallowance
 
+import models.StructuredBuildingAllowanceAddress
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
@@ -23,7 +24,9 @@ import queries.{Gettable, Settable}
 import java.time.LocalDate
 
 case class StructureBuildingFormGroup(structureBuildingQualifyingDate: LocalDate,
-                                      structureBuildingQualifyingAmount: BigDecimal, structureBuildingAllowanceClaim: BigDecimal)
+                                      structureBuildingQualifyingAmount: BigDecimal,
+                                      structureBuildingAllowanceClaim: BigDecimal,
+                                      structuredBuildingAllowanceAddress: StructuredBuildingAllowanceAddress)
 
 case object StructureBuildingFormGroup extends Gettable[Array[StructureBuildingFormGroup]] with Settable[Array[StructureBuildingFormGroup]] {
 

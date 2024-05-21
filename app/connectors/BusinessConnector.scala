@@ -19,7 +19,6 @@ package connectors
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.GetBusinessDetailsResponse
-import models.User
 import models.backend.BusinessDetails
 import play.api.Logging
 import uk.gov.hmrc.http.client.HttpClientV2
