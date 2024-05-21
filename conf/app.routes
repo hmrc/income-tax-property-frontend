@@ -409,7 +409,12 @@ POST        /:taxYear/uk-rent-a-room/consolidated-rr-expenses                   
 GET         /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                               controllers.ConsolidatedRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                               controllers.ConsolidatedRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance               controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance               controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance        controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance        controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance                   controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance                   controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance            controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance            controllers.ukrentaroom.expenses.RentsRatesAndInsuranceRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/uk-rent-a-room/expenses/repairs-and-maintenance-costs               controllers.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-rent-a-room/expenses/repairs-and-maintenance-costs               controllers.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-rent-a-room/expenses/change-repairs-and-maintenance-costs        controllers.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-rent-a-room/expenses/change-repairs-and-maintenance-costs        controllers.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
