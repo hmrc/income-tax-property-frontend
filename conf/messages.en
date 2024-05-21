@@ -1488,6 +1488,41 @@ ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 ukrentaroom.aboutSectionComplete.title = Have you finished this section?
 ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
+consolidatedRRExpenses.title = Consolidated rent a room expenses
+consolidatedRRExpenses.heading = Consolidated rent a room expenses
+consolidatedRRExpenses.details.line1.individual = You can add up all of these expenses and enter the total amount:
+consolidatedRRExpenses.details.line1.agent = You can add up all of these expenses and enter the total amount:
+consolidatedRRExpenses.details.bullet1 = rents, rates, insurance and ground rents
+consolidatedRRExpenses.details.bullet2 = property repairs and maintenance
+consolidatedRRExpenses.details.bullet3 = loan interest or other financial costs
+consolidatedRRExpenses.details.bullet4 = legal, management and other professional fees
+consolidatedRRExpenses.details.bullet5 = costs of services provided, including wages
+consolidatedRRExpenses.details.bullet6 = property business travel costs
+consolidatedRRExpenses.details.bullet7 = other allowable property expenses
+consolidatedRRExpenses.details.line2 = Do not include the cost of buying, selling, improving or altering any land, property, equipment, furnishings or furniture. These are capital costs.
+consolidatedRRExpenses.details.line3.individual = If your rental is jointly let you only need to tell us about your share of the expenses for the property.
+consolidatedRRExpenses.details.line3.agent = If your client’s rental is jointly let you only need to tell us about their share of the expenses for the property.
+consolidatedRRExpenses.checkYourAnswersLabel.individual = How much were your consolidated expenses?
+consolidatedRRExpenses.checkYourAnswersLabel.agent = How much were your client's consolidated expenses?
+consolidatedRRExpenses.radio.legend.individual = What do you want to do?
+consolidatedRRExpenses.radio.legend.agent = What does your client want to do?
+
+consolidatedRRExpenses.error.required.individual = Select yes if you want to claim consolidated expenses
+consolidatedRRExpenses.error.required.agent = Select yes if you want to claim consolidated expenses
+consolidatedRRExpenses.error.required.amount.individual = Enter the amount for your consolidated expenses
+consolidatedRRExpenses.error.required.amount.agent = Enter the amount for your client’s consolidated expenses
+consolidatedRRExpenses.error.nonNumeric.individual = Enter an amount for your consolidated expenses
+consolidatedRRExpenses.error.nonNumeric.agent = Enter an amount for your client’s consolidated expenses
+consolidatedRRExpenses.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
+consolidatedRRExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
+consolidatedRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
+
+consolidatedRRExpenses.consolidated = Claim consolidated expenses
+consolidatedRRExpenses.indiv = Claim individual expenses
+
+consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
+consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
+
 ukrentaroom.about.section.complete.error.required = Select whether you ’ve completed this section
 
 ############ Unused Residential Property Finance Costs #########
@@ -1541,3 +1576,30 @@ ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para1 = You
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para2 = Read more about
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link.text = tax relief for residential landlords at GOV.UK (opens in new tab)
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link = https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies#example-4-carrying-forward-unused-finance-costs
+
+rentsRatesAndInsuranceRR.title.agent=Rents, rates and insurance for your client’s property
+rentsRatesAndInsuranceRR.heading.agent=Rents, rates and insurance for your client’s property
+rentsRatesAndInsuranceRR.title.individual=Rents, rates and insurance
+rentsRatesAndInsuranceRR.heading.individual=Rents, rates and insurance
+rentsRatesAndInsuranceRR.details.bulletPoint.l1.individual=the rent for a lease of a property you let
+rentsRatesAndInsuranceRR.details.bulletPoint.l1.agent=the rent for a lease of a property your client lets
+rentsRatesAndInsuranceRR.details.bulletPoint.l2=business rates, water rates and council tax
+rentsRatesAndInsuranceRR.details.bulletPoint.l3=property and contents insurance
+rentsRatesAndInsuranceRR.details.bulletPoint.l4=insurance paid against loss of rents
+rentsRatesAndInsuranceRR.details.bulletPoint.l5=ground rents
+rentsRatesAndInsuranceRR.details.content.p1.individual=If your property is jointly let, only tell us about your share of the expenses.
+rentsRatesAndInsuranceRR.details.content.p1.agent=If your client’s property is jointly let, only tell us about their share of the expenses.
+rentsRatesAndInsuranceRR.details.content.p2.individual=Only tell us about the portion of the expenses that relate to your rent a room. If you have more than one lodger in your home, tell us about the expenses related to their rooms.
+rentsRatesAndInsuranceRR.details.content.p2.agent=Only tell us about the portion of the expenses that relate to your client’s rent a room. If your client had more than one lodger in their home, tell us about the expenses related to their rooms.
+rentsRatesAndInsuranceRR.label.individual=How much did you spend on rents, rates and insurance for your property?
+rentsRatesAndInsuranceRR.label.agent=How much did your client spend on rents, rates and insurance for their property?
+rentsRatesAndInsuranceRR.checkYourAnswersLabel=Rents, rates and insurance
+rentsRatesAndInsuranceRR.error.nonNumeric.individual=The amount you spent on rents, rates and insurance can only include pounds and pence, for example £600 or £600.20
+rentsRatesAndInsuranceRR.error.nonNumeric.agent=The amount your client spent on rents, rates and insurance can only include pounds and pence, for example £600 or £600.20
+rentsRatesAndInsuranceRR.error.twoDecimalPlaces.individual=The amount you spent on rents, rates and insurance can only include pounds and pence, for example £600 or £600.20
+rentsRatesAndInsuranceRR.error.twoDecimalPlaces.agent=The amount your client spent on rents, rates and insurance can only include pounds and pence, for example £600 or £600.20
+rentsRatesAndInsuranceRR.error.required.agent=Enter how much your client spent on rents, rates and insurance for their property
+rentsRatesAndInsuranceRR.error.required.individual=Enter how much you spent on rents, rates and insurance for your property
+rentsRatesAndInsuranceRR.error.outOfRange=Enter an amount between £{0} and £{1}
+rentsRatesAndInsuranceRR.change.hidden=Rents, rates and insurance
+

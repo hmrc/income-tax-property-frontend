@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukrentaroom.expenses
 
-object PageConstants {
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+case object RentsRatesAndInsuranceRRPage extends QuestionPage[BigDecimal] {
 
-  val propertyAbout: String = "propertyAbout"
-  val propertyRentalsAbout: String = "propertyRentalsAbout"
+  override def path: JsPath = JsPath \ toString
 
-  val allowancesFormGroup: String = "allowancesFormGroup"
-  val adjustments: String = "adjustments"
-
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
-  val propertyRentalsExpense: String = "propertyRentalsExpense"
-
-  val rentARoomExpense: String = "rentARoomExpense"
-
+  override def toString: String = "rentsRatesAndInsuranceRR"
 }
