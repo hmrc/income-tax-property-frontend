@@ -406,5 +406,11 @@ GET        /:taxYear/uk-rent-a-room/expenses-intro                              
 GET        /:taxYear/uk-rent-a-room/expenses/residential-property-finance-costs     controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/expenses/residential-property-finance-costs     controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
-GET        /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs  controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs  controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs              controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs              controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/expenses/unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/expenses/unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
+GET        /:taxYear/uk-rent-a-room/expenses/change-unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/expenses/change-unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
