@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import controllers.actions._
-import forms.RentsRatesAndInsuranceRRFormProvider
+import forms.ukrentaroom.expenses.RentsRatesAndInsuranceRRFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.RentsRatesAndInsuranceRRPage
+import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.RentsRatesAndInsuranceRRView
+import views.html.ukrentaroom.expenses.RentsRatesAndInsuranceRRView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

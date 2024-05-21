@@ -13,6 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
+@import controllers.ukrentaroom.expenses.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 
@@ -28,7 +29,7 @@
 
     @layout(pageTitle = title(form, messages(s"rentsRatesAndInsuranceRR.title.${individualOrAgent}"))) {
 
-        @formHelper(action = RentsRatesAndInsuranceRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.RentsRatesAndInsuranceRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

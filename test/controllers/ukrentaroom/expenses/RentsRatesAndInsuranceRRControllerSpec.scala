@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
-import forms.RentsRatesAndInsuranceRRFormProvider
+import forms.ukrentaroom.expenses.RentsRatesAndInsuranceRRFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RentsRatesAndInsuranceRRPage
+import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.RentsRatesAndInsuranceRRView
+import views.html.ukrentaroom.expenses.RentsRatesAndInsuranceRRView
 
 import scala.concurrent.Future
 
@@ -40,7 +40,7 @@ class RentsRatesAndInsuranceRRControllerSpec extends SpecBase with MockitoSugar 
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
@@ -149,7 +149,7 @@ class RentsRatesAndInsuranceRRControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -166,7 +166,7 @@ class RentsRatesAndInsuranceRRControllerSpec extends SpecBase with MockitoSugar 
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
