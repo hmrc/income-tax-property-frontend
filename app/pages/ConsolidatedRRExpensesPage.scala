@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,15 @@
 
 package pages
 
-object PageConstants {
+import models.ConsolidatedRRExpenses
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+import scala.util.Try
 
-  val propertyAbout: String = "propertyAbout"
-  val propertyRentalsAbout: String = "propertyRentalsAbout"
+case object ConsolidatedRRExpensesPage extends QuestionPage[ConsolidatedRRExpenses] {
 
-  val allowancesFormGroup: String = "allowancesFormGroup"
-  val adjustments: String = "adjustments"
+  override def path: JsPath = JsPath \ PageConstants.rentARoomExpense \toString
 
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
-  val propertyRentalsExpense: String = "propertyRentalsExpense"
-
-  val rentARoomExpense: String = "rentARoomExpense"
-
+  override def toString: String = "consolidatedRRExpenses"
 }

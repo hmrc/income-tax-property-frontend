@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-object PageConstants {
+import play.api.libs.json.{Format, Json}
 
-  val structureBuildingFormGroup: String = "structureBuildingFormGroup"
-  val esbaFormGroup: String = "enhancedStructureBuildingFormGroup"
+final case class ConsolidatedRRExpenses(consolidatedExpensesOrIndiv: Boolean, consolidatedExpensesAmount: Option[BigDecimal])
 
-  val propertyAbout: String = "propertyAbout"
-  val propertyRentalsAbout: String = "propertyRentalsAbout"
-
-  val allowancesFormGroup: String = "allowancesFormGroup"
-  val adjustments: String = "adjustments"
-
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
-  val propertyRentalsExpense: String = "propertyRentalsExpense"
-
-  val rentARoomExpense: String = "rentARoomExpense"
-
+object ConsolidatedRRExpenses {
+  implicit val format: Format[ConsolidatedRRExpenses] = Json.format
 }
