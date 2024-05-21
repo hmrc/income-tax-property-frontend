@@ -26,9 +26,7 @@ import play.api.libs.json.{JsSuccess, Json}
 class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   val adjustmentsJson = """{
-                          |            "privateUseAdjustment" : {
-                          |                "amount" : 2
-                          |            },
+                          |            "privateUseAdjustment" : 2,
                           |            "balancingCharge" : {
                           |                "balancingChargeYesNo" : true,
                           |                "balancingChargeAmount" : 2

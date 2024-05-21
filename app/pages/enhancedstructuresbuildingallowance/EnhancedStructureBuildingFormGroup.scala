@@ -29,7 +29,7 @@ case object EnhancedStructureBuildingFormGroup extends Gettable[Array[EnhancedSt
 
   implicit val format: Format[EnhancedStructureBuildingFormGroup] = Json.format
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
 
   override def toString: String = PageConstants.esbaFormGroup
 }
@@ -38,7 +38,7 @@ case class EnhancedStructureBuildingFormGroupWithIndex(index: Int) extends Setta
 
   implicit val format: Format[EnhancedStructureBuildingFormGroup] = Json.format
 
-  override def path: JsPath = JsPath \ toString \ index
+  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString \ index
 
   override def toString: String = PageConstants.esbaFormGroup
 }

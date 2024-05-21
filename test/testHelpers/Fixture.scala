@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages.enhancedstructuresbuildingallowance
+package testHelpers
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import models.FetchedBackendData
 
-case object ClaimEsbaPage extends QuestionPage[Boolean] {
-
-  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
-
-  override def toString: String = "claimEnhancedStructureBuildingAllowance"
+trait Fixture {
+  val fetchedPropertyData = FetchedBackendData(
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
+  )
 }

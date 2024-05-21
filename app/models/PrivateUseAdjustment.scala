@@ -18,8 +18,8 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class PrivateUseAdjustment(amount: BigDecimal)
+final case class PrivateUseAdjustment(amount: BigDecimal) extends AnyVal
 
 object PrivateUseAdjustment {
-  implicit val format: Format[PrivateUseAdjustment] = Json.format
+  implicit val format: Format[PrivateUseAdjustment] = Json.valueFormat
 }

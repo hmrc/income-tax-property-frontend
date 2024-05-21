@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.PropertyPeriodSessionRecovery
+import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
 import pages._
 import play.api.i18n.I18nSupport
@@ -56,6 +57,11 @@ class SummaryController @Inject() (
       }
     }(request, controllerComponents.executionContext, hc)
   }
+
+  private def existsUkProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains(
+      "uk-property"
+    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 
   private def withUpdatedData(taxYear: Int)(
     block: => Future[Result]

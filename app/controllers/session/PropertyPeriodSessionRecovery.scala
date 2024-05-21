@@ -40,7 +40,7 @@ class PropertyPeriodSessionRecovery @Inject()(
       )
 
     for {
-      fetchedData <- propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, request.user)
+      fetchedData <- propertyPeriodSubmissionService.getPropertySubmission(taxYear, request.user)
       _ <- fetchedData match {
         case Right(fetchedUserAnswersData) =>
           sessionRepository.set(

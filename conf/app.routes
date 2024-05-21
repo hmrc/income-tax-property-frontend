@@ -328,7 +328,8 @@ POST        /:taxYear/enhanced-structure-building-allowance/:index/address      
 GET         /:taxYear/enhanced-structure-building-allowance/:index/change-address                  controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST        /:taxYear/enhanced-structure-building-allowance/:index/change-address                  controllers.enhancedstructuresbuildingallowance.EsbaAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
 
-GET         /:taxYear/enhanced-structure-building-allowance/:index/check-your-answers              controllers.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
+GET        /:taxYear/enhanced-structure-building-allowance/:index/check-your-answers         controllers.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
+POST       /:taxYear/enhanced-structure-building-allowance/check-your-answers         controllers.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersController.onSubmit(taxYear: Int)
 
 GET         /:taxYear/enhanced-structure-building-allowance/claims                                 controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onPageLoad(taxYear: Int)
 POST        /:taxYear/enhanced-structure-building-allowance/claims                                 controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onSubmit(taxYear: Int)

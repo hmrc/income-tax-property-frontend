@@ -19,7 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -29,15 +29,15 @@ import java.util.UUID
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
-  ec: ExecutionContext
+class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
+                                                                                                    ec: ExecutionContext
 ) extends Logging {
 
-  def getPropertyPeriodicSubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
-    hc: HeaderCarrier
+  def getPropertySubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
+                                                                              hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedBackendData]] = {
     val propertyPeriodicSubmissionUrl =
-      s"${appConfig.propertyServiceBaseUrl}/property/submissions/annual/taxyear/$taxYear/nino/${user.nino}/incomesourceid/$incomeSourceId"
+      s"${appConfig.propertyServiceBaseUrl}/property/$taxYear/income/${user.nino}/$incomeSourceId"
 
     httpClient
       .get(url"$propertyPeriodicSubmissionUrl")
@@ -88,4 +88,33 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       }
   }
 
+  def updateEsba(
+                  ctx: JourneyContext,
+                  incomeSourceId: String,
+                  esbasWithSupportingQuestions: EsbasWithSupportingQuestions
+                )
+                (
+                  implicit hc: HeaderCarrier
+                ): Future[Either[ApiError, Unit]] = {
+
+    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/${ctx.nino}/$incomeSourceId/esba/answers"
+
+    httpClient
+      .put(url"$propertyUrl")
+      .setHeader("mtditid" -> ctx.mtditid)
+      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
+      .withBody(Json.toJson(esbasWithSupportingQuestions))
+      .execute[CreateOrUpdateJourneyAnswersResponse]
+      .map { response: CreateOrUpdateJourneyAnswersResponse =>
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            "Error posting journey answers to income-tax-property:" +
+              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
 }

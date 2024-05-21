@@ -16,12 +16,12 @@
 
 package pages.enhancedstructuresbuildingallowance
 
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object EsbaClaimsPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
 
   override def toString: String = "esbaClaims"
 }

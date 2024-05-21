@@ -19,30 +19,34 @@ package service
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
 import play.api.Logging
-import play.api.libs.json.{JsObject, Writes}
+import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertySubmissionService @Inject() (
-  propertyConnector: PropertySubmissionConnector,
-  businessService: BusinessService
-)(implicit
-  val ec: ExecutionContext
-) extends Logging {
+class PropertySubmissionService @Inject()(
+                                           propertyConnector: PropertySubmissionConnector,
+                                           businessService: BusinessService
+                                         )(implicit
+                                           val ec: ExecutionContext
+                                         ) extends Logging {
 
-  def getPropertyPeriodicSubmission(taxYear: Int, user: User)(implicit
-    hc: HeaderCarrier
+  def getPropertySubmission(taxYear: Int, user: User)(implicit
+                                                      hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedBackendData]] =
-    propertyConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user).map {
-      case Left(_) =>
-        logger.error("PropertyPeriodicSubmissionConnector endpoint is unreachable.")
-        Right(FetchedBackendData(new JsObject(Map())))
-      case Right(r) => Right(r)
-    }
+    propertyConnector.getPropertySubmission(taxYear, user.mtditid, user)
+
+  def saveEsba( //Todo: Finially this should be integrated into saveAnswers reusage
+                ctx: JourneyContext, esbasWithSupportingQuestions: EsbasWithSupportingQuestions
+              )
+              (
+                implicit hc: HeaderCarrier
+              ): Future[Either[ApiError, Unit]] = {
+    propertyConnector.updateEsba(ctx, ctx.mtditid, esbasWithSupportingQuestions) //Todo: mdtd? income-source-id?
+  }
 
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,

@@ -39,7 +39,7 @@ class JourneyAnswersService @Inject() (
     journeyAnswersConnector.setStatus(taxYear, user.mtditid, journeyName, status, user).map {
       case Left(_) =>
         logger.error("Unable to access the endpoint that allows the update of the journey status$")
-        Right(FetchedBackendData(new JsObject(Map())))
+        Right(FetchedBackendData(None, None, None, None, None, None, None))
       case Right(r) => Right(r)
     }
 }

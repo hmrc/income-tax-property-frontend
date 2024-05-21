@@ -15,9 +15,10 @@
  *@
 
 @import controllers.enhancedstructuresbuildingallowance.routes
-
+@import models.requests._
 @this(
         layout: templates.Layout,
+        formHelper: FormWithCSRF,
         govukButton: GovukButton,
         govukSummaryList: GovukSummaryList,
 )
@@ -28,11 +29,11 @@
 
     <span class="govuk-caption-l">@messages("summary.enhancedStructuresAndBuildingAllowance")</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
-    @govukSummaryList(list)
-
-    @govukButton(
-        ButtonViewModel(messages("site.saveAndContinue"))
-        .asLink(routes.EsbaClaimsController.onPageLoad(taxYear).url).withId("continue")
-    )
-}
+        @govukSummaryList(list)
+            @govukButton(
+                ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+            )
+        }
+    }
