@@ -16,7 +16,6 @@
 
 package controllers.structurebuildingallowance
 
-import audit.StructureBuildingsAllowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaClaimsFormProvider
@@ -25,6 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.structurebuildingallowance.StructureBuildingFormGroup
 import play.api.Application
 import play.api.data.Form
 import play.api.inject.bind
@@ -41,7 +41,8 @@ import scala.concurrent.Future
 
 class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRouteAddClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
+  def onwardRouteAddClaim: Call =
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
   def onwardRouteNoOtherClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   val formProvider = new SbaClaimsFormProvider()
@@ -155,33 +156,35 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers: Option[UserAnswers] =
         UserAnswers("sba-user-answers")
           .set(
-            page = StructureBuildingsAllowance,
-            value = List(
-              StructureBuildingsAllowance(
+            page = StructureBuildingFormGroup,
+            value = Array(
+              StructureBuildingFormGroup(
                 structureBuildingQualifyingDate = LocalDate.now,
                 structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
                 structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,
-                structuredBuildingAllowanceAddress =
-                  StructuredBuildingAllowanceAddress(
-                    buildingName = "Park View",
-                    buildingNumber = "9",
-                    postCode = "SE13 5FG"
-                  )
+                structuredBuildingAllowanceAddress = StructuredBuildingAllowanceAddress(
+                  buildingName = "Park View",
+                  buildingNumber = "9",
+                  postCode = "SE13 5FG"
+                )
               )
             )
-      ).toOption
+          )
+          .toOption
 
       val application: Application = applicationBuilder(userAnswers = userAnswers, isAgent = false).build()
 
       running(application) {
-        val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url).withFormUrlEncodedBody(("anotherClaim", "true"))
+        val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url)
+          .withFormUrlEncodedBody(("anotherClaim", "true"))
 
         val addOtherClaimResult = route(application, addOtherClaimRequest).value
 
         status(addOtherClaimResult) mustEqual SEE_OTHER
         redirectLocation(addOtherClaimResult).value mustEqual onwardRouteAddClaim.url
 
-        val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url).withFormUrlEncodedBody(("anotherClaim", "false"))
+        val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url)
+          .withFormUrlEncodedBody(("anotherClaim", "false"))
 
         val noOtherClaimResult = route(application, noOtherClaimRequest).value
 

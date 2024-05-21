@@ -43,27 +43,33 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.InProgress,
       "income_link"
     )
-    val expenseListItem = TaskListItem("summary.expenses",
+    val expenseListItem = TaskListItem(
+      "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "expenses_link"
     )
-    val propertyAllowances: TaskListItem = TaskListItem("summary.allowances",
+    val propertyAllowances: TaskListItem = TaskListItem(
+      "summary.allowances",
       controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "allowances_link"
     )
-    val structuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.structuresAndBuildingAllowance",
-      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode),
+    val structuresAndBuildingAllowance: TaskListItem = TaskListItem(
+      "summary.structuresAndBuildingAllowance",
+      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
+        .onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
       "structuresAndBuildingAllowance_link"
     )
-    val adjustmentsListItem = TaskListItem("summary.adjustments",
+    val adjustmentsListItem = TaskListItem(
+      "summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "adjustments_link"
     )
-    val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem("summary.enhancedStructuresAndBuildingAllowance",
+    val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem(
+      "summary.enhancedStructuresAndBuildingAllowance",
       controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
       "enhancedStructuresAndBuildingAllowance_link"
@@ -73,32 +79,53 @@ class SummaryPageSpec extends SpecBase {
     }
 
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
-      ).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(summaryItem)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(
+        1
+      )
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(
+        summaryItem
+      )
 
     }
     "should return all rows except expenses when ClaimPropertyIncomeAllowancePage exist in the user data" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
-      ).success.value.set(ClaimPropertyIncomeAllowancePage, true).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage, true)
+        .success
+        .value
 
       val res = Seq(summaryItem, incomeListItem, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(3)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(
+        3
+      )
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
     }
 
     "should return all rows when ClaimPropertyIncomeAllowance is false and CashOrAccurals is true in the user data" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
-      ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage, false)
+        .success
+        .value
 
       val res = Seq(
         summaryItem,
@@ -110,26 +137,35 @@ class SummaryPageSpec extends SpecBase {
         adjustmentsListItem
       )
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(7)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(
+        7
+      )
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
     }
     "should return all rows except structuresAndBuildingAllowance when ClaimPropertyIncomeAllowance is false and CashOrAccurals is false in the user data" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
-      ).success.value.set(ClaimPropertyIncomeAllowancePage, false).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage, false)
+        .success
+        .value
       val cashOrAccurals = false
 
       val res = Seq(summaryItem, incomeListItem, expenseListItem, propertyAllowances, adjustmentsListItem)
 
-      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(5)
+      SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals).length should be(
+        5
+      )
       SummaryPage.createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
     }
 
   }
   "SummaryPageSpec createUkRentARoomRows" - {
     val taxYear = LocalDate.now.getYear
-    val cashOrAccruals = true
     val summaryAboutItem = TaskListItem(
       "summary.about",
       controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
@@ -147,17 +183,23 @@ class SummaryPageSpec extends SpecBase {
     }
 
     "createUkRentARoomRows return only one row when user has selected Rent a room" in {
-      val userAnswersWithUkRentARoom = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.RentARoom)
-      ).success.value
+      val userAnswersWithUkRentARoom = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.RentARoom)
+        )
+        .success
+        .value
 
-      //ToDo: Should be updated when expenses selection page ticket is merged.
+      // ToDo: Should be updated when expenses selection page ticket is merged.
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(2)
-      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(Seq(summaryAboutItem, summaryExpensesItem))
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        Seq(summaryAboutItem, summaryExpensesItem)
+      )
 
     }
   }
+
   "SummaryPageSpec createFHLRows" - {
     val taxYear = LocalDate.now.getYear
     val cashOrAccruals = true
@@ -178,21 +220,32 @@ class SummaryPageSpec extends SpecBase {
     }
 
     "createFHLRows return only one row when user has selected FHL" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
-      ).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
+        )
+        .success
+        .value
 
       SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
-      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(summaryItem)
+      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(
+        summaryItem
+      )
 
     }
 
     "should return all rows when ClaimPropertyIncomeAllowancePage exist in the user data" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers.set(
-        UKPropertyPage,
-        Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
-      ).success.value.set(FhlMainHomePage, true).success.value
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
+        )
+        .success
+        .value
+        .set(FhlMainHomePage, true)
+        .success
+        .value
 
       val res = Seq(summaryItem, incomeListItem)
 

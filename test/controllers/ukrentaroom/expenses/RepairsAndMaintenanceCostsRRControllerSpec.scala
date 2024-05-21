@@ -14,71 +14,79 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
-import forms.ukrentaroom.TotalIncomeAmountFormProvider
+import forms.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.TotalIncomeAmountPage
+import pages.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.TotalIncomeAmountView
+import views.html.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRView
 
 import scala.concurrent.Future
 
-class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
+class RepairsAndMaintenanceCostsRRControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new TotalIncomeAmountFormProvider()
-  val form = formProvider("individual")
+  val formProvider = new RepairsAndMaintenanceCostsRRFormProvider()
+  private val isAgentMessageKey = "individual"
+  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val totalIncomeAmountAnswer = 100
-  val validAnswer = BigDecimal.valueOf(totalIncomeAmountAnswer)
+  val validAnswer: BigDecimal = BigDecimal(0)
+  val taxYear = 2023
 
-  lazy val totalIncomeAmountRoute: String = routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode).url
-  val taxYear: Int = 2023
+  lazy val repairsAndMaintenanceCostsRRRoute: String =
+    routes.RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode).url
 
-  "TotalIncomeAmount Controller" - {
+  "RepairsAndMaintenanceCostsRR Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeAmountRoute)
+        val request = FakeRequest(GET, repairsAndMaintenanceCostsRRRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[TotalIncomeAmountView]
+        val view = application.injector.instanceOf[RepairsAndMaintenanceCostsRRView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TotalIncomeAmountPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(RepairsAndMaintenanceCostsRRPage, validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeAmountRoute)
+        val request = FakeRequest(GET, repairsAndMaintenanceCostsRRRoute)
 
-        val view = application.injector.instanceOf[TotalIncomeAmountView]
+        val view = application.injector.instanceOf[RepairsAndMaintenanceCostsRRView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -89,7 +97,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -98,8 +106,8 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, totalIncomeAmountRoute)
-            .withFormUrlEncodedBody(("totalIncomeAmount", validAnswer.toString))
+          FakeRequest(POST, repairsAndMaintenanceCostsRRRoute)
+            .withFormUrlEncodedBody(("repairsAndMaintenanceCostsRR", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -110,30 +118,33 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, totalIncomeAmountRoute)
-            .withFormUrlEncodedBody(("totalIncomeAmount", "invalid value"))
+          FakeRequest(POST, repairsAndMaintenanceCostsRRRoute)
+            .withFormUrlEncodedBody(("repairsAndMaintenanceCostsRR", "invalid value"))
 
-        val boundForm = form.bind(Map("totalIncomeAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("repairsAndMaintenanceCostsRR" -> "invalid value"))
 
-        val view = application.injector.instanceOf[TotalIncomeAmountView]
+        val view = application.injector.instanceOf[RepairsAndMaintenanceCostsRRView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeAmountRoute)
+        val request = FakeRequest(GET, repairsAndMaintenanceCostsRRRoute)
 
         val result = route(application, request).value
 
@@ -144,12 +155,12 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, totalIncomeAmountRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+          FakeRequest(POST, repairsAndMaintenanceCostsRRRoute)
+            .withFormUrlEncodedBody(("repairsAndMaintenanceCostsRR", validAnswer.toString))
 
         val result = route(application, request).value
 
