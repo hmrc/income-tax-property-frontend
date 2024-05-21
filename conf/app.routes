@@ -442,3 +442,9 @@ GET        /:taxYear/uk-rent-a-room/expenses/legal-management-other-fee         
 POST       /:taxYear/uk-rent-a-room/expenses/legal-management-other-fee                  controllers.ukrentaroom.LegalManagementOtherFeeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/expenses/change-legal-management-other-fee                        controllers.ukrentaroom.LegalManagementOtherFeeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/expenses/change-legal-management-other-fee                        controllers.ukrentaroom.LegalManagementOtherFeeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/other-allowable-property-expenses                       controllers.OtherPropertyRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/other-allowable-property-expenses                       controllers.OtherPropertyRRExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/change-other-allowable-property-expenses                controllers.OtherPropertyRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/change-other-allowable-property-expenses                controllers.OtherPropertyRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
