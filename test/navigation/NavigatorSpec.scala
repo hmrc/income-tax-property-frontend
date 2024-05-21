@@ -35,6 +35,7 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
+import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
 
 import java.time.LocalDate
 
@@ -368,6 +369,12 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.routes.FhlIncomeController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RentsRatesAndInsuranceRRPage to RepairsAndMaintenanceCostsRRPage" in {
+        navigator.nextPage(
+          RentsRatesAndInsuranceRRPage, taxYear, NormalMode, UserAnswers("test"), UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
       }
 
     }
