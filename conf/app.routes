@@ -408,3 +408,8 @@ GET        /:taxYear/uk-rent-a-room/consolidated-rr-expenses                    
 POST       /:taxYear/uk-rent-a-room/consolidated-rr-expenses                         controllers.ConsolidatedRRExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                  controllers.ConsolidatedRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/change-consolidated-rr-expenses                  controllers.ConsolidatedRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/other-property-rr-expenses                       controllers.OtherPropertyRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/other-property-rr-expenses                       controllers.OtherPropertyRRExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/change-other-property-rr-expenses                controllers.OtherPropertyRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/change-other-property-rr-expenses                controllers.OtherPropertyRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
