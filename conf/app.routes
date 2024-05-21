@@ -163,10 +163,10 @@ POST        /:taxYear/adjustments/check-your-answers                            
 
 GET         /:taxYear/expenses-start                                                               controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int)
 
-GET         /:taxYear/consolidated-expenses                                                        controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/consolidated-expenses                                                        controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/change-consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/change-consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/consolidated-expenses                                                        controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/consolidated-expenses                                                        controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/change-consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/change-consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/expenses/check-your-answers                                                  controllers.propertyrentals.expenses.ExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/expenses/check-your-answers                                                  controllers.propertyrentals.expenses.ExpensesCheckYourAnswersController.onSubmit(taxYear: Int)
@@ -413,3 +413,8 @@ GET         /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance         
 POST        /:taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance                            controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
 GET         /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance                     controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
 POST        /:taxYear/uk-rent-a-room/expenses/change-rents-rates-and-insurance                     controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
+
+GET         /:taxYear/uk-rent-a-room/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+GET         /:taxYear/uk-rent-a-room/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)

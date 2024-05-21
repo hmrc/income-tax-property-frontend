@@ -19,11 +19,12 @@ package controllers.propertyrentals.expenses
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes
 import forms.ConsolidatedExpensesFormProvider
-import models.{ConsolidatedExpenses, NormalMode, UserAnswers}
+import models.{ConsolidatedExpenses, NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.PageConstants
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -44,7 +45,7 @@ import scala.concurrent.Future
     val formProvider = new ConsolidatedExpensesFormProvider()
     val form = formProvider("individual")
 
-    lazy val consolidatedExpensesRoute = routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
+    lazy val consolidatedExpensesRoute = routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, Rentals).url
 
     "ConsolidatedExpenses Controller" - {
 
@@ -60,13 +61,13 @@ import scala.concurrent.Future
           val view = application.injector.instanceOf[ConsolidatedExpensesView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, taxYear, Rentals, "individual")(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(12.34))).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), ConsolidatedExpenses(true, Some(12.34))).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -78,7 +79,7 @@ import scala.concurrent.Future
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(ConsolidatedExpenses(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(ConsolidatedExpenses(true, Some(12.34))), NormalMode, taxYear, Rentals, "individual")(request, messages(application)).toString
         }
       }
 
@@ -124,7 +125,7 @@ import scala.concurrent.Future
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, Rentals, "individual")(request, messages(application)).toString
         }
       }
 

@@ -18,7 +18,8 @@ package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes._
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{CheckMode, ConsolidatedExpenses, UserAnswers}
+import models.{CheckMode, ConsolidatedExpenses, PropertyType, Rentals, UserAnswers}
+import pages.PageConstants
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -30,13 +31,13 @@ object ConsolidatedExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     if (isTotalIncomeUnder85K(answers)) {
-      answers.get(ConsolidatedExpensesPage).flatMap {
+      answers.get(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense)).flatMap {
         case ConsolidatedExpenses(true, Some(amount)) =>
           Some(SummaryListRowViewModel(
             key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url)
                 .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
             )))
         case ConsolidatedExpenses(false, _) =>
@@ -44,7 +45,7 @@ object ConsolidatedExpensesSummary {
             key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
             value = ValueViewModel("site.no").withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url)
                 .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
             )
           ))

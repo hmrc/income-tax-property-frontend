@@ -227,18 +227,18 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from ConsolidatedExpensesPage to RentsRatesAndInsurancePage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), ConsolidatedExpenses(false, None)).get
 
         navigator.nextPage(
-          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+          ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
-        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(100))).get
+        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), ConsolidatedExpenses(true, Some(100))).get
 
         navigator.nextPage(
-          ConsolidatedExpensesPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
+          ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       }
 

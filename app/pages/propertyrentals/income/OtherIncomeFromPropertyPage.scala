@@ -33,8 +33,8 @@ case object OtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
   override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
     if (isTotalIncomeUnder85K(userAnswers)) {
       super.cleanup(value, userAnswers)
-    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo)) {
-      userAnswers.remove(ConsolidatedExpensesPage)
+    } else if (userAnswers.get(ConsolidatedExpensesPage("Rentals")).fold(false)(data => data.consolidatedExpensesYesOrNo)) {
+      userAnswers.remove(ConsolidatedExpensesPage("Rentals"))
     } else {
       super.cleanup(value, userAnswers)
     }

@@ -1475,6 +1475,7 @@ ukRentARoom.expensesIntro.href.label.individual = Individual expenses (opens in 
 
 ukRentARoom.expensesIntro.p5.individual = , where you enter an amount for each separate expenses type.
 ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separate expenses type.
+
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief

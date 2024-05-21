@@ -38,7 +38,7 @@ class ExpensesStartController @Inject()(
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers)) {
-        controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
+        controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, Rentals).url
       }
       else {
         controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals).url

@@ -104,7 +104,7 @@ object PropertyPeriodSessionRecoveryExtensions {
     }
 
     def updatePropertyRentalPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers.updatePage(ConsolidatedExpensesPage, fetchedData)
+      userAnswers.updatePage(ConsolidatedExpensesPage(PageConstants.propertyRentalsExpense), fetchedData)
         .updatePage(CostsOfServicesProvidedPage, fetchedData)
         .updatePage(LoanInterestPage, fetchedData)
         .updatePage(OtherAllowablePropertyExpensesPage, fetchedData)
