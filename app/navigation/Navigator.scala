@@ -41,6 +41,8 @@ import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
+
+import pages.ukrentaroom.expenses.ResidentialPropertyFinanceCostsPage
 import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
@@ -173,7 +175,12 @@ class Navigator @Inject() () {
     case UkRentARoomJointlyLetPage => taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
     case ClaimExpensesOrRRRPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
-
+    case ResidentialPropertyFinanceCostsPage =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdController
+              .onPageLoad(taxYear, NormalMode)
     // Rent a Room
     case RentsRatesAndInsuranceRRPage => taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
 
