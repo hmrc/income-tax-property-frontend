@@ -14,6 +14,7 @@
 * limitations under the License.
 *@
 
+@import controllers.ukrentaroom.expenses.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 
@@ -29,7 +30,7 @@
 
     @layout(pageTitle = title(form, messages("repairsAndMaintenanceCostsRR.title"))) {
 
-        @formHelper(action = RepairsAndMaintenanceCostsRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.RepairsAndMaintenanceCostsRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

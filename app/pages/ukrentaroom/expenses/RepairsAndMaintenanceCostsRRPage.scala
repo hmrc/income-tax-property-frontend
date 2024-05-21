@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukrentaroom.expenses
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object RepairsAndMaintenanceCostsRRPage extends QuestionPage[BigDecimal] {

@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
-import forms.RepairsAndMaintenanceCostsRRFormProvider
+import forms.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RepairsAndMaintenanceCostsRRPage
+import pages.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.RepairsAndMaintenanceCostsRRView
+import views.html.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRView
 
 import scala.concurrent.Future
 
@@ -149,7 +149,7 @@ class RepairsAndMaintenanceCostsRRControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -166,7 +166,7 @@ class RepairsAndMaintenanceCostsRRControllerSpec extends SpecBase with MockitoSu
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

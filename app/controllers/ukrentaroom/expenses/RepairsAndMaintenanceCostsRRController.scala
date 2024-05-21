@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import controllers.actions._
-import forms.RepairsAndMaintenanceCostsRRFormProvider
+import forms.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.RepairsAndMaintenanceCostsRRPage
+import pages.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.RepairsAndMaintenanceCostsRRView
+import views.html.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
