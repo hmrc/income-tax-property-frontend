@@ -362,6 +362,8 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           FhlIsNonUKLandlordPage, taxYear, NormalMode, UserAnswers("test"), testUserAnswer
         ) mustBe controllers.furnishedholidaylettings.income.routes.FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
+
+
       }
 
       "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is false" in {
