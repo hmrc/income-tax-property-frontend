@@ -41,21 +41,19 @@ import scala.concurrent.Future
 
 class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRouteAddClaim: Call =
-    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
-  def onwardRouteNoOtherClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
-
+  lazy val sbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear).url
   val formProvider = new SbaClaimsFormProvider()
   val form: Form[Boolean] = formProvider("agent")
-
   val taxYear = 2024
   val agent = "agent"
   val list: SummaryList = SummaryListViewModel(Seq.empty)
-
-  lazy val sbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear).url
-
   val structureBuildingQualifyingAmount = 100
   val structureBuildingAllowanceClaim = 200
+
+  def onwardRouteAddClaim: Call =
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
+
+  def onwardRouteNoOtherClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   "SbaClaims Controller" - {
 
