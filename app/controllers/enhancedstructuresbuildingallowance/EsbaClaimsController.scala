@@ -19,8 +19,8 @@ package controllers.enhancedstructuresbuildingallowance
 import audit.{AuditModel, AuditService}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
+import models.NormalMode
 import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, JourneyContext, NormalMode}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
@@ -74,7 +74,7 @@ class EsbaClaimsController @Inject()(
 
         value => {
           request.userAnswers.get(Esbas) match {
-            case Some(esbas) if value == false =>
+            case Some(esbas) if !value =>
               auditCYA(taxYear, request, esbas)
             case None =>
               logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
@@ -94,6 +94,7 @@ class EsbaClaimsController @Inject()(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
+      agentRef = request.user.agentRef,
       taxYear,
       isUpdate = false,
       "PropertyRentalsESBA",

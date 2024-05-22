@@ -96,6 +96,7 @@ class CheckYourAnswersController @Inject() (
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
+      request.user.agentRef,
       taxYear,
       isUpdate = false,
       "PropertyAbout",

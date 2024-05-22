@@ -88,15 +88,14 @@ class AllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
-      taxYear = taxYear,
-      isUpdate = false,
-      sectionName = "PropertyRentalsAllowance",
-      enteredRentalDetails = allowance
-    )
-    auditService.sendRentalsAuditEvent(event)
-  }
-
-  private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(
+      agentRef = request.user.agentRef,
+            taxYear = taxYear,
+            isUpdate = false,
+            sectionName = "PropertyRentalsAllowance",
+            enteredRentalDetails = allowance
+          )
+          auditService.sendRentalsAuditEvent(event)
+        }private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(
     implicit hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] = {
     val context = JourneyContext(

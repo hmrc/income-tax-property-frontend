@@ -19,7 +19,7 @@ package controllers.enhancedstructuresbuildingallowance
 import audit.{AuditModel, AuditService}
 import controllers.actions._
 import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, JourneyContext, Mode}
+import models.{EsbasWithSupportingQuestions, JourneyContext}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
@@ -96,6 +96,7 @@ class EsbaCheckYourAnswersController @Inject()(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
+      agentRef = request.user.agentRef,
       taxYear,
       isUpdate = false,
       "Esba", //Todo: ????
