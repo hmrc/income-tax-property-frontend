@@ -67,7 +67,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ElectricChargePointAllowancePage, ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ElectricChargePointAllowancePage, ElectricChargePointAllowance(electricChargePointAllowanceYesNo = false, None)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -82,7 +82,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
         contentAsString(result) mustEqual
           view(
             form.fill(
-              ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),
+              ElectricChargePointAllowance(electricChargePointAllowanceYesNo = false, None)),
               taxYear,
               agent,
               NormalMode)(request, messages(application)).toString

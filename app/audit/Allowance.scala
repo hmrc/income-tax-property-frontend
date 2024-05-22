@@ -22,16 +22,15 @@ import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
 
 case class Allowance(
-  annualInvestmentAllowance: Option[BigDecimal],
-  electricChargePointAllowance: ElectricChargePointAllowance,
-  zeroEmissionCarAllowance: Option[BigDecimal],
-  zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
-  businessPremisesRenovationAllowance: Option[BigDecimal],
-  replacementOfDomesticGoodsAllowance: Option[BigDecimal],
-  otherCapitalAllowance: Option[BigDecimal]
-)
+                      annualInvestmentAllowance: Option[BigDecimal],
+                      electricChargePointAllowance: ElectricChargePointAllowance,
+                      zeroEmissionCarAllowance: Option[BigDecimal],
+                      zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
+                      businessPremisesRenovation: Option[BigDecimal],
+                      replacementOfDomesticGoods: Option[BigDecimal],
+                      otherCapitalAllowance: Option[BigDecimal])
 
-case object Allowance extends Gettable[Allowance] with Settable[Allowance] {
+case object Allowance extends Gettable[Allowance] with Settable[Allowance]{
   implicit val format: OFormat[Allowance] = Json.format[Allowance]
 
   override def path: JsPath = JsPath \ toString
