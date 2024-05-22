@@ -55,7 +55,8 @@ class FhlMoreThanOneControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgency
+      isAgency,
+      Some("agentReferenceNumber")
     )
     s"FhlMoreThanOne Controller for $agencyOrIndividual" - {
 

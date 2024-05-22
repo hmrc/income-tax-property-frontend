@@ -17,12 +17,11 @@
 package controllers.session
 
 import base.SpecBase
+import models.User
 import models.requests.OptionalDataRequest
-import models.{FetchedBackendData, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.libs.json.JsObject
 import play.api.mvc.AnyContent
 import play.api.mvc.Results.Redirect
 import play.api.test.FakeRequest
@@ -35,13 +34,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with Fixture {
-  val propertyPeriodSubmissionService = mock[PropertySubmissionService]
-  val sessionRepository = mock[SessionRepository]
+  val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
+  val sessionRepository: SessionRepository = mock[SessionRepository]
 
   val propertyPeriodSessionRecovery = new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
 
   val taxYear = 2024
-  val user = User("", "", "", false)
+  val user: User = User("", "", "", isAgent = false, Some("agentReferenceNumber"))
 
   "PropertyPeriodSessionRecovery" - {
     "call the connector and set repository" in {

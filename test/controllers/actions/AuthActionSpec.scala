@@ -38,10 +38,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AuthActionSpec extends SpecBase {
 
-  val enrolments = Enrolments(Set(
+  val enrolmentsForIndividuals: Enrolments = Enrolments(Set(
     Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
     Enrolment(models.authorisation.Enrolment.Individual.key,
       Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")), "Activated")))
+
+  val enrolments: Enrolments = Enrolments(Set(
+    Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
+    Enrolment(models.authorisation.Enrolment.Agent.key,
+      Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Agent.value, "agent")), "Activated")))
 
 
   "Auth Action" - {
@@ -50,7 +55,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to log in " in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -70,7 +75,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to log in " in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -90,7 +95,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to the unauthorised page" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -110,7 +115,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to the unauthorised page" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -126,7 +131,7 @@ class AuthActionSpec extends SpecBase {
       }
 
       "must be redirected to uplift their confidence level" in {
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -150,7 +155,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to the unauthorised page" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -170,7 +175,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to the unauthorised page" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -190,7 +195,7 @@ class AuthActionSpec extends SpecBase {
 
       "must redirect the user to the unauthorised page" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -210,7 +215,7 @@ class AuthActionSpec extends SpecBase {
 
       "must allow access to the user" in {
 
-        val application = applicationBuilder(userAnswers = None, true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -232,14 +237,14 @@ class AuthActionSpec extends SpecBase {
 
       "must allow access to the user" in {
 
-        val application = applicationBuilder(userAnswers = None, false).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
           val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolments),
+            new FakeAuthConnector(Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolmentsForIndividuals),
             appConfig,
             bodyParsers)
           val controller = new Harness(authAction)

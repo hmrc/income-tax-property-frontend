@@ -57,7 +57,8 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgent
+      isAgent,
+      Some("agentReferenceNumber")
     )
     s"RentARoomJointlyLet Controller for $agencyOrIndividual" - {
 
