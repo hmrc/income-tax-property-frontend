@@ -31,7 +31,7 @@ object Esba {
 
 object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
 
   override def toString: String = PageConstants.esbaFormGroup
 }

@@ -19,8 +19,8 @@ package controllers.enhancedstructuresbuildingallowance
 import audit.{AuditModel, AuditService}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.NormalMode
 import models.requests.DataRequest
+import models.{EsbasWithSupportingQuestions, JourneyContext, NormalMode}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
@@ -29,6 +29,7 @@ import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,6 +49,7 @@ class EsbaClaimsController @Inject()(
                                       requireData: DataRequiredAction,
                                       formProvider: EsbaClaimsFormProvider,
                                       val controllerComponents: MessagesControllerComponents,
+                                      propertySubmissionService: PropertySubmissionService,
                                       audit: AuditService,
                                       view: EsbaClaimsView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -82,7 +84,7 @@ class EsbaClaimsController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
+         } yield Redirect(navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
         }
       )
   }

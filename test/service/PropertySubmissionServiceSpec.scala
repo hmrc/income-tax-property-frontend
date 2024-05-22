@@ -45,12 +45,20 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
   "getPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val resultFromConnector = FetchedBackendData(new JsObject(Map()))
+      val resultFromConnector = FetchedBackendData(
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None
+      )
       when(
-        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, user.mtditid, user)
       ) thenReturn Future.successful(Right(resultFromConnector))
 
-      val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
+      val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)
 
       whenReady(resultFromService) {
         case Right(r) => r mustBe resultFromConnector
@@ -62,17 +70,17 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
 
       when(
-        propertyPeriodicSubmissionConnector.getPropertyPeriodicSubmission(taxYear, user.mtditid, user)
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, user.mtditid, user)
       ).thenReturn(Future.successful(Left(resultFromConnector)))
 
-      val resultFromService = propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)
+      val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)
 
       whenReady(resultFromService) {
-        case Right(r) if r.fetchedData.value.isEmpty => succeed
+
         case Right(_) =>
-          fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+          fail("Service should return Left")
         case Left(_) =>
-          fail("Service should return FetchedPropertyData with empty JsObject when connector returns failure")
+          succeed
       }
     }
   }

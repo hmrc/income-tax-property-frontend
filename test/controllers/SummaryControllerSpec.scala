@@ -17,10 +17,8 @@
 package controllers
 
 import base.SpecBase
-
-import models.backend.{BusinessDetails, PropertyDetails}
+import models.backend.PropertyDetails
 import models.{FetchedBackendData, NormalMode, UKPropertySelect}
-
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -30,20 +28,21 @@ import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
+import testHelpers.Fixture
 import viewmodels.summary.{TaskListItem, TaskListTag}
 import views.html.SummaryView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class SummaryControllerSpec extends SpecBase with MockitoSugar {
+class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
   private val taxYear = LocalDate.now.getYear
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
 
   when(
-    propertyPeriodSubmissionService.getPropertyPeriodicSubmission(any(), any())(any())
-  ) thenReturn Future.successful(Right(FetchedBackendData(new JsObject(Map()))))
+    propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
+  ) thenReturn Future.successful(Right(fetchedPropertyData))
 
   "Summary Controller" - {
 

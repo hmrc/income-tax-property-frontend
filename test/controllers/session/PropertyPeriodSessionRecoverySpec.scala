@@ -28,12 +28,13 @@ import play.api.mvc.Results.Redirect
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import service.PropertySubmissionService
+import testHelpers.Fixture
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar {
+class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with Fixture {
   val propertyPeriodSubmissionService = mock[PropertySubmissionService]
   val sessionRepository = mock[SessionRepository]
 
@@ -48,8 +49,8 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar {
       implicit val odr = OptionalDataRequest[AnyContent](fakeRequest, "", user, None)
       implicit val hc = HeaderCarrier()
 
-      when(propertyPeriodSubmissionService.getPropertyPeriodicSubmission(taxYear, user)).thenReturn(Future.successful(
-        Right(FetchedBackendData(new JsObject(Map())))
+      when(propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)).thenReturn(Future.successful(
+        Right(fetchedPropertyData)
       ))
 
       when(sessionRepository.set(any())).thenReturn(Future.successful(true))
@@ -61,7 +62,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar {
 
       whenReady(result) { r =>
         r mustEqual expectedCall
-        verify(propertyPeriodSubmissionService, times(1)).getPropertyPeriodicSubmission(taxYear, user)
+        verify(propertyPeriodSubmissionService, times(1)).getPropertySubmission(taxYear, user)
         verify(sessionRepository, times(1)).set(any())
       }
     }

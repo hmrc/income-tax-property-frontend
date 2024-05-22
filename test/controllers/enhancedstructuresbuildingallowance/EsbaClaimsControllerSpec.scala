@@ -19,7 +19,7 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import controllers.enhancedstructuresbuildingallowance.EsbaClaimsController
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.UserAnswers
+import models.{EsbasWithSupportingQuestions, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -31,6 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
@@ -69,17 +70,21 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid data is submitted" in {
-      val userAnswers = emptyUserAnswers.set(Esbas, List[Esba]()).get
+      val userAnswers = emptyUserAnswers.set(EsbasWithSupportingQuestions, EsbasWithSupportingQuestions(true, Some(false), List[Esba]())).get
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
+      val mockPropertySubmissionService = mock[PropertySubmissionService]
+      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn(Future.successful(Right(())))
+
       val application =
         applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
           )
           .build()
 

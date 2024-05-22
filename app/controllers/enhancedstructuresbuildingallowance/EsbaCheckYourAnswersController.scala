@@ -16,24 +16,32 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
+import models.requests.DataRequest
+import models.{EsbasWithSupportingQuestions, JourneyContext, Mode}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance._
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class EsbaCheckYourAnswersController @Inject()(
-                                               override val messagesApi: MessagesApi,
-                                               identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: EsbaCheckYourAnswersView
-                                             ) extends FrontendBaseController with I18nSupport {
+                                                override val messagesApi: MessagesApi,
+                                                identify: IdentifierAction,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction,
+                                                propertySubmissionService: PropertySubmissionService,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                audit: AuditService,
+                                                view: EsbaCheckYourAnswersView
+                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -47,5 +55,53 @@ class EsbaCheckYourAnswersController @Inject()(
         ).flatten
       )
       Ok(view(list, taxYear))
+  }
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request => {
+      val esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions] = request.userAnswers.get(EsbasWithSupportingQuestions)
+      saveEsba(taxYear, request, esbasWithSupportingQuestions)
+    }
+
+  }
+
+  private def saveEsba(
+                        taxYear: Int,
+                        request: DataRequest[AnyContent],
+                        esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
+                      )
+                      (
+                        implicit hc: HeaderCarrier,
+                        ec: ExecutionContext
+                      ): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
+
+    esbasWithSupportingQuestions match {
+      case Some(e) => propertySubmissionService.saveEsba(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false)))).map {
+        case Right(_) =>
+          auditCYA(taxYear, request, e)
+          Redirect(routes.EsbaClaimsController.onPageLoad(taxYear))
+        case Left(_) => InternalServerError
+      }
+      case None => Future.successful(Redirect(routes.EsbaClaimsController.onPageLoad(taxYear)))
+    }
+
+
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbasWithSupportingQuestions: EsbasWithSupportingQuestions)(implicit
+                                                                                                                                   hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      taxYear,
+      isUpdate = false,
+      "Esba", //Todo: ????
+      esbasWithSupportingQuestions
+    )
+
+    audit.sendRentalsAuditEvent(auditModel)
   }
 }

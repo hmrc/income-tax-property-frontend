@@ -16,174 +16,81 @@
 
 package controllers.session
 
-import models.{FetchedBackendData, UserAnswers}
+import models.{Adjustments, EsbasWithSupportingQuestions, FetchedBackendData, UserAnswers}
 import pages._
 import pages.adjustments._
-import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings._
-import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
-import pages.premiumlease._
-import pages.propertyrentals.expenses._
-import pages.propertyrentals.income._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
-import pages.structurebuildingallowance._
-import play.api.libs.json.{JsObject, Reads, Writes}
-import queries.Gettable
+import play.api.libs.json.Writes
+import queries.Settable
+
+import scala.util.{Success, Try}
 
 object PropertyPeriodSessionRecoveryExtensions {
 
-  implicit class UserAnswersExtension(userAnswers: UserAnswers) {
-    def update(fetchedPropertyData: FetchedBackendData): UserAnswers = {
-      val fetchedData = fetchedPropertyData.fetchedData
-      userAnswers.updatePage(CapitalAllowancesForACarPage, fetchedData)
-        .updatePage(UKPropertyPage, fetchedData)
-        .updatePage(TotalIncomePage, fetchedData)
-        .updatePage(ReportPropertyIncomePage, fetchedData)
-        .updateAdjustmentsPages(fetchedData)
-        .updateAllowancesPages(fetchedData)
-        .updateEsbaPages(fetchedData)
-        .updateFhlPages(fetchedData)
-        .updatePremiumLeasePages(fetchedData)
-        .updatePropertyRentalPages(fetchedData)
-        .updateStructureBuildingPages(fetchedData)
+  implicit class UserAnswersExtension(userAnswersArg: UserAnswers) {
+    def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit writes: Writes[T]): Try[UserAnswers] = {
+      value.fold[Try[UserAnswers]](Success(userAnswers))(v => userAnswers.set(page, v))
     }
 
-    def updatePage[A](page: QuestionPage[A], fetchedData: JsObject)(implicit reads: Reads[A], writes: Writes[A]): UserAnswers = {
-      val p: Option[A] = get(page, fetchedData)
-      val r: Option[UserAnswers] = p.map(value => userAnswers.set(page, value).toOption).flatten
-      r.getOrElse(userAnswers)
-    }
+    def update(fetchedData: FetchedBackendData): UserAnswers = {
+      for {
+        ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage, fetchedData.capitalAllowancesForACar)
+        ua2 <- updatePart(ua1, UKPropertyPage, fetchedData.propertyAbout.map(_.ukProperty.toSet))
+        ua3 <- updatePart(ua2, TotalIncomePage, fetchedData.propertyAbout.map(_.totalIncome))
+        ua5 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
+        // Todo: When ticked implemented ua6 <- updateAllowancesPages(ua5, fetchedData.allowances)
+        // Todo: When ticked implemented ua7 <- updateStructureBuildingPages(ua6, fetchedData.sbasWithSupportingQuestions)
+        ua8 <- updateEnhancedStructureBuildingPages(ua5, fetchedData.esbasWithSupportingQuestions) //updateEnhancedStructureBuildingPages(ua7, fetchedData.esbasWithSupportingQuestions)
+        // Todo: When ticked implemented ua9 <- updatePropertyRentalPages(ua8, fetchedData.propertyRentals)
+      } yield ua8 //ua9
+    }.getOrElse(userAnswersArg)
 
-    def updateAdjustmentsPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers
-        .updatePage(BalancingChargePage, fetchedData)
-        .updatePage(PrivateUseAdjustmentPage, fetchedData)
-        .updatePage(PropertyIncomeAllowancePage, fetchedData)
-        .updatePage(RenovationAllowanceBalancingChargePage, fetchedData)
-        .updatePage(ResidentialFinanceCostPage, fetchedData)
-        .updatePage(UnusedResidentialFinanceCostPage, fetchedData)
-    }
-
-    def updateStructuredBuildingAllowancesPages(index: Int, fetchedData: JsObject): UserAnswers = {
-
-      val doAllDataExist = doAllSbaDataExistIn(index, fetchedData)
-      val userAnswerPopulated = userAnswers
-        .updatePage(StructuredBuildingAllowanceAddressPage(index), fetchedData)
-        .updatePage(StructureBuildingQualifyingDatePage(index), fetchedData)
-        .updatePage(StructureBuildingQualifyingAmountPage(index), fetchedData)
-        .updatePage(StructureBuildingAllowanceClaimPage(index), fetchedData)
-
-      if (doAllDataExist) {
-        userAnswerPopulated.updateStructuredBuildingAllowancesPages(index + 1, fetchedData)
-      } else {
-        userAnswerPopulated
+    def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] = {
+      maybeAdjustments match {
+        case None => Success(userAnswers)
+        case Some(adjustments) => for {
+          ua1 <- userAnswers.set(BalancingChargePage, adjustments.balancingCharge)
+          ua2 <- ua1.set(PrivateUseAdjustmentPage, adjustments.privateUseAdjustment)
+          ua3 <- ua2.set(PropertyIncomeAllowancePage, adjustments.propertyIncomeAllowance)
+          ua4 <- ua3.set(RenovationAllowanceBalancingChargePage, adjustments.renovationAllowanceBalancingCharge)
+          ua5 <- ua4.set(ResidentialFinanceCostPage, adjustments.residentialFinancialCost)
+          ua6 <- ua5.set(UnusedResidentialFinanceCostPage, adjustments.unusedResidentialFinanceCost)
+        } yield ua6
       }
     }
 
-    private def doAllSbaDataExistIn(index: Int, fetchedData: JsObject): Boolean = {
-
-      val allPresent: Option[Unit] = for {
-        _ <- get(StructuredBuildingAllowanceAddressPage(index), fetchedData)
-        _ <- get(StructureBuildingQualifyingDatePage(index), fetchedData)
-        _ <- get(StructureBuildingQualifyingAmountPage(index), fetchedData)
-        _ <- get(StructureBuildingAllowanceClaimPage(index), fetchedData)
-      } yield ()
-
-      allPresent.isDefined
-    }
-
-    def updateAllowancesPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers.updatePage(AnnualInvestmentAllowancePage, fetchedData)
-        .updatePage(BusinessPremisesRenovationPage, fetchedData)
-        .updatePage(ElectricChargePointAllowancePage, fetchedData)
-        .updatePage(OtherCapitalAllowancePage, fetchedData)
-        .updatePage(ReplacementOfDomesticGoodsPage, fetchedData)
-        .updatePage(ZeroEmissionCarAllowancePage, fetchedData)
-        .updatePage(ZeroEmissionGoodsVehicleAllowancePage, fetchedData)
-    }
-
-    def updatePropertyRentalPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers.updatePage(ConsolidatedExpensesPage, fetchedData)
-        .updatePage(CostsOfServicesProvidedPage, fetchedData)
-        .updatePage(LoanInterestPage, fetchedData)
-        .updatePage(OtherAllowablePropertyExpensesPage, fetchedData)
-        .updatePage(OtherProfessionalFeesPage, fetchedData)
-        .updatePage(PropertyBusinessTravelCostsPage, fetchedData)
-        .updatePage(RentsRatesAndInsurancePage, fetchedData)
-        .updatePage(RepairsAndMaintenanceCostsPage, fetchedData)
-        .updatePage(DeductingTaxPage, fetchedData)
-        .updatePage(IncomeFromPropertyRentalsPage, fetchedData)
-        .updatePage(IsNonUKLandlordPage, fetchedData)
-        .updatePage(OtherIncomeFromPropertyPage, fetchedData)
-        .updatePage(ReversePremiumsReceivedPage, fetchedData)
-        .updatePage(ClaimPropertyIncomeAllowancePage, fetchedData)
-        .updatePage(ExpensesLessThan1000Page, fetchedData)
-    }
-
-    def updateFhlPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers.updatePage(FhlDeductingTaxPage, fetchedData: JsObject)
-        .updatePage(FhlIsNonUKLandlordPage, fetchedData: JsObject)
-        .updatePage(FhlJointlyLetPage, fetchedData: JsObject)
-        .updatePage(FhlMainHomePage, fetchedData: JsObject)
-        .updatePage(FhlMoreThanOnePage, fetchedData: JsObject)
-    }
-
-    def updateStructureBuildingPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers
-        .updatePage(ClaimStructureBuildingAllowancePage, fetchedData)
-        .updatePage(SbaClaimsPage, fetchedData)
-        .updatePage(SbaRemoveConfirmationPage, fetchedData)
-        .updateStructuredBuildingAllowancesPages(0, fetchedData)
-    }
-
-    def updateEsbaPages(fetchedData: JsObject): UserAnswers = {
-      userAnswers
-        .updatePage(EsbaClaimsPage, fetchedData)
-        .updatePage(EsbaRemoveConfirmationPage, fetchedData)
-        .updatePage(ClaimEsbaPage, fetchedData)
-        .updateEsbaPages(0, fetchedData)
-    }
-
-    def updateEsbaPages(index: Int, fetchedData: JsObject): UserAnswers = {
-
-      val doAllDataExist = doAllEsbaDataExistIn(index, fetchedData)
-      val userAnswerPopulated = userAnswers
-        .updatePage(EsbaQualifyingDatePage(index), fetchedData)
-        .updatePage(EsbaQualifyingAmountPage(index), fetchedData)
-        .updatePage(EsbaClaimPage(index), fetchedData)
-        .updatePage(EsbaClaimAmountPage(index), fetchedData)
-        .updatePage(EsbaAddressPage(index), fetchedData)
-
-      if (doAllDataExist) {
-        userAnswerPopulated.updateStructuredBuildingAllowancesPages(index + 1, fetchedData)
-      } else {
-        userAnswerPopulated
+    def updateEnhancedStructureBuildingPages(
+                                              userAnswers: UserAnswers,
+                                              maybeEsbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
+                                            ): Try[UserAnswers] = {
+      maybeEsbasWithSupportingQuestions match {
+        case None => Success(userAnswers)
+        case Some(esbasWithSupportingQuestions) =>
+          for {
+            ua1 <- userAnswers.set(ClaimEsbaPage, esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance)
+            ua2 <- ua1.set(EsbaClaimsPage, esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
+            ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas)
+          } yield ua3
       }
+
     }
 
-    private def doAllEsbaDataExistIn(index: Int, fetchedData: JsObject): Boolean = {
+    def updateEsba(userAnswers: UserAnswers, index: Int, esba: Esba): Try[UserAnswers] = {
+      for {
+        ua1 <- userAnswers.set(EsbaAddressPage(index), esba.esbaAddress)
+        ua2 <- ua1.set(EsbaQualifyingDatePage(index), esba.esbaQualifyingDate)
+        ua3 <- ua2.set(EsbaQualifyingAmountPage(index), esba.esbaQualifyingAmount)
+        ua4 <- ua3.set(EsbaClaimPage(index), esba.esbaClaim)
+      } yield ua4
 
-      val allPresent: Option[Unit] = for {
-        _ <- get(EsbaQualifyingDatePage(index), fetchedData)
-        _ <- get(EsbaQualifyingAmountPage(index), fetchedData)
-        _ <- get(EsbaClaimPage(index), fetchedData)
-        _ <- get(EsbaClaimAmountPage(index), fetchedData)
-        _ <- get(EsbaAddressPage(index), fetchedData)
-      } yield ()
-
-      allPresent.isDefined
     }
 
-    def updatePremiumLeasePages(fetchedData: JsObject): UserAnswers = {
-      userAnswers.updatePage(CalculatedFigureYourselfPage, fetchedData)
-        .updatePage(LeasePremiumPaymentPage, fetchedData)
-        .updatePage(PremiumsGrantLeasePage, fetchedData)
-        .updatePage(ReceivedGrantLeaseAmountPage, fetchedData)
-        .updatePage(YearLeaseAmountPage, fetchedData)
+    def updateAllEsbas(userAnswers: UserAnswers, fetchedData: List[Esba]): Try[UserAnswers] = {
+      fetchedData.zipWithIndex.foldLeft(Try(userAnswers))((acc, a) => {
+        val (esba, index) = a
+        acc.flatMap(ua => updateEsba(ua, index, esba))
+      })
     }
 
-    private def get[A](page: Gettable[A], data: JsObject)(implicit rds: Reads[A]): Option[A] =
-      Reads.optionNoError(Reads.at(page.path)(rds)).reads(data).getOrElse(None)
   }
 }
