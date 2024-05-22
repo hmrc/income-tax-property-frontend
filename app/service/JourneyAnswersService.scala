@@ -16,12 +16,11 @@
 
 package service
 
-import connectors.{JourneyAnswersConnector, PropertySubmissionConnector}
+import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
-import models.backend.{HttpParserError, PropertyDataError, ServiceError}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{FetchedBackendData, User}
 import play.api.Logging
-import play.api.libs.json.{JsObject, Writes}
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject

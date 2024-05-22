@@ -1249,17 +1249,6 @@ esbaClaims.error.required.individual = Select yes if you want to add another cla
 esbaClaims.error.required.agent = Select yes if your client wants to add another claim
 esbaClaims.legend = Do you want to add another claim?
 
-fhlJointlyLet.title.individual = Is your furnished holiday letting jointly let?
-fhlJointlyLet.title.agent = Is your client’s furnished holiday letting jointly let?
-fhlJointlyLet.heading.individual = Is your furnished holiday letting jointly let?
-fhlJointlyLet.heading.agent = Is your client’s furnished holiday letting jointly let?
-fhlJointlyLet.checkYourAnswersLabel.individual = Is your furnished holiday letting jointly let?
-fhlJointlyLet.checkYourAnswersLabel.agent = Is your client’s furnished holiday letting jointly let?
-fhlJointlyLet.error.required.individual = Select yes if your furnished holiday letting is jointly let
-fhlJointlyLet.error.required.agent = Select yes if your client’s furnished holiday letting is jointly let
-fhlJointlyLet.change.hidden.individual = Is your furnished holiday letting jointly let?
-fhlJointlyLet.change.hidden.agent = Is your client’s furnished holiday letting jointly let?
-
 fhlMainHome.error.required.individual = Select yes if your main home is one of your furnished holiday lettings
 fhlMainHome.error.required.agent = Select yes if your client’s main home is one of their furnished holiday lettings
 fhlMainHome.change.hidden = FhlMainHome
