@@ -138,10 +138,10 @@ class AuthenticatedIdentifierAction @Inject()(
           )
         )
       case (Some(_), Some(_), None) =>
-        logger.warn(
+        val logMessage =
           s"Agent has ${models.authorisation.Enrolment.Agent.key} enrolment but does not have ${models.authorisation.Enrolment.Agent.value} identifier"
-        )
-        Future.successful(Redirect(config.loginUrl))
+        logger.warn(logMessage)
+        Future.failed(InsufficientEnrolments(logMessage))
       case _ => Future.successful(Redirect(config.loginUrl))
     }
   }
