@@ -17,13 +17,13 @@
 package controllers.structurebuildingallowance
 
 import base.SpecBase
+import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.structurebuildingallowance.SbaRemoveConfirmationPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -31,7 +31,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.structurebuildingallowance.SbaRemoveConfirmationView
-import controllers.structuresbuildingallowance.routes
+
 import scala.concurrent.Future
 class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
 
@@ -59,7 +59,10 @@ class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SbaRemoveConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, "£0")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, "£0")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -105,7 +108,10 @@ class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, "£0")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, "£0")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

@@ -17,8 +17,8 @@
 package testHelpers
 
 import controllers.actions.IdentifierAction
-import play.api.mvc.Results
+import play.api.mvc.{Action, AnyContent, Results}
 
 class Harness(authAction: IdentifierAction) {
-  def onPageLoad() = authAction { _ => Results.Ok }
+  def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
 }

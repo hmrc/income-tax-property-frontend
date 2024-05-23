@@ -19,9 +19,14 @@ package controllers.allowances
 import audit.{Allowance, AuditModel, AuditService}
 import controllers.actions._
 import controllers.routes
+import models.JourneyContext
+import models.backend.ServiceError
+import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.allowances._
 import viewmodels.govuk.summarylist._
@@ -37,7 +42,8 @@ class AllowancesCheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: AllowancesCheckYourAnswersView,
-  auditService: AuditService
+  auditService: AuditService,
+  propertySubmissionService: PropertySubmissionService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -61,22 +67,47 @@ class AllowancesCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers
-        .get(Allowance)
-        .fold {
-          logger.error("Allowances not found in userAnswers")
-        } { allowance: Allowance =>
-          val event = AuditModel[Allowance](
-            nino = request.user.nino,
-            userType = request.user.affinityGroup,
-            mtdItId = request.user.mtditid,
-            taxYear = taxYear,
-            isUpdate = false,
-            sectionName = "PropertyRentalsAllowance",
-            enteredRentalDetails = allowance
-          )
-          auditService.sendRentalsAuditEvent(event)
-        }
-      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+      request.userAnswers.get(Allowance) match {
+        case Some(allowance) =>
+          saveAllowanceForPropertyRentals(taxYear, request, allowance).map {
+            case Left(_) => InternalServerError
+            case Right(_: Unit) =>
+              auditAllowanceCYA(taxYear, request, allowance)
+              Redirect(routes.SummaryController.show(taxYear))
+          }
+        case None =>
+          logger.error("Allowance in property rentals is not present in userAnswers")
+          Future.failed(NotFoundException)
+      }
+  }
+
+  private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(
+    implicit hc: HeaderCarrier
+  ): Future[Either[ServiceError, Unit]] = {
+    val context = JourneyContext(
+      taxYear = taxYear,
+      mtditid = request.user.mtditid,
+      nino = request.user.nino,
+      journeyName = "property-rental-allowances"
+    )
+    propertySubmissionService.saveJourneyAnswers[Allowance](context, allowance)
+  }
+
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val event = AuditModel[Allowance](
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = "PropertyRentalsAllowance",
+      userEnteredRentalDetails = allowance
+    )
+    auditService.sendRentalsAuditEvent(event)
   }
 }
+
+case object NotFoundException extends Exception("Allowance in property rentals is not present in userAnswers")

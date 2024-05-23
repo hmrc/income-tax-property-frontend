@@ -36,7 +36,6 @@ import navigation.{FakeNavigator, Navigator}
 
 import scala.concurrent.Future
 
-
 class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new StructuredBuildingAllowanceAddressFormProvider
@@ -49,7 +48,8 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
   def onwardRoute: Call = Call("GET", "/foo")
   private val isAgentMessageKey = "individual"
 
-  lazy val structureBuildingAllowanceAddressDateRoute: String = routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val structureBuildingAllowanceAddressDateRoute: String =
+    routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index).url
 
   override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
@@ -61,7 +61,7 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
       .withFormUrlEncodedBody(
         "buildingName"   -> "building-name",
         "buildingNumber" -> "building-number",
-        "postcode"  -> "postcode"
+        "postcode"       -> "postcode"
       )
 
   "StructureBuildingAllowanceAddress Controller" - {
@@ -76,14 +76,22 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
         val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, index)(
+          getRequest,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(StructuredBuildingAllowanceAddressPage(index), StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")).success.value
+        .set(
+          StructuredBuildingAllowanceAddressPage(index),
+          StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")
+        )
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -93,8 +101,12 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")),
-          taxYear, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")),
+          taxYear,
+          NormalMode,
+          index
+        )(getRequest, messages(application)).toString
       }
     }
     "must redirect to the next page when valid data is submitted" in {
@@ -114,7 +126,11 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
       running(application) {
         val request =
           FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
-            .withFormUrlEncodedBody(("buildingName", validAnswer), ("buildingNumber", validAnswer), ("postcode", validPostCode))
+            .withFormUrlEncodedBody(
+              ("buildingName", validAnswer),
+              ("buildingNumber", validAnswer),
+              ("postcode", validPostCode)
+            )
 
         val result = route(application, request).value
 
@@ -139,7 +155,10 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

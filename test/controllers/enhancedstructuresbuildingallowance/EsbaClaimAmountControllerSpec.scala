@@ -51,7 +51,8 @@ class EsbaClaimAmountControllerSpec extends SpecBase with MockitoSugar {
     "",
     "",
     "",
-    false
+    isAgent = false,
+    Some("agentReferenceNumber")
   )
   "EsbaClaimAmount Controller" - {
 

@@ -37,18 +37,16 @@ import scala.concurrent.Future
 
 class StructureBuildingQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
 
+  lazy val structureBuildingQualifyingDateRoute: String =
+    routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, NormalMode, index).url
+  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
   val formProvider = new StructureBuildingQualifyingDateFormProvider()
-  private def form = formProvider()
-
   val taxYear = 2024
   val index = 0
-  def onwardRoute: Call = Call("GET", "/foo")
-  private val isAgentMessageKey = "individual"
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
+  private val isAgentMessageKey = "individual"
 
-  lazy val structureBuildingQualifyingDateRoute: String = routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, NormalMode, index).url
-
-  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  def onwardRoute: Call = Call("GET", "/foo")
 
   def getRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, structureBuildingQualifyingDateRoute)
@@ -60,6 +58,8 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         "structureBuildingQualifyingDate.month" -> validAnswer.getMonthValue.toString,
         "structureBuildingQualifyingDate.year"  -> validAnswer.getYear.toString
       )
+
+  private def form = formProvider()
 
   "StructureBuildingQualifyingDate Controller" - {
 
@@ -73,13 +73,17 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(
+          getRequest,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingDatePage(index), validAnswer).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(StructureBuildingQualifyingDatePage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -90,7 +94,10 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual
-          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(getRequest, messages(application)).toString
+          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(
+            getRequest,
+            messages(application)
+          ).toString
       }
     }
 
@@ -132,7 +139,10 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

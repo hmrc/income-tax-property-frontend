@@ -25,7 +25,7 @@ import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -77,8 +77,8 @@ class CheckYourAnswersController @Inject() (
   }
 
   private def savePropertyAbout(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
-                                                                                                              hc: HeaderCarrier
-  ) = {
+    hc: HeaderCarrier
+  ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
 
     propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
@@ -96,6 +96,7 @@ class CheckYourAnswersController @Inject() (
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
+      request.user.agentRef,
       taxYear,
       isUpdate = false,
       "PropertyAbout",

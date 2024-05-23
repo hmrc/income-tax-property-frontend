@@ -102,7 +102,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        "allowances" : {
       |            "annualInvestmentAllowance" : 44,
       |            "electricChargePointAllowance" : {
-      |                "electricChargePointAllowanceYesNo" : true,
+      |                "electricChargePointAllowanceYesOrNo" : true,
       |                "electricChargePointAllowanceAmount" : 45
       |            },
       |            "zeroEmissionCarAllowance" : 4,
@@ -156,7 +156,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
-      val fetchedData: FetchedBackendData = Json.parse(data).as[FetchedBackendData] //fetchedPropertyData
+      val fetchedData: FetchedBackendData = Json.parse(data).as[FetchedBackendData] // fetchedPropertyData
 
       val updated = emptyUserAnswers
         .update(fetchedData)

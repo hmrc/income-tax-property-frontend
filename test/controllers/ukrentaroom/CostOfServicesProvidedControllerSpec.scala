@@ -54,7 +54,8 @@ class CostOfServicesProvidedControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgent
+      isAgent,
+      Some("agentReferenceNumber")
     )
     lazy val costOfServicesProvidedRoute = controllers.ukrentaroom.routes.CostOfServicesProvidedController.onPageLoad(taxYear, NormalMode).url
 

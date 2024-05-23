@@ -21,6 +21,7 @@ import config.FrontendAppConfig
 import controllers.routes
 import models.authorisation.SessionValues
 import models.requests.IdentifierRequest
+import play.api.Logging
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
@@ -31,16 +32,16 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.Logging
 
-trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+trait IdentifierAction
+  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject()(
                                                override val authConnector: AuthConnector,
                                                config: FrontendAppConfig,
                                                val parser: BodyParsers.Default
-                                             )
-                                             (implicit val executionContext: ExecutionContext) extends IdentifierAction with AuthorisedFunctions with Logging {
+                                             )(implicit val executionContext: ExecutionContext)
+  extends IdentifierAction with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
@@ -53,58 +54,111 @@ class AuthenticatedIdentifierAction @Inject()(
           Retrievals.confidenceLevel and
           Retrievals.allEnrolments
       ) {
-        case Some(Individual) ~ _ ~ confidenceLevel ~ _ if confidenceLevel < ConfidenceLevel.L250  =>
+        case Some(Individual) ~ _ ~ confidenceLevel ~ _ if confidenceLevel < ConfidenceLevel.L250 =>
           upliftIv
         case Some(Individual) ~ Some(internalId) ~ _ ~ enrolments =>
           identifyIndividual(request, block, internalId, enrolments)
-        case Some(Agent) ~ Some(internalId) ~ _ ~ _ =>
-          identifyAgent(request, block, internalId)
-      }.recoverWith {
-      case _: NoActiveSession =>
-        Future.successful(Redirect(config.loginUrl))
-      case _: BearerTokenExpired =>
-        Future.successful(Redirect(config.loginUrl))
-      case _: AuthorisationException =>
-        Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
-    }
+        case Some(Agent) ~ Some(internalId) ~ _ ~ enrolments =>
+          identifyAgent(request, block, internalId, enrolments)
+      }
+      .recoverWith {
+        case _: NoActiveSession =>
+          Future.successful(Redirect(config.loginUrl))
+        case _: BearerTokenExpired =>
+          Future.successful(Redirect(config.loginUrl))
+        case _: AuthorisationException =>
+          Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
+      }
   }
 
-  private def identifyIndividual[A](request: Request[A],
-                                    block: IdentifierRequest[A] => Future[Result],
-                                    internalId: String,
-                                    enrolments: Enrolments): Future[Result] = {
+  private def identifyIndividual[A](
+                                     request: Request[A],
+                                     block: IdentifierRequest[A] => Future[Result],
+                                     internalId: String,
+                                     enrolments: Enrolments
+                                   ): Future[Result] = {
     val optionalMtdItId: Option[String] =
-      enrolmentGetIdentifierValue(models.authorisation.Enrolment.Individual.key, models.authorisation.Enrolment.Individual.value, enrolments)
+      enrolmentGetIdentifierValue(
+        models.authorisation.Enrolment.Individual.key,
+        models.authorisation.Enrolment.Individual.value,
+        enrolments
+      )
     val optionalNino: Option[String] =
-      enrolmentGetIdentifierValue(models.authorisation.Enrolment.Nino.key, models.authorisation.Enrolment.Nino.value, enrolments)
+      enrolmentGetIdentifierValue(
+        models.authorisation.Enrolment.Nino.key,
+        models.authorisation.Enrolment.Nino.value,
+        enrolments
+      )
     (optionalMtdItId, optionalNino) match {
       case (Some(mtdItId), Some(nino)) =>
-        block(IdentifierRequest(request, internalId, models.User(mtditid = mtdItId, nino = nino, affinityGroup = Individual.toString, isAgent = false)))
+        block(
+          IdentifierRequest(
+            request,
+            internalId,
+            models.User(
+              mtditid = mtdItId,
+              nino = nino,
+              affinityGroup = Individual.toString,
+              isAgent = false,
+              agentRef = None
+            )
+          )
+        )
       case _ => Future.successful(Redirect(config.loginUrl))
     }
   }
 
-  private def identifyAgent[A](request: Request[A], block: IdentifierRequest[A] => Future[Result], internalId: String): Future[Result] = {
+  private def identifyAgent[A](
+                                request: Request[A],
+                                block: IdentifierRequest[A] => Future[Result],
+                                internalId: String,
+                                enrolments: Enrolments
+                              ): Future[Result] = {
     val optionalNino = request.session.get(SessionValues.ClientNino)
     val optionalMtdItId = request.session.get(SessionValues.ClientMtdid)
-    (optionalMtdItId, optionalNino) match {
-      case (Some(mtdItId), Some(nino)) =>
-        block(IdentifierRequest(request, internalId, models.User(mtditid = mtdItId, nino = nino, affinityGroup = Agent.toString, isAgent = true)))
+    val optionalAgentRef: Option[String] =
+      enrolmentGetIdentifierValue(
+        models.authorisation.Enrolment.Agent.key,
+        models.authorisation.Enrolment.Agent.value,
+        enrolments
+      )
+    (optionalMtdItId, optionalNino, optionalAgentRef) match {
+      case (Some(mtdItId), Some(nino), Some(_)) =>
+        block(
+          IdentifierRequest(
+            request,
+            internalId,
+            models.User(
+              mtditid = mtdItId,
+              nino = nino,
+              affinityGroup = Agent.toString,
+              isAgent = true,
+              agentRef = optionalAgentRef
+            )
+          )
+        )
+      case (Some(_), Some(_), None) =>
+        val logMessage =
+          s"Agent has ${models.authorisation.Enrolment.Agent.key} enrolment but does not have ${models.authorisation.Enrolment.Agent.value} identifier"
+        logger.warn(logMessage)
+        Future.failed(InsufficientEnrolments(logMessage))
       case _ => Future.successful(Redirect(config.loginUrl))
     }
   }
 
-  private[actions] def enrolmentGetIdentifierValue(checkedKey: String,
-                                                   checkedIdentifier: String,
-                                                   enrolments: Enrolments
-                                                  ): Option[String] = enrolments.enrolments.collectFirst {
-    case Enrolment(`checkedKey`, enrolmentIdentifiers, _, _) => enrolmentIdentifiers.collectFirst {
-      case EnrolmentIdentifier(`checkedIdentifier`, identifierValue) => identifierValue
+  private[actions] def enrolmentGetIdentifierValue(
+                                                    checkedKey: String,
+                                                    checkedIdentifier: String,
+                                                    enrolments: Enrolments
+                                                  ): Option[String] = enrolments.enrolments.collectFirst { case Enrolment(`checkedKey`, enrolmentIdentifiers, _, _) =>
+    enrolmentIdentifiers.collectFirst { case EnrolmentIdentifier(`checkedIdentifier`, identifierValue) =>
+      identifierValue
     }
   }.flatten
 
   private def upliftIv: Future[Result] = {
-    val logMessage = "[AuthorisedAction][individualAuthentication] User has confidence level below 250, routing user to IV uplift."
+    val logMessage =
+      "[AuthorisedAction][individualAuthentication] User has confidence level below 250, routing user to IV uplift."
     logger.info(logMessage)
     Future(Redirect(config.incomeTaxSubmissionIvRedirect))
   }

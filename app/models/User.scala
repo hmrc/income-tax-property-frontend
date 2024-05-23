@@ -16,10 +16,8 @@
 
 package models
 
-case class User(mtditid: String,
-                nino: String,
-                affinityGroup: String,
-                isAgent: Boolean) {
+case class User(mtditid: String, nino: String, affinityGroup: String, isAgent: Boolean, agentRef: Option[String]) {
 
-  def isAgentMessageKey: String = if(isAgent) "agent" else "individual"
+  def isAgentMessageKey: String = if (isAgent) "agent" else "individual"
+
 }

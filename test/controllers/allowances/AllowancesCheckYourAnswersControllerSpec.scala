@@ -16,16 +16,24 @@
 
 package controllers.allowances
 
-import audit.Allowance
+import audit.{Allowance, AuditService}
 import base.SpecBase
+import models.backend.{BusinessDetails, PropertyDetails}
 import models.{ElectricChargePointAllowance, UserAnswers}
+import org.mockito.ArgumentMatchers.{any, anyString}
+import org.mockito.Mockito.doNothing
+import org.mockito.MockitoSugar.when
+import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.allowances.AllowancesCheckYourAnswersView
 
 import java.time.LocalDate
+import scala.concurrent.Future
 
 class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -52,7 +60,8 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
+    electricChargePointAllowanceYesOrNo = true,
+    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
 
   "Check Your Answers Controller" - {
@@ -90,17 +99,47 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
-      val userAnswers = UserAnswers("allowances-user-answers").set(Allowance, Allowance(
-        annualInvestmentAllowance =  Some(annualInvestmentAllowanceSummary),
-        electricChargePointAllowance = electricChargePointAllowance,
-        zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
-        zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
-        businessPremisesRenovation = Some(businessPremisesRenovation),
-        replacementOfDomesticGoods = Some(replacementOfDomesticGoods),
-        otherCapitalAllowance = Some(otherCapitalAllowance)
-      )).toOption
+      val userAnswers = UserAnswers("allowances-user-answers")
+        .set(
+          Allowance,
+          Allowance(
+            annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
+            electricChargePointAllowance = electricChargePointAllowance,
+            zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+            zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
+            businessPremisesRenovationAllowance = Some(businessPremisesRenovation),
+            replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
+            otherCapitalAllowance = Some(otherCapitalAllowance)
+          )
+        )
+        .toOption
 
-      val application = applicationBuilder(userAnswers = userAnswers, isAgent = false).build()
+      val propertyDetails = PropertyDetails(
+        Some("uk-property"),
+        Some(LocalDate.of(taxYear, 1, 2)),
+        cashOrAccruals = Some(false),
+        "incomeSourceId"
+      )
+
+      // mocks
+      val propertySubmissionService = mock[PropertySubmissionService]
+      val businessService = mock[BusinessService]
+      val auditService = mock[AuditService]
+
+      // when
+      when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
+      when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+        Right(())
+      )
+      doNothing().when(auditService).sendRentalsAuditEvent(any())(any(), any())
+
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[AuditService].toInstance(auditService))
+        .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.AllowancesCheckYourAnswersController.onSubmit(taxYear).url)

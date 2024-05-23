@@ -47,7 +47,8 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
   val taxYear = 2023
   val index = 0
 
-  lazy val structureBuildingQualifyingAmountRoute: String = routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val structureBuildingQualifyingAmountRoute: String =
+    routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
 
   "StructureBuildingQualifyingAmount Controller" - {
 
@@ -63,13 +64,17 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
         val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index), validAnswer).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -81,7 +86,10 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -127,7 +135,10 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

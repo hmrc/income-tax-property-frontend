@@ -124,10 +124,11 @@ class SbaClaimsController @Inject() (
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
       isUpdate = false,
       sectionName = "PropertyRentalsSBA",
-      enteredRentalDetails = sbaInfo
+      userEnteredRentalDetails = sbaInfo
     )
     auditService.sendRentalsAuditEvent(auditModel)
   }

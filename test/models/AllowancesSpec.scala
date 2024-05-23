@@ -30,13 +30,13 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
       {
       |	"annualInvestmentAllowance" : 100,
       |	"electricChargePointAllowance" : {
-      |		"electricChargePointAllowanceYesNo": true,
+      |		"electricChargePointAllowanceYesOrNo": true,
       |		"electricChargePointAllowanceAmount": 200
       |	},
       |	"zeroEmissionCarAllowance" :300,
       |	"zeroEmissionGoodsVehicleAllowance" : 400,
-      |	"businessPremisesRenovation" :500,
-      |	"replacementOfDomesticGoods" : 600,
+      |	"businessPremisesRenovationAllowance" :500,
+      |	"replacementOfDomesticGoodsAllowance" : 600,
       |	"otherCapitalAllowance" :700
       |}""".stripMargin
 
@@ -45,7 +45,8 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesNo = true, electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
+    electricChargePointAllowanceYesOrNo = true,
+    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
@@ -64,15 +65,17 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
 
   "Allowances" - {
     "must deserialise from json" in {
-      Json.parse(allowancesJson).validate[Allowance] mustBe JsSuccess(Allowance(
-        annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-        electricChargePointAllowance = electricChargePointAllowance,
-        zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
-        zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
-        businessPremisesRenovation = Some(businessPremisesRenovation),
-        replacementOfDomesticGoods = Some(replacementOfDomesticGoods),
-        otherCapitalAllowance = Some(otherCapitalAllowance)
-      ))
+      Json.parse(allowancesJson).validate[Allowance] mustBe JsSuccess(
+        Allowance(
+          annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
+          electricChargePointAllowance = electricChargePointAllowance,
+          zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+          zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
+          businessPremisesRenovationAllowance = Some(businessPremisesRenovation),
+          replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
+          otherCapitalAllowance = Some(otherCapitalAllowance)
+        )
+      )
     }
   }
 

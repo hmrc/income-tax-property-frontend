@@ -26,7 +26,6 @@ import models.{FetchedBackendData, JourneyContext, UKPropertySelect, User}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
-import play.api.libs.json.JsObject
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -38,7 +37,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   val propertyPeriodicSubmissionConnector: PropertySubmissionConnector = mock[PropertySubmissionConnector]
   val mockBusinessConnector: BusinessService = mock[BusinessService]
   val taxYear = 2024
-  val user: User = User("mtditid", "nino", "individual", isAgent = false)
+  val user: User = User("mtditid", "nino", "individual", isAgent = false, Some("agentReferenceNumber"))
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val propertyPeriodSubmissionService =
     new PropertySubmissionService(propertyPeriodicSubmissionConnector, mockBusinessConnector)
@@ -86,7 +85,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   }
 
   "saveJourneyAnswers" - {
-    val user = User("mtditid", "nino", "group", isAgent = true)
+    val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
     val taxYear = 2024
     val context =
       JourneyContext(taxYear = taxYear, mtditid = user.mtditid, nino = user.nino, journeyName = "property-about")

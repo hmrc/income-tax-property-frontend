@@ -347,12 +347,6 @@ GET         /:taxYear/furnished-holiday-lettings/change-more-than-one           
 POST        /:taxYear/furnished-holiday-lettings/change-more-than-one                              controllers.furnishedholidaylettings.FhlMoreThanOneController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
-
-GET         /:taxYear/furnished-holiday-lettings/jointly-let                                       controllers.furnishedholidaylettings.FhlJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/furnished-holiday-lettings/jointly-let                                       controllers.furnishedholidaylettings.FhlJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/furnished-holiday-lettings/change-jointly-let                                controllers.furnishedholidaylettings.FhlJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/furnished-holiday-lettings/change-jointly-let                                controllers.furnishedholidaylettings.FhlJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 GET         /:taxYear/furnished-holiday-lettings/main-home                                         controllers.furnishedholidaylettings.FhlMainHomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/furnished-holiday-lettings/main-home                                         controllers.furnishedholidaylettings.FhlMainHomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/furnished-holiday-lettings/change-main-home                                  controllers.furnishedholidaylettings.FhlMainHomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
