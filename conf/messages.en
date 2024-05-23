@@ -1695,10 +1695,10 @@ otherPropertyRRExpenses.details.link.href = https://www.gov.uk/expenses-if-youre
 otherPropertyRRExpenses.details.link.text1 = Read more about
 otherPropertyRRExpenses.details.link.text2 = allowable property expenses at GOV.UK (opens in new tab)
 otherPropertyRRExpenses.error.required.individual = Enter an amount for your other allowable property expenses
-otherPropertyRRExpenses.error.required.agent = Enter an amount for your client's other allowable property expenses
-otherPropertyRRExpenses.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
-otherPropertyRRExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
-otherPropertyRRExpenses.error.nonNumeric.individual = Amount can only include pounds and pence, for example £600 or £600.20
-otherPropertyRRExpenses.error.nonNumeric.agent = Amount can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.required.agent = Enter an amount for your client’s other allowable property expenses
+otherPropertyRRExpenses.error.twoDecimalPlaces.individual = The amount for your other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.twoDecimalPlaces.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.nonNumeric.individual = The amount for your other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
 otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 
