@@ -16,12 +16,12 @@
 
 package pages.structurebuildingallowance
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 final case class SbaInfo(
   claimStructureBuildingAllowance: Boolean,
   structureBuildingFormGroup: Array[StructureBuildingFormGroup]
 )
 object SbaInfo {
-  implicit val format = Json.format[SbaInfo]
+  implicit val format: OFormat[SbaInfo] = Json.format[SbaInfo]
 }

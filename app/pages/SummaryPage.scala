@@ -17,7 +17,6 @@
 package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
-import pages.SummaryPage.ukRentARoomExpensesItem
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage

@@ -25,7 +25,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.allowances.ZeroEmissionCarAllowanceView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

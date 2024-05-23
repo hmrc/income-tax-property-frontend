@@ -18,15 +18,20 @@ package pages.enhancedstructuresbuildingallowance
 
 import models.EsbaAddress
 import pages.PageConstants
-import play.api.libs.json.{JsPath, Json}
+import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-final case class Esba(esbaQualifyingDate: LocalDate, esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal, esbaAddress: EsbaAddress)
+final case class Esba(
+  esbaQualifyingDate: LocalDate,
+  esbaQualifyingAmount: BigDecimal,
+  esbaClaim: BigDecimal,
+  esbaAddress: EsbaAddress
+)
 
 object Esba {
-  implicit val formatter = Json.format[Esba]
+  implicit val formatter: OFormat[Esba] = Json.format[Esba]
 }
 
 object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
@@ -35,4 +40,3 @@ object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
 
   override def toString: String = PageConstants.esbaFormGroup
 }
-

@@ -20,7 +20,6 @@ import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
 import models.{FetchedBackendData, User}
 import play.api.Logging
-import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
