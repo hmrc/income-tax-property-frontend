@@ -88,11 +88,11 @@ class AllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
-      agentRef = request.user.agentRef,
+      agentReferenceNumber = request.user.agentRef,
             taxYear = taxYear,
             isUpdate = false,
             sectionName = "PropertyRentalsAllowance",
-            enteredRentalDetails = allowance
+            userEnteredRentalDetails = allowance
           )
           auditService.sendRentalsAuditEvent(event)
         }private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(

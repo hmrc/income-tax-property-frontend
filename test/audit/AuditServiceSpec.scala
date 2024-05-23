@@ -40,7 +40,7 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
       "NINO",
       "Agent",
       "mtdItId",
-      agentRef = Some("agentReferenceNumber"),
+      agentReferenceNumber = Some("agentReferenceNumber"),
       2024,
       isUpdate = false,
       "PropertyAbout",

@@ -22,11 +22,11 @@ case class AuditModel[T](
                           nino: String,
                           userType: String,
                           mtdItId: String,
-                          agentRef: Option[String],
+                          agentReferenceNumber: Option[String],
                           taxYear: Int,
                           isUpdate: Boolean,
                           sectionName: String,
-                          enteredRentalDetails: T
+                          userEnteredRentalDetails: T
                         )
 
 object AuditModel {
