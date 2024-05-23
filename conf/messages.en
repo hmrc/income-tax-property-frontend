@@ -1514,7 +1514,6 @@ consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
 
 ukrentaroom.about.section.complete.error.required = Select whether you ’ve completed this section
 
-
 ############ Unused Residential Property Finance Costs #########
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.agent = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.agent = Residential property finance costs
@@ -1661,3 +1660,34 @@ ukrentaroom.legalManagementOtherFee.error.nonNumeric.agent = Enter an amount for
 ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.legalManagementOtherFee.error.outOfRange = Enter an amount between £{0} and £{1}
+
+otherPropertyRRExpenses.title = Other allowable property expenses
+otherPropertyRRExpenses.heading = Other allowable property expenses
+otherPropertyRRExpenses.checkYourAnswersLabel= Other allowable property expenses
+otherPropertyRRExpenses.change.hidden = Other allowable property expenses
+otherPropertyRRExpenses.input.heading.individual = How much were your other allowable property expenses?
+otherPropertyRRExpenses.input.heading.agent = How much were your client's other allowable property expenses?
+otherPropertyRRExpenses.details.content.link.text.individual = What you can claim:
+otherPropertyRRExpenses.details.content.link.text.agent = What your client can claim:
+
+otherPropertyRRExpenses.details.content.l1 = office costs, for example stationery or phone bills
+otherPropertyRRExpenses.details.content.l2 = clothing expenses, for example uniforms
+otherPropertyRRExpenses.details.content.l3.individual = things you buy to sell on, for example stock or raw materials
+otherPropertyRRExpenses.details.content.l3.agent = things they buy to sell on, for example stock or raw materials
+otherPropertyRRExpenses.details.content.l4 = financial costs, for example insurance or bank charges
+otherPropertyRRExpenses.details.content.l5.individual = costs of your business premises, for example heating, lighting, business rates
+otherPropertyRRExpenses.details.content.l5.agent = costs of their business premises, for example heating, lighting, business rates
+otherPropertyRRExpenses.details.content.l6 = advertising or marketing, for example website costs
+otherPropertyRRExpenses.details.content.l7.individual = training courses related to your business, for example refresher courses
+otherPropertyRRExpenses.details.content.l7.agent = training courses related to their business, for example refresher courses
+otherPropertyRRExpenses.details.link.href = https://www.gov.uk/expenses-if-youre-self-employed
+otherPropertyRRExpenses.details.link.text1 = Read more about
+otherPropertyRRExpenses.details.link.text2 = allowable property expenses at GOV.UK (opens in new tab)
+otherPropertyRRExpenses.error.required.individual = Enter an amount for your other allowable property expenses
+otherPropertyRRExpenses.error.required.agent = Enter an amount for your client’s other allowable property expenses
+otherPropertyRRExpenses.error.twoDecimalPlaces.individual = The amount for your other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.twoDecimalPlaces.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.nonNumeric.individual = The amount for your other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
+otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
+

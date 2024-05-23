@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.ConsolidatedRRExpensesPage
+import pages.OtherPropertyRRExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ConsolidatedRRExpensesSummary {
+object OtherPropertyRRExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ConsolidatedRRExpensesPage).map { answer =>
-      SummaryListRowViewModel(
-        key = "consolidatedRRExpenses.checkYourAnswersLabel",
-        value = ValueViewModel(answer.toString),
-        actions = Seq(
-          ActionItemViewModel("site.change", routes.ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
-            .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+    answers.get(OtherPropertyRRExpensesPage) match {
+      case Some(answer) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("otherPropertyRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.OtherPropertyRRExpensesController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("otherPropertyRRExpenses.change.hidden"))
+            ))
         )
-      )
+      case _ => Option.empty[SummaryListRow]
     }
 }

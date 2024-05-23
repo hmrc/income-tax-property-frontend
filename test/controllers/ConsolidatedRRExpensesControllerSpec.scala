@@ -35,7 +35,6 @@ import views.html.ConsolidatedRRExpensesView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-
 class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/")
@@ -50,7 +49,7 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, consolidatedRRExpensesRoute)
@@ -60,13 +59,19 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedRRExpensesPage, ConsolidatedRRExpenses(true, Some(12.34))).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(ConsolidatedRRExpensesPage, ConsolidatedRRExpenses(true, Some(12.34)))
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -78,7 +83,12 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(ConsolidatedRRExpenses(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(ConsolidatedRRExpenses(true, Some(12.34))),
+          NormalMode,
+          taxYear,
+          "individual"
+        )(request, messages(application)).toString
       }
     }
 
@@ -124,7 +134,10 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

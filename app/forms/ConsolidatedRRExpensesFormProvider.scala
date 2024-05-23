@@ -25,18 +25,21 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 class ConsolidatedRRExpensesFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[ConsolidatedRRExpenses] = {
-    Form(mapping(
-      "consolidatedExpensesOrIndiv" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
-      "consolidatedExpensesAmount" -> {
-        mandatoryIfTrue("consolidatedExpensesOrIndiv",
-          currency(
-            s"consolidatedRRExpenses.error.required.amount.$individualOrAgent",
-            s"consolidatedRRExpenses.error.twoDecimalPlaces.$individualOrAgent",
-            s"consolidatedRRExpenses.error.nonNumeric.$individualOrAgent")
-            .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedRRExpenses.error.outOfRange"))
-        )
-      }
-    )(ConsolidatedRRExpenses.apply)(ConsolidatedRRExpenses.unapply))
-  }
+  def apply(individualOrAgent: String): Form[ConsolidatedRRExpenses] =
+    Form(
+      mapping(
+        "consolidatedExpensesOrIndiv" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
+        "consolidatedExpensesAmount" -> {
+          mandatoryIfTrue(
+            "consolidatedExpensesOrIndiv",
+            currency(
+              s"consolidatedRRExpenses.error.required.amount.$individualOrAgent",
+              s"consolidatedRRExpenses.error.twoDecimalPlaces.$individualOrAgent",
+              s"consolidatedRRExpenses.error.nonNumeric.$individualOrAgent"
+            )
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedRRExpenses.error.outOfRange"))
+          )
+        }
+      )(ConsolidatedRRExpenses.apply)(ConsolidatedRRExpenses.unapply)
+    )
 }

@@ -16,15 +16,12 @@
 
 package pages
 
-import models.ConsolidatedRRExpenses
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-import scala.util.Try
+case object OtherPropertyRRExpensesPage extends QuestionPage[BigDecimal] {
 
-case object ConsolidatedRRExpensesPage extends QuestionPage[ConsolidatedRRExpenses] {
+  override def path: JsPath = JsPath \ PageConstants.rentARoomExpense\ toString
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomExpense \ toString
-
-  override def toString: String = "consolidatedRRExpenses"
+  override def toString: String = "otherPropertyRRExpenses"
 }
