@@ -38,26 +38,43 @@ import views.html.about.UKPropertyDetailsView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-
 class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   private val taxYear = LocalDate.now.getYear
 
-  private val enrolments = Enrolments(Set(
-    Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
-    Enrolment(models.authorisation.Enrolment.Individual.key,
-      Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")), "Activated")))
+  private val enrolments = Enrolments(
+    Set(
+      Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
+      Enrolment(
+        models.authorisation.Enrolment.Individual.key,
+        Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")),
+        "Activated"
+      )
+    )
+  )
 
   "UKPropertyDetails Controller" - {
 
     "must return OK and the correct view for an Individual" in {
-      val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val authConnector =
+        new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
-      when(businessService.getBusinessDetails(
-        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = false, affinityGroup = "affinityGroup")))(any())
+      when(
+        businessService.getBusinessDetails(
+          org.mockito.ArgumentMatchers.eq(
+            User(
+              mtditid = "mtditid",
+              nino = "nino",
+              isAgent = false,
+              affinityGroup = "affinityGroup",
+              agentRef = Some("agentReferenceNumber")
+            )
+          )
+        )(any())
       ) thenReturn Future.successful(Right(businessDetails))
 
       val application =
@@ -73,7 +90,12 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[UKPropertyDetailsView]
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          UKPropertyDetailsPage(taxYear, "individual", propertyDetails.tradingStartDate.get, propertyDetails.cashOrAccruals.get)
+          UKPropertyDetailsPage(
+            taxYear,
+            "individual",
+            propertyDetails.tradingStartDate.get,
+            propertyDetails.cashOrAccruals.get
+          )
         )(request, messages(application)).toString
 
       }
@@ -82,11 +104,22 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the correct view for an Agent" in {
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
-      val propertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
-      when(businessService.getBusinessDetails(
-        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = true, affinityGroup = "affinityGroup")))(any())
+      when(
+        businessService.getBusinessDetails(
+          org.mockito.ArgumentMatchers.eq(
+            User(
+              mtditid = "mtditid",
+              nino = "nino",
+              isAgent = true,
+              affinityGroup = "affinityGroup",
+              agentRef = Some("agentReferenceNumber")
+            )
+          )
+        )(any())
       ) thenReturn Future.successful(Right(businessDetails))
 
       val application =
@@ -104,19 +137,34 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          UKPropertyDetailsPage(taxYear, "agent", propertyDetails.tradingStartDate.get, propertyDetails.cashOrAccruals.get)
+          UKPropertyDetailsPage(
+            taxYear,
+            "agent",
+            propertyDetails.tradingStartDate.get,
+            propertyDetails.cashOrAccruals.get
+          )
         )(request, messages(application)).toString
       }
     }
 
     "must redirect to the overview if there is no result" in {
-      val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val authConnector =
+        new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(
-        org.mockito.ArgumentMatchers.eq(User(mtditid = "mtditid", nino = "nino", isAgent = false, affinityGroup = "affinityGroup")))(any())
+      when(
+        businessService.getBusinessDetails(
+          org.mockito.ArgumentMatchers.eq(
+            User(
+              mtditid = "mtditid",
+              nino = "nino",
+              isAgent = false,
+              affinityGroup = "affinityGroup",
+              agentRef = Some("agentReferenceNumber")
+            )
+          )
+        )(any())
       ) thenReturn Future.successful(Left(HttpParserError(NOT_FOUND)))
-
 
       val application =
         applicationBuilder(None, isAgent = false)

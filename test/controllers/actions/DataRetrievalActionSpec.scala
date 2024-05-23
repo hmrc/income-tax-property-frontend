@@ -17,8 +17,8 @@
 package controllers.actions
 
 import base.SpecBase
-import models.{User, UserAnswers}
 import models.requests.{IdentifierRequest, OptionalDataRequest}
+import models.{User, UserAnswers}
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.FakeRequest
@@ -43,8 +43,21 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar {
         when(sessionRepository.get("id")) thenReturn Future(None)
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(
-          IdentifierRequest(FakeRequest(), "id", User(mtditid = "mtditid", nino = "nino", isAgent = true, affinityGroup = "affinityGroup"))).futureValue
+        val result = action
+          .callTransform(
+            IdentifierRequest(
+              FakeRequest(),
+              "id",
+              User(
+                mtditid = "mtditid",
+                nino = "nino",
+                isAgent = true,
+                affinityGroup = "affinityGroup",
+                agentRef = Some("agentReferenceNumber")
+              )
+            )
+          )
+          .futureValue
 
         result.userAnswers must not be defined
       }
@@ -58,8 +71,21 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar {
         when(sessionRepository.get("id")) thenReturn Future(Some(UserAnswers("id")))
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(
-          IdentifierRequest(FakeRequest(), "id", User(mtditid = "mtditid", nino = "nino", isAgent = true, affinityGroup = "affinityGroup"))).futureValue
+        val result = action
+          .callTransform(
+            IdentifierRequest(
+              FakeRequest(),
+              "id",
+              User(
+                mtditid = "mtditid",
+                nino = "nino",
+                isAgent = true,
+                affinityGroup = "affinityGroup",
+                agentRef = Some("agentReferenceNumber")
+              )
+            )
+          )
+          .futureValue
 
         result.userAnswers mustBe defined
       }

@@ -17,13 +17,12 @@
 package controllers.furnishedholidaylettings
 
 import base.SpecBase
-import controllers.routes
 import models.User
 import models.requests.DataRequest
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.furnishedholidaylettings.FhlIntroView
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 class FhlIntroControllerSpec extends SpecBase {
   val taxYear = 2024
@@ -37,7 +36,8 @@ class FhlIntroControllerSpec extends SpecBase {
       "",
       "",
       "",
-      isAgent
+      isAgent,
+      Some("agentReferenceNumber")
     )
     s"FhlIntro Controller isAgent:$isAgent" - {
 

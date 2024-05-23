@@ -24,62 +24,79 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.TotalIncomePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.JourneyRecoveryContinueView
 import views.html.ukrentaroom.UkRentARoomExpensesIntroView
 
 class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
   val taxYear = 2024
 
-  val userAnswersWithoutPropertyIncome = emptyUserAnswers
-  val userAnswersWithPropertyIncomeMoreThanEightyFiveThousand = userAnswersWithoutPropertyIncome.set(TotalIncomePage, TotalIncome.Over).get
-  val userAnswersWithPropertyIncomeLessThanEightyFiveThousand = userAnswersWithoutPropertyIncome.set(TotalIncomePage, TotalIncome.Between).get
+  val userAnswersWithoutPropertyIncome: UserAnswers = emptyUserAnswers
+  val userAnswersWithPropertyIncomeMoreThanEightyFiveThousand: UserAnswers =
+    userAnswersWithoutPropertyIncome.set(TotalIncomePage, TotalIncome.Over).get
+  val userAnswersWithPropertyIncomeLessThanEightyFiveThousand: UserAnswers =
+    userAnswersWithoutPropertyIncome.set(TotalIncomePage, TotalIncome.Between).get
 
-  val withLinks = "https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses"
+  val withLinks =
+    "https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses"
   val withNoLinks = "Rent a room expenses"
 
-  val scenarios = Table[Boolean, String, UserAnswers, Option[(Boolean, String)]](
-    ("Is Agent", "AgencyOrIndividual", "Property Income", "IsLessThanEightyFiveThousandWithContainingString"),
-    (true, "agent", userAnswersWithoutPropertyIncome, None),
-    (true, "agent", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
-    (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks))),
-    (false, "individual", userAnswersWithoutPropertyIncome, None),
-    (false, "individual", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
-    (false, "individual", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)))
-  )
-
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String, userAnswers: UserAnswers, isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)]) => {
-    val user = User(
-      "",
-      "",
-      "",
-      isAgent
+  val scenarios: TableFor4[Boolean, String, UserAnswers, Option[(Boolean, String)]] =
+    Table[Boolean, String, UserAnswers, Option[(Boolean, String)]](
+      ("Is Agent", "AgencyOrIndividual", "Property Income", "IsLessThanEightyFiveThousandWithContainingString"),
+      (true, "agent", userAnswersWithoutPropertyIncome, None),
+      (true, "agent", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
+      (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks))),
+      (false, "individual", userAnswersWithoutPropertyIncome, None),
+      (false, "individual", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
+      (false, "individual", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)))
     )
-    s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${(isLessThanEightyFiveThousandWithContainingString.fold("Does not contain")(r => if (r._1) "More" else "Less"))}" - {
 
-      "must return OK and the correct view for a GET" in {
+  forAll(scenarios) {
+    (
+      isAgent: Boolean,
+      agencyOrIndividual: String,
+      userAnswers: UserAnswers,
+      isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)]
+    ) =>
+      val user = User(
+        "",
+        "",
+        "",
+        isAgent,
+        agentRef = Some("agentReferenceNumber")
+      )
+      s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${
+        isLessThanEightyFiveThousandWithContainingString
+          .fold("Does not contain")(r => if (r._1) "More" else "Less")
+      }" - {
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
-        val ukRentARoomExpensesIntroRouteUrl = controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear).url
+        "must return OK and the correct view for a GET" in {
 
-        running(application) {
-          val dataRequest = DataRequest(FakeRequest(GET, ukRentARoomExpensesIntroRouteUrl), "", user, emptyUserAnswers)
+          val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
+          val ukRentARoomExpensesIntroRouteUrl =
+            controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear).url
 
-          val result = route(application, dataRequest).value
+          running(application) {
+            val dataRequest =
+              DataRequest(FakeRequest(GET, ukRentARoomExpensesIntroRouteUrl), "", user, emptyUserAnswers)
 
-          val view = application.injector.instanceOf[UkRentARoomExpensesIntroView]
+            val result = route(application, dataRequest).value
 
-          isLessThanEightyFiveThousandWithContainingString.fold({
-            status(result) mustEqual SEE_OTHER
-          })(r => {
-            val (isLessThanEightyFiveThousand, containingString) = r
-            status(result) mustEqual OK
-            contentAsString(result) mustEqual view(isLessThanEightyFiveThousand)(dataRequest, messages(application)).toString
-            contentAsString(result).contains(containingString) mustBe true
-          })
+            val view = application.injector.instanceOf[UkRentARoomExpensesIntroView]
 
+            isLessThanEightyFiveThousandWithContainingString.fold {
+              status(result) mustEqual SEE_OTHER
+            } { r =>
+              val (isLessThanEightyFiveThousand, containingString) = r
+              status(result) mustEqual OK
+              contentAsString(result) mustEqual view(isLessThanEightyFiveThousand)(
+                dataRequest,
+                messages(application)
+              ).toString
+              contentAsString(result).contains(containingString) mustBe true
+            }
+
+          }
         }
       }
-    }
-  }
   }
 }

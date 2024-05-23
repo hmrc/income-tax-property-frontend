@@ -24,7 +24,7 @@ import models.backend.ServiceError
 import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -81,21 +81,6 @@ class AllowancesCheckYourAnswersController @Inject() (
       }
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(implicit
-    hc: HeaderCarrier
-  ): Unit = {
-    val event = AuditModel[Allowance](
-      nino = request.user.nino,
-      userType = request.user.affinityGroup,
-      mtdItId = request.user.mtditid,
-      taxYear = taxYear,
-      isUpdate = false,
-      sectionName = "PropertyRentalsAllowance",
-      enteredRentalDetails = allowance
-    )
-    auditService.sendRentalsAuditEvent(event)
-  }
-
   private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(
     implicit hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] = {
@@ -105,8 +90,23 @@ class AllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       journeyName = "property-rental-allowances"
     )
-
     propertySubmissionService.saveJourneyAnswers[Allowance](context, allowance)
+  }
+
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val event = AuditModel[Allowance](
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = "PropertyRentalsAllowance",
+      userEnteredRentalDetails = allowance
+    )
+    auditService.sendRentalsAuditEvent(event)
   }
 }
 

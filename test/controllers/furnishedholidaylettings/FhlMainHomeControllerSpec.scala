@@ -55,7 +55,8 @@ class FhlMainHomeControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgency
+      isAgency,
+      Some("agentReferenceNumber")
     )
 
     s"FhlMainHome Controller for $agencyOrIndividual" - {
