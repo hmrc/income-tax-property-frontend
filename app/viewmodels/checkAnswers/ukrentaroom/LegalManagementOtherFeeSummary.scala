@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.LegalManagementOtherFeePage
 import play.api.i18n.Messages
@@ -24,19 +23,20 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object LegalManagementOtherFeeSummary  {
+object LegalManagementOtherFeeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LegalManagementOtherFeePage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = "legalManagementOtherFee.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukrentaroom.routes.LegalManagementOtherFeeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("legalManagementOtherFee.change.hidden"))
+    answers.get(LegalManagementOtherFeePage).map { answer =>
+      SummaryListRowViewModel(
+        key = "legalManagementOtherFee.checkYourAnswersLabel",
+        value = ValueViewModel(answer.toString),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.ukrentaroom.routes.LegalManagementOtherFeeController.onPageLoad(taxYear, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("legalManagementOtherFee.change.hidden"))
         )
+      )
     }
 }

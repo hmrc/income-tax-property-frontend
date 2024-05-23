@@ -436,3 +436,8 @@ GET        /:taxYear/uk-rent-a-room/expenses/legal-management-other-fee         
 POST       /:taxYear/uk-rent-a-room/expenses/legal-management-other-fee                  controllers.ukrentaroom.LegalManagementOtherFeeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/expenses/change-legal-management-other-fee                        controllers.ukrentaroom.LegalManagementOtherFeeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/expenses/change-legal-management-other-fee                        controllers.ukrentaroom.LegalManagementOtherFeeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/allowances/zero-emission-car-allowance                  controllers.ukrentaroom.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/allowances/zero-emission-car-allowance                  controllers.ukrentaroom.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/allowances/change-zero-emission-car-allowance                        controllers.ukrentaroom.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/allowances/change-zero-emission-car-allowance                        controllers.ukrentaroom.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

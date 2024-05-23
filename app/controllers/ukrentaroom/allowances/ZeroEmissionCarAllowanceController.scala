@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.allowances
+package controllers.ukrentaroom.allowances
 
-import controllers.actions._
-import forms.allowances.ZeroEmissionCarAllowanceFormProvider
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.ukrentaroom.allowances.ZeroEmissionCarAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.allowances.ZeroEmissionCarAllowancePage
+import pages.ukrentaroom.allowances.ZeroEmissionCarAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -67,7 +67,7 @@ class ZeroEmissionCarAllowanceController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionCarAllowancePage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ZeroEmissionCarAllowancePage, taxYear: Int, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(ZeroEmissionCarAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
