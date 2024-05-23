@@ -16,10 +16,10 @@
 
 package service
 
-import connectors.{BusinessConnector, JourneyAnswersConnector}
+import connectors.JourneyAnswersConnector
 import connectors.error.{ApiError, SingleErrorBody}
+import models.backend.HttpParserError
 import models.{FetchedBackendData, User}
-import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
@@ -29,7 +29,6 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier
 
-import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -42,7 +41,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
   private val underTest = new JourneyAnswersService(mockJourneyAnswersConnector)
 
   "setStatus" should {
-    val user = User("mtditid", "nino", "group", isAgent = true)
+    val user = User("mtditid", "nino", "group", isAgent = true, agentRef = Some("agentReferenceNumber"))
 
     "return error when fails to get data" ignore {
       when(mockJourneyAnswersConnector.setStatus(any(), any(), any(),any(),any())(any())) thenReturn Future(

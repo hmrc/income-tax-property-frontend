@@ -58,7 +58,8 @@ class LegalManagementOtherFeeControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgent
+      isAgent,
+      Some("agentReferenceNumber")
     )
     s"LegalManagementOtherFee Controller for $agencyOrIndividual" - {
 

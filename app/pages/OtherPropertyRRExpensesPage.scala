@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-case class User(mtditid: String, nino: String, affinityGroup: String, isAgent: Boolean, agentRef: Option[String]) {
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-  def isAgentMessageKey: String = if (isAgent) "agent" else "individual"
+case object OtherPropertyRRExpensesPage extends QuestionPage[BigDecimal] {
 
+  override def path: JsPath = JsPath \ PageConstants.rentARoomExpense\ toString
+
+  override def toString: String = "otherPropertyRRExpenses"
 }

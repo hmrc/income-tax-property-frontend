@@ -88,6 +88,7 @@ class ExpensesCheckYourAnswersController @Inject()(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
       "PropertyRentalsExpense",

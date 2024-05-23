@@ -30,24 +30,24 @@ import views.html.ConsolidatedRRExpensesView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConsolidatedRRExpensesController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                sessionRepository: SessionRepository,
-                                                navigator: Navigator,
-                                                identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                formProvider: ConsolidatedRRExpensesFormProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: ConsolidatedRRExpensesView
-                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class ConsolidatedRRExpensesController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ConsolidatedRRExpensesFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ConsolidatedRRExpensesView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ConsolidatedRRExpensesPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,15 +57,18 @@ class ConsolidatedRRExpensesController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedRRExpensesPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ConsolidatedRRExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedRRExpensesPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(ConsolidatedRRExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

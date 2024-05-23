@@ -17,17 +17,28 @@
 package controllers.actions
 
 import models.User
-
-import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class FakeAgentIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends IdentifierAction {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id", User(mtditid = "mtditid", nino = "nino", isAgent = true, affinityGroup = "affinityGroup")))
+    block(
+      IdentifierRequest(
+        request,
+        "id",
+        User(
+          mtditid = "mtditid",
+          nino = "nino",
+          isAgent = true,
+          affinityGroup = "affinityGroup",
+          agentRef = Some("agentReferenceNumber")
+        )
+      )
+    )
 
   override def parser: BodyParser[AnyContent] =
     bodyParsers.default
@@ -39,7 +50,19 @@ class FakeAgentIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends 
 class FakeIndividualIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends IdentifierAction {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id", User(mtditid = "mtditid", nino = "nino", isAgent = false, affinityGroup = "affinityGroup")))
+    block(
+      IdentifierRequest(
+        request,
+        "id",
+        User(
+          mtditid = "mtditid",
+          nino = "nino",
+          isAgent = false,
+          affinityGroup = "affinityGroup",
+          agentRef = Some("agentReferenceNumber")
+        )
+      )
+    )
 
   override def parser: BodyParser[AnyContent] =
     bodyParsers.default

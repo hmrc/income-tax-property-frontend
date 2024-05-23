@@ -18,13 +18,16 @@ package audit
 
 import play.api.libs.json.{Format, Json, OFormat}
 
-case class AuditModel[T](nino: String,
-                         userType: String,
-                         mtdItId: String,
-                         taxYear: Int,
-                         isUpdate: Boolean,
-                         sectionName: String,
-                         enteredRentalDetails: T)
+case class AuditModel[T](
+                          nino: String,
+                          userType: String,
+                          mtdItId: String,
+                          agentReferenceNumber: Option[String],
+                          taxYear: Int,
+                          isUpdate: Boolean,
+                          sectionName: String,
+                          userEnteredRentalDetails: T
+                        )
 
 object AuditModel {
   implicit def format[T](implicit rentalFormat: Format[T]): OFormat[AuditModel[T]] = Json.format[AuditModel[T]]
