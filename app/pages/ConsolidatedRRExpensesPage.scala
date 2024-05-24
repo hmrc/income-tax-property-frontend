@@ -17,10 +17,7 @@
 package pages
 
 import models.ConsolidatedRRExpenses
-import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
-
-import scala.util.Try
 
 case object ConsolidatedRRExpensesPage extends QuestionPage[ConsolidatedRRExpenses] {
 

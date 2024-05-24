@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages.structurebuildingallowance
+package pages.ukrentaroom.allowances
 
-import play.api.libs.json.{Json, OFormat}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-final case class SbaInfo(
-  claimStructureBuildingAllowance: Boolean,
-  structureBuildingFormGroup: Array[StructureBuildingFormGroup]
-)
-object SbaInfo {
-  implicit val format: OFormat[SbaInfo] = Json.format[SbaInfo]
+case object ZeroEmissionCarAllowancePage extends QuestionPage[BigDecimal] {
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "zeroEmissionCarAllowance"
 }

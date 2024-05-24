@@ -16,14 +16,13 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.ukrentaroom.routes
+import controllers.ukrentaroom.expenses.routes._
 import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import controllers.ukrentaroom.expenses.routes._
 
 object UnusedResidentialPropertyFinanceCostsBroughtFwdSummary {
 
