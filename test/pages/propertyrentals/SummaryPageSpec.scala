@@ -178,11 +178,17 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "expenses_link"
     )
+    val summaryAllowancesItem = TaskListItem(
+      "summary.allowances",
+      controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "allowances_link"
+    )
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
     }
 
-    "createUkRentARoomRows return only one row when user has selected Rent a room" in {
+    "createUkRentARoomRows return only three rows when user has selected Rent a room" in {
       val userAnswersWithUkRentARoom = emptyUserAnswers
         .set(
           UKPropertyPage,
@@ -192,9 +198,9 @@ class SummaryPageSpec extends SpecBase {
         .value
 
       // ToDo: Should be updated when expenses selection page ticket is merged.
-      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(2)
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(3)
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
-        Seq(summaryAboutItem, summaryExpensesItem)
+        Seq(summaryAboutItem, summaryExpensesItem, summaryAllowancesItem)
       )
 
     }

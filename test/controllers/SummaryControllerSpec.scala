@@ -18,13 +18,12 @@ package controllers
 
 import base.SpecBase
 import models.backend.PropertyDetails
-import models.{FetchedBackendData, NormalMode, UKPropertySelect}
+import models.{NormalMode, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
 import play.api.inject.bind
-import play.api.libs.json.JsObject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
@@ -235,6 +234,12 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
           TaskListTag.NotStarted,
           "expenses_link"
+        ),
+        TaskListItem(
+          "summary.allowances",
+          controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "allowances_link"
         )
       )
 
