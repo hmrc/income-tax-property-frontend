@@ -1717,3 +1717,12 @@ otherPropertyRRExpenses.error.twoDecimalPlaces.agent = The amount of your client
 otherPropertyRRExpenses.error.nonNumeric.individual = The amount for your other allowable property expenses can only include pounds and pence, for example £600 or £600.20
 otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
 otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
+
+rRAllowancesStart.title = Allowances
+rRAllowancesStart.heading = Allowances
+rRAllowancesStart.line.content = In this section we're going to ask you about the following allowances:
+rRAllowancesStart.bullet.content.l1 = annual investment allowance
+rRAllowancesStart.bullet.content.l2 = electric charge-point allowance
+rRAllowancesStart.bullet.content.l3 = zero-emission car allowance
+rRAllowancesStart.bullet.content.l4 = replacing domestic goods
+rRAllowancesStart.bullet.content.l5 = other capital allowances
