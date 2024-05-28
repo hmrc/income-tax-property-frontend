@@ -27,9 +27,9 @@ class LegalManagementOtherFeeFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "legalManagementOtherFee" -> currency(
-        s"ukRentARoom.legalManagementOtherFee.error.required.${individualOrAgent}",
-        s"ukRentARoom.legalManagementOtherFee.error.twoDecimalPlaces.${individualOrAgent}",
-        s"ukRentARoom.legalManagementOtherFee.error.nonNumeric.${individualOrAgent}")
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), s"ukRentARoom.legalManagementOtherFee.error.outOfRange"))
+        s"ukrentaroom.legalManagementOtherFee.error.required.${individualOrAgent}",
+        s"ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.${individualOrAgent}",
+        s"ukrentaroom.legalManagementOtherFee.error.nonNumeric.${individualOrAgent}")
+        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), s"ukrentaroom.legalManagementOtherFee.error.outOfRange"))
     )
 }
