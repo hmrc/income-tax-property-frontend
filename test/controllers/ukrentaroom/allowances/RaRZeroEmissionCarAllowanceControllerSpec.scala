@@ -17,25 +17,25 @@
 package controllers.ukrentaroom.allowances
 
 import base.SpecBase
-import forms.ukrentaroom.allowances.ZeroEmissionCarAllowanceFormProvider
+import forms.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.allowances.ZeroEmissionCarAllowancePage
+import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.allowances.ZeroEmissionCarAllowanceView
+import views.html.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceView
 
 import scala.concurrent.Future
 
-class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class RaRZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ZeroEmissionCarAllowanceFormProvider()
+  val formProvider = new RaRZeroEmissionCarAllowanceFormProvider()
   val form = formProvider("individual")
 
   def onwardRoute: Call = Call("GET", "/foo")
@@ -44,9 +44,9 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
   private val zeroEmissionCarAllowance = 100
   private val validAnswer = BigDecimal.valueOf(zeroEmissionCarAllowance)
   private lazy val zeroEmissionCarAllowanceRoute =
-    routes.ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode).url
+    routes.RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode).url
 
-  "ZeroEmissionCarAllowance Controller" - {
+  "RaRZeroEmissionCarAllowance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -57,7 +57,7 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[RaRZeroEmissionCarAllowanceView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, "individual", NormalMode)(
@@ -69,14 +69,14 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ZeroEmissionCarAllowancePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(RaRZeroEmissionCarAllowancePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, zeroEmissionCarAllowanceRoute)
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[RaRZeroEmissionCarAllowanceView]
 
         val result = route(application, request).value
 
@@ -125,7 +125,7 @@ class ZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar 
 
         val boundForm = form.bind(Map("zeroEmissionCarAllowance" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[RaRZeroEmissionCarAllowanceView]
 
         val result = route(application, request).value
 

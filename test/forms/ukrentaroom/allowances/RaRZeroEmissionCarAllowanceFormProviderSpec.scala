@@ -19,9 +19,9 @@ package forms.ukrentaroom.allowances
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
+class RaRZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ZeroEmissionCarAllowanceFormProvider()("individual")
+  val form = new RaRZeroEmissionCarAllowanceFormProvider()("individual")
 
   ".zeroEmissionCarAllowance" - {
 

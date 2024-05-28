@@ -17,10 +17,10 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.ukrentaroom.allowances.ZeroEmissionCarAllowanceFormProvider
+import forms.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.ZeroEmissionCarAllowancePage
+import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -29,23 +29,23 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ZeroEmissionCarAllowanceController @Inject() (
+class RaRZeroEmissionCarAllowanceController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ZeroEmissionCarAllowanceFormProvider,
+  formProvider: RaRZeroEmissionCarAllowanceFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: views.html.ukrentaroom.allowances.ZeroEmissionCarAllowanceView
+  view: views.html.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ZeroEmissionCarAllowancePage) match {
+      val preparedForm = request.userAnswers.get(RaRZeroEmissionCarAllowancePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -63,10 +63,10 @@ class ZeroEmissionCarAllowanceController @Inject() (
             Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionCarAllowancePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRZeroEmissionCarAllowancePage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ZeroEmissionCarAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(RaRZeroEmissionCarAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

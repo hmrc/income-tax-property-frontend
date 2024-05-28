@@ -21,9 +21,9 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class ZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
+class RaRZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
 
-  private val minResidentialPropertyFinanceCosts = 0
+  private val minRaRZeroEmissionCarAllowance = 0
   private val maxResidentialPropertyFinanceCosts = 100000000
   private val errorPrefix = "ukrentaroom.allowances.zeroEmissionCarAllowance.error"
 
@@ -35,7 +35,7 @@ class ZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
         nonNumericKey = s"$errorPrefix.nonNumeric.$individualOrAgent"
       ).verifying(
         inRange(
-          minimum = BigDecimal(minResidentialPropertyFinanceCosts),
+          minimum = BigDecimal(minRaRZeroEmissionCarAllowance),
           maximum = BigDecimal(maxResidentialPropertyFinanceCosts),
           errorKey = s"$errorPrefix.outOfRange.$individualOrAgent"
         )

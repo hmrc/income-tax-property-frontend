@@ -19,7 +19,7 @@ package pages.ukrentaroom.allowances
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ZeroEmissionCarAllowancePage extends QuestionPage[BigDecimal] {
+case object RaRZeroEmissionCarAllowancePage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ toString
 
