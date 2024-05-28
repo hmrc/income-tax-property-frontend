@@ -18,6 +18,7 @@ package controllers.allowances
 
 import controllers.actions._
 import forms.allowances.ZeroEmissionCarAllowanceFormProvider
+import views.html.allowances.ZeroEmissionCarAllowanceView
 import models.Mode
 import navigation.Navigator
 import pages.allowances.ZeroEmissionCarAllowancePage
@@ -38,7 +39,7 @@ class ZeroEmissionCarAllowanceController @Inject() (
   requireData: DataRequiredAction,
   formProvider: ZeroEmissionCarAllowanceFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: views.html.ukrentaroom.allowances.ZeroEmissionCarAllowanceView
+  view: ZeroEmissionCarAllowanceView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 

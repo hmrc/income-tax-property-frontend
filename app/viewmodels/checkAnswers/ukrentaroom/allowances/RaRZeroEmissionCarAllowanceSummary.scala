@@ -33,7 +33,7 @@ object ZeroEmissionCarAllowanceSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.allowances.routes.ZeroEmissionCarAllowanceController
+            controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController
               .onPageLoad(taxYear, CheckMode)
               .url
           )

@@ -30,7 +30,7 @@
 @layout(pageTitle = title(form, messages(s"ukrentaroom.allowances.zeroEmissionCarAllowance.title.$individualOrAgent"))) {
 
 
-    @formHelper(action = ZeroEmissionCarAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = RaRZeroEmissionCarAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
