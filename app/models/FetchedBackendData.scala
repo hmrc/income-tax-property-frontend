@@ -17,92 +17,91 @@
 package models
 
 import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome}
-import controllers.session._
 import pages.PageConstants.esbasWithSupportingQuestions
 import pages.enhancedstructuresbuildingallowance.Esba
-import play.api.libs.json.{Format, JsPath, Json}
+import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
 final case class Adjustments(
-                              balancingCharge: BalancingCharge,
-                              privateUseAdjustment: PrivateUseAdjustment,
-                              propertyIncomeAllowance: BigDecimal,
-                              renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
-                              residentialFinancialCost: BigDecimal,
-                              unusedResidentialFinanceCost: BigDecimal
-                            )
+  balancingCharge: BalancingCharge,
+  privateUseAdjustment: PrivateUseAdjustment,
+  propertyIncomeAllowance: BigDecimal,
+  renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
+  residentialFinancialCost: BigDecimal,
+  unusedResidentialFinanceCost: BigDecimal
+)
 
 object Adjustments {
   implicit val format = Json.format[Adjustments]
 }
 
 final case class Allowances(
-                             annualInvestmentAllowance: BigDecimal,
-                             businessPremisesRenovation: BigDecimal,
-                             electricChargePointAllowance: ElectricChargePointAllowance,
-                             otherCapitalAllowance: BigDecimal,
-                             replacementOfDomesticGoods: BigDecimal,
-                             zeroEmissionCarAllowance: BigDecimal,
-                             zeroEmissionGoodsVehicleAllowance: BigDecimal
-                           )
+  annualInvestmentAllowance: BigDecimal,
+  businessPremisesRenovation: BigDecimal,
+  electricChargePointAllowance: ElectricChargePointAllowance,
+  otherCapitalAllowance: BigDecimal,
+  replacementOfDomesticGoods: BigDecimal,
+  zeroEmissionCarAllowance: BigDecimal,
+  zeroEmissionGoodsVehicleAllowance: BigDecimal
+)
 
 object Allowances {
-  implicit val format = Json.format[Allowances]
+  implicit val format: OFormat[Allowances] = Json.format[Allowances]
 }
 final case class PropertyRentals(
-                                  propertyRentalsIncome: PropertyRentalsIncome,
-                                  propertyRentalsExpense: PropertyRentalsExpense,
-                                  propertyRentalsAbout: PropertyRentalsAbout
-                                )
+  propertyRentalsIncome: PropertyRentalsIncome,
+  propertyRentalsExpense: PropertyRentalsExpense,
+  propertyRentalsAbout: PropertyRentalsAbout
+)
 object PropertyRentals {
-  implicit val format = Json.format[PropertyRentals]
+  implicit val format: OFormat[PropertyRentals] = Json.format[PropertyRentals]
 }
 
 final case class PremiumLease(
-                               calculatedFigureYourself: CalculatedFigureYourself,
-                               leasePremiumPayment: Boolean,
-                               premiumsGrantLease: PremiumsGrantLease,
-                               receivedGrantLeaseAmount: BigDecimal,
-                               yearLeaseAmount: Int
-                             )
+  calculatedFigureYourself: CalculatedFigureYourself,
+  leasePremiumPayment: Boolean,
+  premiumsGrantLease: PremiumsGrantLease,
+  receivedGrantLeaseAmount: BigDecimal,
+  yearLeaseAmount: Int
+)
 
 object PremiumLease {
-  implicit val format = Json.format[PremiumLease]
+  implicit val format: OFormat[PremiumLease] = Json.format[PremiumLease]
 }
 
-
 final case class Sba(
-                      structuredBuildingAllowanceAddress: StructuredBuildingAllowanceAddress,
-                      structureBuildingQualifyingDate: LocalDate,
-                      structureBuildingQualifyingAmount: BigDecimal,
-                      structureBuildingAllowanceClaim: BigDecimal
-                    )
+  structuredBuildingAllowanceAddress: StructuredBuildingAllowanceAddress,
+  structureBuildingQualifyingDate: LocalDate,
+  structureBuildingQualifyingAmount: BigDecimal,
+  structureBuildingAllowanceClaim: BigDecimal
+)
 
 object Sba {
-  implicit val format = Json.format[Sba]
+  implicit val format: OFormat[Sba] = Json.format[Sba]
 }
 
 final case class SbasWithSupportingQuestions(
-                                              claimStructureBuildingAllowance: Boolean,
-                                              sbaClaims: Boolean,
-                                              sbaRemoveConfirmation: Option[Boolean],
-                                              structureBuildingFormGroup: List[Sba]
-                                            )
+  claimStructureBuildingAllowance: Boolean,
+  sbaClaims: Boolean,
+  sbaRemoveConfirmation: Option[Boolean],
+  structureBuildingFormGroup: List[Sba]
+)
 
 object SbasWithSupportingQuestions {
-  implicit val format = Json.format[SbasWithSupportingQuestions]
+  implicit val format: OFormat[SbasWithSupportingQuestions] = Json.format[SbasWithSupportingQuestions]
 }
 
 final case class EsbasWithSupportingQuestions(
-                                               claimEnhancedStructureBuildingAllowance: Boolean,
-                                               esbaClaims: Option[Boolean],
-                                               esbas: List[Esba]
-                                             )
+  claimEnhancedStructureBuildingAllowance: Boolean,
+  esbaClaims: Option[Boolean],
+  esbas: List[Esba]
+)
 
-object EsbasWithSupportingQuestions extends Gettable[EsbasWithSupportingQuestions] with Settable[EsbasWithSupportingQuestions] {
-  implicit val format = Json.format[EsbasWithSupportingQuestions]
+object EsbasWithSupportingQuestions
+    extends Gettable[EsbasWithSupportingQuestions] with Settable[EsbasWithSupportingQuestions] {
+  implicit val format: OFormat[EsbasWithSupportingQuestions] = Json.format[EsbasWithSupportingQuestions]
 
   override def path: JsPath = JsPath \ toString
 
@@ -110,15 +109,15 @@ object EsbasWithSupportingQuestions extends Gettable[EsbasWithSupportingQuestion
 }
 
 final case class FetchedBackendData(
-                                      capitalAllowancesForACar: Option[CapitalAllowancesForACar],
-                                      propertyAbout: Option[PropertyAbout],
-                                      adjustments: Option[Adjustments],
-                                      allowances: Option[Allowances],
-                                      esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-                                      propertyRentals: Option[PropertyRentals],
-                                      sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions]
-                                    )
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
+  propertyAbout: Option[PropertyAbout],
+  adjustments: Option[Adjustments],
+  allowances: Option[Allowances],
+  esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
+  propertyRentals: Option[PropertyRentals],
+  sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions]
+)
 
 object FetchedBackendData {
-  implicit val format = Json.format[FetchedBackendData]
+  implicit val format: OFormat[FetchedBackendData] = Json.format[FetchedBackendData]
 }

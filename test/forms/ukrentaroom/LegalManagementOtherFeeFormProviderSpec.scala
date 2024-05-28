@@ -49,8 +49,8 @@ class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {
       behave like currencyField(
         form,
         fieldName,
-        nonNumericError = FormError(fieldName, s"ukRentARoom.legalManagementOtherFee.error.nonNumeric.$agencyOrIndividual"),
-        twoDecimalPlacesError = FormError(fieldName, s"ukRentARoom.legalManagementOtherFee.error.twoDecimalPlaces.$agencyOrIndividual")
+        nonNumericError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.nonNumeric.$agencyOrIndividual"),
+        twoDecimalPlacesError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.$agencyOrIndividual")
       )
 
       behave like currencyFieldWithRange(
@@ -58,13 +58,13 @@ class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {
         fieldName,
         minimum = minimum,
         maximum = maximum,
-        expectedError = FormError(fieldName, s"ukRentARoom.legalManagementOtherFee.error.outOfRange", Seq(minimum, maximum))
+        expectedError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.outOfRange", Seq(minimum, maximum))
       )
 
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"ukRentARoom.legalManagementOtherFee.error.required.$agencyOrIndividual")
+        requiredError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.required.$agencyOrIndividual")
       )
     }
   }

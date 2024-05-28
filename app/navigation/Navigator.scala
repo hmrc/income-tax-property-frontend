@@ -119,7 +119,8 @@ class Navigator @Inject() () {
     case AnnualInvestmentAllowancePage =>
       taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
     case ElectricChargePointAllowancePage =>
-      taxYear => _ => _ => ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
+      taxYear =>
+        _ => _ => controllers.allowances.routes.ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case ZeroEmissionCarAllowancePage =>
       taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode)
     case ZeroEmissionGoodsVehicleAllowancePage =>

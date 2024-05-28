@@ -21,7 +21,7 @@ import forms.ukrentaroom.UkRentARoomJointlyLetFormProvider
 import models.Mode
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.ukrentaroom.{TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

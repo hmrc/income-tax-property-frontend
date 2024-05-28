@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom
+package viewmodels.checkAnswers.ukrentaroom.allowances
 
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
+import pages.allowances.ZeroEmissionCarAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UkRentARoomJointlyLetSummary {
+object ZeroEmissionCarAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, userType: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkRentARoomJointlyLetPage).map { answer =>
-      val value = if (answer) "site.yes" else "site.no"
-
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ZeroEmissionCarAllowancePage).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel(s"ukRentARoom.jointlyLet.checkYourAnswersLabel.$userType").withCssClass(keyCssClass),
-        value = ValueViewModel(value).withCssClass(valueCssClass),
+        key = "zeroEmissionCarAllowance.checkYourAnswersLabel",
+        value = ValueViewModel(answer.toString),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode).url
+            controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController
+              .onPageLoad(taxYear, CheckMode)
+              .url
           )
-            .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
+            .withVisuallyHiddenText(messages("zeroEmissionCarAllowance.change.hidden"))
         )
       )
     }

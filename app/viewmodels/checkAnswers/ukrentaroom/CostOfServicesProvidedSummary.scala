@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.CostOfServicesProvidedPage
 import play.api.i18n.Messages
@@ -24,19 +23,20 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object CostOfServicesProvidedSummary  {
+object CostOfServicesProvidedSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CostOfServicesProvidedPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = "costOfServicesProvided.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukrentaroom.routes.CostOfServicesProvidedController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("costOfServicesProvided.change.hidden"))
+    answers.get(CostOfServicesProvidedPage).map { answer =>
+      SummaryListRowViewModel(
+        key = "costOfServicesProvided.checkYourAnswersLabel",
+        value = ValueViewModel(answer.toString),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.ukrentaroom.routes.CostOfServicesProvidedController.onPageLoad(taxYear, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("costOfServicesProvided.change.hidden"))
         )
+      )
     }
 }
