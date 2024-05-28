@@ -41,6 +41,7 @@ import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
+import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import pages.ukrentaroom.expenses.{RentsRatesAndInsuranceRRPage, ResidentialPropertyFinanceCostsPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
@@ -51,6 +52,8 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
+    case RaRZeroEmissionCarAllowancePage =>
+      taxYear => _ => _ => RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage       => taxYear => _ => userAnswers => totalIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertySelectPage  => taxYear => _ => _ => SummaryController.show(taxYear)

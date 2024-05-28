@@ -1718,7 +1718,6 @@ otherPropertyRRExpenses.error.nonNumeric.individual = The amount for your other 
 otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s other allowable property expenses can only include pounds and pence, for example £600 or £600.20
 otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 
-<<<<<<< HEAD
 electricChargePointAllowanceForAnEV.title = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.heading = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.details.content1.individual = You can claim 100% of the cost of installing a charge-point for an electric car in the first year that you buy it.
