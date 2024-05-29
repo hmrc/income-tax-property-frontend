@@ -51,7 +51,7 @@ govukRadios: GovukRadios,
             field = form("electricChargePointAllowanceYesOrNo"),
             legend = LegendViewModel(messages(s"electricChargePointAllowanceForAnEV.input.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
             items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                field = form("blah"),
+                field = form("electricChargePointAllowanceYesOrNo"),
                 conditionalYesHtml = Some(
                     govukInput(
                     InputViewModel(

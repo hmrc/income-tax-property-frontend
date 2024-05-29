@@ -16,20 +16,30 @@
 
 package forms.ukrentaroom.allowances
 
-import forms.behaviours.IntFieldBehaviours
+import forms.behaviours.{CurrencyFieldBehaviours, IntFieldBehaviours}
 import play.api.data.FormError
 
-class ElectricChargePointAllowanceForAnEVFormProviderSpec extends IntFieldBehaviours {
+class ElectricChargePointAllowanceForAnEVFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new ElectricChargePointAllowanceForAnEVFormProvider()("individual")
 
-  ".value" - {
+  ".electricChargePointAllowanceYesOrNo" - {
 
-    val fieldName = "value"
+    val fieldName = "electricChargePointAllowanceYesOrNo"
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, "electricChargePointAllowanceForAnEvYesNo.error.required.individual")
+    )
+  }
+
+  ".electricChargePointAllowanceAmount" - {
 
     val minimum = 0
     val maximum = 100000000
 
+    val fieldName = "electricChargePointAllowanceAmount"
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
     behave like fieldThatBindsValidData(
@@ -38,26 +48,24 @@ class ElectricChargePointAllowanceForAnEVFormProviderSpec extends IntFieldBehavi
       validDataGenerator
     )
 
-    behave like intField(
+    behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "electricChargePointAllowanceForAnEV.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "electricChargePointAllowanceForAnEV.error.wholeNumber")
+      nonNumericError =
+        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.individual"),
+      twoDecimalPlacesError =
+        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.individual"),
+      ("electricChargePointAllowanceYesOrNo", "true")
     )
 
-    behave like intFieldWithRange(
+    behave like currencyFieldWithRange(
       form,
       fieldName,
       minimum = minimum,
       maximum = maximum,
       expectedError =
-        FormError(fieldName, "electricChargePointAllowanceForAnEV.error.outOfRange", Seq(minimum, maximum))
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, "electricChargePointAllowanceForAnEV.error.required")
+        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.outOfRange", Seq(minimum, maximum)),
+      ("electricChargePointAllowanceYesOrNo", "true")
     )
   }
 }

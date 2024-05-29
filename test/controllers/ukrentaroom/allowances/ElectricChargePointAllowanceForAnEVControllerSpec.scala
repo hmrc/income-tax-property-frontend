@@ -17,7 +17,7 @@
 package controllers.ukrentaroom.allowances
 
 import base.SpecBase
-import forms.allowances.ElectricChargePointAllowanceFormProvider
+import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
 import models.{ElectricChargePointAllowance, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -36,9 +36,9 @@ import scala.concurrent.Future
 
 class ElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ElectricChargePointAllowanceFormProvider()
   private val individual = "individual"
-  val form: Form[ElectricChargePointAllowance] = formProvider(individual)
+  private val formProvider = new ElectricChargePointAllowanceForAnEVFormProvider()
+  private val form: Form[ElectricChargePointAllowance] = formProvider.apply(individual)
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -90,7 +90,6 @@ class ElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with Mo
 
         status(result) mustEqual OK
 
-        val foo = contentAsString(result)
         contentAsString(result) mustEqual
           view(
             form.fill(ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),

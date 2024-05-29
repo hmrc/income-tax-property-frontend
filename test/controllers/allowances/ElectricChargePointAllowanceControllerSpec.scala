@@ -45,7 +45,8 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
   val taxYear = 2023
 
-  lazy val electricChargePointAllowanceRoute: String = routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val electricChargePointAllowanceRoute: String =
+    routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode).url
 
   "ElectricChargePointAllowance Controller" - {
 
@@ -61,13 +62,22 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[ElectricChargePointAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ElectricChargePointAllowancePage, ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(
+          ElectricChargePointAllowancePage,
+          ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)
+        )
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -81,11 +91,11 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
         status(result) mustEqual OK
         contentAsString(result) mustEqual
           view(
-            form.fill(
-              ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),
-              taxYear,
-              agent,
-              NormalMode)(request, messages(application)).toString
+            form.fill(ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),
+            taxYear,
+            agent,
+            NormalMode
+          )(request, messages(application)).toString
       }
     }
 
@@ -106,7 +116,10 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("electricChargePointAllowanceYesNo", "true"), ("electricChargePointAllowanceAmount", "100"))
+            .withFormUrlEncodedBody(
+              ("electricChargePointAllowanceYesNo", "true"),
+              ("electricChargePointAllowanceAmount", "100")
+            )
 
         val result = route(application, request).value
 
@@ -131,7 +144,10 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
