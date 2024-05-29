@@ -48,10 +48,10 @@ govukRadios: GovukRadios,
 
     @govukRadios(
         radios.RadiosViewModel.yesNoWithConditionalHtml(
-            field = form("electricChargePointAllowanceYesNo"),
+            field = form("electricChargePointAllowanceYesOrNo"),
             legend = LegendViewModel(messages(s"electricChargePointAllowanceForAnEV.input.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
             items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                field = form("electricChargePointAllowanceYesNo"),
+                field = form("blah"),
                 conditionalYesHtml = Some(
                     govukInput(
                     InputViewModel(

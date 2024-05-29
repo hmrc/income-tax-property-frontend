@@ -32,12 +32,12 @@ class ElectricChargePointAllowanceForAnEVFormProvider @Inject() extends Mappings
   def apply(individualOrAgent: String): Form[ElectricChargePointAllowance] =
     Form[ElectricChargePointAllowance](
       mapping(
-        "electricChargePointAllowanceYesNo" -> boolean(
+        "electricChargePointAllowanceYesOrNo" -> boolean(
           s"electricChargePointAllowanceForAnEvYesNo.error.required.$individualOrAgent"
         ),
         "electricChargePointAllowanceAmount" -> {
           mandatoryIfTrue(
-            "electricChargePointAllowanceYesNo",
+            "electricChargePointAllowanceYesOrNo",
             currency(
               s"electricChargePointAllowanceForAnEV.allowance.error.required.$individualOrAgent",
               s"electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.$individualOrAgent",
