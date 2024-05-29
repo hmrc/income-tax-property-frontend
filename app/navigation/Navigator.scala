@@ -35,7 +35,6 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings._
 import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.expenses._
@@ -159,9 +158,6 @@ class Navigator @Inject() () {
             esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
         // Furnished Holiday Lettings
-    case FhlMoreThanOnePage =>
-      taxYear =>
-        _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
     case FhlIsNonUKLandlordPage => taxYear => _ => userAnswers => isFhlNonUKLandlordNavigation(taxYear, userAnswers)
     case FhlDeductingTaxPage    => taxYear => _ => _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
     case FhlIncomePage          => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
@@ -275,9 +271,6 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear, CheckMode, index)
 
         // Furnished Holiday Lettings
-    case FhlMoreThanOnePage =>
-      taxYear =>
-        _ => _ => controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
 
     case FhlIsNonUKLandlordPage =>
       taxYear =>

@@ -28,7 +28,6 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
-import pages.furnishedholidaylettings._
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
@@ -560,16 +559,6 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear, NormalMode, index)
       }
 
-      "must go from FhlMoreThanOnePage to FhlMainHomePage" in {
-        navigator.nextPage(
-          FhlMoreThanOnePage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, NormalMode)
-      }
-
       "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is true" in {
         val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, true).get
         navigator.nextPage(
@@ -1059,16 +1048,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
           .onPageLoad(taxYear, CheckMode, index)
-      }
-
-      "must go from FhlMoreThanOnePage to FhlMainHomePage" in {
-        navigator.nextPage(
-          FhlMoreThanOnePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.furnishedholidaylettings.routes.FhlMainHomeController.onPageLoad(taxYear, CheckMode)
       }
 
     }
