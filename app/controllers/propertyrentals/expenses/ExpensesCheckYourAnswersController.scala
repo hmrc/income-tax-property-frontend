@@ -19,12 +19,13 @@ package controllers.propertyrentals.expenses
 import audit.{AuditModel, AuditService, PropertyRentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
+import models.JourneyContext
 import models.requests.DataRequest
-import pages.PageConstants
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -33,8 +34,7 @@ import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.Future
-
+import scala.concurrent.{ExecutionContext, Future}
 
 class ExpensesCheckYourAnswersController @Inject()(
                                                     override val messagesApi: MessagesApi,
@@ -43,29 +43,32 @@ class ExpensesCheckYourAnswersController @Inject()(
                                                     requireData: DataRequiredAction,
                                                     val controllerComponents: MessagesControllerComponents,
                                                     view: ExpensesCheckYourAnswersView,
-                                                    audit: AuditService
-                                                  ) extends FrontendBaseController with I18nSupport with Logging {
+                                                    audit: AuditService,
+                                                    propertySubmissionService: PropertySubmissionService
+                                                  )(implicit ec: ExecutionContext)
+  extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val rows: Seq[SummaryListRow] = if
-      (request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpensesYesOrNo)) {
-        Seq(
-          ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)
-        ).flatten
-      } else {
-        Seq(
-          ConsolidatedExpensesSummary.row(taxYear, request.userAnswers),
-          RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
-          RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
-          LoanInterestSummary.row(taxYear, request.userAnswers),
-          OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
-          CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
-          PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
-          OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
-        ).flatten
-      }
+      val rows: Seq[SummaryListRow] =
+        if (
+          request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpensesYesOrNo)
+        ) {
+          Seq(
+            ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)
+          ).flatten
+        } else {
+          Seq(
+            ConsolidatedExpensesSummary.row(taxYear, request.userAnswers),
+            RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
+            RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
+            LoanInterestSummary.row(taxYear, request.userAnswers),
+            OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
+            CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
+            PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
+            OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
+          ).flatten
+        }
       val list = SummaryListViewModel(rows = rows)
 
       Ok(view(list, taxYear))
@@ -73,17 +76,31 @@ class ExpensesCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      request.userAnswers.get(PropertyRentalsExpense) match {
-        case Some(propertyRentalsExpense) =>
-          auditCYA(taxYear, request, propertyRentalsExpense)
-        case None =>
-          logger.error(s"${PageConstants.propertyRentalsExpense} section is not present in userAnswers")
-      }
-      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+      request.userAnswers
+        .get(PropertyRentalsExpense)
+        .map(propertyRentalsExpense => saveExpenses(taxYear, request, propertyRentalsExpense))
+        .getOrElse {
+          logger.error("Property Rentals Expenses section is not present in userAnswers")
+          Future.failed(NotFoundException)
+        }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(implicit hc: HeaderCarrier): Unit = {
+  private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: PropertyRentalsExpense)(implicit
+                                                                                                             hc: HeaderCarrier
+  ): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
+
+    propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
+      case Right(_) =>
+        auditCYA(taxYear, request, expenses)
+        Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+      case Left(_) => Future.failed(ExpensesSaveFailed)
+    }
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(
+    implicit hc: HeaderCarrier
+  ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
@@ -92,8 +109,12 @@ class ExpensesCheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       "PropertyRentalsExpense",
-      propertyRentalsExpense)
-
+      propertyRentalsExpense
+    )
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
+
+case object NotFoundException extends Exception("PropertyAbout Section is not present in userAnswers")
+
+case object ExpensesSaveFailed extends Exception("Unable to save Expenses")

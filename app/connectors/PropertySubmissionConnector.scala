@@ -79,12 +79,10 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
             "Error posting journey answers to income-tax-property:" +
               s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
           )
-        } else {
-          logger.info(
-            "Journey answers successfully posted to income-tax-property:" +
-              s" status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
-          )
         }
+        logger.info(
+          "Journey answers successfully posted to income-tax-property status: ${response.httpResponse.status}"
+        )
         response.result
       }
   }
@@ -93,12 +91,12 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
                   ctx: JourneyContext,
                   incomeSourceId: String,
                   esbasWithSupportingQuestions: EsbasWithSupportingQuestions
-                )
-                (
-                  implicit hc: HeaderCarrier
+                )(implicit
+                  hc: HeaderCarrier
                 ): Future[Either[ApiError, Unit]] = {
 
-    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/${ctx.nino}/$incomeSourceId/esba/answers"
+    val propertyUrl =
+      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/${ctx.nino}/$incomeSourceId/esba/answers"
 
     httpClient
       .put(url"$propertyUrl")
