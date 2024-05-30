@@ -1711,4 +1711,37 @@ rRAllowancesStart.bullet.content.l1 = annual investment allowance
 rRAllowancesStart.bullet.content.l2 = electric charge-point allowance
 rRAllowancesStart.bullet.content.l3 = zero-emission car allowance
 rRAllowancesStart.bullet.content.l4 = replacing domestic goods
+
 rRAllowancesStart.bullet.content.l5 = other capital allowances
+
+raRAnnualInvestmentAllowance.title = Annual investment allowance
+raRAnnualInvestmentAllowance.heading = Annual investment allowance
+raRAnnualInvestmentAllowance.checkYourAnswersLabel= Annual investment allowance
+raRAnnualInvestmentAllowance.change.hidden = Annual investment allowance
+raRAnnualInvestmentAllowance.input.heading.individual = How much annual investment allowance do you want to claim?
+raRAnnualInvestmentAllowance.input.heading.agent = How much annual investment allowance does your client want to claim?
+raRAnnualInvestmentAllowance.details.content.link.text.para1 = Annual investment allowance applies only to non-residential properties. It can be claimed on most plant and machinery up to £1 million.
+raRAnnualInvestmentAllowance.details.content.link.text.para2 = It includes:
+
+raRAnnualInvestmentAllowance.details.content.l1 = costs of demolishing plant and machinery
+raRAnnualInvestmentAllowance.details.content.l2 = parts of a building considered integral, known as ‘integral features’
+raRAnnualInvestmentAllowance.details.content.l3 = some fixtures, for example fitted kitchens or bathroom suites
+raRAnnualInvestmentAllowance.details.content.l4 = alterations to a building to install plant and machinery - this does not include repairs
+
+raRAnnualInvestmentAllowance.details.content.link.text.para3 = It can not be claimed on:
+
+raRAnnualInvestmentAllowance.details.content.l5 = items you owned for another reason before you started using them in your business
+raRAnnualInvestmentAllowance.details.content.l6 = items given to you or your business
+raRAnnualInvestmentAllowance.details.content.l7 = business cars
+
+raRAnnualInvestmentAllowance.details.link.href = https://www.gov.uk/capital-allowances/annual-investment-allowance
+raRAnnualInvestmentAllowance.details.link.text1 = Read more about
+raRAnnualInvestmentAllowance.details.link.text2 = annual investment allowance at GOV.UK (opens in new tab)
+
+raRAnnualInvestmentAllowance.error.required.individual = Enter how much you want to claim for annual investment allowance
+raRAnnualInvestmentAllowance.error.required.agent = Enter how much your client wants to claim for annual investment allowance
+raRAnnualInvestmentAllowance.error.twoDecimalPlaces.individual = The amount you want to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
+raRAnnualInvestmentAllowance.error.twoDecimalPlaces.agent = The amount your client wants to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
+raRAnnualInvestmentAllowance.error.nonNumeric.individual = The amount you want to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
+raRAnnualInvestmentAllowance.error.nonNumeric.agent = The amount your client wants to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
+raRAnnualInvestmentAllowance.error.outOfRange = Enter an amount between £{0} and £{1}
