@@ -19,8 +19,6 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.furnishedholidaylettings.FhlMoreThanOnePage
-import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
@@ -69,26 +67,6 @@ case object SummaryPage {
             )
         }
         .getOrElse(Seq(propertyRentalsAbout))
-    } else {
-      Seq.empty[TaskListItem]
-    }
-  }
-
-  def createFHLRows(userAnswers: Option[UserAnswers], taxYear: Int, cashOrAccruals: Boolean): Seq[TaskListItem] = {
-
-    val fhlAbout: TaskListItem = TaskListItem(
-      "summary.about",
-      controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(FhlMoreThanOnePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
-      "about_link"
-    )
-    val fhlIncome: TaskListItem = fhlIncomeItem(userAnswers, taxYear)
-
-    val isFurnishedHolidayLettingsSelected =
-      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
-
-    if (isFurnishedHolidayLettingsSelected) {
-        Seq(fhlAbout)
     } else {
       Seq.empty[TaskListItem]
     }
@@ -219,18 +197,6 @@ case object SummaryPage {
       controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "allowances_link"
-    )
-
-  private def fhlIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
-    TaskListItem(
-      "summary.income",
-      controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(FhlIsNonUKLandlordPage)).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
-      "income_link"
     )
 
 }

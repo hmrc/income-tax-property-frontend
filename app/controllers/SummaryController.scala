@@ -49,9 +49,8 @@ class SummaryController @Inject() (
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
-          val fhlRows = SummaryPage.createFHLRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          Future.successful(Ok(view(taxYear, propertyRentalsRows, fhlRows, ukRentARoomRows)))
+          Future.successful(Ok(view(taxYear, propertyRentalsRows, ukRentARoomRows)))
         case _ =>
           Future.failed(PropertyDataError)
       }

@@ -22,10 +22,6 @@ import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
-import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
-import pages.structurebuildingallowance._
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
