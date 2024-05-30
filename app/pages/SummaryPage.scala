@@ -19,8 +19,8 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
+import pages.furnishedholidaylettings.FhlMoreThanOnePage
 import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
-import pages.furnishedholidaylettings.{FhlMainHomePage, FhlMoreThanOnePage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
@@ -86,14 +86,9 @@ case object SummaryPage {
 
     val isFurnishedHolidayLettingsSelected =
       userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
-    val fhlFhlMainHome = userAnswers.flatMap(_.get(FhlMainHomePage)).isDefined
 
     if (isFurnishedHolidayLettingsSelected) {
-      if (fhlFhlMainHome) {
-        Seq(fhlAbout, fhlIncome)
-      } else {
         Seq(fhlAbout)
-      }
     } else {
       Seq.empty[TaskListItem]
     }
