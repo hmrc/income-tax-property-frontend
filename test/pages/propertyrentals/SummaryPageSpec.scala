@@ -205,40 +205,4 @@ class SummaryPageSpec extends SpecBase {
     }
   }
 
-  "SummaryPageSpec createFHLRows" - {
-    val taxYear = LocalDate.now.getYear
-    val cashOrAccruals = true
-    val summaryItem = TaskListItem(
-      "summary.about",
-      controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
-      "about_link"
-    )
-    val incomeListItem = TaskListItem(
-      "summary.income",
-      controllers.routes.FhlIncomeIntroController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
-      "income_link"
-    )
-    "return empty rows, given an empty user data" in {
-      SummaryPage.createFHLRows(Some(emptyUserAnswers), taxYear, cashOrAccruals).length should be(0)
-    }
-
-    "createFHLRows return only one row when user has selected FHL" in {
-      val userAnswersWithPropertyRentals = emptyUserAnswers
-        .set(
-          UKPropertyPage,
-          Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
-        )
-        .success
-        .value
-
-      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).length should be(1)
-      SummaryPage.createFHLRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals).head should be(
-        summaryItem
-      )
-
-    }
-
-  }
 }

@@ -20,19 +20,19 @@ import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
 import models.{NormalMode, StructuredBuildingAllowanceAddress, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.data.Form
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
+import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.structurebuildingallowance.StructuredBuildingAllowanceAddressView
-import play.api.inject.bind
-import navigation.{FakeNavigator, Navigator}
 
 import scala.concurrent.Future
 
