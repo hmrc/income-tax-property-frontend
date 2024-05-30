@@ -14,54 +14,56 @@
  * limitations under the License.
  */
 
-package controllers.allowances
+package controllers.ukrentaroom.allowances
 
 import base.SpecBase
-import forms.allowances.ElectricChargePointAllowanceFormProvider
+import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
 import models.{ElectricChargePointAllowance, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.allowances.ElectricChargePointAllowancePage
+import pages.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.allowances.ElectricChargePointAllowanceView
+import views.html.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVView
 
 import scala.concurrent.Future
 
-class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class ElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ElectricChargePointAllowanceFormProvider()
-  private val agent = "agent"
-  val form: Form[ElectricChargePointAllowance] = formProvider(agent)
+  private val individual = "individual"
+  private val formProvider = new ElectricChargePointAllowanceForAnEVFormProvider()
+  private val form: Form[ElectricChargePointAllowance] = formProvider.apply(individual)
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   val taxYear = 2023
 
-  lazy val electricChargePointAllowanceRoute: String =
-    routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val electricChargePointAllowanceForAnEVRoute: String =
+    controllers.ukrentaroom.allowances.routes.ElectricChargePointAllowanceForAnEVController
+      .onPageLoad(taxYear, NormalMode)
+      .url
 
-  "ElectricChargePointAllowance Controller" - {
+  "ElectricChargePointAllowanceForAnEV Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, electricChargePointAllowanceRoute)
+        val request = FakeRequest(GET, electricChargePointAllowanceForAnEVRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ElectricChargePointAllowanceView]
+        val view = application.injector.instanceOf[ElectricChargePointAllowanceForAnEVView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(
+        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -72,27 +74,27 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(
-          ElectricChargePointAllowancePage,
+          ElectricChargePointAllowanceForAnEVPage,
           ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)
         )
         .success
         .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, electricChargePointAllowanceRoute)
-
-        val view = application.injector.instanceOf[ElectricChargePointAllowanceView]
-
+        val request = FakeRequest(GET, electricChargePointAllowanceForAnEVRoute)
         val result = route(application, request).value
 
+        val view = application.injector.instanceOf[ElectricChargePointAllowanceForAnEVView]
+
         status(result) mustEqual OK
+
         contentAsString(result) mustEqual
           view(
             form.fill(ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),
             taxYear,
-            agent,
+            individual,
             NormalMode
           )(request, messages(application)).toString
       }
@@ -114,9 +116,9 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, electricChargePointAllowanceRoute)
+          FakeRequest(POST, electricChargePointAllowanceForAnEVRoute)
             .withFormUrlEncodedBody(
-              ("electricChargePointAllowanceYesNo", "true"),
+              ("electricChargePointAllowanceYesOrNo", "true"),
               ("electricChargePointAllowanceAmount", "100")
             )
 
@@ -129,21 +131,26 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("electricChargePointAllowanceAmount", "invalid value"))
+          FakeRequest(POST, electricChargePointAllowanceForAnEVRoute)
+            .withFormUrlEncodedBody(
+              ("electricChargePointAllowanceAmount", "foo")
+            )
 
-        val boundForm = form.bind(Map("electricChargePointAllowanceAmount" -> "invalid value"))
+        val boundForm =
+          form.bind(Map("electricChargePointAllowanceAmount" -> "foo"))
 
-        val view = application.injector.instanceOf[ElectricChargePointAllowanceView]
+        val view = application.injector.instanceOf[ElectricChargePointAllowanceForAnEVView]
 
         val result = route(application, request).value
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(
+        val foo = status(result)
+
+        foo mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -155,7 +162,7 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, electricChargePointAllowanceRoute)
+        val request = FakeRequest(GET, electricChargePointAllowanceForAnEVRoute)
 
         val result = route(application, request).value
 
@@ -170,8 +177,9 @@ class ElectricChargePointAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, electricChargePointAllowanceRoute)
-            .withFormUrlEncodedBody(("electricChargePointAllowanceYesNo", "true"))
+          FakeRequest(POST, electricChargePointAllowanceForAnEVRoute)
+            .withFormUrlEncodedBody(("electricChargePointAllowanceYesOrNo", "true"))
+            .withFormUrlEncodedBody(("electricChargePointAllowanceAmount", "100"))
 
         val result = route(application, request).value
 

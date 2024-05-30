@@ -443,6 +443,12 @@ POST       /:taxYear/uk-rent-a-room/expenses/other-allowable-property-expenses  
 GET        /:taxYear/uk-rent-a-room/expenses/change-other-allowable-property-expenses                controllers.OtherPropertyRRExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/expenses/change-other-allowable-property-expenses                controllers.OtherPropertyRRExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/uk-rent-a-room/allowances/electric-charge-point-allowance-for-an-ev                  controllers.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/allowances/electric-charge-point-allowance-for-an-ev                  controllers.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/allowances/change-electric-charge-point-allowance-for-an-ev                        controllers.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/allowances/change-electric-charge-point-allowance-for-an-ev                        controllers.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+
 GET        /:taxYear/uk-rent-a-room/allowances/allowances-start                            controllers.ukrentaroom.allowances.RRAllowancesStartController.onPageLoad(taxYear: Int)
 
 GET        /:taxYear/uk-rent-a-room/allowances/annual-investment-allowance                               controllers.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
