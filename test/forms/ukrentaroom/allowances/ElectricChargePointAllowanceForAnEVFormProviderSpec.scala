@@ -16,7 +16,7 @@
 
 package forms.ukrentaroom.allowances
 
-import forms.behaviours.{CurrencyFieldBehaviours, IntFieldBehaviours}
+import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
 class ElectricChargePointAllowanceForAnEVFormProviderSpec extends CurrencyFieldBehaviours {

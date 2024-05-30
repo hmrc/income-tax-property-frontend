@@ -18,11 +18,11 @@ package forms.ukrentaroom.allowances
 
 import forms.mappings.Mappings
 import models.ElectricChargePointAllowance
-
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
+
+import javax.inject.Inject
 
 class ElectricChargePointAllowanceForAnEVFormProvider @Inject() extends Mappings {
 

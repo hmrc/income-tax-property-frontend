@@ -17,7 +17,6 @@
 package controllers.allowances
 
 import base.SpecBase
-import controllers.allowances.routes
 import forms.allowances.ElectricChargePointAllowanceFormProvider
 import models.{ElectricChargePointAllowance, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}

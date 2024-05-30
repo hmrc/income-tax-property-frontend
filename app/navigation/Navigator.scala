@@ -27,6 +27,7 @@ import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController
 import controllers.ukrentaroom.expenses.routes._
 import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
@@ -43,7 +44,6 @@ import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import pages.ukrentaroom.expenses.{RentsRatesAndInsuranceRRPage, ResidentialPropertyFinanceCostsPage}
-import controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
 
