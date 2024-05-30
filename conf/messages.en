@@ -1206,15 +1206,6 @@ fhlIntro.li3.agent = Letting: The property be must let as a furnished holiday le
 fhlIntro.a.href = https://www.gov.uk/government/publications/furnished-holiday-lettings-hs253-self-assessment-helpsheet/hs253-furnished-holiday-lettings-2020
 fhlIntro.a = Furnished Holiday Lettings at Gov.uk (opens in new tab)
 fhlIntro.div = Read more about
-fhlMoreThanOne.title.individual = Do you have more than one holiday furnished letting?
-fhlMoreThanOne.title.agent = Does your client have more than one furnished holiday letting?
-fhlMoreThanOne.heading.individual = Do you have more than one holiday furnished letting?
-fhlMoreThanOne.heading.agent = Does your client have more than one furnished holiday letting?
-fhlMoreThanOne.checkYourAnswersLabel.individual = Do you have more than one holiday furnished letting?
-fhlMoreThanOne.checkYourAnswersLabel.agent = Does your client have more than one furnished holiday letting?
-fhlMoreThanOne.error.required.individual = Select yes if you have more than one furnished holiday letting
-fhlMoreThanOne.error.required.agent = Select yes if your client has more than one furnished holiday letting
-fhlMoreThanOne.change.hidden = FhlMoreThanOne
 
 
 sbaCheckYourAnswers.title = sbaCheckYourAnswers
