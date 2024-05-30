@@ -16,16 +16,24 @@
 
 package controllers.propertyrentals.income
 
+import audit.PropertyRentalsIncome
 import base.SpecBase
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.MockitoSugar.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.ExpensesLessThan1000Page
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.CheckYourAnswersView
 
-class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+import scala.concurrent.Future
+
+class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
   val taxYear: Int = 2024
 
@@ -46,7 +54,7 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
         val list = SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
-//        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        //        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -65,11 +73,36 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
-      val userAnswers = UserAnswers("test").set(ExpensesLessThan1000Page, false).get
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val userAnswers = emptyUserAnswers
+        .set(ExpensesLessThan1000Page, false)
+        .flatMap(
+          _.set(
+            PropertyRentalsIncome,
+            PropertyRentalsIncome(
+              true,
+              500,
+              2,
+              None,
+              None,
+              None,
+              None,
+              None,
+              None)
+          )
+        ).get
+
+      val mockPropertySubmissionService = mock[PropertySubmissionService]
+      when(mockPropertySubmissionService.savePropertyRentalsIncome(any(), any())(any())) thenReturn (Future.successful(Right(())))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
+        .overrides(
+          bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+        )
+        .build()
+
 
       running(application) {
-        val request = FakeRequest(POST, routes.PropertyIncomeCheckYourAnswersController.onSubmit(taxYear).url)
+        val request = FakeRequest(POST, controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
 

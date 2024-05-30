@@ -20,11 +20,14 @@ import audit.{AuditModel, AuditService, PropertyRentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
+import models.JourneyContext
+import models.propertyrentals.income.SaveIncome
 import models.requests.DataRequest
 import pages.PageConstants
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.premiumlease._
@@ -32,7 +35,7 @@ import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.income.IncomeCheckYourAnswersView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyIncomeCheckYourAnswersController @Inject()(
                                                           override val messagesApi: MessagesApi,
@@ -40,9 +43,10 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
                                                           getData: DataRetrievalAction,
                                                           requireData: DataRequiredAction,
                                                           val controllerComponents: MessagesControllerComponents,
+                                                          propertySubmissionService: PropertySubmissionService,
                                                           view: IncomeCheckYourAnswersView,
                                                           audit: AuditService
-                                                        ) extends FrontendBaseController with I18nSupport with Logging {
+                                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -67,13 +71,25 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
 
       request.userAnswers.get(PropertyRentalsIncome) match {
-        case Some(propertyRentalsIncome) =>
-          auditCYA(taxYear, request, propertyRentalsIncome)
+        case Some(propertyRentalsIncome) => {
+          propertySubmissionService.savePropertyRentalsIncome(context, SaveIncome.fromPropertyRentalsIncome(propertyRentalsIncome)).map {
+            case Right(_) => {
+              auditCYA(taxYear, request, propertyRentalsIncome)
+              Redirect(routes.SummaryController.show(taxYear))
+            }
+            case Left(_) => {
+              InternalServerError
+            }
+          }
+
+        }
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }
+
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 
