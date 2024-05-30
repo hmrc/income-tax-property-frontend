@@ -19,7 +19,7 @@ package audit
 import models.{CalculatedFigureYourself, DeductingTax, PremiumsGrantLease, ReversePremiumsReceived}
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 case class PropertyRentalsIncome(
   isNonUKLandlord: Boolean,
@@ -33,7 +33,7 @@ case class PropertyRentalsIncome(
   reversePremiumsReceived: Option[ReversePremiumsReceived]
 )
 
-case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] {
+case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] with Settable[PropertyRentalsIncome] {
 
   implicit val formats: Format[PropertyRentalsIncome] = Json.format[PropertyRentalsIncome]
 
