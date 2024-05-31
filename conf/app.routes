@@ -341,11 +341,6 @@ POST        /:taxYear/enhanced-structure-building-allowance/:index/remove-confir
 
 GET         /:taxYear/furnished-holiday-lettings/start                                             controllers.furnishedholidaylettings.FhlIntroController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/furnished-holiday-lettings/more-than-one                                     controllers.furnishedholidaylettings.FhlMoreThanOneController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/furnished-holiday-lettings/more-than-one                                     controllers.furnishedholidaylettings.FhlMoreThanOneController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/furnished-holiday-lettings/change-more-than-one                              controllers.furnishedholidaylettings.FhlMoreThanOneController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/furnished-holiday-lettings/change-more-than-one                              controllers.furnishedholidaylettings.FhlMoreThanOneController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 
 GET         /:taxYear/furnished-holiday-lettings/deducting-tax                                     controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/furnished-holiday-lettings/deducting-tax                                     controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
