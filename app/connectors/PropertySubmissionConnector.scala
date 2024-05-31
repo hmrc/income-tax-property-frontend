@@ -19,6 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
+import models.propertyrentals.income.SaveIncome
 import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
@@ -104,6 +105,36 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
       .setHeader("mtditid" -> ctx.mtditid)
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .withBody(Json.toJson(esbasWithSupportingQuestions))
+      .execute[CreateOrUpdateJourneyAnswersResponse]
+      .map { response: CreateOrUpdateJourneyAnswersResponse =>
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            "Error posting journey answers to income-tax-property:" +
+              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
+
+  def saveIncome(
+                  ctx: JourneyContext,
+                  incomeSourceId: String,
+                  saveIncome: SaveIncome
+                )
+                (
+                  implicit hc: HeaderCarrier
+                ): Future[Either[ApiError, Unit]] = {
+
+    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/income/${ctx.nino}/answers"
+
+    httpClient
+      .post(url"$propertyUrl")
+      .setHeader("mtditid" -> ctx.mtditid)
+      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
+      .withBody(Json.toJson(saveIncome))
       .execute[CreateOrUpdateJourneyAnswersResponse]
       .map { response: CreateOrUpdateJourneyAnswersResponse =>
         if (response.result.isLeft) {

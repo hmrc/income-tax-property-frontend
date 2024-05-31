@@ -17,19 +17,13 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import controllers.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersController
-import models.{NormalMode, UserAnswers}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.{mock, when}
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import repositories.SessionRepository
+import models.UserAnswers
 import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.mvc.Call
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
-
-import scala.concurrent.Future
 
 class EsbaCheckYourAnswersControllerSpec extends SpecBase {
   val index = 1

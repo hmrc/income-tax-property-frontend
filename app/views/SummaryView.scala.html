@@ -23,7 +23,7 @@
         govukTag: GovukTag
 )
 
-@(taxYear: Int, ukPropertyRentalsRows: Seq[TaskListItem], fhlRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = titleNoForm(messages("summary.title")),
@@ -82,24 +82,6 @@
                     </span>
                 </li>
             }
-        </ol>
-    }
-    @if(fhlRows.nonEmpty) {
-        <h2 class="govuk-heading-m">@messages("summary.fhl.heading")</h2>
-        <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
-        @for(item <- fhlRows) {
-            <li class="app-task-list__item">
-                <span class="app-task-list__task-name">
-                    <a class="govuk-link" id="@{item.id}" href="@{item.call}">@messages(s"${item.content}")</a>
-                </span>
-                <span class="hmrc-status-tag">
-                @{
-                    val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
-                    govukTag(tag)
-                }
-                </span>
-            </li>
-        }
         </ol>
     }
 }

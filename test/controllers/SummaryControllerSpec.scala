@@ -73,7 +73,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) mustEqual view(
           taxYear,
           Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
       }
@@ -120,7 +119,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) mustEqual view(
           taxYear,
           propertyRentalsItems,
-          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
       }
@@ -159,54 +157,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) mustEqual view(
           taxYear,
           Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem]
-        )(request, messages(application)).toString
-      }
-    }
-
-    "must display the FHL section if fhl is selected in the about section" in {
-      val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessService = mock[BusinessService]
-      val propertyFhlItems: Seq[TaskListItem] = Seq(
-        TaskListItem(
-          "summary.about",
-          controllers.furnishedholidaylettings.routes.FhlIntroController.onPageLoad(taxYear),
-          TaskListTag.NotStarted,
-          "about_link"
-        )
-      )
-      val userAnswersWithFhl = emptyUserAnswers
-        .set(
-          UKPropertyPage,
-          Set[UKPropertySelect](UKPropertySelect.FurnishedHolidayLettings)
-        )
-        .success
-        .value
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
-      )
-
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithFhl), isAgent = false)
-        .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
-        .build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.SummaryController.show(year).url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SummaryView]
-
-        status(result) mustEqual OK
-        contentAsString(result) must include("UK furnished holiday lettings")
-        contentAsString(result) mustEqual view(
-          taxYear,
-          Seq.empty[TaskListItem],
-          propertyFhlItems,
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
       }
@@ -267,7 +217,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) must include("UK rent a room")
         contentAsString(result) mustEqual view(
           taxYear,
-          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem],
           ukRentARoomItems
         )(request, messages(application)).toString

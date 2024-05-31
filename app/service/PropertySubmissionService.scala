@@ -19,6 +19,7 @@ package service
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
+import models.propertyrentals.income.SaveIncome
 import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
@@ -38,6 +39,12 @@ class PropertySubmissionService @Inject()(
                                                       hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedBackendData]] =
     propertyConnector.getPropertySubmission(taxYear, user.mtditid, user)
+
+  def savePropertyRentalsIncome(ctx: JourneyContext, saveIncome: SaveIncome)(
+    implicit hc: HeaderCarrier
+  ): Future[Either[ApiError, Unit]] = {
+    propertyConnector.saveIncome(ctx, ctx.mtditid, saveIncome)
+  }
 
   def saveEsba( //Todo: Finially this should be integrated into saveAnswers reusage
                 ctx: JourneyContext, esbasWithSupportingQuestions: EsbasWithSupportingQuestions

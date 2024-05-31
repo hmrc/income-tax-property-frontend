@@ -38,6 +38,7 @@ import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
@@ -85,9 +86,9 @@ class Navigator @Inject() () {
     case ReportPropertyIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertyPage => taxYear => _ => _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case propertyrentals.ExpensesLessThan1000Page =>
+    case ExpensesLessThan1000Page =>
       taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
-    case propertyrentals.ClaimPropertyIncomeAllowancePage =>
+    case ClaimPropertyIncomeAllowancePage =>
       taxYear =>
         _ =>
           _ =>
@@ -223,9 +224,9 @@ class Navigator @Inject() () {
     case RepairsAndMaintenanceCostsRRPage =>
       taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case RentsRatesAndInsuranceRRPage => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
-    case propertyrentals.ExpensesLessThan1000Page =>
+    case ExpensesLessThan1000Page =>
       taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
-    case propertyrentals.ClaimPropertyIncomeAllowancePage =>
+    case ClaimPropertyIncomeAllowancePage =>
       taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomePage =>
       taxYear =>
