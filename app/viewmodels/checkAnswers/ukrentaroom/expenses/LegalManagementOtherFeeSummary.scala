@@ -16,28 +16,29 @@
 
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
-import controllers.ukrentaroom.expenses.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
+import pages.ukrentaroom.expenses.LegalManagementOtherFeeRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 
-object RentsRatesAndInsuranceRRSummary {
+object LegalManagementOtherFeeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RentsRatesAndInsuranceRRPage).map { answer =>
+    answers.get(LegalManagementOtherFeeRRPage).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel("rentsRatesAndInsuranceRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+        key = KeyViewModel("legalManagementOtherFee.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, CheckMode).url
+            controllers.ukrentaroom.expenses.routes.LegalManagementOtherFeeRRController
+              .onPageLoad(taxYear, CheckMode)
+              .url
           )
-            .withVisuallyHiddenText(messages("rentsRatesAndInsuranceRR.change.hidden"))
+            .withVisuallyHiddenText(messages("legalManagementOtherFee.change.hidden"))
         )
       )
     }

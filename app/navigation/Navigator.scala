@@ -42,7 +42,7 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
-import pages.ukrentaroom.expenses.{RentsRatesAndInsuranceRRPage, ResidentialPropertyFinanceCostsPage}
+import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
 
@@ -52,6 +52,31 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
+    case ConsolidatedRRExpensesPage =>
+      taxYear =>
+        userAnswers =>
+          _ =>
+            userAnswers.get(ConsolidatedRRExpensesPage) match {
+              case Some(ConsolidatedRRExpenses(true, _)) => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+              case Some(ConsolidatedRRExpenses(false, _)) =>
+                RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
+              case None => SummaryController.show(taxYear)
+            }
+
+    case OtherPropertyExpensesRRPage =>
+      taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
+      taxYear => _ => _ => OtherPropertyExpensesRRController.onPageLoad(taxYear, NormalMode)
+    case ResidentialPropertyFinanceCostsRRPage =>
+      taxYear => _ => _ => UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode)
+    case CostOfServicesProvidedRRPage =>
+      taxYear => _ => _ => ResidentialPropertyFinanceCostsRRController.onPageLoad(taxYear, NormalMode)
+    case RepairsAndMaintenanceCostsRRPage =>
+      taxYear => _ => _ => LegalManagementOtherFeeRRController.onPageLoad(taxYear, NormalMode)
+    case RentsRatesAndInsuranceRRPage =>
+      taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
+    case LegalManagementOtherFeeRRPage =>
+      taxYear => _ => _ => CostOfServicesProvidedRRController.onPageLoad(taxYear, NormalMode)
     case RaRZeroEmissionCarAllowancePage =>
       taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
@@ -172,11 +197,11 @@ class Navigator @Inject() () {
     case UkRentARoomJointlyLetPage => taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
     case ClaimExpensesOrRRRPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case ResidentialPropertyFinanceCostsPage =>
+    case ResidentialPropertyFinanceCostsRRPage =>
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdController
+            controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
               .onPageLoad(taxYear, NormalMode)
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
@@ -187,6 +212,17 @@ class Navigator @Inject() () {
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
+    case OtherPropertyExpensesRRPage   => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case ConsolidatedRRExpensesPage    => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case LegalManagementOtherFeeRRPage => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case CostOfServicesProvidedRRPage  => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
+      taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case ResidentialPropertyFinanceCostsRRPage =>
+      taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case RepairsAndMaintenanceCostsRRPage =>
+      taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+    case RentsRatesAndInsuranceRRPage => taxYear => _ => _ => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ExpensesLessThan1000Page =>
       taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case propertyrentals.ClaimPropertyIncomeAllowancePage =>

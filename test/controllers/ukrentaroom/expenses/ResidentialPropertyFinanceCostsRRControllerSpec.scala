@@ -14,52 +14,54 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
-import controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController
-import forms.ConsolidatedRRExpensesFormProvider
-import models.{ConsolidatedRRExpenses, NormalMode, UserAnswers}
+import forms.ukrentaroom.expenses.ResidentialPropertyFinanceCostsFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.ConsolidatedRRExpensesView
+import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
-class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
+class ResidentialPropertyFinanceCostsRRControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/")
-  private val taxYear = LocalDate.now.getYear
-
-  val formProvider = new ConsolidatedRRExpensesFormProvider()
+  val formProvider = new ResidentialPropertyFinanceCostsFormProvider()
   val form = formProvider("individual")
 
-  lazy val consolidatedRRExpensesRoute = ConsolidatedRRExpensesController.onPageLoad(taxYear, NormalMode).url
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  "ConsolidatedRRExpenses Controller" - {
+  val residentialPropertyFinanceCosts = 100
+  val validAnswer = BigDecimal.valueOf(residentialPropertyFinanceCosts)
+  val taxYear = 2024
+
+  lazy val residentialPropertyFinanceCostsRoute =
+    routes.ResidentialPropertyFinanceCostsRRController.onPageLoad(taxYear, NormalMode).url
+
+  "ResidentialPropertyFinanceCosts Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, consolidatedRRExpensesRoute)
+        val request = FakeRequest(GET, residentialPropertyFinanceCostsRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
           request,
           messages(application)
         ).toString
@@ -68,27 +70,22 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
-        .set(ConsolidatedRRExpensesPage, ConsolidatedRRExpenses(true, Some(12.34)))
-        .success
-        .value
+      val userAnswers = UserAnswers(userAnswersId).set(ResidentialPropertyFinanceCostsRRPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, consolidatedRRExpensesRoute)
+        val request = FakeRequest(GET, residentialPropertyFinanceCostsRoute)
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          form.fill(ConsolidatedRRExpenses(true, Some(12.34))),
-          NormalMode,
-          taxYear,
-          "individual"
-        )(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -108,8 +105,8 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, consolidatedRRExpensesRoute)
-            .withFormUrlEncodedBody("consolidatedExpensesOrIndiv" -> "true", "consolidatedExpensesAmount" -> "1234")
+          FakeRequest(POST, residentialPropertyFinanceCostsRoute)
+            .withFormUrlEncodedBody(("residentialPropertyFinanceCosts", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -124,17 +121,17 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, consolidatedRRExpensesRoute)
-            .withFormUrlEncodedBody(("value", ""))
+          FakeRequest(POST, residentialPropertyFinanceCostsRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
           request,
           messages(application)
         ).toString
@@ -143,10 +140,10 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, false).build()
 
       running(application) {
-        val request = FakeRequest(GET, consolidatedRRExpensesRoute)
+        val request = FakeRequest(GET, residentialPropertyFinanceCostsRoute)
 
         val result = route(application, request).value
 
@@ -157,17 +154,19 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, consolidatedRRExpensesRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, residentialPropertyFinanceCostsRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+
       }
     }
   }

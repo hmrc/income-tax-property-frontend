@@ -16,29 +16,30 @@
 
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
-import controllers.ukrentaroom.expenses.routes
+import controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
+import pages.ukrentaroom.expenses.OtherPropertyExpensesRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 
-object RentsRatesAndInsuranceRRSummary {
+object OtherPropertyExpensesRRSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RentsRatesAndInsuranceRRPage).map { answer =>
-      SummaryListRowViewModel(
-        key = KeyViewModel("rentsRatesAndInsuranceRR.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-        actions = Seq(
-          ActionItemViewModel(
-            "site.change",
-            routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, CheckMode).url
+    answers.get(OtherPropertyExpensesRRPage) match {
+      case Some(answer) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("otherPropertyRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", OtherPropertyExpensesRRController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("otherPropertyRRExpenses.change.hidden"))
+            )
           )
-            .withVisuallyHiddenText(messages("rentsRatesAndInsuranceRR.change.hidden"))
         )
-      )
+      case _ => Option.empty[SummaryListRow]
     }
 }

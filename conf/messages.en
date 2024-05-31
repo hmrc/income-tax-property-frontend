@@ -1502,6 +1502,7 @@ ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet1 = mortgage interest
 ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet2 = interest on loans to buy furnishings
 ukrentaroom.expenses.residentialPropertyFinanceCosts.bullet3 = fees when taking out or repaying mortgages or loans
 ukrentaroom.expenses.residentialPropertyFinanceCosts.para1 = Residential finance costs include:
+ukrentaroom.expenses.residentialPropertyFinanceCosts.checkYourAnswersLabel.individual = Residential property finance costs
 
 ############ Unused Residential Property Finance Costs Brought Forward ############
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.title.individual = Unused residential property finance costs brought forward
@@ -1599,6 +1600,7 @@ ukrentaroom.costOfServicesProvided.error.nonNumeric.agent = Enter an amount for 
 ukrentaroom.costOfServicesProvided.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.costOfServicesProvided.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.costOfServicesProvided.error.outOfRange = Enter an amount between £{0} and £{1}
+costOfServicesProvided.checkYourAnswersLabel = Costs of services provided, including wages
 
 ukrentaroom.legalManagementOtherFee.title = Legal, management or other professional fees
 ukrentaroom.legalManagementOtherFee.heading = Legal, management or other professional fees
@@ -1625,6 +1627,7 @@ ukrentaroom.legalManagementOtherFee.error.nonNumeric.agent = Enter an amount for
 ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.legalManagementOtherFee.error.outOfRange = Enter an amount between £{0} and £{1}
+legalManagementOtherFee.checkYourAnswersLabel = Legal, management or other professional fees
 
 
 ukrentaroom.allowances.zeroEmissionCarAllowance.title.individual = Zero-emission car allowance

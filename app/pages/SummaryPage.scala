@@ -88,7 +88,7 @@ case object SummaryPage {
       userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.FurnishedHolidayLettings)))
 
     if (isFurnishedHolidayLettingsSelected) {
-        Seq(fhlAbout)
+      Seq(fhlAbout)
     } else {
       Seq.empty[TaskListItem]
     }
@@ -204,7 +204,7 @@ case object SummaryPage {
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
+      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
       if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
         TaskListTag.InProgress
       } else {

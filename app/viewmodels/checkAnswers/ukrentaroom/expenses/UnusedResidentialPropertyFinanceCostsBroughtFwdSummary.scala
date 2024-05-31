@@ -16,28 +16,39 @@
 
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
-import controllers.ukrentaroom.expenses.routes
+import controllers.ukrentaroom.expenses.routes._
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
+import pages.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 
-object RentsRatesAndInsuranceRRSummary {
+object UnusedResidentialPropertyFinanceCostsBroughtFwdSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RentsRatesAndInsuranceRRPage).map { answer =>
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel("rentsRatesAndInsuranceRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+        key = KeyViewModel(
+          s"ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.$individualOrAgent"
+        )
+          .withCssClass(keyCssClass),
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, CheckMode).url
+            UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
+              .onPageLoad(taxYear, CheckMode)
+              .url
           )
-            .withVisuallyHiddenText(messages("rentsRatesAndInsuranceRR.change.hidden"))
+            .withVisuallyHiddenText(
+              messages(
+                s"ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.change.hidden.$individualOrAgent"
+              )
+            )
         )
       )
     }

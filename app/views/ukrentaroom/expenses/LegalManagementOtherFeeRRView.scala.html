@@ -1,0 +1,70 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.requests._
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
+@import controllers.ukrentaroom.expenses.routes._
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("ukrentaroom.legalManagementOtherFee.title"))) {
+
+    @formHelper(action = LegalManagementOtherFeeRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        <h1 class="govuk-heading-l">@messages("ukrentaroom.legalManagementOtherFee.heading")</h1>
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+
+        <p class="govuk-body">@messages(s"ukrentaroom.legalManagementOtherFee.details.content1.${request.user.isAgentMessageKey}")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content1.l1")</li>
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content1.l2")</li>
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content1.l3")</li>
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content1.l4")</li>
+        </ul>
+        <p class="govuk-body">@messages(s"ukrentaroom.legalManagementOtherFee.details.content2.${request.user.isAgentMessageKey}")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content2.l1")</li>
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content2.l2")</li>
+            <li>@messages("ukrentaroom.legalManagementOtherFee.details.content2.l3")</li>
+        </ul>
+
+
+        @govukInput(
+            InputViewModel(
+                field = form("legalManagementOtherFee"),
+                label = LabelViewModel(messages(s"ukrentaroom.legalManagementOtherFee.input.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Medium)
+            )
+            .asNumeric()
+            .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
