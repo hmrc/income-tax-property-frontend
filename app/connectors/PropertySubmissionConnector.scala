@@ -16,6 +16,7 @@
 
 package connectors
 
+import audit.Adjustments
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
@@ -135,6 +136,35 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
       .setHeader("mtditid" -> ctx.mtditid)
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .withBody(Json.toJson(saveIncome))
+      .execute[CreateOrUpdateJourneyAnswersResponse]
+      .map { response: CreateOrUpdateJourneyAnswersResponse =>
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            "Error posting journey answers to income-tax-property:" +
+              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
+
+  def saveRentalAdjustments(
+                  ctx: JourneyContext,
+                  incomeSourceId: String,
+                  adjustments: Adjustments
+                )
+                (
+                  implicit hc: HeaderCarrier
+                ): Future[Either[ApiError, Unit]] = {
+    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/property-rental-adjustments/${ctx.nino}/answers"
+
+    httpClient
+      .post(url"$propertyUrl")
+      .setHeader("mtditid" -> ctx.mtditid)
+      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
+      .withBody(Json.toJson(adjustments))
       .execute[CreateOrUpdateJourneyAnswersResponse]
       .map { response: CreateOrUpdateJourneyAnswersResponse =>
         if (response.result.isLeft) {

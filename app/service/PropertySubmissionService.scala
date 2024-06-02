@@ -16,6 +16,7 @@
 
 package service
 
+import audit.Adjustments
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
@@ -44,6 +45,12 @@ class PropertySubmissionService @Inject()(
     implicit hc: HeaderCarrier
   ): Future[Either[ApiError, Unit]] = {
     propertyConnector.saveIncome(ctx, ctx.mtditid, saveIncome)
+  }
+
+  def saveRentalAdjustments(ctx: JourneyContext, adjustments: Adjustments)(
+    implicit hc: HeaderCarrier
+  ): Future[Either[ApiError, Unit]] = {
+    propertyConnector.saveRentalAdjustments(ctx, ctx.mtditid, adjustments)
   }
 
   def saveEsba( //Todo: Finially this should be integrated into saveAnswers reusage
