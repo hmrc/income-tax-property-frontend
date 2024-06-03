@@ -16,10 +16,10 @@
 
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
-import controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController
+import controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CheckMode, ConsolidatedRRExpenses, UserAnswers}
-import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -35,7 +35,7 @@ object ConsolidatedExpensesRRSummary {
           key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("Individual").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
           )
         )
@@ -47,13 +47,13 @@ object ConsolidatedExpensesRRSummary {
             key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel("site.change", ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url)
                 .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
             )
           )
         )
 
-      answers.get(ConsolidatedRRExpensesPage) match {
+      answers.get(ConsolidatedExpensesRRPage) match {
         case Some(ConsolidatedRRExpenses(true, Some(amount))) => individual(amount)
         case Some(ConsolidatedRRExpenses(false, None))        => consolidated
       }

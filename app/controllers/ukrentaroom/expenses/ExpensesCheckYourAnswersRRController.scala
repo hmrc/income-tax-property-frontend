@@ -18,7 +18,7 @@ package controllers.ukrentaroom.expenses
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -42,7 +42,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val rows: Seq[SummaryListRow] =
-        if (request.userAnswers.get(ConsolidatedRRExpensesPage).exists(_.areExpensesConsolidated)) {
+        if (request.userAnswers.get(ConsolidatedExpensesRRPage).exists(_.areExpensesConsolidated)) {
           Seq(
             ConsolidatedExpensesRRSummary.row(taxYear, request.userAnswers)
           ).flatten

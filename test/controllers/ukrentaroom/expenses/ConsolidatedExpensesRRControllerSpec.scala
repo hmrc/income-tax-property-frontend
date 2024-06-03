@@ -24,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,7 +35,7 @@ import views.html.ukrentaroom.expenses.ConsolidatedExpensesRRView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
+class ConsolidatedExpensesRRControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/")
   private val taxYear = LocalDate.now.getYear
@@ -69,7 +69,7 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(ConsolidatedRRExpensesPage, ConsolidatedRRExpenses(true, Some(12.34)))
+        .set(ConsolidatedExpensesRRPage, ConsolidatedRRExpenses(true, Some(12.34)))
         .success
         .value
 

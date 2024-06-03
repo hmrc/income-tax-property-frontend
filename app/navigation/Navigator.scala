@@ -53,11 +53,11 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
-    case ConsolidatedRRExpensesPage =>
+    case ConsolidatedExpensesRRPage =>
       taxYear =>
         _ =>
           userAnswers =>
-            userAnswers.get(ConsolidatedRRExpensesPage) match {
+            userAnswers.get(ConsolidatedExpensesRRPage) match {
               case Some(ConsolidatedRRExpenses(true, _)) => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
               case Some(ConsolidatedRRExpenses(false, None)) =>
                 RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
@@ -212,8 +212,11 @@ class Navigator @Inject() () {
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
-    case OtherPropertyExpensesRRPage   => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-    case ConsolidatedRRExpensesPage    => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
+    case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
+    case ConsolidatedExpensesRRPage =>
+      taxYear =>
+        previousUserAnswers =>
+          userAnswers => consolidatedExpensesRRNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case LegalManagementOtherFeeRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case CostOfServicesProvidedRRPage  => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
@@ -479,6 +482,19 @@ class Navigator @Inject() () {
     userAnswers.get(ConsolidatedExpensesPage) match {
       case Some(ConsolidatedExpenses(true, _))  => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
       case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def consolidatedExpensesRRNavigationCheckMode(
+    taxYear: Int,
+    previousUserAnswers: UserAnswers,
+    userAnswers: UserAnswers
+  ): Call =
+    userAnswers.get(ConsolidatedExpensesRRPage) match {
+      case Some(ConsolidatedRRExpenses(false, _))
+          if previousUserAnswers.get(ConsolidatedExpensesRRPage).map(_.areExpensesConsolidated).getOrElse(true) =>
+        RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
+      case _ =>
+        ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     }
 
   private def consolidatedExpensesNavigationCheckMode(

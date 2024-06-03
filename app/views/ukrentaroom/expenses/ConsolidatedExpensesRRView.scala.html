@@ -36,7 +36,7 @@ govukDetails: GovukDetails
 
 <h1 class="govuk-heading-xl">@messages("consolidatedRRExpenses.heading")</h1>
 
-@formHelper(action = ConsolidatedRRExpensesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+@formHelper(action = ConsolidatedExpensesRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
 @if(form.errors.nonEmpty) {
 @govukErrorSummary(ErrorSummaryViewModel(form))

@@ -22,7 +22,7 @@ import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object ConsolidatedRRExpensesPage extends QuestionPage[ConsolidatedRRExpenses] {
+case object ConsolidatedExpensesRRPage extends QuestionPage[ConsolidatedRRExpenses] {
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomExpense \ toString
 

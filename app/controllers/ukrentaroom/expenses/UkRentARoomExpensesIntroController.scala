@@ -41,7 +41,7 @@ class UkRentARoomExpensesIntroController @Inject() (
     implicit request =>
       val under85KUrl =
         if (isTotalIncomeUnder85K(request.userAnswers)) {
-          controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController.onPageLoad(taxYear, NormalMode).url
+          controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, NormalMode).url
         } else {
           controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode).url
         }

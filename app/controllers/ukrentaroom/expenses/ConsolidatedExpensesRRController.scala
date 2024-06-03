@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ConsolidatedRRExpensesFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +30,7 @@ import views.html.ukrentaroom.expenses.ConsolidatedExpensesRRView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConsolidatedRRExpensesController @Inject() (
+class ConsolidatedExpensesRRController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
@@ -46,7 +46,7 @@ class ConsolidatedRRExpensesController @Inject() (
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ConsolidatedRRExpensesPage) match {
+      val preparedForm = request.userAnswers.get(ConsolidatedExpensesRRPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -64,10 +64,10 @@ class ConsolidatedRRExpensesController @Inject() (
             Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedRRExpensesPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedExpensesRRPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ConsolidatedRRExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(ConsolidatedExpensesRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
