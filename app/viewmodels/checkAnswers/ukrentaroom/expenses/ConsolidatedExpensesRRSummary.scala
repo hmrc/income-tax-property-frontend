@@ -17,8 +17,9 @@
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
 import controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController
+import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{CheckMode, ConsolidatedRRExpenses, UserAnswers}
-import pages.ConsolidatedRRExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -27,24 +28,12 @@ import viewmodels.implicits._
 
 object ConsolidatedExpensesRRSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-
-    val consolidated: Option[SummaryListRow] = Some(
-      SummaryListRowViewModel(
-        key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel("Individual").withCssClass(valueCssClass),
-        actions = Seq(
-          ActionItemViewModel("site.change", ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
-            .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
-        )
-      )
-    )
-
-    val individual: BigDecimal => Option[SummaryListRow] = amount =>
-      Some(
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    if (isTotalIncomeUnder85K(answers)) {
+      val consolidated: Option[SummaryListRow] = Some(
         SummaryListRowViewModel(
           key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+          value = ValueViewModel("Individual").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
@@ -52,12 +41,23 @@ object ConsolidatedExpensesRRSummary {
         )
       )
 
-    answers.get(ConsolidatedRRExpensesPage) match {
-      case Some(ConsolidatedRRExpenses(true, Some(amount)))  => individual(amount)
-      case Some(ConsolidatedRRExpenses(true, None))          => ???
-      case Some(ConsolidatedRRExpenses(false, None))         => consolidated
-      case Some(ConsolidatedRRExpenses(false, Some(amount))) => ???
-      case None                                              => ???
+      val individual: BigDecimal => Option[SummaryListRow] = amount =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", ConsolidatedRRExpensesController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+            )
+          )
+        )
+
+      answers.get(ConsolidatedRRExpensesPage) match {
+        case Some(ConsolidatedRRExpenses(true, Some(amount))) => individual(amount)
+        case Some(ConsolidatedRRExpenses(false, None))        => consolidated
+      }
+    } else {
+      Option.empty[SummaryListRow]
     }
-  }
 }

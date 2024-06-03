@@ -55,13 +55,12 @@ class Navigator @Inject() () {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
     case ConsolidatedRRExpensesPage =>
       taxYear =>
-        userAnswers =>
-          _ =>
+        _ =>
+          userAnswers =>
             userAnswers.get(ConsolidatedRRExpensesPage) match {
               case Some(ConsolidatedRRExpenses(true, _)) => RaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
-              case Some(ConsolidatedRRExpenses(false, _)) =>
+              case Some(ConsolidatedRRExpenses(false, None)) =>
                 RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
-              case None => SummaryController.show(taxYear)
             }
 
     case OtherPropertyExpensesRRPage =>

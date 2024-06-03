@@ -24,5 +24,5 @@ case object RepairsAndMaintenanceCostsRRPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ rentARoomExpense \ toString
 
-  override def toString: String = "repairsAndMaintenanceCostsRR"
+  override def toString: String = "repairsAndMaintenanceCosts"
 }

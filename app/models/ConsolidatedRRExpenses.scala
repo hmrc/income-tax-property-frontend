@@ -18,7 +18,10 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class ConsolidatedRRExpenses(consolidatedExpensesOrIndiv: Boolean, consolidatedExpensesAmount: Option[BigDecimal])
+final case class ConsolidatedRRExpenses(
+  areExpensesConsolidated: Boolean,
+  consolidatedExpensesAmount: Option[BigDecimal]
+)
 
 object ConsolidatedRRExpenses {
   implicit val format: Format[ConsolidatedRRExpenses] = Json.format

@@ -20,8 +20,7 @@ import controllers.actions._
 import forms.ConsolidatedRRExpensesFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ConsolidatedRRExpensesPage
-import pages.ukrentaroom.expenses.RentsRatesAndInsuranceRRPage
+import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
