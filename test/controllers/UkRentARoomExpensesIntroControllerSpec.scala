@@ -38,6 +38,8 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
   val withLinks =
     "https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses"
   val withNoLinks = "Rent a room expenses"
+  val lessThan85KURL =
+    s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance"
 
   val scenarios: TableFor4[Boolean, String, UserAnswers, Option[(Boolean, String)]] =
     Table[Boolean, String, UserAnswers, Option[(Boolean, String)]](
@@ -64,16 +66,14 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
         isAgent,
         agentRef = Some("agentReferenceNumber")
       )
-      s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${
-        isLessThanEightyFiveThousandWithContainingString
-          .fold("Does not contain")(r => if (r._1) "More" else "Less")
-      }" - {
+      s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${isLessThanEightyFiveThousandWithContainingString
+          .fold("Does not contain")(r => if (r._1) "More" else "Less")}" - {
 
         "must return OK and the correct view for a GET" in {
 
           val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
           val ukRentARoomExpensesIntroRouteUrl =
-            controllers.ukrentaroom.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear).url
+            controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear).url
 
           running(application) {
             val dataRequest =
@@ -88,7 +88,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
             } { r =>
               val (isLessThanEightyFiveThousand, containingString) = r
               status(result) mustEqual OK
-              contentAsString(result) mustEqual view(isLessThanEightyFiveThousand)(
+              contentAsString(result) mustEqual view(isLessThanEightyFiveThousand, lessThan85KURL)(
                 dataRequest,
                 messages(application)
               ).toString

@@ -18,22 +18,19 @@ package controllers.ukrentaroom.expenses
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.ConsolidatedRRExpenses
-import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.ukrentaroom.expenses.ConsolidatedRRExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.propertyrentals.expenses.ConsolidatedExpensesSummary
 import viewmodels.checkAnswers.ukrentaroom.expenses._
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.expenses.RaRExpensesCheckYourAnswersView
 
 import scala.concurrent.Future
 
-class RaRExpensesCheckYourAnswersController @Inject() (
+class ExpensesCheckYourAnswersRRController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,

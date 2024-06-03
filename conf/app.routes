@@ -448,5 +448,5 @@ POST       /:taxYear/uk-rent-a-room/allowances/annual-investment-allowance      
 GET        /:taxYear/uk-rent-a-room/allowances/change-annual-investment-allowance                        controllers.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/allowances/change-annual-investment-allowance                        controllers.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/uk-rent-a-room/expenses/check-your-answers                                                  controllers.ukrentaroom.expenses.RaRExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
-POST        /:taxYear/uk-rent-a-room/expenses/check-your-answers                                                  controllers.ukrentaroom.expenses.RaRExpensesCheckYourAnswersController.onSubmit(taxYear: Int)
+GET         /:taxYear/uk-rent-a-room/expenses/check-your-answers                                                  controllers.ukrentaroom.expenses.ExpensesCheckYourAnswersRRController.onPageLoad(taxYear: Int)
+POST        /:taxYear/uk-rent-a-room/expenses/check-your-answers                                                  controllers.ukrentaroom.expenses.ExpensesCheckYourAnswersRRController.onSubmit(taxYear: Int)

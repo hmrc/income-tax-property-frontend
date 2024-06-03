@@ -29,7 +29,7 @@
         <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
         <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-        @formHelper(action = RaRExpensesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @formHelper(action = ExpensesCheckYourAnswersRRController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
             @govukSummaryList(list)
 
             @govukButton(

@@ -31,7 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.OtherPropertyRRExpensesView
+import views.html.ukrentaroom.expenses.OtherPropertyRRExpensesView
 
 import scala.concurrent.Future
 
@@ -46,7 +46,8 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer: BigDecimal = 100
 
-  lazy val OtherPropertyRRExpensesRoute: String = controllers.routes.OtherPropertyRRExpensesController.onPageLoad(taxYear, NormalMode).url
+  lazy val OtherPropertyRRExpensesRoute: String =
+    controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController.onPageLoad(taxYear, NormalMode).url
 
   "OtherPropertyRRExpenses Controller" - {
 
@@ -62,7 +63,10 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[OtherPropertyRRExpensesView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -80,7 +84,10 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -126,7 +133,10 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
