@@ -25,12 +25,10 @@ sealed trait UKPropertySelect
 
 object UKPropertySelect extends Enumerable.Implicits {
   case object PropertyRentals extends WithName("property.rentals") with UKPropertySelect
-  case object FurnishedHolidayLettings extends WithName("furnished.holiday.lettings") with UKPropertySelect
   case object RentARoom extends WithName("rent.a.room") with UKPropertySelect
 
   val values: Seq[UKPropertySelect] = Seq(
     PropertyRentals,
-    FurnishedHolidayLettings,
     RentARoom
   )
 

@@ -28,7 +28,6 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
-import pages.furnishedholidaylettings.income.FhlIsNonUKLandlordPage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -559,28 +558,6 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear, NormalMode, index)
       }
 
-      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is true" in {
-        val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, true).get
-        navigator.nextPage(
-          FhlIsNonUKLandlordPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.furnishedholidaylettings.income.routes.FhlDeductingTaxController
-          .onPageLoad(taxYear, NormalMode)
-      }
-
-      "must go from FhlIsNonUKLandlordPage to FhlDeductingTax page if FhlIsNonUKLandlordPage is false" in {
-        val testUserAnswer = UserAnswers("test").set(FhlIsNonUKLandlordPage, false).get
-        navigator.nextPage(
-          FhlIsNonUKLandlordPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.routes.FhlIncomeController.onPageLoad(taxYear, NormalMode)
-      }
 
       "must go from RentsRatesAndInsuranceRRPage to RepairsAndMaintenanceCostsRRPage" in {
         navigator.nextPage(

@@ -140,7 +140,6 @@ ukPropertySelect.heading.agent = UK property
 ukPropertySelect.error.required = Select which type of property you have
 ukPropertySelect.error.required.agent = Select which type of property your client has
 ukPropertySelect.property.rentals = Property rentals
-ukPropertySelect.furnished.holiday.lettings = Furnished Holiday lettings (FHL)
 ukPropertySelect.rent.a.room = Rent a room
 ukPropertySelect.checkYourAnswersLabel = UK property types
 ukPropertySelect.change.hidden = Change UK property types
@@ -1184,30 +1183,6 @@ esbaAddress.duplicateEsba = The address for this claim has already been added.
 esbaAddress.duplicateSba = The address for this claim has already been added in structures and buildings allowance
 esbaAddress.hint = You can only add one address per claim
 
-fhlIntro.title = Furnished holiday lettings
-fhlIntro.heading = Furnished holiday lettings
-fhlIntro.summary = Understanding furnished holiday lettings
-
-fhlIntro.div.top.individual = You’ll need details of your expenses to answer the questions starting on the next page.
-fhlIntro.div.top.agent = You’ll need details of your client’s expenses to answer the questions starting on the next page.
-
-fhlIntro.p.individual = To qualify as a UK furnished holiday letting your property must be furnished and will also need to pass three occupancy conditions.
-fhlIntro.p.agent = To qualify as a UK furnished holiday letting your client’s property must be furnished and will also need to pass three occupancy conditions.
-
-fhlIntro.li1.individual = Pattern of occupation: The total of all lettings of more than 31 days must not be more than 155 days in a row.
-fhlIntro.li1.agent = Pattern of occupation: The total of all lettings of more than 31 days must not be more than 155 days in a row.
-
-fhlIntro.li2.individual = Availability: Your property must be available for letting for at least 210 days a year.
-fhlIntro.li2.agent = Availability: The property must be available for letting for at least 210 days a year.
-
-fhlIntro.li3.individual = Letting: You must let the property as a furnished holiday letting to the public for at least 105 days a year.
-fhlIntro.li3.agent = Letting: The property be must let as a furnished holiday letting to the public for at least 105 days a year.
-
-fhlIntro.a.href = https://www.gov.uk/government/publications/furnished-holiday-lettings-hs253-self-assessment-helpsheet/hs253-furnished-holiday-lettings-2020
-fhlIntro.a = Furnished Holiday Lettings at Gov.uk (opens in new tab)
-fhlIntro.div = Read more about
-
-
 sbaCheckYourAnswers.title = sbaCheckYourAnswers
 sbaCheckYourAnswers.heading = sbaCheckYourAnswers
 
@@ -1238,76 +1213,6 @@ esbaClaims.heading.agent = Your client's enhanced structures and buildings allow
 esbaClaims.error.required.individual = Select yes if you want to add another claim
 esbaClaims.error.required.agent = Select yes if your client wants to add another claim
 esbaClaims.legend = Do you want to add another claim?
-
-fhlDeductingTax.title = Deducting Tax from non-UK landlords
-fhlDeductingTax.heading.agent = Deducting Tax from non-UK landlords
-fhlDeductingTax.heading.individual = Deducting Tax from non-UK landlords
-fhlDeductingTax.checkYourAnswersLabel = Did you have tax deducted?
-fhlDeductingTax.legend.individual = Did you have tax deducted?
-fhlDeductingTax.legend.agent = Did your client have tax deducted?
-fhlDeductingTax.error.required.individual = Select yes if you had tax deducted
-fhlDeductingTax.error.required.agent = Select yes if your client had tax deducted
-fhlDeductingTax.amount.error.required.individual = Enter the amount of tax you had deducted
-fhlDeductingTax.amount.error.required.agent = Enter the amount of tax deducted
-fhlDeductingTax.amount.error.nonNumeric.individual = Enter the amount of tax you had deducted
-fhlDeductingTax.amount.error.nonNumeric.agent = Enter the amount of tax your client had deducted
-fhlDeductingTax.amount.error.twoDecimalPlaces.individual = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
-fhlDeductingTax.amount.error.twoDecimalPlaces.agent = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
-fhlDeductingTax.amount.error.outOfRange = Enter an amount between £{0} and £{1}
-fhlDeductingTax.change.hidden = Deducting tax from non-UK landlords
-fhlDeductingTax.yes = Yes
-fhlDeductingTax.no = No
-fhlDeductingTax.radio.question.label = How much tax was deducted?
-fhlDeductingTax.details.title = Paying tax as a non-UK landlord
-fhlDeductingTax.details.content.line1.individual = You need to pay tax on your rental income if you live abroad and rented out property in the UK.
-fhlDeductingTax.details.content.line2.individual = You can get your rent either:
-fhlDeductingTax.details.content.line3.individual = in full and pay tax through Self Assessment - if HMRC allows you
-fhlDeductingTax.details.content.line4.individual = with tax already deducted by your letting agent or tenant
-fhlDeductingTax.details.content.line1.agent. = Your client will need to pay tax on their rental income if they live abroad and rented out property in the UK.
-fhlDeductingTax.details.content.line2.agent = They can get their rent either:
-fhlDeductingTax.details.content.line3.agent = in full and pay tax through Self Assessment - if HMRC allows them
-fhlDeductingTax.details.content.line4.agent = with tax already deducted by their letting agent or tenant
-fhlDeductingTax.details.content.link.intro = Read more about
-fhlDeductingTax.details.content.link.text = tax on your UK income if you live abroad (opens in new tab)
-fhlDeductingTax.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
-
-fhlIsNonUKLandlord.title = Non-UK resident landlord
-fhlIsNonUKLandlord.heading = Non-UK resident landlord
-fhlIsNonUKLandlord.checkYourAnswersLabel = Were you a non-UK resident landlord?
-fhlIsNonUKLandlord.error.required.agent = Select yes if your client was a non-UK resident landlord
-fhlIsNonUKLandlord.error.required.individual = Select yes if you were a non-UK resident landlord
-fhlIsNonUKLandlord.change.hidden = Non-UK resident landlords
-fhlIsNonUKLandlord.legend.agent = Was your client a non-UK resident landlord?
-fhlIsNonUKLandlord.legend.individual = Were you a non-UK resident landlord?
-fhlIsNonUKLandlord.p1.agent = Your client is considered a non-UK resident landlord if they:
-fhlIsNonUKLandlord.p1.individual = You’re considered a non-UK resident landlord if at least one of these applies to you:
-fhlIsNonUKLandlord.l1 = lived abroad for more than six months of the year but rented out a property in the UK
-fhlIsNonUKLandlord.l2 = had a usual place of residence outside the UK
-fhlIsNonUKLandlord.l3 = were a UK resident for tax purposes, but lived outside the UK
-fhlIsNonUKLandlord.details.content.link.intro = Read more about
-fhlIsNonUKLandlord.details.content.link.text = tax on your UK income if you live abroad (opens in new tab)
-fhlIsNonUKLandlord.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
-
-fhlIncome.title = FhlIncome
-fhlIncome.heading = Furnished holiday lettings income
-fhlIncome.checkYourAnswersLabel = Income from all furnished holiday letting properties
-fhlIncome.div.content.individual = If your furnished holiday letting is jointly owned just tell us about your portion of the rental income. Include any payouts that you received from insurance policies.
-fhlIncome.div.content.agent = If your client's furnished holiday letting is jointly owned just tell us about their portion of the rental income. Include any payouts that your client received from insurance policies.
-fhlIncome.details.content.link.intro = Read more about
-fhlIncome.details.content.link.href = https://www.gov.uk/government/publications/furnished-holiday-lettings-hs253-self-assessment-helpsheet/hs253-furnished-holiday-lettings-2021
-fhlIncome.input.heading.individual = How much total income did you receive from all of your furnished holiday lettings?
-fhlIncome.input.heading.agent = How much total income did your client receive from all of their furnished holiday lettings?
-fhlIncome.hint.individual = This is your gross income before any deductions
-fhlIncome.hint.agent = This is your client's gross income before any deductions
-fhlIncome.error.nonNumeric.individual = The amount that you received from all of your furnished holiday lettings can only include pounds and pence, for example £600 or £600.20
-fhlIncome.error.nonNumeric.agent = The amount that your client received from all of their furnished holiday lettings can only include pounds and pence, for example £600 or £600.20
-fhlIncome.error.required.individual = Enter the amount you received from all of your furnished holiday lettings
-fhlIncome.error.required.agent = Enter the amount that your client received from all of their furnished holiday lettings
-fhlIncome.error.twoDecimalPlaces.individual = The amount that you received from all of your furnished holiday lettings can only include pounds and pence, for example £600 or £600.20
-fhlIncome.error.twoDecimalPlaces.agent = The amount that your client received from all of their furnished holiday lettings can only include pounds and pence, for example £600 or £600.20
-fhlIncome.error.outOfRange.individual = Enter an amount between {0} and {1}
-fhlIncome.error.outOfRange.agent = Enter an amount between {0} and {1}
-fhlIncome.change.hidden = FhlIncome
 
 ############ UK RENT A ROOM ############
 
