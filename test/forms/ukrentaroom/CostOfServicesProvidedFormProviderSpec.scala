@@ -17,6 +17,7 @@
 package forms.ukrentaroom
 
 import forms.behaviours.{CurrencyFieldBehaviours, IntFieldBehaviours}
+import forms.ukrentaroom.expenses.CostOfServicesProvidedFormProvider
 import play.api.data.FormError
 
 class CostOfServicesProvidedFormProviderSpec extends CurrencyFieldBehaviours {

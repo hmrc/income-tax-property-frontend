@@ -1,0 +1,39 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.ukrentaroom.expenses.routes._
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton,
+        formHelper: FormWithCSRF,
+        govukSummaryList: GovukSummaryList,
+)
+
+@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+
+    @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
+
+        <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
+        <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+
+        @formHelper(action = ExpensesCheckYourAnswersRRController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+            @govukSummaryList(list)
+
+            @govukButton(
+                ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+            )
+        }
+    }

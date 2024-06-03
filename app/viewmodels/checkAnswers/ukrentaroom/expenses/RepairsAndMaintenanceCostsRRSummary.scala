@@ -21,16 +21,16 @@ import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.expenses.RepairsAndMaintenanceCostsRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-
 object RepairsAndMaintenanceCostsRRSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RepairsAndMaintenanceCostsRRPage).map { answer =>
       SummaryListRowViewModel(
-        key = "repairsAndMaintenanceCostsRR.checkYourAnswersLabel",
-        value = ValueViewModel(answer.toString),
+        key = KeyViewModel("repairsAndMaintenanceCostsRR.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

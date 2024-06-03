@@ -20,7 +20,7 @@
         govukButton: GovukButton
 )
 
-@(incomeLessThanEightyThousand: Boolean)(implicit request: DataRequest[_], messages: Messages)
+@(incomeLessThanEightyThousand: Boolean, url: String)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("ukRentARoom.expensesIntro.title"))) {
 
@@ -44,6 +44,6 @@
     }
 
     @govukButton(
-        ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick()
+        ButtonViewModel(messages("site.continue")).withId("continue").asLink(url).preventingDoubleClick()
     )
 }

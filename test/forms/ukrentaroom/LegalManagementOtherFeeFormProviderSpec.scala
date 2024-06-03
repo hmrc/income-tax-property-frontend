@@ -16,7 +16,8 @@
 
 package forms.ukrentaroom
 
-import forms.behaviours.{CurrencyFieldBehaviours}
+import forms.behaviours.CurrencyFieldBehaviours
+import forms.ukrentaroom.expenses.LegalManagementOtherFeeFormProvider
 import play.api.data.FormError
 
 class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {

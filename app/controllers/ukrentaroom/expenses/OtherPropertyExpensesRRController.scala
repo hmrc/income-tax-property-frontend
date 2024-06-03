@@ -17,36 +17,36 @@
 package controllers.ukrentaroom.expenses
 
 import controllers.actions._
-import forms.ukrentaroom.expenses.RentsRatesAndInsuranceRRFormProvider
+import forms.OtherPropertyRRExpensesFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.expenses.{RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
+import pages.ukrentaroom.expenses.OtherPropertyExpensesRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.expenses.RentsRatesAndInsuranceRRView
+import views.html.ukrentaroom.expenses.OtherPropertyExpensesRRView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RentsRatesAndInsuranceRRController @Inject() (
+class OtherPropertyExpensesRRController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: RentsRatesAndInsuranceRRFormProvider,
+  formProvider: OtherPropertyRRExpensesFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: RentsRatesAndInsuranceRRView
+  view: OtherPropertyExpensesRRView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(RentsRatesAndInsuranceRRPage) match {
+      val preparedForm = request.userAnswers.get(OtherPropertyExpensesRRPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -64,10 +64,10 @@ class RentsRatesAndInsuranceRRController @Inject() (
             Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RentsRatesAndInsuranceRRPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherPropertyExpensesRRPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(RentsRatesAndInsuranceRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(OtherPropertyExpensesRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
