@@ -1,0 +1,77 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.govuk._
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
+@import controllers.ukrentaroom.allowances.routes._
+
+
+@this(
+layout: templates.Layout,
+formHelper: FormWithCSRF,
+govukErrorSummary: GovukErrorSummary,
+govukRadios: GovukRadios,
+govukButton: GovukButton,
+govukInput: GovukInput,
+govukDetails: GovukDetails
+)
+
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("raRCapitalAllowancesForACar.title"))) {
+
+<h1 class="govuk-heading-l">@messages("raRCapitalAllowancesForACar.heading")</h1>
+
+@formHelper(action = RaRCapitalAllowancesForACarController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
+@if(form.errors.nonEmpty) {
+@govukErrorSummary(ErrorSummaryViewModel(form))
+}
+
+
+ <p class="govuk-body">@messages(s"raRCapitalAllowancesForACar.details.line1.$individualOrAgent") </p>
+
+ <p class="govuk-body">@messages("otherPropertyRRExpenses.details.link.text1")<a href="@messages("raRCapitalAllowancesForACar.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+ @messages("raRCapitalAllowancesForACar.details.link.text2")
+    </a></p>
+    
+
+
+@govukRadios(
+radios.RadiosViewModel.yesNoWithConditionalHtml(
+field = form("raRCapitalAllowancesForACarYesNo"),
+legend = LegendViewModel(messages(s"raRCapitalAllowancesForACar.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+field = form("raRCapitalAllowancesForACarYesNo"),
+conditionalYesHtml = Some(
+govukInput(InputViewModel(
+field = form("raRCapitalAllowancesForACarAmount"),
+label = LabelViewModel(messages("raRCapitalAllowancesForACar.amountLabel"))
+)
+.withWidth(Fixed10)
+.withPrefix(PrefixOrSuffix(content = Text("£")))
+)
+)
+)
+)
+)
+
+@govukButton(
+ButtonViewModel(messages("site.continue")).withId("continue")
+)
+}
+}

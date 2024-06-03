@@ -17,24 +17,40 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions._
+import controllers.routes
+import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import viewmodels.RRAllowancesStartPage
 import views.html.ukrentaroom.allowances.RRAllowancesStartView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class RRAllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: RRAllowancesStartView
-) extends FrontendBaseController with I18nSupport {
+  view: RRAllowancesStartView,
+  businessService: BusinessService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      Ok(view())
+  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async { implicit request =>
+    val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    businessService.getBusinessDetails(request.user)(hc).map {
+      case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+        val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+        Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.cashOrAccruals.get)))
+      case _ => Redirect(routes.SummaryController.show(taxYear))
+    }
   }
+
+  private def existsUkProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains(
+      "uk-property"
+    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }

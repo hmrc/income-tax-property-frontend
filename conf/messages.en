@@ -1687,13 +1687,18 @@ electricChargePointAllowanceForAnEV.allowance.error.outOfRange = Enter an amount
 
 rRAllowancesStart.title = Allowances
 rRAllowancesStart.heading = Allowances
-rRAllowancesStart.line.content = In this section we're going to ask you about the following allowances:
+rRAllowancesStart.details.content1.individual = In this section we’re going to ask you about your allowances. These are amounts that you can offset against what you’ve spent running your property rentals:
+rRAllowancesStart.details.content1.agent = In this section we’re going to ask you about allowances. These are amounts that your client can offset against what they’ve spent running their property rentals:
+rRAllowancesStart.details.content2.individual = You told us previously that your accounting method is:
+rRAllowancesStart.details.content2.agent = You told us previously that your client’s accounting method is:
+rRAllowancesStart.details.content3.individual = Based on this information you can claim the following:
+rRAllowancesStart.details.content3.agent = Based on this information they can claim the following:
 rRAllowancesStart.bullet.content.l1 = annual investment allowance
 rRAllowancesStart.bullet.content.l2 = electric charge-point allowance
 rRAllowancesStart.bullet.content.l3 = zero-emission car allowance
 rRAllowancesStart.bullet.content.l4 = replacing domestic goods
-
 rRAllowancesStart.bullet.content.l5 = other capital allowances
+rRAllowancesStart.details.content.l6 = Capital allowances for a car
 
 raRAnnualInvestmentAllowance.title = Annual investment allowance
 raRAnnualInvestmentAllowance.heading = Annual investment allowance
@@ -1726,3 +1731,26 @@ raRAnnualInvestmentAllowance.error.twoDecimalPlaces.agent = The amount your clie
 raRAnnualInvestmentAllowance.error.nonNumeric.individual = The amount you want to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
 raRAnnualInvestmentAllowance.error.nonNumeric.agent = The amount your client wants to claim for annual investment allowance can only include pounds and pence, for example £600 or £600.20
 raRAnnualInvestmentAllowance.error.outOfRange = Enter an amount between £{0} and £{1}
+
+
+raRCapitalAllowancesForACar.title = Capital allowances for a car
+raRCapitalAllowancesForACar.heading = Capital allowances for a car
+raRCapitalAllowancesForACar.details.heading = Understanding capital allowances for a car
+raRCapitalAllowancesForACar.details.line1.individual = You can claim capital allowances on cars you buy and use for running your property rentals. This means you can deduct part of the value from your profits before you pay tax.
+raRCapitalAllowancesForACar.details.line1.agent = Your client can claim capital allowances on cars they buy and use for running their property rentals. This means they can deduct part of the value from their profits before they pay tax.
+raRCapitalAllowancesForACar.details.link.href = https://www.gov.uk/capital-allowances/business-cars
+raRCapitalAllowancesForACar.details.link.text1 = Read more about
+raRCapitalAllowancesForACar.details.link.text2 = capital allowances for a car at GOV.UK (opens in new tab)
+raRCapitalAllowancesForACar.checkYourAnswersLabel = Capital allowances for a car
+raRCapitalAllowancesForACar.amountLabel = How much do you want to claim?
+raRCapitalAllowancesForACar.radio.legend.individual = Do you want to claim capital allowance for a car?
+raRCapitalAllowancesForACar.radio.legend.agent = Does your client want to claim capital allowance for a car?
+raRCapitalAllowancesForACar.error.required.individual = Enter yes if you want to claim capital allowances for a car
+raRCapitalAllowancesForACar.error.required.agent = Enter yes if your client wants to claim capital allowances for a car
+raRCapitalAllowancesForACar.error.required.amount.individual = Enter the amount for your capital allowance for a car
+raRCapitalAllowancesForACar.error.required.amount.agent = Enter the amount for your client’s capital allowance for a car
+raRCapitalAllowancesForACar.error.nonNumeric.agent = Enter the amount for your client’s capital allowance for a car
+raRCapitalAllowancesForACar.error.nonNumeric.individual = Enter the amount for your capital allowance for a car
+raRCapitalAllowancesForACar.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+raRCapitalAllowancesForACar.error.outOfRange = Enter an amount between £{0} and £{1}
+raRCapitalAllowancesForACar.change.hidden = Capital allowances for a car
