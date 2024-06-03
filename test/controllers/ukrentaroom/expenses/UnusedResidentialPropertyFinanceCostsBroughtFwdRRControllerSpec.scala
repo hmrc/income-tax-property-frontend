@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdView
+import views.html.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
 
 import scala.concurrent.Future
 
@@ -44,9 +44,8 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
   val unusedResidentialPropertyFinanceCostsBroughtFwd = 100
   val validAnswer = BigDecimal.valueOf(unusedResidentialPropertyFinanceCostsBroughtFwd)
 
-  lazy val unusedResidentialPropertyFinanceCostsBroughtFwdRoute = {
+  lazy val unusedResidentialPropertyFinanceCostsBroughtFwdRoute =
     routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode).url
-  }
 
   "UnusedResidentialPropertyFinanceCostsBroughtFwd Controller" - {
 
@@ -59,7 +58,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdView]
+        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdRRView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
@@ -79,7 +78,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
       running(application) {
         val request = FakeRequest(GET, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
 
-        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdView]
+        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdRRView]
 
         val result = route(application, request).value
 
@@ -128,7 +127,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdView]
+        val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdRRView]
 
         val result = route(application, request).value
 

@@ -26,7 +26,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.expenses._
 import viewmodels.govuk.summarylist._
-import views.html.ukrentaroom.expenses.RaRExpensesCheckYourAnswersView
+import views.html.ukrentaroom.expenses.ExpensesCheckYourAnswersRRView
 
 import scala.concurrent.Future
 
@@ -36,7 +36,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: RaRExpensesCheckYourAnswersView
+  view: ExpensesCheckYourAnswersRRView
 ) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {

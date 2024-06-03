@@ -29,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsView
+import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRView
 
 import scala.concurrent.Future
 
@@ -58,7 +58,7 @@ class ResidentialPropertyFinanceCostsRRControllerSpec extends SpecBase with Mock
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsRRView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
@@ -77,7 +77,7 @@ class ResidentialPropertyFinanceCostsRRControllerSpec extends SpecBase with Mock
       running(application) {
         val request = FakeRequest(GET, residentialPropertyFinanceCostsRoute)
 
-        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsRRView]
 
         val result = route(application, request).value
 
@@ -126,7 +126,7 @@ class ResidentialPropertyFinanceCostsRRControllerSpec extends SpecBase with Mock
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsView]
+        val view = application.injector.instanceOf[ResidentialPropertyFinanceCostsRRView]
 
         val result = route(application, request).value
 

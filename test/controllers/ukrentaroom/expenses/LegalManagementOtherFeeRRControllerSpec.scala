@@ -32,7 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.LegalManagementOtherFeeView
+import views.html.ukrentaroom.expenses.LegalManagementOtherFeeRRView
 
 import scala.concurrent.Future
 
@@ -70,7 +70,7 @@ class LegalManagementOtherFeeRRControllerSpec extends SpecBase with MockitoSugar
           val request = DataRequest(fakeRequest, "", user, userAnswers)
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[LegalManagementOtherFeeView]
+          val view = application.injector.instanceOf[LegalManagementOtherFeeRRView]
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
@@ -86,7 +86,7 @@ class LegalManagementOtherFeeRRControllerSpec extends SpecBase with MockitoSugar
         running(application) {
           val fakeRequest = FakeRequest(GET, legalManagementOtherFeeRoute)
           val request = DataRequest(fakeRequest, "", user, userAnswers)
-          val view = application.injector.instanceOf[LegalManagementOtherFeeView]
+          val view = application.injector.instanceOf[LegalManagementOtherFeeRRView]
 
           val result = route(application, request).value
 
@@ -136,7 +136,7 @@ class LegalManagementOtherFeeRRControllerSpec extends SpecBase with MockitoSugar
 
           val boundForm = form.bind(Map("value" -> "invalid value"))
 
-          val view = application.injector.instanceOf[LegalManagementOtherFeeView]
+          val view = application.injector.instanceOf[LegalManagementOtherFeeRRView]
 
           val result = route(application, request).value
 

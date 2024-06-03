@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
 import controllers.routes
@@ -31,7 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.OtherPropertyRRExpensesView
+import views.html.ukrentaroom.expenses.OtherPropertyExpensesRRView
 
 import scala.concurrent.Future
 
@@ -60,7 +60,7 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[OtherPropertyRRExpensesView]
+        val view = application.injector.instanceOf[OtherPropertyExpensesRRView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(
@@ -79,7 +79,7 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request = FakeRequest(GET, OtherPropertyRRExpensesRoute)
 
-        val view = application.injector.instanceOf[OtherPropertyRRExpensesView]
+        val view = application.injector.instanceOf[OtherPropertyExpensesRRView]
 
         val result = route(application, request).value
 
@@ -128,7 +128,7 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
 
         val boundForm = form.bind(Map("otherProfessionalFees" -> "invalid value"))
 
-        val view = application.injector.instanceOf[OtherPropertyRRExpensesView]
+        val view = application.injector.instanceOf[OtherPropertyExpensesRRView]
 
         val result = route(application, request).value
 
@@ -141,7 +141,6 @@ class OtherPropertyExpensesRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {

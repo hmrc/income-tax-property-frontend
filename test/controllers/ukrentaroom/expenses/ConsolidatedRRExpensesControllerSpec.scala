@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController
@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.ConsolidatedRRExpensesView
+import views.html.ukrentaroom.expenses.ConsolidatedExpensesRRView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -56,7 +56,7 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(
@@ -78,7 +78,7 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request = FakeRequest(GET, consolidatedRRExpensesRoute)
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
         val result = route(application, request).value
 
@@ -129,7 +129,7 @@ class ConsolidatedRRExpensesControllerSpec extends SpecBase with MockitoSugar {
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[ConsolidatedRRExpensesView]
+        val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
         val result = route(application, request).value
 

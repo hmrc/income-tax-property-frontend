@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.expenses
 
 import base.SpecBase
 import models.requests.DataRequest
 import models.{TotalIncome, User, UserAnswers}
-import org.scalatest.prop.{TableFor4, TableFor5}
+import org.scalatest.prop.TableFor5
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.TotalIncomePage
 import play.api.test.FakeRequest

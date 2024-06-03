@@ -25,7 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsView
+import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,7 +39,7 @@ class ResidentialPropertyFinanceCostsRRController @Inject() (
   requireData: DataRequiredAction,
   formProvider: ResidentialPropertyFinanceCostsFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ResidentialPropertyFinanceCostsView
+  view: ResidentialPropertyFinanceCostsRRView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 

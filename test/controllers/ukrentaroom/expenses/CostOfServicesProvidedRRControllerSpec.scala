@@ -32,7 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.CostOfServicesProvidedView
+import views.html.ukrentaroom.expenses.ConsolidatedExpensesRRView
 
 import scala.concurrent.Future
 
@@ -68,10 +68,13 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
           val request = DataRequest(fakeRequest, "", user, userAnswers)
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[CostOfServicesProvidedView]
+          val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, taxYear, if (isAgent) "agent" else "individual")(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
@@ -84,12 +87,17 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
         running(application) {
           val fakeRequest = FakeRequest(GET, costOfServicesProvidedRoute)
           val request = DataRequest(fakeRequest, "", user, userAnswers)
-          val view = application.injector.instanceOf[CostOfServicesProvidedView]
+          val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(
+          contentAsString(result) mustEqual view(
+            form.fill(validAnswer),
+            NormalMode,
+            taxYear,
+            if (isAgent) "agent" else "individual"
+          )(
             request,
             messages(application)
           ).toString
@@ -135,12 +143,17 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
           val request = DataRequest(fakeRequest, "", user, userAnswers)
           val boundForm = form.bind(Map("value" -> "invalid value"))
 
-          val view = application.injector.instanceOf[CostOfServicesProvidedView]
+          val view = application.injector.instanceOf[ConsolidatedExpensesRRView]
 
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(
+          contentAsString(result) mustEqual view(
+            boundForm,
+            NormalMode,
+            taxYear,
+            if (isAgent) "agent" else "individual"
+          )(
             request,
             messages(application)
           ).toString
