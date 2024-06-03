@@ -20,7 +20,6 @@ import controllers.about.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.enhancedstructuresbuildingallowance.routes._
-import controllers.furnishedholidaylettings.income.routes._
 import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
@@ -36,7 +35,6 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.furnishedholidaylettings.income.{FhlDeductingTaxPage, FhlIsNonUKLandlordPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.propertyrentals.expenses._
@@ -162,10 +160,7 @@ class Navigator @Inject() () {
           userAnswers =>
             esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
-        // Furnished Holiday Lettings
-    case FhlIsNonUKLandlordPage => taxYear => _ => userAnswers => isFhlNonUKLandlordNavigation(taxYear, userAnswers)
-    case FhlDeductingTaxPage    => taxYear => _ => _ => FhlIncomeController.onPageLoad(taxYear, NormalMode)
-    case FhlIncomePage          => taxYear => _ => _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
+
     case TotalIncomeAmountPage  => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
@@ -274,13 +269,6 @@ class Navigator @Inject() () {
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
-
-        // Furnished Holiday Lettings
-
-    case FhlIsNonUKLandlordPage =>
-      taxYear =>
-        previousUserAnswers =>
-          userAnswers => isFhlNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
 
     case TotalIncomeAmountPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
@@ -532,23 +520,6 @@ class Navigator @Inject() () {
     (userAnswers.get(EsbaRemoveConfirmationPage), userAnswers.get(EnhancedStructureBuildingFormGroup)) match {
       case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear)
       case (_, Some(esbaForm)) if esbaForm.nonEmpty         => EsbaClaimsController.onPageLoad(taxYear)
-    }
-
-  private def isFhlNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(FhlIsNonUKLandlordPage) match {
-      case Some(true) => FhlDeductingTaxController.onPageLoad(taxYear, NormalMode)
-      case _          => FhlIncomeController.onPageLoad(taxYear, NormalMode)
-    }
-
-  private def isFhlNonUKLandlordNavigationCheckMode(
-    taxYear: Int,
-    previousUserAnswers: UserAnswers,
-    userAnswers: UserAnswers
-  ): Call =
-    userAnswers.get(FhlIsNonUKLandlordPage) match {
-      case Some(true) if !previousUserAnswers.get(FhlIsNonUKLandlordPage).getOrElse(false) =>
-        FhlDeductingTaxController.onPageLoad(taxYear, CheckMode)
-      case _ => FhlIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 
 }

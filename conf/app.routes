@@ -337,25 +337,6 @@ POST        /:taxYear/enhanced-structure-building-allowance/claims              
 GET         /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
-##### FHL
-
-GET         /:taxYear/furnished-holiday-lettings/deducting-tax                                     controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/furnished-holiday-lettings/deducting-tax                                     controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/furnished-holiday-lettings/change-deducting-tax                              controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/furnished-holiday-lettings/change-deducting-tax                              controllers.furnishedholidaylettings.income.FhlDeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
-GET         /:taxYear/furnished-holiday-lettings/is-non-uk-landlord                                controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/furnished-holiday-lettings/is-non-uk-landlord                                controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord                         controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/furnished-holiday-lettings/change-is-non-uk-landlord                         controllers.furnishedholidaylettings.income.FhlIsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
-GET         /:taxYear/furnished-holiday-lettings/fhl-income                                        controllers.FhlIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/furnished-holiday-lettings/fhl-income                                        controllers.FhlIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/furnished-holiday-lettings/change-fhl-income                                 controllers.FhlIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/furnished-holiday-lettings/change-fhl-income                                 controllers.FhlIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
-GET         /:taxYear/furnished-holiday-lettings/income-check-your-answers                         controllers.furnishedholidaylettings.income.FhlIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
-
 
 ##### UK RENT A ROOM
 
