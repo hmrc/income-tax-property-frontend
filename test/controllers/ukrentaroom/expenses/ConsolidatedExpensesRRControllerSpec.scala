@@ -17,7 +17,7 @@
 package controllers.ukrentaroom.expenses
 
 import base.SpecBase
-import controllers.ukrentaroom.expenses.routes.ConsolidatedRRExpensesController
+import controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
 import forms.ConsolidatedRRExpensesFormProvider
 import models.{ConsolidatedRRExpenses, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -43,7 +43,7 @@ class ConsolidatedExpensesRRControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new ConsolidatedRRExpensesFormProvider()
   val form = formProvider("individual")
 
-  lazy val consolidatedRRExpensesRoute = ConsolidatedRRExpensesController.onPageLoad(taxYear, NormalMode).url
+  lazy val consolidatedRRExpensesRoute = ConsolidatedExpensesRRController.onPageLoad(taxYear, NormalMode).url
 
   "ConsolidatedRRExpenses Controller" - {
 
