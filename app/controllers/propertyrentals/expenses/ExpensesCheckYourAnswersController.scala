@@ -54,9 +54,7 @@ class ExpensesCheckYourAnswersController @Inject()(
         if (
           request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpensesYesOrNo)
         ) {
-          Seq(
-            ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)
-          ).flatten
+          Seq(ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)).flatten
         } else {
           Seq(
             ConsolidatedExpensesSummary.row(taxYear, request.userAnswers),

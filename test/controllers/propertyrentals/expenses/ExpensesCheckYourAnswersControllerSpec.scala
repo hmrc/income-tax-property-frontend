@@ -16,19 +16,33 @@
 
 package controllers.propertyrentals.expenses
 
+import audit.PropertyRentalsExpense
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes._
+import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class ExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
+  private val propertySubmissionService = mock[PropertySubmissionService]
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2023/summary")
+  val taxYear = 2024
+
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
 
   "ExpensesCheckYourAnswers Controller" - {
 
@@ -64,8 +78,27 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFl
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
-      val taxYear = 2023
+
+      val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
+      val userAnswers = UserAnswers("test")
+        .set(ConsolidatedExpensesPage, consolidatedExpenses)
+        .get
+
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
+      val rentalsExpense = PropertyRentalsExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(rentalsExpense))(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.ExpensesCheckYourAnswersController.onSubmit(taxYear).url)
@@ -78,4 +111,3 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFl
     }
   }
 }
-
