@@ -337,6 +337,7 @@ POST        /:taxYear/enhanced-structure-building-allowance/claims              
 GET         /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
+
 ##### UK RENT A ROOM
 
 GET         /:taxYear/uk-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
