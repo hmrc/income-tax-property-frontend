@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import models.requests.DataRequest
 import models.{TotalIncome, User, UserAnswers}
-import org.scalatest.prop.TableFor4
+import org.scalatest.prop.{TableFor4, TableFor5}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.TotalIncomePage
 import play.api.test.FakeRequest
@@ -39,17 +39,44 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
     "https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses"
   val withNoLinks = "Rent a room expenses"
   val lessThan85KURL =
+    s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/consolidated-rr-expenses"
+
+  val moreThan85KURL =
     s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance"
 
-  val scenarios: TableFor4[Boolean, String, UserAnswers, Option[(Boolean, String)]] =
-    Table[Boolean, String, UserAnswers, Option[(Boolean, String)]](
-      ("Is Agent", "AgencyOrIndividual", "Property Income", "IsLessThanEightyFiveThousandWithContainingString"),
-      (true, "agent", userAnswersWithoutPropertyIncome, None),
-      (true, "agent", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
-      (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks))),
-      (false, "individual", userAnswersWithoutPropertyIncome, None),
-      (false, "individual", userAnswersWithPropertyIncomeMoreThanEightyFiveThousand, Some((false, withNoLinks))),
-      (false, "individual", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)))
+  val scenarios: TableFor5[Boolean, String, UserAnswers, Option[(Boolean, String)], String] =
+    Table[Boolean, String, UserAnswers, Option[(Boolean, String)], String](
+      (
+        "Is Agent",
+        "AgencyOrIndividual",
+        "Property Income",
+        "IsLessThanEightyFiveThousandWithContainingString",
+        "nextPageLink"
+      ),
+      (true, "agent", userAnswersWithoutPropertyIncome, None, ""),
+      (
+        true,
+        "agent",
+        userAnswersWithPropertyIncomeMoreThanEightyFiveThousand,
+        Some((false, withNoLinks)),
+        moreThan85KURL
+      ),
+      (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)), lessThan85KURL),
+      (false, "individual", userAnswersWithoutPropertyIncome, None, ""),
+      (
+        false,
+        "individual",
+        userAnswersWithPropertyIncomeMoreThanEightyFiveThousand,
+        Some((false, withNoLinks)),
+        moreThan85KURL
+      ),
+      (
+        false,
+        "individual",
+        userAnswersWithPropertyIncomeLessThanEightyFiveThousand,
+        Some((true, withLinks)),
+        lessThan85KURL
+      )
     )
 
   forAll(scenarios) {
@@ -57,7 +84,8 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
       isAgent: Boolean,
       agencyOrIndividual: String,
       userAnswers: UserAnswers,
-      isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)]
+      isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)],
+      nextPageUrl: String
     ) =>
       val user = User(
         "",
@@ -88,7 +116,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
             } { r =>
               val (isLessThanEightyFiveThousand, containingString) = r
               status(result) mustEqual OK
-              contentAsString(result) mustEqual view(isLessThanEightyFiveThousand, lessThan85KURL)(
+              contentAsString(result) mustEqual view(isLessThanEightyFiveThousand, nextPageUrl)(
                 dataRequest,
                 messages(application)
               ).toString
