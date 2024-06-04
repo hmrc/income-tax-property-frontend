@@ -16,22 +16,30 @@
 
 package controllers.propertyrentals
 
+import audit.PropertyRentalsAbout
 import base.SpecBase
-import models.TotalIncome.Under
-import models.UserAnswers
-import pages.TotalIncomePage
-import pages.propertyrentals.ExpensesLessThan1000Page
+import models.{JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import play.api.inject
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.CheckYourAnswersView
 
-import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
   val taxYear: Int = 2024
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
 
   def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
 
@@ -69,8 +77,23 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Summar
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
-      val userAnswers = UserAnswers("test").set(ExpensesLessThan1000Page, true).get
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val userAnswers = UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage, true).get
+
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rentals-about")
+      val propertyRentalsAbout = PropertyRentalsAbout(expensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyRentalsAbout))(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
+        .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.PropertyRentalsCheckYourAnswersController.onSubmit(taxYear).url)
