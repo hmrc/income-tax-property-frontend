@@ -81,7 +81,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
-      val propertyRentalsAbout = PropertyRentalsAbout(expensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
+      val propertyRentalsAbout = PropertyRentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
 
       when(
         propertySubmissionService

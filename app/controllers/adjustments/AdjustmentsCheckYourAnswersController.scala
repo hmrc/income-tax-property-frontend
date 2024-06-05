@@ -65,7 +65,7 @@ class AdjustmentsCheckYourAnswersController @Inject()(
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
 
       request.userAnswers.get(Adjustments) match {
         case Some(adjustments) =>

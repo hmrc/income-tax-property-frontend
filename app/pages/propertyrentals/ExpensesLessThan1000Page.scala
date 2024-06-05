@@ -23,5 +23,5 @@ case object ExpensesLessThan1000Page extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
 
-  override def toString: String = "expensesLessThan1000"
+  override def toString: String = "toexpensesLessThan1000"
 }

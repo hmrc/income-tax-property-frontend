@@ -65,7 +65,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "propertyRentals": {
       |        "propertyRentalsAbout" : {
-      |            "expensesLessThan1000" : false,
+      |            "toexpensesLessThan1000" : false,
       |            "claimPropertyIncomeAllowance" : false
       |        },
       |        "propertyRentalsIncome" : {
