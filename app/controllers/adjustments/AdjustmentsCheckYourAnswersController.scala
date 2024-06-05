@@ -19,10 +19,12 @@ package controllers.adjustments
 import audit.Adjustments._
 import audit.{Adjustments, AuditModel, AuditService}
 import controllers.actions._
+import models.JourneyContext
 import models.requests.DataRequest
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -30,7 +32,7 @@ import viewmodels.govuk.summarylist._
 import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class AdjustmentsCheckYourAnswersController @Inject()(
                                                        override val messagesApi: MessagesApi,
@@ -38,9 +40,10 @@ class AdjustmentsCheckYourAnswersController @Inject()(
                                                        getData: DataRetrievalAction,
                                                        requireData: DataRequiredAction,
                                                        val controllerComponents: MessagesControllerComponents,
+                                                       propertySubmissionService: PropertySubmissionService,
                                                        audit: AuditService,
                                                        view: AdjustmentsCheckYourAnswersView
-                                                     ) extends FrontendBaseController with I18nSupport {
+                                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -61,27 +64,37 @@ class AdjustmentsCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
+
       request.userAnswers.get(Adjustments) match {
         case Some(adjustments) =>
-          auditCYA(taxYear, request, adjustments)
+          propertySubmissionService.saveJourneyAnswers(context, adjustments).map({
+
+            case Right(_) => {
+              auditCYA(taxYear, request, adjustments)
+              Redirect(controllers.routes.SummaryController.show(taxYear))
+            }
+            case Left(_) => InternalServerError
+          })
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
+
+          Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
       }
-      Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
   }
+      private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: Adjustments)(implicit hc: HeaderCarrier): Unit = {
+        val auditModel = AuditModel(
+          request.user.nino,
+          request.user.affinityGroup,
+          request.user.mtditid,
+          request.user.agentRef,
+          taxYear,
+          isUpdate = false,
+          "PropertyRentalsAdjustments",
+          adjustments
+        )
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: Adjustments)(implicit hc: HeaderCarrier): Unit = {
-    val auditModel = AuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      "PropertyRentalsAdjustments",
-      adjustments
-    )
-
-    audit.sendRentalsAuditEvent(auditModel)
+        audit.sendRentalsAuditEvent(auditModel)
+      }
   }
-}
