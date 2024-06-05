@@ -69,7 +69,7 @@ class AdjustmentsCheckYourAnswersController @Inject()(
 
       request.userAnswers.get(Adjustments) match {
         case Some(adjustments) =>
-          propertySubmissionService.saveRentalAdjustments(context, adjustments).map({
+          propertySubmissionService.saveJourneyAnswers(context, adjustments).map({
 
             case Right(_) => {
               auditCYA(taxYear, request, adjustments)
