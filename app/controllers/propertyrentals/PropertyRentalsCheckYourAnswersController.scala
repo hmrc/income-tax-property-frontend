@@ -76,7 +76,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rentals-about")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-about")
 
     propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).map {
       case Right(_) =>
