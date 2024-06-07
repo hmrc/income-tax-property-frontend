@@ -16,9 +16,8 @@
 
 package viewmodels.checkAnswers.allowances
 
-import controllers.allowances.routes.CapitalAllowancesForACarController
 import models.{CapitalAllowancesForACar, CheckMode, UserAnswers}
-import pages.CapitalAllowancesForACarPage
+import pages.allowances.CapitalAllowancesForACarPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}

@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object ResidentialFinanceCostPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ PageConstants.adjustments \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAdjustment \ toString
 
   override def toString: String = "residentialFinanceCost"
 }

@@ -15,8 +15,7 @@
  */
 
 package service
-import audit.Adjustments._
-import audit.Adjustments
+
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}

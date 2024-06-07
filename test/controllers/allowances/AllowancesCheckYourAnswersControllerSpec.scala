@@ -16,9 +16,9 @@
 
 package controllers.allowances
 
-import audit.{Allowance, AuditService}
+import audit.{AuditService, PropertyRentalsAllowance}
 import base.SpecBase
-import models.backend.{BusinessDetails, PropertyDetails}
+import models.backend.PropertyDetails
 import models.{ElectricChargePointAllowance, UserAnswers}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.doNothing
@@ -101,10 +101,10 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
       val userAnswers = UserAnswers("allowances-user-answers")
         .set(
-          Allowance,
-          Allowance(
+          PropertyRentalsAllowance,
+          PropertyRentalsAllowance(
             annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-            electricChargePointAllowance = electricChargePointAllowance,
+            electricChargePointAllowance = Some(electricChargePointAllowance),
             zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
             zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
             businessPremisesRenovationAllowance = Some(businessPremisesRenovation),

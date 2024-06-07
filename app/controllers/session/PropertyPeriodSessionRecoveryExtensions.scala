@@ -19,6 +19,7 @@ package controllers.session
 import models.{Adjustments, EsbasWithSupportingQuestions, FetchedBackendData, UserAnswers}
 import pages._
 import pages.adjustments._
+import pages.allowances.CapitalAllowancesForACarPage
 import pages.enhancedstructuresbuildingallowance._
 import play.api.libs.json.Writes
 import queries.Settable

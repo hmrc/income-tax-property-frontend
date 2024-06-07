@@ -16,8 +16,8 @@
 
 package controllers.adjustments
 
-import audit.Adjustments._
-import audit.{Adjustments, AuditModel, AuditService}
+import audit.PropertyRentalsAdjustments._
+import audit.{AuditModel, AuditService, PropertyRentalsAdjustments}
 import controllers.actions._
 import models.JourneyContext
 import models.requests.DataRequest
@@ -67,7 +67,7 @@ class AdjustmentsCheckYourAnswersController @Inject()(
 
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
 
-      request.userAnswers.get(Adjustments) match {
+      request.userAnswers.get(PropertyRentalsAdjustments) match {
         case Some(adjustments) =>
           propertySubmissionService.saveJourneyAnswers(context, adjustments).map({
 
@@ -83,7 +83,8 @@ class AdjustmentsCheckYourAnswersController @Inject()(
           Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
       }
   }
-      private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: Adjustments)(implicit hc: HeaderCarrier): Unit = {
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: PropertyRentalsAdjustments)(implicit hc: HeaderCarrier): Unit = {
         val auditModel = AuditModel(
           request.user.nino,
           request.user.affinityGroup,

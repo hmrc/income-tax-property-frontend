@@ -16,7 +16,7 @@
 
 package connectors
 
-import audit.Adjustments
+import audit.PropertyRentalsAdjustments
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
@@ -151,7 +151,7 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
   def saveRentalAdjustments(
                   ctx: JourneyContext,
                   incomeSourceId: String,
-                  adjustments: Adjustments
+                  adjustments: PropertyRentalsAdjustments
                 )
                 (
                   implicit hc: HeaderCarrier

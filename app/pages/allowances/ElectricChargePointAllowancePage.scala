@@ -17,13 +17,13 @@
 package pages.allowances
 
 import models.ElectricChargePointAllowance
-import pages.PageConstants.allowancesFormGroup
+import pages.PageConstants.propertyRentalsAllowance
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ElectricChargePointAllowancePage extends QuestionPage[ElectricChargePointAllowance] {
 
-  override def path: JsPath = JsPath \ allowancesFormGroup \ toString
+  override def path: JsPath = JsPath \ propertyRentalsAllowance \ toString
 
   override def toString: String = "electricChargePointAllowance"
 }

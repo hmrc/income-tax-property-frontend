@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.allowances
 
 import models.CapitalAllowancesForACar
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object CapitalAllowancesForACarPage extends QuestionPage[CapitalAllowancesForACar] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAllowance \ toString
 
   override def toString: String = "capitalAllowancesForACar"
 }
