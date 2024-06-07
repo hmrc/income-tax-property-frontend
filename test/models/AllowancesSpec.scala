@@ -67,6 +67,7 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
     "must deserialize from json" in {
       Json.parse(allowancesJson).validate[PropertyRentalsAllowance] mustBe JsSuccess(
         PropertyRentalsAllowance(
+          capitalAllowancesForACar = None,
           annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
           electricChargePointAllowance = Some(electricChargePointAllowance),
           zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),

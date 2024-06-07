@@ -21,17 +21,17 @@ import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
-final case class PropertyRentalsAdjustments(
-                                             privateUseAdjustment: PrivateUseAdjustment,
-                                             balancingCharge: BalancingCharge,
-                                             propertyIncomeAllowance: BigDecimal,
-                                             renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
-                                             residentialFinanceCost: BigDecimal,
-                                             unusedResidentialFinanceCost: BigDecimal
-                                           )
+final case class PropertyRentalsAdjustment(
+  privateUseAdjustment: PrivateUseAdjustment,
+  balancingCharge: BalancingCharge,
+  propertyIncomeAllowance: BigDecimal,
+  renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
+  residentialFinanceCost: BigDecimal,
+  unusedResidentialFinanceCost: BigDecimal
+)
 
-object PropertyRentalsAdjustments extends Gettable[PropertyRentalsAdjustments] {
-  implicit val format: Format[PropertyRentalsAdjustments] = Json.format[PropertyRentalsAdjustments]
+object PropertyRentalsAdjustment extends Gettable[PropertyRentalsAdjustment] {
+  implicit val format: Format[PropertyRentalsAdjustment] = Json.format[PropertyRentalsAdjustment]
 
   override def path: JsPath = JsPath \ toString
 

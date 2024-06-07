@@ -16,12 +16,13 @@
 
 package audit
 
-import models.ElectricChargePointAllowance
+import models.{CapitalAllowancesForACar, ElectricChargePointAllowance}
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 case class PropertyRentalsAllowance(
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   annualInvestmentAllowance: Option[BigDecimal],
   electricChargePointAllowance: Option[ElectricChargePointAllowance],
   zeroEmissionCarAllowance: Option[BigDecimal],
@@ -32,7 +33,7 @@ case class PropertyRentalsAllowance(
 )
 
 case object PropertyRentalsAllowance
-  extends Gettable[PropertyRentalsAllowance] with Settable[PropertyRentalsAllowance] {
+    extends Gettable[PropertyRentalsAllowance] with Settable[PropertyRentalsAllowance] {
   implicit val format: Format[PropertyRentalsAllowance] = Json.format[PropertyRentalsAllowance]
 
   override def path: JsPath = JsPath \ toString

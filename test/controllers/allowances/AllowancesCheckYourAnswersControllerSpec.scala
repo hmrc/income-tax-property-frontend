@@ -103,6 +103,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
         .set(
           PropertyRentalsAllowance,
           PropertyRentalsAllowance(
+            capitalAllowancesForACar = None,
             annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
             electricChargePointAllowance = Some(electricChargePointAllowance),
             zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
