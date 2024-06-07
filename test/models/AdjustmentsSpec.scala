@@ -16,7 +16,7 @@
 
 package models
 
-import audit.Adjustments
+import audit.PropertyRentalsAdjustment
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -42,8 +42,8 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
 
   "Adjustments" - {
     "must deserialise from json" in {
-      import audit.Adjustments._
-      Json.parse(adjustmentsJson).validate[Adjustments] mustBe JsSuccess(Adjustments(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), 2, RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2))
+      import audit.PropertyRentalsAdjustment._
+      Json.parse(adjustmentsJson).validate[PropertyRentalsAdjustment] mustBe JsSuccess(PropertyRentalsAdjustment(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), 2, RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2))
     }
   }
 }

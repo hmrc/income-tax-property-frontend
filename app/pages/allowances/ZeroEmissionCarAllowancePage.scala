@@ -16,13 +16,13 @@
 
 package pages.allowances
 
-import pages.PageConstants.allowancesFormGroup
+import pages.PageConstants.propertyRentalsAllowance
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ZeroEmissionCarAllowancePage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ allowancesFormGroup \ toString
+  override def path: JsPath = JsPath \ propertyRentalsAllowance \ toString
 
   override def toString: String = "zeroEmissionCarAllowance"
 }

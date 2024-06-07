@@ -18,15 +18,15 @@ package controllers.allowances
 
 
 import base.SpecBase
-import controllers.routes
 import controllers.allowances.routes._
+import controllers.routes
 import forms.allowances.CapitalAllowancesForACarFormProvider
 import models.{CapitalAllowancesForACar, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CapitalAllowancesForACarPage
+import pages.allowances.CapitalAllowancesForACarPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest

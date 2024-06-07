@@ -16,14 +16,15 @@
 
 package audit
 
-import models.ElectricChargePointAllowance
+import models.{CapitalAllowancesForACar, ElectricChargePointAllowance}
 import pages.PageConstants
-import play.api.libs.json.{JsPath, Json, OFormat}
+import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
-case class Allowance(
+case class PropertyRentalsAllowance(
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   annualInvestmentAllowance: Option[BigDecimal],
-  electricChargePointAllowance: ElectricChargePointAllowance,
+  electricChargePointAllowance: Option[ElectricChargePointAllowance],
   zeroEmissionCarAllowance: Option[BigDecimal],
   zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
   businessPremisesRenovationAllowance: Option[BigDecimal],
@@ -31,10 +32,11 @@ case class Allowance(
   otherCapitalAllowance: Option[BigDecimal]
 )
 
-case object Allowance extends Gettable[Allowance] with Settable[Allowance] {
-  implicit val format: OFormat[Allowance] = Json.format[Allowance]
+case object PropertyRentalsAllowance
+    extends Gettable[PropertyRentalsAllowance] with Settable[PropertyRentalsAllowance] {
+  implicit val format: Format[PropertyRentalsAllowance] = Json.format[PropertyRentalsAllowance]
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.allowancesFormGroup
+  override def toString: String = PageConstants.propertyRentalsAllowance
 }

@@ -16,39 +16,48 @@
 
 package viewmodels.checkAnswers.allowances
 
-import controllers.allowances.routes.CapitalAllowancesForACarController
+import controllers.allowances.routes
 import models.{CapitalAllowancesForACar, CheckMode, UserAnswers}
-import pages.CapitalAllowancesForACarPage
+import pages.allowances.CapitalAllowancesForACarPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-
 object CapitalAllowancesForACarSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CapitalAllowancesForACarPage).flatMap {
       case CapitalAllowancesForACar(true, Some(amount)) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("capitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
-          )))
-      case CapitalAllowancesForACar(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("capitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("capitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
+            )
           )
-        ))
+        )
+      case CapitalAllowancesForACar(false, _) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("capitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no").withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
+            )
+          )
+        )
       case _ => Option.empty[SummaryListRow]
     }
-  }
 
 }

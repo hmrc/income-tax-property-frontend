@@ -16,7 +16,7 @@
 
 package models
 
-import audit.Allowance
+import audit.PropertyRentalsAllowance
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -25,7 +25,7 @@ import play.api.libs.json.{JsSuccess, Json}
 
 class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val allowancesJson =
+  val allowancesJson: String =
     """
       {
       |	"annualInvestmentAllowance" : 100,
@@ -64,11 +64,12 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
   val otherCapitalAllowance = BigDecimal.valueOf(otherCapitalAllowanceValue)
 
   "Allowances" - {
-    "must deserialise from json" in {
-      Json.parse(allowancesJson).validate[Allowance] mustBe JsSuccess(
-        Allowance(
+    "must deserialize from json" in {
+      Json.parse(allowancesJson).validate[PropertyRentalsAllowance] mustBe JsSuccess(
+        PropertyRentalsAllowance(
+          capitalAllowancesForACar = None,
           annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-          electricChargePointAllowance = electricChargePointAllowance,
+          electricChargePointAllowance = Some(electricChargePointAllowance),
           zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
           zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
           businessPremisesRenovationAllowance = Some(businessPremisesRenovation),

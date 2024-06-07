@@ -16,7 +16,7 @@
 
 package controllers.allowances
 
-import audit.{Allowance, AuditModel, AuditService}
+import audit.{AuditModel, AuditService, PropertyRentalsAllowance}
 import controllers.actions._
 import controllers.routes
 import models.JourneyContext
@@ -67,7 +67,7 @@ class AllowancesCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(Allowance) match {
+      request.userAnswers.get(PropertyRentalsAllowance) match {
         case Some(allowance) =>
           saveAllowanceForPropertyRentals(taxYear, request, allowance).map {
             case Left(_) => InternalServerError
@@ -81,7 +81,7 @@ class AllowancesCheckYourAnswersController @Inject() (
       }
   }
 
-  private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(
+  private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(
     implicit hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] = {
     val context = JourneyContext(
@@ -90,13 +90,13 @@ class AllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       journeyName = "property-rental-allowances"
     )
-    propertySubmissionService.saveJourneyAnswers[Allowance](context, allowance)
+    propertySubmissionService.saveJourneyAnswers[PropertyRentalsAllowance](context, allowance)
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: Allowance)(implicit
-    hc: HeaderCarrier
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(implicit
+                                                                                                                     hc: HeaderCarrier
   ): Unit = {
-    val event = AuditModel[Allowance](
+    val event = AuditModel[PropertyRentalsAllowance](
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
