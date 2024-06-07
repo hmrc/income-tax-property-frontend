@@ -16,19 +16,26 @@
 
 package controllers.ukrentaroom.expenses
 
+import audit.RentARoomExpenses
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.propertyrentals.expenses.{ExpensesSaveFailed, NotFoundException}
+import controllers.routes
+import models.JourneyContext
+import models.requests.DataRequest
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.expenses._
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.expenses.ExpensesCheckYourAnswersRRView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ExpensesCheckYourAnswersRRController @Inject() (
   override val messagesApi: MessagesApi,
@@ -36,8 +43,10 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ExpensesCheckYourAnswersRRView
-) extends FrontendBaseController with I18nSupport with Logging {
+  view: ExpensesCheckYourAnswersRRView,
+  propertySubmissionService: PropertySubmissionService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -72,8 +81,27 @@ class ExpensesCheckYourAnswersRRController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(
-        Redirect(controllers.routes.SummaryController.show(taxYear))
-      )
+      request.userAnswers
+        .get(RentARoomExpenses)
+        .map(propertyRentalsExpense => saveRentARoomExpenses(taxYear, request, propertyRentalsExpense))
+        .getOrElse {
+          logger.error("Rent a room expenses section is not present in userAnswers")
+          Future.failed(NotFoundException)
+        }
+  }
+
+  private def saveRentARoomExpenses(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    rentARoomExpenses: RentARoomExpenses
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-expenses")
+    propertySubmissionService.saveJourneyAnswers(context, rentARoomExpenses).flatMap {
+      case Right(_) =>
+        Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+      case Left(_) => Future.failed(ExpensesSaveFailed)
+    }
   }
 }

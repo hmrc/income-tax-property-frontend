@@ -16,7 +16,7 @@
 
 package models
 
-import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome}
+import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalExpense, PropertyRentalsIncome}
 import pages.PageConstants.esbasWithSupportingQuestions
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
@@ -51,9 +51,9 @@ object Allowances {
   implicit val format: OFormat[Allowances] = Json.format[Allowances]
 }
 final case class PropertyRentals(
-  propertyRentalsIncome: PropertyRentalsIncome,
-  propertyRentalsExpense: PropertyRentalsExpense,
-  propertyRentalsAbout: PropertyRentalsAbout
+                                  propertyRentalsIncome: PropertyRentalsIncome,
+                                  propertyRentalsExpense: PropertyRentalExpense,
+                                  propertyRentalsAbout: PropertyRentalsAbout
 )
 object PropertyRentals {
   implicit val format: OFormat[PropertyRentals] = Json.format[PropertyRentals]
