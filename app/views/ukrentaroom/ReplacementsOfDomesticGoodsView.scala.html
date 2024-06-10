@@ -52,7 +52,7 @@
 
         @govukInput(
             InputViewModel(
-                field = form("value"),
+                field = form("replacementsOfDomesticGoods"),
                 label = LabelViewModel(messages(s"ukrentaroom.replacementsOfDomesticGoods.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Medium)
             )
             .asNumeric()
