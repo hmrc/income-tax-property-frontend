@@ -419,7 +419,7 @@ GET        /:taxYear/uk-rent-a-room/allowances/change-electric-charge-point-allo
 POST       /:taxYear/uk-rent-a-room/allowances/change-electric-charge-point-allowance-for-an-ev                        controllers.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
-GET        /:taxYear/uk-rent-a-room/allowances/allowances-start                            controllers.ukrentaroom.allowances.RRAllowancesStartController.onPageLoad(taxYear: Int)
+GET        /:taxYear/uk-rent-a-room/allowances/allowances-start                                          controllers.ukrentaroom.allowances.RRAllowancesStartController.onPageLoad(taxYear: Int)
 
 GET        /:taxYear/uk-rent-a-room/allowances/annual-investment-allowance                               controllers.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/allowances/annual-investment-allowance                               controllers.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -433,3 +433,5 @@ GET        /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car     
 POST       /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car                              controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-start                                       controllers.ukrentaroom.adjustments.RaRAdjustmentsIntroController.onPageLoad(taxYear: Int)

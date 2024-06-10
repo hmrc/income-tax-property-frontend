@@ -1662,3 +1662,8 @@ raRCapitalAllowancesForACar.error.nonNumeric.individual = Enter the amount for y
 raRCapitalAllowancesForACar.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 raRCapitalAllowancesForACar.error.outOfRange = Enter an amount between £{0} and £{1}
 raRCapitalAllowancesForACar.change.hidden = Capital allowances for a car
+
+raRAdjustmentsIntro.title = Adjustments
+raRAdjustmentsIntro.heading = Adjustments
+raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
+raRAdjustmentsIntro.bullet.content.l1 = balancing charge
