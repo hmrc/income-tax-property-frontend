@@ -1662,3 +1662,37 @@ raRCapitalAllowancesForACar.error.nonNumeric.individual = Enter the amount for y
 raRCapitalAllowancesForACar.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 raRCapitalAllowancesForACar.error.outOfRange = Enter an amount between £{0} and £{1}
 raRCapitalAllowancesForACar.change.hidden = Capital allowances for a car
+
+ukrentaroom.replacementsOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.error.nonNumeric = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.replacementsOfDomesticGoods.error.twoDecimalPlaces = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.replacementsOfDomesticGoods.error.required = Enter how much you spent on replacing domestic goods
+ukrentaroom.replacementsOfDomesticGoods.error.wholeNumber = Enter your replacementsOfDomesticGoods using whole numbers
+ukrentaroom.replacementsOfDomesticGoods.error.outOfRange = Enter an amount between £0 and £100,000,000,000
+ukrentaroom.replacementsOfDomesticGoods.change.hidden = Replacement of domestic goods
+
+ukrentaroom.replacementsOfDomesticGoods.heading.individual = How much did you spend on replacing domestic goods?
+ukrentaroom.replacementsOfDomesticGoods.title.individual = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.p1.individual = You can claim the cost of replacing domestic items such as:
+ukrentaroom.replacementsOfDomesticGoods.li1.individual = movable furniture such as beds, free-standing wardrobes
+ukrentaroom.replacementsOfDomesticGoods.li2.individual = furnishings like curtains and carpets
+ukrentaroom.replacementsOfDomesticGoods.li3.individual = household appliances like TVs and fridges
+ukrentaroom.replacementsOfDomesticGoods.li4.individual  = crockery and cutlery
+ukrentaroom.replacementsOfDomesticGoods.p2.individual = You cannot claim this:
+ukrentaroom.replacementsOfDomesticGoods.li5.individual = if you replace a domestic item in a property, but you can still claim capital allowances on these items
+ukrentaroom.replacementsOfDomesticGoods.li6.individual = for the initial cost of buying domestic items for a house
+ukrentaroom.replacementsOfDomesticGoods.p3.agent = Read more about replacing domestic items at GOV.UK (opens in new tab)
+
+ukrentaroom.replacementsOfDomesticGoods.heading.agent = How much did your client spend on replacing domestic goods?
+ukrentaroom.replacementsOfDomesticGoods.title.agent = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.p1.agent = Your client can claim the cost of replacing domestic items such as:
+ukrentaroom.replacementsOfDomesticGoods.li1.agent = movable furniture such as beds, free-standing wardrobes
+ukrentaroom.replacementsOfDomesticGoods.li2.agent = furnishings like curtains and carpets
+ukrentaroom.replacementsOfDomesticGoods.li3.agent = household appliances like TVs and fridges
+ukrentaroom.replacementsOfDomesticGoods.li4.agent  = crockery and cutlery
+ukrentaroom.replacementsOfDomesticGoods.p2.agent = They cannot claim this:
+ukrentaroom.replacementsOfDomesticGoods.li5.agent = if they replace a domestic item in a property, but they can still claim capital allowances on these items
+ukrentaroom.replacementsOfDomesticGoods.li6.agent = for the initial cost of buying domestic items for a house
+ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
+ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
+ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings

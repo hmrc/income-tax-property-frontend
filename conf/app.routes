@@ -433,3 +433,8 @@ GET        /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car     
 POST       /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car                              controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/allowances/replacements-of-domestic-goods                                 controllers.ukrentaroom.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/allowances/replacements-of-domestic-goods                                 controllers.ukrentaroom.ReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-goods                          controllers.ukrentaroom.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-goods                          controllers.ukrentaroom.ReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

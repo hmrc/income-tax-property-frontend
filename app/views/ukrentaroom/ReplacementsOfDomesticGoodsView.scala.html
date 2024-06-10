@@ -1,0 +1,67 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import models.requests._
+@import viewmodels.LabelSize
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"ukrentaroom.replacementsOfDomesticGoods.title.${request.user.isAgentMessageKey}"))) {
+
+<h1 class="govuk-heading-xl">@messages(s"ukrentaroom.replacementsOfDomesticGoods.title.${request.user.isAgentMessageKey}")</h1>
+<p class="govuk-body">@messages(s"ukrentaroom.replacementsOfDomesticGoods.p1.${request.user.isAgentMessageKey}")</p>
+<ul class="govuk-list govuk-list--bullet" >
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li1.${request.user.isAgentMessageKey}")</li>
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li2.${request.user.isAgentMessageKey}")</li>
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li3.${request.user.isAgentMessageKey}")</li>
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li4.${request.user.isAgentMessageKey}")</li>
+</ul>
+<p class="govuk-body">@messages(s"ukrentaroom.replacementsOfDomesticGoods.p2.${request.user.isAgentMessageKey}")</p>
+<ul class="govuk-list govuk-list--bullet" >
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li5.${request.user.isAgentMessageKey}")</li>
+    <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li6.${request.user.isAgentMessageKey}")</li>
+</ul>
+<p class="govuk-body">@messages("ukrentaroom.replacementsOfDomesticGoods.p3")&nbsp;<a href='@messages(s"ukrentaroom.replacementsOfDomesticGoods.link.href")' target="_blank" rel="noreferrer noopener">@messages(s"ukrentaroom.replacementsOfDomesticGoods.link.text")</a></p>
+    @formHelper(action = controllers.ukrentaroom.routes.ReplacementsOfDomesticGoodsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        @govukInput(
+            InputViewModel(
+                field = form("value"),
+                label = LabelViewModel(messages(s"ukrentaroom.replacementsOfDomesticGoods.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Medium)
+            )
+            .asNumeric()
+            .withWidth(Fixed10)
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
