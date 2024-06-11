@@ -985,6 +985,8 @@ reportPropertyIncome.error.required.individual = Select ‘I want to report my p
 reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
 
+#### SBA
+
 claimStructureBuildingAllowance.title = Do you want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.title.agent = Does your client want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.heading = Structures and buildings allowance
@@ -1085,6 +1087,24 @@ structureBuildingAllowanceAddress.duplicateSba = The address for this claim has 
 structureBuildingAllowanceAddress.duplicateEsba = The address for this claim has already been added in enhanced structures and buildings allowance
 structureBuildingAllowanceAddress.hint = You can only add one address per claim
 
+sbaCheckYourAnswers.title = sbaCheckYourAnswers
+sbaCheckYourAnswers.heading = sbaCheckYourAnswers
+
+sbaClaims.title.individual = Your structures and buildings allowance claims
+sbaClaims.heading.individual = Your structures and buildings allowance claims
+sbaClaims.title.agent = Your client's structures and buildings allowance claims
+sbaClaims.heading.agent = Your client's structures and buildings allowance claims
+
+sbaClaims.error.required.individual = Select yes if you want to add another claim
+sbaClaims.error.required.agent = Select yes if your client wants to add another claim
+sbaClaims.legend = Do you want to add another claim?
+
+sbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
+sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
+
+##### ESBA
 
 esbaQualifyingAmount.title = Qualifying amount
 esbaQualifyingAmount.heading = What is the total qualifying amount?
@@ -1182,23 +1202,6 @@ esbaAddress.change.hidden = Enhanced structures and buildings allowance
 esbaAddress.duplicateEsba = The address for this claim has already been added.
 esbaAddress.duplicateSba = The address for this claim has already been added in structures and buildings allowance
 esbaAddress.hint = You can only add one address per claim
-
-sbaCheckYourAnswers.title = sbaCheckYourAnswers
-sbaCheckYourAnswers.heading = sbaCheckYourAnswers
-
-sbaClaims.title.individual = Your structures and buildings allowance claims
-sbaClaims.heading.individual = Your structures and buildings allowance claims
-sbaClaims.title.agent = Your client's structures and buildings allowance claims
-sbaClaims.heading.agent = Your client's structures and buildings allowance claims
-
-sbaClaims.error.required.individual = Select yes if you want to add another claim
-sbaClaims.error.required.agent = Select yes if your client wants to add another claim
-sbaClaims.legend = Do you want to add another claim?
-
-sbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance {0} claim?
-sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
-sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
-sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
 
 esbaRemoveConfirmation.title = Do you want to remove this enhanced structures and buildings allowance {0} claim?
 esbaRemoveConfirmation.heading = Do you want to remove this enhanced structures and buildings allowance {0} claim?
@@ -1663,6 +1666,40 @@ raRCapitalAllowancesForACar.error.twoDecimalPlaces = Amount can only include pou
 raRCapitalAllowancesForACar.error.outOfRange = Enter an amount between £{0} and £{1}
 raRCapitalAllowancesForACar.change.hidden = Capital allowances for a car
 
+ukrentaroom.replacementsOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.error.nonNumeric = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.replacementsOfDomesticGoods.error.twoDecimalPlaces = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.replacementsOfDomesticGoods.error.required = Enter how much you spent on replacing domestic goods
+ukrentaroom.replacementsOfDomesticGoods.error.wholeNumber = Enter your replacementsOfDomesticGoods using whole numbers
+ukrentaroom.replacementsOfDomesticGoods.error.outOfRange = Enter an amount between £0 and £100,000,000,000
+ukrentaroom.replacementsOfDomesticGoods.change.hidden = Replacement of domestic goods
+
+ukrentaroom.replacementsOfDomesticGoods.heading.individual = How much did you spend on replacing domestic goods?
+ukrentaroom.replacementsOfDomesticGoods.title.individual = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.p1.individual = You can claim the cost of replacing domestic items such as:
+ukrentaroom.replacementsOfDomesticGoods.li1.individual = movable furniture such as beds, free-standing wardrobes
+ukrentaroom.replacementsOfDomesticGoods.li2.individual = furnishings like curtains and carpets
+ukrentaroom.replacementsOfDomesticGoods.li3.individual = household appliances like TVs and fridges
+ukrentaroom.replacementsOfDomesticGoods.li4.individual  = crockery and cutlery
+ukrentaroom.replacementsOfDomesticGoods.p2.individual = You cannot claim this:
+ukrentaroom.replacementsOfDomesticGoods.li5.individual = if you replace a domestic item in a property, but you can still claim capital allowances on these items
+ukrentaroom.replacementsOfDomesticGoods.li6.individual = for the initial cost of buying domestic items for a house
+ukrentaroom.replacementsOfDomesticGoods.p3.agent = Read more about replacing domestic items at GOV.UK (opens in new tab)
+
+ukrentaroom.replacementsOfDomesticGoods.heading.agent = How much did your client spend on replacing domestic goods?
+ukrentaroom.replacementsOfDomesticGoods.title.agent = Replacement of domestic goods
+ukrentaroom.replacementsOfDomesticGoods.p1.agent = Your client can claim the cost of replacing domestic items such as:
+ukrentaroom.replacementsOfDomesticGoods.li1.agent = movable furniture such as beds, free-standing wardrobes
+ukrentaroom.replacementsOfDomesticGoods.li2.agent = furnishings like curtains and carpets
+ukrentaroom.replacementsOfDomesticGoods.li3.agent = household appliances like TVs and fridges
+ukrentaroom.replacementsOfDomesticGoods.li4.agent  = crockery and cutlery
+ukrentaroom.replacementsOfDomesticGoods.p2.agent = They cannot claim this:
+ukrentaroom.replacementsOfDomesticGoods.li5.agent = if they replace a domestic item in a property, but they can still claim capital allowances on these items
+ukrentaroom.replacementsOfDomesticGoods.li6.agent = for the initial cost of buying domestic items for a house
+ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
+ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
+ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
+
 
 raRbalancingCharge.title.agent = Balancing Charge
 raRbalancingCharge.title.individual = Balancing Charge
@@ -1692,3 +1729,4 @@ raRbalancingCharge.amount.error.nonNumeric.agent = The amount for your client's 
 raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client's balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+

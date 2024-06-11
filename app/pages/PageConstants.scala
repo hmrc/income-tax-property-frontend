@@ -32,5 +32,7 @@ object PageConstants {
 
   val rentARoomExpense: String = "rentARoomExpenses"
   val rentARoomAdjustment: String = "rentARoomAdjustments"
+  val rentARoomAllowance: String = "rentARoomAllowances"
+
 
 }

@@ -60,6 +60,7 @@ checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
 
 ukproperty.caption	=	Ynglŷn ag eiddo yn y DU ar gyfer 6 Ebrill {0} i 5 Ebrill {1}
+taxYear.caption = 6 Ebrill {0} i 5 Ebrill {1}
 
 journeyRecovery.continue.title	=	Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth
 journeyRecovery.continue.heading	=	Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth
@@ -976,3 +977,118 @@ otherCapitalAllowance.error.required.agent = Nodwch swm ar gyfer lwfansau cyfala
 otherCapitalAllowance.error.twoDecimalPlaces.individual = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
 otherCapitalAllowance.error.twoDecimalPlaces.agent = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
 otherCapitalAllowance.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
+
+### ESBA
+
+esbaQualifyingAmount.title                        = Swm cymhwysol
+esbaQualifyingAmount.heading                      = Beth yw cyfanswm y swm cymhwysol?
+esbaQualifyingAmount.checkYourAnswersLabel        = Swm cymhwysol
+esbaQualifyingAmount.error.wholeNumber            = Nodwch eich swm cymhwysol gan ddefnyddio rhifau cyfan
+esbaQualifyingAmount.change.hidden                = Swm cymhwysol
+esbaQualifyingAmount.h1                           = Lwfans strwythurau ac adeiladau uwch
+esbaQualifyingAmount.p1                           = Gallwch hawlio 10% o wariant cymhwysol y Porthladd Rhydd bob blwyddyn
+esbaQualifyingAmount.p1.a.link                    = https://www.gov.uk/guidance/check-if-you-can-claim-enhanced-structures-and-buildings-allowance-relief-in-freeport-tax-sites#:~:text=You%20can%20claim%20enhanced%20structures%20and%20buildings%20allowance%20relief%20when,designated%20until%2030%20September%202026.
+esbaQualifyingAmount.p1.a.text                    = os ydych yn bodloni pob un o’r amodau (yn agor tab newydd).
+esbaQualifyingAmount.p2                           = Gallwch wneud hawliad am y rhyddhad am 10 mlynedd o ddyddiad dechrau cyfnod y lwfans.
+esbaQualifyingAmount.p3                           = Dyddiad dechrau cyfnod y lwfans yw’r hwyraf o’r canlynol:
+esbaQualifyingAmount.li1                          = y dyddiad y defnyddir yr adeilad at ddiben dibreswyl am y tro cyntaf
+esbaQualifyingAmount.li2                          = y dyddiad y gwneir y gwariant cymhwysol
+esbaQualifyingAmount.p4                           = Darllenwch ragor am
+esbaQualifyingAmount.p4.a.link                    = https://www.gov.uk/guidance/check-if-you-can-claim-enhanced-structures-and-buildings-allowance-relief-in-freeport-tax-sites#:~:text=You%20can%20claim%20enhanced%20structures%20and%20buildings%20allowance%20relief%20when,designated%20until%2030%20September%202026.
+esbaQualifyingAmount.p4.a.text                    = swm cymhwysol y lwfans strwythurau ac adeiladau uwch (yn agor tab newydd).
+
+esbaQualifyingDate.title                          = Dyddiad cymhwysol
+esbaQualifyingDate.heading                        = Beth yw’r dyddiad cymhwysol?
+esbaQualifyingDate.hint                           = Er enghraifft, 01 1 2022
+esbaQualifyingDate.checkYourAnswersLabel          = Dyddiad cymhwysol
+esbaQualifyingDate.error.required.all             = Nodwch y dyddiad cymhwysol
+esbaQualifyingDate.error.required.two             = Nodwch ddyddiad cymhwysol go iawn
+esbaQualifyingDate.error.required                 = Nodwch ddyddiad cymhwysol go iawn
+esbaQualifyingDate.error.invalid                  = Nodwch ddyddiad cymhwysol go iawn
+esbaQualifyingDate.change.hidden                  = Dyddiad cymhwysol
+esbaQualifyingDate.h1                             = Lwfans strwythurau ac adeiladau uwch
+esbaQualifyingDate.summary                        = Deall dyddiad cymhwysol y lwfans strwythurau ac adeiladau uwch
+esbaQualifyingDate.p                              = Mae’n rhaid i chi fodloni nifer o amodau, gan gynnwys:
+esbaQualifyingDate.li1                            = dechrau’r gwaith adeiladu ar yr adeilad neu’r strwythur pan fydd mewn safle treth Porthladd Rhydd (mae’r gwaith adeiladu’n dechrau pan fyddwch yn ymrwymo i’r contract cyntaf)
+esbaQualifyingDate.li2                            = sicrhau bod yr adeilad neu’r strwythur yn cael ei ddefnyddio mewn ffordd gymhwysol pan fydd mewn safle treth Porthladd Rhydd a hefyd ar neu cyn 30 Medi 2026
+esbaQualifyingDate.li3                            = gwario’n gymhwysol ar yr adeilad neu’r strwythur pan fydd mewn safle treth Porthladd Rhydd a hefyd ar neu cyn 30 Medi 2026
+esbaQualifyingDate.li4                            = mae’n rhaid i chi fod wedi cofrestru ar gyfer naill ai Treth Gorfforaeth neu Dreth Incwm
+esbaQualifyingDate.error.maxDate                  = Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau uwch fod ar neu cyn mis Medi 2026
+
+esbaQualifyingAmount.error.nonNumeric             = Gall yr hawliad am lwfans strwythurau ac adeiladau uwch gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+esbaQualifyingAmount.error.required               = Nodwch gyfanswm y swm cymhwysol ar gyfer lwfans strwythurau ac adeiladau uwch
+esbaQualifyingAmount.error.twoDecimalPlaces       = Gall werth yr hawliad am lwfans strwythurau ac adeiladau uwch gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+esbaQualifyingAmount.error.outOfRange             = Nodwch swm sydd rhwng £0 a £100,000,000
+esbaClaimAmount.title                             = Faint yw’ch hawliad am lwfans strwythurau ac adeiladau uwch?
+esbaClaimAmount.heading.individual                = Faint yw’ch hawliad am lwfans strwythurau ac adeiladau uwch?
+esbaClaimAmount.heading.agent                     = Faint yw hawliad eich cleient am lwfans strwythurau ac adeiladau uwch?
+esbaClaimAmount.checkYourAnswersLabel             = Gwerth yr hawliad
+esbaClaimAmount.error.nonNumeric                  = Gall yr hawliad am lwfans strwythurau ac adeiladau uwch gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+esbaClaimAmount.error.required.individual         = Nodwch y swm ar gyfer eich hawliad am lwfans strwythurau ac adeiladau uwch
+esbaClaimAmount.error.required.agent              = Nodwch y swm ar gyfer hawliad eich cleient am lwfans strwythurau ac adeiladau uwch
+esbaClaimAmount.error.twoDecimalPlaces            = Gall yr hawliad am lwfans strwythurau ac adeiladau uwch gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+esbaClaimAmount.error.outOfRange                  = Nodwch swm rhwng £{0} a £{1}
+esbaClaimAmount.change.hidden                     = EsbaClaimAmount
+esbaClaimAmount.span                              = Lwfans strwythurau ac adeiladau uwch
+esbaClaimAmount.hint.individual                   = Nodwch y swm rydych wedi’i gyfrifo.
+esbaClaimAmount.hint.agent                        = Nodwch y swm rydych wedi’i gyfrifo ar gyfer eich cleient.
+
+enhancedSBA.title                                 = Hawliadau am lwfans strwythurau ac adeiladau uwch
+enhancedSBA.heading.individual                    = Hawliadau am lwfans strwythurau ac adeiladau uwch
+enhancedSBA.heading.agent                         = Hawliadau am lwfans strwythurau ac adeiladau uwch
+enhancedSBA.para1                                 = Rhowch wybod i CThEF os ydych wedi talu rhywfaint o’r costau tuag at brynu, adeiladu neu adnewyddu adeilad, neu’r costau cyfan. Mae’n bosibl y byddwch yn gallu hawlio rhyddhad treth.
+enhancedSBA.addclaim.button                       = Ychwanegu hawliad
+
+claimEnhancedSBA.title                            = A hoffech hawlio’r lwfans strwythurau ac adeiladau uwch?
+claimEnhancedSBA.title.agent                      = A hoffai’ch cleient hawlio’r lwfans strwythurau ac adeiladau uwch?
+claimEnhancedSBA.heading.individual               = Lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.heading.agent                    = Lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.legend.individual                = A hoffech hawlio’r lwfans strwythurau ac adeiladau uwch?
+claimEnhancedSBA.legend.agent                     = A hoffai’ch cleient hawlio’r lwfans strwythurau ac adeiladau uwch?
+claimEnhancedSBA.details.summary                  = Deall y lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.details.content                  = Gallwch hawlio rhyddhad lwfans strwythurau ac adeiladau uwch pan fyddwch chi’n gwneud gwaith adeiladu penodol ar strwythurau ac adeiladau mewn safle treth Porthladd Rhydd dynodedig.
+claimEnhancedSBA.details.p1                       = Ardaloedd arbennig o fewn ffiniau’r Deyrnas Unedig yw Porthladdoedd Rhydd lle bo rheoliadau economaidd gwahanol ar waith.
+claimEnhancedSBA.details.p2                       = Mae’n rhaid i chi fod wedi cofrestru ar gyfer naill ai Treth Gorfforaeth neu Dreth Incwm.
+claimEnhancedSBA.details.p3                       = Darllenwch ragor am
+claimEnhancedSBA.details.content.link.text        = y lwfans strwythurau ac adeiladau uwch ar GOV.UK (yn agor tab newydd)
+claimEnhancedSBA.details.content.link.href        = https://www.gov.uk/government/publications/enhanced-structures-and-buildings-allowances-in-freeports
+claimEnhancedSBA.yes                              = Iawn
+claimEnhancedSBA.no                               = Na
+claimEnhancedSBA.checkYourAnswersLabel            = Gwiriwch eich atebion ar gyfer lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.error.required.agent             = Dewiswch ‘Iawn’ os yw’ch cleient eisiau hawlio lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.error.required.individual        = Dewiswch ‘Iawn’ os ydych chi eisiau hawlio lwfans strwythurau ac adeiladau uwch
+claimEnhancedSBA.change.hidden                    = Lwfans Strwythurau ac Adeiladau Uwch
+
+esbaAddress.title                                 = Ble mae’r strwythur neu’r adeilad uwch newydd wedi’i leoli?
+esbaAddress.heading                               = Ble mae’r strwythur neu’r adeilad uwch newydd wedi’i leoli?
+esbaAddress.caption                               = Lwfans strwythurau ac adeiladau uwch
+esbaAddress.buildingName.legend                   = Enw’r adeilad
+esbaAddress.buildingName.error.required           = Nodwch enw adeilad ar gyfer y strwythur neu adeilad uwch
+esbaAddress.buildingName.error.max                = Mae’n rhaid i enw’r adeilad ar gyfer y strwythur neu adeilad uwch cymhwysol beidio â bod yn fwy na 90 o gymeriadau
+esbaAddress.buildingNumber.legend                 = Rhif yr adeilad
+esbaAddress.buildingNumber.error.required         = Nodwch rif adeilad ar gyfer y strwythur neu adeilad uwch
+esbaAddress.buildingNumber.error.max              = Nodwch rif ar gyfer y strwythur neu adeilad uwch cymhwysol
+esbaAddress.postcode.legend                       = Cod post
+esbaAddress.postcode.error.required               = Nodwch god post ar gyfer y strwythur neu adeilad uwch
+esbaAddress.postcode.error.invalid                = Nodwch god post cyflawn yn y DU ar gyfer y strwythur neu adeilad uwch cymhwysol
+esbaAddress.checkYourAnswersLabel                 = Cyfeiriad
+esbaAddress.change.hidden                         = Lwfans strwythurau ac adeiladau uwch
+esbaAddress.duplicateEsba                         = Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod.
+esbaAddress.duplicateSba                          = Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod ar gyfer y lwfans strwythurau ac adeiladau
+esbaAddress.hint                                  = Gallwch ychwanegu un cyfeiriad yn unig ar gyfer pob hawliad
+
+esbaRemoveConfirmation.title                      = A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau uwch?
+esbaRemoveConfirmation.heading                    = A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau uwch?
+esbaRemoveConfirmation.error.required.individual  = Dewiswch ‘Iawn’ os ydych am ddileu’r hawliad
+esbaRemoveConfirmation.error.required.agent       = Dewiswch ‘Iawn’ os yw’ch cleient am ddileu’r hawliad
+
+esbaClaims.title.individual                       = Eich hawliadau am lwfans strwythurau ac adeiladau uwch
+esbaClaims.heading.individual                     = Eich hawliadau am lwfans strwythurau ac adeiladau uwch
+esbaClaims.title.agent                            = Hawliadau’ch cleient am lwfans strwythurau ac adeiladau uwch
+esbaClaims.heading.agent                          = Hawliadau’ch cleient am lwfans strwythurau ac adeiladau uwch
+
+esbaClaims.error.required.individual              = Dewiswch ‘Iawn’ os ydych am ychwanegu hawliad arall
+esbaClaims.error.required.agent                   = Dewiswch ‘Iawn’ os yw’ch cleient am ychwanegu hawliad arall
+esbaClaims.legend                                 = A ydych chi am ychwanegu hawliad arall?
+
+summary.enhancedStructuresAndBuildingAllowance    = Lwfans strwythurau ac adeiladau uwch
