@@ -985,6 +985,8 @@ reportPropertyIncome.error.required.individual = Select ‘I want to report my p
 reportPropertyIncome.error.required.agent = Select ‘I want to report my client’s property income’ or ‘I do not want to report my client’s property income’
 reportPropertyIncome.change.hidden = Report Property Income
 
+#### SBA
+
 claimStructureBuildingAllowance.title = Do you want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.title.agent = Does your client want to claim structures and buildings allowance?
 claimStructureBuildingAllowance.heading = Structures and buildings allowance
@@ -1085,6 +1087,24 @@ structureBuildingAllowanceAddress.duplicateSba = The address for this claim has 
 structureBuildingAllowanceAddress.duplicateEsba = The address for this claim has already been added in enhanced structures and buildings allowance
 structureBuildingAllowanceAddress.hint = You can only add one address per claim
 
+sbaCheckYourAnswers.title = sbaCheckYourAnswers
+sbaCheckYourAnswers.heading = sbaCheckYourAnswers
+
+sbaClaims.title.individual = Your structures and buildings allowance claims
+sbaClaims.heading.individual = Your structures and buildings allowance claims
+sbaClaims.title.agent = Your client's structures and buildings allowance claims
+sbaClaims.heading.agent = Your client's structures and buildings allowance claims
+
+sbaClaims.error.required.individual = Select yes if you want to add another claim
+sbaClaims.error.required.agent = Select yes if your client wants to add another claim
+sbaClaims.legend = Do you want to add another claim?
+
+sbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
+sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
+sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
+
+##### ESBA
 
 esbaQualifyingAmount.title = Qualifying amount
 esbaQualifyingAmount.heading = What is the total qualifying amount?
@@ -1182,23 +1202,6 @@ esbaAddress.change.hidden = Enhanced structures and buildings allowance
 esbaAddress.duplicateEsba = The address for this claim has already been added.
 esbaAddress.duplicateSba = The address for this claim has already been added in structures and buildings allowance
 esbaAddress.hint = You can only add one address per claim
-
-sbaCheckYourAnswers.title = sbaCheckYourAnswers
-sbaCheckYourAnswers.heading = sbaCheckYourAnswers
-
-sbaClaims.title.individual = Your structures and buildings allowance claims
-sbaClaims.heading.individual = Your structures and buildings allowance claims
-sbaClaims.title.agent = Your client's structures and buildings allowance claims
-sbaClaims.heading.agent = Your client's structures and buildings allowance claims
-
-sbaClaims.error.required.individual = Select yes if you want to add another claim
-sbaClaims.error.required.agent = Select yes if your client wants to add another claim
-sbaClaims.legend = Do you want to add another claim?
-
-sbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance {0} claim?
-sbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance {0} claim?
-sbaRemoveConfirmation.error.required.individual = Select yes if you want to remove the claim
-sbaRemoveConfirmation.error.required.agent = Select yes if your client wants to remove the claim
 
 esbaRemoveConfirmation.title = Do you want to remove this enhanced structures and buildings allowance {0} claim?
 esbaRemoveConfirmation.heading = Do you want to remove this enhanced structures and buildings allowance {0} claim?
