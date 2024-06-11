@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.{AuditModel, AuditService, PropertyRentalExpense}
+import audit.{AuditModel, AuditService, PropertyRentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
 import models.JourneyContext
@@ -75,16 +75,16 @@ class ExpensesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers
-        .get(PropertyRentalExpense)
-        .map(rentARoomExpenses => saveExpenses(taxYear, request, rentARoomExpenses))
+        .get(PropertyRentalsExpense)
+        .map(propertyRentalsExpense => saveExpenses(taxYear, request, propertyRentalsExpense))
         .getOrElse {
-          logger.error("Property Rentals Expenses section is not present in userAnswers")
+          logger.error("Property Rentals Expense section is not present in userAnswers")
           Future.failed(NotFoundException)
         }
   }
 
-  private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: PropertyRentalExpense)(implicit
-                                                                                                            hc: HeaderCarrier
+  private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: PropertyRentalsExpense)(implicit
+                                                                                                             hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
 
@@ -96,8 +96,8 @@ class ExpensesCheckYourAnswersController @Inject() (
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalExpense)(implicit
-                                                                                                                      hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(implicit
+                                                                                                                       hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,

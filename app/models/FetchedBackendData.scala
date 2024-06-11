@@ -16,7 +16,7 @@
 
 package models
 
-import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalExpense, PropertyRentalsIncome}
+import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome}
 import pages.PageConstants.esbasWithSupportingQuestions
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
@@ -52,7 +52,7 @@ object Allowances {
 }
 final case class PropertyRentals(
                                   propertyRentalsIncome: PropertyRentalsIncome,
-                                  propertyRentalsExpense: PropertyRentalExpense,
+                                  propertyRentalsExpense: PropertyRentalsExpense,
                                   propertyRentalsAbout: PropertyRentalsAbout
 )
 object PropertyRentals {

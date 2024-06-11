@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.{ElectricChargePointAllowanceForAnEVPage, RaRZeroEmissionCarAllowancePage}
+import pages.ukrentaroom.allowances.{RaRElectricChargePointAllowanceForAnEVPage, RaRZeroEmissionCarAllowancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +46,7 @@ class ElectricChargePointAllowanceForAnEVController @Inject() (
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ElectricChargePointAllowanceForAnEVPage) match {
+      val preparedForm = request.userAnswers.get(RaRElectricChargePointAllowanceForAnEVPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -64,7 +64,7 @@ class ElectricChargePointAllowanceForAnEVController @Inject() (
             Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ElectricChargePointAllowanceForAnEVPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRElectricChargePointAllowanceForAnEVPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator

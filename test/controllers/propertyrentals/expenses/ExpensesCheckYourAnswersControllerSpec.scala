@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.PropertyRentalExpense
+import audit.PropertyRentalsExpense
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes._
 import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
@@ -86,7 +86,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
-      val rentalsExpense = PropertyRentalExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
+      val rentalsExpense = PropertyRentalsExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
 
       when(
         propertySubmissionService
