@@ -433,3 +433,8 @@ GET        /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car     
 POST       /:taxYear/uk-rent-a-room/allowances/capital-allowances-for-a-car                              controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-rent-a-room/allowances/change-capital-allowances-for-a-car                       controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-rent-a-room/adjustments/rar-balancing-charge                               controllers.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/adjustments/rar-balancing-charge                               controllers.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge                       controllers.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge                        controllers.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
