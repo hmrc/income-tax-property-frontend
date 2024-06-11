@@ -77,6 +77,21 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
     }
   }
 
+  def currencyFieldWithMaximum(form: Form[_],
+                               fieldName: String,
+                               maximum: BigDecimal,
+                               expectedError: FormError): Unit = {
+
+    s"not bind BigDecimals above $maximum" in {
+
+      forAll(bigDecimalsAboveValue(maximum) -> "intAboveMax") {
+        number: BigDecimal =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors must contain only expectedError
+      }
+    }
+  }
+
   def currencyFieldWithMinimum(form: Form[_],
                                fieldName: String,
                                minimum: Int,
@@ -86,6 +101,40 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
 
       forAll(intsBelowValue(minimum) -> "intBelowMin") {
         number: Int =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors must contain only expectedError
+      }
+    }
+  }
+
+  def currencyFieldWithRange(form: Form[_],
+                             fieldName: String,
+                             minimum: BigDecimal,
+                             maximum: BigDecimal,
+                             expectedError: FormError, defaultFields: (String, String)*): Unit = {
+
+    s"not bind BigDecimals outside under $minimum" in {
+      val result = form.bind(Map(fieldName -> (minimum - 1).toString) concat defaultFields).apply(fieldName)
+      result.errors must contain only expectedError
+    }
+
+    s"not bind BigDecimals outside above $maximum" in {
+      val result = form.bind(Map(fieldName -> (maximum + 1).toString) concat defaultFields).apply(fieldName)
+      result.errors must contain only expectedError
+    }
+  }
+
+
+
+  def currencyFieldWithMinimum(form: Form[_],
+                               fieldName: String,
+                               minimum: BigDecimal,
+                               expectedError: FormError): Unit = {
+
+    s"not bind BigDecimals below $minimum" in {
+
+      forAll(bigDecimalsBelowValue(minimum) -> "intBelowMin") {
+        number: BigDecimal =>
           val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
           result.errors must contain only expectedError
       }

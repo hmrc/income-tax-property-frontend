@@ -107,4 +107,20 @@ trait IntFieldBehaviours extends FieldBehaviours {
       }
     }
   }
+
+  def bigDecimalFieldWithRange(form: Form[_],
+                        fieldName: String,
+                        minimum: BigDecimal,
+                        maximum: BigDecimal,
+                        expectedError: FormError): Unit = {
+
+    s"not bind integers outside the range $minimum to $maximum" in {
+
+      forAll(bigDecimalsOutsideRange(minimum, maximum) -> "bigDecimalOutsideRange") {
+        number =>
+          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          result.errors must contain only expectedError
+      }
+    }
+  }
 }
