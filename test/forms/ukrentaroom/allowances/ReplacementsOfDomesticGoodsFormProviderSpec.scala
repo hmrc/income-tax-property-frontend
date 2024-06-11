@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.ukrentaroom.allowances
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
