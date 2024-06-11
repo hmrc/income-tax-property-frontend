@@ -25,15 +25,15 @@ case class RentARoomExpenses(
   consolidatedExpenses: Option[ConsolidatedExpenses],
   rentsRatesAndInsurance: Option[BigDecimal],
   repairsAndMaintenanceCosts: Option[BigDecimal],
-  loanInterestOrOtherFinancialCost: Option[BigDecimal],
-  otherProfessionalFees: Option[BigDecimal],
+  legalManagementOtherFee: Option[BigDecimal],
   costsOfServicesProvided: Option[BigDecimal],
-  propertyBusinessTravelCosts: Option[BigDecimal],
-  otherAllowablePropertyExpenses: Option[BigDecimal]
+  residentialPropertyFinanceCosts: Option[BigDecimal],
+  unusedResidentialPropertyFinanceCostsBroughtFwd: Option[BigDecimal],
+  otherPropertyExpenses: Option[BigDecimal]
 )
 
 object RentARoomExpenses extends Gettable[RentARoomExpenses] {
-implicit val formats: Format[RentARoomExpenses] = Json.format[RentARoomExpenses]
+  implicit val formats: Format[RentARoomExpenses] = Json.format[RentARoomExpenses]
 
   override def path: JsPath = JsPath \ toString
 

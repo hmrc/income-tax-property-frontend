@@ -83,23 +83,25 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
 
       val rentsRatesAndInsurance = 100
       val repairsAndMaintenanceCosts = 200
-      val loanInterest = 300
-      val otherProfessionalFee = 400
+      val legalManagementOtherFee = 300
+      val residentialPropertyFinanceCosts = 400
       val costsOfServicesProvided = 500
-      val propertyBusinessTravelCost = 600
-      val otherAllowablePropertyExpenses = 700
+      val unusedResidentialPropertyFinanceCostsBroughtFwd = 600
+      val otherPropertyExpenses = 700
 
       val answers = UserAnswers(
         id = "rent-a-room-expenses-userId",
         data = Json.obj(
           PageConstants.rentARoomExpense -> Json.obj(
-            "rentsRatesAndInsurance"           -> JsNumber(rentsRatesAndInsurance),
-            "repairsAndMaintenanceCosts"       -> JsNumber(repairsAndMaintenanceCosts),
-            "loanInterestOrOtherFinancialCost" -> JsNumber(loanInterest),
-            "otherProfessionalFees"            -> JsNumber(otherProfessionalFee),
-            "costsOfServicesProvided"          -> JsNumber(costsOfServicesProvided),
-            "propertyBusinessTravelCosts"      -> JsNumber(propertyBusinessTravelCost),
-            "otherAllowablePropertyExpenses"   -> JsNumber(otherAllowablePropertyExpenses)
+            "rentsRatesAndInsurance"          -> JsNumber(rentsRatesAndInsurance),
+            "repairsAndMaintenanceCosts"      -> JsNumber(repairsAndMaintenanceCosts),
+            "legalManagementOtherFee"         -> JsNumber(legalManagementOtherFee),
+            "residentialPropertyFinanceCosts" -> JsNumber(residentialPropertyFinanceCosts),
+            "costsOfServicesProvided"         -> JsNumber(costsOfServicesProvided),
+            "unusedResidentialPropertyFinanceCostsBroughtFwd" -> JsNumber(
+              unusedResidentialPropertyFinanceCostsBroughtFwd
+            ),
+            "otherPropertyExpenses" -> JsNumber(otherPropertyExpenses)
           )
         )
       )
@@ -116,11 +118,11 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
                 consolidatedExpenses = None,
                 rentsRatesAndInsurance = Some(rentsRatesAndInsurance),
                 repairsAndMaintenanceCosts = Some(repairsAndMaintenanceCosts),
-                loanInterestOrOtherFinancialCost = Some(loanInterest),
-                otherProfessionalFees = Some(otherProfessionalFee),
                 costsOfServicesProvided = Some(costsOfServicesProvided),
-                propertyBusinessTravelCosts = Some(propertyBusinessTravelCost),
-                otherAllowablePropertyExpenses = Some(otherAllowablePropertyExpenses)
+                residentialPropertyFinanceCosts = Some(residentialPropertyFinanceCosts),
+                unusedResidentialPropertyFinanceCostsBroughtFwd = Some(unusedResidentialPropertyFinanceCostsBroughtFwd),
+                legalManagementOtherFee = Some(legalManagementOtherFee),
+                otherPropertyExpenses = Some(otherPropertyExpenses)
               )
             )
           )(

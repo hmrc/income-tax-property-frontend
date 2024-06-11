@@ -51,7 +51,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val rows: Seq[SummaryListRow] =
-        if (request.userAnswers.get(ConsolidatedExpensesRRPage).exists(_.areExpensesConsolidated)) {
+        if (request.userAnswers.get(ConsolidatedExpensesRRPage).exists(_.consolidatedExpensesYesOrNo)) {
           Seq(
             ConsolidatedExpensesRRSummary.row(taxYear, request.userAnswers)
           ).flatten
@@ -83,7 +83,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
     implicit request =>
       request.userAnswers
         .get(RentARoomExpenses)
-        .map(propertyRentalsExpense => saveRentARoomExpenses(taxYear, request, propertyRentalsExpense))
+        .map(rentARoomExpense => saveRentARoomExpenses(taxYear, request, rentARoomExpense))
         .getOrElse {
           logger.error("Rent a room expenses section is not present in userAnswers")
           Future.failed(NotFoundException)
