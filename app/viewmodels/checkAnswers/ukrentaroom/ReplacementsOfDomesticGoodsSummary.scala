@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.ReplacementsOfDomesticGoodsPage
 import play.api.i18n.Messages

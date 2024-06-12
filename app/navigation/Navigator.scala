@@ -51,6 +51,7 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
+    case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
         _ =>

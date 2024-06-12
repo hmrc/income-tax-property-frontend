@@ -73,7 +73,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       Future.successful(
-        Redirect(controllers.routes.SummaryController.show(taxYear))
+        Redirect(controllers.ukrentaroom.expenses.routes.ExpensesRRSectionCompleteController.onPageLoad(taxYear))
       )
   }
 }
