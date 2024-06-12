@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukrentaroom.adjustments
 
 import models.RaRBalancingCharge
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object RaRBalancingChargePage extends QuestionPage[RaRBalancingCharge] {

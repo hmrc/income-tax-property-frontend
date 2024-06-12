@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.adjustments
 
 import controllers.actions._
-import forms.RaRBalancingChargeFormProvider
+import forms.ukrentaroom.adjustments.RaRBalancingChargeFormProvider
 import models.Mode
 import models.RaRBBalancingCharge.format
 import navigation.Navigator
-import pages.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.RaRBalancingChargeView
+import views.html.ukrentaroom.adjustments.RaRBalancingChargeView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

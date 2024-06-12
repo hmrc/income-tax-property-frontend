@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
-import forms.RaRBalancingChargeFormProvider
-import models.{NormalMode, RaRBalancingCharge, UserAnswers}
+import controllers.ukrentaroom.adjustments.routes
+import forms.ukrentaroom.adjustments.RaRBalancingChargeFormProvider
 import models.RaRBBalancingCharge.format
+import models.{NormalMode, RaRBalancingCharge, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.RaRBalancingChargeView
+import views.html.ukrentaroom.adjustments.RaRBalancingChargeView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -60,7 +61,10 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[RaRBalancingChargeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -76,13 +80,19 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[RaRBalancingChargeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "agent")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RaRBalancingChargePage, RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23))).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(RaRBalancingChargePage, RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23)))
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -94,8 +104,12 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23))),
-          taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23))),
+          taxYear,
+          NormalMode,
+          "agent"
+        )(request, messages(application)).toString
       }
     }
 
@@ -141,7 +155,10 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(
+          request,
+          messages(application)
+        ).toString
       }
     }
   }
