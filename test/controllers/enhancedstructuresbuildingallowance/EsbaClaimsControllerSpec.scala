@@ -17,14 +17,13 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import controllers.enhancedstructuresbuildingallowance.EsbaClaimsController
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.{EsbasWithSupportingQuestions, UserAnswers}
+import models.EsbasWithSupportingQuestions
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.enhancedstructuresbuildingallowance.{Esba, Esbas}
+import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
