@@ -24,27 +24,25 @@ import org.scalacheck.Gen._
 import org.scalacheck.{Gen, Shrink}
 import pages.enhancedstructuresbuildingallowance.Esba
 
+import scala.math.BigDecimal.RoundingMode
+import scala.math.BigDecimal.RoundingMode.RoundingMode
+
 trait Generators extends ModelGenerators {
 
   implicit val dontShrink: Shrink[String] = Shrink.shrinkAny
 
-  def genIntersperseString(gen: Gen[String],
-                           value: String,
-                           frequencyV: Int = 1,
-                           frequencyN: Int = 10): Gen[String] = {
+  def genIntersperseString(gen: Gen[String], value: String, frequencyV: Int = 1, frequencyN: Int = 10): Gen[String] = {
 
     val genValue: Gen[Option[String]] = Gen.frequency(frequencyN -> None, frequencyV -> Gen.const(Some(value)))
 
     for {
       seq1 <- gen
       seq2 <- Gen.listOfN(seq1.length, genValue)
-    } yield {
-      seq1.toSeq.zip(seq2).foldLeft("") {
-        case (acc, (n, Some(v))) =>
-          acc + n + v
-        case (acc, (n, _)) =>
-          acc + n
-      }
+    } yield seq1.toSeq.zip(seq2).foldLeft("") {
+      case (acc, (n, Some(v))) =>
+        acc + n + v
+      case (acc, (n, _)) =>
+        acc + n
     }
   }
 
@@ -53,26 +51,25 @@ trait Generators extends ModelGenerators {
     genIntersperseString(numberGen, ",")
   }
 
-  def bigDecimalsInRangeWithCommas(min: BigDecimal, max: BigDecimal): Gen[String] = {
-    val numberGen = choose[BigDecimal](min, max).map(_.toString)
+  def bigDecimalsInRangeWithCommas(min: BigDecimal, max: BigDecimal, roundingMode: RoundingMode): Gen[String] = {
+    val numberGen = choose[BigDecimal](min, max).map(_.setScale(2, roundingMode)).map(_.toString)
     genIntersperseString(numberGen, ",")
   }
 
   def intsLargerThanMaxValue: Gen[BigInt] =
-    arbitrary[BigInt] suchThat(x => x > Int.MaxValue)
+    arbitrary[BigInt] suchThat (x => x > Int.MaxValue)
 
   def intsSmallerThanMinValue: Gen[BigInt] =
-    arbitrary[BigInt] suchThat(x => x < Int.MinValue)
+    arbitrary[BigInt] suchThat (x => x < Int.MinValue)
 
   def nonNumerics: Gen[String] =
-    alphaStr suchThat(_.size > 0)
+    alphaStr suchThat (_.size > 0)
 
   def decimals: Gen[String] =
     arbitrary[BigDecimal]
       .suchThat(_.abs < Int.MaxValue)
       .suchThat(!_.isValidInt)
       .map("%f".format(_))
-
 
   def decimalsNotTwoDecimalPlaces: Gen[String] =
     arbitrary[BigDecimal]
@@ -82,28 +79,28 @@ trait Generators extends ModelGenerators {
       .map("%f".format(_))
 
   def intsBelowValue(value: Int): Gen[Int] =
-    arbitrary[Int] suchThat(_ < value)
+    arbitrary[Int] suchThat (_ < value)
 
   def bigDecimalsBelowValue(value: BigDecimal): Gen[BigDecimal] =
     arbitrary[BigDecimal] suchThat (_ < value)
 
   def intsAboveValue(value: Int): Gen[Int] =
-    arbitrary[Int] suchThat(_ > value)
+    arbitrary[Int] suchThat (_ > value)
 
   def bigDecimalsAboveValue(value: BigDecimal): Gen[BigDecimal] =
     arbitrary[BigDecimal] suchThat (_ > value)
 
   def intsOutsideRange(min: Int, max: Int): Gen[Int] =
-    arbitrary[Int] suchThat(x => x < min || x > max)
+    arbitrary[Int] suchThat (x => x < min || x > max)
 
   def bigDecimalsOutsideRange(min: BigDecimal, max: BigDecimal): Gen[BigDecimal] =
     arbitrary[BigDecimal] suchThat (x => x < min || x > max)
 
   def nonBooleans: Gen[String] =
     arbitrary[String]
-      .suchThat (_.nonEmpty)
-      .suchThat (_ != "true")
-      .suchThat (_ != "false")
+      .suchThat(_.nonEmpty)
+      .suchThat(_ != "true")
+      .suchThat(_ != "false")
 
   def nonEmptyString: Gen[String] =
     arbitrary[String] suchThat (_.nonEmpty)
@@ -111,7 +108,7 @@ trait Generators extends ModelGenerators {
   def stringsWithMaxLength(maxLength: Int): Gen[String] =
     for {
       length <- choose(1, maxLength)
-      chars <- listOfN(length, arbitrary[Char])
+      chars  <- listOfN(length, arbitrary[Char])
     } yield chars.mkString
 
   def stringsLongerThan(minLength: Int): Gen[String] = for {
@@ -136,26 +133,23 @@ trait Generators extends ModelGenerators {
     def toMillis(date: LocalDate): Long =
       date.atStartOfDay.atZone(ZoneOffset.UTC).toInstant.toEpochMilli
 
-    Gen.choose(toMillis(min), toMillis(max)).map {
-      millis =>
-        Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
+    Gen.choose(toMillis(min), toMillis(max)).map { millis =>
+      Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
     }
   }
 
-  def genEsba(): Gen[Esba] = {
+  def genEsba(): Gen[Esba] =
     for {
-      esbaQualifyingDate <- arbitrary[LocalDate]
+      esbaQualifyingDate   <- arbitrary[LocalDate]
       esbaQualifyingAmount <- arbitrary[BigDecimal]
-      esbaClaimAmount <- arbitrary[BigDecimal]
-      esbaAddress <- genEsbaAddress()
+      esbaClaimAmount      <- arbitrary[BigDecimal]
+      esbaAddress          <- genEsbaAddress()
     } yield Esba(esbaQualifyingDate, esbaQualifyingAmount, esbaClaimAmount, esbaAddress)
-  }
 
-  def genEsbaAddress(): Gen[EsbaAddress] = {
+  def genEsbaAddress(): Gen[EsbaAddress] =
     for {
-      buildingName <- arbitrary[String]
+      buildingName   <- arbitrary[String]
       buildingNumber <- arbitrary[String]
-      postCode <- arbitrary[String]
+      postCode       <- arbitrary[String]
     } yield EsbaAddress(buildingName, buildingNumber, postCode)
-  }
 }

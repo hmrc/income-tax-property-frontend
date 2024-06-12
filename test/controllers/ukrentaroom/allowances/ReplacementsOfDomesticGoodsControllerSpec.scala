@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukrentaroom.allowances
 
 import base.SpecBase
-import forms.ReplacementsOfDomesticGoodsFormProvider
+import controllers.routes
+import forms.ukrentaroom.allowances.ReplacementsOfDomesticGoodsFormProvider
 import models.requests.DataRequest
 import models.{NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -25,13 +26,13 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import pages.ukrentaroom.ReplacementsOfDomesticGoodsPage
+import pages.ukrentaroom.allowances.ReplacementsOfDomesticGoodsPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.ReplacementsOfDomesticGoodsView
+import views.html.ukrentaroom.allowances.ReplacementsOfDomesticGoodsView
 
 import scala.concurrent.Future
 
@@ -46,7 +47,7 @@ class ReplacementsOfDomesticGoodsControllerSpec extends SpecBase with MockitoSug
 
   val validAnswer = BigDecimal(0)
   lazy val replacementsOfDomesticGoodsRoute =
-    controllers.ukrentaroom.routes.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode).url
+    controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode).url
 
   val scenarios = Table[String, Boolean](("AgencyOrIndividual", "IsAgent"), ("agency", true), ("individual", false))
   forAll(scenarios) { (agencyOrIndividual, isAgent) =>
