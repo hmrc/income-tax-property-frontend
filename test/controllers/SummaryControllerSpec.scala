@@ -178,18 +178,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
           TaskListTag.NotStarted,
           "about_link"
-        ),
-        TaskListItem(
-          "summary.expenses",
-          controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
-          TaskListTag.NotStarted,
-          "expenses_link"
-        ),
-        TaskListItem(
-          "summary.allowances",
-          controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
-          TaskListTag.NotStarted,
-          "allowances_link"
         )
       )
 

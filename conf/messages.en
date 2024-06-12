@@ -1666,6 +1666,7 @@ raRCapitalAllowancesForACar.error.twoDecimalPlaces = Amount can only include pou
 raRCapitalAllowancesForACar.error.outOfRange = Enter an amount between £{0} and £{1}
 raRCapitalAllowancesForACar.change.hidden = Capital allowances for a car
 
+
 ukrentaroom.replacementsOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
 ukrentaroom.replacementsOfDomesticGoods.error.nonNumeric = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.replacementsOfDomesticGoods.error.twoDecimalPlaces = The amount spent on replacing domestic goods can only include pounds and pence, for example £600 or £600.20
@@ -1700,6 +1701,7 @@ ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
 ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
 ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
 
+
 ukRentARoom.otherCapitalAllowances.title = Other capital allowances
 ukRentARoom.otherCapitalAllowances.heading.individual = How much are your other capital allowances?
 ukRentARoom.otherCapitalAllowances.heading.agent = How much are your client’s other capital allowances?
@@ -1720,3 +1722,11 @@ ukRentARoom.otherCapitalAllowances.p2.agent = Your client cannot claim capital a
 ukRentARoom.otherCapitalAllowances.p3.agent = There is more information on
 ukRentARoom.otherCapitalAllowances.href.link = https://www.gov.uk/government/publications/capital-allowances-and-balancing-charges-hs252-self-assessment-helpsheet/hs252-capital-allowances-and-balancing-charges-2022#:~:text=for%20more%20information.-,Balancing%20charge,AIA%20on%20all%20your%20costs.
 ukRentARoom.otherCapitalAllowances.href.label = capital allowances and balancing charges on GOV.UK
+
+
+raRAdjustmentsIntro.title = Adjustments
+raRAdjustmentsIntro.heading = Adjustments
+raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
+raRAdjustmentsIntro.bullet.content.l1 = balancing charge
+
+
