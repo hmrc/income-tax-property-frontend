@@ -18,9 +18,11 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
+import models.ClaimExpensesOrRRR
 import models.{NormalMode, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.{SummaryPage, UKPropertyPage}
+import pages.ukrentaroom.ClaimExpensesOrRRRPage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 import java.time.LocalDate
@@ -183,16 +185,41 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "allowances_link"
     )
+    val summaryAdjustmentsItem = TaskListItem(
+      "summary.adjustments",
+      controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "adjustments_link"
+    )
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
     }
 
-    "createUkRentARoomRows return only three rows when user has selected Rent a room" in {
+    "createUkRentARoomRows return only one row when user has selected Rent a room" in {
       val userAnswersWithUkRentARoom = emptyUserAnswers
         .set(
           UKPropertyPage,
           Set[UKPropertySelect](UKPropertySelect.RentARoom)
         )
+        .success
+        .value
+
+      // ToDo: Should be updated when expenses selection page ticket is merged.
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(1)
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        Seq(summaryAboutItem)
+      )
+
+    }
+    "createUkRentARoomRows return three rows when user has selected Rent a room and Rent a Room Relief" in {
+      val userAnswersWithUkRentARoom = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.RentARoom)
+        )
+        .success
+        .value
+        .set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(true, Some(12.34)))
         .success
         .value
 
@@ -203,6 +230,26 @@ class SummaryPageSpec extends SpecBase {
       )
 
     }
+    "createUkRentARoomRows return four rows when user has selected Rent a room and Expenses" in {
+      val userAnswersWithUkRentARoom = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.RentARoom)
+        )
+        .success
+        .value
+        .set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(false, Some(12.34)))
+        .success
+        .value
+
+      // ToDo: Should be updated when expenses selection page ticket is merged.
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(4)
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        Seq(summaryAboutItem, summaryExpensesItem, summaryAllowancesItem, summaryAdjustmentsItem)
+      )
+
+    }
   }
 
 }
+

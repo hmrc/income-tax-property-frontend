@@ -65,17 +65,22 @@
     </a></p>
 
 
-@govukInput(
-InputViewModel(
-field = form("raRAnnualInvestmentAllowance"),
-label = LabelViewModel(messages(s"raRAnnualInvestmentAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
-)
-.asNumeric()
-.withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
-)
+    @govukInput(
+        InputViewModel(
+        field = form("raRAnnualInvestmentAllowance"),
+        label = LabelViewModel(messages(s"raRAnnualInvestmentAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
+        )
+        .asNumeric()
+        .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+    )
 
-@govukButton(
-ButtonViewModel(messages("site.continue")).withId("continue")
-)
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).withId("continue")
+    )
+
+    }
 }
+
+@{
+// $COVERAGE-OFF$
 }

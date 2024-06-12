@@ -15,7 +15,8 @@
  *@
 
 @import viewmodels.InputWidth._
-@import controllers.ukrentaroom.routes
+@import models.requests._
+@import viewmodels.LabelSize
 
 @this(
     layout: templates.Layout,
@@ -25,11 +26,15 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"ukrentaroom.income.totalIncomeAmount.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages("ukRentARoom.otherCapitalAllowances.title"))) {
+<h1 class="govuk-heading-xl">@messages("ukRentARoom.otherCapitalAllowances.title")</h1>
+<p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p1.${request.user.isAgentMessageKey}")</p>
+<p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p2.${request.user.isAgentMessageKey}")</p>
+<p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p3.${request.user.isAgentMessageKey}")&nbsp;<a href='@messages("ukRentARoom.otherCapitalAllowances.href.link")'>@messages("ukRentARoom.otherCapitalAllowances.href.label")</a></p>
 
-    @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+@formHelper(action = controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -37,8 +42,8 @@
 
         @govukInput(
             InputViewModel(
-                field = form("totalIncomeAmount"),
-                label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading()
+                field = form("otherCapitalAllowances"),
+                label = LabelViewModel(messages(s"ukRentARoom.otherCapitalAllowances.heading.${request.user.isAgentMessageKey}")).asPageHeading(LabelSize.Medium)
             )
             .asNumeric()
             .withWidth(Fixed10)
@@ -49,8 +54,4 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
-}
-
-@{
-// $COVERAGE-OFF$
 }

@@ -26,7 +26,7 @@ case object ConsolidatedExpensesRRPage extends QuestionPage[ConsolidatedRRExpens
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomExpense \ toString
 
-  override def toString: String = "consolidatedRRExpenses"
+  override def toString: String = "consolidatedExpenses"
 
   override def cleanup(value: Option[ConsolidatedRRExpenses], userAnswers: UserAnswers): Try[UserAnswers] =
     value

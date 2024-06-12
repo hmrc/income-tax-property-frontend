@@ -479,7 +479,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(ConsolidatedExpensesRRPage) match {
       case Some(ConsolidatedRRExpenses(false, _))
-          if previousUserAnswers.get(ConsolidatedExpensesRRPage).map(_.areExpensesConsolidated).getOrElse(true) =>
+          if previousUserAnswers.get(ConsolidatedExpensesRRPage).map(_.consolidatedExpensesYesOrNo).getOrElse(true) =>
         RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
       case _ =>
         ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)

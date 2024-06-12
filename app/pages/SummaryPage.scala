@@ -22,7 +22,7 @@ import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
-import pages.ukrentaroom.{AboutSectionCompletePage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -76,10 +76,18 @@ case object SummaryPage {
     val ukRentARoomAbout: TaskListItem = ukRentARoomAboutItem(userAnswers, taxYear)
     val ukRentARoomExpenses: TaskListItem = ukRentARoomExpensesItem(userAnswers, taxYear)
     val ukRentARoomAllowances: TaskListItem = ukRentARoomAllowancesItem(userAnswers, taxYear)
+    val ukRentARoomAdjustments: TaskListItem = ukRentARoomAdjustmentsItem(userAnswers, taxYear)
     val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+
+    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimExpensesOrRRR)
     // ToDo: Should be updated when expenses selection page ticket is merged.
     if (isRentARoomSelected) {
-      Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances)
+      claimRentARoomRelief
+        .collect {
+          case true  => Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances)
+          case false => Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances, ukRentARoomAdjustments)
+        }
+        .getOrElse(Seq(ukRentARoomAbout))
     } else {
       Seq.empty[TaskListItem]
     }
@@ -197,6 +205,14 @@ case object SummaryPage {
       controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "allowances_link"
+    )
+
+  private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.adjustments",
+      controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "adjustments_link"
     )
 
 }
