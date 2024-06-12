@@ -1701,8 +1701,32 @@ ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
 ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
 ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
 
+
+ukRentARoom.otherCapitalAllowances.title = Other capital allowances
+ukRentARoom.otherCapitalAllowances.heading.individual = How much are your other capital allowances?
+ukRentARoom.otherCapitalAllowances.heading.agent = How much are your client’s other capital allowances?
+ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel = OtherCapitalAllowances
+ukRentARoom.otherCapitalAllowances.error.nonNumeric.agent = The amount for your client’s capital allowances can only include pounds and pence, for example £600 or £600.20.
+ukRentARoom.otherCapitalAllowances.error.nonNumeric.individual = The amount for your capital allowances can only include pounds and pence, for example £600 or £600.20.
+ukRentARoom.otherCapitalAllowances.error.twoDecimalPlaces.agent = The amount for your client’s capital allowances can only include pounds and pence, for example £600 or £600.20.
+ukRentARoom.otherCapitalAllowances.error.twoDecimalPlaces.individual = The amount for your capital allowances can only include pounds and pence, for example £600 or £600.20.
+ukRentARoom.otherCapitalAllowances.error.required.individual = Enter the amount for your other capital allowances
+ukRentARoom.otherCapitalAllowances.error.required.agent = Enter the amount for your client’s other capital allowances
+ukRentARoom.otherCapitalAllowances.error.outOfRange = Enter an amount between £0 and £100,000,000,000
+ukRentARoom.otherCapitalAllowances.change.hidden = OtherCapitalAllowances
+ukRentARoom.otherCapitalAllowances.p1.individual = You can claim capital allowances for any other equipment or vehicles for your furnished holiday lettings (not other furnished residential lettings).
+ukRentARoom.otherCapitalAllowances.p2.individual = You cannot claim capital allowances if you’re claiming the property income allowance or using cash basis. The only exception for those using cash basis (and not claiming the trading income allowance) is cars.
+ukRentARoom.otherCapitalAllowances.p3.individual = There is more information on
+ukRentARoom.otherCapitalAllowances.p1.agent = Your client can claim capital allowances for any other equipment or vehicles for their furnished holiday lettings (not other furnished residential lettings).
+ukRentARoom.otherCapitalAllowances.p2.agent = Your client cannot claim capital allowances if their claiming the property income allowance or using cash basis. The only exception for those using cash basis (and not claiming the trading income allowance) is cars.
+ukRentARoom.otherCapitalAllowances.p3.agent = There is more information on
+ukRentARoom.otherCapitalAllowances.href.link = https://www.gov.uk/government/publications/capital-allowances-and-balancing-charges-hs252-self-assessment-helpsheet/hs252-capital-allowances-and-balancing-charges-2022#:~:text=for%20more%20information.-,Balancing%20charge,AIA%20on%20all%20your%20costs.
+ukRentARoom.otherCapitalAllowances.href.label = capital allowances and balancing charges on GOV.UK
+
+
 raRAdjustmentsIntro.title = Adjustments
 raRAdjustmentsIntro.heading = Adjustments
 raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
 raRAdjustmentsIntro.bullet.content.l1 = balancing charge
+
 

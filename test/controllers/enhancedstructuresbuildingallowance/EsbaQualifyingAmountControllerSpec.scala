@@ -17,7 +17,6 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import controllers.enhancedstructuresbuildingallowance.routes
 import forms.enhancedstructuresbuildingallowance.EsbaQualifyingAmountFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
