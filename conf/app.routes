@@ -446,10 +446,10 @@ GET        /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-g
 POST       /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-goods                          controllers.ukrentaroom.allowances.ReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
-GET        /:taxYear/uk-rent-a-room/allowances/replacements-of-domestic-goods                                 controllers.ukrentaroom.allowances.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/uk-rent-a-room/allowances/replacements-of-domestic-goods                                 controllers.ukrentaroom.allowances.ReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-goods                          controllers.ukrentaroom.allowances.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/uk-rent-a-room/allowances/change-replacements-of-domestic-goods                          controllers.ukrentaroom.allowances.ReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-start                                       controllers.ukrentaroom.adjustments.RaRAdjustmentsIntroController.onPageLoad(taxYear: Int)
+
+GET        /:taxYear/uk-rent-a-room/adjustments/rar-balancing-charge                               controllers.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-rent-a-room/adjustments/rar-balancing-charge                               controllers.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge                       controllers.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge                        controllers.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 

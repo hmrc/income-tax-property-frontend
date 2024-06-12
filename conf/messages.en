@@ -1729,4 +1729,33 @@ raRAdjustmentsIntro.heading = Adjustments
 raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
 raRAdjustmentsIntro.bullet.content.l1 = balancing charge
 
+raRbalancingCharge.title.agent = Balancing Charge
+raRbalancingCharge.title.individual = Balancing Charge
+raRbalancingCharge.heading.agent = How much was your client’s balancing charge?
+raRbalancingCharge.heading.individual = Balancing Charge
+raRbalancingCharge.para.individual = Understanding balancing charge
+raRbalancingCharge.para.agent = Understanding balancing charge
+
+raRbalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
+
+raRbalancingCharge.checkYourAnswersLabel = Balancing charge
+raRbalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
+raRbalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
+raRbalancingCharge.change.hidden = Balancing charge
+raRbalancingCharge.details.line1 = If you sold, gave away or stopped using an item in the running of your rent a room that you claimed capital allowances for, you may have to include a balancing charge.
+raRbalancingCharge.details.line2 = Any balancing charges are regarded as income if you’re claiming property income allowance.
+raRbalancingCharge.details.line2.link.text = Not Required, will default to some value
+raRbalancingCharge.radio.legend.individual = Do you have to report a balancing charge?
+raRbalancingCharge.radio.legend.agent = Does your client have to report a balancing charge?
+raRbalancingCharge.radio.question.label = How much is the balancing charge?
+raRbalancingCharge.label = Enter the figure
+
+raRbalancingCharge.amount.error.required.individual = Enter the amount for the balancing charge
+raRbalancingCharge.amount.error.required.agent = Enter the amount for the balancing charge
+raRbalancingCharge.amount.error.nonNumeric.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
+raRbalancingCharge.amount.error.nonNumeric.agent = The amount for your client's balancing charge can only include pounds and pence, for example £600 or £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client's balancing charge can only include pounds and pence, for example £600 or £600.20
+raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+
 
