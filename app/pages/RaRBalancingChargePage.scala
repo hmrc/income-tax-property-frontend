@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.allowances
+package pages
 
-import pages.{PageConstants, QuestionPage}
+import models.RaRBalancingCharge
 import play.api.libs.json.JsPath
 
-case object RaRZeroEmissionCarAllowancePage extends QuestionPage[BigDecimal] {
+case object RaRBalancingChargePage extends QuestionPage[RaRBalancingCharge] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment \ toString
 
-  override def toString: String = "zeroEmissionCarAllowance"
+  override def toString: String = "balancingCharge"
 }

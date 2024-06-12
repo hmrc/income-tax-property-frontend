@@ -16,30 +16,31 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.Mappings
-import models.ConsolidatedRRExpenses
+import models.RaRBalancingCharge
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
-class ConsolidatedRRExpensesFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  def apply(individualOrAgent: String): Form[ConsolidatedRRExpenses] =
-    Form(
+class RaRBalancingChargeFormProvider @Inject() extends Mappings {
+
+  def apply(individualOrAgent: String): Form[RaRBalancingCharge] =
+    Form[RaRBalancingCharge](
       mapping(
-        "consolidatedExpensesYesOrNo" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
-        "consolidatedExpensesAmount" -> {
+        "raRbalancingChargeYesNo" -> boolean(s"raRbalancingCharge.error.required.$individualOrAgent"),
+        "raRbalancingChargeAmount" -> {
           mandatoryIfTrue(
-            "consolidatedExpensesYesOrNo",
+            "raRbalancingChargeYesNo",
             currency(
-              s"consolidatedRRExpenses.error.required.amount.$individualOrAgent",
-              s"consolidatedRRExpenses.error.twoDecimalPlaces.$individualOrAgent",
-              s"consolidatedRRExpenses.error.nonNumeric.$individualOrAgent"
+              s"raRbalancingCharge.amount.error.required.$individualOrAgent",
+              s"raRbalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
+              s"raRbalancingCharge.amount.error.nonNumeric.$individualOrAgent"
             )
-              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedRRExpenses.error.outOfRange"))
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "raRbalancingCharge.amount.error.outOfRange"))
           )
         }
-      )(ConsolidatedRRExpenses.apply)(ConsolidatedRRExpenses.unapply)
+      )(RaRBalancingCharge.apply)(RaRBalancingCharge.unapply)
     )
 }

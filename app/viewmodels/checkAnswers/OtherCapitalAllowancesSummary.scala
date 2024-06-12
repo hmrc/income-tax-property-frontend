@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom
+package viewmodels.checkAnswers
 
+import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.allowances.ReplacementsOfDomesticGoodsPage
+import pages.ukrentaroom.allowances.OtherCapitalAllowancesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ReplacementsOfDomesticGoodsSummary {
+object OtherCapitalAllowancesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReplacementsOfDomesticGoodsPage).map { answer =>
+    answers.get(OtherCapitalAllowancesPage).map { answer =>
       SummaryListRowViewModel(
-        key = "replacementsOfDomesticGoods.checkYourAnswersLabel",
+        key = "ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel",
         value = ValueViewModel(answer.toString),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController
+            controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController
               .onPageLoad(taxYear, CheckMode)
               .url
           )
-            .withVisuallyHiddenText(messages("replacementsOfDomesticGoods.change.hidden"))
+            .withVisuallyHiddenText(messages("ukRentARoom.otherCapitalAllowances.change.hidden"))
         )
       )
     }

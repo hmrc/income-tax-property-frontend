@@ -17,41 +17,41 @@
 package forms
 
 import forms.behaviours.BooleanFieldBehaviours
-import models.ConsolidatedRRExpenses
+import models.RaRBalancingCharge
 import org.scalatest.OptionValues
 import play.api.data.FormError
 
-class ConsolidatedRRExpensesFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
+class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
-  val requiredKey = "consolidatedRRExpenses.error.required.individual"
+  val requiredKey = "raRbalancingCharge.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ConsolidatedRRExpensesFormProvider()("individual")
+  val form = new RaRBalancingChargeFormProvider()("individual")
 
-  "consolidatedRRExpensesAmount" - {
-    "when consolidatedRRExpenses is true" - {
+  "raRbalancingChargeAmount" - {
+    "when raRbalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "true", "consolidatedExpensesAmount" -> "12.34"))
-        boundForm.value.value mustBe ConsolidatedRRExpenses(true, Some(12.34))
+        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true", "raRbalancingChargeAmount" -> "12.34"))
+        boundForm.value.value mustBe RaRBalancingCharge(true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "true"))
+        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true"))
         boundForm.errors must contain(
-          FormError("consolidatedExpensesAmount", "consolidatedRRExpenses.error.required.amount.individual")
+          FormError("raRbalancingChargeAmount", "raRbalancingCharge.amount.error.required.individual")
         )
       }
     }
     "when consolidatedExpenses is false" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "false", "consolidatedExpensesAmount" -> "1234"))
-        boundForm.value.value mustBe ConsolidatedRRExpenses(false, None)
+        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false", "raRbalancingChargeAmount" -> "1234"))
+        boundForm.value.value mustBe RaRBalancingCharge(false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "false"))
-        boundForm.value.value mustBe ConsolidatedRRExpenses(false, None)
+        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false"))
+        boundForm.value.value mustBe RaRBalancingCharge(false, None)
         boundForm.errors mustBe empty
       }
     }

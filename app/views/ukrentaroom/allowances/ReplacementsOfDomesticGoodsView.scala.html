@@ -44,7 +44,7 @@
     <li>@messages(s"ukrentaroom.replacementsOfDomesticGoods.li6.${request.user.isAgentMessageKey}")</li>
 </ul>
 <p class="govuk-body">@messages("ukrentaroom.replacementsOfDomesticGoods.p3")&nbsp;<a href='@messages(s"ukrentaroom.replacementsOfDomesticGoods.link.href")' target="_blank" rel="noreferrer noopener">@messages(s"ukrentaroom.replacementsOfDomesticGoods.link.text")</a></p>
-    @formHelper(action = controllers.ukrentaroom.routes.ReplacementsOfDomesticGoodsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -64,4 +64,8 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
+}
+
+@{
+// $COVERAGE-OFF$
 }

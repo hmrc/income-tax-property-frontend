@@ -14,31 +14,30 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom
+package viewmodels.checkAnswers
 
+import controllers.routes
+import models.RaRBBalancingCharge.format
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.allowances.ReplacementsOfDomesticGoodsPage
+import pages.RaRBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ReplacementsOfDomesticGoodsSummary {
+object RaRBalancingChargeSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReplacementsOfDomesticGoodsPage).map { answer =>
-      SummaryListRowViewModel(
-        key = "replacementsOfDomesticGoods.checkYourAnswersLabel",
-        value = ValueViewModel(answer.toString),
-        actions = Seq(
-          ActionItemViewModel(
-            "site.change",
-            controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController
-              .onPageLoad(taxYear, CheckMode)
-              .url
+    answers.get(RaRBalancingChargePage).map {
+      answer =>
+
+        SummaryListRowViewModel(
+          key     = "raRBalancingCharge.checkYourAnswersLabel",
+          value   = ValueViewModel(answer.toString),
+          actions = Seq(
+            ActionItemViewModel("site.change", routes.RaRBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("raRBalancingCharge.change.hidden"))
           )
-            .withVisuallyHiddenText(messages("replacementsOfDomesticGoods.change.hidden"))
         )
-      )
     }
 }
