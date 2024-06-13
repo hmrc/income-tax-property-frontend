@@ -27,7 +27,7 @@ import viewmodels.implicits._
 
 object ClaimExpensesOrRRRSummary {
 
-  def rows(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[Seq[SummaryListRow]] =
+  def rows(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[Seq[SummaryListRow]] =
     answers.get(ClaimExpensesOrRRRPage).flatMap {
       case ClaimExpensesOrRRR(true, Some(amount)) =>
         Some(
@@ -44,7 +44,7 @@ object ClaimExpensesOrRRRSummary {
               )
             ),
             SummaryListRowViewModel(
-              key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel.amount").withCssClass(keyCssClass),
+              key = KeyViewModel(s"claimExpensesOrRRR.checkYourAnswersLabel.amount.$individualOrAgent").withCssClass(keyCssClass),
               value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
               actions = Seq(
                 ActionItemViewModel(

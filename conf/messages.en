@@ -1305,10 +1305,11 @@ ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separa
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
-claimExpensesOrRRR.checkYourAnswersLabel.amount = How much did you pay?
+claimExpensesOrRRR.checkYourAnswersLabel.amount.individual = How much do you want to claim?
+claimExpensesOrRRR.checkYourAnswersLabel.amount.agent = How much does your client want to claim?
 claimExpensesOrRRR.checkYourAnswersLabel.type = Claim expenses or rent a room relief
 claimExpensesOrRRR.no = Expenses
-claimExpensesOrRRR.yes = Rent a Room
+claimExpensesOrRRR.yes = Rent a Room relief
 claimExpensesOrRRR.legend.individual = Which one do you want to claim?
 claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
 
@@ -1324,10 +1325,10 @@ claimExpensesOrRRR.amount.error.twoDecimalPlaces.agent = The total amount of ren
 claimExpensesOrRRR.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 claimExpensesOrRRR.change.hidden = Claim expenses or rent a room relief
 
-claimExpensesOrRRR.rentARoom = Rent a room
+claimExpensesOrRRR.rentARoom = Rent a room relief
 claimExpensesOrRRR.expenses = Expenses
-claimExpensesOrRRR.radio.question.label.individual = How much did you pay?
-claimExpensesOrRRR.radio.question.label.agent = How much did your client pay?
+claimExpensesOrRRR.radio.question.label.individual = How much do you want to claim?
+claimExpensesOrRRR.radio.question.label.agent = How much does your client want to claim?
 
 claimExpensesOrRRR.para1.jointlyLet.individual = You can earn up to £3,750 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
 claimExpensesOrRRR.para1.notJointlyLet.individual = You can earn up to £7,500 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.

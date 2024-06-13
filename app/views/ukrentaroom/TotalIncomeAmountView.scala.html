@@ -14,8 +14,9 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.ukrentaroom.routes
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
 
 @this(
     layout: templates.Layout,
@@ -24,6 +25,7 @@
     govukInput: GovukInput,
     govukButton: GovukButton
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
@@ -38,7 +40,7 @@
         @govukInput(
             InputViewModel(
                 field = form("totalIncomeAmount"),
-                label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading()
+                label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10)
