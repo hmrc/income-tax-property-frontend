@@ -43,6 +43,16 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
   ) thenReturn Future.successful(Right(fetchedPropertyData))
 
+  def propertyAboutItems: Seq[TaskListItem] =
+    Seq(
+      TaskListItem(
+        "summary.about",
+        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
+        "about_link"
+      )
+    )
+
   "Summary Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -72,6 +82,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
         contentAsString(result) mustEqual view(
           taxYear,
+          propertyAboutItems,
           Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
@@ -118,6 +129,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) must include("Property Rentals")
         contentAsString(result) mustEqual view(
           taxYear,
+          propertyAboutItems,
           propertyRentalsItems,
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
@@ -156,6 +168,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) mustNot include("Property Rentals")
         contentAsString(result) mustEqual view(
           taxYear,
+          propertyAboutItems,
           Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
@@ -205,6 +218,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) must include("UK rent a room")
         contentAsString(result) mustEqual view(
           taxYear,
+          propertyAboutItems,
           Seq.empty[TaskListItem],
           ukRentARoomItems
         )(request, messages(application)).toString
