@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.adjustments.routes
+@import controllers.ukrentaroom.adjustments.routes
 
 @this(
         layout: templates.Layout,
@@ -35,7 +35,7 @@
 
 @govukButton(
 ButtonViewModel(messages("propertyIncomeStart.button"))
-.asLink(routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode).url)
+.asLink(routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url)
 .withId("continue")
 )
 }

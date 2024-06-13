@@ -40,6 +40,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
@@ -203,6 +204,9 @@ class Navigator @Inject() () {
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
 
+    case RaRBalancingChargePage =>
+      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
 
   }
@@ -316,6 +320,8 @@ class Navigator @Inject() () {
 
     case ClaimExpensesOrRRRPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    case RaRBalancingChargePage =>
+      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case _ => taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
   }
 

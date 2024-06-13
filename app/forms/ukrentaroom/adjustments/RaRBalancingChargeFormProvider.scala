@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.ukrentaroom.adjustments
 
 import forms.mappings.Mappings
 import models.RaRBalancingCharge
