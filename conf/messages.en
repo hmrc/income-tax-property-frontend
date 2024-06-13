@@ -1738,7 +1738,8 @@ raRbalancingCharge.para.agent = Understanding balancing charge
 
 raRbalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
 
-raRbalancingCharge.checkYourAnswersLabel = Balancing charge
+raRbalancingCharge.checkYourAnswersLabel.individual = Do you have to pay a balancing charge?
+raRbalancingCharge.checkYourAnswersLabel.agent = Does your client have to pay a balancing charge?
 raRbalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
 raRbalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
 raRbalancingCharge.change.hidden = Balancing charge
@@ -1759,3 +1760,5 @@ raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your cli
 raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
 
+raRAdjustmentsCYA.title = raRAdjustmentsCYA
+raRAdjustmentsCYA.heading = raRAdjustmentsCYA

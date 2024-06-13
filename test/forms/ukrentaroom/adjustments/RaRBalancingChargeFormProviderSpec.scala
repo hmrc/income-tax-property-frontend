@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.ukrentaroom.adjustments
 
 import forms.behaviours.BooleanFieldBehaviours
 import models.RaRBalancingCharge
