@@ -19,6 +19,7 @@ package models
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import viewmodels.govuk.all.HintViewModel
 import viewmodels.govuk.checkbox._
 
 sealed trait UKPropertySelect
@@ -33,14 +34,13 @@ object UKPropertySelect extends Enumerable.Implicits {
   )
 
   def checkboxItems(implicit messages: Messages): Seq[CheckboxItem] =
-    values.zipWithIndex.map {
-      case (value, index) =>
-        CheckboxItemViewModel(
-          content = Text(messages(s"ukPropertySelect.${value.toString}")),
-          fieldId = "value",
-          index   = index,
-          value   = value.toString
-        )
+    values.zipWithIndex.map { case (value, index) =>
+      CheckboxItemViewModel(
+        content = Text(messages(s"ukPropertySelect.${value.toString}")),
+        fieldId = "value",
+        index = index,
+        value = value.toString
+      ).withHint(HintViewModel(Text(messages(s"ukPropertySelect.${value.toString}.hint"))))
     }
 
   implicit val enumerable: Enumerable[UKPropertySelect] =

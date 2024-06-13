@@ -18,9 +18,10 @@ package controllers.about
 
 import controllers.actions._
 import forms.about.UKPropertyFormProvider
-import models.Mode
+import models.{Mode, UKPropertySelect}
 import navigation.Navigator
 import pages.UKPropertyPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -42,7 +43,7 @@ class UKPropertySelectController @Inject()(
                                         view: UKPropertySelectView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Set[UKPropertySelect]] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

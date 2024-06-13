@@ -52,7 +52,7 @@ class CheckYourAnswersController @Inject() (
       val totalIncomeRow = TotalIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
       val reportIncomeRow =
         ReportPropertyIncomeSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
-      val ukPropertyRow = UKPropertySelectSummary.row(taxYear, request.userAnswers)
+      val ukPropertyRow = UKPropertySelectSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers)
 
       val propertyIncomeRows = if (request.userAnswers.get(ReportPropertyIncomePage).isDefined) {
         Seq(totalIncomeRow, reportIncomeRow, ukPropertyRow)
