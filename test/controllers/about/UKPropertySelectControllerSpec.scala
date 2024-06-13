@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -43,10 +44,10 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute : Call = Call(GET, "/uk-property-details")
 
   val formProvider = new UKPropertyFormProvider()
-  val form = formProvider()
+  val form: Form[Set[UKPropertySelect]] = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
 
-  lazy val ukPropertySelectRoute = routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode).url
+  lazy val ukPropertySelectRoute: String = routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode).url
 
   "UKPropertySelectController" - {
 

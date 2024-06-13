@@ -43,11 +43,11 @@ class UKPropertySelectController @Inject()(
                                         view: UKPropertySelectView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Set[UKPropertySelect]] = formProvider()
+
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
+      val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UKPropertyPage) match {
           case None => form
           case Some(value) => form.fill(value)
@@ -58,7 +58,7 @@ class UKPropertySelectController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),

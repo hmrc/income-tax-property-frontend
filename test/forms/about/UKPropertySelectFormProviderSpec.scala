@@ -22,12 +22,12 @@ import play.api.data.FormError
 
 class UKPropertySelectFormProviderSpec extends CheckboxFieldBehaviours {
 
-  val form = new UKPropertyFormProvider()()
+  val form = new UKPropertyFormProvider()("individual")
 
   ".value" - {
 
     val fieldName = "value"
-    val requiredKey = "ukPropertySelect.error.required"
+    val requiredKey = "ukPropertySelect.error.required.individual"
 
     behave like checkboxField[UKPropertySelect](
       form,

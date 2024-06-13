@@ -25,8 +25,9 @@ import javax.inject.Inject
 
 class UKPropertyFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Set[UKPropertySelect]] =
+  def apply(individualOrAgent: String): Form[Set[UKPropertySelect]] =
     Form(
-      "value" -> set(enumerable[UKPropertySelect]("ukPropertySelect.error.required")).verifying(nonEmptySet("ukPropertySelect.error.required"))
+      "value" -> set(enumerable[UKPropertySelect](s"ukPropertySelect.error.required.$individualOrAgent"))
+        .verifying(nonEmptySet(s"ukPropertySelect.error.required.$individualOrAgent"))
     )
 }

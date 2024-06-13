@@ -43,7 +43,7 @@ object TotalIncomeSummary {
           value = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("totalIncome.change.hidden"))
+              .withVisuallyHiddenText(messages(s"totalIncome.change.hidden.$individualOrAgent"))
           )
         )
     }

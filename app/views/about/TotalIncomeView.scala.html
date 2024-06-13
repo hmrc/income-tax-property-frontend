@@ -18,28 +18,31 @@
 
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"totalIncome.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages(s"totalIncome.title.$individualOrAgent"))) {
 
-    @formHelper(action = routes.TotalIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.TotalIncomeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
+        <h1 class="govuk-heading-l">@messages(s"totalIncome.heading.$individualOrAgent")</h1>
+        <p class="govuk-body"> @messages(s"totalIncome.body.$individualOrAgent")</p>
 
         @govukRadios(
             RadiosViewModel(
-                field  = form("value"),
-                legend = LegendViewModel(messages(s"totalIncome.heading.${individualOrAgent}")).asPageHeading(),
-                items  = TotalIncome.options
+                field = form("value"),
+                legend = LegendViewModel("").asPageHeading(),
+                items = TotalIncome.options
             )
         )
 
