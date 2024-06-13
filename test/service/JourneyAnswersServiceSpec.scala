@@ -18,8 +18,8 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.{ApiError, SingleErrorBody}
-import models.backend.HttpParserError
-import models.{FetchedBackendData, User}
+import models.backend.{HttpParserError, PropertyDetails}
+import models.{FetchedBackendData, JourneyContext, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
@@ -29,6 +29,7 @@ import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.http.HeaderCarrier
 
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -37,18 +38,43 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
   implicit private val hc: HeaderCarrier = HeaderCarrier()
 
   val mockJourneyAnswersConnector: JourneyAnswersConnector = mock[JourneyAnswersConnector]
-
-  private val underTest = new JourneyAnswersService(mockJourneyAnswersConnector)
+  val mockBusinessService: BusinessService = mock[BusinessService]
+  val taxYear = 2024
+  private val underTest = new JourneyAnswersService(mockJourneyAnswersConnector, mockBusinessService)
 
   "setStatus" should {
     val user = User("mtditid", "nino", "group", isAgent = true, agentRef = Some("agentReferenceNumber"))
 
+    when(mockBusinessService.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
+      Right(
+        Option(
+          PropertyDetails(
+            incomeSourceType = Some("incomeSourceId"),
+            tradingStartDate = Some(LocalDate.now),
+            cashOrAccruals = Some(true),
+            incomeSourceId = "incomeSourceId"
+          )
+        )
+      )
+    )
+
     "return error when fails to get data" ignore {
-      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(),any(),any())(any())) thenReturn Future(
+      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future(
         Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
       )
 
-      await(underTest.setStatus(2024, "", "", user)) shouldBe Left(HttpParserError(INTERNAL_SERVER_ERROR))
+      await(
+        underTest.setStatus(
+          JourneyContext(
+            taxYear = taxYear,
+            mtditid = user.mtditid,
+            nino = user.nino,
+            journeyName = "rent-a-room-expenses"
+          ),
+          "completed",
+          user
+        )
+      ) shouldBe Left(HttpParserError(INTERNAL_SERVER_ERROR))
     }
 
     "return data" in {
@@ -57,10 +83,33 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
         Right(fetchedBackendData)
       )
 
-      await(underTest.setStatus(2024, "", "", user)) shouldBe Right(fetchedBackendData)
+      when(mockBusinessService.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
+        Right(
+          Option(
+            PropertyDetails(
+              incomeSourceType = Some("incomeSourceId"),
+              tradingStartDate = Some(LocalDate.now),
+              cashOrAccruals = Some(true),
+              incomeSourceId = "incomeSourceId"
+            )
+          )
+        )
+      )
+
+      await(
+        underTest.setStatus(
+          JourneyContext(
+            taxYear = taxYear,
+            mtditid = user.mtditid,
+            nino = user.nino,
+            journeyName = "rent-a-room-expenses"
+          ),
+          "inProgress",
+          user
+        )
+      ) shouldBe Right(fetchedBackendData)
 
     }
   }
-
 
 }

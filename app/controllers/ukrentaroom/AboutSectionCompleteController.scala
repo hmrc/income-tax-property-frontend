@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
-import models.Mode
+import models.{JourneyContext, Mode}
 import navigation.Navigator
 import pages.UKPropertySelectPage
 import pages.ukrentaroom.AboutSectionCompletePage
@@ -69,7 +69,16 @@ class AboutSectionCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService
-                     .setStatus(taxYear, "rent-a-room", if (value) "completed" else "inProgress", request.user)
+                     .setStatus(
+                       JourneyContext(
+                         taxYear = taxYear,
+                         mtditid = request.user.mtditid,
+                         nino = request.user.nino,
+                         journeyName = "rent-a-room-about"
+                       ),
+                       if (value) "completed" else "inProgress",
+                       request.user
+                     )
             } yield Redirect(
               navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )

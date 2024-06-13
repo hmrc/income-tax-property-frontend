@@ -18,7 +18,7 @@ package controllers.ukrentaroom.expenses
 
 import controllers.actions._
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
-import models.Mode
+import models.{JourneyContext, Mode}
 import navigation.Navigator
 import pages.ExpensesRRSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,7 +68,16 @@ class ExpensesRRSectionCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesRRSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService
-                     .setStatus(taxYear, "rent-a-room-expenses", if (value) "completed" else "inProgress", request.user)
+                     .setStatus(
+                       ctx = JourneyContext(
+                         taxYear = taxYear,
+                         mtditid = request.user.mtditid,
+                         nino = request.user.nino,
+                         journeyName = "rent-a-room-expenses"
+                       ),
+                       status = if (value) "completed" else "inProgress",
+                       user = request.user
+                     )
             } yield Redirect(
               navigator.nextPage(ExpensesRRSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )

@@ -190,11 +190,16 @@ case object SummaryPage {
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
+      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear), {
+
+        val sectionFinished = userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
       },
       "expenses_link"
     )

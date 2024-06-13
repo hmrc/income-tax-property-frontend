@@ -44,7 +44,8 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
   val context =
     JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rent-a-room-expenses")
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
+  def onwardRoute: Call =
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/uk-rent-a-room/expenses-section-complete-yes-no")
 
   "ExpensesCheckYourRRAnswers Controller" - {
 

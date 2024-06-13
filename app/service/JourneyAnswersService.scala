@@ -18,7 +18,8 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
-import models.{FetchedBackendData, User}
+import models.backend.{HttpParserError, PropertyDataError, ServiceError}
+import models.{FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -26,18 +27,30 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class JourneyAnswersService @Inject() (
-  journeyAnswersConnector: JourneyAnswersConnector
+  journeyAnswersConnector: JourneyAnswersConnector,
+  businessService: BusinessService
 )(implicit
   val ec: ExecutionContext
 ) extends Logging {
 
-  def setStatus(taxYear: Int, journeyName: String, status: String, user: User)(implicit
+  def setStatus(ctx: JourneyContext, status: String, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ApiError, FetchedBackendData]] =
-    journeyAnswersConnector.setStatus(taxYear, user.mtditid, journeyName, status, user).map {
-      case Left(_) =>
-        logger.error("Unable to access the endpoint that allows the update of the journey status$")
-        Right(FetchedBackendData(None, None, None, None, None, None, None))
-      case Right(r) => Right(r)
+  ): Future[Either[ServiceError, FetchedBackendData]] =
+    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            journeyAnswersConnector
+              .setStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyName, status, user)
+              .map {
+                case Left(error) =>
+                  logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
+                  Right(FetchedBackendData(None, None, None, None, None, None, None))
+                case Right(r) => Right(r)
+              }
+          }
+          .getOrElse(Future.successful(Left(PropertyDataError())))
+
     }
 }
