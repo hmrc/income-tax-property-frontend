@@ -20,10 +20,11 @@ import base.SpecBase
 import connectors.JourneyAnswersConnector
 import controllers.ukrentaroom.routes.AboutSectionCompleteController
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
-import models.{FetchedBackendData, NormalMode, UserAnswers}
+import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.inject.bind
@@ -31,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.AboutSectionCompleteView
 
@@ -45,6 +47,13 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
   val taxYear = 2024
   implicit val hc = HeaderCarrier()
+  val user = User(
+    mtditid = "mtditid",
+    nino = "nino",
+    isAgent = false,
+    affinityGroup = "affinityGroup",
+    agentRef = Some("agentReferenceNumber")
+  )
 
   lazy val aboutSectionCompleteRoute = AboutSectionCompleteController.onPageLoad(taxYear).url
 
@@ -90,18 +99,30 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
-      val mockJourneyAnswersConnector = mock[JourneyAnswersConnector]
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future
-        .successful(Right(FetchedBackendData(None, None, None, None, None, None, None)))
+      doReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None))))
+        .when(mockJourneyAnswersService)
+        .setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(
+              taxYear = taxYear,
+              mtditid = user.mtditid,
+              nino = user.nino,
+              journeyName = "rent-a-room-about"
+            )
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(postOnwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
-            bind[JourneyAnswersConnector].toInstance(mockJourneyAnswersConnector)
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 

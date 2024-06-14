@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukrentaroom.expenses
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ExpensesRRSectionCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "expensesRRSectionComplete"
+  override def toString: String = "expensesRRSectionCompleteYesOrNo"
 }

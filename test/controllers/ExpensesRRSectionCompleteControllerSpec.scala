@@ -18,18 +18,21 @@ package controllers
 
 import base.SpecBase
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ExpensesRRSectionCompletePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.JourneyAnswersService
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.expenses.ExpensesRRSectionCompleteView
 
 import scala.concurrent.Future
@@ -41,9 +44,17 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
   val formProvider = new ExpensesRRSectionCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
   val taxYear = 2024
-
+  val user = User(
+    mtditid = "mtditid",
+    nino = "nino",
+    isAgent = false,
+    affinityGroup = "affinityGroup",
+    agentRef = Some("agentReferenceNumber")
+  )
   lazy val expensesRRSectionCompleteRoute: String =
     controllers.ukrentaroom.expenses.routes.ExpensesRRSectionCompleteController.onPageLoad(taxYear).url
+
+  implicit val hc: HeaderCarrier = new HeaderCarrier()
 
   "ExpensesRRSectionComplete Controller" - {
 
@@ -87,14 +98,30 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      doReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None))))
+        .when(mockJourneyAnswersService)
+        .setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(
+              taxYear = taxYear,
+              mtditid = user.mtditid,
+              nino = user.nino,
+              journeyName = "rent-a-room-expenses"
+            )
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 
@@ -117,9 +144,9 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, expensesRRSectionCompleteRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("expensesRRSectionCompleteYesOrNo", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("expensesRRSectionCompleteYesOrNo" -> ""))
 
         val view = application.injector.instanceOf[ExpensesRRSectionCompleteView]
 
@@ -151,7 +178,7 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, expensesRRSectionCompleteRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("expensesRRSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 

@@ -22,6 +22,7 @@ import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 

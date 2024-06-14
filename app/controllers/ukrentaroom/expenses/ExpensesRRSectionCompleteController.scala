@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
 import navigation.Navigator
-import pages.ExpensesRRSectionCompletePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
