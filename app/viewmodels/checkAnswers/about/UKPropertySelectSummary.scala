@@ -26,28 +26,29 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UKPropertySelectSummary  {
+object UKPropertySelectSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UKPropertyPage).map {
-      answers =>
-
-        val value = ValueViewModel(
-          HtmlContent(
-            answers.map {
-              answer => HtmlFormat.escape(messages(s"ukPropertySelect.$answer")).toString
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(UKPropertyPage).map { answers =>
+      val value = ValueViewModel(
+        HtmlContent(
+          answers
+            .map { answer =>
+              HtmlFormat.escape(messages(s"ukPropertySelect.$answer")).toString
             }
             .mkString(",<br>")
-          )
         )
+      )
 
-        SummaryListRowViewModel(
-          key     = "ukPropertySelect.checkYourAnswersLabel",
-          value   = value,
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("ukPropertySelect.change.hidden"))
-          )
+      SummaryListRowViewModel(
+        key = s"ukPropertySelect.checkYourAnswersLabel.$individualOrAgent",
+        value = value,
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages(s"ukPropertySelect.change.hidden.$individualOrAgent"))
         )
+      )
     }
 }

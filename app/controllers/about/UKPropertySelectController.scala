@@ -18,9 +18,10 @@ package controllers.about
 
 import controllers.actions._
 import forms.about.UKPropertyFormProvider
-import models.Mode
+import models.{Mode, UKPropertySelect}
 import navigation.Navigator
 import pages.UKPropertyPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -42,11 +43,11 @@ class UKPropertySelectController @Inject()(
                                         view: UKPropertySelectView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
+      val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UKPropertyPage) match {
           case None => form
           case Some(value) => form.fill(value)
@@ -57,7 +58,7 @@ class UKPropertySelectController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),

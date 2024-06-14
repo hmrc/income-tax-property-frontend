@@ -14,9 +14,8 @@
  * limitations under the License.
  *@
 
-@import models.Mode
-@import models.NormalMode
 @import controllers.about.routes
+@import models.Mode
 
 @this(
     layout: templates.Layout,
@@ -37,9 +36,8 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"ukPropertySelect.heading.${individualOrAgent}")</h1>
-
-        <div class="govuk-hint"> @messages("ukPropertySelect.heading.message") </div>
+        <h1 class="govuk-heading-l">@messages(s"ukPropertySelect.heading.$individualOrAgent")</h1>
+        <div class="govuk-hint"> @messages(s"ukPropertySelect.heading.message.$individualOrAgent") </div>
 
         @govukCheckboxes(
             CheckboxesViewModel(
@@ -51,7 +49,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }

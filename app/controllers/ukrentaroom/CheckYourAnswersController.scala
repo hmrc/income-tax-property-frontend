@@ -43,7 +43,7 @@ class CheckYourAnswersController @Inject() (
         UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
       val totalIncomeAmountSummary =
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
-      val claimExpensesOrRRRSummary = ClaimExpensesOrRRRSummary.rows(taxYear, request.userAnswers)
+      val claimExpensesOrRRRSummary = ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers)
 
       val list = SummaryListViewModel(
         rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrRRRSummary).flatten
