@@ -17,12 +17,12 @@
 package pages.ukrentaroom
 
 import models.ClaimExpensesOrRRR
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object ClaimExpensesOrRRRPage extends QuestionPage[ClaimExpensesOrRRR] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout \ toString
 
   override def toString: String = "claimExpensesOrRRR"
 }

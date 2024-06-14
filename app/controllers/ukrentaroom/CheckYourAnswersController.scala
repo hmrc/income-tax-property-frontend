@@ -18,15 +18,17 @@ package controllers.ukrentaroom
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.{JourneyContext, RaRAbout}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.CheckYourAnswersView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -34,8 +36,10 @@ class CheckYourAnswersController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
   view: CheckYourAnswersView
-) extends FrontendBaseController with I18nSupport with Logging {
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -54,8 +58,21 @@ class CheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(
-        Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
-      )
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "uk-rent-a-room-about")
+
+      val rarAboutMaybe: Option[RaRAbout] = request.userAnswers.get(RaRAbout)
+
+      rarAboutMaybe.fold[Future[Result]] {
+        logger.error("UK Rent A Room Section is not present in userAnswers")
+        Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+      } { rarAbout =>
+        propertySubmissionService
+          .saveJourneyAnswers[RaRAbout](context, rarAbout)
+          .map {
+            case Left(_) =>
+              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
+            case Right(_) => Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+          }
+      }
   }
 }
