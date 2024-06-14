@@ -31,22 +31,24 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.AboutSectionCompleteView
 
 import scala.concurrent.Future
 
 class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  private def putOnwardRoute =
-    Call("PUT", "/income-tax-property/completed-section/mtditid/rent-a-room/2023")
+  private def postOnwardRoute =
+    Call("POST", "/income-tax-property/2024/uk-rent-a-room/about-section-complete-yes-no")
 
   val formProvider = new AboutSectionCompleteFormProvider()
   val form = formProvider()
-  val taxYear = 2023
+  val taxYear = 2024
+  implicit val hc = HeaderCarrier()
 
   lazy val aboutSectionCompleteRoute = AboutSectionCompleteController.onPageLoad(taxYear).url
 
-  "RentARoomAboutSectionComplete Controller" - {
+  "AboutSectionCompleteControllerSpec Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -91,14 +93,13 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       val mockJourneyAnswersConnector = mock[JourneyAnswersConnector]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(
-        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
-      ).thenReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None))))
+      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future
+        .successful(Right(FetchedBackendData(None, None, None, None, None, None, None)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(putOnwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(postOnwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersConnector].toInstance(mockJourneyAnswersConnector)
           )
@@ -112,7 +113,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual putOnwardRoute.url
+        redirectLocation(result).value mustEqual postOnwardRoute.url
       }
     }
 
@@ -131,9 +132,9 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, AboutSectionCompleteController.onSubmit(taxYear).url)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("rentARoomIsSectionCompleteYesOrNo" -> ""))
 
         val view = application.injector.instanceOf[AboutSectionCompleteView]
 
@@ -165,7 +166,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, aboutSectionCompleteRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
