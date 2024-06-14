@@ -14,12 +14,14 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import viewmodels.summary.TaskListItem
 
 
 @this(
         layout: templates.Layout,
-        govukTag: GovukTag
+        govukTag: GovukTag,
+        govukTaskList : GovukTaskList
 )
 
 @(taxYear: Int, startItems: Seq[TaskListItem], ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
