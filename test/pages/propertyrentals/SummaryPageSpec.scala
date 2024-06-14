@@ -18,11 +18,10 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
-import models.ClaimExpensesOrRRR
-import models.{NormalMode, UKPropertySelect}
+import models.{ClaimExpensesOrRRR, NormalMode, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
-import pages.{SummaryPage, UKPropertyPage}
 import pages.ukrentaroom.ClaimExpensesOrRRRPage
+import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 import java.time.LocalDate
@@ -41,7 +40,7 @@ class SummaryPageSpec extends SpecBase {
     val incomeListItem = TaskListItem(
       "summary.income",
       controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-      TaskListTag.InProgress,
+      TaskListTag.NotStarted,
       "income_link"
     )
     val expenseListItem = TaskListItem(
@@ -251,5 +250,19 @@ class SummaryPageSpec extends SpecBase {
     }
   }
 
-}
+  "SummaryPageSpec property start rows" - {
+    val taxYear = 2024
+    "return one item, given an empty user data" in {
+      val item = TaskListItem(
+        "summary.about",
+        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
+        "about_link"
+      )
+      SummaryPage.propertyAboutItems(Some(emptyUserAnswers), taxYear) should be(Seq(item))
 
+    }
+
+  }
+
+}
