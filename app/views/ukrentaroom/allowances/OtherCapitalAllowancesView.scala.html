@@ -29,7 +29,7 @@
 @(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("ukRentARoom.otherCapitalAllowances.title"))) {
-<h1 class="govuk-heading-xl">@messages("ukRentARoom.otherCapitalAllowances.title")</h1>
+<h1 class="govuk-heading-l">@messages("ukRentARoom.otherCapitalAllowances.title")</h1>
 <p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p1.${request.user.isAgentMessageKey}")</p>
 <p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p2.${request.user.isAgentMessageKey}")</p>
 <p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p3.${request.user.isAgentMessageKey}")&nbsp;<a href='@messages("ukRentARoom.otherCapitalAllowances.href.link")'>@messages("ukRentARoom.otherCapitalAllowances.href.label")</a></p>

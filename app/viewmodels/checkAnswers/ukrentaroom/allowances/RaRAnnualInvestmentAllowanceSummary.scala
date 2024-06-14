@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.allowances.RaRAnnualInvestmentAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,7 +33,7 @@ object RaRAnnualInvestmentAllowanceSummary  {
 
         SummaryListRowViewModel(
           key     = "raRAnnualInvestmentAllowance.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("raRAnnualInvestmentAllowance.change.hidden"))

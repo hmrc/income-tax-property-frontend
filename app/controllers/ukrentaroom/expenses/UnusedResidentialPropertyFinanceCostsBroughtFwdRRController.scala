@@ -18,17 +18,16 @@ package controllers.ukrentaroom.expenses
 
 import controllers.actions._
 import forms.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.expenses.{OtherPropertyExpensesRRPage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
+import pages.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class UnusedResidentialPropertyFinanceCostsBroughtFwdRRController @Inject() (

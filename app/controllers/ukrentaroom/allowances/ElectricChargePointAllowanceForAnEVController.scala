@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.{RaRElectricChargePointAllowanceForAnEVPage, RaRZeroEmissionCarAllowancePage}
+import pages.ukrentaroom.allowances.RaRElectricChargePointAllowanceForAnEVPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -68,7 +68,7 @@ class ElectricChargePointAllowanceForAnEVController @Inject() (
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(RaRZeroEmissionCarAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(RaRElectricChargePointAllowanceForAnEVPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

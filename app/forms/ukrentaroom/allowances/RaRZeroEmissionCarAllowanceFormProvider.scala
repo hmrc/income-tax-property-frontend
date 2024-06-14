@@ -23,23 +23,16 @@ import javax.inject.Inject
 
 class RaRZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
 
-  private val minRaRZeroEmissionCarAllowance = 0
-  private val maxResidentialPropertyFinanceCosts = 100000000
-  private val errorPrefix = "ukrentaroom.allowances.zeroEmissionCarAllowance.error"
+  val minimum = 0
+  val maximum = 100000000
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "zeroEmissionCarAllowance" -> currency(
-        requiredKey = s"$errorPrefix.required.$individualOrAgent",
-        twoDecimalPlacesKey = s"$errorPrefix.twoDecimalPlaces.$individualOrAgent",
-        nonNumericKey = s"$errorPrefix.nonNumeric.$individualOrAgent"
-      ).verifying(
-        inRange(
-          minimum = BigDecimal(minRaRZeroEmissionCarAllowance),
-          maximum = BigDecimal(maxResidentialPropertyFinanceCosts),
-          errorKey = s"$errorPrefix.outOfRange.$individualOrAgent"
-        )
+        s"ukrentaroom.allowances.zeroEmissionCarAllowance.error.required.$individualOrAgent",
+        s"ukrentaroom.allowances.zeroEmissionCarAllowance.error.twoDecimalPlaces.$individualOrAgent",
+        s"ukrentaroom.allowances.zeroEmissionCarAllowance.error.nonNumeric.$individualOrAgent"
       )
+        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), s"ukrentaroom.allowances.zeroEmissionCarAllowance.error.outOfRange.$individualOrAgent"))
     )
-
 }

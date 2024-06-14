@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.ukrentaroom.allowances
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.allowances.OtherCapitalAllowancesPage
+import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object OtherCapitalAllowancesSummary {
+object ZeroEmissionCarAllowanceSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherCapitalAllowancesPage).map { answer =>
+    answers.get(RaRZeroEmissionCarAllowancePage).map { answer =>
       SummaryListRowViewModel(
-        key = "ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel",
-        value = ValueViewModel(answer.toString),
+        key = "zeroEmissionCarAllowance.checkYourAnswersLabel",
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController
+            controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController
               .onPageLoad(taxYear, CheckMode)
               .url
           )
-            .withVisuallyHiddenText(messages("ukRentARoom.otherCapitalAllowances.change.hidden"))
+            .withVisuallyHiddenText(messages("zeroEmissionCarAllowance.change.hidden"))
         )
       )
     }
