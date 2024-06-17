@@ -14,7 +14,6 @@
  * limitations under the License.
  *@
 
-@import controllers.about.routes
 @import viewmodels.summary.TaskListItem
 
 
@@ -23,69 +22,50 @@
         govukTag: GovukTag
 )
 
-@(taxYear: Int, ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, startItems: Seq[TaskListItem], ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = titleNoForm(messages("summary.title")),
-    showBackLink = true
-) {
-
-    <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
-    <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
-
-    <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
-        <li class="app-task-list__item">
-            <span class="app-task-list__task-name">
-                <a class="govuk-link" id="about_uk_properties_link" href="@routes.UKPropertyDetailsController.onPageLoad(taxYear)">@messages(s"summary.aboutUKProperties")</a>
-            </span>
-            <span class="hmrc-status-tag">
-            @{
-                val tag = Tag(content = Text(messages("common.notStarted")), classes = "govuk-tag--grey")
-                govukTag(tag)
-            }
-            </span>
-        </li>
-    </ol>
-
-
-    @if(ukPropertyRentalsRows.nonEmpty) {
-        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
-        <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
-        @for(item <- ukPropertyRentalsRows) {
-            <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                        <a class="govuk-link" id="@{item.id}" href="@{item.call}">@messages(s"${item.content}")</a>
-                    </span>
-                <span class="hmrc-status-tag">
-                @{
-                    val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
-                    govukTag(tag)
+    @taskListSection(items: Seq[TaskListItem]) = {
+        <ol class="govuk-task-list">
+        @for(item <- items) {
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+                <div class="govuk-task-list__name-and-hint">
+                    <a class="govuk-link govuk-task-list__link" aria-describedby="@{item.id}"  href="@{item.call}">@messages(s"${item.content}")</a>
+                </div>
+                <div class="govuk-task-list__status" id="@{item.id}">
+                @if(!item.taskListTag.cssClass.isBlank){
+                    @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
+                } else {
+                    @messages(s"common.${item.taskListTag.message}")
                 }
-                </span>
+                </div>
             </li>
         }
         </ol>
     }
-    @if(ukRentARoomRows.nonEmpty) {
-        <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
-        <ol class="app-task-list__items govuk-!-padding-bottom-1 govuk-!-padding-left-0">
-            @for(item <- ukRentARoomRows) {
-                <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                            <a class="govuk-link" id="@{item.id}" href="@{item.call}">@messages(s"${item.content}")</a>
-                    </span>
-                    <span class="hmrc-status-tag">
-                    @{
-                        val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
-                        govukTag(tag)
-                    }
-                    </span>
-                </li>
-            }
-        </ol>
-    }
-}
 
-@{
-// $COVERAGE-OFF$
-}
+    @layout(
+        pageTitle = titleNoForm(messages("summary.title")),
+        showBackLink = true
+    ) {
+
+        <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
+
+        @if(startItems.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
+            @taskListSection(startItems)
+        }
+
+        @if(ukPropertyRentalsRows.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
+            @taskListSection(ukPropertyRentalsRows)
+        }
+
+        @if(ukRentARoomRows.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
+            @taskListSection(ukRentARoomRows)
+        }
+    }
+
+    @{
+        // $COVERAGE-OFF$
+    }

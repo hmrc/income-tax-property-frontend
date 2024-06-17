@@ -20,7 +20,7 @@ object TaskListTag {
 
   sealed abstract class TaskListTag(val message: String, val cssClass: String)
 
-  case object InProgress extends TaskListTag(message = "inProgress", cssClass = "govuk-tag--blue")
-  case object NotStarted extends TaskListTag(message = "notStarted", cssClass = "govuk-tag--grey")
-  case object Completed extends TaskListTag(message = "completed", cssClass = "govuk-tag--turquoise")
+  case object InProgress extends TaskListTag(message = "inProgress", cssClass = "govuk-tag--light-blue")
+  case object NotStarted extends TaskListTag(message = "notStarted", cssClass = "govuk-tag--blue")
+  case object Completed extends TaskListTag(message = "completed", cssClass = "")
 }
