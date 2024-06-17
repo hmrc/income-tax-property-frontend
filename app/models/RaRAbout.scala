@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom
+package models
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import pages.PageConstants
+import play.api.libs.json.{JsPath, Json}
+import queries.{Gettable, Settable}
 
-case object TotalIncomeAmountPage extends QuestionPage[BigDecimal] {
+final case class RaRAbout(
+  ukRentARoomJointlyLet: Boolean,
+  totalIncomeAmount: BigDecimal,
+  claimExpensesOrRRR: ClaimExpensesOrRRR
+)
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout \ toString
+object RaRAbout extends Settable[RaRAbout] with Gettable[RaRAbout] {
+  implicit val format = Json.format[RaRAbout]
 
-  override def toString: String = "totalIncomeAmount"
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout
 }

@@ -17,15 +17,24 @@
 package controllers.ukrentaroom
 
 import base.SpecBase
-import models.UserAnswers
+import models.{ClaimExpensesOrRRR, JourneyContext, RaRAbout, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers._
+import org.mockito.MockitoSugar.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukrentaroom.CheckYourAnswersView
+import play.api.inject.bind
+import testHelpers.Fixture
 
-class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+import scala.concurrent.Future
+
+class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
   val taxYear: Int = 2023
 
@@ -66,7 +75,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
       }
     }
 
-    "must return OK and the correct view for a POST (onSubmit)" in {
+    "must redirect to journey recovery page, when there is no data for rent a room about in session" in {
       val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -74,9 +83,40 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
         val request = FakeRequest(POST, controllers.ukrentaroom.routes.CheckYourAnswersController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
-
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+
+      }
+    }
+
+    "must return OK and the correct view for a POST (onSubmit)" in {
+      val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
+
+      val rarAbout = RaRAbout(true, 22.23, ClaimExpensesOrRRR(false, Some(22.11)))
+      val userAnswersWithRaRAbout =
+        userAnswers.set(RaRAbout, rarAbout).get
+
+      val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
+
+      when(
+        propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rarAbout))(any(), any())
+      ) thenReturn Future.successful(Right(()))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)
+        .overrides(
+          bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, controllers.ukrentaroom.routes.CheckYourAnswersController.onSubmit(taxYear).url)
+
+        val result = route(application, request).value
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.ukrentaroom.routes.AboutSectionCompleteController
+          .onPageLoad(taxYear)
+          .url
+
       }
     }
   }
