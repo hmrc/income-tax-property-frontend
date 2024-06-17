@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers
 
 import base.SpecBase
-import connectors.JourneyAnswersConnector
-import controllers.ukrentaroom.routes.AboutSectionCompleteController
-import forms.ukrentaroom.AboutSectionCompleteFormProvider
+import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.AboutSectionCompletePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -34,19 +33,17 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
 import uk.gov.hmrc.http.HeaderCarrier
-import views.html.ukrentaroom.AboutSectionCompleteView
+import views.html.ukrentaroom.expenses.ExpensesRRSectionCompleteView
 
 import scala.concurrent.Future
 
-class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
+class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  private def postOnwardRoute =
-    Call("POST", "/income-tax-property/2024/uk-rent-a-room/about-section-complete-yes-no")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new AboutSectionCompleteFormProvider()
-  val form = formProvider()
+  val formProvider = new ExpensesRRSectionCompleteFormProvider()
+  val form: Form[Boolean] = formProvider()
   val taxYear = 2024
-  implicit val hc = HeaderCarrier()
   val user = User(
     mtditid = "mtditid",
     nino = "nino",
@@ -54,21 +51,23 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
     affinityGroup = "affinityGroup",
     agentRef = Some("agentReferenceNumber")
   )
+  lazy val expensesRRSectionCompleteRoute: String =
+    controllers.ukrentaroom.expenses.routes.ExpensesRRSectionCompleteController.onPageLoad(taxYear).url
 
-  lazy val aboutSectionCompleteRoute = AboutSectionCompleteController.onPageLoad(taxYear).url
+  implicit val hc: HeaderCarrier = new HeaderCarrier()
 
-  "AboutSectionCompleteControllerSpec Controller" - {
+  "ExpensesRRSectionComplete Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, aboutSectionCompleteRoute)
+        val request = FakeRequest(GET, expensesRRSectionCompleteRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AboutSectionCompleteView]
+        val view = application.injector.instanceOf[ExpensesRRSectionCompleteView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
@@ -77,14 +76,14 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AboutSectionCompletePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ExpensesRRSectionCompletePage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, aboutSectionCompleteRoute)
+        val request = FakeRequest(GET, expensesRRSectionCompleteRoute)
 
-        val view = application.injector.instanceOf[AboutSectionCompleteView]
+        val view = application.injector.instanceOf[ExpensesRRSectionCompleteView]
 
         val result = route(application, request).value
 
@@ -110,7 +109,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "rent-a-room-about"
+              journeyName = "rent-a-room-expenses"
             )
           ),
           ArgumentMatchers.eq("completed"),
@@ -118,9 +117,9 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
         )(any())
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(postOnwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
@@ -128,36 +127,28 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, AboutSectionCompleteController.onSubmit(taxYear).url)
-            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
+          FakeRequest(POST, expensesRRSectionCompleteRoute)
+            .withFormUrlEncodedBody(("expensesRRSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual postOnwardRoute.url
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-      val mockJourneyAnswersConnector = mock[JourneyAnswersConnector]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(
-        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
-      ).thenReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None))))
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, AboutSectionCompleteController.onSubmit(taxYear).url)
-            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", ""))
+          FakeRequest(POST, expensesRRSectionCompleteRoute)
+            .withFormUrlEncodedBody(("expensesRRSectionCompleteYesOrNo", ""))
 
-        val boundForm = form.bind(Map("rentARoomIsSectionCompleteYesOrNo" -> ""))
+        val boundForm = form.bind(Map("expensesRRSectionCompleteYesOrNo" -> ""))
 
-        val view = application.injector.instanceOf[AboutSectionCompleteView]
+        val view = application.injector.instanceOf[ExpensesRRSectionCompleteView]
 
         val result = route(application, request).value
 
@@ -168,31 +159,31 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, aboutSectionCompleteRoute)
+        val request = FakeRequest(GET, expensesRRSectionCompleteRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, aboutSectionCompleteRoute)
-            .withFormUrlEncodedBody(("rentARoomIsSectionCompleteYesOrNo", "true"))
+          FakeRequest(POST, expensesRRSectionCompleteRoute)
+            .withFormUrlEncodedBody(("expensesRRSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

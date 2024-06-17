@@ -20,7 +20,6 @@ import audit.RentARoomExpenses
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.propertyrentals.expenses.{ExpensesSaveFailed, NotFoundException}
-import controllers.routes
 import models.JourneyContext
 import models.requests.DataRequest
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
@@ -100,7 +99,9 @@ class ExpensesCheckYourAnswersRRController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-expenses")
     propertySubmissionService.saveJourneyAnswers(context, rentARoomExpenses).flatMap {
       case Right(_) =>
-        Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+        Future.successful(
+          Redirect(controllers.ukrentaroom.expenses.routes.ExpensesRRSectionCompleteController.onPageLoad(taxYear))
+        )
       case Left(_) => Future.failed(ExpensesSaveFailed)
     }
   }

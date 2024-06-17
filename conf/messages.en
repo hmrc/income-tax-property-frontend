@@ -1710,6 +1710,9 @@ ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
 ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
 ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
 
+ukrentaroom.expensesRRSectionComplete.title = Have you completed this section?
+ukrentaroom.expensesRRSectionComplete.heading = Have you completed this section?
+ukrentaroom.expensesRRSectionComplete.error.required = Select yes if you have completed this section
 
 ukRentARoom.otherCapitalAllowances.title = Other capital allowances
 ukRentARoom.otherCapitalAllowances.heading.individual = How much are your other capital allowances?
@@ -1766,8 +1769,8 @@ raRbalancingCharge.amount.error.nonNumeric.individual = The amount for your bala
 raRbalancingCharge.amount.error.nonNumeric.agent = The amount for your client's balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client's balancing charge can only include pounds and pence, for example £600 or £600.20
-raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
+raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
 raRAdjustmentsCYA.title = raRAdjustmentsCYA
 raRAdjustmentsCYA.heading = raRAdjustmentsCYA

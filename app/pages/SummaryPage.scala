@@ -22,6 +22,7 @@ import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -190,11 +191,16 @@ case object SummaryPage {
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
+      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear), {
+
+        val sectionFinished = userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
       },
       "expenses_link"
     )

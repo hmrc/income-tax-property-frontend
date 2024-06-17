@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers.ukrentaroom.expenses
 
 import controllers.actions._
-import forms.ukrentaroom.AboutSectionCompleteFormProvider
+import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
 import navigation.Navigator
-import pages.UKPropertySelectPage
-import pages.ukrentaroom.AboutSectionCompletePage
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.AboutSectionCompleteView
+import views.html.ukrentaroom.expenses.ExpensesRRSectionCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AboutSectionCompleteController @Inject() (
+class ExpensesRRSectionCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  journeyAnswersService: JourneyAnswersService,
-  formProvider: AboutSectionCompleteFormProvider,
+  formProvider: ExpensesRRSectionCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: AboutSectionCompleteView
+  view: ExpensesRRSectionCompleteView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -50,7 +49,7 @@ class AboutSectionCompleteController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(AboutSectionCompletePage) match {
+      val preparedForm = request.userAnswers.get(ExpensesRRSectionCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,21 +65,21 @@ class AboutSectionCompleteController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesRRSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService
                      .setStatus(
-                       JourneyContext(
+                       ctx = JourneyContext(
                          taxYear = taxYear,
                          mtditid = request.user.mtditid,
                          nino = request.user.nino,
-                         journeyName = "rent-a-room-about"
+                         journeyName = "rent-a-room-expenses"
                        ),
-                       if (value) "completed" else "inProgress",
-                       request.user
+                       status = if (value) "completed" else "inProgress",
+                       user = request.user
                      )
             } yield Redirect(
-              navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(ExpensesRRSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
