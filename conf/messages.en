@@ -1,6 +1,6 @@
 service.name = Update and submit an Income Tax Return
 
-common.notStarted = Not started
+common.notStarted = Not yet started
 common.inProgress = In progress
 common.completed = Completed
 

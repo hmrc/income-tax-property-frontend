@@ -32,9 +32,10 @@
                     <a class="govuk-link govuk-task-list__link" aria-describedby="@{item.id}"  href="@{item.call}">@messages(s"${item.content}")</a>
                 </div>
                 <div class="govuk-task-list__status" id="@{item.id}">
-                @{
-                    val tag = Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}")
-                    govukTag(tag)
+                @if(!item.taskListTag.cssClass.isBlank){
+                    @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
+                } else {
+                    @messages(s"common.${item.taskListTag.message}")
                 }
                 </div>
             </li>
