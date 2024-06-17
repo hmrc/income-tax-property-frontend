@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package audit
 
-import pages.PageConstants
-import play.api.libs.json.{Format, JsPath, Json}
-import queries.{Gettable, Settable}
+import play.api.libs.json.{Format, Json, OFormat}
 
-final case class RaRAbout(
-  ukRentARoomJointlyLet: Boolean,
-  totalIncomeAmount: BigDecimal,
-  claimExpensesOrRRR: ClaimExpensesOrRRR
+case class RentARoomAuditModel[T](
+  nino: String,
+  userType: String,
+  mtdItId: String,
+  agentReferenceNumber: Option[String],
+  taxYear: Int,
+  isUpdate: Boolean,
+  sectionName: String,
+  userEnteredRentARoomDetails: T
 )
 
-object RaRAbout extends Settable[RaRAbout] with Gettable[RaRAbout] {
-  implicit val format: Format[RaRAbout] = Json.format[RaRAbout]
-
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout
+object RentARoomAuditModel {
+  implicit def format[T](implicit rentARoomAuditModelFormat: Format[T]): OFormat[RentARoomAuditModel[T]] =
+    Json.format[RentARoomAuditModel[T]]
 }

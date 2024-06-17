@@ -24,12 +24,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class AuditService @Inject()(auditConnector: AuditConnector)(implicit ec: ExecutionContext) {
+class AuditService @Inject() (auditConnector: AuditConnector)(implicit ec: ExecutionContext) {
 
-  private val auditType = "CreateOrAmendRentalsUpdate"
+  private val rentalsAuditType = "CreateOrAmendRentalsUpdate"
+  private val rentARoomAuditType = "CreateOrAmendRentARoomUpdate"
 
-  def sendRentalsAuditEvent[T](event: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit = {
-    auditConnector.sendExplicitAudit(auditType, event)
-  }
+  def sendRentalsAuditEvent[T](event: AuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit =
+    auditConnector.sendExplicitAudit(rentalsAuditType, event)
+
+  def sendRentARoomAuditEvent[T](
+    event: RentARoomAuditModel[T]
+  )(implicit hc: HeaderCarrier, writes: Writes[RentARoomAuditModel[T]]): Unit =
+    auditConnector.sendExplicitAudit(rentARoomAuditType, event)
 
 }
