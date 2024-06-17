@@ -17,7 +17,7 @@
 package pages.ukrentaroom.expenses
 
 import pages.PageConstants.rentARoomExpense
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object OtherPropertyExpensesRRPage extends QuestionPage[BigDecimal] {

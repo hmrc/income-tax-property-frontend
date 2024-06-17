@@ -27,7 +27,7 @@ govukSummaryList: GovukSummaryList,
 
 <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
 <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-@formHelper(action = controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+@formHelper(action = controllers.ukrentaroom.allowances.routes.RaRAllowancesCYAController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
 @govukSummaryList(list)
 
