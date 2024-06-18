@@ -39,13 +39,15 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
       "status is OK and valid jsValue" in {
 
         val propertyPeriodicSubmissionResponse = FetchedBackendData(
-          Some(CapitalAllowancesForACar(true, Some(3.2))), Some(
+          Some(CapitalAllowancesForACar(true, Some(3.2))),
+          Some(
             PropertyAbout(
               TotalIncome.Between,
               Seq(UKPropertySelect.PropertyRentals),
               Some(true)
             )
-          ), Some(
+          ),
+          Some(
             Adjustments(
               BalancingCharge(true, Some(4.2)),
               PrivateUseAdjustment(4.5),
@@ -54,7 +56,13 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               4.2,
               4.2
             )
-          ), None, None, None, None
+          ),
+          None,
+          None,
+          None,
+          None,
+          None,
+          None
         )
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 
@@ -67,10 +75,9 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
       }
 
       "status is OK and invalid jsValue" in {
-        val jsValue: JsValue = Json.parse(
-          """
-            |{"capitalAllowancesForACar": "invalid"}
-            |""".stripMargin)
+        val jsValue: JsValue = Json.parse("""
+                                            |{"capitalAllowancesForACar": "invalid"}
+                                            |""".stripMargin)
 
         val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)
 
@@ -81,10 +88,9 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
       }
 
       "status is NOT_FOUND and any jsValue" in {
-        val jsValue: JsValue = Json.parse(
-          """
-            |{}
-            |""".stripMargin)
+        val jsValue: JsValue = Json.parse("""
+                                            |{}
+                                            |""".stripMargin)
 
         val httpResponse: HttpResponse = HttpResponse.apply(NOT_FOUND, jsValue, anyHeaders)
 

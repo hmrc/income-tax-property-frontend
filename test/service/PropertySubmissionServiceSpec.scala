@@ -51,6 +51,8 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         None,
         None,
         None,
+        None,
+        None,
         None
       )
       when(
@@ -61,7 +63,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
       whenReady(resultFromService) {
         case Right(r) => r mustBe resultFromConnector
-        case Left(_) => fail("Service should return success when connector returns success")
+        case Left(_)  => fail("Service should return success when connector returns success")
       }
     }
 

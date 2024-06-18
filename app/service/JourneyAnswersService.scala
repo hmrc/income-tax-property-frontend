@@ -46,7 +46,7 @@ class JourneyAnswersService @Inject() (
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
-                  Right(FetchedBackendData(None, None, None, None, None, None, None))
+                  Right(FetchedBackendData(None, None, None, None, None, None, None, None, None))
                 case Right(r) => Right(r)
               }
           }
