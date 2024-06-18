@@ -21,7 +21,13 @@ import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
+import pages.allowances.CapitalAllowancesForACarPage
 import pages.enhancedstructuresbuildingallowance._
+import pages.premiumlease.{ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherAllowablePropertyExpensesPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.structurebuildingallowance.{SbaClaimsPage, SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage, StructuredBuildingAllowanceAddressPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -63,7 +69,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        ],
       |        "esbaClaims" : false
       |        },
-      |        "propertyRentals": {
       |        "propertyRentalsAbout" : {
       |            "toexpensesLessThan1000" : false,
       |            "claimPropertyIncomeAllowance" : false
@@ -93,7 +98,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "costsOfServicesProvided" : 34,
       |            "propertyBusinessTravelCosts" : 4,
       |            "otherAllowablePropertyExpenses" : 3
-      |        }
       |        },
       |        "allowances" : {
       |            "annualInvestmentAllowance" : 44,
@@ -131,7 +135,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |                }
       |            }
       |        ],
-      |        "sbaClaims" : false
+      |        "sbaClaims" : true
       |        },
       |        "adjustments" : {
       |            "privateUseAdjustment" : 2,
@@ -161,9 +165,9 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ExpensesLessThan1000Page).get mustBe false
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(IsNonUKLandlordPage).get mustBe false
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
+      updated.get(IsNonUKLandlordPage).get mustBe false
+      updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
+      updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
@@ -176,6 +180,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(PrivateUseAdjustmentPage).get mustBe PrivateUseAdjustment(2)
       updated.get(BalancingChargePage).get mustBe BalancingCharge(true, Some(3))
       updated.get(PropertyIncomeAllowancePage).get mustBe 4
+      updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(RenovationAllowanceBalancingChargePage).get mustBe RenovationAllowanceBalancingCharge(true, Some(23))
       updated.get(ResidentialFinanceCostPage).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3
@@ -185,7 +190,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "12",
         "EH1 AB1"
       )
-
       updated.get(EsbaQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-01-04")
       updated.get(EsbaQualifyingAmountPage(0)).get mustBe 5
       updated.get(EsbaClaimPage(0)).get mustBe 6
@@ -199,16 +203,23 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(EsbaClaimPage(1)).get mustBe 5
 
 // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-04-03")
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingQualifyingAmountPage(0)).get mustBe 3
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingAllowanceClaimPage(0)).get mustBe 4
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructuredBuildingAllowanceAddressPage(0)).get mustBe StructuredBuildingAllowanceAddress("3", "3", "EH1 AB2")
-//
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingQualifyingDatePage(1)).get mustBe LocalDate.parse("2022-02-02")
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingQualifyingAmountPage(1)).get mustBe 4
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructureBuildingAllowanceClaimPage(1)).get mustBe 5
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(StructuredBuildingAllowanceAddressPage(1)).get mustBe StructuredBuildingAllowanceAddress("4", "4", "EH1 AB2")
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(SbaClaimsPage).get mustBe true
+      updated.get(SbaClaimsPage).get mustBe true
+      updated.get(StructureBuildingQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-04-03")
+      updated.get(StructureBuildingQualifyingAmountPage(0)).get mustBe 3
+      updated.get(StructureBuildingAllowanceClaimPage(0)).get mustBe 4
+      updated.get(StructuredBuildingAllowanceAddressPage(0)).get mustBe StructuredBuildingAllowanceAddress(
+        "3",
+        "3",
+        "EH1 AB2"
+      )
+      updated.get(StructureBuildingQualifyingDatePage(1)).get mustBe LocalDate.parse("2022-02-02")
+      updated.get(StructureBuildingQualifyingAmountPage(1)).get mustBe 4
+      updated.get(StructureBuildingAllowanceClaimPage(1)).get mustBe 5
+      updated.get(StructuredBuildingAllowanceAddressPage(1)).get mustBe StructuredBuildingAllowanceAddress(
+        "4",
+        "4",
+        "EH1 AB2"
+      )
 // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(SbaRemoveConfirmationPage).get mustBe true
 
     }

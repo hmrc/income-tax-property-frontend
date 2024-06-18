@@ -25,7 +25,7 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaClaimsPage, StructureBuildingAllowanceClaimPage, StructuredBuildingAllowanceAddressPage}
+import pages.structurebuildingallowance._
 import play.api.libs.json.Writes
 import queries.Settable
 
@@ -46,11 +46,15 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua3 <- updatePart(ua2, TotalIncomePage, fetchedData.propertyAbout.map(_.totalIncome))
         ua5 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.allowances)
-        ua7 <- updateStructureBuildingPages(ua6, fetchedData.sbasWithSupportingQuestions)
-        ua8 <- updateEnhancedStructureBuildingPages(
-                 ua7,
-                 fetchedData.esbasWithSupportingQuestions
-               )
+        ua7 <-
+          updateStructureBuildingPages(ua6, fetchedData.sbasWithSupportingQuestions)
+
+        ua8 <-
+          updateEnhancedStructureBuildingPages(
+            ua7,
+            fetchedData.esbasWithSupportingQuestions
+          )
+
         ua9  <- updatePropertyRentalsIncomePages(ua8, fetchedData.propertyRentalsIncome)
         ua10 <- updatePropertyRentalsExpensesPages(ua9, fetchedData.propertyRentalsExpenses)
       } yield ua10
@@ -93,13 +97,23 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(propertyRentalsIncome) =>
           for {
-            ua1 <- userAnswers.set(IncomeFromPropertyRentalsPage, propertyRentalsIncome.incomeFromPropertyRentals)
-            ua2 <- ua1.set(IsNonUKLandlordPage, propertyRentalsIncome.isNonUKLandlord)
-            ua3 <- ua2.set(OtherIncomeFromPropertyPage, propertyRentalsIncome.otherIncomeFromProperty)
-            ua4 <- propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage, dt))
-            ua5 <- propertyRentalsIncome.receivedGrantLeaseAmount.fold(Try(ua4))(rgla =>
-                     ua4.set(ReceivedGrantLeaseAmountPage, rgla)
-                   )
+            ua1 <-
+              userAnswers.set(IncomeFromPropertyRentalsPage, propertyRentalsIncome.incomeFromPropertyRentals)
+
+            ua2 <-
+              ua1.set(IsNonUKLandlordPage, propertyRentalsIncome.isNonUKLandlord)
+
+            ua3 <-
+              ua2.set(OtherIncomeFromPropertyPage, propertyRentalsIncome.otherIncomeFromProperty)
+
+            ua4 <-
+              propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage, dt))
+
+            ua5 <-
+              propertyRentalsIncome.receivedGrantLeaseAmount.fold(Try(ua4))(rgla =>
+                ua4.set(ReceivedGrantLeaseAmountPage, rgla)
+              )
+
             ua6 <- propertyRentalsIncome.premiumsGrantLease.fold(Try(ua5))(pgl => ua5.set(PremiumsGrantLeasePage, pgl))
             ua7 <- propertyRentalsIncome.yearLeaseAmount.fold(Try(ua6))(yla =>
                      ua6.set(YearLeaseAmountPage, yla.toInt)
@@ -200,8 +214,8 @@ object PropertyPeriodSessionRecoveryExtensions {
     def updateSba(userAnswers: UserAnswers, index: Int, sba: Sba): Try[UserAnswers] =
       for {
         ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index), sba.structuredBuildingAllowanceAddress)
-        ua2 <- ua1.set(EsbaQualifyingDatePage(index), sba.structureBuildingQualifyingDate)
-        ua3 <- ua2.set(EsbaQualifyingAmountPage(index), sba.structureBuildingQualifyingAmount)
+        ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index), sba.structureBuildingQualifyingDate)
+        ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index), sba.structureBuildingQualifyingAmount)
         ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index), sba.structureBuildingAllowanceClaim)
       } yield ua4
 

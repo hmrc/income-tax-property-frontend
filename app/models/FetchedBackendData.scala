@@ -114,8 +114,8 @@ final case class FetchedBackendData(
   adjustments: Option[Adjustments],
   allowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-  propertyRentals: Option[PropertyRentals],
   sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
+  propertyRentals: Option[PropertyRentals],
   propertyRentalsIncome: Option[PropertyRentalsIncome],
   propertyRentalsExpenses: Option[PropertyRentalsExpense]
 )
