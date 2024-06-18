@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.expenses.ResidentialPropertyFinanceCostsFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.expenses.{ResidentialPropertyFinanceCostsRRPage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
+import pages.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

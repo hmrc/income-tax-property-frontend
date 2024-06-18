@@ -16,20 +16,25 @@
 
 package audit
 
-import models.RaRBalancingCharge
-import models.RaRBBalancingCharge.format
+
+import models.{ElectricChargePointAllowance, RaRCapitalAllowancesForACar}
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
-final case class RentARoomAdjustments(
-    RaRBalancingCharge: Option[RaRBalancingCharge]
+case class RentARoomAllowances(
+  RaRCapitalAllowancesForACar: Option[RaRCapitalAllowancesForACar],
+  RaRAnnualInvestmentAllowance: Option[BigDecimal],
+  ElectricChargePointAllowanceForAnEV: Option[ElectricChargePointAllowance],
+  RaRZeroEmissionCarAllowance: Option[BigDecimal],
+  ReplacementsOfDomesticGoods: Option[BigDecimal],
+  OtherCapitalAllowances: Option[BigDecimal]
 )
 
-object RentARoomAdjustments extends Gettable[RentARoomAdjustments] with Settable[RentARoomAdjustments] {
-  implicit val formats: Format[RentARoomAdjustments] = Json.format[RentARoomAdjustments]
+object RentARoomAllowances extends Gettable[RentARoomAllowances] with Settable[RentARoomAllowances] {
+  implicit val formats: Format[RentARoomAllowances] = Json.format[RentARoomAllowances]
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentARoomAdjustment
+  override def toString: String = PageConstants.rentARoomAllowance
 }

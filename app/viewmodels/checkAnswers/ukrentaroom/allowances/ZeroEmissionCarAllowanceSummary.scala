@@ -25,7 +25,6 @@ import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object RaRZeroEmissionCarAllowanceSummary {
-
   def row(taxYear: Int, answers: UserAnswers, agentOrIndividual: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =

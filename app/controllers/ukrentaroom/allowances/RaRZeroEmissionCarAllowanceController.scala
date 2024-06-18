@@ -16,7 +16,7 @@
 
 package controllers.ukrentaroom.allowances
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
@@ -25,6 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +39,7 @@ class RaRZeroEmissionCarAllowanceController @Inject() (
   requireData: DataRequiredAction,
   formProvider: RaRZeroEmissionCarAllowanceFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: views.html.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceView
+  view: RaRZeroEmissionCarAllowanceView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 

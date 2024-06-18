@@ -49,7 +49,10 @@ class SummaryController @Inject() (
           val propertyRentalsRows =
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          Future.successful(Ok(view(taxYear, propertyRentalsRows, ukRentARoomRows)))
+          val startItems = SummaryPage.propertyAboutItems(request.userAnswers, taxYear)
+          Future.successful(
+            Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows))
+          )
         case _ =>
           Future.failed(PropertyDataError)
       }
@@ -60,6 +63,7 @@ class SummaryController @Inject() (
     block: => Future[Result]
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
     sessionRecovery.withUpdatedData(taxYear)(block)
+
 }
 
 case object PropertyDataError extends Exception("Encountered an issue retrieving property data from the business API")

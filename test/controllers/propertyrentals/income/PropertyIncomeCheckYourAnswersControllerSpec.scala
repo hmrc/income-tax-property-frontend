@@ -18,7 +18,6 @@ package controllers.propertyrentals.income
 
 import audit.PropertyRentalsIncome
 import base.SpecBase
-import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar

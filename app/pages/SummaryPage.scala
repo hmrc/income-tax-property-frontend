@@ -19,8 +19,9 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import pages.propertyrentals.income.IsNonUKLandlordPage
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
@@ -32,7 +33,7 @@ case object SummaryPage {
     taxYear: Int,
     cashOrAccruals: Boolean
   ): Seq[TaskListItem] = {
-    val propertyRentalsAbout: TaskListItem = propertyAboutItem(userAnswers, taxYear)
+    val propertyRentalsAbout: TaskListItem = propertyRentalsAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = propertyRentalsIncomeItem(userAnswers, taxYear)
     val propertyRentalsExpenses: TaskListItem = propertyRentalsExpensesItem(userAnswers, taxYear)
     val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear)
@@ -93,6 +94,16 @@ case object SummaryPage {
       Seq.empty[TaskListItem]
     }
   }
+
+  def propertyAboutItems(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] =
+    Seq(
+      TaskListItem(
+        "summary.about",
+        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
+        if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+        "about_link"
+      )
+    )
 
   private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
@@ -155,7 +166,7 @@ case object SummaryPage {
     TaskListItem(
       "summary.income",
       controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage)).isDefined) {
+      if (userAnswers.flatMap(_.get(IsNonUKLandlordPage)).isDefined) {
         TaskListTag.InProgress
       } else {
         TaskListTag.NotStarted
@@ -163,11 +174,11 @@ case object SummaryPage {
       "income_link"
     )
 
-  private def propertyAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  private def propertyRentalsAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
       "about_link"
     )
 

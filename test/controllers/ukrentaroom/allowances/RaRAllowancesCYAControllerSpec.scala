@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.adjustments
+package controllers.ukrentaroom.allowances
 
-import audit.{AuditService, RentARoomAdjustments}
+import audit.{AuditService, RentARoomAllowances}
 import base.SpecBase
-import controllers.ukrentaroom.adjustments.routes
 import models.backend.PropertyDetails
-import models.{RaRBalancingCharge, UserAnswers}
+import models.{ElectricChargePointAllowance, UserAnswers}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.{doNothing, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -30,23 +29,38 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
-import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
+import views.html.ukrentaroom.allowances.RaRAllowancesCYAView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
+class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = LocalDate.now.getYear
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
-  val raRBalancingChargeValue = 200
-  val raRBalancingCharge = RaRBalancingCharge(
-    raRbalancingChargeYesNo = true,
-    raRbalancingChargeAmount = Some(raRBalancingChargeValue)
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val annualInvestmentAllowanceSummaryValue = 100
+  val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
+
+  val otherCapitalAllowanceValue = 700
+  val otherCapitalAllowance = BigDecimal.valueOf(otherCapitalAllowanceValue)
+
+  val replacementOfDomesticGoodsValue = 600
+  val replacementOfDomesticGoods = BigDecimal.valueOf(replacementOfDomesticGoodsValue)
+
+  val businessPremisesRenovationValue = 500
+  val businessPremisesRenovation = BigDecimal.valueOf(businessPremisesRenovationValue)
+
+  val zeroEmissionCarAllowanceValue = 300
+  val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
+
+  val electricChargePointAllowanceValue = 200
+  val electricChargePointAllowance = ElectricChargePointAllowance(
+    electricChargePointAllowanceYesOrNo = true,
+    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
 
-  "RaRAdjustmentsCYA Controller" - {
+  "RaRAllowancesCYA Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -55,11 +69,11 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
       val taxYear = 2023
       running(application) {
 
-        val request = FakeRequest(GET, routes.RaRAdjustmentsCYAController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.RaRAllowancesCYAController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RaRAdjustmentsCYAView]
+        val view = application.injector.instanceOf[RaRAllowancesCYAView]
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
@@ -70,7 +84,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.RaRAdjustmentsCYAController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.RaRAllowancesCYAController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -81,11 +95,16 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
-      val userAnswers = UserAnswers("adjustments-user-answers")
+      val userAnswers = UserAnswers("allowances-user-answers")
         .set(
-          RentARoomAdjustments,
-          RentARoomAdjustments(
-            RaRBalancingCharge = Some(raRBalancingCharge)
+          RentARoomAllowances,
+          RentARoomAllowances(
+            RaRCapitalAllowancesForACar = None,
+            RaRAnnualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
+            ElectricChargePointAllowanceForAnEV = Some(electricChargePointAllowance),
+            RaRZeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+            ReplacementsOfDomesticGoods = Some(replacementOfDomesticGoods),
+            OtherCapitalAllowances = Some(otherCapitalAllowance)
           )
         )
         .toOption
@@ -118,7 +137,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, routes.RaRAdjustmentsCYAController.onSubmit(taxYear).url)
+        val request = FakeRequest(POST, routes.RaRAllowancesCYAController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
 

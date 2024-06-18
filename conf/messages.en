@@ -1,6 +1,6 @@
 service.name = Update and submit an Income Tax Return
 
-common.notStarted = Not started
+common.notStarted = Not yet started
 common.inProgress = In progress
 common.completed = Completed
 
@@ -1606,6 +1606,7 @@ electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.agent = The amoun
 electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.individual = The amount you want to claim for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.agent = The amount your client wants to claim for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowanceForAnEV.allowance.error.outOfRange = Enter an amount between £{0} and £{1}
+electricChargePointAllowanceForAnEV.checkYourAnswersLabel = Electric charge-point allowance for an electric vehicle
 
 rRAllowancesStart.title = Allowances
 rRAllowancesStart.heading = Allowances
@@ -1711,6 +1712,7 @@ ukrentaroom.replacementsOfDomesticGoods.li6.agent = for the initial cost of buyi
 ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
 ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
 ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
+ukrentaroom.replacementsOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
 
 ukrentaroom.expensesRRSectionComplete.title = Have you completed this section?
 ukrentaroom.expensesRRSectionComplete.heading = Have you completed this section?
@@ -1776,3 +1778,6 @@ raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and �
 
 raRAdjustmentsCYA.title = raRAdjustmentsCYA
 raRAdjustmentsCYA.heading = raRAdjustmentsCYA
+
+raRAllowancesCYA.title = raRAllowancesCYA
+raRAllowancesCYA.heading = raRAllowancesCYA

@@ -20,7 +20,6 @@ import controllers.ukrentaroom.allowances.routes
 import models.{CheckMode, RaRCapitalAllowancesForACar, UserAnswers}
 import pages.ukrentaroom.allowances.RaRCapitalAllowancesForACarPage
 import play.api.i18n.Messages
-import play.api.libs.json.KeyWrites
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
@@ -55,5 +54,21 @@ object RaRCapitalAllowancesForACarSummary {
               .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
           )
         )
+      case RaRCapitalAllowancesForACar(false, _) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no").withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
+            )
+          )
+        )
+      case _ => Option.empty[SummaryListRow]
     }
+
 }
