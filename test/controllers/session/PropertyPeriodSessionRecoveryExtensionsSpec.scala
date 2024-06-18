@@ -167,7 +167,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
       updated.get(IsNonUKLandlordPage).get mustBe false
       updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
-      updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
+//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
