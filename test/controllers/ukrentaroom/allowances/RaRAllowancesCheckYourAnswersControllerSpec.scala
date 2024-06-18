@@ -29,12 +29,12 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
-import views.html.ukrentaroom.allowances.RaRAllowancesCYAView
+import views.html.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
+class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = LocalDate.now.getYear
 
@@ -60,7 +60,7 @@ class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
     electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
 
-  "RaRAllowancesCYA Controller" - {
+  "RaRAllowancesCheckYourAnswer Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -69,11 +69,11 @@ class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
       val taxYear = 2023
       running(application) {
 
-        val request = FakeRequest(GET, routes.RaRAllowancesCYAController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RaRAllowancesCYAView]
+        val view = application.injector.instanceOf[RaRAllowancesCheckYourAnswersView]
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
@@ -84,7 +84,7 @@ class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.RaRAllowancesCYAController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -137,7 +137,7 @@ class RaRAllowancesCYAControllerSpec extends SpecBase with SummaryListFluency {
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, routes.RaRAllowancesCYAController.onSubmit(taxYear).url)
+        val request = FakeRequest(POST, routes.RaRAllowancesCheckYourAnswersController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
 

@@ -54,21 +54,5 @@ object RaRCapitalAllowancesForACarSummary {
               .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
           )
         )
-      case RaRCapitalAllowancesForACar(false, _) =>
-        Some(
-          SummaryListRowViewModel(
-            key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel("site.no").withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel(
-                "site.change",
-                routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
-              )
-                .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
-            )
-          )
-        )
-      case _ => Option.empty[SummaryListRow]
     }
-
 }

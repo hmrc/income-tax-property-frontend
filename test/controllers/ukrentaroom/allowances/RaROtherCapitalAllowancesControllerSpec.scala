@@ -45,7 +45,7 @@ class RaROtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar
   val validAnswer: BigDecimal = 0
 
   lazy val otherCapitalAllowancesRoute =
-    controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode).url
+    controllers.ukrentaroom.allowances.routes.RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode).url
   val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
   val taxYear = 2024
   forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>

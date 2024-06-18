@@ -20,11 +20,7 @@ import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.allowances.RaROtherCapitalAllowancesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-<<<<<<<< HEAD:app/viewmodels/checkAnswers/ukrentaroom/allowances/RaROtherCapitalAllowancesSummary.scala
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
-========
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
->>>>>>>> 994f7d5a60f7c376eec010eeaa320eb26ab56386:app/viewmodels/checkAnswers/ukrentaroom/allowances/OtherCapitalAllowancesSummary.scala
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -33,11 +29,7 @@ object RaROtherCapitalAllowancesSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RaROtherCapitalAllowancesPage).map { answer =>
       SummaryListRowViewModel(
-<<<<<<<< HEAD:app/viewmodels/checkAnswers/ukrentaroom/allowances/RaROtherCapitalAllowancesSummary.scala
         key = KeyViewModel("ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel").withCssClass(keyCssClass),
-========
-        key = "ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel",
->>>>>>>> 994f7d5a60f7c376eec010eeaa320eb26ab56386:app/viewmodels/checkAnswers/ukrentaroom/allowances/OtherCapitalAllowancesSummary.scala
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(

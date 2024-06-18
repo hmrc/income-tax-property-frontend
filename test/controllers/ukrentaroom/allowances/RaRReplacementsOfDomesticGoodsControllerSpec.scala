@@ -47,7 +47,7 @@ class RaRReplacementsOfDomesticGoodsControllerSpec extends SpecBase with Mockito
 
   val validAnswer = BigDecimal(0)
   lazy val replacementsOfDomesticGoodsRoute =
-    controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode).url
+    controllers.ukrentaroom.allowances.routes.RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode).url
 
   val scenarios = Table[String, Boolean](("AgencyOrIndividual", "IsAgent"), ("agency", true), ("individual", false))
   forAll(scenarios) { (agencyOrIndividual, isAgent) =>
