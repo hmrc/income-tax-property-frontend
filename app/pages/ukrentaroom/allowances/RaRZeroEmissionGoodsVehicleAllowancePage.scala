@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages.ukrentaroom.allowances
 
-import play.api.libs.json.{Format, Json}
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-final case class CapitalAllowancesForACar(
-  capitalAllowancesForACarYesNo: Boolean,
-  capitalAllowancesForACarAmount: Option[BigDecimal]
-)
+case object RaRZeroEmissionGoodsVehicleAllowancePage extends QuestionPage[BigDecimal] {
 
-object CapitalAllowancesForACar {
-  implicit val format: Format[CapitalAllowancesForACar] = Json.format
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
+
+  override def toString: String = "zeroEmissionGoodsVehicleAllowance"
 }

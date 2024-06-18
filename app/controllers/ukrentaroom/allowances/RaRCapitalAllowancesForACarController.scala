@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.allowances.RaRCapitalAllowancesForACarFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.RaRCapitalAllowancesForACarPage
+import pages.ukrentaroom.allowances.RaRCapitalAllowancesForACarPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

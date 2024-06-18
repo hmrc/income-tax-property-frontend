@@ -34,7 +34,7 @@
 <p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p2.${request.user.isAgentMessageKey}")</p>
 <p class="govuk-body">@messages(s"ukRentARoom.otherCapitalAllowances.p3.${request.user.isAgentMessageKey}")&nbsp;<a href='@messages("ukRentARoom.otherCapitalAllowances.href.link")'>@messages("ukRentARoom.otherCapitalAllowances.href.label")</a></p>
 
-@formHelper(action = controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+@formHelper(action = controllers.ukrentaroom.allowances.routes.RaROtherCapitalAllowancesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

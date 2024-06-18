@@ -32,7 +32,7 @@ govukRadios: GovukRadios,
 
 @layout(pageTitle = title(form, messages("electricChargePointAllowanceForAnEV.title"))) {
 
-    @formHelper(action = routes.ElectricChargePointAllowanceForAnEVController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.RaRElectricChargePointAllowanceForAnEVController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
     @if(form.errors.nonEmpty) {
         @govukErrorSummary(ErrorSummaryViewModel(form))

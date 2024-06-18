@@ -18,7 +18,10 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class RaRCapitalAllowancesForACar(RaRCapitalAllowancesForACarYesNo: Boolean, RaRCapitalAllowancesForACarAmount: Option[BigDecimal])
+final case class RaRCapitalAllowancesForACar(
+  capitalAllowancesForACarYesNo: Boolean,
+  capitalAllowancesForACarAmount: Option[BigDecimal]
+)
 
 object RaRCapitalAllowancesForACar {
   implicit val format: Format[RaRCapitalAllowancesForACar] = Json.format

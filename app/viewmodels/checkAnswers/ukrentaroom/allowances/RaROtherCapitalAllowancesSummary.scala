@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom
+package viewmodels.checkAnswers.ukrentaroom.allowances
 
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.allowances.ReplacementsOfDomesticGoodsPage
+import pages.ukrentaroom.allowances.RaROtherCapitalAllowancesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ReplacementsOfDomesticGoodsSummary {
+object RaROtherCapitalAllowancesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReplacementsOfDomesticGoodsPage).map { answer =>
+    answers.get(RaROtherCapitalAllowancesPage).map { answer =>
       SummaryListRowViewModel(
-        key = "replacementsOfDomesticGoods.checkYourAnswersLabel",
-        value = ValueViewModel(answer.toString),
+        key = KeyViewModel("ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.allowances.routes.ReplacementsOfDomesticGoodsController
+            controllers.ukrentaroom.allowances.routes.RaROtherCapitalAllowancesController
               .onPageLoad(taxYear, CheckMode)
               .url
           )
-            .withVisuallyHiddenText(messages("replacementsOfDomesticGoods.change.hidden"))
+            .withVisuallyHiddenText(messages("ukRentARoom.otherCapitalAllowances.change.hidden"))
         )
       )
     }

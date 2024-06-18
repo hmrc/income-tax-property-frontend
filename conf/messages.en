@@ -1585,6 +1585,8 @@ otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s o
 otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 
 electricChargePointAllowanceForAnEV.title = Electric charge-point allowance for an electric vehicle
+electricChargePointAllowanceForAnEV.hidden = Electric charge-point allowance for an electric vehicle
+electricChargePointAllowanceForAnEV.checkYourAnswersLabel = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.heading = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.details.content1.individual = You can claim 100% of the cost of installing a charge-point for an electric car in the first year that you buy it.
 electricChargePointAllowanceForAnEV.details.content1.agent = Your client can claim 100% of the cost of installing a charge-point for an electric car in the first year that they buy it.
@@ -1717,7 +1719,7 @@ ukrentaroom.expensesRRSectionComplete.error.required = Select yes if you have co
 ukRentARoom.otherCapitalAllowances.title = Other capital allowances
 ukRentARoom.otherCapitalAllowances.heading.individual = How much are your other capital allowances?
 ukRentARoom.otherCapitalAllowances.heading.agent = How much are your client’s other capital allowances?
-ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel = OtherCapitalAllowances
+ukRentARoom.otherCapitalAllowances.checkYourAnswersLabel = Other capital allowances
 ukRentARoom.otherCapitalAllowances.error.nonNumeric.agent = The amount for your client’s capital allowances can only include pounds and pence, for example £600 or £600.20.
 ukRentARoom.otherCapitalAllowances.error.nonNumeric.individual = The amount for your capital allowances can only include pounds and pence, for example £600 or £600.20.
 ukRentARoom.otherCapitalAllowances.error.twoDecimalPlaces.agent = The amount for your client’s capital allowances can only include pounds and pence, for example £600 or £600.20.

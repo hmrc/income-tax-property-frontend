@@ -17,37 +17,37 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions._
-import forms.ukrentaroom.allowances.ReplacementsOfDomesticGoodsFormProvider
+import forms.ukrentaroom.allowances.OtherCapitalAllowancesFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.ReplacementsOfDomesticGoodsPage
+import pages.ukrentaroom.allowances.RaROtherCapitalAllowancesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.allowances.ReplacementsOfDomesticGoodsView
+import views.html.ukrentaroom.allowances.OtherCapitalAllowancesView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReplacementsOfDomesticGoodsController @Inject() (
+class RaROtherCapitalAllowancesController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ReplacementsOfDomesticGoodsFormProvider,
+  formProvider: OtherCapitalAllowancesFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ReplacementsOfDomesticGoodsView
+  view: OtherCapitalAllowancesView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ReplacementsOfDomesticGoodsPage) match {
+      val form = formProvider(request.user.isAgentMessageKey)
+
+      val preparedForm = request.userAnswers.get(RaROtherCapitalAllowancesPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -57,16 +57,17 @@ class ReplacementsOfDomesticGoodsController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ReplacementsOfDomesticGoodsPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaROtherCapitalAllowancesPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ReplacementsOfDomesticGoodsPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(RaROtherCapitalAllowancesPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
