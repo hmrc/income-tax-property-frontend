@@ -17,17 +17,16 @@
 package audit
 
 import models.RaRBalancingCharge
-import models.RaRBBalancingCharge.format
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
-import queries.{Gettable, Settable}
+import queries.Gettable
 
 final case class RentARoomAdjustments(
-  balancingCharge: Option[RaRBalancingCharge]
+  balancingCharge: RaRBalancingCharge
 )
 
-object RentARoomAdjustments extends Gettable[RentARoomAdjustments] with Settable[RentARoomAdjustments] {
-  implicit val formats: Format[RentARoomAdjustments] = Json.format[RentARoomAdjustments]
+object RentARoomAdjustments extends Gettable[RentARoomAdjustments] {
+  implicit val format: Format[RentARoomAdjustments] = Json.format[RentARoomAdjustments]
 
   override def path: JsPath = JsPath \ toString
 

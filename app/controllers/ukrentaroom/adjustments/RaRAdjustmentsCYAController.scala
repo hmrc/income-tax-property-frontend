@@ -17,7 +17,7 @@
 package controllers.ukrentaroom.adjustments
 
 import audit.RentARoomAdjustments._
-import audit.{AuditModel, AuditService, RentARoomAdjustments}
+import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
 import controllers.actions._
 import models.JourneyContext
 import models.requests.DataRequest
@@ -64,7 +64,6 @@ class RaRAdjustmentsCYAController @Inject() (
       request.userAnswers.get(RentARoomAdjustments) match {
         case Some(adjustments) =>
           propertySubmissionService.saveJourneyAnswers(context, adjustments).map {
-
             case Right(_) =>
               auditCYA(taxYear, request, adjustments)
               Redirect(controllers.routes.SummaryController.show(taxYear))
@@ -72,7 +71,6 @@ class RaRAdjustmentsCYAController @Inject() (
           }
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
-
           Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
       }
   }
@@ -80,17 +78,16 @@ class RaRAdjustmentsCYAController @Inject() (
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentARoomAdjustments)(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel(
+    val auditModel = RentARoomAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "RentARoomAdjustments",
+      "PropertyRentARoomAdjustments",
       adjustments
     )
-
-    audit.sendRentalsAuditEvent(auditModel)
+    audit.sendRentARoomAuditEvent(auditModel)
   }
 }

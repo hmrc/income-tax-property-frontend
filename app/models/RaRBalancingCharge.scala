@@ -20,6 +20,6 @@ import play.api.libs.json.{Format, Json}
 
 final case class RaRBalancingCharge(raRbalancingChargeYesNo: Boolean, raRbalancingChargeAmount: Option[BigDecimal])
 
-object RaRBBalancingCharge {
+object RaRBalancingCharge {
   implicit val format: Format[RaRBalancingCharge] = Json.format
 }
