@@ -23,12 +23,14 @@ final case class RentARoomIncome(rentsReceived: BigDecimal)
 object RentARoomIncome {
   implicit val format = Json.format[RentARoomIncome]
 }
-final case class UkOtherPropertyIncome(premiumsOfLeaseGrant: Option[BigDecimal],
-                                       reversePremiums: Option[BigDecimal],
-                                       periodAmount: Option[BigDecimal],
-                                       taxDeducted: Option[BigDecimal],
-                                       otherIncome: Option[BigDecimal],
-                                       ukOtherRentARoom: Option[RentARoomIncome])
+final case class UkOtherPropertyIncome(
+  premiumsOfLeaseGrant: Option[BigDecimal],
+  reversePremiums: Option[BigDecimal],
+  periodAmount: Option[BigDecimal],
+  taxDeducted: Option[BigDecimal],
+  otherIncome: Option[BigDecimal],
+  ukOtherRentARoom: Option[RentARoomIncome]
+)
 
 object UkOtherPropertyIncome {
   implicit val format = Json.format[UkOtherPropertyIncome]
@@ -40,25 +42,29 @@ object UkRentARoomExpense {
   implicit val format: OFormat[UkRentARoomExpense] = Json.format[UkRentARoomExpense]
 }
 
-final case class UkOtherPropertyExpenses(premisesRunningCosts: Option[BigDecimal],
-                                         repairsAndMaintenance: Option[BigDecimal],
-                                         financialCosts: Option[BigDecimal],
-                                         professionalFees: Option[BigDecimal],
-                                         travelCosts: Option[BigDecimal],
-                                         costOfServices: Option[BigDecimal],
-                                         other: Option[BigDecimal],
-                                         residentialFinancialCost: Option[BigDecimal],
-                                         residentialFinancialCostsCarriedForward: Option[BigDecimal],
-                                         ukOtherRentARoom: Option[UkRentARoomExpense],
-                                         consolidatedExpense: Option[BigDecimal])
+final case class UkOtherPropertyExpenses(
+  premisesRunningCosts: Option[BigDecimal],
+  repairsAndMaintenance: Option[BigDecimal],
+  financialCosts: Option[BigDecimal],
+  professionalFees: Option[BigDecimal],
+  travelCosts: Option[BigDecimal],
+  costOfServices: Option[BigDecimal],
+  other: Option[BigDecimal],
+  residentialFinancialCost: Option[BigDecimal],
+  residentialFinancialCostsCarriedForward: Option[BigDecimal],
+  ukOtherRentARoom: Option[UkRentARoomExpense],
+  consolidatedExpense: Option[BigDecimal]
+)
 
 object UkOtherPropertyExpenses {
   implicit val format: OFormat[UkOtherPropertyExpenses] = Json.format[UkOtherPropertyExpenses]
 }
 
-final case class SaveIncome(ukOtherPropertyExpenses: Option[UkOtherPropertyExpenses],
-                            ukOtherPropertyIncome: UkOtherPropertyIncome,
-                            incomeToSave: Income)
+final case class SaveIncome(
+  ukOtherPropertyExpenses: Option[UkOtherPropertyExpenses],
+  ukOtherPropertyIncome: UkOtherPropertyIncome,
+  incomeToSave: Income
+)
 
 object SaveIncome {
   implicit val format = Json.format[SaveIncome]
@@ -70,20 +76,23 @@ object SaveIncome {
       propertyRentalsIncome.yearLeaseAmount,
       propertyRentalsIncome.deductingTax.flatMap(_.taxDeductedAmount),
       Some(propertyRentalsIncome.otherIncomeFromProperty),
-      None //Todo: To be fetched from allowances in backend
+      None // Todo: To be fetched from allowances in backend
     )
 
     val incomeToSave = Income(
       propertyRentalsIncome.isNonUKLandlord,
       propertyRentalsIncome.incomeFromPropertyRentals,
-      propertyRentalsIncome.premiumsGrantLease.map(_.premiumsGrantLeaseYesOrNo).getOrElse(false), //ToDo: Recheck
-      ReversePremiumsReceived(propertyRentalsIncome.reversePremiumsReceived.map(_.reversePremiumsReceived).getOrElse(false)), //Todo: Recheck
+      propertyRentalsIncome.premiumsGrantLease.map(_.premiumsGrantLeaseYesOrNo).getOrElse(false), // ToDo: Recheck
+      ReversePremiumsReceived(
+        propertyRentalsIncome.reversePremiumsReceived.map(_.reversePremiumsReceived).getOrElse(false)
+      ), // Todo: Recheck
       propertyRentalsIncome.deductingTax.map(x => DeductingTax(x.taxDeductedYesNo)),
       propertyRentalsIncome.calculatedFigureYourself.map(x => CalculatedFigureYourself(x.calculatedFigureYourself)),
       propertyRentalsIncome.yearLeaseAmount,
-      propertyRentalsIncome.premiumsGrantLease.map(x => PremiumsGrantLease(x.premiumsGrantLeaseYesOrNo))
+      propertyRentalsIncome.premiumsGrantLease.map(x => PremiumsGrantLease(x.premiumsGrantLeaseYesOrNo)),
+      propertyRentalsIncome.receivedGrantLeaseAmount
     )
-    //Todo: None to be replaced by expenses
+    // Todo: None to be replaced by expenses
     SaveIncome(None, ukOtherPropertyIncome, incomeToSave)
   }
 }

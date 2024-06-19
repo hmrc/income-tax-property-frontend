@@ -458,5 +458,4 @@ GET        /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge     
 POST       /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge                         controllers.ukrentaroom.adjustments.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/uk-rent-a-room/adjustments/check-your-answers                                    controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onPageLoad(taxYear: Int)
-POST        /:taxYear/uk-rent-a-room/adjustments/check-your-answers                                    controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onSubmit(taxYear: Int)
-
+POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers                                    controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onSubmit(taxYear: Int)

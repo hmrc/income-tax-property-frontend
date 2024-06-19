@@ -85,7 +85,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         .set(
           RentARoomAdjustments,
           RentARoomAdjustments(
-            RaRBalancingCharge = Some(raRBalancingCharge)
+            balancingCharge = Some(raRBalancingCharge)
           )
         )
         .toOption

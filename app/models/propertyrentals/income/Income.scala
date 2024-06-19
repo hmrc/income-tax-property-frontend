@@ -19,15 +19,16 @@ package models.propertyrentals.income
 import play.api.libs.json.{Json, OFormat}
 
 final case class Income(
-                         isNonUKLandlord: Boolean,
-                         incomeFromPropertyRentals: BigDecimal,
-                         leasePremiumPayment: Boolean,
-                         reversePremiumsReceived: ReversePremiumsReceived,
-                         taxDeductedYesNo: Option[DeductingTax],
-                         calculatedFigureYourself: Option[CalculatedFigureYourself],
-                         yearLeaseAmount: Option[BigDecimal],
-                         premiumsGrantLeaseYesNo: Option[PremiumsGrantLease]
-                       )
+  isNonUKLandlord: Boolean,
+  incomeFromPropertyRentals: BigDecimal,
+  leasePremiumPayment: Boolean,
+  reversePremiumsReceived: ReversePremiumsReceived,
+  taxDeductedYesNo: Option[DeductingTax],
+  calculatedFigureYourself: Option[CalculatedFigureYourself],
+  yearLeaseAmount: Option[BigDecimal],
+  premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
+  receivedGrantLeaseAmount: Option[BigDecimal]
+)
 
 object Income {
   implicit val format: OFormat[Income] = Json.format[Income]

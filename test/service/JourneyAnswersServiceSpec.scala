@@ -78,7 +78,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
     }
 
     "return data" in {
-      val fetchedBackendData = FetchedBackendData(None, None, None, None, None, None, None)
+      val fetchedBackendData = FetchedBackendData(None, None, None, None, None, None, None, None, None)
       when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future(
         Right(fetchedBackendData)
       )
