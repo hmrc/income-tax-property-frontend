@@ -33,8 +33,9 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
-import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage}
-import pages.ukrentaroom.expenses.{OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, ResidentialPropertyFinanceCostsRRPage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage}
+import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage}
+import pages.ukrentaroom.expenses.{CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage, ResidentialPropertyFinanceCostsRRPage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
 
 import java.time.LocalDate
 
@@ -684,6 +685,94 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ClaimExpensesOrRRRPage to CheckYourAnswersController" in {
+        navigator.nextPage(
+          ClaimExpensesOrRRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController
+          .onPageLoad(taxYear)
+      }
+
+      "must go from AboutSectionCompletePage to AboutSectionCompleteController" in {
+        navigator.nextPage(
+          AboutSectionCompletePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.AboutSectionCompleteController
+          .onPageLoad(taxYear)
+      }
+
+      "must go from OtherAllowablePropertyExpensesPage to ExpensesCheckYourAnswersController" in {
+        navigator.nextPage(
+          OtherAllowablePropertyExpensesPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController
+          .onPageLoad(taxYear)
+      }
+
+      "must go from RaRZeroEmissionCarAllowancePage to RaRReplacementsOfDomesticGoodsController" in {
+        navigator.nextPage(
+          RaRZeroEmissionCarAllowancePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.allowances.routes.RaRReplacementsOfDomesticGoodsController
+          .onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from LegalManagementOtherFeeRRPage to CostOfServicesProvidedRRController" in {
+        navigator.nextPage(
+          LegalManagementOtherFeeRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.CostOfServicesProvidedRRController
+          .onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RentsRatesAndInsuranceRRPage to RepairsAndMaintenanceCostsRRController" in {
+        navigator.nextPage(
+          RentsRatesAndInsuranceRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.RepairsAndMaintenanceCostsRRController
+          .onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from RepairsAndMaintenanceCostsRRPage to LegalManagementOtherFeeRRController" in {
+        navigator.nextPage(
+          RepairsAndMaintenanceCostsRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.LegalManagementOtherFeeRRController
+          .onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from CostOfServicesProvidedRRPage to ResidentialPropertyFinanceCostsRRController" in {
+        navigator.nextPage(
+          CostOfServicesProvidedRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.ResidentialPropertyFinanceCostsRRController
+          .onPageLoad(taxYear, NormalMode)
       }
 
       "must go from RaRAnnualInvestmentAllowancePage to RaRAllowancesCheckYourAnswersController" in {
