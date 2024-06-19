@@ -16,19 +16,20 @@
 
 package controllers.ukrentaroom.adjustments
 
-import audit.{AuditService, RentARoomAdjustments}
+import audit.AuditService
 import base.SpecBase
-import controllers.ukrentaroom.adjustments.routes
 import models.backend.PropertyDetails
 import models.{RaRBalancingCharge, UserAnswers}
-import org.mockito.ArgumentMatchers.{any, anyString}
-import org.mockito.Mockito.{doNothing, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertySubmissionService}
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
@@ -37,11 +38,11 @@ import scala.concurrent.Future
 
 class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
-  val taxYear = LocalDate.now.getYear
+  val taxYear: Int = LocalDate.now.getYear
   val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   val raRBalancingChargeValue = 200
-  val raRBalancingCharge = RaRBalancingCharge(
+  val raRBalancingCharge: RaRBalancingCharge = RaRBalancingCharge(
     raRbalancingChargeYesNo = true,
     raRbalancingChargeAmount = Some(raRBalancingChargeValue)
   )
@@ -83,10 +84,8 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
       val userAnswers = UserAnswers("adjustments-user-answers")
         .set(
-          RentARoomAdjustments,
-          RentARoomAdjustments(
-            balancingCharge = Some(raRBalancingCharge)
-          )
+          RaRBalancingChargePage,
+          raRBalancingCharge
         )
         .toOption
 
@@ -99,30 +98,23 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
       // mocks
       val propertySubmissionService = mock[PropertySubmissionService]
-      val businessService = mock[BusinessService]
-      val auditService = mock[AuditService]
+      val audit = mock[AuditService]
 
-      // when
-      when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
-      )
       when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
         Right(())
       )
-      doNothing().when(auditService).sendRentalsAuditEvent(any())(any(), any())
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
-        .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[AuditService].toInstance(auditService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.RaRAdjustmentsCYAController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
-
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendRentARoomAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }

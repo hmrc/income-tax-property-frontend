@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukrentaroom.adjustments
 
 
 import controllers.ukrentaroom.adjustments.routes
-import models.RaRBBalancingCharge.format
+import models.RaRBalancingCharge.format
 import models.{CheckMode, RaRBalancingCharge, UserAnswers}
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.i18n.Messages
