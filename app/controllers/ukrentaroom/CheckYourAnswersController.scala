@@ -16,13 +16,16 @@
 
 package controllers.ukrentaroom
 
+import audit.{AuditService, RentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.requests.DataRequest
 import models.{JourneyContext, RaRAbout}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
 import viewmodels.govuk.summarylist._
@@ -37,7 +40,8 @@ class CheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   propertySubmissionService: PropertySubmissionService,
-  view: CheckYourAnswersView
+  view: CheckYourAnswersView,
+  audit: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -47,7 +51,8 @@ class CheckYourAnswersController @Inject() (
         UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
       val totalIncomeAmountSummary =
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
-      val claimExpensesOrRRRSummary = ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers)
+      val claimExpensesOrRRRSummary =
+        ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers)
 
       val list = SummaryListViewModel(
         rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrRRRSummary).flatten
@@ -71,8 +76,27 @@ class CheckYourAnswersController @Inject() (
           .map {
             case Left(_) =>
               Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
-            case Right(_) => Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+            case Right(_) =>
+              auditCYA(taxYear, request, rarAbout)
+              Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
           }
       }
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], rarAbout: RaRAbout)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = RentARoomAuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentARoomAbout",
+      rarAbout
+    )
+
+    audit.sendRentARoomAuditEvent(auditModel)
   }
 }
