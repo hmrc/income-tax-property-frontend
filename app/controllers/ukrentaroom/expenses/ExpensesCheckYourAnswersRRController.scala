@@ -16,7 +16,7 @@
 
 package controllers.ukrentaroom.expenses
 
-import audit.RentARoomExpenses
+import audit.{AuditService, RentARoomAuditModel, RentARoomExpenses}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.propertyrentals.expenses.{ExpensesSaveFailed, NotFoundException}
@@ -43,7 +43,8 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ExpensesCheckYourAnswersRRView,
-  propertySubmissionService: PropertySubmissionService
+  propertySubmissionService: PropertySubmissionService,
+  audit: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -99,10 +100,27 @@ class ExpensesCheckYourAnswersRRController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-expenses")
     propertySubmissionService.saveJourneyAnswers(context, rentARoomExpenses).flatMap {
       case Right(_) =>
+        auditCYA(taxYear, request, rentARoomExpenses)
         Future.successful(
           Redirect(controllers.ukrentaroom.expenses.routes.ExpensesRRSectionCompleteController.onPageLoad(taxYear))
         )
       case Left(_) => Future.failed(ExpensesSaveFailed)
     }
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], rentARoomExpenses: RentARoomExpenses)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = RentARoomAuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentARoomExpense",
+      rentARoomExpenses
+    )
+    audit.sendRentARoomAuditEvent(auditModel)
   }
 }

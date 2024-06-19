@@ -16,13 +16,13 @@
 
 package controllers.ukrentaroom.expenses
 
-import audit.RentARoomExpenses
+import audit.{AuditService, RentARoomExpenses}
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes._
 import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.PageConstants
 import play.api.inject.bind
@@ -41,7 +41,8 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
 
   val taxYear = 2024
   private val propertySubmissionService = mock[PropertySubmissionService]
-  val context =
+  private val audit = mock[AuditService]
+  val context: JourneyContext =
     JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rent-a-room-expenses")
 
   def onwardRoute: Call =
@@ -108,6 +109,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
       )
       val application = applicationBuilder(userAnswers = Some(answers), isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       when(
@@ -138,6 +140,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendRentARoomAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
