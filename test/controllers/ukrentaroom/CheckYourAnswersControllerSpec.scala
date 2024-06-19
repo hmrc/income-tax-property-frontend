@@ -16,21 +16,21 @@
 
 package controllers.ukrentaroom
 
+import audit.AuditService
 import base.SpecBase
-import models.{ClaimExpensesOrRRR, JourneyContext, RaRAbout, UserAnswers}
+import models.{ClaimExpensesOrRRR, RaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
-import org.mockito.MockitoSugar.when
+import org.mockito.MockitoSugar.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukrentaroom.CheckYourAnswersView
-import play.api.inject.bind
-import testHelpers.Fixture
 
 import scala.concurrent.Future
 
@@ -92,11 +92,12 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
 
-      val rarAbout = RaRAbout(true, 22.23, ClaimExpensesOrRRR(false, Some(22.11)))
+      val rarAbout = RaRAbout(ukRentARoomJointlyLet = true, 22.23, ClaimExpensesOrRRR(claimExpensesOrRRR = false, Some(22.11)))
       val userAnswersWithRaRAbout =
         userAnswers.set(RaRAbout, rarAbout).get
 
       val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
+      val audit: AuditService = mock[AuditService]
 
       when(
         propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rarAbout))(any(), any())
@@ -104,7 +105,8 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)
         .overrides(
-          bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService)
+          bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService),
+          bind[AuditService].toInstance(audit)
         )
         .build()
 
@@ -113,6 +115,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
 
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendRentARoomAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual controllers.ukrentaroom.routes.AboutSectionCompleteController
           .onPageLoad(taxYear)
           .url
