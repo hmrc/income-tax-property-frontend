@@ -38,11 +38,9 @@
             RadiosViewModel.yesNo(
                 field = form("rentARoomIsSectionCompleteYesOrNo"),
                 legend = LegendViewModel(messages("ukrentaroom.aboutSectionComplete.heading")).asPageHeading(LegendSize.Large)
-            )
+            ).withHint(HintViewModel(messages(s"aboutSectionComplete.hint")))
         )
 
-
-        <div class="govuk-hint"> @messages(s"aboutSectionComplete.hint") </div>
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")
