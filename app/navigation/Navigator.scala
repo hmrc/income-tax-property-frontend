@@ -204,8 +204,7 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
-              .onPageLoad(taxYear, NormalMode)
+            UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode)
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
