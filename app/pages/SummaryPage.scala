@@ -19,11 +19,11 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
-import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
+import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -81,12 +81,11 @@ case object SummaryPage {
     val ukRentARoomAdjustments: TaskListItem = ukRentARoomAdjustmentsItem(userAnswers, taxYear)
     val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
 
-    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimExpensesOrRRR)
-    // ToDo: Should be updated when expenses selection page ticket is merged.
+    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimRRROrExpenses)
     if (isRentARoomSelected) {
       claimRentARoomRelief
         .collect {
-          case true  => Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances)
+          case true  => Seq(ukRentARoomAbout)
           case false => Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances, ukRentARoomAdjustments)
         }
         .getOrElse(Seq(ukRentARoomAbout))
@@ -154,7 +153,11 @@ case object SummaryPage {
     TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined) {
+      if (
+        userAnswers
+          .flatMap(_.get(RentsRatesAndInsurancePage))
+          .isDefined || userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined
+      ) {
         TaskListTag.InProgress
       } else {
         TaskListTag.NotStarted
@@ -178,7 +181,8 @@ case object SummaryPage {
     TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+      if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) TaskListTag.InProgress
+      else TaskListTag.NotStarted,
       "about_link"
     )
 
@@ -206,7 +210,11 @@ case object SummaryPage {
 
         val sectionFinished = userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+          if (
+            userAnswers
+              .flatMap(_.get(ConsolidatedExpensesRRPage))
+              .isDefined || userAnswers.flatMap(_.get(RentsRatesAndInsuranceRRPage)).isDefined
+          ) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted

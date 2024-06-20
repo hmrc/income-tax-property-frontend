@@ -17,7 +17,7 @@
 package pages
 
 import models.TotalIncome.{Between, Over}
-import models.{ConsolidatedExpenses, TotalIncome, UserAnswers}
+import models.{TotalIncome, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
@@ -31,14 +31,17 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
   override def cleanup(totalIncome: Option[TotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
 
-    val updatedUserAnswers = totalIncome.filter(income => income == Between || income == Over)
+    val updatedUserAnswers: Try[UserAnswers] = totalIncome
+      .filter(income => income == Between || income == Over)
       .map(_ => userAnswers.remove(ReportPropertyIncomePage))
       .getOrElse(super.cleanup(totalIncome, userAnswers))
 
     totalIncome match {
-      case Some(Over) => for {
-        consolidatedExpensesPage <- updatedUserAnswers.get.set(ConsolidatedExpensesPage, ConsolidatedExpenses(consolidatedExpensesYesOrNo = false, None))
-      } yield consolidatedExpensesPage
+      case Some(Over) =>
+        for {
+          answers     <- updatedUserAnswers
+          userAnswers <- answers.remove(ConsolidatedExpensesPage)
+        } yield userAnswers
       case _ => super.cleanup(totalIncome, userAnswers)
     }
   }
