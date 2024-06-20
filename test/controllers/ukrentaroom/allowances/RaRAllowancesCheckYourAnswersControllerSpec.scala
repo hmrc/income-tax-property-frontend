@@ -16,7 +16,7 @@
 
 package controllers.ukrentaroom.allowances
 
-import audit.{AuditService, RentARoomAllowances}
+import audit.{AuditService, RentARoomAllowance}
 import base.SpecBase
 import models.backend.PropertyDetails
 import models.{ElectricChargePointAllowance, UserAnswers}
@@ -53,6 +53,9 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
+
+  val zeroEmissionGoodsVehicleAllowanceValue = 800
+  val zeroEmissionGoodsVehicleAllowance = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
@@ -97,14 +100,16 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val userAnswers = UserAnswers("allowances-user-answers")
         .set(
-          RentARoomAllowances,
-          RentARoomAllowances(
-            RaRCapitalAllowancesForACar = None,
-            RaRAnnualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-            ElectricChargePointAllowanceForAnEV = Some(electricChargePointAllowance),
-            RaRZeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
-            ReplacementsOfDomesticGoods = Some(replacementOfDomesticGoods),
-            OtherCapitalAllowances = Some(otherCapitalAllowance)
+          RentARoomAllowance,
+          RentARoomAllowance(
+            capitalAllowancesForACar = None,
+            annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
+            electricChargePointAllowance = Some(electricChargePointAllowance),
+            zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+            replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
+            otherCapitalAllowance = Some(otherCapitalAllowance),
+            zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
+            businessPremisesRenovationAllowance = Some(businessPremisesRenovation)
           )
         )
         .toOption

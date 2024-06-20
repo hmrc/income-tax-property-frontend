@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize
 @import controllers.ukrentaroom.expenses.routes._
 
 @this(
@@ -37,7 +38,7 @@
 @govukRadios(
    RadiosViewModel.yesNo(
     field = form("expensesRRSectionCompleteYesOrNo"),
-    legend = LegendViewModel(messages("ukrentaroom.aboutSectionComplete.heading")).asPageHeading()
+    legend = LegendViewModel(messages("ukrentaroom.aboutSectionComplete.heading")).asPageHeading(LegendSize.Large)
    ).withHint(HintViewModel(messages(s"aboutSectionComplete.hint")))
   )
 
