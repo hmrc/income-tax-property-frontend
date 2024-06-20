@@ -26,7 +26,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import pages.ukrentaroom.allowances.OtherCapitalAllowancesPage
+import pages.ukrentaroom.allowances.RaROtherCapitalAllowancesPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,7 +36,7 @@ import views.html.ukrentaroom.allowances.OtherCapitalAllowancesView
 
 import scala.concurrent.Future
 
-class OtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar {
+class RaROtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new OtherCapitalAllowancesFormProvider()
 
@@ -45,7 +45,7 @@ class OtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer: BigDecimal = 0
 
   lazy val otherCapitalAllowancesRoute =
-    controllers.ukrentaroom.allowances.routes.OtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode).url
+    controllers.ukrentaroom.allowances.routes.RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode).url
   val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
   val taxYear = 2024
   forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
@@ -77,7 +77,7 @@ class OtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar {
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(OtherCapitalAllowancesPage, validAnswer).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(RaROtherCapitalAllowancesPage, validAnswer).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
 

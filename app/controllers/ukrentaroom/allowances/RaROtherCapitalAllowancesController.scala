@@ -17,41 +17,42 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions._
-import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
+import forms.ukrentaroom.allowances.OtherCapitalAllowancesFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.RaRElectricChargePointAllowanceForAnEVPage
+import pages.ukrentaroom.allowances.RaROtherCapitalAllowancesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVView
+import views.html.ukrentaroom.allowances.OtherCapitalAllowancesView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ElectricChargePointAllowanceForAnEVController @Inject() (
+class RaROtherCapitalAllowancesController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ElectricChargePointAllowanceForAnEVFormProvider,
+  formProvider: OtherCapitalAllowancesFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ElectricChargePointAllowanceForAnEVView
+  view: OtherCapitalAllowancesView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(RaRElectricChargePointAllowanceForAnEVPage) match {
+
+      val preparedForm = request.userAnswers.get(RaROtherCapitalAllowancesPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,15 +61,13 @@ class ElectricChargePointAllowanceForAnEVController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRElectricChargePointAllowanceForAnEVPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaROtherCapitalAllowancesPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator
-                .nextPage(RaRElectricChargePointAllowanceForAnEVPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(RaROtherCapitalAllowancesPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

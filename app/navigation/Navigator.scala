@@ -26,8 +26,8 @@ import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
-import controllers.ukrentaroom.expenses.routes._
 import controllers.ukrentaroom.allowances.routes._
+import controllers.ukrentaroom.expenses.routes._
 import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
@@ -36,14 +36,13 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
-import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
-import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.allowances._
+import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.mvc.Call
 
@@ -53,6 +52,16 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
+    case RaRCapitalAllowancesForACarPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaROtherCapitalAllowancesPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRReplacementsOfDomesticGoodsPage =>
+      taxYear => _ => _ => RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode)
+    case RaRElectricChargePointAllowanceForAnEVPage =>
+      taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
+    case RaRAnnualInvestmentAllowancePage =>
+      taxYear => _ => _ => RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
     case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
@@ -78,7 +87,8 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
     case LegalManagementOtherFeeRRPage =>
       taxYear => _ => _ => CostOfServicesProvidedRRController.onPageLoad(taxYear, NormalMode)
-
+    case RaRZeroEmissionCarAllowancePage =>
+      taxYear => _ => _ => RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage       => taxYear => _ => userAnswers => totalIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertySelectPage  => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -181,13 +191,9 @@ class Navigator @Inject() () {
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
+      taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
-
-    case TotalIncomeAmountPage  => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomeAmountPage => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
@@ -198,24 +204,23 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
-              .onPageLoad(taxYear, NormalMode)
+            UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode)
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
 
     case RaRCapitalAllowancesForACarPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => ElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case RaRZeroEmissionCarAllowancePage =>
-      taxYear => _ => _ => ReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
-    case ReplacementsOfDomesticGoodsPage =>
-      taxYear => _ => _ => OtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode)
-    case OtherCapitalAllowancesPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
+    case RaRReplacementsOfDomesticGoodsPage =>
+      taxYear => _ => _ => RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode)
+    case RaROtherCapitalAllowancesPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRBalancingChargePage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
@@ -225,6 +230,18 @@ class Navigator @Inject() () {
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
+    case RaRCapitalAllowancesForACarPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaROtherCapitalAllowancesPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRReplacementsOfDomesticGoodsPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRZeroEmissionCarAllowancePage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRElectricChargePointAllowanceForAnEVPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRAnnualInvestmentAllowancePage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
@@ -335,17 +352,17 @@ class Navigator @Inject() () {
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRCapitalAllowancesForACarPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRElectricChargePointAllowanceForAnEVPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRZeroEmissionCarAllowancePage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
-    case ReplacementsOfDomesticGoodsPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
-    case OtherCapitalAllowancesPage =>
-      taxYear => _ => _ => RaRAllowancesCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaRReplacementsOfDomesticGoodsPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case RaROtherCapitalAllowancesPage =>
+      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRBalancingChargePage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)

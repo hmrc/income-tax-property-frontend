@@ -25,7 +25,7 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ElectricChargePointAllowanceForAnEVSummary {
+object RaRElectricChargePointAllowanceForAnEVSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(RaRElectricChargePointAllowanceForAnEVPage).flatMap {
@@ -34,7 +34,7 @@ object ElectricChargePointAllowanceForAnEVSummary {
           key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
       case ElectricChargePointAllowance(false, _) =>
@@ -42,7 +42,7 @@ object ElectricChargePointAllowanceForAnEVSummary {
           key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
           )
         ))

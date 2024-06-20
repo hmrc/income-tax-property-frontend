@@ -1340,6 +1340,8 @@ ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 ukrentaroom.aboutSectionComplete.title = Have you finished this section?
 ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
+aboutSectionComplete.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
+
 consolidatedRRExpenses.title = Consolidated rent a room expenses
 consolidatedRRExpenses.heading = Consolidated rent a room expenses
 consolidatedRRExpenses.details.line1.individual = You can add up all of these expenses and enter the total amount:
@@ -1364,6 +1366,7 @@ consolidatedRRExpenses.error.required.agent = Select yes if you want to claim co
 consolidatedRRExpenses.error.required.amount.individual = Enter the amount for your consolidated expenses
 consolidatedRRExpenses.error.required.amount.agent = Enter the amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.nonNumeric.individual = Enter an amount for your consolidated expenses
+consolidatedRRExpenses.error.nonNumeric.agent = Enter an amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.nonNumeric.agent = Enter an amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 consolidatedRRExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
@@ -1585,6 +1588,8 @@ otherPropertyRRExpenses.error.nonNumeric.agent = The amount of your client’s o
 otherPropertyRRExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 
 electricChargePointAllowanceForAnEV.title = Electric charge-point allowance for an electric vehicle
+electricChargePointAllowanceForAnEV.hidden = Electric charge-point allowance for an electric vehicle
+electricChargePointAllowanceForAnEV.checkYourAnswersLabel = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.heading = Electric charge-point allowance for an electric vehicle
 electricChargePointAllowanceForAnEV.details.content1.individual = You can claim 100% of the cost of installing a charge-point for an electric car in the first year that you buy it.
 electricChargePointAllowanceForAnEV.details.content1.agent = Your client can claim 100% of the cost of installing a charge-point for an electric car in the first year that they buy it.

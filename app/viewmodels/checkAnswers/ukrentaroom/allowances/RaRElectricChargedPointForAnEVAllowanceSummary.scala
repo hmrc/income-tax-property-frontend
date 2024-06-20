@@ -17,41 +17,41 @@
 package viewmodels.checkAnswers.ukrentaroom.allowances
 
 import controllers.ukrentaroom.allowances.routes
-import models.{CheckMode, RaRCapitalAllowancesForACar, UserAnswers}
-import pages.ukrentaroom.allowances.RaRCapitalAllowancesForACarPage
+import models.{CheckMode, ElectricChargePointAllowance, UserAnswers}
+import pages.ukrentaroom.allowances.RaRElectricChargePointAllowanceForAnEVPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object RaRCapitalAllowancesForACarSummary {
+object RaRElectricChargedPointForAnEVAllowanceSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RaRCapitalAllowancesForACarPage).map {
-      case RaRCapitalAllowancesForACar(true, Some(amount)) =>
+    answers.get(RaRElectricChargePointAllowanceForAnEVPage).map {
+      case ElectricChargePointAllowance(true, Some(amount)) =>
         SummaryListRowViewModel(
-          key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel(
               "site.change",
-              routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+              routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
             )
-              .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
+              .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
           )
         )
 
-      case RaRCapitalAllowancesForACar(false, None) =>
+      case ElectricChargePointAllowance(false, None) =>
         SummaryListRowViewModel(
-          key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel(
               "site.change",
-              routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+              routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
             )
-              .withVisuallyHiddenText(messages("raRCapitalAllowancesForACar.change.hidden"))
+              .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
           )
         )
     }

@@ -34,7 +34,7 @@ import views.html.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVView
 
 import scala.concurrent.Future
 
-class ElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with MockitoSugar {
+class RaRElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with MockitoSugar {
 
   private val individual = "individual"
   private val formProvider = new ElectricChargePointAllowanceForAnEVFormProvider()
@@ -45,7 +45,7 @@ class ElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with Mo
   val taxYear = 2023
 
   lazy val electricChargePointAllowanceForAnEVRoute: String =
-    controllers.ukrentaroom.allowances.routes.ElectricChargePointAllowanceForAnEVController
+    controllers.ukrentaroom.allowances.routes.RaRElectricChargePointAllowanceForAnEVController
       .onPageLoad(taxYear, NormalMode)
       .url
 

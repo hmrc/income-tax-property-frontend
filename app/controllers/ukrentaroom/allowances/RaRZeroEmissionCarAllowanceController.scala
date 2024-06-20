@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
+import pages.ukrentaroom.allowances.{RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

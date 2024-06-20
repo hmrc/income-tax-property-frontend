@@ -33,11 +33,12 @@
    @govukErrorSummary(ErrorSummaryViewModel(form))
   }
 
-  @govukRadios(
+
+@govukRadios(
    RadiosViewModel.yesNo(
     field = form("expensesRRSectionCompleteYesOrNo"),
     legend = LegendViewModel(messages("ukrentaroom.aboutSectionComplete.heading")).asPageHeading()
-   )
+   ).withHint(HintViewModel(messages(s"aboutSectionComplete.hint")))
   )
 
   @govukButton(

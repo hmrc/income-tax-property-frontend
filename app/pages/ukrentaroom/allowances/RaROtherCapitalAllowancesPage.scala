@@ -19,9 +19,9 @@ package pages.ukrentaroom.allowances
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object OtherCapitalAllowancesPage extends QuestionPage[BigDecimal] {
+case object RaROtherCapitalAllowancesPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
 
-  override def toString: String = "otherCapitalAllowances"
+  override def toString: String = "otherCapitalAllowance"
 }

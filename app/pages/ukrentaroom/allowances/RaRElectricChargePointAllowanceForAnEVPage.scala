@@ -24,5 +24,5 @@ case object RaRElectricChargePointAllowanceForAnEVPage extends QuestionPage[Elec
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
 
-  override def toString: String = "electricChargePointAllowanceForAnEV"
+  override def toString: String = "electricChargePointAllowance"
 }
