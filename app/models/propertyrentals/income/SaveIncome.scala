@@ -35,7 +35,6 @@ final case class UkOtherPropertyIncome(
 object UkOtherPropertyIncome {
   implicit val format = Json.format[UkOtherPropertyIncome]
 }
-import UkOtherPropertyIncome._
 final case class UkRentARoomExpense(amountClaimed: BigDecimal)
 
 object UkRentARoomExpense {
