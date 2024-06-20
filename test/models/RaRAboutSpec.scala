@@ -16,7 +16,6 @@
 
 package models
 
-import audit.PropertyRentalsAdjustment
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -25,24 +24,24 @@ import play.api.libs.json.{JsSuccess, Json}
 
 class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val raRAboutJson = """{
+  val raRAboutJson: String = """{
                        |    "ukRentARoomJointlyLet" : true,
                        |    "totalIncomeAmount" : 34,
                        |    "claimExpensesOrRRR" : {
-                       |        "claimExpensesOrRRR" : true,
+                       |        "claimRRROrExpenses" : true,
                        |        "rentARoomAmount" : 23
                        |    }
                        |}""".stripMargin
 
   "RaRAbout" - {
-    "must deserialise from json" in {
+    "must deserialize from json" in {
 
       Json.parse(raRAboutJson).validate[RaRAbout] mustBe JsSuccess(
         RaRAbout(
-          true,
+          ukRentARoomJointlyLet = true,
           34,
           ClaimExpensesOrRRR(
-            true,
+            claimRRROrExpenses = true,
             Some(23)
           )
         )

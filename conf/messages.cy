@@ -1,16 +1,16 @@
 service.name	=	Diweddaru a chyflwyno Ffurflen Treth Incwm
 
-common.notStarted	=	Heb ddechrau
+common.notStarted	=	*Missing Welsh*
 common.inProgress	=	Ar y gweill
 common.completed	=	Wedi cwblhau
 
 summary.page.heading	=	Eiddo
-summary.heading	=	Ynglŷn â’ch eiddo yn y DU
-summary.title	=	Ynglŷn â’ch eiddo yn y DU
-summary.aboutUKProperties.heading	=	Ynglŷn â’ch eiddo yn y DU
+summary.heading	=	*Missing Welsh*
+summary.title	=	*Missing Welsh*
+summary.aboutUKProperties.heading	=	*Missing Welsh*
 summary.aboutUKProperties	=	Ynglŷn â
 
-summary.rentals.heading	=	Eiddo wedi’u rhentu
+summary.rentals.heading	=	*Missing Welsh*
 summary.about	=	Ynglŷn â
 summary.income	=	Incwm
 summary.expenses	=	Treuliau
@@ -133,8 +133,8 @@ ukPropertySelect.property.rentals.hint = *Missing Welsh*
 ukPropertySelect.furnished.holiday.lettings	=	Llety gwyliau wedi’i ddodrefnu (FHL)
 ukPropertySelect.rent.a.room	=	Rhentu ystafell
 ukPropertySelect.rent.a.room.hint = *Missing Welsh*
-ukPropertySelect.error.required.individual = *Missing Welsh*
-ukPropertySelect.error.required.agent = *Missing Welsh*
+ukPropertySelect.error.required.individual = Dewiswch y math o eiddo sydd gennych
+ukPropertySelect.error.required.agent = Dewiswch y math o eiddo sydd gan eich cleient
 ukPropertySelect.checkYourAnswersLabel.individual	=	Mathau o eiddo yn y DU
 ukPropertySelect.checkYourAnswersLabel.agent	=	*Missing Welsh*
 ukPropertySelect.change.hidden.individual	=	Eiddo yn y DU
@@ -722,9 +722,6 @@ otherCapitalAllowance.change.hidden	=	Lwfansau cyfalaf eraill
 #################### Error messages
 
 totalIncome.error.required = Dewiswch gyfanswm yr incwm a gawsoch o’ch eiddo yn y DU
-
-ukPropertySelect.error.required = Dewiswch y math o eiddo sydd gennych
-ukPropertySelect.error.required.agent = Dewiswch y math o eiddo sydd gan eich cleient
 
 expensesLessThan1000.error.required.individual = Dewiswch ‘Iawn’ os oedd cyfanswm eich treuliau’n llai na £1,000
 expensesLessThan1000.error.required.agent = Dewiswch ‘Iawn’ os oedd cyfanswm treuliau’ch cleient yn llai na £1,000

@@ -24,24 +24,25 @@ import scala.util.Try
 
 case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsExpense \toString
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalsExpense \ toString
 
   override def toString: String = "consolidatedExpenses"
 
-  override def cleanup(value: Option[ConsolidatedExpenses], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value.map {
-      case ConsolidatedExpenses(false, _) => super.cleanup(value, userAnswers)
+  override def cleanup(value: Option[ConsolidatedExpenses], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case ConsolidatedExpenses(false, _) => super.cleanup(value, userAnswers)
 
-      case ConsolidatedExpenses(true, _) =>
-        for {
-          rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage)
-          rAMC <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
-          cOSP <- rAMC.remove(CostsOfServicesProvidedPage)
-          lI <- cOSP.remove(LoanInterestPage)
-          pBTC <- lI.remove(PropertyBusinessTravelCostsPage)
-          oPF <- pBTC.remove(OtherProfessionalFeesPage)
-          oAPE <- oPF.remove(OtherAllowablePropertyExpensesPage)
-        } yield oAPE
-    }.getOrElse(super.cleanup(value, userAnswers))
-  }
+        case ConsolidatedExpenses(true, _) =>
+          for {
+            rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage)
+            rAMC  <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
+            cOSP  <- rAMC.remove(CostsOfServicesProvidedPage)
+            lI    <- cOSP.remove(LoanInterestPage)
+            pBTC  <- lI.remove(PropertyBusinessTravelCostsPage)
+            oPF   <- pBTC.remove(OtherProfessionalFeesPage)
+            oAPE  <- oPF.remove(OtherAllowablePropertyExpensesPage)
+          } yield oAPE
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }

@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class ClaimExpensesOrRRR(claimExpensesOrRRR: Boolean, rentARoomAmount: Option[BigDecimal])
+final case class ClaimExpensesOrRRR(claimRRROrExpenses: Boolean, rentARoomAmount: Option[BigDecimal])
 
 object ClaimExpensesOrRRR {
   implicit val format: Format[ClaimExpensesOrRRR] = Json.format

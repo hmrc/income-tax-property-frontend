@@ -49,7 +49,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         "summary.about",
         controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
         TaskListTag.NotStarted,
-        "about_link"
+        "property_about_link"
       )
     )
 
@@ -99,7 +99,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           "summary.about",
           controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
           TaskListTag.NotStarted,
-          "about_link"
+          "rentals_about_link"
         )
       )
       val userAnswersWithPropertyRentals = emptyUserAnswers
@@ -126,7 +126,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         val view = application.injector.instanceOf[SummaryView]
 
         status(result) mustEqual OK
-        contentAsString(result) must include("Property Rentals")
+        contentAsString(result) must include("UK property rentals")
         contentAsString(result) mustEqual view(
           taxYear,
           propertyAboutItems,
@@ -165,7 +165,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         val view = application.injector.instanceOf[SummaryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustNot include("Property Rentals")
+        contentAsString(result) mustNot include("UK property rentals")
         contentAsString(result) mustEqual view(
           taxYear,
           propertyAboutItems,
@@ -190,7 +190,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           "summary.about",
           controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
           TaskListTag.NotStarted,
-          "about_link"
+          "rent_a_room_about_link"
         )
       )
 
