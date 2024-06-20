@@ -5,12 +5,12 @@ common.inProgress = In progress
 common.completed = Completed
 
 summary.page.heading = Property
-summary.heading = About your UK Properties
-summary.title = About your UK Properties
-summary.aboutUKProperties.heading = About your UK Properties
+summary.heading = UK property
+summary.title = UK property
+summary.aboutUKProperties.heading = UK property
 summary.aboutUKProperties = About
 
-summary.rentals.heading = Property Rentals
+summary.rentals.heading = UK property rentals
 summary.rentARoom.heading = UK rent a room
 summary.about = About
 summary.income = Income

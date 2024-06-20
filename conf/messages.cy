@@ -5,12 +5,12 @@ common.inProgress	=	Ar y gweill
 common.completed	=	Wedi cwblhau
 
 summary.page.heading	=	Eiddo
-summary.heading	=	Ynglŷn â’ch eiddo yn y DU
-summary.title	=	Ynglŷn â’ch eiddo yn y DU
-summary.aboutUKProperties.heading	=	Ynglŷn â’ch eiddo yn y DU
+summary.heading	=	*Missing Welsh*
+summary.title	=	*Missing Welsh*
+summary.aboutUKProperties.heading	=	*Missing Welsh*
 summary.aboutUKProperties	=	Ynglŷn â
 
-summary.rentals.heading	=	Eiddo wedi’u rhentu
+summary.rentals.heading	=	*Missing Welsh*
 summary.about	=	Ynglŷn â
 summary.income	=	Incwm
 summary.expenses	=	Treuliau
