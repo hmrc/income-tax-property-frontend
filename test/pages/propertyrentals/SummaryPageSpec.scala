@@ -35,44 +35,44 @@ class SummaryPageSpec extends SpecBase {
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "about_link"
+      "rentals_about_link"
     )
     val incomeListItem = TaskListItem(
       "summary.income",
       controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "income_link"
+      "rentals_income_link"
     )
     val expenseListItem = TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "expenses_link"
+      "rentals_expenses_link"
     )
     val propertyAllowances: TaskListItem = TaskListItem(
       "summary.allowances",
       controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "allowances_link"
+      "rentals_allowances_link"
     )
     val structuresAndBuildingAllowance: TaskListItem = TaskListItem(
       "summary.structuresAndBuildingAllowance",
       controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
         .onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
-      "structuresAndBuildingAllowance_link"
+      "rentals_structures_and_building_allowance_link"
     )
     val adjustmentsListItem = TaskListItem(
       "summary.adjustments",
       controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "adjustments_link"
+      "rentals_adjustments_link"
     )
     val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
       controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
-      "enhancedStructuresAndBuildingAllowance_link"
+      "rentals_enhanced_structures_and_building_allowance_link"
     )
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccruals).length should be(0)
@@ -170,25 +170,25 @@ class SummaryPageSpec extends SpecBase {
       "summary.about",
       controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
       TaskListTag.NotStarted,
-      "about_link"
+      "rent_a_room_about_link"
     )
     val summaryExpensesItem = TaskListItem(
       "summary.expenses",
       controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "expenses_link"
+      "rent_a_room_expenses_link"
     )
     val summaryAllowancesItem = TaskListItem(
       "summary.allowances",
       controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "allowances_link"
+      "rent_a_room_allowances_link"
     )
     val summaryAdjustmentsItem = TaskListItem(
       "summary.adjustments",
       controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
-      "adjustments_link"
+      "rent_a_room_adjustments_link"
     )
     "return empty rows, given an empty user data" in {
       SummaryPage.createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
@@ -218,14 +218,13 @@ class SummaryPageSpec extends SpecBase {
         )
         .success
         .value
-        .set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(true, Some(12.34)))
+        .set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(12.34)))
         .success
         .value
 
-      // ToDo: Should be updated when expenses selection page ticket is merged.
-      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(3)
+      SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(1)
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
-        Seq(summaryAboutItem, summaryExpensesItem, summaryAllowancesItem)
+        Seq(summaryAboutItem)
       )
 
     }
@@ -257,7 +256,7 @@ class SummaryPageSpec extends SpecBase {
         "summary.about",
         controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
         TaskListTag.NotStarted,
-        "about_link"
+        "property_about_link"
       )
       SummaryPage.propertyAboutItems(Some(emptyUserAnswers), taxYear) should be(Seq(item))
 
