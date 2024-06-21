@@ -32,7 +32,7 @@ case class RentARoomAllowance(
   otherCapitalAllowance: Option[BigDecimal]
 )
 
-case object RentARoomAllowance extends Gettable[RentARoomAllowance] with Settable[RentARoomAllowance] {
+case object RentARoomAllowance extends Gettable[RentARoomAllowance] {
 
   implicit val format: Format[RentARoomAllowance] = Json.format[RentARoomAllowance]
 

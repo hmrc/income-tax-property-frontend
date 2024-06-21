@@ -16,14 +16,16 @@
 
 package controllers.ukrentaroom.allowances
 
-import audit.{AuditService, RentARoomAllowances}
+import audit.{AuditService, RentARoomAllowance}
 import base.SpecBase
 import models.backend.PropertyDetails
 import models.{ElectricChargePointAllowance, UserAnswers}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.{doNothing, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.PageConstants
 import play.api.inject.bind
+import play.api.libs.json.{JsError, JsResultException, JsSuccess, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -33,6 +35,7 @@ import views.html.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersView
 
 import java.time.LocalDate
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -53,6 +56,9 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
+
+  val zeroEmissionGoodsVehicleAllowanceValue = 800
+  val zeroEmissionGoodsVehicleAllowance = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
 
   val electricChargePointAllowanceValue = 200
   val electricChargePointAllowance = ElectricChargePointAllowance(
@@ -95,19 +101,25 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
-      val userAnswers = UserAnswers("allowances-user-answers")
-        .set(
-          RentARoomAllowances,
-          RentARoomAllowances(
-            RaRCapitalAllowancesForACar = None,
-            RaRAnnualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-            ElectricChargePointAllowanceForAnEV = Some(electricChargePointAllowance),
-            RaRZeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
-            ReplacementsOfDomesticGoods = Some(replacementOfDomesticGoods),
-            OtherCapitalAllowances = Some(otherCapitalAllowance)
+      val userAnswersJson = Json.obj(
+        (
+          PageConstants.rentARoomAllowance,
+          Json.toJson(
+            RentARoomAllowance(
+              capitalAllowancesForACar = None,
+              annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
+              electricChargePointAllowance = Some(electricChargePointAllowance),
+              zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
+              replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
+              otherCapitalAllowance = Some(otherCapitalAllowance),
+              zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
+              businessPremisesRenovationAllowance = Some(businessPremisesRenovation)
+            )
           )
         )
-        .toOption
+      )
+
+      val userAnswers = Option(UserAnswers("id", userAnswersJson))
 
       val propertyDetails = PropertyDetails(
         Some("uk-property"),
