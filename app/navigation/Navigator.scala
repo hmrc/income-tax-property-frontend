@@ -62,9 +62,9 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case RaRZeroEmissionCarAllowancePage =>
       taxYear => _ => _ => RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
-    case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
     case RaRAllowancesCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+
+    case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
         _ =>
@@ -212,8 +212,7 @@ class Navigator @Inject() () {
 
     case RaRCapitalAllowancesForACarPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-    case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
+
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case RaRZeroEmissionCarAllowancePage =>
@@ -241,8 +240,7 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-    case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+
     case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
@@ -354,8 +352,7 @@ class Navigator @Inject() () {
 
     case RaRCapitalAllowancesForACarPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-    case RaRAnnualInvestmentAllowancePage =>
-      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRZeroEmissionCarAllowancePage =>

@@ -33,9 +33,9 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
+import pages.ukrentaroom.allowances._
+import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage}
-import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage}
-import pages.ukrentaroom.expenses.{CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage, ResidentialPropertyFinanceCostsRRPage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
 
 import java.time.LocalDate
 
