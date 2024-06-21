@@ -16,7 +16,7 @@
 
 package controllers.ukrentaroom.allowances
 
-import audit.{AuditModel, AuditService, RentARoomAllowance}
+import audit.{AuditService, RentARoomAllowance, RentARoomAuditModel}
 import controllers.actions._
 import controllers.routes
 import models.JourneyContext
@@ -98,17 +98,17 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
   private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentARoomAllowance)(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val event = AuditModel[RentARoomAllowance](
+    val event = RentARoomAuditModel[RentARoomAllowance](
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
       agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
       isUpdate = false,
-      sectionName = "RentARoomAllowance",
-      userEnteredRentalDetails = allowance
+      sectionName = "PropertyRentARoomAllowances",
+      userEnteredRentARoomDetails = allowance
     )
-    auditService.sendRentalsAuditEvent(event)
+    auditService.sendRentARoomAuditEvent(event)
   }
 }
 
