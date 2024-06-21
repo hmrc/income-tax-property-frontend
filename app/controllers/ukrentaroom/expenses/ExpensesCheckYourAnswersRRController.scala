@@ -118,7 +118,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
       agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentARoomExpense",
+      "PropertyRentARoomExpenses",
       rentARoomExpenses
     )
     audit.sendRentARoomAuditEvent(auditModel)

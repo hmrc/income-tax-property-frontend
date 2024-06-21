@@ -18,50 +18,48 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance}
 import base.SpecBase
-import models.backend.PropertyDetails
 import models.{ElectricChargePointAllowance, UserAnswers}
-import org.mockito.ArgumentMatchers.{any, anyString}
-import org.mockito.Mockito.{doNothing, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.PageConstants
 import play.api.inject.bind
-import play.api.libs.json.{JsError, JsResultException, JsSuccess, Json}
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertySubmissionService}
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersView
 
 import java.time.LocalDate
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
-  val taxYear = LocalDate.now.getYear
+  val taxYear: Int = LocalDate.now.getYear
 
   val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
   val annualInvestmentAllowanceSummaryValue = 100
-  val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
+  val annualInvestmentAllowanceSummary: BigDecimal = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
 
   val otherCapitalAllowanceValue = 700
-  val otherCapitalAllowance = BigDecimal.valueOf(otherCapitalAllowanceValue)
+  val otherCapitalAllowance: BigDecimal = BigDecimal.valueOf(otherCapitalAllowanceValue)
 
   val replacementOfDomesticGoodsValue = 600
-  val replacementOfDomesticGoods = BigDecimal.valueOf(replacementOfDomesticGoodsValue)
+  val replacementOfDomesticGoods: BigDecimal = BigDecimal.valueOf(replacementOfDomesticGoodsValue)
 
   val businessPremisesRenovationValue = 500
-  val businessPremisesRenovation = BigDecimal.valueOf(businessPremisesRenovationValue)
+  val businessPremisesRenovation: BigDecimal = BigDecimal.valueOf(businessPremisesRenovationValue)
 
   val zeroEmissionCarAllowanceValue = 300
-  val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
+  val zeroEmissionCarAllowance: BigDecimal = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
 
   val zeroEmissionGoodsVehicleAllowanceValue = 800
-  val zeroEmissionGoodsVehicleAllowance = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
+  val zeroEmissionGoodsVehicleAllowance: BigDecimal = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
 
   val electricChargePointAllowanceValue = 200
-  val electricChargePointAllowance = ElectricChargePointAllowance(
+  val electricChargePointAllowance: ElectricChargePointAllowance = ElectricChargePointAllowance(
     electricChargePointAllowanceYesOrNo = true,
     electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
   )
@@ -72,7 +70,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
       val list = SummaryListViewModel(Seq.empty)
-      val taxYear = 2023
+
       running(application) {
 
         val request = FakeRequest(GET, routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear).url)
@@ -86,7 +84,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
-      val taxYear = 2023
+
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
@@ -121,30 +119,16 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val userAnswers = Option(UserAnswers("id", userAnswersJson))
 
-      val propertyDetails = PropertyDetails(
-        Some("uk-property"),
-        Some(LocalDate.of(taxYear, 1, 2)),
-        cashOrAccruals = Some(false),
-        "incomeSourceId"
-      )
-
       // mocks
       val propertySubmissionService = mock[PropertySubmissionService]
-      val businessService = mock[BusinessService]
       val auditService = mock[AuditService]
 
-      // when
-      when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
-      )
       when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
         Right(())
       )
-      doNothing().when(auditService).sendRentalsAuditEvent(any())(any(), any())
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
-        .overrides(bind[BusinessService].toInstance(businessService))
         .overrides(bind[AuditService].toInstance(auditService))
         .build()
 
@@ -154,6 +138,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(auditService, times(1)).sendRentARoomAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
