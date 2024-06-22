@@ -20,8 +20,9 @@ import base.SpecBase
 import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 import controllers.routes
 import forms.ExpensesSectionFinishedFormProvider
-import models.UserAnswers
+import models.{FetchedBackendData, JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -31,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import views.html.propertyrentals.expenses.ExpensesSectionFinishedView
 
 import scala.concurrent.Future
@@ -85,8 +87,25 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
+      val user: User = User(
+        mtditid = "mtditid",
+        nino = "nino",
+        affinityGroup = "affinityGroup",
+        isAgent = false,
+        agentRef = Some("agentRef")
+      )
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(
+        mockJourneyAnswersService.setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-expenses")
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
+      ) thenReturn Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
