@@ -93,7 +93,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         nino = "nino",
         affinityGroup = "affinityGroup",
         isAgent = false,
-        agentRef = Some("agentRef")
+        agentRef = Some("agentReferenceNumber")
       )
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
@@ -104,14 +104,15 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)
-        )(any())
+        )(ArgumentMatchers.any())
       ) thenReturn Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 
