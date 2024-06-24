@@ -22,7 +22,10 @@ import models.FetchedBackendData
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-final case class GetPropertyPeriodicSubmissionResponse(httpResponse: HttpResponse, result: Either[ApiError, FetchedBackendData])
+final case class GetPropertyPeriodicSubmissionResponse(
+  httpResponse: HttpResponse,
+  result: Either[ApiError, FetchedBackendData]
+)
 
 object GetPropertyPeriodicSubmissionResponse {
 
@@ -31,16 +34,20 @@ object GetPropertyPeriodicSubmissionResponse {
 
       override protected[connectors] val parserName: String = this.getClass.getSimpleName
 
-      override def read(method: String, url: String, response: HttpResponse): GetPropertyPeriodicSubmissionResponse = response.status match {
-        case OK => GetPropertyPeriodicSubmissionResponse(response, extractResult(response))
-        case NOT_FOUND | INTERNAL_SERVER_ERROR | SERVICE_UNAVAILABLE | BAD_REQUEST =>
-          GetPropertyPeriodicSubmissionResponse(response, handleError(response, response.status))
-        case _ => GetPropertyPeriodicSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
-      }
+      override def read(method: String, url: String, response: HttpResponse): GetPropertyPeriodicSubmissionResponse =
+        response.status match {
+          case OK => GetPropertyPeriodicSubmissionResponse(response, extractResult(response))
+          case NOT_FOUND | INTERNAL_SERVER_ERROR | SERVICE_UNAVAILABLE | BAD_REQUEST =>
+            GetPropertyPeriodicSubmissionResponse(response, handleError(response, response.status))
+          case _ => GetPropertyPeriodicSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
+        }
 
-      private def extractResult(response: HttpResponse): Either[ApiError, FetchedBackendData] = {
-        response.json.validate[FetchedBackendData]
-          .fold[Either[ApiError, FetchedBackendData]](_ => badSuccessJsonResponse, parsedModel => Right(parsedModel))
-      }
+      private def extractResult(response: HttpResponse): Either[ApiError, FetchedBackendData] =
+        response.json
+          .validate[FetchedBackendData]
+          .fold[Either[ApiError, FetchedBackendData]](
+            _ => badSuccessJsonResponse,
+            parsedModel => Right(parsedModel)
+          )
     }
 }

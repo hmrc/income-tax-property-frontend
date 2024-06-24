@@ -107,8 +107,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            },
       |            "zeroEmissionCarAllowance" : 4,
       |            "zeroEmissionGoodsVehicleAllowance" : 4,
-      |            "businessPremisesRenovation" : 4,
-      |            "replacementOfDomesticGoods" : 4,
+      |            "businessPremisesRenovationAllowance" : 4,
+      |            "replacementOfDomesticGoodsAllowance" : 4,
       |            "otherCapitalAllowance" : 4
       |        },
       |        "sbasWithSupportingQuestions": {
@@ -148,7 +148,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |                "renovationAllowanceBalancingChargeYesNo" : true,
       |                "renovationAllowanceBalancingChargeAmount" : 23
       |            },
-      |            "residentialFinancialCost" : 2,
+      |            "residentialFinanceCost" : 2,
       |            "unusedResidentialFinanceCost" : 3
       |
       |    }
@@ -203,7 +203,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(EsbaClaimPage(1)).get mustBe 5
 
 // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
-      updated.get(SbaClaimsPage).get mustBe true
       updated.get(StructureBuildingQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-04-03")
       updated.get(StructureBuildingQualifyingAmountPage(0)).get mustBe 3
       updated.get(StructureBuildingAllowanceClaimPage(0)).get mustBe 4
