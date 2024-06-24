@@ -40,7 +40,7 @@ object UnusedResidentialPropertyFinanceCostsBroughtFwdSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
+            RaRUnusedResidentialCostsController
               .onPageLoad(taxYear, CheckMode)
               .url
           )

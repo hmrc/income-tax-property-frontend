@@ -17,7 +17,7 @@
 package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
-import forms.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
+import forms.ukrentaroom.adjustments.UnusedResidentialCostFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -34,28 +34,28 @@ import views.html.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsB
 
 import scala.concurrent.Future
 
-class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends SpecBase with MockitoSugar {
+class RaRUnusedResidentialCostsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider()
+  val formProvider = new UnusedResidentialCostFormProvider()
   val form: Form[BigDecimal] = formProvider("individual")
   val taxYear = 2023
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val unusedResidentialPropertyFinanceCostsBroughtFwd = 100
-  val validAnswer: BigDecimal = BigDecimal.valueOf(unusedResidentialPropertyFinanceCostsBroughtFwd)
+  val unusedResidentialCosts = 100
+  val validAnswer: BigDecimal = BigDecimal.valueOf(unusedResidentialCosts)
 
-  lazy val unusedResidentialPropertyFinanceCostsBroughtFwdRoute: String =
-    routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode).url
+  lazy val rarUnusedResidentialCostsControllerRoute: String =
+    routes.RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode).url
 
-  "UnusedResidentialPropertyFinanceCostsBroughtFwd Controller" - {
+  "RaRUnusedResidentialCostsController Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+        val request = FakeRequest(GET, rarUnusedResidentialCostsControllerRoute)
 
         val result = route(application, request).value
 
@@ -77,7 +77,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+        val request = FakeRequest(GET, rarUnusedResidentialCostsControllerRoute)
 
         val view = application.injector.instanceOf[UnusedResidentialPropertyFinanceCostsBroughtFwdRRView]
 
@@ -107,7 +107,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+          FakeRequest(POST, rarUnusedResidentialCostsControllerRoute)
             .withFormUrlEncodedBody(("unusedResidentialPropertyFinanceCostsBroughtFwd", validAnswer.toString))
 
         val result = route(application, request).value
@@ -123,7 +123,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+          FakeRequest(POST, rarUnusedResidentialCostsControllerRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -145,7 +145,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
       val application = applicationBuilder(userAnswers = None, false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+        val request = FakeRequest(GET, rarUnusedResidentialCostsControllerRoute)
 
         val result = route(application, request).value
 
@@ -160,7 +160,7 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends Sp
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedResidentialPropertyFinanceCostsBroughtFwdRoute)
+          FakeRequest(POST, rarUnusedResidentialCostsControllerRoute)
             .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value

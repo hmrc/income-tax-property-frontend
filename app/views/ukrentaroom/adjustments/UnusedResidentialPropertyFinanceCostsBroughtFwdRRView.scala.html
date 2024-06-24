@@ -29,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages(s"ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.title.$individualOrAgent"))) {
 
-    @formHelper(action = UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = RaRUnusedResidentialCostsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

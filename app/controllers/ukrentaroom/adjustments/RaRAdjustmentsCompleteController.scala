@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,64 +17,69 @@
 package controllers.ukrentaroom.adjustments
 
 import controllers.actions._
-import forms.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
-import models.Mode
+import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
+import models.{JourneyContext, Mode}
 import navigation.Navigator
-import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
+import views.html.ukrentaroom.adjustments.RaRAdjustmentsCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnusedResidentialPropertyFinanceCostsBroughtFwdRRController @Inject() (
+class RaRAdjustmentsCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider,
+  journeyAnswersService: JourneyAnswersService,
+  formProvider: RaRAdjustmentsCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
+  view: RaRAdjustmentsCompleteView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
+  val form = formProvider()
+
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage) match {
+      val preparedForm = request.userAnswers.get(RaRAdjustmentsCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAdjustmentsCompletePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+              _ <- journeyAnswersService
+                     .setStatus(
+                       ctx = JourneyContext(
+                         taxYear = taxYear,
+                         mtditid = request.user.mtditid,
+                         nino = request.user.nino,
+                         journeyName = "rent-a-room-adjustments"
+                       ),
+                       status = if (value) "completed" else "inProgress",
+                       user = request.user
+                     )
             } yield Redirect(
-              navigator.nextPage(
-                UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
-                taxYear,
-                mode,
-                request.userAnswers,
-                updatedAnswers
-              )
+              navigator.nextPage(RaRAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

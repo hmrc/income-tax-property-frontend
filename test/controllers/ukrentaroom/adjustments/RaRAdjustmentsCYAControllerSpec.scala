@@ -39,7 +39,7 @@ import scala.util.Try
 class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear: Int = LocalDate.now.getYear
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no")
 
   val raRBalancingChargeValue = 200
   val raRBalancingCharge: BalancingCharge = BalancingCharge(
