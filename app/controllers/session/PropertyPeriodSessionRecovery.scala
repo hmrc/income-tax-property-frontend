@@ -27,14 +27,14 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyPeriodSessionRecovery @Inject()(
-                                               propertyPeriodSubmissionService: PropertySubmissionService,
-                                               sessionRepository: SessionRepository
-                                             ) {
-  def withUpdatedData(taxYear: Int)(block: => Future[Result])
-                     (implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
-    val currentUserAnswers = request
-      .userAnswers
+class PropertyPeriodSessionRecovery @Inject() (
+  propertyPeriodSubmissionService: PropertySubmissionService,
+  sessionRepository: SessionRepository
+) {
+  def withUpdatedData(taxYear: Int)(
+    block: => Future[Result]
+  )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
+    val currentUserAnswers = request.userAnswers
       .getOrElse(
         UserAnswers(request.userId)
       )
@@ -42,12 +42,13 @@ class PropertyPeriodSessionRecovery @Inject()(
     for {
       fetchedData <- propertyPeriodSubmissionService.getPropertySubmission(taxYear, request.user)
       _ <- fetchedData match {
-        case Right(fetchedUserAnswersData) =>
-          sessionRepository.set(
-            currentUserAnswers.update(fetchedUserAnswersData)
-          )
-        case Left(_) => sessionRepository.set(currentUserAnswers)
-      }
+             case Right(fetchedUserAnswersData) =>
+               sessionRepository.set(
+                 currentUserAnswers.update(fetchedUserAnswersData)
+               )
+             case Left(e) =>
+               sessionRepository.set(currentUserAnswers)
+           }
       blockResult <- block
     } yield blockResult
   }

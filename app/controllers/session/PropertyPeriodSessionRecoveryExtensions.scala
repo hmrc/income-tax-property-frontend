@@ -69,7 +69,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua2 <- ua1.set(PrivateUseAdjustmentPage, adjustments.privateUseAdjustment)
             ua3 <- ua2.set(PropertyIncomeAllowancePage, adjustments.propertyIncomeAllowance)
             ua4 <- ua3.set(RenovationAllowanceBalancingChargePage, adjustments.renovationAllowanceBalancingCharge)
-            ua5 <- ua4.set(ResidentialFinanceCostPage, adjustments.residentialFinancialCost)
+            ua5 <- ua4.set(ResidentialFinanceCostPage, adjustments.residentialFinanceCost)
             ua6 <- ua5.set(UnusedResidentialFinanceCostPage, adjustments.unusedResidentialFinanceCost)
           } yield ua6
       }
@@ -80,10 +80,10 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(allowances) =>
           for {
             ua1 <- userAnswers.set(AnnualInvestmentAllowancePage, allowances.annualInvestmentAllowance)
-            ua2 <- ua1.set(BusinessPremisesRenovationPage, allowances.businessPremisesRenovation)
+            ua2 <- ua1.set(BusinessPremisesRenovationPage, allowances.businessPremisesRenovationAllowance)
             ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
             ua4 <- ua3.set(OtherCapitalAllowancePage, allowances.otherCapitalAllowance)
-            ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoods)
+            ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoodsAllowance)
             ua6 <- ua5.set(ZeroEmissionCarAllowancePage, allowances.zeroEmissionCarAllowance)
             ua7 <- ua6.set(ZeroEmissionGoodsVehicleAllowancePage, allowances.zeroEmissionGoodsVehicleAllowance)
           } yield ua7
@@ -200,8 +200,8 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimStructureBuildingAllowancePage,
                      sbasWithSupportingQuestions.claimStructureBuildingAllowance
                    )
-            ua2 <- ua1.set(SbaClaimsPage, sbasWithSupportingQuestions.sbaClaims)
-            ua3 <- updateAllSbas(ua2, sbasWithSupportingQuestions.structureBuildingFormGroup)
+            //ua2 <- ua1.set(SbaClaimsPage, sbasWithSupportingQuestions.sbaClaims)
+            ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup)
           } yield ua3
       }
 
