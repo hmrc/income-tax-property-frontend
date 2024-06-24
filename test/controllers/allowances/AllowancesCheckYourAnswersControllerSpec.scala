@@ -39,7 +39,10 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val taxYear = LocalDate.now.getYear
 
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val onwardRoute: Call = Call(
+    "GET",
+    s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/allowances-section-finished-yes-no"
+  )
   val annualInvestmentAllowanceSummaryValue = 100
   val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
 

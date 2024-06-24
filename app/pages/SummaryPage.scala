@@ -18,6 +18,7 @@ package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
+import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IsNonUKLandlordPage
@@ -36,7 +37,7 @@ case object SummaryPage {
     val propertyRentalsAbout: TaskListItem = propertyRentalsAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = propertyRentalsIncomeItem(userAnswers, taxYear)
     val propertyRentalsExpenses: TaskListItem = propertyRentalsExpensesItem(userAnswers, taxYear)
-    val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear)
+    val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear, userAnswers)
     val structuresAndBuildingAllowance: TaskListItem = structuresAndBuildingAllowanceItem(userAnswers, taxYear)
     val propertyRentalsAdjustments: TaskListItem = propertyRentalsAdjustmentsItem(userAnswers, taxYear)
     val enhancedStructuresAndBuildingAllowance: TaskListItem = rentalsEsbaItem(userAnswers, taxYear)
@@ -141,11 +142,17 @@ case object SummaryPage {
       "rentals_structures_and_building_allowance_link"
     )
 
-  private def propertyAllowancesItem(taxYear: Int) =
+  private def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
       controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      userAnswers
+        .flatMap { answers =>
+          answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_allowances_link"
     )
 
