@@ -27,8 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.adjustments.RaRBalancingChargeSummary
-import viewmodels.checkAnswers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
+import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 

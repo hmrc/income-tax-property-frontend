@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom.expenses
+package viewmodels.checkAnswers.ukrentaroom.adjustments
 
-import controllers.ukrentaroom.expenses.routes._
+import controllers.ukrentaroom.adjustments.routes._
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}

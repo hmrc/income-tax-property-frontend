@@ -26,6 +26,7 @@ import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.ukrentaroom.adjustments.routes._
 import controllers.ukrentaroom.allowances.routes._
 import controllers.ukrentaroom.expenses.routes._
 import controllers.ukrentaroom.routes._
@@ -40,7 +41,7 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
-import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}

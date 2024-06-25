@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.expenses
+package pages.ukrentaroom.adjustments
 
-import pages.PageConstants.rentARoomAllowance
+import pages.PageConstants.rentARoomAdjustment
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ rentARoomAllowance \ toString
+  override def path: JsPath = JsPath \ rentARoomAdjustment \ toString
 
   override def toString: String = "unusedResidentialPropertyFinanceCostsBroughtFwd"
 }
