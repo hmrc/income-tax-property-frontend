@@ -775,16 +775,6 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from RaRAnnualInvestmentAllowancePage to RaRAllowancesCheckYourAnswersController" in {
-        navigator.nextPage(
-          RaRAnnualInvestmentAllowancePage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.allowances.routes.RaRElectricChargePointAllowanceForAnEVController
-          .onPageLoad(taxYear, NormalMode)
-      }
 
       "must go from RaRElectricChargePointAllowanceForAnEVPage to RaRZeroEmissionCarAllowanceController" in {
         navigator.nextPage(
@@ -830,20 +820,20 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear)
       }
 
-      "must go from ResidentialPropertyFinanceCostsRRPage to UnusedResidentialPropertyFinanceCostsBroughtFwdRRController" in {
+      "must go from ResidentialPropertyFinanceCostsRRPage to OtherPropertyExpensesRRController" in {
         navigator.nextPage(
           ResidentialPropertyFinanceCostsRRPage,
           taxYear,
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.expenses.routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
+        ) mustBe controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController
           .onPageLoad(taxYear, NormalMode)
       }
 
       "must go from ResidentialPropertyFinanceCostsRRPage to ExpensesCheckYourAnswersRRController" in {
         navigator.nextPage(
-          UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
+          OtherPropertyExpensesRRPage,
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -852,15 +842,15 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear)
       }
 
-      "must go from UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage to OtherPropertyExpensesRRController" in {
+      "must go from UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage to RaRAdjustmentsCYAController" in {
         navigator.nextPage(
           UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
           taxYear,
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController
-          .onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController
+          .onPageLoad(taxYear)
       }
 
       "must go from UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage to ExpensesCheckYourAnswersRRController" in {
@@ -870,7 +860,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.expenses.routes.ExpensesCheckYourAnswersRRController
+        ) mustBe controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController
           .onPageLoad(taxYear)
       }
 
@@ -882,26 +872,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.ukrentaroom.expenses.routes.ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-      }
-
-      /*"must go from RaRAnnualInvestmentAllowancePage to RaRAllowancesCheckYourAnswers" in {
-        navigator.nextPage(
-          RaRAnnualInvestmentAllowancePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.allowances.routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }*/
-
-      "must go from RaRAnnualInvestmentAllowancePage to RaRAllowancesCheckYourAnswers" in {
-        navigator.nextPage(
-          RaRAnnualInvestmentAllowancePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.allowances.routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from RaRCapitalAllowancesForACarPage to RaRAllowancesCheckYourAnswers" in {

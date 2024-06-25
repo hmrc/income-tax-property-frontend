@@ -28,6 +28,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.adjustments.RaRBalancingChargeSummary
+import viewmodels.checkAnswers.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
@@ -50,7 +51,9 @@ class RaRAdjustmentsCYAController @Inject() (
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+          UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
       )
 

@@ -1274,7 +1274,6 @@ ukRentARoom.expensesIntro.li2.individual = property repairs and maintenance
 ukRentARoom.expensesIntro.li3.individual = legal, management or other professional fees
 ukRentARoom.expensesIntro.li4.individual = costs of services, including wages
 ukRentARoom.expensesIntro.li5.individual = residential property financial costs
-ukRentARoom.expensesIntro.li6.individual = unused residential property finance costs brought forward
 ukRentARoom.expensesIntro.li7.individual = other allowable property expenses
 
 
@@ -1718,6 +1717,7 @@ raRAdjustmentsIntro.title = Adjustments
 raRAdjustmentsIntro.heading = Adjustments
 raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
 raRAdjustmentsIntro.bullet.content.l1 = balancing charge
+raRAdjustmentsIntro.bullet.content.l2 = unused residential property finance costs brought forward
 
 raRbalancingCharge.title.agent = Balancing Charge
 raRbalancingCharge.title.individual = Balancing Charge

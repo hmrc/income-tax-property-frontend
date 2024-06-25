@@ -77,10 +77,8 @@ class Navigator @Inject() () {
     case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case OtherPropertyExpensesRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
-      taxYear => _ => _ => OtherPropertyExpensesRRController.onPageLoad(taxYear, NormalMode)
     case ResidentialPropertyFinanceCostsRRPage =>
-      taxYear => _ => _ => UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => OtherPropertyExpensesRRController.onPageLoad(taxYear, NormalMode)
     case CostOfServicesProvidedRRPage =>
       taxYear => _ => _ => ResidentialPropertyFinanceCostsRRController.onPageLoad(taxYear, NormalMode)
     case RepairsAndMaintenanceCostsRRPage =>
@@ -223,6 +221,9 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRBalancingChargePage =>
+      taxYear => _ => _ => UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode)
+
+    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
@@ -248,8 +249,7 @@ class Navigator @Inject() () {
           userAnswers => consolidatedExpensesRRNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case LegalManagementOtherFeeRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case CostOfServicesProvidedRRPage  => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
-      taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
+
     case ResidentialPropertyFinanceCostsRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case RepairsAndMaintenanceCostsRRPage =>
@@ -364,6 +364,10 @@ class Navigator @Inject() () {
 
     case RaRBalancingChargePage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+
+    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
+      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+
     case _ => taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
   }
 
