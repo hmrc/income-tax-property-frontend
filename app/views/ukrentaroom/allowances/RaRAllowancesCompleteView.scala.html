@@ -15,6 +15,7 @@
  *@
 
 @import controllers.ukrentaroom.allowances.routes._
+@import viewmodels.LegendSize
 
 @this(
   layout: templates.Layout,
@@ -37,7 +38,7 @@
 @govukRadios(
    RadiosViewModel.yesNo(
     field = form("rarAllowancesCompleteYesOrNo"),
-    legend = LegendViewModel(messages("ukrentaroom.allowancesComplete.heading")).asPageHeading()
+    legend = LegendViewModel(messages("ukrentaroom.allowancesComplete.heading")).asPageHeading(LegendSize.Large)
    ).withHint(HintViewModel(messages(s"aboutSectionComplete.hint")))
   )
 

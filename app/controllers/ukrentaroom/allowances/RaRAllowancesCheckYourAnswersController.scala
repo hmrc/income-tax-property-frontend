@@ -18,7 +18,6 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance, RentARoomAuditModel}
 import controllers.actions._
-import controllers.routes
 import models.JourneyContext
 import models.backend.ServiceError
 import models.requests.DataRequest

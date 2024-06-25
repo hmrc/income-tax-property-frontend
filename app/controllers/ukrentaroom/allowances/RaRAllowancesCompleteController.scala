@@ -17,7 +17,6 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions._
-import controllers.routes
 import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
 import models.{JourneyContext, Mode}
 import navigation.Navigator
