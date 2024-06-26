@@ -1760,3 +1760,9 @@ allowancesSectionFinished.title = Have you finished this section?
 allowancesSectionFinished.heading = Have you finished this section?
 allowancesSectionFinished.error.required = Select yes if you have completed this section
 allowancesSectionFinished.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
+
+expensesSectionComplete.title = Have you finished this section?
+expensesSectionComplete.error.required = Select yes if you have completed this section
+
+haveYouFinishedThisSection.heading = Have you finished this section?
+haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.

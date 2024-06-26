@@ -453,6 +453,9 @@ POST       /:taxYear/uk-rent-a-room/adjustments/change-rar-balancing-charge     
 GET        /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onPageLoad(taxYear:Int)
 POST       /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onSubmit(taxYear: Int)
+
 GET        /:taxYear/uk-rent-a-room/adjustments/unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/uk-rent-a-room/adjustments/change-unused-residential-property-finance-cost-brought-fwd   controllers.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
