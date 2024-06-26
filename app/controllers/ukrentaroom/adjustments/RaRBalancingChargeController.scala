@@ -18,8 +18,8 @@ package controllers.ukrentaroom.adjustments
 
 import controllers.actions._
 import forms.ukrentaroom.adjustments.RaRBalancingChargeFormProvider
+import models.BalancingCharge.format
 import models.Mode
-import models.RaRBalancingCharge.format
 import navigation.Navigator
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}

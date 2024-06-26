@@ -16,11 +16,11 @@
 
 package pages.ukrentaroom.adjustments
 
-import models.RaRBalancingCharge
+import models.BalancingCharge
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object RaRBalancingChargePage extends QuestionPage[RaRBalancingCharge] {
+case object RaRBalancingChargePage extends QuestionPage[BalancingCharge] {
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment \ toString
 

@@ -16,60 +16,60 @@
 
 @import controllers.ukrentaroom.adjustments.routes
 @import viewmodels.InputWidth._
+@import viewmodels.LegendSize
 @import viewmodels.govuk._
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukRadios: GovukRadios,
-govukButton: GovukButton,
-govukInput : GovukInput
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton,
+        govukInput: GovukInput
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"raRbalancingCharge.title.${individualOrAgent}"))) {
+    @layout(pageTitle = title(form, messages(s"raRbalancingCharge.title.$individualOrAgent"))) {
 
-@formHelper(action = routes.RaRBalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.RaRBalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
-@if(form.errors.nonEmpty) {
-@govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
-}
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+            }
 
-<h1 class="govuk-heading-l">@messages(s"raRbalancingCharge.heading.${individualOrAgent}")</h1>
-
-
-        <p class="govuk-body">@messages("raRbalancingCharge.details.line1") </p>
-        <p class="govuk-body">@messages("raRbalancingCharge.details.line2") </p>
+            <h1 class="govuk-heading-l">@messages(s"raRbalancingCharge.heading.${individualOrAgent}")</h1>
 
 
+            <p class="govuk-body">@messages("raRbalancingCharge.details.line1") </p>
+            <p class="govuk-body">@messages("raRbalancingCharge.details.line2") </p>
 
 
-@govukRadios(
-radios.RadiosViewModel.yesNoWithConditionalHtml(
-field = form("raRbalancingChargeYesNo"),
-legend = LegendViewModel(messages(s"raRbalancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
-items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-field = form("raRbalancingCharge"),
-conditionalYesHtml = Some(
-govukInput(
-InputViewModel(
-field = form("raRbalancingChargeAmount"),
-label = LabelViewModel(messages("raRbalancingCharge.radio.question.label"))
-)
-.asNumeric()
-.withWidth(Fixed10)
-.withPrefix(PrefixOrSuffix(content = Text("£")))
-)
-)
-)
-)
-)
+            @govukRadios(
+                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                    field = form("raRbalancingChargeYesNo"),
+                    legend = LegendViewModel(messages(s"raRbalancingCharge.radio.legend.$individualOrAgent")).asPageHeading(LegendSize.Large),
+                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                        field = form("raRbalancingCharge"),
+                        conditionalYesHtml = Some(
+                            govukInput(
+                                InputViewModel(
+                                    field = form("raRbalancingChargeAmount"),
+                                    label = LabelViewModel(messages("raRbalancingCharge.radio.question.label"))
+                                )
+                                .asNumeric()
+                                .withWidth(Fixed10)
+                                .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            )
+                        )
+                    )
+                )
+            )
 
-@govukButton(
-ButtonViewModel(messages("site.continue")).withId("continue")
-)
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
 
-}
-}
+        }
+    }
