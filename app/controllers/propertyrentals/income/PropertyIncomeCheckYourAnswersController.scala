@@ -34,23 +34,24 @@ import viewmodels.checkAnswers.premiumlease._
 import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.income.IncomeCheckYourAnswersView
+import controllers.propertyrentals.income.routes.IncomeSectionFinishedController
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyIncomeCheckYourAnswersController @Inject()(
-                                                          override val messagesApi: MessagesApi,
-                                                          identify: IdentifierAction,
-                                                          getData: DataRetrievalAction,
-                                                          requireData: DataRequiredAction,
-                                                          val controllerComponents: MessagesControllerComponents,
-                                                          propertySubmissionService: PropertySubmissionService,
-                                                          view: IncomeCheckYourAnswersView,
-                                                          audit: AuditService
-                                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class PropertyIncomeCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
+  view: IncomeCheckYourAnswersView,
+  audit: AuditService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
@@ -74,26 +75,27 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
 
       request.userAnswers.get(PropertyRentalsIncome) match {
-        case Some(propertyRentalsIncome) => {
-          propertySubmissionService.savePropertyRentalsIncome(context, SaveIncome.fromPropertyRentalsIncome(propertyRentalsIncome)).map {
-            case Right(_) => {
-              auditCYA(taxYear, request, propertyRentalsIncome)
-              Redirect(routes.SummaryController.show(taxYear))
+        case Some(propertyRentalsIncome) =>
+          propertySubmissionService
+            .savePropertyRentalsIncome(context, SaveIncome.fromPropertyRentalsIncome(propertyRentalsIncome))
+            .map {
+              case Right(_) =>
+                auditCYA(taxYear, request, propertyRentalsIncome)
+                Redirect(IncomeSectionFinishedController.onPageLoad(taxYear))
+              case Left(_) =>
+                InternalServerError
             }
-            case Left(_) => {
-              InternalServerError
-            }
-          }
 
-        }
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }
 
-      Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+      Future.successful(Redirect(IncomeSectionFinishedController.onPageLoad(taxYear)))
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(implicit hc: HeaderCarrier): Unit = {
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(
+    implicit hc: HeaderCarrier
+  ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
@@ -102,7 +104,8 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       "PropertyRentalsIncome",
-      propertyRentalsIncome)
+      propertyRentalsIncome
+    )
 
     audit.sendRentalsAuditEvent(auditModel)
   }

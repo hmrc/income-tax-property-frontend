@@ -20,7 +20,7 @@ import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
-import pages.propertyrentals.income.IsNonUKLandlordPage
+import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
@@ -169,11 +169,13 @@ case object SummaryPage {
     TaskListItem(
       "summary.income",
       controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(IsNonUKLandlordPage)).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
+      userAnswers
+        .flatMap { answers =>
+          answers.get(IncomeSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_income_link"
     )
 
