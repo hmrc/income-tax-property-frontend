@@ -259,9 +259,9 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "4",
         "EH1 AB2"
       )
-      updated.get(RaRBalancingChargePage).get mustBe RaRBalancingCharge(true, Some(10))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(true, Some(10))
 
-      updated.get(RaRCapitalAllowancesForACarPage).get mustBe RaRCapitalAllowancesForACar(true, Some(20))
+      updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(true, Some(20))
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
       updated.get(RaRElectricChargePointAllowanceForAnEVPage).get mustBe ElectricChargePointAllowance(true, Some(30))
       updated.get(RaRZeroEmissionCarAllowancePage).get mustBe 35
