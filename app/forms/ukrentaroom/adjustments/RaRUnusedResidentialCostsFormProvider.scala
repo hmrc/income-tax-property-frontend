@@ -21,7 +21,7 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class UnusedResidentialCostFormProvider @Inject() extends Mappings {
+class RaRUnusedResidentialCostsFormProvider @Inject() extends Mappings {
 
   val min = 0
   val max = 100000000

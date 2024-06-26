@@ -23,7 +23,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -86,7 +86,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         .set(RaRBalancingChargePage, raRBalancingCharge)
 
       val updatedUserAnswers: Option[UserAnswers] = userAnswersTry.toOption.flatMap { ua =>
-        ua.set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, BigDecimal(12)).toOption
+        ua.set(RaRUnusedResidentialCostsPage, BigDecimal(12)).toOption
       }
 
       // mocks

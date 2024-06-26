@@ -16,19 +16,19 @@
 
 package controllers.session
 
-import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome, RentARoomAdjustments, RentARoomAllowance}
-import models.{Adjustments, Allowances, EsbasWithSupportingQuestions, FetchedBackendData, RaRAbout, Sba, SbasWithSupportingQuestions, UserAnswers}
+import audit._
+import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
-import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage, RaRZeroEmissionGoodsVehicleAllowancePage}
+import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.libs.json.Writes
 import queries.Settable

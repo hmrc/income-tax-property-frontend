@@ -205,7 +205,7 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+            controllers.ukrentaroom.adjustments.routes.RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
@@ -225,7 +225,7 @@ class Navigator @Inject() () {
     case RaRBalancingChargePage =>
       taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
 
-    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
+    case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
 
@@ -368,7 +368,7 @@ class Navigator @Inject() () {
     case RaRBalancingChargePage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
-    case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
+    case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case _ => taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)

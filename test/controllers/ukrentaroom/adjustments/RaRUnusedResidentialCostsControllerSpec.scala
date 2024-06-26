@@ -17,13 +17,13 @@
 package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
-import forms.ukrentaroom.adjustments.UnusedResidentialCostFormProvider
+import forms.ukrentaroom.adjustments.RaRUnusedResidentialCostsFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class RaRUnusedResidentialCostsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new UnusedResidentialCostFormProvider()
+  val formProvider = new RaRUnusedResidentialCostsFormProvider()
   val form: Form[BigDecimal] = formProvider("individual")
   val taxYear = 2023
 
@@ -72,7 +72,7 @@ class RaRUnusedResidentialCostsControllerSpec extends SpecBase with MockitoSugar
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, validAnswer).success.value
+        UserAnswers(userAnswersId).set(RaRUnusedResidentialCostsPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

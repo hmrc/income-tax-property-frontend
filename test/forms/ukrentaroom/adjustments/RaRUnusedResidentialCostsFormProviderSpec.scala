@@ -19,9 +19,9 @@ package forms.ukrentaroom.adjustments
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class UnusedResidentialCostFormProviderSpec extends CurrencyFieldBehaviours {
+class RaRUnusedResidentialCostsFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new UnusedResidentialCostFormProvider()("individual")
+  val form = new RaRUnusedResidentialCostsFormProvider()("individual")
 
   ".unusedResidentialPropertyFinanceCostsBroughtFwd" - {
 

@@ -33,7 +33,7 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
-import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage}
@@ -843,9 +843,9 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear)
       }
 
-      "must go from UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage to RaRAdjustmentsCYAController" in {
+      "must go from RaRUnusedResidentialCostsPage to RaRAdjustmentsCYAController" in {
         navigator.nextPage(
-          UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
+          RaRUnusedResidentialCostsPage,
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -854,9 +854,9 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear)
       }
 
-      "must go from UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage to ExpensesCheckYourAnswersRRController" in {
+      "must go from RaRUnusedResidentialCostsPage to ExpensesCheckYourAnswersRRController" in {
         navigator.nextPage(
-          UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
+          RaRUnusedResidentialCostsPage,
           taxYear,
           CheckMode,
           UserAnswers("test"),
