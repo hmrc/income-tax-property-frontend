@@ -34,6 +34,7 @@ import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.income.IncomeCheckYourAnswersView
 import controllers.propertyrentals.income.routes.IncomeSectionFinishedController
+import models.propertyrentals.income.SaveIncome
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -75,20 +76,21 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
 
       request.userAnswers.get(PropertyRentalsIncome) match {
         case Some(propertyRentalsIncome) =>
-          propertySubmissionService
-            .savePropertyRentalsIncome(context, SaveIncome.fromPropertyRentalsIncome(propertyRentalsIncome))
-            .map {
-              case Right(_) =>
-                auditCYA(taxYear, request, propertyRentalsIncome)
-                Redirect(IncomeSectionFinishedController.onPageLoad(taxYear))
-              case Left(_) =>
-                InternalServerError
-            }
+          propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).map {
+            case Right(_) =>
+              auditCYA(taxYear, request, propertyRentalsIncome)
+              Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
+            case Left(_) =>
+              InternalServerError
+          }
+
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }
 
-      Future.successful(Redirect(IncomeSectionFinishedController.onPageLoad(taxYear)))
+      Future.successful(
+        Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
+      )
   }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(
