@@ -101,7 +101,11 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
       val mockJourneyAnswersService = mock[JourneyAnswersService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      doReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None))))
+      doReturn(
+        Future.successful(
+          Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+        )
+      )
         .when(mockJourneyAnswersService)
         .setStatus(
           ArgumentMatchers.eq(

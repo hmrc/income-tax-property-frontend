@@ -18,14 +18,19 @@ package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
+import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IncomeSectionFinishedPage
+import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
+import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
+import viewmodels.summary.TaskListTag.TaskListTag
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -37,7 +42,7 @@ case object SummaryPage {
     val propertyRentalsAbout: TaskListItem = propertyRentalsAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = propertyRentalsIncomeItem(userAnswers, taxYear)
     val propertyRentalsExpenses: TaskListItem = propertyRentalsExpensesItem(userAnswers, taxYear)
-    val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear)
+    val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear, userAnswers)
     val structuresAndBuildingAllowance: TaskListItem = structuresAndBuildingAllowanceItem(userAnswers, taxYear)
     val propertyRentalsAdjustments: TaskListItem = propertyRentalsAdjustmentsItem(userAnswers, taxYear)
     val enhancedStructuresAndBuildingAllowance: TaskListItem = rentalsEsbaItem(userAnswers, taxYear)
@@ -142,11 +147,17 @@ case object SummaryPage {
       "rentals_structures_and_building_allowance_link"
     )
 
-  private def propertyAllowancesItem(taxYear: Int) =
+  private def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
       controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      userAnswers
+        .flatMap { answers =>
+          answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_allowances_link"
     )
 
@@ -154,15 +165,13 @@ case object SummaryPage {
     TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
-      if (
-        userAnswers
-          .flatMap(_.get(RentsRatesAndInsurancePage))
-          .isDefined || userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined
-      ) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_expenses_link"
     )
 
@@ -253,8 +262,17 @@ case object SummaryPage {
   private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
-      controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear), {
+        val sectionFinished = userAnswers.flatMap(_.get(RaRAdjustmentsCompletePage))
+
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(RaRBalancingChargePage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rent_a_room_adjustments_link"
     )
 

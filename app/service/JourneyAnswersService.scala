@@ -18,7 +18,7 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
-import models.backend.{HttpParserError, PropertyDataError, ServiceError}
+import models.backend.{ConnectorError, HttpParserError, PropertyDataError, ServiceError}
 import models.{FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
@@ -46,7 +46,10 @@ class JourneyAnswersService @Inject() (
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
-                  Right(FetchedBackendData(None, None, None, None, None, None, None, None, None))
+//                  Right(
+//                    FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None)
+//                  ) // Todo: Change!!!! Wrong, would cause overriding
+                  Left(ConnectorError(error.status, "Error while calling set status on backend"))
                 case Right(r) => Right(r)
               }
           }

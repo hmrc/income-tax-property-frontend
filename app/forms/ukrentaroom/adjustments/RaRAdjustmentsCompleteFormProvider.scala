@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package testHelpers
+package forms.ukrentaroom.adjustments
 
-import models.FetchedBackendData
+import forms.mappings.Mappings
+import play.api.data.Form
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+import javax.inject.Inject
+
+class RaRAdjustmentsCompleteFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "raRAdjustmentsCompleteYesOrNo" -> boolean("ukrentaroom.raRAdjustmentsComplete.error.required")
+    )
 }

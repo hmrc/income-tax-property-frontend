@@ -16,7 +16,7 @@
 
 package models
 
-import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome}
+import audit.{PropertyAbout, PropertyRentalsAbout, PropertyRentalsExpense, PropertyRentalsIncome, RentARoomAdjustments, RentARoomAllowance, RentARoomExpenses}
 import pages.PageConstants.esbasWithSupportingQuestions
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
@@ -109,13 +109,18 @@ object EsbasWithSupportingQuestions
 final case class FetchedBackendData(
   capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   propertyAbout: Option[PropertyAbout],
+  propertyRentalsAbout: Option[PropertyRentalsAbout],
   adjustments: Option[Adjustments],
   allowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
   sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
   propertyRentals: Option[PropertyRentals],
   propertyRentalsIncome: Option[PropertyRentalsIncome],
-  propertyRentalsExpenses: Option[PropertyRentalsExpense]
+  propertyRentalsExpenses: Option[PropertyRentalsExpense],
+  raRAbout: Option[RaRAbout],
+  rarExpenses: Option[RentARoomExpenses],
+  raRAdjustments: Option[RentARoomAdjustments],
+  rentARoomAllowances: Option[RentARoomAllowance]
 )
 
 object FetchedBackendData {

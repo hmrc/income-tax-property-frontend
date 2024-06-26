@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import audit.PropertyRentalsExpense
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes._
-import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
+import models.{ConsolidatedExpenses, FetchedBackendData, JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -29,7 +29,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{JourneyAnswersService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
 
@@ -42,7 +42,11 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
   val taxYear = 2024
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
+  def onwardRoute: Call =
+    Call(
+      "POST",
+      s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/expenses-section-finished-yes-no"
+    )
 
   "ExpensesCheckYourAnswers Controller" - {
 

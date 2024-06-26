@@ -14,60 +14,72 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.allowances
+package controllers.propertyrentals.expenses
 
 import controllers.actions._
-import forms.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceFormProvider
-import models.Mode
+import forms.ExpensesSectionFinishedFormProvider
+import models.{JourneyContext, NormalMode}
 import navigation.Navigator
-import pages.ukrentaroom.allowances.RaRAnnualInvestmentAllowancePage
+import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceView
+import views.html.propertyrentals.expenses.ExpensesSectionFinishedView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRAnnualInvestmentAllowanceController @Inject() (
+class ExpensesSectionFinishedController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: RaRAnnualInvestmentAllowanceFormProvider,
+  formProvider: ExpensesSectionFinishedFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: RaRAnnualInvestmentAllowanceView
+  view: ExpensesSectionFinishedView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  val form = formProvider()
+
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(RaRAnnualInvestmentAllowancePage) match {
+      val preparedForm = request.userAnswers.get(ExpensesSectionFinishedPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAnnualInvestmentAllowancePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
+              _ <- journeyAnswersService.setStatus(
+                     JourneyContext(
+                       taxYear = taxYear,
+                       mtditid = request.user.mtditid,
+                       nino = request.user.nino,
+                       journeyName = "rental-expenses"
+                     ),
+                     status = if (value) "completed" else "inProgress",
+                     user = request.user
+                   )
             } yield Redirect(
-              navigator.nextPage(RaRAnnualInvestmentAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator
+                .nextPage(ExpensesSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
   }

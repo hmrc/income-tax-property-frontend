@@ -16,8 +16,8 @@
 
 package controllers.session
 
-import audit.{PropertyRentalsExpense, PropertyRentalsIncome}
-import models.{Adjustments, Allowances, EsbasWithSupportingQuestions, FetchedBackendData, Sba, SbasWithSupportingQuestions, UserAnswers}
+import audit._
+import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
@@ -25,7 +25,11 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.allowances._
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.libs.json.Writes
 import queries.Settable
 
@@ -42,23 +46,53 @@ object PropertyPeriodSessionRecoveryExtensions {
     def update(fetchedData: FetchedBackendData): UserAnswers = {
       for {
         ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage, fetchedData.capitalAllowancesForACar)
-        ua2 <- updatePart(ua1, UKPropertyPage, fetchedData.propertyAbout.map(_.ukProperty.toSet))
-        ua3 <- updatePart(ua2, TotalIncomePage, fetchedData.propertyAbout.map(_.totalIncome))
-        ua5 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
-        ua6 <- updateAllowancesPages(ua5, fetchedData.allowances)
-        ua7 <-
-          updateStructureBuildingPages(ua6, fetchedData.sbasWithSupportingQuestions)
+        ua2 <- updatePropertyAboutPages(ua1, fetchedData.propertyAbout)
+        ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.propertyRentalsAbout)
+        ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
+        ua5 <- updateAllowancesPages(ua4, fetchedData.allowances)
+        ua6 <-
+          updateStructureBuildingPages(ua5, fetchedData.sbasWithSupportingQuestions)
 
-        ua8 <-
+        ua7 <-
           updateEnhancedStructureBuildingPages(
-            ua7,
+            ua6,
             fetchedData.esbasWithSupportingQuestions
           )
 
-        ua9  <- updatePropertyRentalsIncomePages(ua8, fetchedData.propertyRentalsIncome)
-        ua10 <- updatePropertyRentalsExpensesPages(ua9, fetchedData.propertyRentalsExpenses)
-      } yield ua10
+        ua8  <- updatePropertyRentalsIncomePages(ua7, fetchedData.propertyRentalsIncome)
+        ua9  <- updatePropertyRentalsExpensesPages(ua8, fetchedData.propertyRentalsExpenses)
+        ua10 <- updateRentARoomAbout(ua9, fetchedData.raRAbout)
+        ua11 <- updateRentARoomAllowance(ua10, fetchedData.rentARoomAllowances)
+        ua12 <- updateRentARoomAdjustments(ua11, fetchedData.raRAdjustments)
+      } yield ua12
     }.getOrElse(userAnswersArg)
+
+    def updatePropertyAboutPages(
+      userAnswers: UserAnswers,
+      maybePropertyAbout: Option[PropertyAbout]
+    ): Try[UserAnswers] =
+      maybePropertyAbout match {
+        case None => Success(userAnswers)
+        case Some(propertyAbout) =>
+          for {
+            ua1 <- userAnswers.set(UKPropertyPage, propertyAbout.ukProperty.toSet)
+            ua2 <- ua1.set(TotalIncomePage, propertyAbout.totalIncome)
+            ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
+          } yield ua3
+      }
+
+    def updatePropertyRentalsAboutPages(
+      userAnswers: UserAnswers,
+      maybePropertyRentalsAbout: Option[PropertyRentalsAbout]
+    ): Try[UserAnswers] =
+      maybePropertyRentalsAbout match {
+        case None => Success(userAnswers)
+        case Some(propertyRentalsAbout) =>
+          for {
+            ua1 <- userAnswers.set(ExpensesLessThan1000Page, propertyRentalsAbout.toexpensesLessThan1000)
+            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage, propertyRentalsAbout.claimPropertyIncomeAllowance)
+          } yield ua2
+      }
 
     def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] =
       maybeAdjustments match {
@@ -200,7 +234,6 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimStructureBuildingAllowancePage,
                      sbasWithSupportingQuestions.claimStructureBuildingAllowance
                    )
-            //ua2 <- ua1.set(SbaClaimsPage, sbasWithSupportingQuestions.sbaClaims)
             ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup)
           } yield ua3
       }
@@ -219,5 +252,56 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index), sba.structureBuildingAllowanceClaim)
       } yield ua4
 
+    def updateRentARoomAbout(userAnswers: UserAnswers, maybeRentARoomAbout: Option[RaRAbout]): Try[UserAnswers] =
+      maybeRentARoomAbout match {
+        case None => Success(userAnswers)
+        case Some(raRAbout) =>
+          for {
+            ua1 <- userAnswers.set(UkRentARoomJointlyLetPage, raRAbout.ukRentARoomJointlyLet)
+            ua2 <- ua1.set(TotalIncomeAmountPage, raRAbout.totalIncomeAmount)
+            ua3 <- ua2.set(ClaimExpensesOrRRRPage, raRAbout.claimExpensesOrRRR)
+          } yield ua3
+      }
+
+    def updateRentARoomAllowance(
+      userAnswers: UserAnswers,
+      maybeRentARoomAllowance: Option[RentARoomAllowance]
+    ): Try[UserAnswers] =
+      maybeRentARoomAllowance match {
+        case None => Success(userAnswers)
+        case Some(rentARoomAllowance) =>
+          for {
+            ua1 <- rentARoomAllowance.capitalAllowancesForACar.fold[Try[UserAnswers]](Success(userAnswers))(cafac =>
+                     userAnswers.set(RaRCapitalAllowancesForACarPage, cafac)
+                   )
+            ua2 <- rentARoomAllowance.annualInvestmentAllowance.fold[Try[UserAnswers]](Success(ua1))(aia =>
+                     ua1.set(RaRAnnualInvestmentAllowancePage, aia)
+                   )
+            ua3 <- rentARoomAllowance.electricChargePointAllowance.fold[Try[UserAnswers]](Success(ua2))(ecpa =>
+                     ua2.set(RaRElectricChargePointAllowanceForAnEVPage, ecpa)
+                   )
+            ua4 <- rentARoomAllowance.zeroEmissionCarAllowance.fold[Try[UserAnswers]](Success(ua3))(zeca =>
+                     ua3.set(RaRZeroEmissionCarAllowancePage, zeca)
+                   )
+            ua5 <- rentARoomAllowance.zeroEmissionGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua4))(zegva =>
+                     ua4.set(RaRZeroEmissionGoodsVehicleAllowancePage, zegva)
+                   )
+            ua6 <- rentARoomAllowance.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua5))(rodga =>
+                     ua5.set(RaRReplacementsOfDomesticGoodsPage, rodga)
+                   )
+            ua7 <- rentARoomAllowance.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua6))(oca =>
+                     ua6.set(RaROtherCapitalAllowancesPage, oca)
+                   )
+          } yield ua7
+      }
+
+    def updateRentARoomAdjustments(
+      userAnswers: UserAnswers,
+      maybeRentARoomAdjustments: Option[RentARoomAdjustments]
+    ): Try[UserAnswers] =
+      maybeRentARoomAdjustments match {
+        case None                       => Success(userAnswers)
+        case Some(rentARoomAdjustments) => userAnswers.set(RaRBalancingChargePage, rentARoomAdjustments.balancingCharge)
+      }
   }
 }

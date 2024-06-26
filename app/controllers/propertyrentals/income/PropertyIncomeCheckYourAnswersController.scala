@@ -21,7 +21,6 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
 import models.JourneyContext
-import models.propertyrentals.income.SaveIncome
 import models.requests.DataRequest
 import pages.PageConstants
 import play.api.Logging
@@ -72,7 +71,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
 
       request.userAnswers.get(PropertyRentalsIncome) match {
         case Some(propertyRentalsIncome) =>
@@ -85,7 +84,6 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
               case Left(_) =>
                 InternalServerError
             }
-
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }

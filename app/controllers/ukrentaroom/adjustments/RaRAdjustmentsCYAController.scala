@@ -16,22 +16,22 @@
 
 package controllers.ukrentaroom.adjustments
 
-import audit.RentARoomAdjustments._
 import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
-import controllers.actions._
+import com.google.inject.Inject
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.JourneyContext
 import models.requests.DataRequest
-import play.api.i18n.Lang.logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.adjustments.RaRBalancingChargeSummary
+import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RaRAdjustmentsCYAController @Inject() (
@@ -40,54 +40,71 @@ class RaRAdjustmentsCYAController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
+  view: RaRAdjustmentsCYAView,
   propertySubmissionService: PropertySubmissionService,
-  audit: AuditService,
-  view: RaRAdjustmentsCYAView
+  audit: AuditService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val list = SummaryListViewModel(
-        rows = Seq(
-          RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+      val rows: Seq[SummaryListRow] =
+        Seq(
+          RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+          UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
-      )
+      val list = SummaryListViewModel(rows = rows)
 
       Ok(view(list, taxYear))
   }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-adjustments")
-
-      request.userAnswers.get(RentARoomAdjustments) match {
-        case Some(adjustments) =>
-          propertySubmissionService.saveJourneyAnswers(context, adjustments).map {
-            case Right(_) =>
-              auditCYA(taxYear, request, adjustments)
-              Redirect(controllers.routes.SummaryController.show(taxYear))
-            case Left(_) => InternalServerError
-          }
-        case None =>
-          logger.error("Adjustments Section is not present in userAnswers")
-          Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
-      }
+      request.userAnswers
+        .get(RentARoomAdjustments)
+        .map(rentARoomAdjustments => saveRentARoomAdjustments(taxYear, request, rentARoomAdjustments))
+        .getOrElse {
+          logger.error("Rent a room adjustments section is not present in userAnswers")
+          Future.failed(AdjustmentsNotFoundException)
+        }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentARoomAdjustments)(implicit
+  private def saveRentARoomAdjustments(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    rentARoomAdjustments: RentARoomAdjustments
+  )(implicit
     hc: HeaderCarrier
+  ): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-adjustments")
+    propertySubmissionService.saveJourneyAnswers(context, rentARoomAdjustments).flatMap {
+      case Right(_) =>
+        auditCYA(taxYear, request, rentARoomAdjustments)
+        Future.successful(
+          Redirect(controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCompleteController.onPageLoad(taxYear))
+        )
+      case Left(_) => Future.failed(AdjustmentsSaveFailed)
+    }
+  }
+
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], rentARoomAdjustments: RentARoomAdjustments)(
+    implicit hc: HeaderCarrier
   ): Unit = {
     val auditModel = RentARoomAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
-      request.user.agentRef,
+      agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
       "PropertyRentARoomAdjustments",
-      adjustments
+      rentARoomAdjustments
     )
     audit.sendRentARoomAuditEvent(auditModel)
   }
+
+  private case object AdjustmentsNotFoundException extends Exception("Adjustments Section is not present in userAnswers")
+
+  private case object AdjustmentsSaveFailed extends Exception("Unable to save Adjustments")
 }

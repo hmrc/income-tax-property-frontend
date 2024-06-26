@@ -23,7 +23,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -34,11 +34,12 @@ import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
 import java.time.LocalDate
 import scala.concurrent.Future
+import scala.util.Try
 
 class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear: Int = LocalDate.now.getYear
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no")
 
   val raRBalancingChargeValue = 200
   val raRBalancingCharge: BalancingCharge = BalancingCharge(
@@ -81,12 +82,12 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
-      val userAnswers = UserAnswers("adjustments-user-answers")
-        .set(
-          RaRBalancingChargePage,
-          raRBalancingCharge
-        )
-        .toOption
+      val userAnswersTry: Try[UserAnswers] = UserAnswers("adjustments-user-answers")
+        .set(RaRBalancingChargePage, raRBalancingCharge)
+
+      val updatedUserAnswers: Option[UserAnswers] = userAnswersTry.toOption.flatMap { ua =>
+        ua.set(RaRUnusedResidentialCostsPage, BigDecimal(12)).toOption
+      }
 
       // mocks
       val propertySubmissionService = mock[PropertySubmissionService]
@@ -96,7 +97,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         Right(())
       )
 
-      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+      val application = applicationBuilder(userAnswers = updatedUserAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()

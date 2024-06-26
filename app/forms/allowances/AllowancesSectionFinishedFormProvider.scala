@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.allowances
+package forms.allowances
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class RaRAnnualInvestmentAllowanceFormProvider @Inject() extends Mappings {
+class AllowancesSectionFinishedFormProvider @Inject() extends Mappings {
 
-  val minimum = 0
-  val maximum = 100000000
-
-  def apply(individualOrAgent: String): Form[BigDecimal] =
+  def apply(): Form[Boolean] =
     Form(
-      "raRAnnualInvestmentAllowance" -> currency(
-        s"raRAnnualInvestmentAllowance.error.required.$individualOrAgent",
-        s"raRAnnualInvestmentAllowance.error.twoDecimalPlaces.$individualOrAgent",
-        s"raRAnnualInvestmentAllowance.error.nonNumeric.$individualOrAgent"
-      )
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "raRAnnualInvestmentAllowance.error.outOfRange"))
+      "allowancesSectionFinishedYesOrNo" -> boolean("allowancesSectionFinished.error.required")
     )
 }

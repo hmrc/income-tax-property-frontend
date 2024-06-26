@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.allowances
+package forms.ukrentaroom.adjustments
 
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class RaRAnnualInvestmentAllowanceFormProviderSpec extends CurrencyFieldBehaviours {
+class RaRUnusedResidentialCostsFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new RaRAnnualInvestmentAllowanceFormProvider()("individual")
+  val form = new RaRUnusedResidentialCostsFormProvider()("individual")
 
-  ".raRAnnualInvestmentAllowance" - {
+  ".unusedResidentialPropertyFinanceCostsBroughtFwd" - {
 
-    val fieldName = "raRAnnualInvestmentAllowance"
+    val fieldName = "unusedResidentialPropertyFinanceCostsBroughtFwd"
 
     val minimum = 0
     val maximum = 100000000
@@ -41,8 +41,14 @@ class RaRAnnualInvestmentAllowanceFormProviderSpec extends CurrencyFieldBehaviou
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "raRAnnualInvestmentAllowance.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "raRAnnualInvestmentAllowance.error.twoDecimalPlaces.individual")
+      nonNumericError = FormError(
+        fieldName,
+        "ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNumeric.individual"
+      ),
+      twoDecimalPlacesError = FormError(
+        fieldName,
+        "ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.twoDecimalPlaces.individual"
+      )
     )
 
     behave like currencyFieldWithRange(
@@ -50,13 +56,20 @@ class RaRAnnualInvestmentAllowanceFormProviderSpec extends CurrencyFieldBehaviou
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "raRAnnualInvestmentAllowance.error.outOfRange", Seq(minimum, maximum))
+      expectedError = FormError(
+        fieldName,
+        "ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.outOfRange.individual",
+        Seq(minimum, maximum)
+      )
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "raRAnnualInvestmentAllowance.error.required.individual")
+      requiredError = FormError(
+        fieldName,
+        "ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.required.individual"
+      )
     )
   }
 }

@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package testHelpers
+package models
 
-import models.FetchedBackendData
+import pages.PageConstants
+import play.api.libs.json.{Format, JsPath, Json}
+import queries.{Gettable, Settable}
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+final case class RaRAdjustments(
+                                 balancingCharge: BalancingCharge
+)
+
+object RaRAdjustments extends Settable[RaRAdjustments] with Gettable[RaRAdjustments] {
+  implicit val format: Format[RaRAdjustments] = Json.format[RaRAdjustments]
+
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment
 }

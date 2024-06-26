@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package testHelpers
+package pages.allowances
 
-import models.FetchedBackendData
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+case object AllowancesSectionFinishedPage extends QuestionPage[Boolean] {
+
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+
+  override def toString: String = "allowancesSectionFinishedYesOrNo"
 }

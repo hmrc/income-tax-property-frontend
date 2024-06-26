@@ -18,7 +18,6 @@ package controllers.allowances
 
 import audit.{AuditModel, AuditService, PropertyRentalsAllowance}
 import controllers.actions._
-import controllers.routes
 import models.JourneyContext
 import models.backend.ServiceError
 import models.requests.DataRequest
@@ -73,7 +72,7 @@ class AllowancesCheckYourAnswersController @Inject() (
             case Left(_) => InternalServerError
             case Right(_: Unit) =>
               auditAllowanceCYA(taxYear, request, allowance)
-              Redirect(routes.SummaryController.show(taxYear))
+              Redirect(controllers.allowances.routes.AllowancesSectionFinishedController.onPageLoad(taxYear))
           }
         case None =>
           logger.error("Allowance in property rentals is not present in userAnswers")
@@ -81,8 +80,12 @@ class AllowancesCheckYourAnswersController @Inject() (
       }
   }
 
-  private def saveAllowanceForPropertyRentals(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(
-    implicit hc: HeaderCarrier
+  private def saveAllowanceForPropertyRentals(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    allowance: PropertyRentalsAllowance
+  )(implicit
+    hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] = {
     val context = JourneyContext(
       taxYear = taxYear,
@@ -93,8 +96,8 @@ class AllowancesCheckYourAnswersController @Inject() (
     propertySubmissionService.saveJourneyAnswers[PropertyRentalsAllowance](context, allowance)
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(implicit
-                                                                                                                     hc: HeaderCarrier
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(
+    implicit hc: HeaderCarrier
   ): Unit = {
     val event = AuditModel[PropertyRentalsAllowance](
       nino = request.user.nino,

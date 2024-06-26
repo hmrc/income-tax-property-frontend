@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package testHelpers
+package forms
 
-import models.FetchedBackendData
+import javax.inject.Inject
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+import forms.mappings.Mappings
+import play.api.data.Form
+
+class ExpensesSectionFinishedFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "expensesSectionFinishedYesOrNo" -> boolean("expensesSectionComplete.error.required")
+    )
 }

@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package testHelpers
+package pages.propertyrentals.expenses
 
-import models.FetchedBackendData
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+case object ExpensesSectionFinishedPage extends QuestionPage[Boolean] {
+
+  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+
+  override def toString: String = "expensesSectionFinishedYesOrNo"
 }

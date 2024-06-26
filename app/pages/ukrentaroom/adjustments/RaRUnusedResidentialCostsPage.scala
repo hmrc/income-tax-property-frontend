@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package testHelpers
+package pages.ukrentaroom.adjustments
 
-import models.FetchedBackendData
+import pages.PageConstants.rentARoomAdjustment
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait Fixture {
-  val fetchedPropertyData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
-  )
+case object RaRUnusedResidentialCostsPage extends QuestionPage[BigDecimal] {
+
+  override def path: JsPath = JsPath \ rentARoomAdjustment \ toString
+
+  override def toString: String = "unusedResidentialPropertyFinanceCostsBroughtFwd"
 }

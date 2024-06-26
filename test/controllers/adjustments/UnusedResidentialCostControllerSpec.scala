@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,79 +14,71 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.allowances
+package controllers.adjustments
 
 import base.SpecBase
-import forms.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceFormProvider
+import forms.adjustments.UnusedResidentialFinanceCostFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.allowances.RaRAnnualInvestmentAllowancePage
+import pages.adjustments.UnusedResidentialFinanceCostPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.allowances.RaRAnnualInvestmentAllowanceView
+import views.html.adjustments.UnusedResidentialFinanceCostView
 
 import scala.concurrent.Future
 
-class RaRAnnualInvestmentAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class UnusedResidentialCostControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new RaRAnnualInvestmentAllowanceFormProvider()
-  private val isAgentMessageKey = "individual"
-  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
+  val formProvider = new UnusedResidentialFinanceCostFormProvider()
 
-  def onwardRoute = Call("GET", "/foo")
-
-  val validAnswer: BigDecimal = BigDecimal(0)
+  val form: Form[BigDecimal] = formProvider("individual")
   val taxYear = 2023
+  val validAnswer: BigDecimal = BigDecimal(100.65)
 
-  lazy val raRAnnualInvestmentAllowanceRoute =
-    routes.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode).url
+  def onwardRoute: Call = Call("GET", "/unused-residential-finance-cost")
 
-  "RaRAnnualInvestmentAllowance Controller" - {
+  lazy val unusedResidentialFinanceCostRoute: String = routes.UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode).url
+
+  "UnusedResidentialFinanceCost Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, raRAnnualInvestmentAllowanceRoute)
+        val request = FakeRequest(GET, unusedResidentialFinanceCostRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RaRAnnualInvestmentAllowanceView]
+        val view = application.injector.instanceOf[UnusedResidentialFinanceCostView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RaRAnnualInvestmentAllowancePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(UnusedResidentialFinanceCostPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, raRAnnualInvestmentAllowanceRoute)
+        val request = FakeRequest(GET, unusedResidentialFinanceCostRoute)
 
-        val view = application.injector.instanceOf[RaRAnnualInvestmentAllowanceView]
+        val view = application.injector.instanceOf[UnusedResidentialFinanceCostView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -106,8 +98,8 @@ class RaRAnnualInvestmentAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, raRAnnualInvestmentAllowanceRoute)
-            .withFormUrlEncodedBody(("raRAnnualInvestmentAllowance", validAnswer.toString))
+          FakeRequest(POST, unusedResidentialFinanceCostRoute)
+            .withFormUrlEncodedBody(("unusedResidentialFinanceCost", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -122,45 +114,41 @@ class RaRAnnualInvestmentAllowanceControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, raRAnnualInvestmentAllowanceRoute)
-            .withFormUrlEncodedBody(("raRAnnualInvestmentAllowance", "invalid value"))
+          FakeRequest(POST, unusedResidentialFinanceCostRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = form.bind(Map("raRAnnualInvestmentAllowance" -> "invalid value"))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RaRAnnualInvestmentAllowanceView]
+        val view = application.injector.instanceOf[UnusedResidentialFinanceCostView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, raRAnnualInvestmentAllowanceRoute)
+        val request = FakeRequest(GET, unusedResidentialFinanceCostRoute)
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(result) mustEqual OK
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, raRAnnualInvestmentAllowanceRoute)
-            .withFormUrlEncodedBody(("raRAnnualInvestmentAllowance", validAnswer.toString))
+          FakeRequest(POST, unusedResidentialFinanceCostRoute)
+            .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value
 

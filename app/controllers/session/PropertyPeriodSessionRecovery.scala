@@ -26,30 +26,40 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
+trait SessionRecovery {
+  def withUpdatedData(taxYear: Int)(
+    block: OptionalDataRequest[AnyContent] => Future[Result]
+  )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result]
+}
 
 class PropertyPeriodSessionRecovery @Inject() (
   propertyPeriodSubmissionService: PropertySubmissionService,
   sessionRepository: SessionRepository
-) {
-  def withUpdatedData(taxYear: Int)(
-    block: => Future[Result]
+) extends SessionRecovery {
+  override def withUpdatedData(taxYear: Int)(
+    block: OptionalDataRequest[AnyContent] => Future[Result]
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
-    val currentUserAnswers = request.userAnswers
-      .getOrElse(
-        UserAnswers(request.userId)
-      )
-
+    val basicUserAnswers = request.userAnswers.getOrElse(UserAnswers(request.userId))
     for {
       fetchedData <- propertyPeriodSubmissionService.getPropertySubmission(taxYear, request.user)
-      _ <- fetchedData match {
-             case Right(fetchedUserAnswersData) =>
-               sessionRepository.set(
-                 currentUserAnswers.update(fetchedUserAnswersData)
-               )
-             case Left(e) =>
-               sessionRepository.set(currentUserAnswers)
-           }
-      blockResult <- block
+      currentUserAnswersMaybe <- sessionRepository
+                                   .get(request.userId)
+
+      updatedUserAnswers <- fetchedData match {
+                              case Right(fetchedUserAnswersData) =>
+                                currentUserAnswersMaybe.fold {
+                                  val updated = basicUserAnswers.update(fetchedUserAnswersData)
+                                  sessionRepository
+                                    .set(
+                                      updated
+                                    )
+                                    .map(_ => updated)
+                                }(ua => Future.successful(ua))
+                              case Left(_) =>
+                                Future.successful(basicUserAnswers)
+                            }
+      blockResult <-
+        block(OptionalDataRequest(request.request, request.userId, request.user, Some(updatedUserAnswers)))
     } yield blockResult
   }
 }

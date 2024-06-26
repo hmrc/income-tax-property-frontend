@@ -47,6 +47,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               Some(true)
             )
           ),
+          None,
           Some(
             Adjustments(
               BalancingCharge(true, Some(4.2)),
@@ -57,6 +58,10 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               4.2
             )
           ),
+          None,
+          None,
+          None,
+          None,
           None,
           None,
           None,

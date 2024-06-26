@@ -53,10 +53,20 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         None,
         None,
         None,
+        None,
+        None,
+        None,
+        None,
+        None,
         None
       )
+      val incomeSourceId = "incomeSourceId"
+      val details =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), incomeSourceId)
+
+      when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
       when(
-        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, user.mtditid, user)
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, incomeSourceId, user)
       ) thenReturn Future.successful(Right(resultFromConnector))
 
       val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)
@@ -69,9 +79,14 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
     "return FetchedPropertyData with empty JsObject when connector returns failure" in {
       val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
+      val incomeSourceId = "incomeSourceId"
+      val details =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), incomeSourceId)
+
+      when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
       when(
-        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, user.mtditid, user)
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, incomeSourceId, user)
       ).thenReturn(Future.successful(Left(resultFromConnector)))
 
       val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)

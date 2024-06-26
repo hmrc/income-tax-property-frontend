@@ -18,20 +18,20 @@ package controllers.propertyrentals.expenses
 
 import audit.{AuditModel, AuditService, PropertyRentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import controllers.routes
 import models.JourneyContext
 import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{JourneyAnswersService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.propertyrentals.expenses._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
+import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +44,8 @@ class ExpensesCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ExpensesCheckYourAnswersView,
   audit: AuditService,
-  propertySubmissionService: PropertySubmissionService
+  propertySubmissionService: PropertySubmissionService,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -84,20 +85,20 @@ class ExpensesCheckYourAnswersController @Inject() (
   }
 
   private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: PropertyRentalsExpense)(implicit
-                                                                                                             hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
 
     propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, expenses)
-        Future.successful(Redirect(routes.SummaryController.show(taxYear)))
+        Future.successful(Redirect(ExpensesSectionFinishedController.onPageLoad(taxYear)))
       case Left(_) => Future.failed(ExpensesSaveFailed)
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(implicit
-                                                                                                                       hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(
+    implicit hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
