@@ -16,6 +16,7 @@
 
 package service
 
+import audit.PropertyRentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, PropertyDataError, ServiceError}
@@ -28,32 +29,43 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertySubmissionService @Inject()(
-                                           propertyConnector: PropertySubmissionConnector,
-                                           businessService: BusinessService
-                                         )(implicit
-                                           val ec: ExecutionContext
-                                         ) extends Logging {
+class PropertySubmissionService @Inject() (
+  propertyConnector: PropertySubmissionConnector,
+  businessService: BusinessService
+)(implicit
+  val ec: ExecutionContext
+) extends Logging {
 
   def getPropertySubmission(taxYear: Int, user: User)(implicit
-                                                      hc: HeaderCarrier
-  ): Future[Either[ApiError, FetchedBackendData]] =
-    propertyConnector.getPropertySubmission(taxYear, user.mtditid, user)
+    hc: HeaderCarrier
+  ): Future[Either[ServiceError, FetchedBackendData]] =
+    businessService.getUkPropertyDetails(user.nino, user.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            propertyConnector.getPropertySubmission(taxYear, ukProperty.incomeSourceId, user).map {
+              case Left(error) =>
+                Left(HttpParserError(error.status))
+              case Right(r) =>
+                Right(r)
+            }
+          }
+          .getOrElse(Future.successful(Left(PropertyDataError())))
+    }
 
-  def savePropertyRentalsIncome(ctx: JourneyContext, saveIncome: SaveIncome)(
-    implicit hc: HeaderCarrier
-  ): Future[Either[ApiError, Unit]] = {
-    propertyConnector.saveIncome(ctx, ctx.mtditid, saveIncome)
-  }
+  def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: PropertyRentalsIncome)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ServiceError, Unit]] =
+    saveJourneyAnswers(ctx, propertyRentalsIncome)
 
-  def saveEsba( //Todo: Finially this should be integrated into saveAnswers reusage
-                ctx: JourneyContext, esbasWithSupportingQuestions: EsbasWithSupportingQuestions
-              )
-              (
-                implicit hc: HeaderCarrier
-              ): Future[Either[ApiError, Unit]] = {
-    propertyConnector.updateEsba(ctx, ctx.mtditid, esbasWithSupportingQuestions) //Todo: mdtd? income-source-id?
-  }
+  def saveEsba( // Todo: Finially this should be integrated into saveAnswers reusage
+    ctx: JourneyContext,
+    esbasWithSupportingQuestions: EsbasWithSupportingQuestions
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ApiError, Unit]] =
+    propertyConnector.updateEsba(ctx, ctx.mtditid, esbasWithSupportingQuestions) // Todo: mdtd? income-source-id?
 
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,

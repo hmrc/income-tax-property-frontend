@@ -102,7 +102,11 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       val mockJourneyAnswersService = mock[JourneyAnswersService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      doReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None))))
+      doReturn(
+        Future.successful(
+          Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+        )
+      )
         .when(mockJourneyAnswersService)
         .setStatus(
           ArgumentMatchers.eq(
@@ -146,7 +150,11 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
         mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
-      ).thenReturn(Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None))))
+      ).thenReturn(
+        Future.successful(
+          Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+        )
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 

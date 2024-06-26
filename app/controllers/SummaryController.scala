@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import controllers.session.PropertyPeriodSessionRecovery
+import controllers.session.SessionRecovery
 import models.requests.OptionalDataRequest
 import pages._
 import play.api.i18n.I18nSupport
@@ -35,14 +35,14 @@ class SummaryController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  sessionRecovery: PropertyPeriodSessionRecovery,
+  sessionRecovery: SessionRecovery,
   view: SummaryView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    withUpdatedData(taxYear) {
+  def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit requestBeforeUpdate =>
+    withUpdatedData(taxYear) { request =>
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
@@ -56,11 +56,11 @@ class SummaryController @Inject() (
         case _ =>
           Future.failed(PropertyDataError)
       }
-    }(request, controllerComponents.executionContext, hc)
+    }(requestBeforeUpdate, controllerComponents.executionContext, hc)
   }
 
   private def withUpdatedData(taxYear: Int)(
-    block: => Future[Result]
+    block: OptionalDataRequest[AnyContent] => Future[Result]
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
     sessionRecovery.withUpdatedData(taxYear)(block)
 

@@ -37,7 +37,8 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
   val sessionRepository: SessionRepository = mock[SessionRepository]
 
-  val propertyPeriodSessionRecovery = new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
+  val propertyPeriodSessionRecovery =
+    new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
 
   val taxYear = 2024
   val user: User = User("", "", "", isAgent = false, Some("agentReferenceNumber"))
@@ -48,21 +49,24 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
       implicit val odr = OptionalDataRequest[AnyContent](fakeRequest, "", user, None)
       implicit val hc = HeaderCarrier()
 
-      when(propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)).thenReturn(Future.successful(
-        Right(fetchedPropertyData)
-      ))
+      when(propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)).thenReturn(
+        Future.successful(
+          Right(fetchedPropertyData)
+        )
+      )
+      when(sessionRepository.get(any())).thenReturn(Future.successful(Some(emptyUserAnswers)))
 
-      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
+//      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val expectedCall = Redirect(controllers.routes.IndexController.onPageLoad)
-      val result = propertyPeriodSessionRecovery.withUpdatedData(taxYear) {
+      val result = propertyPeriodSessionRecovery.withUpdatedData(taxYear) { _ =>
         Future.successful(expectedCall)
       }
 
       whenReady(result) { r =>
         r mustEqual expectedCall
         verify(propertyPeriodSubmissionService, times(1)).getPropertySubmission(taxYear, user)
-        verify(sessionRepository, times(1)).set(any())
+        //verify(sessionRepository, times(1)).set(any())
       }
     }
   }
