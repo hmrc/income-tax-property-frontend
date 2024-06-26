@@ -19,13 +19,14 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
+import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
+import viewmodels.summary.TaskListTag.TaskListTag
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -154,15 +155,13 @@ case object SummaryPage {
     TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
-      if (
-        userAnswers
-          .flatMap(_.get(RentsRatesAndInsurancePage))
-          .isDefined || userAnswers.flatMap(_.get(ConsolidatedExpensesPage)).isDefined
-      ) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_expenses_link"
     )
 
