@@ -182,8 +182,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |    },
       |    "raRAdjustments" : {
       |        "balancingCharge" : {
-      |            "raRbalancingChargeYesNo" : true,
-      |            "raRbalancingChargeAmount" : 10
+      |            "balancingChargeYesNo" : true,
+      |            "balancingChargeAmount" : 10
       |        }
       |    }
       |}""".stripMargin
