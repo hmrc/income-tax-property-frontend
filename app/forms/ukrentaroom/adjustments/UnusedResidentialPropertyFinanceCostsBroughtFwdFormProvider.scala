@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.expenses
+package forms.ukrentaroom.adjustments
 
 import forms.mappings.Mappings
 import play.api.data.Form

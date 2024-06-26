@@ -22,7 +22,7 @@ case class RRAllowancesStartPage(taxYear: Int, individualOrAgent: String, cashOr
   def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
   def nextPageUrl: String = if (cashOrAccruals) {
-    controllers.ukrentaroom.allowances.routes.RaRAnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode).url
+    controllers.ukrentaroom.allowances.routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode).url
   } else {
     controllers.ukrentaroom.allowances.routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode).url
   }

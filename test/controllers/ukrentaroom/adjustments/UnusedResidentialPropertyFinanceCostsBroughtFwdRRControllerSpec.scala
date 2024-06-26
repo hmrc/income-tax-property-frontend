@@ -14,37 +14,38 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.expenses
+package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
-import forms.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
+import forms.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.expenses.UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
+import views.html.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
 
 import scala.concurrent.Future
 
 class UnusedResidentialPropertyFinanceCostsBroughtFwdRRControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider()
-  val form = formProvider("individual")
+  val form: Form[BigDecimal] = formProvider("individual")
   val taxYear = 2023
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   val unusedResidentialPropertyFinanceCostsBroughtFwd = 100
-  val validAnswer = BigDecimal.valueOf(unusedResidentialPropertyFinanceCostsBroughtFwd)
+  val validAnswer: BigDecimal = BigDecimal.valueOf(unusedResidentialPropertyFinanceCostsBroughtFwd)
 
-  lazy val unusedResidentialPropertyFinanceCostsBroughtFwdRoute =
+  lazy val unusedResidentialPropertyFinanceCostsBroughtFwdRoute: String =
     routes.UnusedResidentialPropertyFinanceCostsBroughtFwdRRController.onPageLoad(taxYear, NormalMode).url
 
   "UnusedResidentialPropertyFinanceCostsBroughtFwd Controller" - {
