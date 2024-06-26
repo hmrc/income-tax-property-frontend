@@ -105,7 +105,9 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)
         )(ArgumentMatchers.any())
-      ) thenReturn Future.successful(Right(FetchedBackendData(None, None, None, None, None, None, None, None, None)))
+      ) thenReturn Future.successful(
+        Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+      )
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)

@@ -21,7 +21,6 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.routes
 import models.JourneyContext
-import models.propertyrentals.income.SaveIncome
 import models.requests.DataRequest
 import pages.PageConstants
 import play.api.Logging

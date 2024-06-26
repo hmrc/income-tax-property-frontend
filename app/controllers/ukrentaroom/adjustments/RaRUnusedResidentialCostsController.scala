@@ -17,10 +17,10 @@
 package controllers.ukrentaroom.adjustments
 
 import controllers.actions._
-import forms.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider
+import forms.ukrentaroom.adjustments.RaRUnusedResidentialCostsFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,23 +30,23 @@ import views.html.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsB
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnusedResidentialPropertyFinanceCostsBroughtFwdRRController @Inject() (
-  override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
-  navigator: Navigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  formProvider: UnusedResidentialPropertyFinanceCostsBroughtFwdFormProvider,
-  val controllerComponents: MessagesControllerComponents,
-  view: UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
+class RaRUnusedResidentialCostsController @Inject()(
+                                                     override val messagesApi: MessagesApi,
+                                                     sessionRepository: SessionRepository,
+                                                     navigator: Navigator,
+                                                     identify: IdentifierAction,
+                                                     getData: DataRetrievalAction,
+                                                     requireData: DataRequiredAction,
+                                                     formProvider: RaRUnusedResidentialCostsFormProvider,
+                                                     val controllerComponents: MessagesControllerComponents,
+                                                     view: UnusedResidentialPropertyFinanceCostsBroughtFwdRRView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage) match {
+      val preparedForm = request.userAnswers.get(RaRUnusedResidentialCostsPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -65,11 +65,11 @@ class UnusedResidentialPropertyFinanceCostsBroughtFwdRRController @Inject() (
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, value))
+                Future.fromTry(request.userAnswers.set(RaRUnusedResidentialCostsPage, value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(
-                UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage,
+                RaRUnusedResidentialCostsPage,
                 taxYear,
                 mode,
                 request.userAnswers,

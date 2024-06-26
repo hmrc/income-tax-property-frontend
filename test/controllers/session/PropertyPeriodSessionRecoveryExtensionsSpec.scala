@@ -22,15 +22,13 @@ import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
-import pages.propertyrentals.income._
-import pages.structurebuildingallowance._
-import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherAllowablePropertyExpensesPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
+import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
-import pages.structurebuildingallowance.{SbaClaimsPage, SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage, StructuredBuildingAllowanceAddressPage}
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
-import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage, RaRZeroEmissionGoodsVehicleAllowancePage}
+import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
@@ -184,7 +182,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        "balancingCharge" : {
       |            "balancingChargeYesNo" : true,
       |            "balancingChargeAmount" : 10
-      |        }
+      |        },
+      |        "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
       |    }
       |}""".stripMargin
 

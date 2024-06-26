@@ -23,7 +23,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -39,7 +39,7 @@ import scala.util.Try
 class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear: Int = LocalDate.now.getYear
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no")
 
   val raRBalancingChargeValue = 200
   val raRBalancingCharge: BalancingCharge = BalancingCharge(
@@ -86,7 +86,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         .set(RaRBalancingChargePage, raRBalancingCharge)
 
       val updatedUserAnswers: Option[UserAnswers] = userAnswersTry.toOption.flatMap { ua =>
-        ua.set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, BigDecimal(12)).toOption
+        ua.set(RaRUnusedResidentialCostsPage, BigDecimal(12)).toOption
       }
 
       // mocks

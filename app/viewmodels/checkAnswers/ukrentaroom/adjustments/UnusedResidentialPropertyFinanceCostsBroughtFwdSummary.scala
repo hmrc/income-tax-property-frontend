@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukrentaroom.adjustments
 
 import controllers.ukrentaroom.adjustments.routes._
 import models.{CheckMode, UserAnswers}
-import pages.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage
+import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -30,7 +30,7 @@ object UnusedResidentialPropertyFinanceCostsBroughtFwdSummary {
   def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage).map { answer =>
+    answers.get(RaRUnusedResidentialCostsPage).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel(
           s"ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.$individualOrAgent"
@@ -40,7 +40,7 @@ object UnusedResidentialPropertyFinanceCostsBroughtFwdSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            UnusedResidentialPropertyFinanceCostsBroughtFwdRRController
+            RaRUnusedResidentialCostsController
               .onPageLoad(taxYear, CheckMode)
               .url
           )

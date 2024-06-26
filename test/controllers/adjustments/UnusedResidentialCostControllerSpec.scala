@@ -34,7 +34,7 @@ import views.html.adjustments.UnusedResidentialFinanceCostView
 
 import scala.concurrent.Future
 
-class UnusedResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
+class UnusedResidentialCostControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new UnusedResidentialFinanceCostFormProvider()
 
