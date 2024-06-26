@@ -21,13 +21,9 @@ import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
-import pages.allowances.CapitalAllowancesForACarPage
 import pages.enhancedstructuresbuildingallowance._
-import pages.premiumlease.{ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
-import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherAllowablePropertyExpensesPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
-import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
-import pages.structurebuildingallowance.{SbaClaimsPage, SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage, StructuredBuildingAllowanceAddressPage}
+import pages.propertyrentals.income._
+import pages.structurebuildingallowance._
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture

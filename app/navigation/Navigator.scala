@@ -60,9 +60,11 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode)
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
+    case RaRZeroEmissionCarAllowancePage =>
+      taxYear => _ => _ => RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
     case RaRAnnualInvestmentAllowancePage =>
       taxYear => _ => _ => RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, NormalMode)
-    case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case RaRAllowancesCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear =>
         _ =>
@@ -72,7 +74,7 @@ class Navigator @Inject() () {
               case Some(ConsolidatedRRExpenses(false, None)) =>
                 RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
             }
-
+    case ExpensesRRSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case OtherPropertyExpensesRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage =>
@@ -87,8 +89,7 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
     case LegalManagementOtherFeeRRPage =>
       taxYear => _ => _ => CostOfServicesProvidedRRController.onPageLoad(taxYear, NormalMode)
-    case RaRZeroEmissionCarAllowancePage =>
-      taxYear => _ => _ => RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
+
     case UKPropertyDetailsPage => taxYear => _ => _ => TotalIncomeController.onPageLoad(taxYear, NormalMode)
     case TotalIncomePage       => taxYear => _ => userAnswers => totalIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertySelectPage  => taxYear => _ => _ => SummaryController.show(taxYear)
