@@ -16,13 +16,13 @@
 
 package audit
 
-import models.{CapitalAllowancesForACar, ElectricChargePointAllowance, RaRCapitalAllowancesForACar}
+import models.{CapitalAllowancesForACar, ElectricChargePointAllowance}
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 case class RentARoomAllowance(
-  capitalAllowancesForACar: Option[RaRCapitalAllowancesForACar],
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   annualInvestmentAllowance: Option[BigDecimal],
   electricChargePointAllowance: Option[ElectricChargePointAllowance],
   zeroEmissionCarAllowance: Option[BigDecimal],
