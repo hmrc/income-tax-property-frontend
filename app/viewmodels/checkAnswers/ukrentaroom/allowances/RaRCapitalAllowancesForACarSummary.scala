@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.ukrentaroom.allowances
 
 import controllers.ukrentaroom.allowances.routes
-import models.{CheckMode, RaRCapitalAllowancesForACar, UserAnswers}
+import models.{CapitalAllowancesForACar, CheckMode, UserAnswers}
 import pages.ukrentaroom.allowances.RaRCapitalAllowancesForACarPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -29,7 +29,7 @@ object RaRCapitalAllowancesForACarSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RaRCapitalAllowancesForACarPage).map {
-      case RaRCapitalAllowancesForACar(true, Some(amount)) =>
+      case CapitalAllowancesForACar(true, Some(amount)) =>
         SummaryListRowViewModel(
           key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
@@ -42,7 +42,7 @@ object RaRCapitalAllowancesForACarSummary {
           )
         )
 
-      case RaRCapitalAllowancesForACar(false, None) =>
+      case CapitalAllowancesForACar(false, None) =>
         SummaryListRowViewModel(
           key = KeyViewModel("raRCapitalAllowancesForACar.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),

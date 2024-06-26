@@ -42,10 +42,8 @@ case object ConsolidatedExpensesRRPage extends QuestionPage[ConsolidatedRRExpens
             withoutCostOfServicesProvided    <- withoutLegalManagementOtherFees.remove(CostOfServicesProvidedRRPage)
             withoutResidentialPropertyFinanceCosts <-
               withoutCostOfServicesProvided.remove(ResidentialPropertyFinanceCostsRRPage)
-            withoutUnusedResidentialPropertyFinanceCostsBroughtFwd <-
-              withoutResidentialPropertyFinanceCosts.remove(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage)
             withoutAllPreviousAnswers <-
-              withoutUnusedResidentialPropertyFinanceCostsBroughtFwd.remove(OtherPropertyExpensesRRPage)
+              withoutResidentialPropertyFinanceCosts.remove(OtherPropertyExpensesRRPage)
           } yield withoutAllPreviousAnswers
       }
       .getOrElse(super.cleanup(value, userAnswers))

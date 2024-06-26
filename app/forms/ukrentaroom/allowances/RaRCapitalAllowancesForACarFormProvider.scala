@@ -17,7 +17,7 @@
 package forms.ukrentaroom.allowances
 
 import forms.mappings.Mappings
-import models.RaRCapitalAllowancesForACar
+import models.CapitalAllowancesForACar
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
@@ -29,7 +29,7 @@ class RaRCapitalAllowancesForACarFormProvider @Inject() extends Mappings {
   val minimum = 0
   val maximum = 100000000
 
-  def apply(individualOrAgent: String): Form[RaRCapitalAllowancesForACar] =
+  def apply(individualOrAgent: String): Form[CapitalAllowancesForACar] =
     Form(
       mapping(
         "raRCapitalAllowancesForACarYesNo" -> boolean(s"raRCapitalAllowancesForACar.error.required.$individualOrAgent"),
@@ -46,6 +46,6 @@ class RaRCapitalAllowancesForACarFormProvider @Inject() extends Mappings {
               )
           )
         }
-      )(RaRCapitalAllowancesForACar.apply)(RaRCapitalAllowancesForACar.unapply)
+      )(CapitalAllowancesForACar.apply)(CapitalAllowancesForACar.unapply)
     )
 }
