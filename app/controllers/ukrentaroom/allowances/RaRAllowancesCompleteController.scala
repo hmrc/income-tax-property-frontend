@@ -17,58 +17,69 @@
 package controllers.ukrentaroom.allowances
 
 import controllers.actions._
-import forms.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceFormProvider
-import models.Mode
+import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
+import models.{JourneyContext, Mode}
 import navigation.Navigator
-import pages.ukrentaroom.allowances.RaRZeroEmissionCarAllowancePage
+import pages.ukrentaroom.allowances.RaRAllowancesCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceView
+import views.html.ukrentaroom.allowances.RaRAllowancesCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRZeroEmissionCarAllowanceController @Inject() (
+class RaRAllowancesCompleteController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: RaRZeroEmissionCarAllowanceFormProvider,
+  formProvider: RaRAllowancesCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: RaRZeroEmissionCarAllowanceView
+  view: RaRAllowancesCompleteView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
+  private val form = formProvider()
+
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(RaRZeroEmissionCarAllowancePage) match {
+      val preparedForm = request.userAnswers.get(RaRAllowancesCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRZeroEmissionCarAllowancePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAllowancesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              navigator.nextPage(RaRZeroEmissionCarAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
-            )
+              _ <- journeyAnswersService
+                     .setStatus(
+                       ctx = JourneyContext(
+                         taxYear = taxYear,
+                         mtditid = request.user.mtditid,
+                         nino = request.user.nino,
+                         journeyName = "rent-a-room-allowances"
+                       ),
+                       status = if (value) "completed" else "inProgress",
+                       user = request.user
+                     )
+            } yield
+              Redirect(navigator.nextPage(RaRAllowancesCompletePage, taxYear, mode, request.userAnswers, updatedAnswers))
         )
   }
 }
