@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages.ukrentaroom.allowances
 
-import play.api.libs.json.{Format, Json}
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-final case class RaRBalancingCharge(raRbalancingChargeYesNo: Boolean, raRbalancingChargeAmount: Option[BigDecimal])
+case object RaRAllowancesCompletePage extends QuestionPage[Boolean] {
 
-object RaRBalancingCharge {
-  implicit val format: Format[RaRBalancingCharge] = Json.format
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance\ toString
+
+  override def toString: String = "rarAllowancesCompleteYesOrNo"
 }

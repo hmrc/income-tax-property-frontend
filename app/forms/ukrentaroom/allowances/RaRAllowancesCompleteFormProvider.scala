@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package models
+package forms.ukrentaroom.allowances
 
-import play.api.libs.json.{Format, Json}
+import forms.mappings.Mappings
+import play.api.data.Form
 
-final case class RaRCapitalAllowancesForACar(
-  capitalAllowancesForACarYesNo: Boolean,
-  capitalAllowancesForACarAmount: Option[BigDecimal]
-)
+import javax.inject.Inject
 
-object RaRCapitalAllowancesForACar {
-  implicit val format: Format[RaRCapitalAllowancesForACar] = Json.format
+class RaRAllowancesCompleteFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "rarAllowancesCompleteYesOrNo" -> boolean("ukrentaroom.allowancesComplete.error.required")
+    )
 }

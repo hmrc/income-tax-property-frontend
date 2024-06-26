@@ -18,7 +18,6 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance, RentARoomAuditModel}
 import controllers.actions._
-import controllers.routes
 import models.JourneyContext
 import models.backend.ServiceError
 import models.requests.DataRequest
@@ -71,7 +70,7 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
             case Left(_) => InternalServerError
             case Right(_: Unit) =>
               auditAllowanceCYA(taxYear, request, allowance)
-              Redirect(routes.SummaryController.show(taxYear))
+              Redirect(controllers.ukrentaroom.allowances.routes.RaRAllowancesCompleteController.onPageLoad(taxYear))
           }
         case None =>
           logger.error("Allowance in rent a room is not present in userAnswers")

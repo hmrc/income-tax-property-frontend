@@ -20,12 +20,13 @@ import base.SpecBase
 import controllers.routes
 import controllers.ukrentaroom.allowances.routes._
 import forms.ukrentaroom.allowances.RaRCapitalAllowancesForACarFormProvider
-import models.{NormalMode, RaRCapitalAllowancesForACar, UserAnswers}
+import models.{CapitalAllowancesForACar, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.allowances.RaRCapitalAllowancesForACarPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,14 +37,13 @@ import views.html.ukrentaroom.allowances.RaRCapitalAllowancesForACarView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-
 class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/")
+  def onwardRoute: Call = Call("GET", "/")
   private val taxYear = LocalDate.now.getYear
 
   val formProvider = new RaRCapitalAllowancesForACarFormProvider()
-  val form = formProvider("individual")
+  val form: Form[CapitalAllowancesForACar] = formProvider("individual")
 
   lazy val RaRcapitalAllowancesForACarRoute = RaRCapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode).url
 
@@ -51,7 +51,7 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, RaRcapitalAllowancesForACarRoute)
@@ -61,15 +61,24 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
         val view = application.injector.instanceOf[RaRCapitalAllowancesForACarView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RaRCapitalAllowancesForACarPage, RaRCapitalAllowancesForACar(true, Some(12.34))).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(
+          RaRCapitalAllowancesForACarPage,
+          CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
+        )
+        .success
+        .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, RaRcapitalAllowancesForACarRoute)
@@ -79,7 +88,12 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(RaRCapitalAllowancesForACar(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))),
+          NormalMode,
+          taxYear,
+          "individual"
+        )(request, messages(application)).toString
       }
     }
 
@@ -90,7 +104,7 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -100,7 +114,10 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
       running(application) {
         val request =
           FakeRequest(POST, RaRcapitalAllowancesForACarRoute)
-            .withFormUrlEncodedBody("raRCapitalAllowancesForACarYesNo" -> "true", "raRCapitalAllowancesForACarAmount" -> "1234")
+            .withFormUrlEncodedBody(
+              "raRCapitalAllowancesForACarYesNo"  -> "true",
+              "raRCapitalAllowancesForACarAmount" -> "1234"
+            )
 
         val result = route(application, request).value
 
@@ -125,7 +142,10 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
