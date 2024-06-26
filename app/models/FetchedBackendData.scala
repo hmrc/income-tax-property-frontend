@@ -29,7 +29,7 @@ final case class Adjustments(
   privateUseAdjustment: PrivateUseAdjustment,
   propertyIncomeAllowance: BigDecimal,
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
-  residentialFinancialCost: BigDecimal,
+  residentialFinanceCost: BigDecimal,
   unusedResidentialFinanceCost: BigDecimal
 )
 
@@ -39,10 +39,10 @@ object Adjustments {
 
 final case class Allowances(
   annualInvestmentAllowance: BigDecimal,
-  businessPremisesRenovation: BigDecimal,
+  businessPremisesRenovationAllowance: BigDecimal,
   electricChargePointAllowance: ElectricChargePointAllowance,
   otherCapitalAllowance: BigDecimal,
-  replacementOfDomesticGoods: BigDecimal,
+  replacementOfDomesticGoodsAllowance: BigDecimal,
   zeroEmissionCarAllowance: BigDecimal,
   zeroEmissionGoodsVehicleAllowance: BigDecimal
 )
@@ -84,8 +84,6 @@ object Sba {
 
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
-  sbaClaims: Boolean,
-  sbaRemoveConfirmation: Option[Boolean],
   structureBuildingFormGroup: List[Sba]
 )
 

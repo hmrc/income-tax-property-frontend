@@ -23,6 +23,7 @@ import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import viewmodels.summary.TaskListTag.TaskListTag
@@ -227,9 +228,24 @@ case object SummaryPage {
     TaskListItem(
       "summary.allowances",
       controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      {
+        val sectionFinished = userAnswers.flatMap(_.get(RaRAllowancesCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (
+            userAnswers
+              .flatMap(_.get(RaRElectricChargePointAllowanceForAnEVPage))
+              .isDefined || userAnswers.flatMap(_.get(RaRCapitalAllowancesForACarPage)).isDefined
+          ) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rent_a_room_allowances_link"
     )
+
+
 
   private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(

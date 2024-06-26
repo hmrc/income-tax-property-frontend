@@ -1340,7 +1340,7 @@ ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 ukrentaroom.aboutSectionComplete.title = Have you finished this section?
 ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
 
-aboutSectionComplete.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
+aboutSectionComplete.hint = You’ll still be able to go back and review the information that you’ve given us once you’ve finished.
 
 consolidatedRRExpenses.title = Consolidated rent a room expenses
 consolidatedRRExpenses.heading = Consolidated rent a room expenses
@@ -1625,6 +1625,10 @@ rRAllowancesStart.bullet.content.l3 = zero-emission car allowance
 rRAllowancesStart.bullet.content.l4 = replacing domestic goods
 rRAllowancesStart.bullet.content.l5 = other capital allowances
 rRAllowancesStart.details.content.l6 = Capital allowances for a car
+
+ukrentaroom.allowancesComplete.title = Have you completed this section?
+ukrentaroom.allowancesComplete.heading = Have you completed this section?
+ukrentaroom.allowancesComplete.error.required = Select yes if you have completed this section
 
 raRAnnualInvestmentAllowance.title = Annual investment allowance
 raRAnnualInvestmentAllowance.heading = Annual investment allowance

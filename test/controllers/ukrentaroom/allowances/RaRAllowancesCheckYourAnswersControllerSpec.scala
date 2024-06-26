@@ -39,7 +39,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
   val taxYear: Int = LocalDate.now.getYear
 
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/allowances/complete-yes-no")
   val annualInvestmentAllowanceSummaryValue = 100
   val annualInvestmentAllowanceSummary: BigDecimal = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
 
@@ -97,7 +97,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       }
     }
 
-    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+    "must return OK and the POST for onSubmit() should redirect to the Have you finished URL" in {
 
       val userAnswersJson = Json.obj(
         (

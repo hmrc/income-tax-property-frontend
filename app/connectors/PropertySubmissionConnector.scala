@@ -82,7 +82,7 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
           )
         }
         logger.info(
-          "Journey answers successfully posted to income-tax-property status: ${response.httpResponse.status}"
+          s"Journey answers successfully posted to income-tax-property status: ${response.httpResponse.status}"
         )
         response.result
       }
