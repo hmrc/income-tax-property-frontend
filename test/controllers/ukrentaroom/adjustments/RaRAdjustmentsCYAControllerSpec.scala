@@ -18,8 +18,7 @@ package controllers.ukrentaroom.adjustments
 
 import audit.AuditService
 import base.SpecBase
-import models.backend.PropertyDetails
-import models.{RaRBalancingCharge, UserAnswers}
+import models.{BalancingCharge, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
@@ -42,9 +41,9 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
   val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   val raRBalancingChargeValue = 200
-  val raRBalancingCharge: RaRBalancingCharge = RaRBalancingCharge(
-    raRbalancingChargeYesNo = true,
-    raRbalancingChargeAmount = Some(raRBalancingChargeValue)
+  val raRBalancingCharge: BalancingCharge = BalancingCharge(
+    balancingChargeYesNo = true,
+    balancingChargeAmount = Some(raRBalancingChargeValue)
   )
 
   "RaRAdjustmentsCYA Controller" - {
@@ -88,13 +87,6 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
           raRBalancingCharge
         )
         .toOption
-
-      val propertyDetails = PropertyDetails(
-        Some("uk-property"),
-        Some(LocalDate.of(taxYear, 1, 2)),
-        cashOrAccruals = Some(false),
-        "incomeSourceId"
-      )
 
       // mocks
       val propertySubmissionService = mock[PropertySubmissionService]

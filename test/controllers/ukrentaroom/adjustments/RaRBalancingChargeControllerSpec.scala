@@ -18,8 +18,8 @@ package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
 import forms.ukrentaroom.adjustments.RaRBalancingChargeFormProvider
-import models.RaRBalancingCharge.format
-import models.{NormalMode, RaRBalancingCharge, UserAnswers}
+import models.BalancingCharge.format
+import models.{BalancingCharge, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -44,7 +44,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
   lazy val totalIncomeRoute: String = routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new RaRBalancingChargeFormProvider()
-  val form: Form[RaRBalancingCharge] = formProvider("agent")
+  val form: Form[BalancingCharge] = formProvider("agent")
 
   "RaRBalancingCharge Controller" - {
 
@@ -89,7 +89,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(RaRBalancingChargePage, RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23)))
+        .set(RaRBalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
         .success
         .value
 
@@ -104,7 +104,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(RaRBalancingCharge(raRbalancingChargeYesNo = true, Some(7689.23))),
+          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
           taxYear,
           NormalMode,
           "agent"

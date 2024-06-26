@@ -17,7 +17,7 @@
 package forms.ukrentaroom.adjustments
 
 import forms.behaviours.BooleanFieldBehaviours
-import models.RaRBalancingCharge
+import models.BalancingCharge
 import org.scalatest.OptionValues
 import play.api.data.FormError
 
@@ -32,7 +32,7 @@ class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Opt
     "when raRbalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true", "raRbalancingChargeAmount" -> "12.34"))
-        boundForm.value.value mustBe RaRBalancingCharge(true, Some(12.34))
+        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
@@ -46,12 +46,12 @@ class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Opt
     "when consolidatedExpenses is false" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false", "raRbalancingChargeAmount" -> "1234"))
-        boundForm.value.value mustBe RaRBalancingCharge(false, None)
+        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false"))
-        boundForm.value.value mustBe RaRBalancingCharge(false, None)
+        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
         boundForm.errors mustBe empty
       }
     }

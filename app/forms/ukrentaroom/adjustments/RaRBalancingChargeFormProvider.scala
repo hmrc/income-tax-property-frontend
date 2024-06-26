@@ -17,7 +17,7 @@
 package forms.ukrentaroom.adjustments
 
 import forms.mappings.Mappings
-import models.RaRBalancingCharge
+import models.BalancingCharge
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
@@ -26,8 +26,8 @@ import javax.inject.Inject
 
 class RaRBalancingChargeFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[RaRBalancingCharge] =
-    Form[RaRBalancingCharge](
+  def apply(individualOrAgent: String): Form[BalancingCharge] =
+    Form[BalancingCharge](
       mapping(
         "raRbalancingChargeYesNo" -> boolean(s"raRbalancingCharge.error.required.$individualOrAgent"),
         "raRbalancingChargeAmount" -> {
@@ -41,6 +41,6 @@ class RaRBalancingChargeFormProvider @Inject() extends Mappings {
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "raRbalancingCharge.amount.error.outOfRange"))
           )
         }
-      )(RaRBalancingCharge.apply)(RaRBalancingCharge.unapply)
+      )(BalancingCharge.apply)(BalancingCharge.unapply)
     )
 }

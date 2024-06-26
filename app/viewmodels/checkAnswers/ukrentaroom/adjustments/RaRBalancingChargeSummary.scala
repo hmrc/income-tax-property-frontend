@@ -16,10 +16,9 @@
 
 package viewmodels.checkAnswers.ukrentaroom.adjustments
 
-
 import controllers.ukrentaroom.adjustments.routes
-import models.RaRBalancingCharge.format
-import models.{CheckMode, RaRBalancingCharge, UserAnswers}
+import models.BalancingCharge.format
+import models.{BalancingCharge, CheckMode, UserAnswers}
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -29,28 +28,35 @@ import viewmodels.implicits._
 
 object RaRBalancingChargeSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
     answers.get(RaRBalancingChargePage).flatMap {
-      case RaRBalancingCharge(true, amount) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel(s"raRbalancingCharge.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.RaRBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
-          )))
-      case RaRBalancingCharge(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel(s"raRbalancingCharge.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.RaRBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("raRbalancingCharge.change.hidden"))
+      case BalancingCharge(true, amount) =>
+        Some(
+          SummaryListRowViewModel(
+            key =
+              KeyViewModel(s"raRbalancingCharge.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.RaRBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
+            )
           )
-        ))
+        )
+      case BalancingCharge(false, _) =>
+        Some(
+          SummaryListRowViewModel(
+            key =
+              KeyViewModel(s"raRbalancingCharge.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no").withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.RaRBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("raRbalancingCharge.change.hidden"))
+            )
+          )
+        )
       case _ => Option.empty[SummaryListRow]
     }
-  }
 
 }
-
