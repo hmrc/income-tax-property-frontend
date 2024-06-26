@@ -24,6 +24,14 @@ import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
+import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, CostsOfServicesProvidedPage, LoanInterestPage, OtherAllowablePropertyExpensesPage, OtherProfessionalFeesPage, PropertyBusinessTravelCostsPage, RentsRatesAndInsurancePage, RepairsAndMaintenanceCostsPage}
+import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.structurebuildingallowance.{SbaClaimsPage, SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage, StructuredBuildingAllowanceAddressPage}
+import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.allowances.{RaRAnnualInvestmentAllowancePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage, RaROtherCapitalAllowancesPage, RaRReplacementsOfDomesticGoodsPage, RaRZeroEmissionCarAllowancePage, RaRZeroEmissionGoodsVehicleAllowancePage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -77,13 +85,14 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |                "calculatedFigureYourself" : true,
       |                "amount" : 45
       |            },
+      |            "receivedGrantLeaseAmount": 6,
       |            "reversePremiumsReceived" : {
       |                "reversePremiumsReceived" : true,
       |                "amount" : 45
       |            },
       |            "otherIncomeFromProperty" : 45
       |        },
-      |        "propertyRentalsExpense" : {
+      |        "propertyRentalsExpenses" : {
       |            "consolidatedExpenses" : {
       |                "consolidatedExpensesYesOrNo" : false
       |            },
@@ -147,6 +156,35 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "residentialFinanceCost" : 2,
       |            "unusedResidentialFinanceCost" : 3
       |
+      |    },
+      |    "raRAbout" : {
+      |            "ukRentARoomJointlyLet" : false,
+      |            "totalIncomeAmount" : 30,
+      |            "claimExpensesOrRRR" : {
+      |                "claimRRROrExpenses" : false,
+      |                "rentARoomAmount" : 50
+      |            }
+      |        },
+      |    "rentARoomAllowances" : {
+      |        "capitalAllowancesForACar" : {
+      |            "capitalAllowancesForACarYesNo" : true,
+      |            "capitalAllowancesForACarAmount" : 20
+      |        },
+      |        "annualInvestmentAllowance" : 5,
+      |        "electricChargePointAllowance" : {
+      |            "electricChargePointAllowanceYesOrNo" : true,
+      |            "electricChargePointAllowanceAmount" : 30
+      |        },
+      |        "zeroEmissionCarAllowance" : 35,
+      |        "zeroEmissionGoodsVehicleAllowance" : 10,
+      |        "replacementOfDomesticGoodsAllowance" : 25,
+      |        "otherCapitalAllowance" : 20
+      |    },
+      |    "raRAdjustments" : {
+      |        "balancingCharge" : {
+      |            "balancingChargeYesNo" : true,
+      |            "balancingChargeAmount" : 10
+      |        }
       |    }
       |}""".stripMargin
 
@@ -159,20 +197,26 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(TotalIncomePage).get mustBe TotalIncome.Between
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ExpensesLessThan1000Page).get mustBe false
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
+      updated.get(ExpensesLessThan1000Page).get mustBe false
+      updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
       updated.get(IsNonUKLandlordPage).get mustBe false
       updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ReceivedGrantLeaseAmountPage).get mustBe 6
+      updated.get(ReceivedGrantLeaseAmountPage) mustBe None // Lease clean up test
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(LoanInterestPage).get mustBe 56
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(OtherProfessionalFeesPage).get mustBe 4
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CostsOfServicesProvidedPage).get mustBe 34
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(PropertyBusinessTravelCostsPage).get mustBe 4
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(OtherAllowablePropertyExpensesPage).get mustBe 3
+      // Todo: do we need this? updated.get(LeasePremiumPaymentPage).get mustBe true
+      updated.get(CalculatedFigureYourselfPage).get mustBe CalculatedFigureYourself(true, Some(45))
+      updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
+      updated.get(UkRentARoomJointlyLetPage).get mustBe false
+      updated.get(TotalIncomeAmountPage).get mustBe 30
+      updated.get(ClaimExpensesOrRRRPage).get mustBe ClaimExpensesOrRRR(false, Some(50))
+      updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
+      updated.get(LoanInterestPage).get mustBe 56
+      updated.get(OtherProfessionalFeesPage).get mustBe 4
+      updated.get(CostsOfServicesProvidedPage).get mustBe 34
+      updated.get(PropertyBusinessTravelCostsPage).get mustBe 4
+      updated.get(OtherAllowablePropertyExpensesPage).get mustBe 3
       updated.get(PrivateUseAdjustmentPage).get mustBe PrivateUseAdjustment(2)
       updated.get(BalancingChargePage).get mustBe BalancingCharge(true, Some(3))
       updated.get(PropertyIncomeAllowancePage).get mustBe 4
@@ -215,7 +259,15 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "4",
         "EH1 AB2"
       )
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(SbaRemoveConfirmationPage).get mustBe true
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(true, Some(10))
+
+      updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(true, Some(20))
+      updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
+      updated.get(RaRElectricChargePointAllowanceForAnEVPage).get mustBe ElectricChargePointAllowance(true, Some(30))
+      updated.get(RaRZeroEmissionCarAllowancePage).get mustBe 35
+      updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
+      updated.get(RaRReplacementsOfDomesticGoodsPage).get mustBe 25
+      updated.get(RaROtherCapitalAllowancesPage).get mustBe 20
 
     }
   }

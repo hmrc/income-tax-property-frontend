@@ -37,20 +37,20 @@ import views.html.propertyrentals.income.IncomeCheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyIncomeCheckYourAnswersController @Inject()(
-                                                          override val messagesApi: MessagesApi,
-                                                          identify: IdentifierAction,
-                                                          getData: DataRetrievalAction,
-                                                          requireData: DataRequiredAction,
-                                                          val controllerComponents: MessagesControllerComponents,
-                                                          propertySubmissionService: PropertySubmissionService,
-                                                          view: IncomeCheckYourAnswersView,
-                                                          audit: AuditService
-                                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class PropertyIncomeCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
+  view: IncomeCheckYourAnswersView,
+  audit: AuditService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
@@ -71,21 +71,18 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
 
       request.userAnswers.get(PropertyRentalsIncome) match {
-        case Some(propertyRentalsIncome) => {
-          propertySubmissionService.savePropertyRentalsIncome(context, SaveIncome.fromPropertyRentalsIncome(propertyRentalsIncome)).map {
-            case Right(_) => {
+        case Some(propertyRentalsIncome) =>
+          propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).map {
+            case Right(_) =>
               auditCYA(taxYear, request, propertyRentalsIncome)
               Redirect(routes.SummaryController.show(taxYear))
-            }
-            case Left(_) => {
+            case Left(_) =>
               InternalServerError
-            }
           }
 
-        }
         case None =>
           logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
       }
@@ -93,7 +90,9 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       Future.successful(Redirect(routes.SummaryController.show(taxYear)))
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(implicit hc: HeaderCarrier): Unit = {
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(
+    implicit hc: HeaderCarrier
+  ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
@@ -102,7 +101,8 @@ class PropertyIncomeCheckYourAnswersController @Inject()(
       taxYear,
       isUpdate = false,
       "PropertyRentalsIncome",
-      propertyRentalsIncome)
+      propertyRentalsIncome
+    )
 
     audit.sendRentalsAuditEvent(auditModel)
   }

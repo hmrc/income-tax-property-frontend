@@ -17,27 +17,38 @@
 package controllers
 
 import base.SpecBase
+import controllers.session.SessionRecovery
 import models.backend.PropertyDetails
+import models.requests.OptionalDataRequest
 import models.{NormalMode, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
 import play.api.inject.bind
+import play.api.mvc.{AnyContent, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
 import testHelpers.Fixture
+import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.summary.{TaskListItem, TaskListTag}
 import views.html.SummaryView
 
 import java.time.LocalDate
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
   private val taxYear = LocalDate.now.getYear
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
+
+  val fakeSessionRecovery = new SessionRecovery {
+    override def withUpdatedData(taxYear: Int)(
+      block: OptionalDataRequest[AnyContent] => Future[Result]
+    )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
+      block(request)
+  }
 
   when(
     propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
@@ -115,6 +126,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithPropertyRentals), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[SessionRecovery].toInstance(fakeSessionRecovery))
         .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
@@ -204,6 +216,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithUkRentARoom), isAgent = false)
         .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[SessionRecovery].toInstance(fakeSessionRecovery))
         .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
         .build()
 
