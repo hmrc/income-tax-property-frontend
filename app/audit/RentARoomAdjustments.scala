@@ -16,13 +16,14 @@
 
 package audit
 
-import models.RaRBalancingCharge
+import models.BalancingCharge
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
 final case class RentARoomAdjustments(
-  balancingCharge: RaRBalancingCharge
+  balancingCharge: BalancingCharge,
+  unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal
 )
 
 object RentARoomAdjustments extends Gettable[RentARoomAdjustments] {

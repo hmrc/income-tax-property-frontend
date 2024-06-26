@@ -28,7 +28,6 @@ case class RentARoomExpenses(
   legalManagementOtherFee: Option[BigDecimal],
   costsOfServicesProvided: Option[BigDecimal],
   residentialPropertyFinanceCosts: Option[BigDecimal],
-  unusedResidentialPropertyFinanceCostsBroughtFwd: Option[BigDecimal],
   otherPropertyExpenses: Option[BigDecimal]
 )
 

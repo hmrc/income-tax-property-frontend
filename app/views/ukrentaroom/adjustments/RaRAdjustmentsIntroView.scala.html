@@ -23,19 +23,20 @@
 
 @(taxYear: Int)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("raRAdjustmentsIntro.title"))) {
+    @layout(pageTitle = titleNoForm(messages("raRAdjustmentsIntro.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("raRAdjustmentsIntro.heading")</h1>
+        <h1 class="govuk-heading-l">@messages("raRAdjustmentsIntro.heading")</h1>
 
-<p class="govuk-body">@messages("raRAdjustmentsStart.para1")</p>
+        <p class="govuk-body">@messages("raRAdjustmentsStart.para1")</p>
 
-<ul id="list" class="govuk-list govuk-list--bullet">
- <li>@messages("raRAdjustmentsIntro.bullet.content.l1")</li>
-</ul>
+        <ul id="list" class="govuk-list govuk-list--bullet">
+            <li>@messages("raRAdjustmentsIntro.bullet.content.l1")</li>
+            <li>@messages("raRAdjustmentsIntro.bullet.content.l2")</li>
+        </ul>
 
-@govukButton(
-ButtonViewModel(messages("propertyIncomeStart.button"))
-.asLink(routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url)
-.withId("continue")
-)
-}
+        @govukButton(
+            ButtonViewModel(messages("propertyIncomeStart.button"))
+            .asLink(routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url)
+            .withId("continue")
+        )
+    }

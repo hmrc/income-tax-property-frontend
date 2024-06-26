@@ -18,13 +18,12 @@ package controllers.ukrentaroom.adjustments
 
 import audit.AuditService
 import base.SpecBase
-import models.backend.PropertyDetails
-import models.{RaRBalancingCharge, UserAnswers}
+import models.{BalancingCharge, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,6 +34,7 @@ import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
 import java.time.LocalDate
 import scala.concurrent.Future
+import scala.util.Try
 
 class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -42,9 +42,9 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
   val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
 
   val raRBalancingChargeValue = 200
-  val raRBalancingCharge: RaRBalancingCharge = RaRBalancingCharge(
-    raRbalancingChargeYesNo = true,
-    raRbalancingChargeAmount = Some(raRBalancingChargeValue)
+  val raRBalancingCharge: BalancingCharge = BalancingCharge(
+    balancingChargeYesNo = true,
+    balancingChargeAmount = Some(raRBalancingChargeValue)
   )
 
   "RaRAdjustmentsCYA Controller" - {
@@ -82,19 +82,12 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
-      val userAnswers = UserAnswers("adjustments-user-answers")
-        .set(
-          RaRBalancingChargePage,
-          raRBalancingCharge
-        )
-        .toOption
+      val userAnswersTry: Try[UserAnswers] = UserAnswers("adjustments-user-answers")
+        .set(RaRBalancingChargePage, raRBalancingCharge)
 
-      val propertyDetails = PropertyDetails(
-        Some("uk-property"),
-        Some(LocalDate.of(taxYear, 1, 2)),
-        cashOrAccruals = Some(false),
-        "incomeSourceId"
-      )
+      val updatedUserAnswers: Option[UserAnswers] = userAnswersTry.toOption.flatMap { ua =>
+        ua.set(UnusedResidentialPropertyFinanceCostsBroughtFwdRRPage, BigDecimal(12)).toOption
+      }
 
       // mocks
       val propertySubmissionService = mock[PropertySubmissionService]
@@ -104,7 +97,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
         Right(())
       )
 
-      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+      val application = applicationBuilder(userAnswers = updatedUserAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()
