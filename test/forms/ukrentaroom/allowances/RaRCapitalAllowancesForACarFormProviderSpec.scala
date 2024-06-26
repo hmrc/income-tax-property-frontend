@@ -17,7 +17,7 @@
 package forms.ukrentaroom.allowances
 
 import forms.behaviours.FieldBehaviours
-import models.RaRCapitalAllowancesForACar
+import models.CapitalAllowancesForACar
 import play.api.data.FormError
 
 class RaRCapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
@@ -32,7 +32,7 @@ class RaRCapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
       "and an amount is entered, should successfully bind" in {
         val boundForm =
           form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "true", "raRCapitalAllowancesForACarAmount" -> "12.34"))
-        boundForm.value.value mustBe RaRCapitalAllowancesForACar(true, Some(12.34))
+        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
@@ -47,12 +47,12 @@ class RaRCapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
       "and an amount is entered, should successfully bind" in {
         val boundForm =
           form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false", "raRCapitalAllowancesForACarAmount" -> "1234"))
-        boundForm.value.value mustBe RaRCapitalAllowancesForACar(false, None)
+        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false"))
-        boundForm.value.value mustBe RaRCapitalAllowancesForACar(false, None)
+        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
         boundForm.errors mustBe empty
       }
     }
