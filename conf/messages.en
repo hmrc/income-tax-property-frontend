@@ -1770,3 +1770,9 @@ haveYouFinishedThisSection.hint = You’ll still be able to go back and review t
 ukrentaroom.raRAdjustmentsComplete.title = Have you completed this section?
 ukrentaroom.raRAdjustmentsComplete.heading = Have you completed this section?
 ukrentaroom.raRAdjustmentsComplete.error.required = Select yes if you have completed this section
+
+
+rentalsAdjustmentsComplete.title = Have you finished this section?
+rentalsAdjustmentsComplete.heading = Have you finished this section?
+rentalsAdjustmentsComplete.error.required = Select yes if you have completed this section
+rentalsAdjustmentsComplete.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.

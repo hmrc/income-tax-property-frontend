@@ -165,6 +165,9 @@ POST        /:taxYear/adjustments/change-unused-residential-finance-cost        
 GET         /:taxYear/adjustments/check-your-answers                                               controllers.adjustments.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear : Int)
 POST        /:taxYear/adjustments/check-your-answers                                               controllers.adjustments.AdjustmentsCheckYourAnswersController.onSubmit(taxYear : Int)
 
+GET        /:taxYear/adjustments/rentals-adjustments-complete                                      controllers.adjustments.RentalsAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/adjustments/rentals-adjustments-complete                                      controllers.adjustments.RentalsAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
 ############## Expenses
 
 GET         /:taxYear/expenses-start                                                               controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int)
@@ -466,4 +469,7 @@ POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers              
 
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
+
+
 
