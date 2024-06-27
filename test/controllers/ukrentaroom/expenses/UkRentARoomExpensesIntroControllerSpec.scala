@@ -35,8 +35,6 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
   val userAnswersWithPropertyIncomeLessThanEightyFiveThousand: UserAnswers =
     userAnswersWithoutPropertyIncome.set(TotalIncomePage, TotalIncome.Between).get
 
-  val withLinks =
-    "https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses"
   val withNoLinks = "Rent a room expenses"
   val lessThan85KURL =
     s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/consolidated-rr-expenses"
@@ -61,7 +59,6 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
         Some((false, withNoLinks)),
         moreThan85KURL
       ),
-      (true, "agent", userAnswersWithPropertyIncomeLessThanEightyFiveThousand, Some((true, withLinks)), lessThan85KURL),
       (false, "individual", userAnswersWithoutPropertyIncome, None, ""),
       (
         false,
@@ -69,13 +66,6 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
         userAnswersWithPropertyIncomeMoreThanEightyFiveThousand,
         Some((false, withNoLinks)),
         moreThan85KURL
-      ),
-      (
-        false,
-        "individual",
-        userAnswersWithPropertyIncomeLessThanEightyFiveThousand,
-        Some((true, withLinks)),
-        lessThan85KURL
       )
     )
 

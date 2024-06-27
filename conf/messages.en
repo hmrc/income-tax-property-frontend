@@ -1245,20 +1245,17 @@ ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent = Enter an amount be
 ukrentaroom.income.totalIncomeAmount.change.hidden.agent = How much total rent a room income did your client receive?
 ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.agent = How much total rent a room income did your client receive?
 
-ukrentaroom.aboutSectionComplete.title = Have you completed this section?
-ukrentaroom.aboutSectionComplete.heading = Have you finished this section?
-
 rentARoomJointlyLet.title = Jointly let rent a room
 ukRentARoom.jointlyLet.title.individual = Jointly let rent a room
 ukRentARoom.jointlyLet.heading.individual = Is your rent a room jointly let?
-ukRentARoom.jointlyLet.p.individual = The Rent a Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
+ukRentARoom.jointlyLet.p.individual = The Rent-a-Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
 ukRentARoom.jointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
 ukRentARoom.jointlyLet.error.required.individual = Select yes if your rent a room is jointly let
 ukRentARoom.jointlyLet.change.hidden.individual = RentARoomJointlyLet
 
 ukRentARoom.jointlyLet.title.agent = Jointly let rent a room
 ukRentARoom.jointlyLet.heading.agent = Is your client’s rent a room jointly let?
-ukRentARoom.jointlyLet.p.agent = The Rent a Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
+ukRentARoom.jointlyLet.p.agent = The Rent-a-Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
 ukRentARoom.jointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
 ukRentARoom.jointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
 ukRentARoom.jointlyLet.change.hidden.agent = RentARoomJointlyLet
@@ -1288,19 +1285,14 @@ ukRentARoom.expensesIntro.li7.agent = other allowable property expenses
 ukRentARoom.expensesIntro.p2.individual = You can claim either:
 ukRentARoom.expensesIntro.p2.agent = Your client can claim either:
 
-ukRentARoom.expensesIntro.p3.individual = , if your total property income before expenses was less than £85,000. You can add up all of your expenses and enter the total amount.
-ukRentARoom.expensesIntro.p3.agent = , if their total property income before expenses was less than £85,000. You can add up all of their expenses and enter the total amount.
+ukRentARoom.expensesIntro.p3.individual = Consolidated expenses, if your total property income before expenses was less than £85,000. You can add up all of your expenses and enter the total amount.
+ukRentARoom.expensesIntro.p3.agent = Consolidated expenses, if their total property income before expenses was less than £85,000. You can add up all of their expenses and enter the total amount.
 
 ukRentARoom.expensesIntro.p4.individual = or
 ukRentARoom.expensesIntro.p4.agent = or
 
-ukRentARoom.expensesIntro.href.link.consolidated = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
-ukRentARoom.expensesIntro.href.link.individual = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
-ukRentARoom.expensesIntro.href.label.consolidated = Consolidated expenses (opens in new tab)
-ukRentARoom.expensesIntro.href.label.individual = Individual expenses (opens in new tab)
-
-ukRentARoom.expensesIntro.p5.individual = , where you enter an amount for each separate expenses type.
-ukRentARoom.expensesIntro.p5.agent = , where you enter an amount for each separate expenses type.
+ukRentARoom.expensesIntro.p5.individual = Individual expenses, where you enter an amount for each separate expenses type.
+ukRentARoom.expensesIntro.p5.agent = Individual expenses, where you enter an amount for each separate expenses type.
 claimExpensesOrRRR.title = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
@@ -1308,7 +1300,7 @@ claimExpensesOrRRR.checkYourAnswersLabel.amount.individual = How much do you wan
 claimExpensesOrRRR.checkYourAnswersLabel.amount.agent = How much does your client want to claim?
 claimExpensesOrRRR.checkYourAnswersLabel.type = Claim expenses or rent a room relief
 claimExpensesOrRRR.no = Expenses
-claimExpensesOrRRR.yes = Rent a Room relief
+claimExpensesOrRRR.yes = Rent a room relief
 claimExpensesOrRRR.legend.individual = Which one do you want to claim?
 claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
 
@@ -1343,9 +1335,9 @@ aboutSectionComplete.hint = You’ll still be able to go back and review the inf
 
 consolidatedRRExpenses.title = Consolidated rent a room expenses
 consolidatedRRExpenses.heading = Consolidated rent a room expenses
-consolidatedRRExpenses.details.line1.individual = You can add up all of these expenses and enter the total amount:
-consolidatedRRExpenses.details.line1.agent = You can add up all of these expenses and enter the total amount:
-consolidatedRRExpenses.details.bullet1 = rents, rates, insurance and ground rents
+consolidatedRRExpenses.details.line1.individual = You can add up all of these expenses and enter the total amount, or enter an amount for each separate expense.
+consolidatedRRExpenses.details.line1.agent = Your client can add up all of these expenses and enter the total amount, or enter an amount for each separate expense.
+consolidatedRRExpenses.details.bullet1 = rents, rate and insurance
 consolidatedRRExpenses.details.bullet2 = property repairs and maintenance
 consolidatedRRExpenses.details.bullet3 = loan interest or other financial costs
 consolidatedRRExpenses.details.bullet4 = legal, management and other professional fees
@@ -1365,7 +1357,6 @@ consolidatedRRExpenses.error.required.agent = Select yes if you want to claim co
 consolidatedRRExpenses.error.required.amount.individual = Enter the amount for your consolidated expenses
 consolidatedRRExpenses.error.required.amount.agent = Enter the amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.nonNumeric.individual = Enter an amount for your consolidated expenses
-consolidatedRRExpenses.error.nonNumeric.agent = Enter an amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.nonNumeric.agent = Enter an amount for your client’s consolidated expenses
 consolidatedRRExpenses.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 consolidatedRRExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
@@ -1414,11 +1405,9 @@ ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNu
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.twoDecimalPlaces.individual = The amount of unused residential costs you want to carry forward can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.outOfRange.individual = Enter an amount between £{0} and £{1}
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.change.hidden.individual = Enter how much unused residential finance costs you want to carry forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.individual = Unused residential property finance costs brought forward
 
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.title.agent = Unused residential property finance costs brought forward
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.heading.agent = Unused residential property finance costs brought forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.agent = Unused residential property finance costs brought forward
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.label.agent = How much unused residential finance costs does your client want to carry forward?
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.required.agent = Enter how much your client spent on residential finance costs
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNumeric.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
@@ -1608,7 +1597,6 @@ electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.agent = The amoun
 electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.individual = The amount you want to claim for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.agent = The amount your client wants to claim for electric charge-point allowance can only include pounds and pence, for example £600 or £600.20
 electricChargePointAllowanceForAnEV.allowance.error.outOfRange = Enter an amount between £{0} and £{1}
-electricChargePointAllowanceForAnEV.checkYourAnswersLabel = Electric charge-point allowance for an electric vehicle
 
 rRAllowancesStart.title = Allowances
 rRAllowancesStart.heading = Allowances
@@ -1685,7 +1673,6 @@ ukrentaroom.replacementsOfDomesticGoods.li6.agent = for the initial cost of buyi
 ukrentaroom.replacementsOfDomesticGoods.p3 = Read more about
 ukrentaroom.replacementsOfDomesticGoods.link.text = replacing domestic items at GOV.UK (opens in new tab)
 ukrentaroom.replacementsOfDomesticGoods.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income#:~:text=Allowances%20for%20replacement%20of%20domestic,%2C%20linens%2C%20carpets%2C%20floor%20coverings
-ukrentaroom.replacementsOfDomesticGoods.checkYourAnswersLabel = Replacement of domestic goods
 
 ukrentaroom.expensesRRSectionComplete.title = Have you completed this section?
 ukrentaroom.expensesRRSectionComplete.heading = Have you completed this section?
