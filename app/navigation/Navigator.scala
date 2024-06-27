@@ -26,6 +26,7 @@ import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
+import controllers.ukrentaroom.adjustments.routes._
 import controllers.ukrentaroom.allowances.routes._
 import controllers.ukrentaroom.expenses.routes._
 import controllers.ukrentaroom.routes._
@@ -205,7 +206,7 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.adjustments.routes.RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
+            OtherPropertyExpensesRRController.onPageLoad(taxYear, NormalMode)
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
@@ -222,11 +223,11 @@ class Navigator @Inject() () {
     case RaROtherCapitalAllowancesPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
+      // RAR Adjustments
     case RaRBalancingChargePage =>
-      taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
-
+      taxYear => _ => _ => RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
@@ -366,10 +367,10 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRBalancingChargePage =>
-      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case _ => taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
   }
