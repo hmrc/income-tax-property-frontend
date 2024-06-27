@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class IncomeSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "incomeSectionFinished.error.required"
+  val requiredKey = "haveYouFinishedThisSection.error.required"
   val invalidKey = "error.boolean"
 
   val form = new IncomeSectionFinishedFormProvider()()

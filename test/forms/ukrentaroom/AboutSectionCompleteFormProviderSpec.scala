@@ -21,7 +21,7 @@ import play.api.data.FormError
 
 class AboutSectionCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "ukrentaroom.about.section.complete.error.required"
+  val requiredKey = "haveYouFinishedThisSection.error.required"
   val invalidKey = "error.boolean"
 
   val form = new AboutSectionCompleteFormProvider()()
