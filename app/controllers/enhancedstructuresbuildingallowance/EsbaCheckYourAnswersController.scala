@@ -32,20 +32,20 @@ import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EsbaCheckYourAnswersController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                propertySubmissionService: PropertySubmissionService,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                audit: AuditService,
-                                                view: EsbaCheckYourAnswersView
-                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EsbaCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  propertySubmissionService: PropertySubmissionService,
+  val controllerComponents: MessagesControllerComponents,
+  audit: AuditService,
+  view: EsbaCheckYourAnswersView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val list = SummaryListViewModel(
         rows = Seq(
           EsbaQualifyingDateSummary.row(taxYear, index, request.userAnswers),
@@ -58,39 +58,44 @@ class EsbaCheckYourAnswersController @Inject()(
   }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request => {
-      val esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions] = request.userAnswers.get(EsbasWithSupportingQuestions)
+    implicit request =>
+      val esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions] =
+        request.userAnswers.get(EsbasWithSupportingQuestions)
       saveEsba(taxYear, request, esbasWithSupportingQuestions)
-    }
 
   }
 
   private def saveEsba(
-                        taxYear: Int,
-                        request: DataRequest[AnyContent],
-                        esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
-                      )
-                      (
-                        implicit hc: HeaderCarrier,
-                        ec: ExecutionContext
-                      ): Future[Result] = {
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
+  )(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
 
     esbasWithSupportingQuestions match {
-      case Some(e) => propertySubmissionService.saveEsba(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false)))).map {
-        case Right(_) =>
-          auditCYA(taxYear, request, e)
-          Redirect(routes.EsbaClaimsController.onPageLoad(taxYear))
-        case Left(_) => InternalServerError
-      }
+      case Some(e) =>
+        propertySubmissionService
+          .saveJourneyAnswers(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false))))
+          .map {
+            case Right(_) =>
+              auditCYA(taxYear, request, e)
+              Redirect(routes.EsbaClaimsController.onPageLoad(taxYear))
+            case Left(_) => InternalServerError
+          }
       case None => Future.successful(Redirect(routes.EsbaClaimsController.onPageLoad(taxYear)))
     }
 
-
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbasWithSupportingQuestions: EsbasWithSupportingQuestions)(implicit
-                                                                                                                                   hc: HeaderCarrier
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    esbasWithSupportingQuestions: EsbasWithSupportingQuestions
+  )(implicit
+    hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
       request.user.nino,
@@ -99,7 +104,7 @@ class EsbaCheckYourAnswersController @Inject()(
       agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "Esba", //Todo: ????
+      "Esba",
       esbasWithSupportingQuestions
     )
 
