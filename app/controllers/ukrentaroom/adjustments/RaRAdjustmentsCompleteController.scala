@@ -16,6 +16,8 @@
 
 package controllers.ukrentaroom.adjustments
 
+import controllers.ControllerUtils
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
 import models.{JourneyContext, Mode}
@@ -75,7 +77,7 @@ class RaRAdjustmentsCompleteController @Inject() (
                          nino = request.user.nino,
                          journeyName = "rent-a-room-adjustments"
                        ),
-                       status = if (value) "completed" else "inProgress",
+                       status = statusForPage(value),
                        user = request.user
                      )
             } yield Redirect(
