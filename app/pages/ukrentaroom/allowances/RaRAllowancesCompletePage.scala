@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object RaRAllowancesCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance\ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomSectionFinished \ toString
 
-  override def toString: String = "rarAllowancesCompleteYesOrNo"
+  override def toString: String = "allowancesSectionFinishedYesOrNo"
 }

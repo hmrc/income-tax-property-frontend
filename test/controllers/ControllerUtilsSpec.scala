@@ -22,10 +22,10 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerUtilsSpec extends AnyWordSpec with Matchers {
 
   ".statusForPage" should {
-    "return status = completed when the value for isSectionCompleted is true" in {
+    "should return status = completed when the value for isSectionCompleted is true" in {
       ControllerUtils.statusForPage(true) shouldBe "completed"
     }
-    "return status = inProgress when the value for isSectionCompleted is false" in {
+    "should return status = inProgress when the value for isSectionCompleted is false" in {
       ControllerUtils.statusForPage(false) shouldBe "inProgress"
     }
   }
