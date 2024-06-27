@@ -1765,8 +1765,17 @@ expensesSectionComplete.title = Have you finished this section?
 expensesSectionComplete.error.required = Select yes if you have completed this section
 
 haveYouFinishedThisSection.heading = Have you finished this section?
+haveYouFinishedThisSection.title = Have you finished this section?
 haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
 
 ukrentaroom.raRAdjustmentsComplete.title = Have you completed this section?
 ukrentaroom.raRAdjustmentsComplete.heading = Have you completed this section?
 ukrentaroom.raRAdjustmentsComplete.error.required = Select yes if you have completed this section
+
+esbaSectionFinished.title = esbaSectionFinished
+esbaSectionFinished.heading = esbaSectionFinished
+esbaSectionFinished.error.required =  Select yes if you have completed this section
+
+sbaSectionFinished.title = sbaSectionFinished
+sbaSectionFinished.heading = sbaSectionFinished
+sbaSectionFinished.error.required =  Select yes if you have completed this section
