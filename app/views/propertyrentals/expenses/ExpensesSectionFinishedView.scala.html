@@ -26,7 +26,7 @@
 
 @(form: Form[_], taxYear: Int)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("ExpensesSectionComplete.title"))) {
+@layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
     @formHelper(action = ExpensesSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
@@ -42,7 +42,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick()
         )
     }
 }
