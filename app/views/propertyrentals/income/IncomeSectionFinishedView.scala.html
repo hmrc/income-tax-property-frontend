@@ -15,7 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
-@import controllers.propertyrentals.expenses.routes._
+@import controllers.propertyrentals.income.routes._
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = ExpensesSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = IncomeSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -36,7 +36,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("expensesSectionFinishedYesOrNo"),
+                field = form("incomeSectionFinishedYesOrNo"),
                 legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
             ).withHint(HintViewModel(messages(s"haveYouFinishedThisSection.hint")))
         )

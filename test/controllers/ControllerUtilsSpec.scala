@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.allowances
+package controllers
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-case object RaRAllowancesCompletePage extends QuestionPage[Boolean] {
+class ControllerUtilsSpec extends AnyWordSpec with Matchers {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomSectionFinished \ toString
-
-  override def toString: String = "allowancesSectionFinishedYesOrNo"
+  ".statusForPage" should {
+    "should return status = completed when the value for isSectionCompleted is true" in {
+      ControllerUtils.statusForPage(true) shouldBe "completed"
+    }
+    "should return status = inProgress when the value for isSectionCompleted is false" in {
+      ControllerUtils.statusForPage(false) shouldBe "inProgress"
+    }
+  }
 }

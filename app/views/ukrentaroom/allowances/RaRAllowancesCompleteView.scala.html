@@ -27,7 +27,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("ukrentaroom.allowancesComplete.title"))) {
+@layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
   @formHelper(action = RaRAllowancesCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
   @if(form.errors.nonEmpty) {
@@ -38,8 +38,8 @@
 @govukRadios(
    RadiosViewModel.yesNo(
     field = form("rarAllowancesCompleteYesOrNo"),
-    legend = LegendViewModel(messages("ukrentaroom.allowancesComplete.heading")).asPageHeading(LegendSize.Large)
-   ).withHint(HintViewModel(messages(s"aboutSectionComplete.hint")))
+    legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
+   ).withHint(HintViewModel(messages(s"haveYouFinishedThisSection.hint")))
   )
 
   @govukButton(

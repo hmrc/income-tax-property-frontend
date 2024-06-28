@@ -22,7 +22,7 @@ import play.api.data.FormError
 
 class RaRAdjustmentsCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "ukrentaroom.raRAdjustmentsComplete.error.required"
+  val requiredKey = "haveYouFinishedThisSection.error.required"
   val invalidKey = "error.boolean"
 
   val form = new RaRAdjustmentsCompleteFormProvider()()

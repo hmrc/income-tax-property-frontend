@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package forms.allowances
+package forms.propertyrentals.income
 
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class AllowancesSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
+class IncomeSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "haveYouFinishedThisSection.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new AllowancesSectionFinishedFormProvider()()
+  val form = new IncomeSectionFinishedFormProvider()()
 
-  ".allowancesSectionFinishedYesOrNo" - {
+  ".incomeSectionFinishedYesOrNo" - {
 
-    val fieldName = "allowancesSectionFinishedYesOrNo"
+    val fieldName = "incomeSectionFinishedYesOrNo"
 
     behave like booleanField(
       form,

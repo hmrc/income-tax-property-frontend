@@ -467,3 +467,5 @@ POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers              
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
+GET        /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onSubmit(taxYear: Int)
