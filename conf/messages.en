@@ -1600,12 +1600,8 @@ electricChargePointAllowanceForAnEV.allowance.error.outOfRange = Enter an amount
 
 rRAllowancesStart.title = Allowances
 rRAllowancesStart.heading = Allowances
-rRAllowancesStart.details.content1.individual = In this section we’re going to ask you about your allowances. These are amounts that you can offset against what you’ve spent running your property rentals:
-rRAllowancesStart.details.content1.agent = In this section we’re going to ask you about allowances. These are amounts that your client can offset against what they’ve spent running their property rentals:
-rRAllowancesStart.details.content2.individual = You told us previously that your accounting method is:
-rRAllowancesStart.details.content2.agent = You told us previously that your client’s accounting method is:
-rRAllowancesStart.details.content3.individual = Based on this information you can claim the following:
-rRAllowancesStart.details.content3.agent = Based on this information they can claim the following:
+rRAllowancesStart.details.content1.individual = In this section we’re going to ask you about the following allowances:
+rRAllowancesStart.details.content1.agent = In this section we’re going to ask you about the following allowances:
 rRAllowancesStart.bullet.content.l1 = electric charge-point allowance
 rRAllowancesStart.bullet.content.l2 = zero-emission car allowance
 rRAllowancesStart.bullet.content.l3 = replacing domestic goods
