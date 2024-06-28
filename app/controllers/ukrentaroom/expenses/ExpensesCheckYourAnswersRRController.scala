@@ -67,8 +67,6 @@ class ExpensesCheckYourAnswersRRController @Inject() (
               .row(taxYear, request.userAnswers),
             CostOfServicesProvidedSummary
               .row(taxYear, request.userAnswers),
-            ResidentialPropertyFinanceCostsSummary
-              .row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
             OtherPropertyExpensesRRSummary.row(taxYear, request.userAnswers)
           ).flatten
         }

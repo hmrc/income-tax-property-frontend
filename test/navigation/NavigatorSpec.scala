@@ -772,10 +772,9 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.expenses.routes.ResidentialPropertyFinanceCostsRRController
+        ) mustBe controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController
           .onPageLoad(taxYear, NormalMode)
       }
-
 
       "must go from RaRElectricChargePointAllowanceForAnEVPage to RaRZeroEmissionCarAllowanceController" in {
         navigator.nextPage(
@@ -819,17 +818,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.ukrentaroom.allowances.routes.RaRAllowancesCheckYourAnswersController
           .onPageLoad(taxYear)
-      }
-
-      "must go from ResidentialPropertyFinanceCostsRRPage to OtherPropertyExpensesRRController" in {
-        navigator.nextPage(
-          ResidentialPropertyFinanceCostsRRPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.expenses.routes.OtherPropertyExpensesRRController
-          .onPageLoad(taxYear, NormalMode)
       }
 
       "must go from ResidentialPropertyFinanceCostsRRPage to ExpensesCheckYourAnswersRRController" in {
