@@ -16,6 +16,8 @@
 
 package controllers.ukrentaroom.expenses
 
+import controllers.ControllerUtils
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
@@ -75,7 +77,7 @@ class ExpensesRRSectionCompleteController @Inject() (
                          nino = request.user.nino,
                          journeyName = "rent-a-room-expenses"
                        ),
-                       status = if (value) "completed" else "inProgress",
+                       status = statusForPage(value),
                        user = request.user
                      )
             } yield Redirect(

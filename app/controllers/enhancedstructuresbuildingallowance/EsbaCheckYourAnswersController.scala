@@ -77,14 +77,14 @@ class EsbaCheckYourAnswersController @Inject() (
 
     esbasWithSupportingQuestions match {
       case Some(e) =>
-        propertySubmissionService.saveEsba(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false)))).map {
-          case Right(_) =>
-            auditCYA(taxYear, request, e)
-            Redirect(
-              controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
-            )
-          case Left(_) => InternalServerError
-        }
+        propertySubmissionService
+          .saveJourneyAnswers(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false))))
+          .map {
+            case Right(_) =>
+              auditCYA(taxYear, request, e)
+              Redirect(routes.EsbaClaimsController.onPageLoad(taxYear))
+            case Left(_) => InternalServerError
+          }
       case None => Future.successful(Redirect(routes.EsbaClaimsController.onPageLoad(taxYear)))
     }
 
@@ -104,7 +104,7 @@ class EsbaCheckYourAnswersController @Inject() (
       agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "Esba", // Todo: ????
+      "Esba",
       esbasWithSupportingQuestions
     )
 

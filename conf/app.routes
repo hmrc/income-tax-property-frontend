@@ -87,12 +87,8 @@ POST        /:taxYear/property-rentals/change-other-income-from-property        
 GET         /:taxYear/property-rentals/income-check-your-answers                                   controllers.propertyrentals.income.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/property-rentals/income-check-your-answers                                   controllers.propertyrentals.income.PropertyIncomeCheckYourAnswersController.onSubmit(taxYear: Int)
 
-GET        /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onPageLoad(taxYear:Int)
-POST       /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onSubmit(taxYear: Int)
-
-GET        /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onPageLoad(taxYear: Int)
-POST       /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onSubmit(taxYear: Int)
-
+GET        /:taxYear/property-rentals/income-section-finished-yes-no                                controllers.propertyrentals.income.IncomeSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/income-section-finished-yes-no                                controllers.propertyrentals.income.IncomeSectionFinishedController.onSubmit(taxYear: Int)
 
 ############## Premium lease
 
@@ -213,6 +209,8 @@ POST        /:taxYear/expenses/repairs-and-maintenance-costs                    
 GET         /:taxYear/expenses/change-repairs-and-maintenance-costs                                controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/expenses/change-repairs-and-maintenance-costs                                controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/expenses-section-finished-yes-no                              controllers.propertyrentals.expenses.ExpensesSectionFinishedController.onSubmit(taxYear: Int)
 
 GET         /:taxYear/property-business-travel-costs                                               controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/property-business-travel-costs                                               controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -264,9 +262,11 @@ POST        /:taxYear/allowances/replacement-of-domestic-goods                  
 GET         /:taxYear/allowances/change-replacement-of-domestic-goods                              controllers.allowances.ReplacementOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/allowances/change-replacement-of-domestic-goods                              controllers.allowances.ReplacementOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onPageLoad(taxYear:Int)
+POST       /:taxYear/property-rentals/allowances-section-finished-yes-no                            controllers.allowances.AllowancesSectionFinishedController.onSubmit(taxYear: Int)
+
 GET         /:taxYear/allowances/check-your-answers                                                controllers.allowances.AllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/allowances/check-your-answers                                                controllers.allowances.AllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
-
 
 GET         /:taxYear/rent-a-room/allowances/check-your-answers                                    controllers.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rent-a-room/allowances/check-your-answers                                    controllers.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
@@ -308,6 +308,8 @@ POST        /:taxYear/structure-building-allowance/claims                       
 GET         /:taxYear/structure-building-allowance/:index/remove-confirmation                      controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/structure-building-allowance/:index/remove-confirmation                      controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
+GET        /:taxYear/property-rentals/sba-section-finished-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/sba-section-finished-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
 
 ##### Enhanced Structure Building Allowance
 
@@ -346,6 +348,9 @@ POST        /:taxYear/enhanced-structure-building-allowance/claims              
 
 GET         /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/enhanced-structure-building-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+
+GET        /:taxYear/property-rentals/esba-section-finished-yes-no                                 controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/esba-section-finished-yes-no                                 controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onSubmit(taxYear: Int)
 
 
 ##### UK RENT A ROOM
@@ -466,10 +471,3 @@ POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers              
 
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-
-
-GET        /:taxYear/property-rentals/esba-section-finished-yes-no                        controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onPageLoad(taxYear: Int)
-POST       /:taxYear/property-rentals/esba-section-finished-yes-no                        controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onSubmit(taxYear: Int)
-
-GET        /:taxYear/property-rentals/sba-section-finished-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
-POST       /:taxYear/property-rentals/sba-section-finished-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)

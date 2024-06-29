@@ -16,12 +16,12 @@
 
 package pages.ukrentaroom.adjustments
 
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object RaRAdjustmentsCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomSectionFinished \ toString
 
-  override def toString: String = "raRAdjustmentsComplete"
+  override def toString: String = "adjustmentsSectionFinishedYesOrNo"
 }

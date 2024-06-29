@@ -25,6 +25,6 @@ class AllowancesSectionFinishedFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "allowancesSectionFinishedYesOrNo" -> boolean("allowancesSectionFinished.error.required")
+      "allowancesSectionFinishedYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
     )
 }

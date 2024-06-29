@@ -59,14 +59,6 @@ class PropertySubmissionService @Inject() (
   ): Future[Either[ServiceError, Unit]] =
     saveJourneyAnswers(ctx, propertyRentalsIncome)
 
-  def saveEsba( // Todo: Finially this should be integrated into saveAnswers reusage
-    ctx: JourneyContext,
-    esbasWithSupportingQuestions: EsbasWithSupportingQuestions
-  )(implicit
-    hc: HeaderCarrier
-  ): Future[Either[ApiError, Unit]] =
-    propertyConnector.updateEsba(ctx, ctx.mtditid, esbasWithSupportingQuestions) // Todo: mdtd? income-source-id?
-
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A

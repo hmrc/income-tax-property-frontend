@@ -16,6 +16,8 @@
 
 package controllers.ukrentaroom
 
+import controllers.ControllerUtils
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
@@ -76,7 +78,7 @@ class AboutSectionCompleteController @Inject() (
                          nino = request.user.nino,
                          journeyName = "rent-a-room-about"
                        ),
-                       if (value) "completed" else "inProgress",
+                       status = statusForPage(value),
                        request.user
                      )
             } yield Redirect(

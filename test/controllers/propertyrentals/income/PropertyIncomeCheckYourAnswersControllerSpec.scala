@@ -36,7 +36,10 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
 
   val taxYear: Int = 2024
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
+  def onwardRoute: Call = Call(
+    "GET",
+    s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/income-section-finished-yes-no"
+  )
 
   "Property Income Check Your Answers Controller" - {
 
@@ -77,21 +80,15 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
         .flatMap(
           _.set(
             PropertyRentalsIncome,
-            PropertyRentalsIncome(
-              true,
-              500,
-              2,
-              None,
-              None,
-              None,
-              None,
-              None,
-              None)
+            PropertyRentalsIncome(true, 500, 2, None, None, None, None, None, None)
           )
-        ).get
+        )
+        .get
 
       val mockPropertySubmissionService = mock[PropertySubmissionService]
-      when(mockPropertySubmissionService.savePropertyRentalsIncome(any(), any())(any())) thenReturn (Future.successful(Right(())))
+      when(mockPropertySubmissionService.savePropertyRentalsIncome(any(), any())(any())) thenReturn (Future.successful(
+        Right(())
+      ))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
         .overrides(
@@ -99,9 +96,11 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
         )
         .build()
 
-
       running(application) {
-        val request = FakeRequest(POST, controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onSubmit(taxYear).url)
+        val request = FakeRequest(
+          POST,
+          controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onSubmit(taxYear).url
+        )
 
         val result = route(application, request).value
 

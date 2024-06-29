@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.allowances
+package forms.propertyrentals.income
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object RaRAllowancesCompletePage extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomSectionFinished \ toString
+class IncomeSectionFinishedFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "allowancesSectionFinishedYesOrNo"
+  def apply(): Form[Boolean] =
+    Form(
+      "incomeSectionFinishedYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+    )
 }

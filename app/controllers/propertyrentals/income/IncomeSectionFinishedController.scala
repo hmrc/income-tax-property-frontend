@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,74 +14,73 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.adjustments
+package controllers.propertyrentals.income
 
 import controllers.ControllerUtils
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
-import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
-import models.{JourneyContext, Mode}
+import forms.propertyrentals.income.IncomeSectionFinishedFormProvider
+import models.{JourneyContext, NormalMode}
 import navigation.Navigator
-import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
+import pages.propertyrentals.income.IncomeSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.adjustments.RaRAdjustmentsCompleteView
+import views.html.propertyrentals.income.IncomeSectionFinishedView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRAdjustmentsCompleteController @Inject() (
+class IncomeSectionFinishedController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  journeyAnswersService: JourneyAnswersService,
-  formProvider: RaRAdjustmentsCompleteFormProvider,
+  formProvider: IncomeSectionFinishedFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: RaRAdjustmentsCompleteView
+  view: IncomeSectionFinishedView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(RaRAdjustmentsCompletePage) match {
+      val preparedForm = request.userAnswers.get(IncomeSectionFinishedPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
+      Ok(view(preparedForm, taxYear))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAdjustmentsCompletePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       ctx = JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rent-a-room-adjustments"
-                       ),
-                       status = statusForPage(value),
-                       user = request.user
-                     )
+              _ <- journeyAnswersService.setStatus(
+                     JourneyContext(
+                       taxYear = taxYear,
+                       mtditid = request.user.mtditid,
+                       nino = request.user.nino,
+                       journeyName = "rental-income"
+                     ),
+                     status = statusForPage(value),
+                     user = request.user
+                   )
             } yield Redirect(
-              navigator.nextPage(RaRAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(IncomeSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
   }

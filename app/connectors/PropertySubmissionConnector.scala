@@ -31,12 +31,12 @@ import java.util.UUID
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
-                                                                                                    ec: ExecutionContext
+class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig: FrontendAppConfig)(implicit
+  ec: ExecutionContext
 ) extends Logging {
 
   def getPropertySubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
-                                                                              hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedBackendData]] = {
     val propertyPeriodicSubmissionUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/$taxYear/income/${user.nino}/$incomeSourceId"
@@ -84,95 +84,6 @@ class PropertySubmissionConnector @Inject()(httpClient: HttpClientV2, appConfig:
         logger.info(
           s"Journey answers successfully posted to income-tax-property status: ${response.httpResponse.status}"
         )
-        response.result
-      }
-  }
-
-  def updateEsba(
-                  ctx: JourneyContext,
-                  incomeSourceId: String,
-                  esbasWithSupportingQuestions: EsbasWithSupportingQuestions
-                )(implicit
-                  hc: HeaderCarrier
-                ): Future[Either[ApiError, Unit]] = {
-
-    val propertyUrl =
-      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/${ctx.nino}/$incomeSourceId/esba/answers"
-
-    httpClient
-      .put(url"$propertyUrl")
-      .setHeader("mtditid" -> ctx.mtditid)
-      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
-      .withBody(Json.toJson(esbasWithSupportingQuestions))
-      .execute[CreateOrUpdateJourneyAnswersResponse]
-      .map { response: CreateOrUpdateJourneyAnswersResponse =>
-        if (response.result.isLeft) {
-          val correlationId =
-            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
-          logger.error(
-            "Error posting journey answers to income-tax-property:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
-          )
-        }
-        response.result
-      }
-  }
-
-  def saveIncome(
-                  ctx: JourneyContext,
-                  incomeSourceId: String,
-                  saveIncome: SaveIncome
-                )
-                (
-                  implicit hc: HeaderCarrier
-                ): Future[Either[ApiError, Unit]] = {
-
-    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/income/${ctx.nino}/answers"
-
-    httpClient
-      .post(url"$propertyUrl")
-      .setHeader("mtditid" -> ctx.mtditid)
-      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
-      .withBody(Json.toJson(saveIncome))
-      .execute[CreateOrUpdateJourneyAnswersResponse]
-      .map { response: CreateOrUpdateJourneyAnswersResponse =>
-        if (response.result.isLeft) {
-          val correlationId =
-            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
-          logger.error(
-            "Error posting journey answers to income-tax-property:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
-          )
-        }
-        response.result
-      }
-  }
-
-  def saveRentalAdjustments(
-                  ctx: JourneyContext,
-                  incomeSourceId: String,
-                  adjustments: PropertyRentalsAdjustment
-                )
-                (
-                  implicit hc: HeaderCarrier
-                ): Future[Either[ApiError, Unit]] = {
-    val propertyUrl = s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/property-rental-adjustments/${ctx.nino}/answers"
-
-    httpClient
-      .post(url"$propertyUrl")
-      .setHeader("mtditid" -> ctx.mtditid)
-      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
-      .withBody(Json.toJson(adjustments))
-      .execute[CreateOrUpdateJourneyAnswersResponse]
-      .map { response: CreateOrUpdateJourneyAnswersResponse =>
-        if (response.result.isLeft) {
-          val correlationId =
-            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
-          logger.error(
-            "Error posting journey answers to income-tax-property:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
-          )
-        }
         response.result
       }
   }

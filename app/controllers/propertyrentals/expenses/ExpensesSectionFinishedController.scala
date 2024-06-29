@@ -16,6 +16,8 @@
 
 package controllers.propertyrentals.expenses
 
+import controllers.ControllerUtils
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ExpensesSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode}
@@ -74,7 +76,7 @@ class ExpensesSectionFinishedController @Inject() (
                        nino = request.user.nino,
                        journeyName = "rental-expenses"
                      ),
-                     status = if (value) "completed" else "inProgress",
+                     status = statusForPage(value),
                      user = request.user
                    )
             } yield Redirect(
