@@ -1270,7 +1270,6 @@ ukRentARoom.expensesIntro.li1.individual = rents, rates and insurance
 ukRentARoom.expensesIntro.li2.individual = property repairs and maintenance
 ukRentARoom.expensesIntro.li3.individual = legal, management or other professional fees
 ukRentARoom.expensesIntro.li4.individual = costs of services, including wages
-ukRentARoom.expensesIntro.li5.individual = residential property financial costs
 ukRentARoom.expensesIntro.li7.individual = other allowable property expenses
 
 
@@ -1278,7 +1277,6 @@ ukRentARoom.expensesIntro.li1.agent = rents, rates and insurance
 ukRentARoom.expensesIntro.li2.agent = property repairs and maintenance
 ukRentARoom.expensesIntro.li3.agent = legal, management or other professional fees
 ukRentARoom.expensesIntro.li4.agent = costs of services, including wages
-ukRentARoom.expensesIntro.li5.agent = residential property financial costs
 ukRentARoom.expensesIntro.li6.agent = unused residential property finance costs brought forward
 ukRentARoom.expensesIntro.li7.agent = other allowable property expenses
 
