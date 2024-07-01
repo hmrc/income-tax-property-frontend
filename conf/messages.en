@@ -1363,16 +1363,6 @@ consolidatedRRExpenses.indiv = Claim individual expenses
 consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
 consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
 
-############ Unused Residential Property Finance Costs #########
-ukrentaroom.expenses.residentialPropertyFinanceCosts.title.agent = Residential property finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.agent = Residential property finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.label.agent = How much did your client spend on residential property finance costs?
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.required.agent = Enter how much your client spent on residential finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.nonNumeric.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.twoDecimalPlaces.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.outOfRange.agent = Enter an amount between £{0} and £{1}
-ukrentaroom.expenses.residentialPropertyFinanceCosts.change.hidden.agent = Enter how much your client spent on residential finance costs
-
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.label.individual = How much did you spend on residential property finance costs?
