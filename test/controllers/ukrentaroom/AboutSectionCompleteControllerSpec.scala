@@ -152,7 +152,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
         mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
       ).thenReturn(
         Future.successful(
-          Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+          Right("")
         )
       )
 

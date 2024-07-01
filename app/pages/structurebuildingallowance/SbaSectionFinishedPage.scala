@@ -16,12 +16,12 @@
 
 package pages.structurebuildingallowance
 
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object SbaSectionFinishedPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "sbaSectionFinished"
+  override def toString: String = "propertyRentalsSbaSectionFinishedYesOrNo"
 }

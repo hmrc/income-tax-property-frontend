@@ -16,6 +16,7 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode}
@@ -69,13 +70,13 @@ class EsbaSectionFinishedController @Inject() (
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService.setStatus(
                      JourneyContext(
-                       taxYear = taxYear,
-                       mtditid = request.user.mtditid,
-                       nino = request.user.nino,
-                       journeyName = "rental-esba"
+                       taxYear,
+                       request.user.mtditid,
+                       request.user.nino,
+                       "rental-esba"
                      ),
-                     status = if (value) "completed" else "inProgress",
-                     user = request.user
+                     statusForPage(value),
+                     request.user
                    )
             } yield Redirect(
               navigator.nextPage(EsbaSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)

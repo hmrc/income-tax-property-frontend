@@ -16,7 +16,6 @@
 
 package controllers.ukrentaroom
 
-import controllers.ControllerUtils
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.AboutSectionCompleteFormProvider

@@ -19,8 +19,9 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -30,6 +31,8 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.JourneyAnswersService
+import views.html.enhancedstructuresbuildingallowance.EsbaSectionFinishedView
 
 import scala.concurrent.Future
 
@@ -40,13 +43,15 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new EsbaSectionFinishedFormProvider()
   val form = formProvider()
 
-  lazy val esbaSectionFinishedRoute = routes.EsbaSectionFinishedController.onPageLoad(NormalMode).url
+  val taxYear: Int = 2024
+  lazy val esbaSectionFinishedRoute =
+    controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear).url
 
   "EsbaSectionFinished Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, esbaSectionFinishedRoute)
@@ -56,7 +61,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaSectionFinishedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -64,7 +69,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(EsbaSectionFinishedPage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, esbaSectionFinishedRoute)
@@ -74,28 +79,49 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
+      val user: User = User(
+        mtditid = "mtditid",
+        nino = "nino",
+        affinityGroup = "affinityGroup",
+        isAgent = false,
+        agentRef = Some("agentReferenceNumber")
+      )
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(
+        mockJourneyAnswersService.setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-esba")
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
+      ) thenReturn Future.successful(Right(""))
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 
       running(application) {
         val request =
           FakeRequest(POST, esbaSectionFinishedRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("esbaSectionFinishedYesOrNo", "true"))
 
         val result = route(application, request).value
 
@@ -106,7 +132,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
@@ -120,7 +146,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 

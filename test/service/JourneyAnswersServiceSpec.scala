@@ -78,10 +78,8 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
     }
 
     "return data" in {
-      val fetchedBackendData =
-        FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None)
       when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future(
-        Right(fetchedBackendData)
+        Right("")
       )
 
       when(mockBusinessService.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
@@ -108,7 +106,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
           "inProgress",
           user
         )
-      ) shouldBe Right(fetchedBackendData)
+      ) shouldBe Right("")
 
     }
   }

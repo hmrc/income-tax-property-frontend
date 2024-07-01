@@ -16,14 +16,16 @@
 
 package controllers.structuresbuildingallowance
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.structurebuildingallowance.SbaSectionFinishedFormProvider
-import models.NormalMode
+import models.{JourneyContext, NormalMode}
 import navigation.Navigator
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.structurebuildingallowance.SbaSectionFinishedView
 
@@ -39,7 +41,8 @@ class SbaSectionFinishedController @Inject() (
   requireData: DataRequiredAction,
   formProvider: SbaSectionFinishedFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: SbaSectionFinishedView
+  view: SbaSectionFinishedView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -65,6 +68,16 @@ class SbaSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
+              _ <- journeyAnswersService.setStatus(
+                     JourneyContext(
+                       taxYear,
+                       request.user.mtditid,
+                       request.user.nino,
+                       "rental-sba"
+                     ),
+                     statusForPage(value),
+                     request.user
+                   )
             } yield Redirect(
               navigator.nextPage(SbaSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )

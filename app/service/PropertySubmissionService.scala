@@ -19,9 +19,8 @@ package service
 import audit.PropertyRentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
-import models.backend.{HttpParserError, PropertyDataError, ServiceError}
-import models.propertyrentals.income.SaveIncome
-import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
+import models.backend.{HttpParserError, UKPropertyDetailsError, ServiceError}
+import models.{FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
@@ -51,7 +50,7 @@ class PropertySubmissionService @Inject() (
                 Right(r)
             }
           }
-          .getOrElse(Future.successful(Left(PropertyDataError())))
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(user.nino, user.mtditid))))
     }
 
   def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: PropertyRentalsIncome)(implicit
@@ -73,7 +72,7 @@ class PropertySubmissionService @Inject() (
               case Right(_)    => Right(())
             }
           }
-          .getOrElse(Future.successful(Left(PropertyDataError())))
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
 
     }
 

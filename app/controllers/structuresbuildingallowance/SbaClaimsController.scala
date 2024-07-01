@@ -17,6 +17,7 @@
 package controllers.structuresbuildingallowance
 
 import audit.{AuditModel, AuditService}
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
@@ -28,7 +29,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.PropertySubmissionService
+import service.{JourneyAnswersService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -50,7 +51,8 @@ class SbaClaimsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: SbaClaimsView,
   propertySubmissionService: PropertySubmissionService,
-  auditService: AuditService
+  auditService: AuditService,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 

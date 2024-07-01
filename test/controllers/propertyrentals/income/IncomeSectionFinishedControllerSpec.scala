@@ -109,7 +109,7 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
           ArgumentMatchers.eq(user)
         )(any())
       ) thenReturn Future.successful(
-        Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+        Right("")
       )
 
       val application =

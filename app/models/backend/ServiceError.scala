@@ -20,6 +20,8 @@ trait ServiceError
 
 case class HttpParserError(status: Int) extends ServiceError
 
-case class PropertyDataError() extends ServiceError
+case class UKPropertyDetailsError(nino: String, mtditid: String) extends ServiceError {
+  override def toString: String = s"Unable to fetch UK property details for user with nino: $nino and mtditid: $mtditid"
+}
 
 case class ConnectorError(statusCode: Int, message: String) extends ServiceError
