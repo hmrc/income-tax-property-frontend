@@ -16,6 +16,7 @@
 
 package controllers.adjustments
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
 import models.{JourneyContext, Mode}
@@ -75,7 +76,7 @@ class RentalsAdjustmentsCompleteController @Inject() (
                          nino = request.user.nino,
                          journeyName = "rental-adjustments"
                        ),
-                       status = if (value) "completed" else "inProgress",
+                       status = statusForPage(value),
                        user = request.user
                      )
             } yield Redirect(

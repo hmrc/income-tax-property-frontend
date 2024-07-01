@@ -26,7 +26,7 @@
 
 @(form: Form[_], taxYear: Int)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("allowancesSectionFinished.title"))) {
+@layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
     @formHelper(action = AllowancesSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
@@ -37,12 +37,12 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("allowancesSectionFinishedYesOrNo"),
-                legend = LegendViewModel(messages(s"allowancesSectionFinished.heading")).asPageHeading(LegendSize.Large)
-            ).withHint(HintViewModel(messages(s"allowancesSectionFinished.hint")))
+                legend = LegendViewModel(messages(s"haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
+            ).withHint(HintViewModel(messages(s"haveYouFinishedThisSection.hint")))
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick()
         )
     }
 }

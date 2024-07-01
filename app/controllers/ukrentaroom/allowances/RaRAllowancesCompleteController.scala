@@ -16,6 +16,8 @@
 
 package controllers.ukrentaroom.allowances
 
+import controllers.ControllerUtils
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
 import models.{JourneyContext, Mode}
@@ -31,7 +33,7 @@ import views.html.ukrentaroom.allowances.RaRAllowancesCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRAllowancesCompleteController @Inject()(
+class RaRAllowancesCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
@@ -75,11 +77,12 @@ class RaRAllowancesCompleteController @Inject()(
                          nino = request.user.nino,
                          journeyName = "rent-a-room-allowances"
                        ),
-                       status = if (value) "completed" else "inProgress",
+                       status = statusForPage(value),
                        user = request.user
                      )
-            } yield
-              Redirect(navigator.nextPage(RaRAllowancesCompletePage, taxYear, mode, request.userAnswers, updatedAnswers))
+            } yield Redirect(
+              navigator.nextPage(RaRAllowancesCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
         )
   }
 }

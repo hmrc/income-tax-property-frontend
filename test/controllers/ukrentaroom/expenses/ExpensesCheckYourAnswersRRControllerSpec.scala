@@ -122,7 +122,6 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
                 rentsRatesAndInsurance = Some(rentsRatesAndInsurance),
                 repairsAndMaintenanceCosts = Some(repairsAndMaintenanceCosts),
                 costsOfServicesProvided = Some(costsOfServicesProvided),
-                residentialPropertyFinanceCosts = Some(residentialPropertyFinanceCosts),
                 legalManagementOtherFee = Some(legalManagementOtherFee),
                 otherPropertyExpenses = Some(otherPropertyExpenses)
               )

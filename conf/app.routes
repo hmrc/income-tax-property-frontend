@@ -374,12 +374,6 @@ POST        /:taxYear/uk-rent-a-room/about-section-complete-yes-no              
 GET         /:taxYear/uk-rent-a-room/check-your-answers                                            controllers.ukrentaroom.CheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/uk-rent-a-room/check-your-answers                                            controllers.ukrentaroom.CheckYourAnswersController.onSubmit(taxYear: Int)
 
-GET        /:taxYear/uk-rent-a-room/expenses/residential-property-finance-costs                    controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/uk-rent-a-room/expenses/residential-property-finance-costs                    controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-
-GET        /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs              controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/uk-rent-a-room/expenses/change-residential-property-finance-costs              controllers.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 GET         /:taxYear/uk-rent-a-room/expenses-intro                                                 controllers.ukrentaroom.expenses.UkRentARoomExpensesIntroController.onPageLoad(taxYear: Int)
 
 
@@ -470,6 +464,6 @@ POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers              
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
-
-
+GET        /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onSubmit(taxYear: Int)
 

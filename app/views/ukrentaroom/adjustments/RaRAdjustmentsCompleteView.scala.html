@@ -18,34 +18,33 @@
 @import viewmodels.LegendSize
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukRadios: GovukRadios,
-govukButton: GovukButton
+  layout: templates.Layout,
+  formHelper: FormWithCSRF,
+  govukErrorSummary: GovukErrorSummary,
+  govukRadios: GovukRadios,
+  govukButton: GovukButton
 )
 
 
 @(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("ukrentaroom.aboutSectionComplete.title"))) {
-@formHelper(action = RaRAdjustmentsCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
-@if(form.errors.nonEmpty) {
-@govukErrorSummary(ErrorSummaryViewModel(form))
-}
+@layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
+  @formHelper(action = RaRAdjustmentsCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+  @if(form.errors.nonEmpty) {
+    @govukErrorSummary(ErrorSummaryViewModel(form))
+  }
 
-@govukRadios(
-RadiosViewModel.yesNo(
-field = form("raRAdjustmentsCompleteYesOrNo"),
-legend = LegendViewModel(messages("ukrentaroom.raRAdjustmentsComplete.heading")).asPageHeading(LegendSize.Large)
-).withHint(HintViewModel(messages("aboutSectionComplete.hint")))
-)
+ @govukRadios(
+  RadiosViewModel.yesNo(
+   field = form("raRAdjustmentsCompleteYesOrNo"),
+   legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
+   ).withHint(HintViewModel(messages("haveYouFinishedThisSection.hint")))
+ )
 
 
-@govukButton(
-ButtonViewModel(messages("site.continue")).withId("continue")
-)
-}
+  @govukButton(
+   ButtonViewModel(messages("site.continue")).withId("continue").preventingDoubleClick())
+  }
 }
 
 @{
