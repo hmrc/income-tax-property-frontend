@@ -20,7 +20,7 @@ import models.ElectricChargePointAllowance
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object RaRElectricChargePointAllowanceForAnEVPage extends QuestionPage[ElectricChargePointAllowance] {
+case object RaRElectricChargePointAllowanceForAnEVPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
 

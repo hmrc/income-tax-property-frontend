@@ -28,31 +28,17 @@ import viewmodels.implicits._
 object RaRElectricChargedPointForAnEVAllowanceSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RaRElectricChargePointAllowanceForAnEVPage).map {
-      case ElectricChargePointAllowance(true, Some(amount)) =>
-        SummaryListRowViewModel(
-          key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel(
-              "site.change",
-              routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
-            )
-              .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
+    answers.get(RaRElectricChargePointAllowanceForAnEVPage).map { amount =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
         )
-
-      case ElectricChargePointAllowance(false, None) =>
-        SummaryListRowViewModel(
-          key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel(
-              "site.change",
-              routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
-            )
-              .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
-          )
-        )
+      )
     }
 }

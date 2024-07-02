@@ -46,25 +46,14 @@ govukRadios: GovukRadios,
         </a>
     </p>
 
-    @govukRadios(
-        radios.RadiosViewModel.yesNoWithConditionalHtml(
-            field = form("electricChargePointAllowanceYesOrNo"),
-            legend = LegendViewModel(messages(s"electricChargePointAllowanceForAnEV.input.heading.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
-            items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                field = form("electricChargePointAllowanceYesOrNo"),
-                conditionalYesHtml = Some(
-                    govukInput(
-                    InputViewModel(
-                        field = form("electricChargePointAllowanceAmount"),
-                        label = LabelViewModel(messages(s"electricChargePointAllowanceForAnEvYesNo.radio.question.label.$individualOrAgent"))
-                    )
-                    .asNumeric()
-                    .withWidth(Fixed10)
-                    .withPrefix(PrefixOrSuffix(content = Text("£"))))
-                )
-            )
-        )
+    @govukInput(
+        InputViewModel(
+        field = form("electricChargePointAllowanceAmount"),
+        label = LabelViewModel(messages(s"electricChargePointAllowanceForAnEvYesNo.question.label.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m")
     )
+    .asNumeric()
+    .withWidth(Fixed10)
+    .withPrefix(PrefixOrSuffix(content = Text("£"))))
 
     @govukButton(ButtonViewModel(messages("site.continue")).withId("continue"))
 

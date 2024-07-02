@@ -169,10 +169,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "capitalAllowancesForACarAmount" : 20
       |        },
       |        "annualInvestmentAllowance" : 5,
-      |        "electricChargePointAllowance" : {
-      |            "electricChargePointAllowanceYesOrNo" : true,
-      |            "electricChargePointAllowanceAmount" : 30
-      |        },
+      |        "electricChargePointAllowance" : 30,
       |        "zeroEmissionCarAllowance" : 35,
       |        "zeroEmissionGoodsVehicleAllowance" : 10,
       |        "replacementOfDomesticGoodsAllowance" : 25,
@@ -262,7 +259,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(true, Some(20))
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
-      updated.get(RaRElectricChargePointAllowanceForAnEVPage).get mustBe ElectricChargePointAllowance(true, Some(30))
+      updated.get(RaRElectricChargePointAllowanceForAnEVPage).get mustBe 30
       updated.get(RaRZeroEmissionCarAllowancePage).get mustBe 35
       updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
       updated.get(RaRReplacementsOfDomesticGoodsPage).get mustBe 25

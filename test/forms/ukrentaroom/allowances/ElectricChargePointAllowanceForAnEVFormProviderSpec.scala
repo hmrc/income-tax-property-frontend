@@ -23,17 +23,6 @@ class ElectricChargePointAllowanceForAnEVFormProviderSpec extends CurrencyFieldB
 
   val form = new ElectricChargePointAllowanceForAnEVFormProvider()("individual")
 
-  ".electricChargePointAllowanceYesOrNo" - {
-
-    val fieldName = "electricChargePointAllowanceYesOrNo"
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, "electricChargePointAllowanceForAnEvYesNo.error.required.individual")
-    )
-  }
-
   ".electricChargePointAllowanceAmount" - {
 
     val minimum = 0
@@ -54,8 +43,7 @@ class ElectricChargePointAllowanceForAnEVFormProviderSpec extends CurrencyFieldB
       nonNumericError =
         FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.individual"),
       twoDecimalPlacesError =
-        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.individual"),
-      ("electricChargePointAllowanceYesOrNo", "true")
+        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.individual")
     )
 
     behave like currencyFieldWithRange(
@@ -64,8 +52,7 @@ class ElectricChargePointAllowanceForAnEVFormProviderSpec extends CurrencyFieldB
       minimum = minimum,
       maximum = maximum,
       expectedError =
-        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.outOfRange", Seq(minimum, maximum)),
-      ("electricChargePointAllowanceYesOrNo", "true")
+        FormError(fieldName, "electricChargePointAllowanceForAnEV.allowance.error.outOfRange", Seq(minimum, maximum))
     )
   }
 }

@@ -38,7 +38,7 @@ class RaRElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with
 
   private val individual = "individual"
   private val formProvider = new ElectricChargePointAllowanceForAnEVFormProvider()
-  private val form: Form[ElectricChargePointAllowance] = formProvider.apply(individual)
+  private val form: Form[BigDecimal] = formProvider.apply(individual)
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -75,7 +75,7 @@ class RaRElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with
       val userAnswers = UserAnswers(userAnswersId)
         .set(
           RaRElectricChargePointAllowanceForAnEVPage,
-          ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)
+          BigDecimal(12.34)
         )
         .success
         .value
@@ -92,7 +92,7 @@ class RaRElectricChargePointAllowanceForAnEVControllerSpec extends SpecBase with
 
         contentAsString(result) mustEqual
           view(
-            form.fill(ElectricChargePointAllowance(electricChargePointAllowanceYesOrNo = false, None)),
+            form.fill(12.34),
             taxYear,
             individual,
             NormalMode
