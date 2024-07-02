@@ -17,11 +17,11 @@
 @import viewmodels.InputWidth._
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
 @(form: Form[_], taxYear: Int, index: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -34,26 +34,28 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-<div class="govuk-width-container " class="govuk-details" data-module="govuk-details">
-    <h1 class="govuk-heading-l">
+        <div class="govuk-width-container govuk-details" data-module="govuk-details">
+            <h1 class="govuk-heading-l">
                 <span class="govuk-caption-m">
-                    @messages("esbaQualifyingAmount.h1")
-                  </span>
-        <h1 class="govuk-heading-l">@messages("esbaQualifyingAmount.title")</h1>
-    </h1>
-    <p class="govuk-body">@messages("esbaQualifyingAmount.p1")
-        <a href='@messages("esbaQualifyingAmount.p1.a.link")' target="_blank" rel="noreferrer noopener">
-            @messages("esbaQualifyingAmount.p1.a.text")
-        </a>
-    </p>
-    <p class="govuk-body">@messages("esbaQualifyingAmount.p2")</p>
-    <p class="govuk-body">@messages("esbaQualifyingAmount.p3")</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("esbaQualifyingAmount.li1")</li>
-        <li>@messages("esbaQualifyingAmount.li2")</li>
-    </ul>
-    <p class="govuk-body">@messages("esbaQualifyingAmount.p4") <a href='@messages("esbaQualifyingAmount.p4.a.link")' target="_blank" rel="noreferrer noopener">@messages("esbaQualifyingAmount.p4.a.text")</a></p>
-</div>
+                @messages("esbaQualifyingAmount.h1")
+                </span>
+                <h1 class="govuk-heading-l">@messages("esbaQualifyingAmount.title")</h1>
+            </h1>
+            <p class="govuk-body">@messages("esbaQualifyingAmount.p1")
+                <a class="govuk-link" href='@messages("esbaQualifyingAmount.p1.a.link")' target="_blank" rel="noreferrer noopener">
+                @messages("esbaQualifyingAmount.p1.a.text")
+                </a>
+            </p>
+            <p class="govuk-body">@messages("esbaQualifyingAmount.p2")</p>
+            <p class="govuk-body">@messages("esbaQualifyingAmount.p3")</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>@messages("esbaQualifyingAmount.li1")</li>
+                <li>@messages("esbaQualifyingAmount.li2")</li>
+            </ul>
+            <p class="govuk-body">@messages("esbaQualifyingAmount.p4")
+                <a class="govuk-link" href='@messages("esbaQualifyingAmount.p4.a.link")' target="_blank" rel="noreferrer noopener">@messages("esbaQualifyingAmount.p4.a.text")</a>
+            </p>
+        </div>
 
         @govukInput(
             InputViewModel(
