@@ -19,18 +19,15 @@ package pages
 import models.{NormalMode, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.AllowancesSectionFinishedPage
-import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
-import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
-import pages.propertyrentals.income.IncomeSectionFinishedPage
+import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
-import pages.propertyrentals.income.IsNonUKLandlordPage
+import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
-import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
+import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
-import viewmodels.summary.TaskListTag.TaskListTag
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -123,11 +120,13 @@ case object SummaryPage {
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
       controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
-      if (userAnswers.flatMap(_.get(EsbaQualifyingDatePage(0))).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
+      userAnswers
+        .flatMap { answers =>
+          answers.get(EsbaSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_enhanced_structures_and_building_allowance_link"
     )
 
@@ -153,11 +152,13 @@ case object SummaryPage {
       "summary.structuresAndBuildingAllowance",
       controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
         .onPageLoad(taxYear, NormalMode),
-      if (userAnswers.flatMap(_.get(StructureBuildingQualifyingDatePage(0))).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
-      },
+      userAnswers
+        .flatMap { answers =>
+          answers.get(SbaSectionFinishedPage).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted),
       "rentals_structures_and_building_allowance_link"
     )
 
@@ -253,8 +254,7 @@ case object SummaryPage {
   private def ukRentARoomAllowancesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.allowances",
-      controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear),
-      {
+      controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear), {
         val sectionFinished = userAnswers.flatMap(_.get(RaRAllowancesCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (
@@ -270,8 +270,6 @@ case object SummaryPage {
       },
       "rent_a_room_allowances_link"
     )
-
-
 
   private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(

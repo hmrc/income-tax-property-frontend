@@ -28,26 +28,21 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOp
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-case class UpdateStatusResponse(httpResponse: HttpResponse, result: Either[ApiError, FetchedBackendData])
+case class UpdateStatusResponse(httpResponse: HttpResponse, result: Either[ApiError, String])
 
 object UpdateStatusResponse {
-  implicit val getPropertyPeriodicSubmissionResponseReads: HttpReads[UpdateStatusResponse] =
+  implicit val updateJourneyStatusResponseReads: HttpReads[UpdateStatusResponse] =
     new HttpReads[UpdateStatusResponse] with Parser {
 
       override protected[connectors] val parserName: String = this.getClass.getSimpleName
 
       override def read(method: String, url: String, response: HttpResponse): UpdateStatusResponse =
         response.status match {
-          case OK => UpdateStatusResponse(response, extractResult(response))
+          case NO_CONTENT => UpdateStatusResponse(response, Right(""))
           case NOT_FOUND | INTERNAL_SERVER_ERROR | SERVICE_UNAVAILABLE | BAD_REQUEST =>
-            UpdateStatusResponse(response, handleError(response, response.status))
-          case _ => UpdateStatusResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
+            UpdateStatusResponse(response, handleError[String](response, response.status))
+          case _ => UpdateStatusResponse(response, handleError[String](response, INTERNAL_SERVER_ERROR))
         }
-
-      private def extractResult(response: HttpResponse): Either[ApiError, FetchedBackendData] =
-        response.json
-          .validate[FetchedBackendData]
-          .fold[Either[ApiError, FetchedBackendData]](_ => badSuccessJsonResponse, parsedModel => Right(parsedModel))
     }
 }
 
@@ -57,7 +52,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
 
   def setStatus(taxYear: Int, incomeSourceId: String, journeyName: String, status: String, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ApiError, FetchedBackendData]] = {
+  ): Future[Either[ApiError, String]] = {
     val updateStatusUrl =
       s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear"
 

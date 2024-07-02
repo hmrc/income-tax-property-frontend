@@ -1720,7 +1720,3 @@ haveYouFinishedThisSection.heading = Have you finished this section?
 haveYouFinishedThisSection.title = Have you finished this section?
 haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
 haveYouFinishedThisSection.error.required = Select yes if you have completed this section
-
-
-
-

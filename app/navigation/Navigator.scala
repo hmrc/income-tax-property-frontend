@@ -183,19 +183,21 @@ class Navigator @Inject() () {
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
     case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case SbaRemoveConfirmationPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
+      taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
 
+    case SbaSectionFinishedPage =>
+      taxYer =>
+        _ =>
+          _ =>
+            SummaryController.show(taxYer)
         // Enhanced structured building allowance
     case ClaimEsbaPage =>
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
-
-    case TotalIncomeAmountPage => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
+    case EsbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case TotalIncomeAmountPage   => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
@@ -346,7 +348,6 @@ class Navigator @Inject() () {
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
-
     case TotalIncomeAmountPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     case UkRentARoomJointlyLetPage =>
@@ -609,7 +610,7 @@ class Navigator @Inject() () {
   private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(SbaClaimsPage) match {
       case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
-      case _          => SummaryController.show(taxYear)
+      case _          => SbaSectionFinishedController.onPageLoad(taxYear)
     }
 
   private def sbaRemoveConfirmationNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =

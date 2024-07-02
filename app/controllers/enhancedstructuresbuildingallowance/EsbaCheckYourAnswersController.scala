@@ -82,10 +82,17 @@ class EsbaCheckYourAnswersController @Inject() (
           .map {
             case Right(_) =>
               auditCYA(taxYear, request, e)
-              Redirect(routes.EsbaClaimsController.onPageLoad(taxYear))
+              Redirect(
+                controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
+              )
             case Left(_) => InternalServerError
           }
-      case None => Future.successful(Redirect(routes.EsbaClaimsController.onPageLoad(taxYear)))
+      case None =>
+        Future.successful(
+          Redirect(
+            controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
+          )
+        )
     }
 
   }

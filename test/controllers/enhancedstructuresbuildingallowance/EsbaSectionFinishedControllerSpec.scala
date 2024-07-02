@@ -14,76 +14,75 @@
  * limitations under the License.
  */
 
-package controllers.propertyrentals.income
+package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import controllers.routes
-import forms.propertyrentals.income.IncomeSectionFinishedFormProvider
-import models.{FetchedBackendData, JourneyContext, User, UserAnswers}
+import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
+import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.income.IncomeSectionFinishedPage
+import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
-import views.html.propertyrentals.income.IncomeSectionFinishedView
+import views.html.enhancedstructuresbuildingallowance.EsbaSectionFinishedView
 
 import scala.concurrent.Future
 
-class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
+class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
-  val taxYear: Int = 2024
+  def onwardRoute = Call("GET", "/foo")
 
-  private def onwardRoute = Call(
-    "POST",
-    s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/income-section-finished-yes-no"
-  )
-
-  val formProvider = new IncomeSectionFinishedFormProvider()
+  val formProvider = new EsbaSectionFinishedFormProvider()
   val form = formProvider()
 
-  lazy val incomeSectionFinishedRoute =
-    controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear).url
+  val taxYear: Int = 2024
+  lazy val esbaSectionFinishedRoute =
+    controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear).url
 
-  "IncomeSectionFinished Controller" - {
+  "EsbaSectionFinished Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeSectionFinishedRoute)
+        val request = FakeRequest(GET, esbaSectionFinishedRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[IncomeSectionFinishedView]
+        val view = application.injector.instanceOf[EsbaSectionFinishedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IncomeSectionFinishedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaSectionFinishedPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeSectionFinishedRoute)
+        val request = FakeRequest(GET, esbaSectionFinishedRoute)
 
-        val view = application.injector.instanceOf[IncomeSectionFinishedView]
+        val view = application.injector.instanceOf[EsbaSectionFinishedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -103,14 +102,12 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-income")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-esba")
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)
         )(any())
-      ) thenReturn Future.successful(
-        Right("")
-      )
+      ) thenReturn Future.successful(Right(""))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
@@ -123,8 +120,8 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeSectionFinishedRoute)
-            .withFormUrlEncodedBody(("incomeSectionFinishedYesOrNo", "true"))
+          FakeRequest(POST, esbaSectionFinishedRoute)
+            .withFormUrlEncodedBody(("esbaSectionFinishedYesOrNo", "true"))
 
         val result = route(application, request).value
 
@@ -139,17 +136,17 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeSectionFinishedRoute)
-            .withFormUrlEncodedBody(("incomeSectionFinishedYesOrNo", ""))
+          FakeRequest(POST, esbaSectionFinishedRoute)
+            .withFormUrlEncodedBody(("value", ""))
 
-        val boundForm = form.bind(Map("incomeSectionFinishedYesOrNo" -> ""))
+        val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[IncomeSectionFinishedView]
+        val view = application.injector.instanceOf[EsbaSectionFinishedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -158,7 +155,7 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, incomeSectionFinishedRoute)
+        val request = FakeRequest(GET, esbaSectionFinishedRoute)
 
         val result = route(application, request).value
 
@@ -173,8 +170,8 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, incomeSectionFinishedRoute)
-            .withFormUrlEncodedBody(("incomeSectionFinishedYesOrNo", "true"))
+          FakeRequest(POST, esbaSectionFinishedRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 

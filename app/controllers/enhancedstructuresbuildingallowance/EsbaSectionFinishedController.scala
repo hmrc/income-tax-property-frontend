@@ -14,74 +14,72 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers.enhancedstructuresbuildingallowance
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
-import forms.ukrentaroom.AboutSectionCompleteFormProvider
-import models.{JourneyContext, Mode}
+import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
+import models.{JourneyContext, NormalMode}
 import navigation.Navigator
-import pages.UKPropertySelectPage
-import pages.ukrentaroom.AboutSectionCompletePage
+import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.AboutSectionCompleteView
+import views.html.enhancedstructuresbuildingallowance.EsbaSectionFinishedView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AboutSectionCompleteController @Inject() (
+class EsbaSectionFinishedController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  journeyAnswersService: JourneyAnswersService,
-  formProvider: AboutSectionCompleteFormProvider,
+  formProvider: EsbaSectionFinishedFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: AboutSectionCompleteView
+  view: EsbaSectionFinishedView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(AboutSectionCompletePage) match {
+      val preparedForm = request.userAnswers.get(EsbaSectionFinishedPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
+      Ok(view(preparedForm, NormalMode, taxYear))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rent-a-room-about"
-                       ),
-                       status = statusForPage(value),
-                       request.user
-                     )
+              _ <- journeyAnswersService.setStatus(
+                     JourneyContext(
+                       taxYear,
+                       request.user.mtditid,
+                       request.user.nino,
+                       "rental-esba"
+                     ),
+                     statusForPage(value),
+                     request.user
+                   )
             } yield Redirect(
-              navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(EsbaSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
   }

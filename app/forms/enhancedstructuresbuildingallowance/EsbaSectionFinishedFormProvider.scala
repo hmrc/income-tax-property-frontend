@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package models.backend
+package forms.enhancedstructuresbuildingallowance
 
-trait ServiceError
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case class HttpParserError(status: Int) extends ServiceError
+import javax.inject.Inject
 
-case class UKPropertyDetailsError(nino: String, mtditid: String) extends ServiceError {
-  override def toString: String = s"Unable to fetch UK property details for user with nino: $nino and mtditid: $mtditid"
+class EsbaSectionFinishedFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "esbaSectionFinishedYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+    )
 }
-
-case class ConnectorError(statusCode: Int, message: String) extends ServiceError

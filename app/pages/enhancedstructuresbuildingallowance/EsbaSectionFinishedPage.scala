@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package models.backend
+package pages.enhancedstructuresbuildingallowance
 
-trait ServiceError
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-case class HttpParserError(status: Int) extends ServiceError
+case object EsbaSectionFinishedPage extends QuestionPage[Boolean] {
 
-case class UKPropertyDetailsError(nino: String, mtditid: String) extends ServiceError {
-  override def toString: String = s"Unable to fetch UK property details for user with nino: $nino and mtditid: $mtditid"
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "propertyRentalsEsbaSectionFinishedYesOrNo"
 }
-
-case class ConnectorError(statusCode: Int, message: String) extends ServiceError

@@ -53,7 +53,8 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   def onwardRouteAddClaim: Call =
     Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/structure-building-allowance/add-claim")
 
-  def onwardRouteNoOtherClaim: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/summary")
+  def onwardRouteNoOtherClaim: Call =
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/sba-section-finished-yes-no")
 
   "SbaClaims Controller" - {
 

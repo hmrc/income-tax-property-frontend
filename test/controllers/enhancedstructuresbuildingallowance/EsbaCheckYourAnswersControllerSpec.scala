@@ -28,7 +28,8 @@ import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
 class EsbaCheckYourAnswersControllerSpec extends SpecBase {
   val index = 1
   val taxYear = 2024
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/enhanced-structure-building-allowance/claims")
+  def onwardRoute: Call =
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/property-rentals/esba-section-finished-yes-no")
 
   "EsbaCheckYourAnswers Controller" - {
 
@@ -61,7 +62,6 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
-
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
