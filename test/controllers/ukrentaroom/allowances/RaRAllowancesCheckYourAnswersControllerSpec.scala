@@ -39,7 +39,8 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
   val taxYear: Int = LocalDate.now.getYear
 
-  val onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/allowances/complete-yes-no")
+  val onwardRoute: Call =
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/allowances/complete-yes-no")
   val annualInvestmentAllowanceSummaryValue = 100
   val annualInvestmentAllowanceSummary: BigDecimal = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
 
@@ -59,10 +60,6 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
   val zeroEmissionGoodsVehicleAllowance: BigDecimal = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
 
   val electricChargePointAllowanceValue = 200
-  val electricChargePointAllowance: ElectricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesOrNo = true,
-    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
-  )
 
   "RaRAllowancesCheckYourAnswer Controller" - {
 
@@ -106,7 +103,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
             RentARoomAllowance(
               capitalAllowancesForACar = None,
               annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-              electricChargePointAllowance = Some(electricChargePointAllowance),
+              electricChargePointAllowance = Some(electricChargePointAllowanceValue),
               zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
               replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
               otherCapitalAllowance = Some(otherCapitalAllowance),
