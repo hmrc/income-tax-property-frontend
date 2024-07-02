@@ -470,10 +470,10 @@ privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.individual = Amount can
 privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 privateUseAdjustmentAmount.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
-balancingCharge.title.agent = Balancing Charge
-balancingCharge.title.individual = Balancing Charge
+balancingCharge.title.agent = Balancing charge
+balancingCharge.title.individual = Balancing charge
 balancingCharge.heading.agent = How much was your client’s balancing charge?
-balancingCharge.heading.individual = Balancing Charge
+balancingCharge.heading.individual = Balancing charge
 balancingCharge.para.individual = Understanding balancing charge
 balancingCharge.para.agent = Understanding balancing charge
 
@@ -502,16 +502,16 @@ balancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1
 unusedResidentialFinanceCost.title = Unused residential costs brought forward
 unusedResidentialFinanceCost.heading = Unused residential costs brought forward
 unusedResidentialFinanceCost.details.content.text = Understanding residential financial costs carried forward
-unusedResidentialFinanceCost.details.content.link.content = You can carry forward any balance of residential finance costs which are still unused to future years of the same property rental.
+unusedResidentialFinanceCost.details.content.link.content = You can bring forward any balance of residential finance costs which are still unused to future years of the same property rental.
 unusedResidentialFinanceCost.details.content.link.intro = Read more about
 unusedResidentialFinanceCost.details.content.link.text = tax relief for residential landlords at GOV.UK (opens in new tab)
 unusedResidentialFinanceCost.details.content.link.href = https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies#example-4-carrying-forward-unused-finance-costs
 unusedResidentialFinanceCost.input.legend = How much unused residential costs do you want to bring forward?
 unusedResidentialFinanceCost.checkYourAnswersLabel = Unused residential costs brought forward
-unusedResidentialFinanceCost.error.required.individual = Enter an amount for unused residential finance costs you want to carry forward
-unusedResidentialFinanceCost.error.required.agent = Enter an amount for unused residential finance costs your client wants to carry forward
-unusedResidentialFinanceCost.error.nonNumeric.individual = Enter an amount for unused residential finance costs you want to carry forward
-unusedResidentialFinanceCost.error.nonNumeric.agent = Enter an amount for unused residential finance costs your client wants to carry forward
+unusedResidentialFinanceCost.error.required.individual = Enter an amount for unused residential finance costs you want to bring forward
+unusedResidentialFinanceCost.error.required.agent = Enter an amount for unused residential finance costs your client wants to bring forward
+unusedResidentialFinanceCost.error.nonNumeric.individual = Enter an amount for unused residential finance costs you want to bring forward
+unusedResidentialFinanceCost.error.nonNumeric.agent = Enter an amount for unused residential finance costs your client wants to bring forward
 unusedResidentialFinanceCost.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
 unusedResidentialFinanceCost.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 unusedResidentialFinanceCost.error.outOfRange = Enter an amount between £{0} and £{1}
@@ -783,8 +783,8 @@ rentsRatesAndInsurance.change.hidden = Rents, rates and insurance for your clien
 
 allowancesStart.title = Allowances
 allowancesStart.heading = Allowances
-allowancesStart.details.content1.individual = In this section we're going to ask you about your allowances. These are amounts that you can offset against what you've spent running your property rentals:
-allowancesStart.details.content1.agent = In this section we're going to ask you about allowances. These are amounts that your client can offset against what they've spent running their property rentals:
+allowancesStart.details.content1.individual = In this section we’re going to ask you about your allowances. These are amounts that you can offset against what you've spent running your property rentals:
+allowancesStart.details.content1.agent = In this section we’re going to ask you about allowances. These are amounts that your client can offset against what they've spent running their property rentals:
 allowancesStart.details.content2.individual = You told us previously that your accounting method is:
 allowancesStart.details.content2.agent = You told us previously that your client's accounting method is:
 allowancesStart.details.content3.individual = Based on this information you can claim the following:
@@ -1263,8 +1263,8 @@ ukRentARoom.jointlyLet.change.hidden.agent = RentARoomJointlyLet
 ukRentARoom.expensesIntro.title = Rent a room expenses
 ukRentARoom.expensesIntro.heading = Rent a room expenses
 
-ukRentARoom.expensesIntro.p1.individual = In this section we're going to ask you about your allowable expenses. These are the things that you spend money on to run your rent a room. Just tell us about the proportion of the expenses that relate to the room that you're renting out:
-ukRentARoom.expensesIntro.p1.agent = In this section we're going to ask you about your client's expenses. These are the things that your client spends money on to run their rent a room. Just tell us about the proportion of the expenses that relate to the room that your client is renting out:
+ukRentARoom.expensesIntro.p1.individual = In this section we’re going to ask you about your allowable expenses. These are the things that you spend money on to run your rent a room. Just tell us about the proportion of the expenses that relate to the room that you're renting out:
+ukRentARoom.expensesIntro.p1.agent = In this section we’re going to ask you about your client's expenses. These are the things that your client spends money on to run their rent a room. Just tell us about the proportion of the expenses that relate to the room that your client is renting out:
 
 ukRentARoom.expensesIntro.li1.individual = rents, rates and insurance
 ukRentARoom.expensesIntro.li2.individual = property repairs and maintenance
@@ -1379,17 +1379,17 @@ ukrentaroom.expenses.residentialPropertyFinanceCosts.checkYourAnswersLabel.indiv
 ############ Unused Residential Property Finance Costs Brought Forward ############
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.title.individual = Unused residential property finance costs brought forward
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.heading.individual =  Unused residential property finance costs brought forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.label.individual = How much unused residential finance costs do you want to carry forward?
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.label.individual = How much unused residential finance costs do you want to bring forward?
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.individual = Unused residential property finance costs brought forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.required.individual = Enter how much unused residential finance costs you want to carry forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNumeric.individual = The amount of unused residential costs you want to carry forward can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.twoDecimalPlaces.individual = The amount of unused residential costs you want to carry forward can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.required.individual = Enter how much unused residential finance costs you want to bring forward
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNumeric.individual = The amount of unused residential costs you want to bring forward can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.twoDecimalPlaces.individual = The amount of unused residential costs you want to bring forward can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.outOfRange.individual = Enter an amount between £{0} and £{1}
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.change.hidden.individual = Enter how much unused residential finance costs you want to carry forward
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.change.hidden.individual = Enter how much unused residential finance costs you want to bring forward
 
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.title.agent = Unused residential property finance costs brought forward
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.heading.agent = Unused residential property finance costs brought forward
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.label.agent = How much unused residential finance costs does your client want to carry forward?
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.label.agent = How much unused residential finance costs does your client want to bring forward?
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.required.agent = Enter how much your client spent on residential finance costs
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.nonNumeric.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.twoDecimalPlaces.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
@@ -1397,7 +1397,7 @@ ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.error.outOf
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.change.hidden.agent = Enter how much your client spent on residential finance costs
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.checkYourAnswersLabel.agent = Unused residential property finance costs brought forward
 
-ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para1 = You can carry forward any balance of residential finance costs which are still unused to future years of the same rent a room.
+ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para1 = You can bring forward any balance of residential finance costs which are still unused to future years of the same rent a room.
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para2 = Read more about
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link.text = tax relief for residential landlords at GOV.UK (opens in new tab)
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link = https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies#example-4-carrying-forward-unused-finance-costs
@@ -1675,21 +1675,21 @@ ukRentARoom.otherCapitalAllowances.href.label = capital allowances and balancing
 
 raRAdjustmentsIntro.title = Adjustments
 raRAdjustmentsIntro.heading = Adjustments
-raRAdjustmentsStart.para1 = In this section we're going to ask you about the following adjustments:
+raRAdjustmentsStart.para1 = In this section we’re going to ask you about the following adjustments:
 raRAdjustmentsIntro.bullet.content.l1 = balancing charge
 raRAdjustmentsIntro.bullet.content.l2 = unused residential property finance costs brought forward
 
-raRbalancingCharge.title.agent = Balancing Charge
-raRbalancingCharge.title.individual = Balancing Charge
+raRbalancingCharge.title.agent = Balancing charge
+raRbalancingCharge.title.individual = Balancing charge
 raRbalancingCharge.heading.agent = How much was your client’s balancing charge?
-raRbalancingCharge.heading.individual = Balancing Charge
+raRbalancingCharge.heading.individual = Balancing charge
 raRbalancingCharge.para.individual = Understanding balancing charge
 raRbalancingCharge.para.agent = Understanding balancing charge
 
 raRbalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
 
-raRbalancingCharge.checkYourAnswersLabel.individual = Do you have to pay a balancing charge?
-raRbalancingCharge.checkYourAnswersLabel.agent = Does your client have to pay a balancing charge?
+raRbalancingCharge.checkYourAnswersLabel.individual = Do you have to report a balancing charge?
+raRbalancingCharge.checkYourAnswersLabel.agent = Does your client have to report a balancing charge?
 raRbalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
 raRbalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
 raRbalancingCharge.change.hidden = Balancing charge
