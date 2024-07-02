@@ -22,7 +22,7 @@ import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IncomeSectionFinishedPage
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
@@ -104,13 +104,15 @@ case object SummaryPage {
         controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear), {
           val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyCompletePage))
 
-          sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-            if (userAnswers.flatMap(_.get(ReportPropertyIncomePage)).isDefined) {
-              TaskListTag.InProgress
-            } else {
-              TaskListTag.NotStarted
+          sectionFinished
+            .map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress)
+            .getOrElse {
+              if (userAnswers.flatMap(_.get(ReportPropertyIncomePage)).isDefined) {
+                TaskListTag.InProgress
+              } else {
+                TaskListTag.NotStarted
+              }
             }
-          }
         },
         "property_about_link"
       )
@@ -207,9 +209,17 @@ case object SummaryPage {
   private def propertyRentalsAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) TaskListTag.InProgress
-      else TaskListTag.NotStarted,
+      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear), {
+        val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyRentalsSectionFinishedPage))
+
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_about_link"
     )
 
