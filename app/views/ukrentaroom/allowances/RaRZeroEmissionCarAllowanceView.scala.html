@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.ukrentaroom.allowances.routes._
+@import viewmodels.InputWidth._
 
 @this(
     layout: templates.Layout,
@@ -42,7 +42,7 @@
 
         <p class="govuk-body">
             @messages("ukrentaroom.allowances.zeroEmissionCarAllowance.p3")
-            <a href='@messages("ukrentaroom.allowances.zeroEmissionCarAllowance.link")' target="_blank" rel="noreferrer noopener">
+            <a class="govuk-link" href='@messages("ukrentaroom.allowances.zeroEmissionCarAllowance.link")' target="_blank" rel="noreferrer noopener">
                 @messages("ukrentaroom.allowances.zeroEmissionCarAllowance.link.text")
             </a>
         </p>

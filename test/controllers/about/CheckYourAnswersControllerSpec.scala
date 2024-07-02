@@ -42,7 +42,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
 
   private val propertySubmissionService = mock[PropertySubmissionService]
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2023/summary")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2023/about-property-complete-yes-no")
 
   "Check Your Answers Controller" - {
 

@@ -101,8 +101,17 @@ case object SummaryPage {
     Seq(
       TaskListItem(
         "summary.about",
-        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
-        if (userAnswers.flatMap(_.get(TotalIncomePage)).isDefined) TaskListTag.InProgress else TaskListTag.NotStarted,
+        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear), {
+          val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyCompletePage))
+
+          sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+            if (userAnswers.flatMap(_.get(ReportPropertyIncomePage)).isDefined) {
+              TaskListTag.InProgress
+            } else {
+              TaskListTag.NotStarted
+            }
+          }
+        },
         "property_about_link"
       )
     )

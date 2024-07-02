@@ -41,6 +41,9 @@ POST        /:taxYear/change-report-property-income                             
 GET         /:taxYear/check-your-answers                                                           controllers.about.CheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/check-your-answers                                                           controllers.about.CheckYourAnswersController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/about-property-complete-yes-no                                                controllers.about.AboutPropertyCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/about-property-complete-yes-no                                                controllers.about.AboutPropertyCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
 ############## Property rentals
 
 ## About
@@ -471,4 +474,5 @@ GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                  controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
 GET        /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onPageLoad(taxYear: Int)
+
 POST       /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onSubmit(taxYear: Int)
