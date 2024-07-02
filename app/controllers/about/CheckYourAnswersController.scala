@@ -84,7 +84,7 @@ class CheckYourAnswersController @Inject() (
     propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
       case Right(_) =>
         auditCYA(taxYear, request, propertyAbout)
-        Redirect(routes.SummaryController.show(taxYear))
+        Redirect(controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear))
       case Left(_) => InternalServerError
     }
   }
