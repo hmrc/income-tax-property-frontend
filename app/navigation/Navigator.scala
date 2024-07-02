@@ -230,6 +230,7 @@ class Navigator @Inject() () {
     case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
 

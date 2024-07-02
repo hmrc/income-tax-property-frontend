@@ -17,7 +17,7 @@
 package pages
 
 import models.{NormalMode, UKPropertySelect, UserAnswers}
-import pages.adjustments.PrivateUseAdjustmentPage
+import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, RentsRatesAndInsurancePage}
@@ -125,11 +125,16 @@ case object SummaryPage {
   private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
-      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
-      if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) {
-        TaskListTag.InProgress
-      } else {
-        TaskListTag.NotStarted
+      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear), {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
       },
       "rentals_adjustments_link"
     )

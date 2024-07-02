@@ -73,14 +73,14 @@ class AdjustmentsCheckYourAnswersController @Inject()(
 
             case Right(_) => {
               auditCYA(taxYear, request, adjustments)
-              Redirect(controllers.routes.SummaryController.show(taxYear))
+              Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear))
             }
             case Left(_) => InternalServerError
           })
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
 
-          Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
+          Future.successful(Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear)))
       }
   }
 
