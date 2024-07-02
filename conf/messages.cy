@@ -1099,3 +1099,129 @@ esbaClaims.error.required.agent                   = Dewiswch ‘Iawn’ os yw’
 esbaClaims.legend                                 = A ydych chi am ychwanegu hawliad arall?
 
 summary.enhancedStructuresAndBuildingAllowance    = Lwfans strwythurau ac adeiladau uwch
+
+claimStructureBuildingAllowance.title =	A hoffech hawlio’r lwfans strwythurau ac adeiladau?
+claimStructureBuildingAllowance.title.agent	= A hoffai’ch cleient hawlio’r lwfans strwythurau ac adeiladau?
+claimStructureBuildingAllowance.heading =	Lwfans strwythurau ac adeiladau
+claimStructureBuildingAllowance.legend.individual =	A hoffech hawlio’r lwfans strwythurau ac adeiladau?
+claimStructureBuildingAllowance.legend.agent =	A hoffai’ch cleient hawlio’r lwfans strwythurau ac adeiladau?
+claimStructureBuildingAllowance.details.summary =	Deall y lwfans strwythurau ac adeiladau
+claimStructureBuildingAllowance.details.content =	Os ydych wedi talu rhywfaint o’r costau tuag at brynu, adeiladu neu adnewyddu eich eiddo (neu strwythur), neu’r costau cyfan, yna efallai y gallwch hawlio rhyddhad treth y lwfans strwythurau ac adeiladau ar yr hyn yr ydych wedi’i wario.
+claimStructureBuildingAllowance.details.p1 =	Gallwch dim ond hawlio ar gyfer costau adeiladu sy’n cynnwys y canlynol:
+claimStructureBuildingAllowance.details.l1 =	ffioedd ar gyfer cynllunio
+claimStructureBuildingAllowance.details.l2 =	paratoi’r safle ar gyfer adeiladu
+claimStructureBuildingAllowance.details.l3 =	gwaith adeiladu
+claimStructureBuildingAllowance.details.l4 =	costau adnewyddu, atgyweirio a throsi
+claimStructureBuildingAllowance.details.l5 =	gwaith dodrefnu
+claimStructureBuildingAllowance.details.p2 =	Rhaid i bob contract adeiladu fod wedi’i arwyddo ar neu ar ôl 29 Hydref 2018. Darllenwch ragor am y
+claimStructureBuildingAllowance.details.content.link.text =	lwfansau cyfalaf ar gyfer strwythurau ac adeiladau ar GOV.UK (yn agor tab newydd)
+claimStructureBuildingAllowance.yes =	Iawn
+claimStructureBuildingAllowance.no =	Na
+claimStructureBuildingAllowance.checkYourAnswersLabel =	A hoffech hawlio’r lwfans strwythurau ac adeiladau?
+claimStructureBuildingAllowance.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient eisiau hawlio’r lwfans strwythurau ac adeiladau
+claimStructureBuildingAllowance.error.required.individual =	Dewiswch ‘Iawn’ os ydych chi eisiau hawlio’r lwfans strwythurau ac adeiladau
+claimStructureBuildingAllowance.change.hidden =	Lwfans Strwythurau ac Adeiladau
+
+structureBuildingAllowance.title.individual =	Lwfans Strwythurau ac Adeiladau
+structureBuildingAllowance.title.agent =	Lwfans Strwythurau ac Adeiladau
+structureBuildingAllowance.heading =	Hawliadau am lwfans strwythurau ac adeiladau
+structureBuildingAllowance.para1 =	Rhowch wybod i CThEF os ydych wedi talu rhywfaint o’r costau tuag at brynu, adeiladu neu adnewyddu adeilad, neu’r costau cyfan. Mae’n bosibl y byddwch yn gallu hawlio rhyddhad treth.
+structureBuildingAllowance.button =	Ychwanegu hawliad
+
+structureBuildingAllowanceClaim.title =	Faint yw’ch hawliad am lwfans strwythurau ac adeiladau?
+structureBuildingAllowanceClaim.heading.individual =	Faint yw’ch hawliad am lwfans strwythurau ac adeiladau?
+structureBuildingAllowanceClaim.heading.agent =	Faint yw hawliad eich cleient am lwfans strwythurau ac adeiladau?
+structureBuildingAllowanceClaim.legend.individual =	Nodwch y swm rydych wedi’i gyfrifo ar gyfer eich lwfans.
+structureBuildingAllowanceClaim.legend.agent =	Nodwch y swm rydych wedi’i gyfrifo ar gyfer lwfans eich cleient.
+structureBuildingAllowanceClaim.checkYourAnswersLabel =	Gwerth yr hawliad
+structureBuildingAllowanceClaim.error.nonNumeric =	Nodwch swm yr hawliad am lwfans strwythurau ac adeiladau
+structureBuildingAllowanceClaim.error.required.individual =	Nodwch swm eich hawliad am lwfans strwythurau ac adeiladau
+structureBuildingAllowanceClaim.error.required.agent =	Nodwch swm hawliad eich cleient am lwfans strwythurau ac adeiladau
+structureBuildingAllowanceClaim.error.twoDecimalPlaces.individual =	Gall yr hawliad am lwfans strwythurau ac adeiladau gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+structureBuildingAllowanceClaim.error.twoDecimalPlaces.agent =	Gall yr hawliad am lwfans strwythurau ac adeiladau gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+structureBuildingAllowanceClaim.error.outOfRange =	Nodwch swm rhwng £{0} a £{1}
+structureBuildingAllowanceClaim.change.hidden =	Hawliad am Lwfans Strwythurau ac Adeiladau
+
+structureBuildingQualifyingDate.title =	Dyddiad cymhwysol
+structureBuildingQualifyingDate.heading =	Dyddiad cymhwysol
+structureBuildingQualifyingDate.legend =	Beth yw’r dyddiad cymhwysol?
+structureBuildingQualifyingDate.hint =	Er enghraifft, 29 10 2018
+structureBuildingQualifyingDate.details.heading = 	Deall dyddiad cymhwysol y lwfans strwythurau ac adeiladau
+structureBuildingQualifyingDate.details.content1.individual =	Dechreuwch eich hawliad o ba ddyddiad bynnag sydd hwyrach o’r canlynol:
+structureBuildingQualifyingDate.details.content1.agent =	Dechreuwch hawliad eich cleient o ba ddyddiad bynnag sydd hwyrach o’r canlynol:
+structureBuildingQualifyingDate.details.l1.individual =	y dyddiad y gwnaethoch ddechrau defnyddio’r strwythur ar gyfer gweithgaredd cymhwysol
+structureBuildingQualifyingDate.details.l1.agent =	y dyddiad y gwnaeth eich cleient ddechrau defnyddio’r strwythur ar gyfer gweithgaredd cymhwysol
+structureBuildingQualifyingDate.details.l2.individual =	 y dyddiad y mae disgwyl i chi dalu am y strwythur neu’r adeilad
+structureBuildingQualifyingDate.details.l2.agent =	 y dyddiad y mae disgwyl i chi dalu am y strwythur neu’r adeilad
+structureBuildingQualifyingDate.details.content2.link.intro =	Darllenwch ragor am
+structureBuildingQualifyingDate.details.content2.link.text =	y lwfans strwythurau ac adeiladau ar GOV.UK (yn agor tab newydd)
+structureBuildingQualifyingDate.checkYourAnswersLabel =	Dyddiad cymhwysol
+
+structureBuildingQualifyingDate.error.required.all =	Nodwch y dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau
+structureBuildingQualifyingDate.error.required.two =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau gynnwys {0} a {1}
+structureBuildingQualifyingDate.error.required =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau gynnwys {0}
+structureBuildingQualifyingDate.error.invalid =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau gynnwys dyddiad, mis a blwyddyn ar ffurf rhifau
+structureBuildingQualifyingDate.error.maxDate =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau fod cyn mis Medi 2026
+structureBuildingQualifyingDate.error.minDate =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau fod ar ôl 29 Hydref 2018
+structureBuildingQualifyingDate.change.hidden =	Dyddiad cymhwysol
+
+structureBuildingQualifyingAmount.title = 	Swm cymhwysol
+structureBuildingQualifyingAmount.heading =	Swm cymhwysol
+structureBuildingQualifyingAmount.checkYourAnswersLabel =	Swm cymhwysol
+structureBuildingQualifyingAmount.details.content.individual =	Gallwch hawlio 3% y flwyddyn o 6 Ebrill 2020 ymlaen ar gostau cymhwysol, a bydd cyfnod y lwfans yn dod i ben 33 mlynedd a thraean ar ôl yr hwyraf o’r canlynol:
+structureBuildingQualifyingAmount.details.content.agent =	Gall eich cleient hawlio 3% y flwyddyn o 6 Ebrill 2020 ymlaen ar gostau cymhwysol, a bydd cyfnod y lwfans yn dod i ben 33 mlynedd a thraean ar ôl yr hwyraf o’r canlynol:
+structureBuildingQualifyingAmount.details.l1 =	y dyddiad daeth y strwythur i ddefnydd dibreswyl am y tro cyntaf
+structureBuildingQualifyingAmount.details.l2 =	y dyddiad y codir y gwariant cymhwysol
+structureBuildingQualifyingAmount.input.legend =	Beth yw cyfanswm y swm cymhwysol?
+
+structureBuildingQualifyingAmount.error.nonNumeric =	Nodwch gyfanswm y swm cymhwysol ar gyfer lwfans strwythurau ac adeiladau uwch
+structureBuildingQualifyingAmount.error.required =	Nodwch gyfanswm y swm cymhwysol ar gyfer lwfans strwythurau ac adeiladau uwch
+structureBuildingQualifyingAmount.error.twoDecimalPlaces =	Gall cyfanswm y swm cymhwysol ar gyfer lwfans strwythurau ac adeiladau uwch gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+structureBuildingQualifyingAmount.error.outOfRange =	Nodwch swm rhwng £{0} a £{1}
+structureBuildingQualifyingAmount.change.hidden =	Swm cymhwysol
+
+structureBuildingAllowanceAddress.title = 	Ble mae’r strwythur neu’r adeilad newydd wedi’i leoli?
+structureBuildingAllowanceAddress.heading =	Ble mae’r strwythur neu’r adeilad newydd wedi’i leoli?
+structureBuildingAllowanceAddress.caption =	Lwfans strwythurau ac adeiladau
+structureBuildingAllowanceAddress.buildingName.legend =	Enw’r adeilad
+structureBuildingAllowanceAddress.buildingName.error.required =	Nodwch enw adeilad ar gyfer y strwythur neu adeilad
+structureBuildingAllowanceAddress.buildingName.error.max =	Mae’n rhaid i enw’r adeilad ar gyfer y strwythur neu adeilad cymhwysol beidio â bod yn fwy na 90 o gymeriadau
+structureBuildingAllowanceAddress.buildingNumber.legend =	Rhif yr adeilad
+structureBuildingAllowanceAddress.buildingNumber.error.required =	Nodwch rif adeilad ar gyfer y strwythur neu adeilad
+structureBuildingAllowanceAddress.buildingNumber.error.max =	Nodwch rif ar gyfer y strwythur neu adeilad cymhwysol
+structureBuildingAllowanceAddress.postcode.legend =	Cod post
+structureBuildingAllowanceAddress.postcode.error.required =	Nodwch god post ar gyfer y strwythur neu adeilad
+structureBuildingAllowanceAddress.postcode.error.invalid =	Nodwch god post cyflawn yn y DU ar gyfer y strwythur neu adeilad cymhwysol
+structureBuildingAllowanceAddress.checkYourAnswersLabel =	Cyfeiriad
+structureBuildingAllowanceAddress.change.hidden =	Cyfeiriad
+structureBuildingAllowanceAddress.duplicateSba =	Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod
+structureBuildingAllowanceAddress.duplicateEsba =	Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod ar gyfer y lwfans strwythurau ac adeiladau uwch
+structureBuildingAllowanceAddress.hint =	Gallwch ychwanegu un cyfeiriad yn unig ar gyfer pob hawliad
+
+sbaCheckYourAnswers.title =	sbaCheckYourAnswers
+sbaCheckYourAnswers.heading =	sbaCheckYourAnswers
+
+sbaClaims.title.individual =	Eich hawliadau am lwfans strwythurau ac adeiladau
+sbaClaims.heading.individual =	Eich hawliadau am lwfans strwythurau ac adeiladau
+sbaClaims.title.agent =	Hawliadau’ch cleient am lwfans strwythurau ac adeiladau
+sbaClaims.heading.agent =	Hawliadau’ch cleient am lwfans strwythurau ac adeiladau
+
+sbaClaims.error.required.individual	= Dewiswch ‘Iawn’ os ydych am ychwanegu hawliad arall
+sbaClaims.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient am ychwanegu hawliad arall
+sbaClaims.legend =	A ydych chi am ychwanegu hawliad arall?
+
+sbaRemoveConfirmation.title =	A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau?
+sbaRemoveConfirmation.heading =	A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau?
+sbaRemoveConfirmation.error.required.individual =	Dewiswch ‘Iawn’ os ydych am ddileu’r hawliad
+sbaRemoveConfirmation.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient am ddileu’r hawliad
+
+totalIncome.body.individual	= Dyma’r swm cyn i unrhyw ddidyniadau gael eu gwneud.
+totalIncome.body.agent =	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
+totalIncome.change.hidden.agent =	beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
+ukPropertySelect.heading.message.agent =	Dewiswch bob un sy’n berthnasol i’ch cleient
+ukPropertySelect.property.rentals.hint =	Fflat, tŷ neu fan preswyl arall sy’n cael ei roi ar osod i denantiaid ar sail tymor byr neu dymor hir. Dylech gynnwys rhentu eiddo a thir arall gan gynnwys llynnoedd, tiroedd hamdden ac eiddo dibreswyl
+ukPropertySelect.rent.a.room.hint =	Ystafell wedi’i dodrefnu yn eich prif gartref sy’n cael ei rhoi ar osod i denantiaid.
+ukPropertySelect.error.required.individual =	Dewiswch y math o eiddo sydd gennych
+ukPropertySelect.error.required.agent =	Dewiswch y math o eiddo sydd gan eich cleient
+ukPropertySelect.checkYourAnswersLabel.agent =	Pa eiddo rhent sydd gan eich cleient yn y DU?
+ukPropertySelect.change.hidden.agent =	pa eiddo rhent sydd gan eich cleient yn y DU?
