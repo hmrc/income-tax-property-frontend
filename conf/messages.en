@@ -1270,7 +1270,6 @@ ukRentARoom.expensesIntro.li1.individual = rents, rates and insurance
 ukRentARoom.expensesIntro.li2.individual = property repairs and maintenance
 ukRentARoom.expensesIntro.li3.individual = legal, management or other professional fees
 ukRentARoom.expensesIntro.li4.individual = costs of services, including wages
-ukRentARoom.expensesIntro.li5.individual = residential property financial costs
 ukRentARoom.expensesIntro.li7.individual = other allowable property expenses
 
 
@@ -1278,7 +1277,6 @@ ukRentARoom.expensesIntro.li1.agent = rents, rates and insurance
 ukRentARoom.expensesIntro.li2.agent = property repairs and maintenance
 ukRentARoom.expensesIntro.li3.agent = legal, management or other professional fees
 ukRentARoom.expensesIntro.li4.agent = costs of services, including wages
-ukRentARoom.expensesIntro.li5.agent = residential property financial costs
 ukRentARoom.expensesIntro.li6.agent = unused residential property finance costs brought forward
 ukRentARoom.expensesIntro.li7.agent = other allowable property expenses
 
@@ -1362,16 +1360,6 @@ consolidatedRRExpenses.indiv = Claim individual expenses
 
 consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
 consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
-
-############ Unused Residential Property Finance Costs #########
-ukrentaroom.expenses.residentialPropertyFinanceCosts.title.agent = Residential property finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.agent = Residential property finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.label.agent = How much did your client spend on residential property finance costs?
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.required.agent = Enter how much your client spent on residential finance costs
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.nonNumeric.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.twoDecimalPlaces.agent = The amount your client spent on residential finance costs can only include pounds and pence, for example £600 or £600.20
-ukrentaroom.expenses.residentialPropertyFinanceCosts.error.outOfRange.agent = Enter an amount between £{0} and £{1}
-ukrentaroom.expenses.residentialPropertyFinanceCosts.change.hidden.agent = Enter how much your client spent on residential finance costs
 
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
@@ -1736,3 +1724,10 @@ haveYouFinishedThisSection.heading = Have you finished this section?
 haveYouFinishedThisSection.title = Have you finished this section?
 haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
 haveYouFinishedThisSection.error.required = Select yes if you have completed this section
+
+ukrentaroom.raRAdjustmentsComplete.title = Have you completed this section?
+ukrentaroom.raRAdjustmentsComplete.heading = Have you completed this section?
+
+rentalsAdjustmentsComplete.title = Have you finished this section?
+rentalsAdjustmentsComplete.heading = Have you finished this section?
+rentalsAdjustmentsComplete.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,61 +14,73 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.expenses
+package controllers.adjustments
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
-import forms.ukrentaroom.expenses.ResidentialPropertyFinanceCostsFormProvider
-import models.Mode
+import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
+import models.{JourneyContext, Mode}
 import navigation.Navigator
-import pages.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRPage
+import pages.adjustments.RentalsAdjustmentsCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.expenses.ResidentialPropertyFinanceCostsRRView
+import views.html.adjustments.RentalsAdjustmentsCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ResidentialPropertyFinanceCostsRRController @Inject() (
+class RentalsAdjustmentsCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ResidentialPropertyFinanceCostsFormProvider,
+  journeyAnswersService: JourneyAnswersService,
+  formProvider: RentalsAdjustmentsCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ResidentialPropertyFinanceCostsRRView
+  view: RentalsAdjustmentsCompleteView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
+  val form = formProvider()
+
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ResidentialPropertyFinanceCostsRRPage) match {
+      val preparedForm = request.userAnswers.get(RentalsAdjustmentsCompletePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ResidentialPropertyFinanceCostsRRPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsAdjustmentsCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
+              _ <- journeyAnswersService
+                     .setStatus(
+                       ctx = JourneyContext(
+                         taxYear = taxYear,
+                         mtditid = request.user.mtditid,
+                         nino = request.user.nino,
+                         journeyName = "rental-adjustments"
+                       ),
+                       status = statusForPage(value),
+                       user = request.user
+                     )
             } yield Redirect(
-              navigator
-                .nextPage(ResidentialPropertyFinanceCostsRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(RentalsAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
