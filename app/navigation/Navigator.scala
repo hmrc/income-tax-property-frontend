@@ -39,7 +39,7 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
@@ -231,11 +231,12 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
     case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
-    case RaRAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case RaRAdjustmentsCompletePage     => taxYear => _ => _ => SummaryController.show(taxYear)
     case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case AboutPropertyCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case AboutPropertyCompletePage      => taxYear => _ => _ => SummaryController.show(taxYear)
 
-    case _ => _ => _ => _ => IndexController.onPageLoad
+    case AboutPropertyRentalsSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case _                                       => _ => _ => _ => IndexController.onPageLoad
 
   }
 
