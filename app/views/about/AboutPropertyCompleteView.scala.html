@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.adjustments.routes._
+@import controllers.about.routes._
 @import viewmodels.LegendSize
 
 @this(
@@ -29,14 +29,14 @@ govukButton: GovukButton
 @(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
-@formHelper(action = RentalsAdjustmentsCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+@formHelper(action = AboutPropertyCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 @if(form.errors.nonEmpty) {
 @govukErrorSummary(ErrorSummaryViewModel(form))
 }
 
 @govukRadios(
 RadiosViewModel.yesNo(
-field = form("rentalsAdjustmentsCompleteYesOrNo"),
+field = form("aboutPropertyCompleteYesOrNo"),
 legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
 ).withHint(HintViewModel(messages("haveYouFinishedThisSection.hint")))
 )
