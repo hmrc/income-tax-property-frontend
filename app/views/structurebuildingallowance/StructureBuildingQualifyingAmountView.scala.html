@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.structuresbuildingallowance.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
-@import controllers.structuresbuildingallowance.routes
 
 @this(
     layout: templates.Layout,
@@ -35,7 +35,7 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-        <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
+
         <h1 class="govuk-heading-l">@messages("structureBuildingQualifyingAmount.heading")</h1>
         <p class="govuk-body">@messages(s"structureBuildingQualifyingAmount.details.content.$individualOrAgent")</p>
 

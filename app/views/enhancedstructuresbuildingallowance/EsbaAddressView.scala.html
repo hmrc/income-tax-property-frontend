@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.enhancedstructuresbuildingallowance.routes
+@import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 
 @this(
@@ -41,19 +41,19 @@
             @govukInput(
                 InputViewModel(
                     field = form("buildingName"),
-                    label = LabelViewModel(messages("esbaAddress.buildingName.legend")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--l")
+                    label = LabelViewModel(messages("esbaAddress.buildingName.legend")).asPageHeading(LabelSize.Medium)
                 )
             )
             @govukInput(
                 InputViewModel(
                     field = form("buildingNumber"),
-                    label = LabelViewModel(messages("esbaAddress.buildingNumber.legend")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--l")
+                    label = LabelViewModel(messages("esbaAddress.buildingNumber.legend")).asPageHeading(LabelSize.Medium)
                 ).withWidth(Fixed5)
             )
             @govukInput(
                 InputViewModel(
                     field = form("postcode"),
-                    label = LabelViewModel(messages("esbaAddress.postcode.legend")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--l")
+                    label = LabelViewModel(messages("esbaAddress.postcode.legend")).asPageHeading(LabelSize.Medium)
                 ).withWidth(Fixed10)
             )
 
