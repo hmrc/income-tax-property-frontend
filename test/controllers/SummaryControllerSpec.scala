@@ -43,7 +43,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
   private val taxYear = LocalDate.now.getYear
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
 
-  val fakeSessionRecovery = new SessionRecovery {
+  val fakeSessionRecovery: SessionRecovery = new SessionRecovery {
     override def withUpdatedData(taxYear: Int)(
       block: OptionalDataRequest[AnyContent] => Future[Result]
     )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
@@ -95,6 +95,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           taxYear,
           propertyAboutItems,
           Seq.empty[TaskListItem],
+          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
       }
@@ -143,6 +144,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           taxYear,
           propertyAboutItems,
           propertyRentalsItems,
+          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
       }
@@ -181,6 +183,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         contentAsString(result) mustEqual view(
           taxYear,
           propertyAboutItems,
+          Seq.empty[TaskListItem],
           Seq.empty[TaskListItem],
           Seq.empty[TaskListItem]
         )(request, messages(application)).toString
@@ -233,7 +236,60 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           taxYear,
           propertyAboutItems,
           Seq.empty[TaskListItem],
-          ukRentARoomItems
+          ukRentARoomItems,
+          Seq.empty[TaskListItem]
+        )(request, messages(application)).toString
+      }
+    }
+
+    "must display the UK combined section if rent a room  & rentals are selected in the about section" in {
+      val year = LocalDate.now().getYear
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+      val businessService = mock[BusinessService]
+
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
+
+      val combinedItems: Seq[TaskListItem] = Seq(
+        TaskListItem(
+          "summary.about",
+          controllers.routes.SummaryController.show(taxYear),
+          TaskListTag.NotStarted,
+          "combined_about_link"
+        )
+      )
+
+      val userAnswersWithUkRentARoom = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.RentARoom, UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithUkRentARoom), isAgent = false)
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[SessionRecovery].toInstance(fakeSessionRecovery))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SummaryController.show(year).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[SummaryView]
+
+        status(result) mustEqual OK
+        contentAsString(result) must include("UK property rentals and rent a room")
+        contentAsString(result) mustEqual view(
+          taxYear,
+          propertyAboutItems,
+          Seq.empty[TaskListItem],
+          Seq.empty[TaskListItem],
+          combinedItems
         )(request, messages(application)).toString
       }
     }
