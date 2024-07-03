@@ -50,8 +50,9 @@ class SummaryController @Inject() (
             SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
           val startItems = SummaryPage.propertyAboutItems(request.userAnswers, taxYear)
+          val combinedItems = SummaryPage.createCombinedRows(request.userAnswers, taxYear)
           Future.successful(
-            Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows))
+            Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems))
           )
         case _ =>
           Future.failed(PropertyDataError)

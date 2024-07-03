@@ -48,7 +48,10 @@ case object SummaryPage {
     val isPropertyRentalsSelected =
       userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
 
-    if (isPropertyRentalsSelected) {
+    val isRentARoomSelected =
+      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+
+    if (isPropertyRentalsSelected && !isRentARoomSelected) {
       claimPropertyIncomeAllowance
         .collect {
           case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
@@ -83,15 +86,31 @@ case object SummaryPage {
     val ukRentARoomAllowances: TaskListItem = ukRentARoomAllowancesItem(userAnswers, taxYear)
     val ukRentARoomAdjustments: TaskListItem = ukRentARoomAdjustmentsItem(userAnswers, taxYear)
     val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+    val isPropertyRentalsSelected =
+      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
 
     val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimRRROrExpenses)
-    if (isRentARoomSelected) {
+    if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {
           case true  => Seq(ukRentARoomAbout)
           case false => Seq(ukRentARoomAbout, ukRentARoomExpenses, ukRentARoomAllowances, ukRentARoomAdjustments)
         }
         .getOrElse(Seq(ukRentARoomAbout))
+    } else {
+      Seq.empty[TaskListItem]
+    }
+  }
+
+  def createCombinedRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
+    val combinedAbout: TaskListItem = combinedAboutItem(userAnswers, taxYear)
+
+    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+    val isPropertyRentalsSelected =
+      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
+
+    if (isRentARoomSelected && isPropertyRentalsSelected) {
+      Seq(combinedAbout)
     } else {
       Seq.empty[TaskListItem]
     }
@@ -238,6 +257,14 @@ case object SummaryPage {
         }
       },
       "rent_a_room_about_link"
+    )
+
+  private def combinedAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.about",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "combined_about_link"
     )
 
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =

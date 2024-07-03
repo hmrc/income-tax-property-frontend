@@ -22,7 +22,7 @@
         govukTag: GovukTag
 )
 
-@(taxYear: Int, startItems: Seq[TaskListItem], ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, startItems: Seq[TaskListItem], ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem], combinedItems: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
 
     @taskListSection(items: Seq[TaskListItem]) = {
         <ol class="govuk-task-list">
@@ -63,6 +63,11 @@
         @if(ukRentARoomRows.nonEmpty) {
             <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
             @taskListSection(ukRentARoomRows)
+        }
+
+        @if(combinedItems.nonEmpty) {
+            <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
+            @taskListSection(combinedItems)
         }
     }
 
