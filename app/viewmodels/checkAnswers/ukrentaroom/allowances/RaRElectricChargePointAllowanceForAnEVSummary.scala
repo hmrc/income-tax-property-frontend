@@ -27,28 +27,21 @@ import viewmodels.implicits._
 
 object RaRElectricChargePointAllowanceForAnEVSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(RaRElectricChargePointAllowanceForAnEVPage).flatMap {
-      case ElectricChargePointAllowance(true, amount) =>
-        Some(SummaryListRowViewModel(
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(RaRElectricChargePointAllowanceForAnEVPage).flatMap { amount =>
+      Some(
+        SummaryListRowViewModel(
           key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel(
+              "site.change",
+              routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url
+            )
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
-          )))
-      case ElectricChargePointAllowance(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("electricChargePointAllowanceForAnEV.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.RaRElectricChargePointAllowanceForAnEVController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("electricChargePointAllowanceForAnEV.change.hidden"))
           )
-        ))
-      case _ => Option.empty[SummaryListRow]
+        )
+      )
     }
-  }
 
 }
-

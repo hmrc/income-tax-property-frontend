@@ -29,30 +29,21 @@ class ElectricChargePointAllowanceForAnEVFormProvider @Inject() extends Mappings
   private val minElectricChargePointAllowanceForAnEVAmount: Int = 0
   private val maxElectricChargePointAllowanceForAnEVAmount: Int = 100000000
 
-  def apply(individualOrAgent: String): Form[ElectricChargePointAllowance] =
-    Form[ElectricChargePointAllowance](
-      mapping(
-        "electricChargePointAllowanceYesOrNo" -> boolean(
-          s"electricChargePointAllowanceForAnEvYesNo.error.required.$individualOrAgent"
-        ),
-        "electricChargePointAllowanceAmount" -> {
-          mandatoryIfTrue(
-            "electricChargePointAllowanceYesOrNo",
-            currency(
-              s"electricChargePointAllowanceForAnEV.allowance.error.required.$individualOrAgent",
-              s"electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.$individualOrAgent",
-              s"electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.$individualOrAgent"
+  def apply(individualOrAgent: String): Form[BigDecimal] =
+    Form[BigDecimal](
+      "electricChargePointAllowanceAmount" ->
+        currency(
+          s"electricChargePointAllowanceForAnEV.allowance.error.required.$individualOrAgent",
+          s"electricChargePointAllowanceForAnEV.allowance.error.twoDecimalPlaces.$individualOrAgent",
+          s"electricChargePointAllowanceForAnEV.allowance.error.nonNumeric.$individualOrAgent"
+        )
+          .verifying(
+            inRange(
+              BigDecimal(minElectricChargePointAllowanceForAnEVAmount),
+              BigDecimal(maxElectricChargePointAllowanceForAnEVAmount),
+              s"electricChargePointAllowanceForAnEV.allowance.error.outOfRange"
             )
-              .verifying(
-                inRange(
-                  BigDecimal(minElectricChargePointAllowanceForAnEVAmount),
-                  BigDecimal(maxElectricChargePointAllowanceForAnEVAmount),
-                  s"electricChargePointAllowanceForAnEV.allowance.error.outOfRange"
-                )
-              )
           )
-        }
-      )(ElectricChargePointAllowance.apply)(ElectricChargePointAllowance.unapply)
     )
 
 }
