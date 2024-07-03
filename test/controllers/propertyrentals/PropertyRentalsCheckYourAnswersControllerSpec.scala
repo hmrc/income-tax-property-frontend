@@ -41,7 +41,8 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
   private val propertySubmissionService = mock[PropertySubmissionService]
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
+  def onwardRoute: Call =
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/property-rentals/about-section-finished-yes-no")
 
   "Check Your Answers Controller" - {
 
@@ -77,11 +78,13 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
-      val userAnswers = UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage, true).get
+      val userAnswers =
+        UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage, true).get
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
-      val propertyRentalsAbout = PropertyRentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
+      val propertyRentalsAbout =
+        PropertyRentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
 
       when(
         propertySubmissionService

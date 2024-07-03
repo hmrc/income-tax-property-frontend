@@ -476,3 +476,7 @@ POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes
 GET        /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onPageLoad(taxYear: Int)
 
 POST       /:taxYear/property-rentals/income-section-finished-yes-no                            controllers.propertyrentals.income.IncomeSectionFinishedController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear: Int)
+
+POST       /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onSubmit(taxYear: Int)
