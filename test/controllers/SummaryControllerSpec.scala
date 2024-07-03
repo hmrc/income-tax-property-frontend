@@ -257,7 +257,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           "summary.about",
           controllers.routes.SummaryController.show(taxYear),
           TaskListTag.NotStarted,
-          "combined_about_link"
+          "combined_rentals_and_rent_a_room_about_link"
         )
       )
 

@@ -45,11 +45,8 @@ case object SummaryPage {
     val enhancedStructuresAndBuildingAllowance: TaskListItem = rentalsEsbaItem(userAnswers, taxYear)
 
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage))
-    val isPropertyRentalsSelected =
-      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
-
-    val isRentARoomSelected =
-      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
+    val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
+    val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     if (isPropertyRentalsSelected && !isRentARoomSelected) {
       claimPropertyIncomeAllowance
@@ -85,9 +82,8 @@ case object SummaryPage {
     val ukRentARoomExpenses: TaskListItem = ukRentARoomExpensesItem(userAnswers, taxYear)
     val ukRentARoomAllowances: TaskListItem = ukRentARoomAllowancesItem(userAnswers, taxYear)
     val ukRentARoomAdjustments: TaskListItem = ukRentARoomAdjustmentsItem(userAnswers, taxYear)
-    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
-    val isPropertyRentalsSelected =
-      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
+    val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
+    val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimRRROrExpenses)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
@@ -102,17 +98,14 @@ case object SummaryPage {
     }
   }
 
-  def createCombinedRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
-    val combinedAbout: TaskListItem = combinedAboutItem(userAnswers, taxYear)
-
-    val isRentARoomSelected = userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.RentARoom)))
-    val isPropertyRentalsSelected =
-      userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(UKPropertySelect.PropertyRentals)))
+  def createCombinedRentalsAndRaRRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
+    val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
+    val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     if (isRentARoomSelected && isPropertyRentalsSelected) {
-      Seq(combinedAbout)
+      Seq(combinedRentalsAndRaRAboutItem(taxYear))
     } else {
-      Seq.empty[TaskListItem]
+      Seq.empty
     }
   }
 
@@ -259,12 +252,12 @@ case object SummaryPage {
       "rent_a_room_about_link"
     )
 
-  private def combinedAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  private def combinedRentalsAndRaRAboutItem(taxYear: Int) =
     TaskListItem(
       "summary.about",
       controllers.routes.SummaryController.show(taxYear),
       TaskListTag.NotStarted,
-      "combined_about_link"
+      "combined_rentals_and_rent_a_room_about_link"
     )
 
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
@@ -324,5 +317,8 @@ case object SummaryPage {
       },
       "rent_a_room_adjustments_link"
     )
+
+  private def isSelected(userAnswers: Option[UserAnswers], select: UKPropertySelect): Boolean =
+    userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(select)))
 
 }
