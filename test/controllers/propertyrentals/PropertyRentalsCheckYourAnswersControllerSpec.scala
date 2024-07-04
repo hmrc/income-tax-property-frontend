@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals
 
-import audit.PropertyRentalsAbout
+import audit.RentalsAbout
 import base.SpecBase
 import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
@@ -42,7 +42,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
   private val propertySubmissionService = mock[PropertySubmissionService]
 
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2024/property-rentals/about-section-finished-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/about-section-finished-yes-no")
 
   "Check Your Answers Controller" - {
 
@@ -84,7 +84,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
       val propertyRentalsAbout =
-        PropertyRentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
+        RentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
 
       when(
         propertySubmissionService

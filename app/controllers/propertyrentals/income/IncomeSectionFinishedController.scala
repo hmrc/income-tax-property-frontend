@@ -16,7 +16,6 @@
 
 package controllers.propertyrentals.income
 
-import controllers.ControllerUtils
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.propertyrentals.income.IncomeSectionFinishedFormProvider

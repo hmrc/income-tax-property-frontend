@@ -16,12 +16,10 @@
 
 package connectors
 
-import audit.PropertyRentalsAdjustment
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.propertyrentals.income.SaveIncome
-import models.{EsbasWithSupportingQuestions, FetchedBackendData, JourneyContext, User}
+import models.{FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
