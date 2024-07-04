@@ -480,3 +480,4 @@ POST       /:taxYear/property-rentals/income-section-finished-yes-no            
 GET        /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear: Int)
 
 POST       /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onSubmit(taxYear: Int)
+GET        /:taxYear/property-rentals-and-rent-a-room/start                         controllers.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
