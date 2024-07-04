@@ -15,25 +15,26 @@
  *@
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukButton: GovukButton,
-govukSummaryList: GovukSummaryList,
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukButton: GovukButton,
+        govukSummaryList: GovukSummaryList,
 )
 
 @(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
+    @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
-<h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-    @formHelper(action = controllers.adjustments.routes.AdjustmentsCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
+        <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+        @formHelper(action = controllers.adjustments.routes.AdjustmentsCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
-        @govukSummaryList(list)
+            @govukSummaryList(list)
 
-        @govukButton(
-            ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+            )
+        }
     }
-}
 
 
