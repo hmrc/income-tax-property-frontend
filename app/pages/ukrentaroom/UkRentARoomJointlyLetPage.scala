@@ -20,9 +20,9 @@ import models.{PropertyType, RentARoom, RentalsAndRentARoom}
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case class UkRentARoomJointlyLetPage(journeyType: PropertyType) extends QuestionPage[Boolean] {
+case class UkRentARoomJointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  private val jointlyLetAboutPath = journeyType match {
+  private val jointlyLetAboutPath = propertyType match {
     case RentARoom           => PageConstants.rentARoomAbout
     case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomAbout
   }
