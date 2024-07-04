@@ -16,41 +16,36 @@
 
 @import viewmodels.LegendSize
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukDateInput: GovukDateInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukDateInput: GovukDateInput,
+        govukButton: GovukButton
 )
 
 @(form: Form[_], taxYear: Int, index: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("esbaQualifyingDate.title"))) {
 
-<h1 class="govuk-heading-l">
-                <span class="govuk-caption-m">
-                  @messages("esbaQualifyingDate.h1")
-                </span>
     <h1 class="govuk-heading-l">@messages("esbaQualifyingDate.title")</h1>
-</h1>
-<details class="govuk-details" data-module="govuk-details" open="">
-    <summary class="govuk-details__summary">
-                      <span class="govuk-details__summary-text">
-                          @messages("esbaQualifyingDate.summary")
-                    </span></summary>
+    <details class="govuk-details" data-module="govuk-details" open="">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+            @messages("esbaQualifyingDate.summary")
+            </span></summary>
 
-    <div class="govuk-details__text">
+        <div class="govuk-details__text">
 
-        <p class="govuk-body">@messages("esbaQualifyingDate.p")</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("esbaQualifyingDate.li1")</li>
-            <li>@messages("esbaQualifyingDate.li2")</li>
-            <li>@messages("esbaQualifyingDate.li3")</li>
-            <li>@messages("esbaQualifyingDate.li4")</li>
-        </ul>
+            <p class="govuk-body">@messages("esbaQualifyingDate.p")</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>@messages("esbaQualifyingDate.li1")</li>
+                <li>@messages("esbaQualifyingDate.li2")</li>
+                <li>@messages("esbaQualifyingDate.li3")</li>
+                <li>@messages("esbaQualifyingDate.li4")</li>
+            </ul>
 
-    </div>
-</details>
+        </div>
+    </details>
     @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onSubmit(taxYear, index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -59,7 +54,7 @@
 
         @govukDateInput(
             DateViewModel(
-                field  = form("esbaQualifyingDate"),
+                field = form("esbaQualifyingDate"),
                 legend = LegendViewModel(messages("esbaQualifyingDate.heading")).asPageHeading(LegendSize.Medium)
             )
             .withHint(HintViewModel(messages("esbaQualifyingDate.hint")))

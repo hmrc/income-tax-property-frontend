@@ -59,7 +59,7 @@ businessDetails.cash	=	Sail arian parod
 checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
 
-ukproperty.caption	=	Ynglŷn ag eiddo yn y DU ar gyfer 6 Ebrill {0} i 5 Ebrill {1}
+ukproperty.caption	= 6 Ebrill {0} i 5 Ebrill {1}
 taxYear.caption = 6 Ebrill {0} i 5 Ebrill {1}
 
 journeyRecovery.continue.title	=	Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth

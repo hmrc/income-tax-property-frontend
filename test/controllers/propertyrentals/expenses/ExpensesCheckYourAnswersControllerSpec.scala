@@ -16,10 +16,10 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.PropertyRentalsExpense
+import audit.RentalsExpense
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes._
-import models.{ConsolidatedExpenses, FetchedBackendData, JourneyContext, UserAnswers}
+import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -29,7 +29,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{JourneyAnswersService, PropertySubmissionService}
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
 
@@ -45,7 +45,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
   def onwardRoute: Call =
     Call(
       "POST",
-      s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/expenses-section-finished-yes-no"
+      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/expenses-section-finished-yes-no"
     )
 
   "ExpensesCheckYourAnswers Controller" - {
@@ -90,7 +90,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
-      val rentalsExpense = PropertyRentalsExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
+      val rentalsExpense = RentalsExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
 
       when(
         propertySubmissionService

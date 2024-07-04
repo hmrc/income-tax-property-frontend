@@ -17,20 +17,21 @@
 @import controllers.ukrentaroom.allowances.routes._
 
 @this(
-  layout: templates.Layout,
-  formHelper: FormWithCSRF,
-  govukButton: GovukButton,
-  govukSummaryList: GovukSummaryList,
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukButton: GovukButton,
+        govukSummaryList: GovukSummaryList,
 )
 
 @(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
-<h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
+    <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-@formHelper(action = RaRAllowancesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
-    @govukSummaryList(list)
-    @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
-}
+    @formHelper(action = RaRAllowancesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @govukSummaryList(list)
+        @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
+    }
 }

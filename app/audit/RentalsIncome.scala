@@ -21,7 +21,7 @@ import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
-case class PropertyRentalsIncome(
+case class RentalsIncome(
   isNonUKLandlord: Boolean,
   incomeFromPropertyRentals: BigDecimal,
   otherIncomeFromProperty: BigDecimal,
@@ -33,9 +33,9 @@ case class PropertyRentalsIncome(
   reversePremiumsReceived: Option[ReversePremiumsReceived]
 )
 
-case object PropertyRentalsIncome extends Gettable[PropertyRentalsIncome] with Settable[PropertyRentalsIncome] {
+case object RentalsIncome extends Gettable[RentalsIncome] with Settable[RentalsIncome] {
 
-  implicit val formats: Format[PropertyRentalsIncome] = Json.format[PropertyRentalsIncome]
+  implicit val formats: Format[RentalsIncome] = Json.format[RentalsIncome]
 
   override def path: JsPath = JsPath \ toString
 

@@ -14,9 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.structuresbuildingallowance.routes
-@import viewmodels.LabelSize
+@import viewmodels.InputWidth._
 
 @this(
         layout: templates.Layout,
@@ -29,7 +28,7 @@
 @(form: Form[_], taxYear: Int, mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("structureBuildingAllowanceAddress.title"))) {
-        <span class="govuk-caption-l">@messages("summary.structuresAndBuildingAllowance")</span>
+
         <h1 class="govuk-heading-l">@messages("structureBuildingAllowanceAddress.heading")</h1>
 
         @formHelper(action = routes.StructuredBuildingAllowanceAddressController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {

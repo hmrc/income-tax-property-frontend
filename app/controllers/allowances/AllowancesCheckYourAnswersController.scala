@@ -16,7 +16,7 @@
 
 package controllers.allowances
 
-import audit.{AuditModel, AuditService, PropertyRentalsAllowance}
+import audit.{RentalsAuditModel, AuditService, RentalsAllowance}
 import controllers.actions._
 import models.JourneyContext
 import models.backend.ServiceError
@@ -66,7 +66,7 @@ class AllowancesCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(PropertyRentalsAllowance) match {
+      request.userAnswers.get(RentalsAllowance) match {
         case Some(allowance) =>
           saveAllowanceForPropertyRentals(taxYear, request, allowance).map {
             case Left(_) => InternalServerError
@@ -83,7 +83,7 @@ class AllowancesCheckYourAnswersController @Inject() (
   private def saveAllowanceForPropertyRentals(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    allowance: PropertyRentalsAllowance
+    allowance: RentalsAllowance
   )(implicit
     hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] = {
@@ -93,13 +93,13 @@ class AllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       journeyName = "property-rental-allowances"
     )
-    propertySubmissionService.saveJourneyAnswers[PropertyRentalsAllowance](context, allowance)
+    propertySubmissionService.saveJourneyAnswers[RentalsAllowance](context, allowance)
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: PropertyRentalsAllowance)(
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentalsAllowance)(
     implicit hc: HeaderCarrier
   ): Unit = {
-    val event = AuditModel[PropertyRentalsAllowance](
+    val event = RentalsAuditModel[RentalsAllowance](
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
