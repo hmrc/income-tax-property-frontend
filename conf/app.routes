@@ -361,10 +361,10 @@ POST       /:taxYear/property-rentals/esba-section-finished-yes-no              
 
 ##### UK RENT A ROOM
 
-GET         /:taxYear/uk-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/uk-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/uk-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+GET         /:taxYear/uk-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
 
 GET         /:taxYear/uk-rent-a-room/claim-expenses-or-rrr                                         controllers.ukrentaroom.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-rent-a-room/claim-expenses-or-rrr                                         controllers.ukrentaroom.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -480,3 +480,10 @@ POST       /:taxYear/property-rentals/income-section-finished-yes-no            
 GET        /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear: Int)
 
 POST       /:taxYear/property-rentals/about-section-finished-yes-no                                  controllers.propertyrentals.AboutPropertyRentalsSectionFinishedController.onSubmit(taxYear: Int)
+
+##### RENTALS AND RENT A ROOM (COMBINED JOURNEY)
+
+GET         /:taxYear/rentals-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
+POST        /:taxYear/rentals-rent-a-room/jointly-let                                                   controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
+GET         /:taxYear/rentals-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)
+POST        /:taxYear/rentals-rent-a-room/change-jointly-let                                            controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)

@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.Mode
+import models.{Mode, RentARoom}
 import navigation.Navigator
 import pages.ukrentaroom.{ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -50,7 +50,7 @@ class ClaimExpensesOrRRRController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage) match {
+      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom)) match {
         case Some(true)  => "jointlyLet"
         case Some(false) => "notJointlyLet"
       }
@@ -60,7 +60,7 @@ class ClaimExpensesOrRRRController @Inject() (
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage) match {
+      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom)) match {
         case Some(true)  => "jointlyLet"
         case Some(false) => "notJointlyLet"
       }

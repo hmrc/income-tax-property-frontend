@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import base.SpecBase
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{ClaimExpensesOrRRR, NormalMode, UserAnswers}
+import models.{ClaimExpensesOrRRR, NormalMode, RentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -46,7 +46,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
   "ClaimExpensesOrRRR Controller" - {
 
     "must return OK and the correct view for a GET" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
+      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true).get
 
       val application = applicationBuilder(userAnswers = Some(answers), isAgent = false).build()
 
@@ -69,7 +69,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers =
         UserAnswers(userAnswersId).set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(true, Some(100.65))).success.value
-      val completeAnswers = userAnswers.set(UkRentARoomJointlyLetPage, true).get
+      val completeAnswers = userAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true).get
       val application = applicationBuilder(userAnswers = Some(completeAnswers), isAgent = false).build()
 
       running(application) {
@@ -91,7 +91,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid data is submitted" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
+      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true).get
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
@@ -117,7 +117,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
-      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage, true).get
+      val answers = emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true).get
       val application = applicationBuilder(userAnswers = Some(answers), isAgent = false).build()
 
       running(application) {

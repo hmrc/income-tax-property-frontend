@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.UkRentARoomJointlyLetFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, User, UserAnswers}
+import models.{NormalMode, RentARoom, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -44,14 +44,12 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
   val taxYear = 2024
 
-  lazy val rentARoomJointlyLetRoute = controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentARoomJointlyLetRoute =
+    controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
-  val scenarios = Table[Boolean, String](
-    ("Is Agent", "AgencyOrIndividual"),
-    (true, "agent"),
-    (false, "individual"))
+  val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
 
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) => {
+  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
     val form = formProvider(agencyOrIndividual)
     val user = User(
       "",
@@ -74,13 +72,16 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
           val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, NormalMode, RentARoom)(
+            DataRequest(request, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(UkRentARoomJointlyLetPage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(UkRentARoomJointlyLetPage(RentARoom), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
 
@@ -92,7 +93,10 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, RentARoom)(
+            DataRequest(request, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
         }
       }
 
@@ -138,7 +142,10 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, RentARoom)(
+            DataRequest(request, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
         }
       }
 
@@ -172,7 +179,6 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
         }
       }
     }
-  }
   }
 
 }
