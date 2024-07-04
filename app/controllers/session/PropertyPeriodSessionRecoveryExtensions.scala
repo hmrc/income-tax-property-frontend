@@ -83,7 +83,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updatePropertyRentalsAboutPages(
       userAnswers: UserAnswers,
-      maybePropertyRentalsAbout: Option[PropertyRentalsAbout]
+      maybePropertyRentalsAbout: Option[RentalsAbout]
     ): Try[UserAnswers] =
       maybePropertyRentalsAbout match {
         case None => Success(userAnswers)
@@ -125,7 +125,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updatePropertyRentalsIncomePages(
       userAnswers: UserAnswers,
-      maybePropertyRentalsIncome: Option[PropertyRentalsIncome]
+      maybePropertyRentalsIncome: Option[RentalsIncome]
     ): Try[UserAnswers] =
       maybePropertyRentalsIncome match {
         case None => Success(userAnswers)
@@ -163,7 +163,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updatePropertyRentalsExpensesPages(
       userAnswers: UserAnswers,
-      maybePropertyRentalsExpenses: Option[PropertyRentalsExpense]
+      maybePropertyRentalsExpenses: Option[RentalsExpense]
     ): Try[UserAnswers] =
       maybePropertyRentalsExpenses match {
         case None => Success(userAnswers)

@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals.income
 
-import audit.PropertyRentalsIncome
+import audit.RentalsIncome
 import base.SpecBase
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
@@ -38,7 +38,7 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
 
   def onwardRoute: Call = Call(
     "GET",
-    s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/income-section-finished-yes-no"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/income-section-finished-yes-no"
   )
 
   "Property Income Check Your Answers Controller" - {
@@ -79,8 +79,8 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
         .set(ExpensesLessThan1000Page, false)
         .flatMap(
           _.set(
-            PropertyRentalsIncome,
-            PropertyRentalsIncome(true, 500, 2, None, None, None, None, None, None)
+            RentalsIncome,
+            RentalsIncome(true, 500, 2, None, None, None, None, None, None)
           )
         )
         .get

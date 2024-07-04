@@ -16,7 +16,7 @@
 
 package controllers.allowances
 
-import audit.{AuditService, PropertyRentalsAllowance}
+import audit.{AuditService, RentalsAllowance}
 import base.SpecBase
 import models.backend.PropertyDetails
 import models.{ElectricChargePointAllowance, UserAnswers}
@@ -41,7 +41,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val onwardRoute: Call = Call(
     "GET",
-    s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/allowances-section-finished-yes-no"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/allowances-section-finished-yes-no"
   )
   val annualInvestmentAllowanceSummaryValue = 100
   val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
@@ -104,8 +104,8 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
       val userAnswers = UserAnswers("allowances-user-answers")
         .set(
-          PropertyRentalsAllowance,
-          PropertyRentalsAllowance(
+          RentalsAllowance,
+          RentalsAllowance(
             capitalAllowancesForACar = None,
             annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
             electricChargePointAllowance = Some(electricChargePointAllowance),

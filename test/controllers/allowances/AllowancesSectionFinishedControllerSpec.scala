@@ -19,7 +19,7 @@ package controllers.allowances
 import base.SpecBase
 import controllers.routes
 import forms.allowances.AllowancesSectionFinishedFormProvider
-import models.{FetchedBackendData, JourneyContext, User, UserAnswers}
+import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -41,7 +41,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
   def onwardRoute: Call =
     Call(
       "POST",
-      s"/update-and-submit-income-tax-return/property/$taxYear/property-rentals/allowances-section-finished-yes-no"
+      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/allowances-section-finished-yes-no"
     )
 
   val formProvider = new AllowancesSectionFinishedFormProvider()
