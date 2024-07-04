@@ -16,7 +16,7 @@
 
 package service
 
-import audit.PropertyRentalsIncome
+import audit.RentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, UKPropertyDetailsError, ServiceError}
@@ -53,8 +53,8 @@ class PropertySubmissionService @Inject() (
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(user.nino, user.mtditid))))
     }
 
-  def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: PropertyRentalsIncome)(implicit
-    hc: HeaderCarrier
+  def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: RentalsIncome)(implicit
+                                                                                           hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] =
     saveJourneyAnswers(ctx, propertyRentalsIncome)
 

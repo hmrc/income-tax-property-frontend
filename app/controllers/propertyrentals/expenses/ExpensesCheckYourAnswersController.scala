@@ -16,7 +16,7 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.{AuditModel, AuditService, PropertyRentalsExpense}
+import audit.{RentalsAuditModel, AuditService, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.JourneyContext
 import models.requests.DataRequest
@@ -76,7 +76,7 @@ class ExpensesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers
-        .get(PropertyRentalsExpense)
+        .get(RentalsExpense)
         .map(propertyRentalsExpense => saveExpenses(taxYear, request, propertyRentalsExpense))
         .getOrElse {
           logger.error("Property Rentals Expense section is not present in userAnswers")
@@ -84,8 +84,8 @@ class ExpensesCheckYourAnswersController @Inject() (
         }
   }
 
-  private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: PropertyRentalsExpense)(implicit
-    hc: HeaderCarrier
+  private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: RentalsExpense)(implicit
+                                                                                                     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
 
@@ -97,10 +97,10 @@ class ExpensesCheckYourAnswersController @Inject() (
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: PropertyRentalsExpense)(
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: RentalsExpense)(
     implicit hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel(
+    val auditModel = RentalsAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,

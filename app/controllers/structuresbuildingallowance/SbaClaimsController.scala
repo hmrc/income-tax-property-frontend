@@ -16,7 +16,7 @@
 
 package controllers.structuresbuildingallowance
 
-import audit.{AuditModel, AuditService}
+import audit.{RentalsAuditModel, AuditService}
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
@@ -122,7 +122,7 @@ class SbaClaimsController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel[SbaInfo](
+    val auditModel = RentalsAuditModel[SbaInfo](
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,

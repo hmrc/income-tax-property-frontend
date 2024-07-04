@@ -16,7 +16,7 @@
 
 package models
 
-import audit.PropertyRentalsAllowance
+import audit.RentalsAllowance
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -65,8 +65,8 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
 
   "Allowances" - {
     "must deserialize from json" in {
-      Json.parse(allowancesJson).validate[PropertyRentalsAllowance] mustBe JsSuccess(
-        PropertyRentalsAllowance(
+      Json.parse(allowancesJson).validate[RentalsAllowance] mustBe JsSuccess(
+        RentalsAllowance(
           capitalAllowancesForACar = None,
           annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
           electricChargePointAllowance = Some(electricChargePointAllowance),

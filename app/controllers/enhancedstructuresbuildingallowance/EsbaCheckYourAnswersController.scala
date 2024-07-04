@@ -16,7 +16,7 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.{AuditModel, AuditService}
+import audit.{RentalsAuditModel, AuditService}
 import controllers.actions._
 import models.requests.DataRequest
 import models.{EsbasWithSupportingQuestions, JourneyContext}
@@ -104,7 +104,7 @@ class EsbaCheckYourAnswersController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel(
+    val auditModel = RentalsAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
