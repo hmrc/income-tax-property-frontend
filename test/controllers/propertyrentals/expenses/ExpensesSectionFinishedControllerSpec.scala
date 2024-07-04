@@ -40,7 +40,7 @@ import scala.concurrent.Future
 class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call =
-    Call("POST", "/update-and-submit-income-tax-return/property/2024/property-rentals/expenses-section-complete-yes-no")
+    Call("POST", "/update-and-submit-income-tax-return/property/2024/rentals/expenses-section-complete-yes-no")
 
   val formProvider = new ExpensesSectionFinishedFormProvider()
   val form = formProvider()

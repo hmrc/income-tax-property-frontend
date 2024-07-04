@@ -16,7 +16,7 @@
 
 package models.propertyrentals.income
 
-import audit.PropertyRentalsIncome
+import audit.RentalsIncome
 import play.api.libs.json.{Json, OFormat}
 
 final case class RentARoomIncome(rentsReceived: BigDecimal)
@@ -68,7 +68,7 @@ final case class SaveIncome(
 object SaveIncome {
   implicit val format = Json.format[SaveIncome]
 
-  def fromPropertyRentalsIncome(propertyRentalsIncome: PropertyRentalsIncome): SaveIncome = {
+  def fromPropertyRentalsIncome(propertyRentalsIncome: RentalsIncome): SaveIncome = {
     val ukOtherPropertyIncome = UkOtherPropertyIncome(
       propertyRentalsIncome.premiumsGrantLease.flatMap(_.premiumsGrantLease),
       propertyRentalsIncome.reversePremiumsReceived.flatMap(_.amount),

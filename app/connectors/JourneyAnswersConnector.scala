@@ -18,7 +18,7 @@ package connectors
 
 import config.FrontendAppConfig
 import connectors.error.ApiError
-import models.{FetchedBackendData, User}
+import models.User
 import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.{JsString, Json}

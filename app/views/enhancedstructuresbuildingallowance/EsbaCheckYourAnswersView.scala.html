@@ -14,8 +14,6 @@
  * limitations under the License.
  *@
 
-@import controllers.enhancedstructuresbuildingallowance.routes
-@import models.requests._
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -27,7 +25,7 @@
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
-    <span class="govuk-caption-l">@messages("summary.enhancedStructuresAndBuildingAllowance")</span>
+    <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
     @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 

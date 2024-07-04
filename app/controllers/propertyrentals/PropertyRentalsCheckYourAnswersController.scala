@@ -16,10 +16,9 @@
 
 package controllers.propertyrentals
 
-import audit.{AuditModel, AuditService, PropertyRentalsAbout}
+import audit.{AuditService, RentalsAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import controllers.routes
 import models.JourneyContext
 import models.requests.DataRequest
 import play.api.Logging
@@ -61,7 +60,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers
-        .get(PropertyRentalsAbout)
+        .get(RentalsAbout)
         .map(propertyRentalsAbout => savePropertyAbout(taxYear, request, propertyRentalsAbout))
         .getOrElse {
           logger.error("PropertyRentalsAbout Section is not present in userAnswers")
@@ -72,7 +71,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
   private def savePropertyAbout(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    propertyRentalsAbout: PropertyRentalsAbout
+    propertyRentalsAbout: RentalsAbout
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
@@ -86,10 +85,10 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsAbout: PropertyRentalsAbout)(
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsAbout: RentalsAbout)(
     implicit hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel(
+    val auditModel = RentalsAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,

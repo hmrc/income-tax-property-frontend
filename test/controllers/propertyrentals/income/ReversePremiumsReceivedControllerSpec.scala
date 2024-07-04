@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/property-rentals/deducting-tax")
+  def onwardRoute = Call("GET", "/rentals/deducting-tax")
   private val taxYear = LocalDate.now.getYear
 
   val formProvider = new ReversePremiumsReceivedFormProvider()

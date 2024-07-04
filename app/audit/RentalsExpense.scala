@@ -16,27 +16,27 @@
 
 package audit
 
-import models.CapitalAllowancesForACar
+import models.ConsolidatedExpenses
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
-case class RentARoomAllowance(
-  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
-  annualInvestmentAllowance: Option[BigDecimal],
-  electricChargePointAllowance: Option[BigDecimal],
-  zeroEmissionCarAllowance: Option[BigDecimal],
-  zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
-  businessPremisesRenovationAllowance: Option[BigDecimal],
-  replacementOfDomesticGoodsAllowance: Option[BigDecimal],
-  otherCapitalAllowance: Option[BigDecimal]
+case class RentalsExpense(
+  consolidatedExpenses: Option[ConsolidatedExpenses],
+  rentsRatesAndInsurance: Option[BigDecimal],
+  repairsAndMaintenanceCosts: Option[BigDecimal],
+  loanInterestOrOtherFinancialCost: Option[BigDecimal],
+  otherProfessionalFees: Option[BigDecimal],
+  costsOfServicesProvided: Option[BigDecimal],
+  propertyBusinessTravelCosts: Option[BigDecimal],
+  otherAllowablePropertyExpenses: Option[BigDecimal]
 )
 
-case object RentARoomAllowance extends Gettable[RentARoomAllowance] {
+case object RentalsExpense extends Gettable[RentalsExpense] {
 
-  implicit val format: Format[RentARoomAllowance] = Json.format[RentARoomAllowance]
+  implicit val formats: Format[RentalsExpense] = Json.format[RentalsExpense]
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentARoomAllowance
+  override def toString: String = PageConstants.propertyRentalsExpense
 }

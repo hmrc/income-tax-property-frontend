@@ -16,10 +16,9 @@
 
 package controllers.propertyrentals.income
 
-import audit.{AuditModel, AuditService, PropertyRentalsIncome}
+import audit.{RentalsAuditModel, AuditService, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import controllers.routes
 import models.JourneyContext
 import models.requests.DataRequest
 import pages.PageConstants
@@ -33,8 +32,6 @@ import viewmodels.checkAnswers.premiumlease._
 import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.income.IncomeCheckYourAnswersView
-import controllers.propertyrentals.income.routes.IncomeSectionFinishedController
-import models.propertyrentals.income.SaveIncome
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -74,7 +71,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
     implicit request =>
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
 
-      request.userAnswers.get(PropertyRentalsIncome) match {
+      request.userAnswers.get(RentalsIncome) match {
         case Some(propertyRentalsIncome) =>
           propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).map {
             case Right(_) =>
@@ -93,10 +90,10 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
       )
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: PropertyRentalsIncome)(
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(
     implicit hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel(
+    val auditModel = RentalsAuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
