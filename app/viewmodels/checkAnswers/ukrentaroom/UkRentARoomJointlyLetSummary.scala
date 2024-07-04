@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.ukrentaroom
 
-import models.{CheckMode, RentARoom, UserAnswers}
+import models.{CheckMode, PropertyType, RentARoom, UserAnswers}
 import pages.ukrentaroom.UkRentARoomJointlyLetPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,8 +26,10 @@ import viewmodels.implicits._
 
 object UkRentARoomJointlyLetSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, userType: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkRentARoomJointlyLetPage(RentARoom)).map { answer =>
+  def row(taxYear: Int, answers: UserAnswers, userType: String, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(UkRentARoomJointlyLetPage(propertyType)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
@@ -36,7 +38,9 @@ object UkRentARoomJointlyLetSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, CheckMode, RentARoom).url
+            controllers.ukrentaroom.routes.UkRentARoomJointlyLetController
+              .onPageLoad(taxYear, CheckMode, propertyType)
+              .url
           )
             .withVisuallyHiddenText(messages("ukRentARoom.jointlyLet.change.hidden"))
         )

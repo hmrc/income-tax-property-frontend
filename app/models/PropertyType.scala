@@ -16,9 +16,7 @@
 
 package models
 
-import pages.PageConstants
 import play.api.mvc.JavascriptLiteral
-import uk.gov.hmrc.govukfrontend.views.viewmodels.pagination.Pagination
 
 sealed trait PropertyType
 
