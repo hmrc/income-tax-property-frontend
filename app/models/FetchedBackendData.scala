@@ -16,8 +16,8 @@
 
 package models
 
-import audit.{PropertyAbout, RentalsAbout, RentalsExpense, RentalsIncome, RentARoomAdjustments, RentARoomAllowance, RentARoomExpenses}
-import pages.PageConstants.esbasWithSupportingQuestions
+import audit._
+import pages.PageConstants.{esbasWithSupportingQuestions, sbasWithSupportingQuestions}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
@@ -51,9 +51,9 @@ object Allowances {
   implicit val format: OFormat[Allowances] = Json.format[Allowances]
 }
 final case class PropertyRentals(
-                                  propertyRentalsIncome: RentalsIncome,
-                                  propertyRentalsExpense: RentalsExpense,
-                                  propertyRentalsAbout: RentalsAbout
+  propertyRentalsIncome: RentalsIncome,
+  propertyRentalsExpense: RentalsExpense,
+  propertyRentalsAbout: RentalsAbout
 )
 object PropertyRentals {
   implicit val format: OFormat[PropertyRentals] = Json.format[PropertyRentals]
@@ -84,11 +84,17 @@ object Sba {
 
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
-  structureBuildingFormGroup: List[Sba]
+  sbaClaims: Option[Boolean],
+  sbas: List[Sba]
 )
 
-object SbasWithSupportingQuestions {
+object SbasWithSupportingQuestions
+  extends Gettable[SbasWithSupportingQuestions] with Settable[SbasWithSupportingQuestions]{
   implicit val format: OFormat[SbasWithSupportingQuestions] = Json.format[SbasWithSupportingQuestions]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = sbasWithSupportingQuestions
 }
 
 final case class EsbasWithSupportingQuestions(
@@ -107,20 +113,20 @@ object EsbasWithSupportingQuestions
 }
 
 final case class FetchedBackendData(
-                                     capitalAllowancesForACar: Option[CapitalAllowancesForACar],
-                                     propertyAbout: Option[PropertyAbout],
-                                     propertyRentalsAbout: Option[RentalsAbout],
-                                     adjustments: Option[Adjustments],
-                                     allowances: Option[Allowances],
-                                     esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-                                     sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
-                                     propertyRentals: Option[PropertyRentals],
-                                     propertyRentalsIncome: Option[RentalsIncome],
-                                     propertyRentalsExpenses: Option[RentalsExpense],
-                                     raRAbout: Option[RaRAbout],
-                                     rarExpenses: Option[RentARoomExpenses],
-                                     raRAdjustments: Option[RentARoomAdjustments],
-                                     rentARoomAllowances: Option[RentARoomAllowance]
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
+  propertyAbout: Option[PropertyAbout],
+  propertyRentalsAbout: Option[RentalsAbout],
+  adjustments: Option[Adjustments],
+  allowances: Option[Allowances],
+  esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
+  sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
+  propertyRentals: Option[PropertyRentals],
+  propertyRentalsIncome: Option[RentalsIncome],
+  propertyRentalsExpenses: Option[RentalsExpense],
+  raRAbout: Option[RaRAbout],
+  rarExpenses: Option[RentARoomExpenses],
+  raRAdjustments: Option[RentARoomAdjustments],
+  rentARoomAllowances: Option[RentARoomAllowance]
 )
 
 object FetchedBackendData {

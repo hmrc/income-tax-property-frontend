@@ -234,7 +234,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimStructureBuildingAllowancePage,
                      sbasWithSupportingQuestions.claimStructureBuildingAllowance
                    )
-            ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup)
+            ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.sbas)
           } yield ua3
       }
 
