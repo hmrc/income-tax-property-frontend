@@ -484,3 +484,8 @@ POST       /:taxYear/uk-rent-a-room/adjustments/check-your-answers              
 GET        /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                   controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes-no                   controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
+
+#################### Rentals And Rent A Room  ##########################
+
+GET        /:taxYear/property-rentals-and-rent-a-room/start                                           controllers.rentalsandrentaroom.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
+
