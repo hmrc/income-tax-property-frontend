@@ -116,7 +116,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "sbasWithSupportingQuestions": {
       |        "claimStructureBuildingAllowance" : true,
-      |        "structureBuildingFormGroup" : [
+      |        "sbaClaims" : true,
+      |        "sbas" : [
       |            {
       |                "structureBuildingQualifyingDate" : "2022-04-03",
       |                "structureBuildingQualifyingAmount" : 3,
@@ -137,8 +138,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |                    "postCode" : "EH1 AB2"
       |                }
       |            }
-      |        ],
-      |        "sbaClaims" : true
+      |        ]
       |        },
       |        "adjustments" : {
       |            "privateUseAdjustment" : 2,

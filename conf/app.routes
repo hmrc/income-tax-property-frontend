@@ -275,11 +275,6 @@ POST        /:taxYear/rentals/structures-buildings-allowance/change-claim-yes-no
 
 GET         /:taxYear/rentals/structures-buildings-allowance/add-claim                                       controllers.structuresbuildingallowance.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/:index/allowance-claim                          controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
-POST        /:taxYear/rentals/structures-buildings-allowance/:index/allowance-claim                          controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
-GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-allowance-claim                   controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
-POST        /:taxYear/rentals/structures-buildings-allowance/:index/change-allowance-claim                   controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
-
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/qualifying-date                          controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/qualifying-date                          controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-qualifying-date                   controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
@@ -290,18 +285,24 @@ POST        /:taxYear/rentals/structures-buildings-allowance/:index/qualifying-a
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-qualifying-amount                 controllers.structuresbuildingallowance.StructureBuildingQualifyingAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/change-qualifying-amount                 controllers.structuresbuildingallowance.StructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
 
+GET         /:taxYear/rentals/structures-buildings-allowance/:index/claim-amount                             controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
+POST        /:taxYear/rentals/structures-buildings-allowance/:index/claim-amount                             controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
+GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-claim-amount                      controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
+POST        /:taxYear/rentals/structures-buildings-allowance/:index/change-claim-amount                      controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
+
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/address                                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/address                                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-address                           controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/change-address                           controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int)
 
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/check-your-answers                       controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
+POST        /:taxYear/rentals/structures-buildings-allowance/check-your-answers                       controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onSubmit(taxYear: Int)
 
 GET         /:taxYear/rentals/structures-buildings-allowance/claims                                          controllers.structuresbuildingallowance.SbaClaimsController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/claims                                          controllers.structuresbuildingallowance.SbaClaimsController.onSubmit(taxYear: Int)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/:index/remove-confirmation                      controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-confirmation                      controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                             controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                             controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
 GET        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                  controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                  controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
@@ -315,15 +316,15 @@ POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/change-cla
 
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/add-claim                              controllers.enhancedstructuresbuildingallowance.EsbaAddClaimController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-amount               controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-amount               controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
-
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-date                 controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-date                 controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, index: Int,mode: Mode = NormalMode)
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-date          controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-date          controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-amount               controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-amount               controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/change-qualifying-amount        controllers.enhancedstructuresbuildingallowance.EsbaQualifyingAmountController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/claim-amount                    controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, index: Int)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/claim-amount                    controllers.enhancedstructuresbuildingallowance.EsbaClaimAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int)
@@ -341,8 +342,8 @@ POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/check-your-
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/claims                                 controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/claims                                 controllers.enhancedstructuresbuildingallowance.EsbaClaimsController.onSubmit(taxYear: Int)
 
-GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/remove-confirmation             controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/remove-claim                    controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/remove-claim                    controllers.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
 
 GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                         controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                         controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onSubmit(taxYear: Int)
