@@ -29,7 +29,7 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, jointlyLet: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, maxIncome: BigDecimal)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRRR.title"))) {
 
@@ -41,7 +41,7 @@
 
             <h1 class="govuk-heading-l">@messages(s"claimExpensesOrRRR.heading.${individualOrAgent}")</h1>
 
-            <p class="govuk-body">@messages(s"claimExpensesOrRRR.para1.${jointlyLet}.${individualOrAgent}")</p>
+            <p class="govuk-body">@messages(s"claimExpensesOrRRR.para1.jointlyLet.$individualOrAgent", maxIncome)</p>
 
             @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
