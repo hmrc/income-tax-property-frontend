@@ -255,7 +255,7 @@ case object SummaryPage {
   private def combinedRentalsAndRaRAboutItem(taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.routes.SummaryController.show(taxYear),
+      controllers.rentalsandrentaroom.routes.RentalsAndRentARoomStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "combined_rentals_and_rent_a_room_about_link"
     )
