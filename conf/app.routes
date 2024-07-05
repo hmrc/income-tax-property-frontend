@@ -487,5 +487,5 @@ POST       /:taxYear/uk-rent-a-room/adjustments/adjustments-section-complete-yes
 
 #################### Rentals And Rent A Room  ##########################
 
-GET        /:taxYear/property-rentals-and-rent-a-room/start                                           controllers.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
+GET        /:taxYear/property-rentals-and-rent-a-room/start                                           controllers.rentalsandrentaroom.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
 

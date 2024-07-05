@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.rentalsandrentaroom
 
 import base.SpecBase
+import controllers.routes
 import models.User
 import models.requests.DataRequest
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RentalsAndRentARoomStartView
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
+import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
 class RentalsAndRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
   "RentalsAndRentARoomStart Controller" - {
@@ -44,7 +45,10 @@ class RentalsAndRentARoomStartControllerSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.RentalsAndRentARoomStartController.onPageLoad(taxYear).url)
+          val request = FakeRequest(
+            GET,
+            controllers.rentalsandrentaroom.routes.RentalsAndRentARoomStartController.onPageLoad(taxYear).url
+          )
 
           val result = route(application, request).value
           val dataRequest =
