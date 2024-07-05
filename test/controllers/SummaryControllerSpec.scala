@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.session.SessionRecovery
 import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
-import models.{NormalMode, UKPropertySelect}
+import models.{NormalMode, RentARoom, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -203,7 +203,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       val ukRentARoomItems: Seq[TaskListItem] = Seq(
         TaskListItem(
           "summary.about",
-          controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
+          controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom),
           TaskListTag.NotStarted,
           "rent_a_room_about_link"
         )

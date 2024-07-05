@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import base.SpecBase
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{BusinessConstants, ClaimExpensesOrRRR, NormalMode, UserAnswers}
+import models.{BusinessConstants, ClaimExpensesOrRRR, NormalMode, RentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -49,7 +49,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage, true)
+        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, BigDecimal(5000))
       } yield withTotalIncome
 
@@ -80,7 +80,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
       val maxIncome = BigDecimal(5000)
 
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage, false)
+        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, maxIncome)
         withClaimExpenses <-
           withTotalIncome.set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65)))
@@ -107,8 +107,9 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must redirect to the next page when valid data is submitted" in {
+
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage, true)
+        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, BigDecimal(5000))
       } yield withTotalIncome
 
@@ -137,9 +138,10 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
+
       val maxIncome = BigDecimal(8000)
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage, false)
+        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, maxIncome)
       } yield withTotalIncome
 

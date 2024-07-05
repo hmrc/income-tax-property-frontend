@@ -257,7 +257,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(raRAbout) =>
           for {
-            ua1 <- userAnswers.set(UkRentARoomJointlyLetPage, raRAbout.ukRentARoomJointlyLet)
+            ua1 <- userAnswers.set(UkRentARoomJointlyLetPage(RentARoom), raRAbout.ukRentARoomJointlyLet)
             ua2 <- ua1.set(TotalIncomeAmountPage, raRAbout.totalIncomeAmount)
             ua3 <- ua2.set(ClaimExpensesOrRRRPage, raRAbout.claimExpensesOrRRR)
           } yield ua3

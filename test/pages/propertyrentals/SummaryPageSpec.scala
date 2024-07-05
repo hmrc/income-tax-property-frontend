@@ -18,7 +18,7 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
-import models.{ClaimExpensesOrRRR, NormalMode, UKPropertySelect}
+import models.{ClaimExpensesOrRRR, NormalMode, RentARoom, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.ukrentaroom.ClaimExpensesOrRRRPage
 import pages.{SummaryPage, UKPropertyPage}
@@ -168,7 +168,7 @@ class SummaryPageSpec extends SpecBase {
     val taxYear = LocalDate.now.getYear
     val summaryAboutItem = TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode),
+      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom),
       TaskListTag.NotStarted,
       "rent_a_room_about_link"
     )

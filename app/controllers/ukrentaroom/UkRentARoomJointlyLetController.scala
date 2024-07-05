@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.UkRentARoomJointlyLetFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.ukrentaroom.UkRentARoomJointlyLetPage
@@ -44,31 +44,32 @@ class UkRentARoomJointlyLetController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request: DataRequest[AnyContent] =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request: DataRequest[AnyContent] =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkRentARoomJointlyLetPage) match {
+      val preparedForm = request.userAnswers.get(UkRentARoomJointlyLetPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
-  }
+      Ok(view(preparedForm, taxYear, mode, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkRentARoomJointlyLetPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkRentARoomJointlyLetPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(UkRentARoomJointlyLetPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator
+                .nextPage(UkRentARoomJointlyLetPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

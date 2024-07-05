@@ -16,12 +16,18 @@
 
 package pages.ukrentaroom
 
+import models.{PropertyType, RentARoom, RentalsAndRentARoom}
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object UkRentARoomJointlyLetPage extends QuestionPage[Boolean] {
+case class UkRentARoomJointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout \ toString
+  private val jointlyLetAboutPath = propertyType match {
+    case RentARoom           => PageConstants.rentARoomAbout
+    case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomAbout
+  }
+
+  override def path: JsPath = JsPath \ jointlyLetAboutPath \ toString
 
   override def toString: String = "ukRentARoomJointlyLet"
 }

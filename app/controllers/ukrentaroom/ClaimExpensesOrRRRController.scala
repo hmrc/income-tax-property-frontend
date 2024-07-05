@@ -18,8 +18,8 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
+import models.{BusinessConstants, Mode, RentARoom}
 import models.requests.DataRequest
-import models.{BusinessConstants, Mode}
 import navigation.Navigator
 import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -57,7 +57,6 @@ class ClaimExpensesOrRRRController @Inject() (
           Future.successful(Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, maxIncome)))
         )
         .getOrElse(Future.failed(NotFoundException))
-
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -87,7 +86,7 @@ class ClaimExpensesOrRRRController @Inject() (
 
   private def maxAllowedIncome(request: DataRequest[AnyContent]): Option[BigDecimal] =
     for {
-      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage)
+      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom))
       income       <- request.userAnswers.get(TotalIncomeAmountPage)
     } yield {
       val maxAllowedIncome =

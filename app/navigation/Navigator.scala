@@ -197,7 +197,8 @@ class Navigator @Inject() () {
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
-    case UkRentARoomJointlyLetPage => taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
+    case UkRentARoomJointlyLetPage(RentARoom) =>
+      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
     case ClaimExpensesOrRRRPage =>
       taxYear =>
         _ =>
@@ -348,7 +349,7 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear, CheckMode, index)
     case TotalIncomeAmountPage =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case UkRentARoomJointlyLetPage =>
+    case UkRentARoomJointlyLetPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
     case ClaimExpensesOrRRRPage =>

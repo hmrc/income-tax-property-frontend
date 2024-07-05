@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{NormalMode, UKPropertySelect, UserAnswers}
+import models.{NormalMode, RentARoom, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
@@ -238,11 +238,11 @@ case object SummaryPage {
   private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode), {
+      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage)).isDefined) {
+          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage(RentARoom))).isDefined) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted

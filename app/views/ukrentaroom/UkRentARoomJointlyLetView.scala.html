@@ -15,7 +15,9 @@
  *@
 
 @import models.requests._
+@import models.PropertyType
 @import viewmodels.LegendSize
+
 
 @this(
     layout: templates.Layout,
@@ -25,14 +27,14 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("rentARoomJointlyLet.title"))) {
     <h1 class="govuk-heading-l">@messages(s"ukRentARoom.jointlyLet.title.${request.user.isAgentMessageKey}")</h1>
 
     <p class="govuk-body">@messages(s"ukRentARoom.jointlyLet.p.${request.user.isAgentMessageKey}")</p>
 
-    @formHelper(action = controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

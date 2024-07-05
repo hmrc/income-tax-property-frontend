@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.UkRentARoomJointlyLetFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, User, UserAnswers}
+import models.{NormalMode, RentARoom, RentalsAndRentARoom, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -44,14 +44,17 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
   val taxYear = 2024
 
-  lazy val rentARoomJointlyLetRoute = controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentARoomJointlyLetRoute =
+    controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
-  val scenarios = Table[Boolean, String](
-    ("Is Agent", "AgencyOrIndividual"),
-    (true, "agent"),
-    (false, "individual"))
+  lazy val rentalsArndRentARoomJointlyLetRoute =
+    controllers.ukrentaroom.routes.UkRentARoomJointlyLetController
+      .onPageLoad(taxYear, NormalMode, RentalsAndRentARoom)
+      .url
 
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) => {
+  val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
+
+  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
     val form = formProvider(agencyOrIndividual)
     val user = User(
       "",
@@ -62,41 +65,81 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
     )
     s"RentARoomJointlyLet Controller for $agencyOrIndividual" - {
 
-      "must return OK and the correct view for a GET" in {
+      "must return OK and the correct view for a GET for both rent a room and combined journeys" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, rentARoomJointlyLetRoute)
-
-          val result = route(application, request).value
-
+          val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
+          val rentARoomResult = route(application, rentARoomRequest).value
           val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
 
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          status(rentARoomResult) mustEqual OK
+          contentAsString(rentARoomResult) mustEqual view(form, taxYear, NormalMode, RentARoom)(
+            DataRequest(rentARoomRequest, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
+
+          val rentalsAndRentARoomRequest = FakeRequest(GET, rentalsArndRentARoomJointlyLetRoute)
+          val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual OK
+          contentAsString(rentalsAndRentARoomResult) mustEqual view(form, taxYear, NormalMode, RentalsAndRentARoom)(
+            DataRequest(rentalsAndRentARoomRequest, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
+
         }
       }
 
-      "must populate the view correctly on a GET when the question has previously been answered" in {
+      "must populate the view correctly on a GET when the question has previously been answered for both rent a room and combined journeys" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(UkRentARoomJointlyLetPage, true).success.value
+        val rentARoomUserAnswers =
+          UserAnswers(userAnswersId).set(UkRentARoomJointlyLetPage(RentARoom), true).success.value
+        val rentARoomJourney = applicationBuilder(userAnswers = Some(rentARoomUserAnswers), isAgent).build()
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
+        running(rentARoomJourney) {
+          val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
+          val view = rentARoomJourney.injector.instanceOf[UkRentARoomJointlyLetView]
+          val rentARoomResult = route(rentARoomJourney, rentARoomRequest).value
 
-        running(application) {
-          val request = FakeRequest(GET, rentARoomJointlyLetRoute)
+          status(rentARoomResult) mustEqual OK
+          contentAsString(rentARoomResult) mustEqual view(
+            form.fill(true),
+            taxYear,
+            NormalMode,
+            RentARoom
+          )(
+            DataRequest(rentARoomRequest, "", user, emptyUserAnswers),
+            messages(rentARoomJourney)
+          ).toString
+        }
 
-          val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
+        val rentalsAndRentARoomUserAnswers =
+          UserAnswers(userAnswersId).set(UkRentARoomJointlyLetPage(RentARoom), true).success.value
+        val rentalsAndRentARoomJourney =
+          applicationBuilder(userAnswers = Some(rentalsAndRentARoomUserAnswers), isAgent).build()
 
-          val result = route(application, request).value
+        running(rentalsAndRentARoomJourney) {
 
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
+          val view = rentalsAndRentARoomJourney.injector.instanceOf[UkRentARoomJointlyLetView]
+          val rentalsAndRentARoomResult = route(rentalsAndRentARoomJourney, rentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual OK
+          contentAsString(rentalsAndRentARoomResult) mustEqual view(
+            form.fill(true),
+            taxYear,
+            NormalMode,
+            RentARoom
+          )(
+            DataRequest(rentARoomRequest, "", user, emptyUserAnswers),
+            messages(rentalsAndRentARoomJourney)
+          ).toString
         }
       }
 
-      "must redirect to the next page when valid data is submitted" in {
+      "must redirect to the next page when valid data is submitted for both rent a room and combined journeys" in {
 
         val mockSessionRepository = mock[SessionRepository]
 
@@ -111,68 +154,111 @@ class UkRentARoomJointlyLetControllerSpec extends SpecBase with MockitoSugar {
             .build()
 
         running(application) {
-          val request =
+          val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
               .withFormUrlEncodedBody(("ukRentARoomJointlyLet", "true"))
 
-          val result = route(application, request).value
+          val rentARoomResult = route(application, rentARoomRequest).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url
+          status(rentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentARoomResult).value mustEqual onwardRoute.url
+
+          val rentalsAndRentARoomRequest =
+            FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", "true"))
+
+          val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentalsAndRentARoomResult).value mustEqual onwardRoute.url
         }
       }
 
-      "must return a Bad Request and errors when invalid data is submitted" in {
+      "must return a Bad Request and errors when invalid data is submitted for rent a room and combined journeys" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
 
         running(application) {
-          val request =
+          val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("value", ""))
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", ""))
 
-          val boundForm = form.bind(Map("value" -> ""))
-
+          val boundForm = form.bind(Map("ukRentARoomJointlyLet" -> ""))
           val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
 
-          val result = route(application, request).value
+          val rentARoomResult = route(application, rentARoomRequest).value
 
-          status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(DataRequest(request, "", user, emptyUserAnswers), messages(application)).toString
+          status(rentARoomResult) mustEqual BAD_REQUEST
+          contentAsString(rentARoomResult) mustEqual view(boundForm, taxYear, NormalMode, RentARoom)(
+            DataRequest(rentARoomRequest, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
+
+          val rentalsAndRentARoomRequest =
+            FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", ""))
+
+          val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual BAD_REQUEST
+          contentAsString(rentalsAndRentARoomResult) mustEqual view(
+            boundForm,
+            taxYear,
+            NormalMode,
+            RentalsAndRentARoom
+          )(
+            DataRequest(rentalsAndRentARoomRequest, "", user, emptyUserAnswers),
+            messages(application)
+          ).toString
         }
       }
 
-      "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must redirect to Journey Recovery for a GET if no existing data is found for both rent a room and combined journeys" in {
 
         val application = applicationBuilder(userAnswers = None, true).build()
 
         running(application) {
-          val request = FakeRequest(GET, rentARoomJointlyLetRoute)
+          val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
 
-          val result = route(application, request).value
+          val rentARoomResult = route(application, rentARoomRequest).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          status(rentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+
+          val rentalsAndRentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
+
+          val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentalsAndRentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
         }
       }
 
-      "must redirect to Journey Recovery for a POST if no existing data is found" in {
+      "must redirect to Journey Recovery for a POST if no existing data is found for both rent a room and combined journeys" in {
 
         val application = applicationBuilder(userAnswers = None, true).build()
 
         running(application) {
-          val request =
+          val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("value", "true"))
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", "true"))
 
-          val result = route(application, request).value
+          val rentARoomResult = route(application, rentARoomRequest).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          status(rentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+
+          val rentalsAndRentARoomRequest =
+            FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
+              .withFormUrlEncodedBody(("ukRentARoomJointlyLet", "true"))
+
+          val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+          status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+          redirectLocation(rentalsAndRentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
         }
       }
     }
-  }
   }
 
 }
