@@ -29,7 +29,7 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
   val index = 1
   val taxYear = 2024
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/esba-section-finished-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/enhanced-structures-buildings-allowance/complete-yes-no")
 
   "EsbaCheckYourAnswers Controller" - {
 

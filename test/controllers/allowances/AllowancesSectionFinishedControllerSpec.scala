@@ -41,7 +41,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
   def onwardRoute: Call =
     Call(
       "POST",
-      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/allowances-section-finished-yes-no"
+      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/allowances/complete-yes-no"
     )
 
   val formProvider = new AllowancesSectionFinishedFormProvider()

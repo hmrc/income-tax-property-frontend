@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.allowances
+package models
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
-
-case object RaRElectricChargePointAllowanceForAnEVPage extends QuestionPage[BigDecimal] {
-
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
-
-  override def toString: String = "electricChargePointAllowance"
+object BusinessConstants {
+  val jointlyLetTaxFreeAmount: BigDecimal = BigDecimal(3750)
+  val notJointlyLetTaxFreeAmount: BigDecimal = BigDecimal(7500)
 }

@@ -18,9 +18,10 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{Mode, RentARoom}
+import models.{BusinessConstants, Mode, RentARoom}
+import models.requests.DataRequest
 import navigation.Navigator
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,40 +44,56 @@ class ClaimExpensesOrRRRController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ClaimExpensesOrRRRPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
-      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom)) match {
-        case Some(true)  => "jointlyLet"
-        case Some(false) => "notJointlyLet"
-      }
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, jointlyLet))
+
+      maxAllowedIncome(request)
+        .map(maxIncome =>
+          Future.successful(Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, maxIncome)))
+        )
+        .getOrElse(Future.failed(NotFoundException))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val jointlyLet = request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom)) match {
-        case Some(true)  => "jointlyLet"
-        case Some(false) => "notJointlyLet"
-      }
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors =>
-            Future
-              .successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, jointlyLet))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrRRRPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              navigator.nextPage(ClaimExpensesOrRRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
+      maxAllowedIncome(request)
+        .map(maxIncome =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors =>
+                Future
+                  .successful(
+                    BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, maxIncome))
+                  ),
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrRRRPage, value))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator.nextPage(ClaimExpensesOrRRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
             )
         )
+        .getOrElse(Future.failed(NotFoundException))
   }
+
+  private def maxAllowedIncome(request: DataRequest[AnyContent]): Option[BigDecimal] =
+    for {
+      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom))
+      income       <- request.userAnswers.get(TotalIncomeAmountPage)
+    } yield {
+      val maxAllowedIncome =
+        if (isJointlyLet) BusinessConstants.jointlyLetTaxFreeAmount else BusinessConstants.notJointlyLetTaxFreeAmount
+      income min maxAllowedIncome
+    }
+
 }
+
+case object NotFoundException extends Exception("TotalIncomeAmount is not present in userAnswers")

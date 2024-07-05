@@ -19,7 +19,7 @@ package service
 import connectors.JourneyAnswersConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{JourneyContext, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers

@@ -41,7 +41,7 @@ class ExpensesStartControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = true,
-          "/update-and-submit-income-tax-return/property/2024/rentals/consolidated-expenses")(request, messages(application)).toString
+          "/update-and-submit-income-tax-return/property/2024/rentals/expenses/consolidated-expenses")(request, messages(application)).toString
       }
     }
 

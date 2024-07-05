@@ -42,7 +42,7 @@ class IncomeSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
   private def onwardRoute = Call(
     "POST",
-    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/income-section-finished-yes-no"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/complete-yes-no"
   )
 
   val formProvider = new IncomeSectionFinishedFormProvider()
