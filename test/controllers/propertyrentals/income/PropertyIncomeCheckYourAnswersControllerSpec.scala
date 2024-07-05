@@ -38,7 +38,7 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
 
   def onwardRoute: Call = Call(
     "GET",
-    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/income-section-finished-yes-no"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rentals/income/complete-yes-no"
   )
 
   "Property Income Check Your Answers Controller" - {

@@ -41,7 +41,7 @@ import scala.concurrent.Future
 
 class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute : Call = Call(GET, "/uk-property-details")
+  def onwardRoute : Call = Call(GET, "/details")
 
   val formProvider = new UKPropertyFormProvider()
   val form: Form[Set[UKPropertySelect]] = formProvider("individual")
@@ -102,7 +102,7 @@ class UKPropertySelectControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(Call(GET, "/uk-property-details"))),
+            bind[Navigator].toInstance(new FakeNavigator(Call(GET, "/details"))),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .overrides(bind[AuthConnector].toInstance(authConnector))

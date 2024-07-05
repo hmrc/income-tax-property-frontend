@@ -16,7 +16,6 @@
 
 package pages.ukrentaroom.allowances
 
-import models.ElectricChargePointAllowance
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 

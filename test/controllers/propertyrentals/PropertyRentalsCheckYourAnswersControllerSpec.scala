@@ -42,7 +42,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
   private val propertySubmissionService = mock[PropertySubmissionService]
 
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/about-section-finished-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/about/complete-yes-no")
 
   "Check Your Answers Controller" - {
 
