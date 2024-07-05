@@ -1320,11 +1320,8 @@ claimExpensesOrRRR.expenses = Expenses
 claimExpensesOrRRR.radio.question.label.individual = How much do you want to claim?
 claimExpensesOrRRR.radio.question.label.agent = How much does your client want to claim?
 
-claimExpensesOrRRR.para1.jointlyLet.individual = You can earn up to £3,750 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
-claimExpensesOrRRR.para1.notJointlyLet.individual = You can earn up to £7,500 a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
-
-claimExpensesOrRRR.para1.jointlyLet.agent = Your client can earn up to £3,750 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
-claimExpensesOrRRR.para1.notJointlyLet.agent = Your client can earn up to £7,500 a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
+claimExpensesOrRRR.para1.jointlyLet.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
+claimExpensesOrRRR.para1.jointlyLet.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
 ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 
 consolidatedRRExpenses.title = Consolidated rent a room expenses
