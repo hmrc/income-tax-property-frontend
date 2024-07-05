@@ -51,10 +51,10 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   val structureBuildingAllowanceClaim = 200
 
   def onwardRouteAddClaim: Call =
-    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/structure-building-allowance/add-claim")
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/structures-buildings-allowance/add-claim")
 
   def onwardRouteNoOtherClaim: Call =
-    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/sba-section-finished-yes-no")
+    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/structures-buildings-allowance/complete-yes-no")
 
   "SbaClaims Controller" - {
 
@@ -153,7 +153,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
 
       val userAnswers: Option[UserAnswers] =
-        UserAnswers("sba-user-answers")
+        UserAnswers("structures-buildings-allowance-user-answers")
           .set(
             page = StructureBuildingFormGroup,
             value = Array(

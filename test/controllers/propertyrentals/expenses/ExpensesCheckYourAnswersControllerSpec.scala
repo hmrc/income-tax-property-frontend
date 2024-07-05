@@ -45,7 +45,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
   def onwardRoute: Call =
     Call(
       "POST",
-      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/expenses-section-finished-yes-no"
+      s"/update-and-submit-income-tax-return/property/$taxYear/rentals/expenses/complete-yes-no"
     )
 
   "ExpensesCheckYourAnswers Controller" - {
