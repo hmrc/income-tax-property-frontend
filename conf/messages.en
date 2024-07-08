@@ -1357,7 +1357,11 @@ consolidatedRRExpenses.consolidated = Claim consolidated expenses
 consolidatedRRExpenses.indiv = Claim individual expenses
 
 consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
-consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
+consolidatedRRExpenses.checkYourAnswersLabel.type = Consolidated or individual expenses
+consolidatedRRExpenses.checkYourAnswersLabel.amount.individual = How much were your consolidated expenses?
+consolidatedRRExpenses.checkYourAnswersLabel.amount.agent = How much were your client's consolidated expenses?
+consolidatedRRExpenses.yes = Consolidated
+consolidatedRRExpenses.no = Individual
 
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
