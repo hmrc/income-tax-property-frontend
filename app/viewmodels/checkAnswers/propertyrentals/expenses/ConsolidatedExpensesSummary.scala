@@ -16,8 +16,7 @@
 
 package viewmodels.checkAnswers.propertyrentals.expenses
 
-import controllers.propertyrentals.expenses.routes._
-import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import controllers.propertyrentals.expenses.routes
 import models.{CheckMode, ConsolidatedExpenses, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.Messages
@@ -28,30 +27,55 @@ import viewmodels.implicits._
 
 object ConsolidatedExpensesSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    if (isTotalIncomeUnder85K(answers)) {
-      answers.get(ConsolidatedExpensesPage).flatMap {
-        case ConsolidatedExpenses(true, Some(amount)) =>
-          Some(SummaryListRowViewModel(
-            key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
-            )))
-        case ConsolidatedExpenses(false, _) =>
-          Some(SummaryListRowViewModel(
-            key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel("site.no").withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+  def rows(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[Seq[SummaryListRow]] =
+    answers.get(ConsolidatedExpensesPage).flatMap {
+      case ConsolidatedExpenses(true, Some(amount)) =>
+        Some(
+          Seq(
+            SummaryListRowViewModel(
+              key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("consolidatedExpenses.yes").withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+              )
+            ),
+            SummaryListRowViewModel(
+              key = KeyViewModel(s"consolidatedExpenses.checkYourAnswersLabel.amount.$individualOrAgent")
+                .withCssClass(keyCssClass),
+              value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+              )
             )
-          ))
-        case _ => Option.empty[SummaryListRow]
-      }
-    } else {
-      Option.empty[SummaryListRow]
+          )
+        )
+      case ConsolidatedExpenses(false, _) =>
+        Some(
+          Seq(
+            SummaryListRowViewModel(
+              key = KeyViewModel("consolidatedExpenses.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("consolidatedRRExpenses.no").withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
+              )
+            )
+          )
+        )
+      case _ => Option.empty
     }
-  }
+
 }
