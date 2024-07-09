@@ -610,7 +610,11 @@ consolidatedExpenses.error.twoDecimalPlaces.individual = Amount can only include
 consolidatedExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 consolidatedExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 consolidatedExpenses.change.hidden = Consolidated expenses
-consolidatedExpenses.checkYourAnswersLabel = Consolidated expenses
+consolidatedExpenses.checkYourAnswersLabel.type = Consolidated or individual expenses
+consolidatedExpenses.checkYourAnswersLabel.amount.individual = How much were your consolidated expenses?
+consolidatedExpenses.checkYourAnswersLabel.amount.agent = How much were your client's consolidated expenses?
+consolidatedExpenses.yes = Consolidated
+consolidatedExpenses.no = Individual
 
 loanInterest.title = Loan interest or other financial costs
 loanInterest.heading = Loan interest or other financial costs
@@ -1357,7 +1361,11 @@ consolidatedRRExpenses.consolidated = Claim consolidated expenses
 consolidatedRRExpenses.indiv = Claim individual expenses
 
 consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
-consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
+consolidatedRRExpenses.checkYourAnswersLabel.type = Consolidated or individual expenses
+consolidatedRRExpenses.checkYourAnswersLabel.amount.individual = How much were your consolidated expenses?
+consolidatedRRExpenses.checkYourAnswersLabel.amount.agent = How much were your client's consolidated expenses?
+consolidatedRRExpenses.yes = Consolidated
+consolidatedRRExpenses.no = Individual
 
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
