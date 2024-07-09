@@ -16,10 +16,10 @@
 
 package controllers.about
 
-import audit.{RentalsAuditModel, AuditService, PropertyAbout}
+import audit.{AuditService, PropertyAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import controllers.routes
+import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import models.JourneyContext
 import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
@@ -71,8 +71,8 @@ class CheckYourAnswersController @Inject() (
         .get(PropertyAbout)
         .map(propertyAbout => savePropertyAbout(taxYear, request, propertyAbout))
         .getOrElse {
-          logger.error("PropertyAbout Section is not present in userAnswers")
-          Future.failed(NotFoundException)
+          logger.error(s"PropertyAbout section is not present in userAnswers for userId: ${request.userId}")
+          Future.failed(NotFoundException("PropertyAbout section is not present in userAnswers"))
         }
   }
 
@@ -80,12 +80,11 @@ class CheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
-
-    propertySubmissionService.saveJourneyAnswers(context, propertyAbout).map {
+    propertySubmissionService.saveJourneyAnswers(context, propertyAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyAbout)
-        Redirect(controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear))
-      case Left(_) => InternalServerError
+        Future.successful(Redirect(controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear)))
+      case Left(_) => Future.failed(SaveJourneyAnswersFailed("Unable to save property about section"))
     }
   }
 
@@ -106,5 +105,3 @@ class CheckYourAnswersController @Inject() (
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
-
-case object NotFoundException extends Exception("PropertyAbout Section is not present in userAnswers")
