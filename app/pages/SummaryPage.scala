@@ -85,7 +85,7 @@ case object SummaryPage {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
-    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage)).map(_.claimRRROrExpenses)
+    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage(RentARoom))).map(_.claimRRROrExpenses)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {

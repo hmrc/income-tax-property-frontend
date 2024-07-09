@@ -206,7 +206,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(UkRentARoomJointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage).get mustBe 30
-      updated.get(ClaimExpensesOrRRRPage).get mustBe ClaimExpensesOrRRR(false, Some(50))
+      updated.get(ClaimExpensesOrRRRPage(RentARoom)).get mustBe ClaimExpensesOrRRR(false, Some(50))
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
       updated.get(LoanInterestPage).get mustBe 56
       updated.get(OtherProfessionalFeesPage).get mustBe 4

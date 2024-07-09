@@ -43,7 +43,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
   val form: Form[ClaimExpensesOrRRR] = formProvider("individual")
   val taxYear = 2023
 
-  lazy val claimExpensesOrRRRRoute: String = routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode).url
+  lazy val claimExpensesOrRRRRoute: String =
+    routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
   "ClaimExpensesOrRRR Controller" - {
 
@@ -68,7 +69,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          BusinessConstants.jointlyLetTaxFreeAmount
+          BusinessConstants.jointlyLetTaxFreeAmount,
+          RentARoom
         )(
           request,
           messages(application)
@@ -83,7 +85,10 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
         withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, maxIncome)
         withClaimExpenses <-
-          withTotalIncome.set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65)))
+          withTotalIncome.set(
+            ClaimExpensesOrRRRPage(RentARoom),
+            ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65))
+          )
       } yield withClaimExpenses
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
@@ -101,7 +106,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          maxIncome
+          maxIncome,
+          RentARoom
         )(request, messages(application)).toString
       }
     }
@@ -164,7 +170,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          BusinessConstants.notJointlyLetTaxFreeAmount
+          BusinessConstants.notJointlyLetTaxFreeAmount,
+          RentARoom
         )(
           request,
           messages(application)

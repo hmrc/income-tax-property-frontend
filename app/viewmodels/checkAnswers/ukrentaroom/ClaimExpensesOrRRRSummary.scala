@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.ukrentaroom
 
 import controllers.ukrentaroom.routes
-import models.{CheckMode, ClaimExpensesOrRRR, UserAnswers}
+import models.{CheckMode, ClaimExpensesOrRRR, PropertyType, UserAnswers}
 import pages.ukrentaroom.ClaimExpensesOrRRRPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,8 +27,10 @@ import viewmodels.implicits._
 
 object ClaimExpensesOrRRRSummary {
 
-  def rows(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[Seq[SummaryListRow]] =
-    answers.get(ClaimExpensesOrRRRPage).flatMap {
+  def rows(taxYear: Int, individualOrAgent: String, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[Seq[SummaryListRow]] =
+    answers.get(ClaimExpensesOrRRRPage(propertyType)).flatMap {
       case ClaimExpensesOrRRR(true, Some(amount)) =>
         Some(
           Seq(
@@ -38,18 +40,19 @@ object ClaimExpensesOrRRRSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url
+                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
               )
             ),
             SummaryListRowViewModel(
-              key = KeyViewModel(s"claimExpensesOrRRR.checkYourAnswersLabel.amount.$individualOrAgent").withCssClass(keyCssClass),
+              key = KeyViewModel(s"claimExpensesOrRRR.checkYourAnswersLabel.amount.$individualOrAgent")
+                .withCssClass(keyCssClass),
               value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url
+                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
               )
@@ -65,7 +68,7 @@ object ClaimExpensesOrRRRSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode).url
+                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
               )

@@ -15,12 +15,15 @@
  *@
 
 @import models.requests._
+@import models.PropertyType
+@import controllers.ukrentaroom.routes._
+
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@()(implicit request: DataRequest[_], messages: Messages)
+@(propertyType: PropertyType, taxYear: Int)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"rentalsAndRentARoom.start.title.${request.user.isAgentMessageKey}"))) {
 
@@ -29,6 +32,7 @@
 
     @govukButton(
      ButtonViewModel(messages("site.continue"))
-      .withId("continue")
+        .asLink(UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, propertyType).url)
+        .withId("continue")
     )
 }

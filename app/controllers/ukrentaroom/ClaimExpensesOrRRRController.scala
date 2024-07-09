@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{BusinessConstants, Mode, RentARoom}
+import models.{BusinessConstants, Mode, PropertyType, RentARoom}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
@@ -44,25 +44,27 @@ class ClaimExpensesOrRRRController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimExpensesOrRRRPage) match {
+      val preparedForm = request.userAnswers.get(ClaimExpensesOrRRRPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      maxAllowedIncome(request)
+      maxAllowedIncome(request, propertyType)
         .map(maxIncome =>
-          Future.successful(Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, maxIncome)))
+          Future.successful(
+            Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, maxIncome, propertyType))
+          )
         )
         .getOrElse(Future.failed(NotFoundException))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      maxAllowedIncome(request)
+      maxAllowedIncome(request, propertyType)
         .map(maxIncome =>
           form
             .bindFromRequest()
@@ -70,23 +72,26 @@ class ClaimExpensesOrRRRController @Inject() (
               formWithErrors =>
                 Future
                   .successful(
-                    BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, maxIncome))
+                    BadRequest(
+                      view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, maxIncome, propertyType)
+                    )
                   ),
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrRRRPage, value))
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrRRRPage(propertyType), value))
                   _              <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(ClaimExpensesOrRRRPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                  navigator
+                    .nextPage(ClaimExpensesOrRRRPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
                 )
             )
         )
         .getOrElse(Future.failed(NotFoundException))
-  }
+    }
 
-  private def maxAllowedIncome(request: DataRequest[AnyContent]): Option[BigDecimal] =
+  private def maxAllowedIncome(request: DataRequest[AnyContent], propertyType: PropertyType): Option[BigDecimal] =
     for {
-      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom))
+      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(propertyType))
       income       <- request.userAnswers.get(TotalIncomeAmountPage)
     } yield {
       val maxAllowedIncome =

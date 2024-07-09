@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{PropertyType, RentARoom, RentalsAndRentARoom}
+
 object PageConstants {
 
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
@@ -36,10 +38,32 @@ object PageConstants {
   val rentARoomAbout: String = "rentARoomAbout"
   val rentalsAndRentARoomAbout: String = "rentalsAndRentARoomAbout"
   val rentARoomExpense: String = "rentARoomExpenses"
+  val rentalsAndRentARoomExpense: String = "rentalsAndRentARoomExpenses"
   val rentARoomAdjustment: String = "rentARoomAdjustments"
+  val rentalsAndRentARoomAdjustment: String = "rentalsAndRentARoomAdjustments"
   val rentARoomAllowance: String = "rentARoomAllowances"
+  val rentalsAndRentARoomAllowance: String = "rentalsAndRentARoomAllowances"
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
 
+  val aboutPath: PropertyType => String = {
+    case RentARoom => PageConstants.rentARoomAbout
+    case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomAbout
+  }
+
+  val expensesPath: PropertyType => String = {
+    case RentARoom => PageConstants.rentARoomExpense
+    case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomExpense
+  }
+
+  val adjustmentsPath: PropertyType => String = {
+    case RentARoom => PageConstants.rentARoomAdjustment
+    case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomAdjustment
+  }
+
+  val allowancePath: PropertyType => String = {
+    case RentARoom => PageConstants.rentARoomAllowance
+    case RentalsAndRentARoom => PageConstants.rentalsAndRentARoomAllowance
+  }
 }
