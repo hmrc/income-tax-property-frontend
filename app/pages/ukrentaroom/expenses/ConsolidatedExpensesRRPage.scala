@@ -24,7 +24,7 @@ import scala.util.Try
 
 case object ConsolidatedExpensesRRPage extends QuestionPage[ConsolidatedRRExpenses] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomExpense \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomExpenses \ toString
 
   override def toString: String = "consolidatedExpenses"
 

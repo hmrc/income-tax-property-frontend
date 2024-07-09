@@ -90,7 +90,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsAbout) =>
           for {
             ua1 <- userAnswers.set(ExpensesLessThan1000Page, propertyRentalsAbout.toexpensesLessThan1000)
-            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage, propertyRentalsAbout.claimPropertyIncomeAllowance)
+            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage(Rentals), propertyRentalsAbout.claimPropertyIncomeAllowance)
           } yield ua2
       }
 

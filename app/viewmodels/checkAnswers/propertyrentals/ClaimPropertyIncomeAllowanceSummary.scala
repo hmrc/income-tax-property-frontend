@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals
 
 import controllers.propertyrentals.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,19 +26,22 @@ import viewmodels.implicits._
 
 object ClaimPropertyIncomeAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ClaimPropertyIncomeAllowancePage).map {
-      answer =>
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ClaimPropertyIncomeAllowancePage(propertyType)).map { answer =>
+      val value = if (answer) "claimPropertyIncomeAllowance.yes" else "claimPropertyIncomeAllowance.no"
 
-        val value = if (answer) "claimPropertyIncomeAllowance.yes" else "claimPropertyIncomeAllowance.no"
-
-        SummaryListRowViewModel(
-          key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
-          value = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("claimPropertyIncomeAllowance.change.hidden"))
+      SummaryListRowViewModel(
+        key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
+        value = ValueViewModel(value),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
+            .withVisuallyHiddenText(messages("claimPropertyIncomeAllowance.change.hidden"))
         )
+      )
     }
 }

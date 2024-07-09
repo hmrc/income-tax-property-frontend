@@ -28,5 +28,5 @@ case object RentalsAbout extends Gettable[RentalsAbout] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.propertyRentalsAbout
+  override def toString: String = PageConstants.rentalsAbout
 }

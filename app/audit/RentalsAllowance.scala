@@ -37,5 +37,5 @@ case object RentalsAllowance extends Gettable[RentalsAllowance] with Settable[Re
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.propertyRentalsAllowance
+  override def toString: String = PageConstants.rentalsAllowances
 }

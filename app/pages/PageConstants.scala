@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{PropertyType, RentARoom, Rentals, RentalsAndRentARoom}
+
 object PageConstants {
 
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
@@ -24,20 +26,52 @@ object PageConstants {
   val esbaFormGroup: String = "esbas"
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
+  // About
   val propertyAbout: String = "propertyAbout"
-  val propertyRentalsAbout: String = "propertyRentalsAbout"
-
-  val propertyRentalsAllowance: String = "propertyRentalsAllowance"
-  val propertyRentalsAdjustment: String = "propertyRentalsAdjustment"
-
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
-  val propertyRentalsExpense: String = "propertyRentalsExpense"
-
+  val rentalsAbout: String = "rentalsAbout"
   val rentARoomAbout: String = "rentARoomAbout"
   val rentalsAndRentARoomAbout: String = "rentalsAndRentARoomAbout"
-  val rentARoomExpense: String = "rentARoomExpenses"
-  val rentARoomAdjustment: String = "rentARoomAdjustments"
-  val rentARoomAllowance: String = "rentARoomAllowances"
+
+  val aboutPath: PropertyType => String = {
+    case Rentals             => rentalsAbout
+    case RentARoom           => rentARoomAbout
+    case RentalsAndRentARoom => rentalsAndRentARoomAbout
+  }
+
+  // Allowance
+  val rentalsAllowances: String = "rentalsAllowances"
+  val rentARoomAllowances: String = "rentARoomAllowances"
+  val rentalsAndRentARoomAllowances: String = "rentalsAndRentARoomAllowances"
+
+  val allowancesPath: PropertyType => String = {
+    case Rentals             => rentalsAllowances
+    case RentARoom           => rentARoomAllowances
+    case RentalsAndRentARoom => rentalsAndRentARoomAllowances
+  }
+
+  // Adjustments
+  val rentalsAdjustments: String = "rentalsAdjustments"
+  val rentARoomAdjustments: String = "rentARoomAdjustments"
+  val rentalsAndRentARoomAdjustments: String = "rentalsAndRentARoomAdjustments"
+
+  val adjustmentsPath: PropertyType => String = {
+    case Rentals             => rentalsAdjustments
+    case RentARoom           => rentARoomAdjustments
+    case RentalsAndRentARoom => rentalsAndRentARoomAdjustments
+  }
+
+  // Expenses
+  val rentalsExpenses: String = "rentalsExpenses"
+  val rentARoomExpenses: String = "rentARoomExpenses"
+  val rentalsAndRentARoomExpenses: String = "rentalsAndRentARoomExpenses"
+
+  val expensesPath: PropertyType => String = {
+    case Rentals             => rentalsExpenses
+    case RentARoom           => rentARoomExpenses
+    case RentalsAndRentARoom => rentalsAndRentARoomExpenses
+  }
+
+  val propertyRentalsIncome: String = "propertyRentalsIncome"
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"

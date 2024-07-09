@@ -19,7 +19,7 @@ package controllers.propertyrentals
 import base.SpecBase
 import controllers.{propertyrentals, routes}
 import forms.propertyrentals.ClaimPropertyIncomeAllowanceFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, RentalsAndRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -43,45 +43,87 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
   val form = formProvider()
   val taxYear = LocalDate.now.getYear
 
-  lazy val claimPropertyIncomeAllowanceRoute = propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentalsClaimPropertyIncomeAllowanceRoute =
+    propertyrentals.routes.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals).url
+
+  lazy val rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute =
+    propertyrentals.routes.ClaimPropertyIncomeAllowanceController
+      .onPageLoad(taxYear, NormalMode, RentalsAndRentARoom)
+      .url
 
   "ClaimPropertyIncomeAllowance Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET for both rentals and rentals and rent a room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
-
-        val result = route(application, request).value
-
+        val rentalsRequest = FakeRequest(GET, rentalsClaimPropertyIncomeAllowanceRoute)
+        val rentalsResult = route(application, rentalsRequest).value
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        status(rentalsResult) mustEqual OK
+        contentAsString(rentalsResult) mustEqual view(form, taxYear, NormalMode, Rentals, "individual")(
+          rentalsRequest,
+          messages(application)
+        ).toString
+
+        val rentalsAndRentARoomRequest = FakeRequest(GET, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+        val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+        status(rentalsAndRentARoomResult) mustEqual OK
+        contentAsString(rentalsAndRentARoomResult) mustEqual view(
+          form,
+          taxYear,
+          NormalMode,
+          RentalsAndRentARoom,
+          "individual"
+        )(
+          rentalsAndRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "must populate the view correctly on a GET when the question has previously been answered for both rentals and rentals and rent a room journeys" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage, true).success.value
+      val rentalsUserAnswers =
+        UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage(Rentals), true).success.value
+      val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), isAgent = false).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
-
-      running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
-
-        val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
-
-        val result = route(application, request).value
+      running(rentalsApplication) {
+        val request = FakeRequest(GET, rentalsClaimPropertyIncomeAllowanceRoute)
+        val view = rentalsApplication.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val result = route(rentalsApplication, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, Rentals, "individual")(
+          request,
+          messages(rentalsApplication)
+        ).toString
       }
+
+      val rentalsAndRentARoomUserAnswers =
+        UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage(RentalsAndRentARoom), true).success.value
+
+      val rentalsAndRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsAndRentARoomUserAnswers), isAgent = false).build()
+
+      running(rentalsAndRentARoomApplication) {
+        val request = FakeRequest(GET, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+        val view = rentalsAndRentARoomApplication.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val result = route(rentalsAndRentARoomApplication, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, RentalsAndRentARoom, "individual")(
+          request,
+          messages(rentalsApplication)
+        ).toString
+      }
+
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page when valid data is submitted for both rentals and rentals and rent a room journeys" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -96,64 +138,105 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
           .build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+        val rentalsRequest =
+          FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
 
-        val result = route(application, request).value
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual onwardRoute.url
+
+        val rentalsAndRentARoomRequest =
+          FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+
+        val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+        status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsAndRentARoomResult).value mustEqual onwardRoute.url
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted for both rentals and rentals and rent a room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", ""))
+        val rentalsRequest =
+          FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
-
+        val boundForm = form.bind(Map("claimPropertyIncomeAllowanceYesOrNo" -> ""))
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val result = route(application, request).value
+        status(rentalsResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsResult) mustEqual view(boundForm, taxYear, NormalMode, Rentals, "individual")(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        val rentalsAndRentARoomRequest =
+          FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", ""))
+
+        val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+        status(rentalsAndRentARoomResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsAndRentARoomResult) mustEqual view(
+          boundForm,
+          taxYear,
+          NormalMode,
+          RentalsAndRentARoom,
+          "individual"
+        )(
+          rentalsAndRentARoomRequest,
+          messages(application)
+        ).toString
+
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found for both rentals and rentals and rent a room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimPropertyIncomeAllowanceRoute)
+        val rentalsRequest = FakeRequest(GET, rentalsClaimPropertyIncomeAllowanceRoute)
+        val rentalsResult = route(application, rentalsRequest).value
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
 
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        val rentalsAndRentARoomRequest = FakeRequest(GET, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+        val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+        status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsAndRentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "must redirect to Journey Recovery for a POST if no existing data is found for both rentals and rentals and rent a room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, claimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+        val rentalsRequest =
+          FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
 
-        val result = route(application, request).value
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+
+        val rentalsAndRentARoomRequest =
+          FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
+            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+
+        val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
+
+        status(rentalsAndRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsAndRentARoomResult).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

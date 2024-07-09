@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object ExpensesLessThan1000Page extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentalsAbout \ toString
 
   override def toString: String = "toexpensesLessThan1000"
 }

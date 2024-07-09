@@ -27,5 +27,5 @@ final case class RaRAdjustments(
 object RaRAdjustments extends Settable[RaRAdjustments] with Gettable[RaRAdjustments] {
   implicit val format: Format[RaRAdjustments] = Json.format[RaRAdjustments]
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustments
 }

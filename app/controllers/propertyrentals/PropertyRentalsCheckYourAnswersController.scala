@@ -19,7 +19,7 @@ package controllers.propertyrentals
 import audit.{AuditService, RentalsAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
+import models.{JourneyContext, PropertyType}
 import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,12 +45,12 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
           ExpensesLessThan1000Summary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          ClaimPropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          ClaimPropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
         ).flatten
       )
 

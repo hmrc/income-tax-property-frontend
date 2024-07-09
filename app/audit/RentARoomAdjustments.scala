@@ -31,5 +31,5 @@ object RentARoomAdjustments extends Gettable[RentARoomAdjustments] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentARoomAdjustment
+  override def toString: String = PageConstants.rentARoomAdjustments
 }

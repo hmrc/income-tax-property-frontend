@@ -22,7 +22,7 @@ import play.api.libs.json.JsPath
 
 case object RaRBalancingChargePage extends QuestionPage[BalancingCharge] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment \ toString
+  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustments \ toString
 
   override def toString: String = "balancingCharge"
 }

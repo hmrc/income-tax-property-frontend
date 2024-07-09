@@ -94,7 +94,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
       val answers = UserAnswers(
         id = "rent-a-room-expenses-userId",
         data = Json.obj(
-          PageConstants.rentARoomExpense -> Json.obj(
+          PageConstants.rentARoomExpenses -> Json.obj(
             "rentsRatesAndInsurance"          -> JsNumber(rentsRatesAndInsurance),
             "repairsAndMaintenanceCosts"      -> JsNumber(repairsAndMaintenanceCosts),
             "legalManagementOtherFee"         -> JsNumber(legalManagementOtherFee),

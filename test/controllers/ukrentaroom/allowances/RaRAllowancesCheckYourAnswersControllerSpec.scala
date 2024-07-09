@@ -98,7 +98,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val userAnswersJson = Json.obj(
         (
-          PageConstants.rentARoomAllowance,
+          PageConstants.rentARoomAllowances,
           Json.toJson(
             RentARoomAllowance(
               capitalAllowancesForACar = None,
