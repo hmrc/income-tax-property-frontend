@@ -50,7 +50,7 @@ class CheckYourAnswersController @Inject() (
       val ukRentARoomJointlyLetSummary =
         UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val totalIncomeAmountSummary =
-        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val claimExpensesOrRRRSummary =
         ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers)
 
