@@ -20,7 +20,7 @@
         govukButton: GovukButton
 )
 
-@()(implicit request: DataRequest[_], messages: Messages)
+@(taxYear: Int, mode: models.Mode)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"rentalsAndRentARoom.start.title.${request.user.isAgentMessageKey}"))) {
 
@@ -30,5 +30,6 @@
     @govukButton(
      ButtonViewModel(messages("site.continue"))
       .withId("continue")
+      .asLink(controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, mode, models.RentalsAndRentARoom).url)
     )
 }

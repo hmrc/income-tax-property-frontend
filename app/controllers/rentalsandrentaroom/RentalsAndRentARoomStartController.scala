@@ -17,6 +17,7 @@
 package controllers.rentalsandrentaroom
 
 import controllers.actions._
+import models.{Mode, NormalMode}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,6 +36,6 @@ class RentalsAndRentARoomStartController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view())
+      Ok(view(taxYear, NormalMode))
   }
 }

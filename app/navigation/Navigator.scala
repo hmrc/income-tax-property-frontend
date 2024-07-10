@@ -197,7 +197,8 @@ class Navigator @Inject() () {
     case EsbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
     case EsbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case TotalIncomeAmountPage(RentARoom)   => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomeAmountPage(RentARoom) =>
+      taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
