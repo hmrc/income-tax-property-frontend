@@ -28,11 +28,11 @@ object PageConstants {
 
   val propertyAbout: String = "propertyAbout"
 
-  val labelForPropertyType: (PropertyType, String) => String = (propertyType, prefix) =>
+  val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
     propertyType match {
-      case Rentals             => s"rentals$prefix"
-      case RentARoom           => s"rentARoom$prefix"
-      case RentalsAndRentARoom => s"rentalsAndRentARoom$prefix"
+      case Rentals             => s"rentals$suffix"
+      case RentARoom           => s"rentARoom$suffix"
+      case RentalsAndRentARoom => s"rentalsAndRentARoom$suffix"
     }
 
   // About
