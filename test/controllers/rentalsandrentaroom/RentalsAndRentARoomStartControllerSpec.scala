@@ -17,9 +17,8 @@
 package controllers.rentalsandrentaroom
 
 import base.SpecBase
-import controllers.routes
-import models.User
 import models.requests.DataRequest
+import models.{NormalMode, User}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -57,7 +56,7 @@ class RentalsAndRentARoomStartControllerSpec extends SpecBase {
           val view = application.injector.instanceOf[RentalsAndRentARoomStartView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view()(dataRequest, messages(application)).toString
+          contentAsString(result) mustEqual view(taxYear, NormalMode)(dataRequest, messages(application)).toString
         }
       }
     }

@@ -43,10 +43,9 @@ class ClaimPropertyIncomeAllowanceController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
+      val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowancePage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
@@ -57,6 +56,7 @@ class ClaimPropertyIncomeAllowanceController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
+      val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(

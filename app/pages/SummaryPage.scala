@@ -27,7 +27,7 @@ import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, JointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -238,11 +238,11 @@ case object SummaryPage {
   private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom), {
+      controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(UkRentARoomJointlyLetPage(RentARoom))).isDefined) {
+          if (userAnswers.flatMap(_.get(JointlyLetPage(RentARoom))).isDefined) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted

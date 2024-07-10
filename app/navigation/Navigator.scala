@@ -44,7 +44,7 @@ import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -202,7 +202,7 @@ class Navigator @Inject() () {
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
-    case UkRentARoomJointlyLetPage(RentARoom) =>
+    case JointlyLetPage(RentARoom) =>
       taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
     case ClaimExpensesOrRRRPage =>
       taxYear =>
@@ -354,7 +354,7 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear, CheckMode, index)
     case TotalIncomeAmountPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case UkRentARoomJointlyLetPage(RentARoom) =>
+    case JointlyLetPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
     case ClaimExpensesOrRRRPage =>

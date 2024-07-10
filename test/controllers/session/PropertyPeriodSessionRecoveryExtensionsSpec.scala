@@ -29,7 +29,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -204,7 +204,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       // Todo: do we need this? updated.get(LeasePremiumPaymentPage).get mustBe true
       updated.get(CalculatedFigureYourselfPage).get mustBe CalculatedFigureYourself(true, Some(45))
       updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
-      updated.get(UkRentARoomJointlyLetPage(RentARoom)).get mustBe false
+      updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
       updated.get(ClaimExpensesOrRRRPage).get mustBe ClaimExpensesOrRRR(false, Some(50))
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7

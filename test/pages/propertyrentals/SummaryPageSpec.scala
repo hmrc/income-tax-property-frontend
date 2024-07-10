@@ -168,7 +168,7 @@ class SummaryPageSpec extends SpecBase {
     val taxYear = LocalDate.now.getYear
     val summaryAboutItem = TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.UkRentARoomJointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom),
+      controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom),
       TaskListTag.NotStarted,
       "rent_a_room_about_link"
     )

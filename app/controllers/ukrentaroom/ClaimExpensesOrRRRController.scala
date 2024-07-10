@@ -21,7 +21,7 @@ import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
 import models.{BusinessConstants, Mode, RentARoom}
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -86,7 +86,7 @@ class ClaimExpensesOrRRRController @Inject() (
 
   private def maxAllowedIncome(request: DataRequest[AnyContent]): Option[BigDecimal] =
     for {
-      isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom))
+      isJointlyLet <- request.userAnswers.get(JointlyLetPage(RentARoom))
       income       <- request.userAnswers.get(TotalIncomeAmountPage(RentARoom))
     } yield {
       val maxAllowedIncome =

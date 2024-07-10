@@ -23,8 +23,10 @@ import javax.inject.Inject
 
 class ClaimPropertyIncomeAllowanceFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "claimPropertyIncomeAllowanceYesOrNo" -> boolean("claimPropertyIncomeAllowance.error.required")
+      "claimPropertyIncomeAllowanceYesOrNo" -> boolean(
+        s"claimPropertyIncomeAllowance.error.required.$individualOrAgent"
+      )
     )
 }

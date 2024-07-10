@@ -29,7 +29,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
 import play.api.libs.json.Writes
 import queries.Settable
 
@@ -257,7 +257,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(raRAbout) =>
           for {
-            ua1 <- userAnswers.set(UkRentARoomJointlyLetPage(RentARoom), raRAbout.ukRentARoomJointlyLet)
+            ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.ukRentARoomJointlyLet)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentARoom), raRAbout.totalIncomeAmount)
             ua3 <- ua2.set(ClaimExpensesOrRRRPage, raRAbout.claimExpensesOrRRR)
           } yield ua3

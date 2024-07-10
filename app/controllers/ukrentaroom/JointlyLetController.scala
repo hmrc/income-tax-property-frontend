@@ -17,37 +17,37 @@
 package controllers.ukrentaroom
 
 import controllers.actions._
-import forms.ukrentaroom.UkRentARoomJointlyLetFormProvider
+import forms.ukrentaroom.JointlyLetFormProvider
 import models.{Mode, PropertyType}
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.ukrentaroom.UkRentARoomJointlyLetPage
+import pages.ukrentaroom.JointlyLetPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.UkRentARoomJointlyLetView
+import views.html.ukrentaroom.JointlyLetView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkRentARoomJointlyLetController @Inject() (
+class JointlyLetController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: UkRentARoomJointlyLetFormProvider,
+  formProvider: JointlyLetFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: UkRentARoomJointlyLetView
+  view: JointlyLetView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request: DataRequest[AnyContent] =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkRentARoomJointlyLetPage(propertyType)) match {
+      val preparedForm = request.userAnswers.get(JointlyLetPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -64,11 +64,11 @@ class UkRentARoomJointlyLetController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkRentARoomJointlyLetPage(propertyType), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(JointlyLetPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(UkRentARoomJointlyLetPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(JointlyLetPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
     }
