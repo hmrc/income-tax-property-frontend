@@ -26,52 +26,25 @@ object PageConstants {
   val esbaFormGroup: String = "esbas"
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
-  // About
   val propertyAbout: String = "propertyAbout"
-  val rentalsAbout: String = "rentalsAbout"
-  val rentARoomAbout: String = "rentARoomAbout"
-  val rentalsAndRentARoomAbout: String = "rentalsAndRentARoomAbout"
 
-  val aboutPath: PropertyType => String = {
-    case Rentals             => rentalsAbout
-    case RentARoom           => rentARoomAbout
-    case RentalsAndRentARoom => rentalsAndRentARoomAbout
-  }
+  val labelForPropertyType: (PropertyType, String) => String = (propertyType, prefix) =>
+    propertyType match {
+      case Rentals             => s"rentals$prefix"
+      case RentARoom           => s"rentARoom$prefix"
+      case RentalsAndRentARoom => s"rentalsAndRentARoom$prefix"
+    }
 
+  // About
+  val aboutPath: PropertyType => String = labelForPropertyType(_, "About")
   // Allowance
-  val rentalsAllowances: String = "rentalsAllowances"
-  val rentARoomAllowances: String = "rentARoomAllowances"
-  val rentalsAndRentARoomAllowances: String = "rentalsAndRentARoomAllowances"
-
-  val allowancesPath: PropertyType => String = {
-    case Rentals             => rentalsAllowances
-    case RentARoom           => rentARoomAllowances
-    case RentalsAndRentARoom => rentalsAndRentARoomAllowances
-  }
-
+  val allowancesPath: PropertyType => String = labelForPropertyType(_, "Allowances")
   // Adjustments
-  val rentalsAdjustments: String = "rentalsAdjustments"
-  val rentARoomAdjustments: String = "rentARoomAdjustments"
-  val rentalsAndRentARoomAdjustments: String = "rentalsAndRentARoomAdjustments"
-
-  val adjustmentsPath: PropertyType => String = {
-    case Rentals             => rentalsAdjustments
-    case RentARoom           => rentARoomAdjustments
-    case RentalsAndRentARoom => rentalsAndRentARoomAdjustments
-  }
-
+  val adjustmentsPath: PropertyType => String = labelForPropertyType(_, "Adjustments")
   // Expenses
-  val rentalsExpenses: String = "rentalsExpenses"
-  val rentARoomExpenses: String = "rentARoomExpenses"
-  val rentalsAndRentARoomExpenses: String = "rentalsAndRentARoomExpenses"
-
-  val expensesPath: PropertyType => String = {
-    case Rentals             => rentalsExpenses
-    case RentARoom           => rentARoomExpenses
-    case RentalsAndRentARoom => rentalsAndRentARoomExpenses
-  }
-
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
+  val expensesPath: PropertyType => String = labelForPropertyType(_, "Expenses")
+  // Income
+  val incomePath: PropertyType => String = labelForPropertyType(_, "Income")
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"

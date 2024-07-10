@@ -17,7 +17,8 @@
 package pages.premiumlease
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{PremiumsGrantLease, UserAnswers}
+import models.{PremiumsGrantLease, Rentals, UserAnswers}
+import pages.PageConstants.incomePath
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
@@ -26,7 +27,7 @@ import scala.util.Try
 
 case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
+  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
 
   override def toString: String = "premiumsGrantLease"
 

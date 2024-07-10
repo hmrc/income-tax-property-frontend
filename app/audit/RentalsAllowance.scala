@@ -16,8 +16,8 @@
 
 package audit
 
-import models.{CapitalAllowancesForACar, ElectricChargePointAllowance}
-import pages.PageConstants
+import models.{CapitalAllowancesForACar, ElectricChargePointAllowance, Rentals}
+import pages.PageConstants.allowancesPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
@@ -37,5 +37,5 @@ case object RentalsAllowance extends Gettable[RentalsAllowance] with Settable[Re
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentalsAllowances
+  override def toString: String = allowancesPath(Rentals)
 }

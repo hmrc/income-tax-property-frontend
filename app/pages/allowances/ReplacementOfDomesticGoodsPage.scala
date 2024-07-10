@@ -16,13 +16,14 @@
 
 package pages.allowances
 
-import pages.PageConstants.rentalsAllowances
+import models.Rentals
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ReplacementOfDomesticGoodsPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ rentalsAllowances \ toString
+  override def path: JsPath = JsPath \ allowancesPath(Rentals) \ toString
 
   override def toString: String = "replacementOfDomesticGoodsAllowance"
 }

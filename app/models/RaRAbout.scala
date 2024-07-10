@@ -16,18 +16,18 @@
 
 package models
 
-import pages.PageConstants
+import pages.PageConstants.aboutPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RaRAbout(
-                           jointlyLet: Boolean,
-                           totalIncomeAmount: BigDecimal,
-                           claimExpensesOrRRR: ClaimExpensesOrRRR
+  jointlyLet: Boolean,
+  totalIncomeAmount: BigDecimal,
+  claimExpensesOrRRR: ClaimExpensesOrRRR
 )
 
 object RaRAbout extends Settable[RaRAbout] with Gettable[RaRAbout] {
   implicit val format: Format[RaRAbout] = Json.format[RaRAbout]
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout
+  override def path: JsPath = JsPath \ aboutPath(RentARoom)
 }

@@ -16,14 +16,14 @@
 
 package pages.allowances
 
-import models.ElectricChargePointAllowance
-import pages.PageConstants.rentalsAllowances
+import models.{ElectricChargePointAllowance, Rentals}
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ElectricChargePointAllowancePage extends QuestionPage[ElectricChargePointAllowance] {
 
-  override def path: JsPath = JsPath \ rentalsAllowances \ toString
+  override def path: JsPath = JsPath \ allowancesPath(Rentals) \ toString
 
   override def toString: String = "electricChargePointAllowance"
 }
