@@ -193,12 +193,12 @@ class Navigator @Inject() () {
     case EsbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
     case EsbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case TotalIncomeAmountPage   => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomeAmountPage(RentARoom)   => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
     case UkRentARoomJointlyLetPage(RentARoom) =>
-      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
     case ClaimExpensesOrRRRPage =>
       taxYear =>
         _ =>
@@ -347,7 +347,7 @@ class Navigator @Inject() () {
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
-    case TotalIncomeAmountPage =>
+    case TotalIncomeAmountPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     case UkRentARoomJointlyLetPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)

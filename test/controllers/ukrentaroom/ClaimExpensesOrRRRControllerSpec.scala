@@ -50,7 +50,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the correct view for a GET" in {
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, BigDecimal(5000))
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
       } yield withTotalIncome
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
@@ -81,7 +81,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
         withClaimExpenses <-
           withTotalIncome.set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65)))
       } yield withClaimExpenses
@@ -110,7 +110,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, BigDecimal(5000))
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
       } yield withTotalIncome
 
       val mockSessionRepository = mock[SessionRepository]
@@ -142,7 +142,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
       val maxIncome = BigDecimal(8000)
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage, maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
       } yield withTotalIncome
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()

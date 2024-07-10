@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.TotalIncomeAmountFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.ukrentaroom.TotalIncomeAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,31 +43,31 @@ class TotalIncomeAmountController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(TotalIncomeAmountPage) match {
+      val preparedForm = request.userAnswers.get(TotalIncomeAmountPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomeAmountPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomeAmountPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(TotalIncomeAmountPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(TotalIncomeAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

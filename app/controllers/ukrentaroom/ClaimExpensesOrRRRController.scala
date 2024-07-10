@@ -87,7 +87,7 @@ class ClaimExpensesOrRRRController @Inject() (
   private def maxAllowedIncome(request: DataRequest[AnyContent]): Option[BigDecimal] =
     for {
       isJointlyLet <- request.userAnswers.get(UkRentARoomJointlyLetPage(RentARoom))
-      income       <- request.userAnswers.get(TotalIncomeAmountPage)
+      income       <- request.userAnswers.get(TotalIncomeAmountPage(RentARoom))
     } yield {
       val maxAllowedIncome =
         if (isJointlyLet) BusinessConstants.jointlyLetTaxFreeAmount else BusinessConstants.notJointlyLetTaxFreeAmount
