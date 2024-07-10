@@ -29,7 +29,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -73,7 +73,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "propertyRentalsAbout" : {
       |            "toexpensesLessThan1000" : false,
-      |            "claimPropertyIncomeAllowance" : false
+      |            "claimPropertyIncomeAllowanceYesOrNo" : false
       |        },
       |        "propertyRentalsIncome" : {
       |            "isNonUKLandlord" : false,
@@ -156,7 +156,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |
       |    },
       |    "raRAbout" : {
-      |            "ukRentARoomJointlyLet" : false,
+      |            "jointlyLet" : false,
       |            "totalIncomeAmount" : 30,
       |            "claimExpensesOrRRR" : {
       |                "claimRRROrExpenses" : false,

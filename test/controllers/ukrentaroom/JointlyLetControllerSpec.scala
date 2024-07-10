@@ -32,7 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.UkRentARoomJointlyLetView
+import views.html.ukrentaroom.JointlyLetView
 
 import scala.concurrent.Future
 
@@ -72,7 +72,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
           val rentARoomResult = route(application, rentARoomRequest).value
-          val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
+          val view = application.injector.instanceOf[JointlyLetView]
 
           status(rentARoomResult) mustEqual OK
           contentAsString(rentARoomResult) mustEqual view(form, taxYear, NormalMode, RentARoom)(
@@ -100,7 +100,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
         running(rentARoomJourney) {
           val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
-          val view = rentARoomJourney.injector.instanceOf[UkRentARoomJointlyLetView]
+          val view = rentARoomJourney.injector.instanceOf[JointlyLetView]
           val rentARoomResult = route(rentARoomJourney, rentARoomRequest).value
 
           status(rentARoomResult) mustEqual OK
@@ -123,7 +123,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(rentalsAndRentARoomJourney) {
 
           val rentARoomRequest = FakeRequest(GET, rentARoomJointlyLetRoute)
-          val view = rentalsAndRentARoomJourney.injector.instanceOf[UkRentARoomJointlyLetView]
+          val view = rentalsAndRentARoomJourney.injector.instanceOf[JointlyLetView]
           val rentalsAndRentARoomResult = route(rentalsAndRentARoomJourney, rentARoomRequest).value
 
           status(rentalsAndRentARoomResult) mustEqual OK
@@ -184,7 +184,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
               .withFormUrlEncodedBody(("jointlyLet", ""))
 
           val boundForm = form.bind(Map("jointlyLet" -> ""))
-          val view = application.injector.instanceOf[UkRentARoomJointlyLetView]
+          val view = application.injector.instanceOf[JointlyLetView]
 
           val rentARoomResult = route(application, rentARoomRequest).value
 

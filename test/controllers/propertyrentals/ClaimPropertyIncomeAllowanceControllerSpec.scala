@@ -40,7 +40,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ClaimPropertyIncomeAllowanceFormProvider()
-  val form = formProvider()
+  val form = formProvider("individual")
   val taxYear = LocalDate.now.getYear
 
   lazy val rentalsClaimPropertyIncomeAllowanceRoute =

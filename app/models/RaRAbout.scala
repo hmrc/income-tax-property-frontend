@@ -21,9 +21,9 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RaRAbout(
-  ukRentARoomJointlyLet: Boolean,
-  totalIncomeAmount: BigDecimal,
-  claimExpensesOrRRR: ClaimExpensesOrRRR
+                           jointlyLet: Boolean,
+                           totalIncomeAmount: BigDecimal,
+                           claimExpensesOrRRR: ClaimExpensesOrRRR
 )
 
 object RaRAbout extends Settable[RaRAbout] with Gettable[RaRAbout] {

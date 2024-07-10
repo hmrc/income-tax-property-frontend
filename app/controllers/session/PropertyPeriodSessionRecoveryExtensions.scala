@@ -90,7 +90,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsAbout) =>
           for {
             ua1 <- userAnswers.set(ExpensesLessThan1000Page, propertyRentalsAbout.toexpensesLessThan1000)
-            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage(Rentals), propertyRentalsAbout.claimPropertyIncomeAllowance)
+            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage(Rentals), propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo)
           } yield ua2
       }
 
@@ -257,7 +257,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(raRAbout) =>
           for {
-            ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.ukRentARoomJointlyLet)
+            ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.jointlyLet)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentARoom), raRAbout.totalIncomeAmount)
             ua3 <- ua2.set(ClaimExpensesOrRRRPage, raRAbout.claimExpensesOrRRR)
           } yield ua3

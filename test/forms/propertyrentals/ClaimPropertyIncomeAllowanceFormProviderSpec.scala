@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class ClaimPropertyIncomeAllowanceFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "claimPropertyIncomeAllowance.error.required"
+  val requiredKey = "claimPropertyIncomeAllowance.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ClaimPropertyIncomeAllowanceFormProvider()()
+  val form = new ClaimPropertyIncomeAllowanceFormProvider()("individual")
 
   ".claimPropertyIncomeAllowanceYesOrNo" - {
 
