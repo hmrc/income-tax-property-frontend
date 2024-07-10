@@ -462,7 +462,11 @@ consolidatedExpenses.checkYourAnswersLabel.agent	=	Faint oedd ei dreuliau cyfuno
 consolidatedExpenses.radio.legend.individual	=	A ydych am hawlio treuliau cyfunol?
 consolidatedExpenses.radio.legend.agent	=	A yw’ch cleient am hawlio treuliau cyfunol?
 consolidatedExpenses.change.hidden	=	Treuliau cyfunol
-consolidatedExpenses.checkYourAnswersLabel	=	Treuliau cyfunol
+consolidatedExpenses.checkYourAnswersLabel.type = *Missing Welsh*
+consolidatedExpenses.checkYourAnswersLabel.amount.individual = *Missing Welsh*
+consolidatedExpenses.checkYourAnswersLabel.amount.agent = *Missing Welsh*
+consolidatedExpenses.yes = *Missing Welsh*
+consolidatedExpenses.no = *Missing Welsh*
 
 loanInterest.title	=	Llog ar fenthyciadau a chostau ariannol eraill
 loanInterest.heading	=	Llog ar fenthyciadau a chostau ariannol eraill

@@ -18,7 +18,6 @@ package controllers.propertyrentals.expenses
 
 import audit.RentalsExpense
 import base.SpecBase
-import controllers.propertyrentals.expenses.routes._
 import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -57,7 +56,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
       val taxYear = 2023
       running(application) {
 
-        val request = FakeRequest(GET, ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -72,7 +71,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -84,9 +83,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
     "must return OK and the correct view for a POST (onSubmit)" in {
 
       val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
-      val userAnswers = UserAnswers("test")
-        .set(ConsolidatedExpensesPage, consolidatedExpenses)
-        .get
+      val userAnswers = UserAnswers("test").set(ConsolidatedExpensesPage, consolidatedExpenses).toOption
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
@@ -100,7 +97,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
           )
       ) thenReturn Future(Right())
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
         .build()
 

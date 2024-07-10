@@ -24,7 +24,7 @@ import models.JourneyContext
 import models.requests.DataRequest
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.Logging
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -50,30 +50,38 @@ class ExpensesCheckYourAnswersRRController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val rows: Seq[SummaryListRow] =
-        if (request.userAnswers.get(ConsolidatedExpensesRRPage).exists(_.consolidatedExpensesYesOrNo)) {
-          Seq(
-            ConsolidatedExpensesRRSummary.row(taxYear, request.userAnswers)
-          ).flatten
-        } else {
-          Seq(
-            ConsolidatedExpensesRRSummary
-              .row(taxYear, request.userAnswers),
-            RentsRatesAndInsuranceRRSummary
-              .row(taxYear, request.userAnswers),
-            RepairsAndMaintenanceCostsRRSummary
-              .row(taxYear, request.userAnswers),
-            LegalManagementOtherFeeSummary
-              .row(taxYear, request.userAnswers),
-            CostOfServicesProvidedSummary
-              .row(taxYear, request.userAnswers),
-            OtherPropertyExpensesRRSummary.row(taxYear, request.userAnswers)
-          ).flatten
-        }
+      val rows: Seq[SummaryListRow] = generateRows(taxYear, request)
       val list = SummaryListViewModel(rows = rows)
-
       Ok(view(list, taxYear))
   }
+
+  private def generateRows(taxYear: Int, request: DataRequest[AnyContent])(implicit
+    messages: Messages
+  ): Seq[SummaryListRow] = {
+    val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesRRPage) match {
+      case Some(_) =>
+        ConsolidatedExpensesRRSummary
+          .rows(taxYear, request.user.isAgentMessageKey, request.userAnswers)
+          .getOrElse(Seq.empty)
+      case None => Seq.empty
+    }
+    consolidatedExpensesRows ++ individualExpensesRows(taxYear, request).flatten
+  }
+
+  private def individualExpensesRows(taxYear: Int, request: DataRequest[AnyContent])(implicit
+    messages: Messages
+  ): Seq[Option[SummaryListRow]] =
+    Seq(
+      RentsRatesAndInsuranceRRSummary
+        .row(taxYear, request.userAnswers),
+      RepairsAndMaintenanceCostsRRSummary
+        .row(taxYear, request.userAnswers),
+      LegalManagementOtherFeeSummary
+        .row(taxYear, request.userAnswers),
+      CostOfServicesProvidedSummary
+        .row(taxYear, request.userAnswers),
+      OtherPropertyExpensesRRSummary.row(taxYear, request.userAnswers)
+    )
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>

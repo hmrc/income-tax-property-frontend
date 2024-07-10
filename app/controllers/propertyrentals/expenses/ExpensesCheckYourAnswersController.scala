@@ -16,22 +16,21 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.{RentalsAuditModel, AuditService, RentalsExpense}
+import audit.{AuditService, RentalsAuditModel, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.JourneyContext
 import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{JourneyAnswersService, PropertySubmissionService}
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.propertyrentals.expenses._
 import viewmodels.govuk.summarylist._
 import views.html.propertyrentals.expenses.ExpensesCheckYourAnswersView
-import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,34 +43,40 @@ class ExpensesCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ExpensesCheckYourAnswersView,
   audit: AuditService,
-  propertySubmissionService: PropertySubmissionService,
-  journeyAnswersService: JourneyAnswersService
+  propertySubmissionService: PropertySubmissionService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val rows: Seq[SummaryListRow] =
-        if (
-          request.userAnswers.get(ConsolidatedExpensesPage).exists(expenses => expenses.consolidatedExpensesYesOrNo)
-        ) {
-          Seq(ConsolidatedExpensesSummary.row(taxYear, request.userAnswers)).flatten
-        } else {
-          Seq(
-            ConsolidatedExpensesSummary.row(taxYear, request.userAnswers),
-            RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
-            RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
-            LoanInterestSummary.row(taxYear, request.userAnswers),
-            OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
-            CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
-            PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
-            OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
-          ).flatten
-        }
+      val rows: Seq[SummaryListRow] = generateRows(taxYear, request)
       val list = SummaryListViewModel(rows = rows)
-
       Ok(view(list, taxYear))
   }
+
+  private def generateRows(taxYear: Int, request: DataRequest[AnyContent])(implicit
+    messages: Messages
+  ): Seq[SummaryListRow] = {
+    val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage) match {
+      case Some(_) =>
+        ConsolidatedExpensesSummary
+          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          .getOrElse(Seq.empty)
+      case None => Seq.empty
+    }
+    consolidatedExpensesRows ++ individualExpenses(taxYear, request).flatten
+  }
+
+  private def individualExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) =
+    Seq(
+      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
+      RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
+      LoanInterestSummary.row(taxYear, request.userAnswers),
+      OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
+      CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
+      PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
+      OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
+    )
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
@@ -85,20 +90,20 @@ class ExpensesCheckYourAnswersController @Inject() (
   }
 
   private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: RentalsExpense)(implicit
-                                                                                                     hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
 
     propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, expenses)
-        Future.successful(Redirect(ExpensesSectionFinishedController.onPageLoad(taxYear)))
+        Future.successful(Redirect(routes.ExpensesSectionFinishedController.onPageLoad(taxYear)))
       case Left(_) => Future.failed(ExpensesSaveFailed)
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: RentalsExpense)(
-    implicit hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: RentalsExpense)(implicit
+    hc: HeaderCarrier
   ): Unit = {
     val auditModel = RentalsAuditModel(
       request.user.nino,
