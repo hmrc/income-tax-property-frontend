@@ -696,7 +696,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController
-          .onPageLoad(taxYear)
+          .onPageLoad(taxYear, RentARoom)
       }
 
       "must go from AboutSectionCompletePage to AboutSectionCompleteController" in {

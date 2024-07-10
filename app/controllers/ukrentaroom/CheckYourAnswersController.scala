@@ -16,11 +16,11 @@
 
 package controllers.ukrentaroom
 
-import audit.{AuditService, RentARoomAuditModel}
+import audit.{AuditService, RentARoomAuditModel, RentalsAndRentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
-import models.{JourneyContext, RaRAbout, RentARoom}
+import models.{JourneyContext, PropertyType, RaRAbout, RentARoom, RentalsAndRaRAbout, RentalsAndRentARoom}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -30,6 +30,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.CheckYourAnswersView
+import RentARoomAuditModel._
+import RentalsAndRentARoomAuditModel._
+import play.api.libs.json.Writes
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,8 +48,8 @@ class CheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val ukRentARoomJointlyLetSummary =
         UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val totalIncomeAmountSummary =
@@ -58,45 +61,86 @@ class CheckYourAnswersController @Inject() (
         rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrRRRSummary).flatten
       )
 
-      Ok(view(list, taxYear))
-  }
+      Ok(view(list, taxYear, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "uk-rent-a-room-about")
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      propertyType match {
+        case RentARoom =>
+          val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "uk-rent-a-room-about")
 
-      val rarAboutMaybe: Option[RaRAbout] = request.userAnswers.get(RaRAbout)
+          val rarAboutMaybe = request.userAnswers.get(RaRAbout)
+          sendAbout(taxYear, request, context, rarAboutMaybe)
+        case RentalsAndRentARoom =>
+          val context =
+            JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-about")
 
-      rarAboutMaybe.fold[Future[Result]] {
-        logger.error("UK Rent A Room Section is not present in userAnswers")
-        Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
-      } { rarAbout =>
-        propertySubmissionService
-          .saveJourneyAnswers[RaRAbout](context, rarAbout)
-          .map {
-            case Left(_) =>
-              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
-            case Right(_) =>
-              auditCYA(taxYear, request, rarAbout)
-              Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
-          }
+          val rentalsAndRaRAboutMaybe = request.userAnswers.get(RentalsAndRaRAbout)
+          sendAbout(taxYear, request, context, rentalsAndRaRAboutMaybe)
       }
-  }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], rarAbout: RaRAbout)(implicit
-    hc: HeaderCarrier
-  ): Unit = {
-    val auditModel = RentARoomAuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      "PropertyRentARoomAbout",
-      rarAbout
-    )
+    }
 
-    audit.sendRentARoomAuditEvent(auditModel)
-  }
+  private def sendAbout[T](
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    context: JourneyContext,
+    aboutMaybe: Option[T]
+  )(implicit
+    hc: HeaderCarrier,
+    writes: Writes[T],
+    writesRentARoom: Writes[RentARoomAuditModel[T]],
+    writesRentalsAndRentARoom: Writes[RentalsAndRentARoomAuditModel[T]]
+  ): Future[Result] =
+    aboutMaybe.fold[Future[Result]] {
+      logger.error("UK Rent A Room Section is not present in userAnswers")
+      Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+    } { about =>
+      propertySubmissionService
+        .saveJourneyAnswers[T](context, about)
+        .map {
+          case Left(_) =>
+            Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
+          case Right(_) =>
+            auditCYA(taxYear, request, about)
+            Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+        }
+    }
+
+  private def auditCYA[T](taxYear: Int, request: DataRequest[AnyContent], about: T)(implicit
+    hc: HeaderCarrier,
+    writes: Writes[T],
+    writesRentARoom: Writes[RentARoomAuditModel[T]],
+    writesRentalsAndRentARoom: Writes[RentalsAndRentARoomAuditModel[T]]
+  ): Unit =
+    about match {
+      case RaRAbout(_, _, _) =>
+        val auditModel = RentARoomAuditModel(
+          request.user.nino,
+          request.user.affinityGroup,
+          request.user.mtditid,
+          request.user.agentRef,
+          taxYear,
+          isUpdate = false,
+          "PropertyRentARoomAbout",
+          about
+        )
+
+        audit.sendRentARoomAuditEvent(auditModel)
+      case RentalsAndRaRAbout(_, _, _, _) =>
+        val auditModel = RentalsAndRentARoomAuditModel(
+          request.user.nino,
+          request.user.affinityGroup,
+          request.user.mtditid,
+          request.user.agentRef,
+          taxYear,
+          isUpdate = false,
+          "PropertyRentalsRentARoom",
+          about
+        )
+
+        audit.sendRentalsAndRentARoomAuditEvent(auditModel)
+    }
+
 }

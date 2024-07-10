@@ -154,7 +154,7 @@ class Navigator @Inject() () {
           _ =>
             ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
 
-    // allowances
+        // allowances
     case CapitalAllowancesForACarPage => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case AnnualInvestmentAllowancePage =>
       taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
@@ -176,7 +176,7 @@ class Navigator @Inject() () {
           _ =>
             ExpensesCheckYourAnswersController.onPageLoad(taxYear)
 
-    // Structured building allowance
+        // Structured building allowance
     case ClaimStructureBuildingAllowancePage =>
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case StructureBuildingAllowancePage =>
@@ -184,16 +184,21 @@ class Navigator @Inject() () {
     case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case SbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
-    case SbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case SbaSectionFinishedPage =>
+      taxYear =>
+        _ =>
+          _ =>
+            SummaryController.show(taxYear)
 
-    // Enhanced structured building allowance
+        // Enhanced structured building allowance
     case ClaimEsbaPage =>
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear, userAnswers)
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
     case EsbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case TotalIncomeAmountPage(RentARoom)   => taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
+    case TotalIncomeAmountPage(RentARoom) =>
+      taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode)
 
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
@@ -203,9 +208,9 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+            controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
 
-    // Rent a Room
+        // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
 
@@ -348,12 +353,12 @@ class Navigator @Inject() () {
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
     case TotalIncomeAmountPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
     case UkRentARoomJointlyLetPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
 
     case ClaimExpensesOrRRRPage =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
 
     case RaRCapitalAllowancesForACarPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
