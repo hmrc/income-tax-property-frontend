@@ -360,10 +360,10 @@ POST        /:taxYear/uk-rent-a-room/claim-expenses-or-rrr                      
 GET         /:taxYear/uk-rent-a-room/change-claim-expenses-or-rrr                                  controllers.ukrentaroom.ClaimExpensesOrRRRController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/uk-rent-a-room/change-claim-expenses-or-rrr                                  controllers.ukrentaroom.ClaimExpensesOrRRRController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/uk-rent-a-room/total-income-amount                                           controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-rent-a-room/total-income-amount                                           controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/uk-rent-a-room/change-total-income-amount                                    controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/uk-rent-a-room/change-total-income-amount                                    controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-rent-a-room/total-income-amount                                           controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/total-income-amount                                           controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+GET         /:taxYear/uk-rent-a-room/change-total-income-amount                                    controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/uk-rent-a-room/change-total-income-amount                                    controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
 
 GET         /:taxYear/uk-rent-a-room/about-section-complete-yes-no                                 controllers.ukrentaroom.AboutSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-rent-a-room/about-section-complete-yes-no                                 controllers.ukrentaroom.AboutSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -474,7 +474,7 @@ POST       /:taxYear/property-rentals/about-section-finished-yes-no             
 
 #################### Rentals And Rent A Room  ##########################
 
-GET        /:taxYear/property-rentals-and-rent-a-room/start                                           controllers.rentalsandrentaroom.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
+GET        /:taxYear/rentals-and-rent-a-room/start                                                    controllers.rentalsandrentaroom.RentalsAndRentARoomStartController.onPageLoad(taxYear: Int)
 
 GET         /:taxYear/rentals-rent-a-room/jointly-let                                                 controllers.ukrentaroom.UkRentARoomJointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
 POST        /:taxYear/rentals-rent-a-room/jointly-let                                                 controllers.ukrentaroom.UkRentARoomJointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
@@ -485,3 +485,8 @@ GET         /:taxYear/rentals-rent-a-room/claim-property-income-allowance       
 POST        /:taxYear/rentals-rent-a-room/claim-property-income-allowance                                   controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
 GET         /:taxYear/rentals-rent-a-room/change-claim-property-income-allowance                            controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)
 POST        /:taxYear/rentals-rent-a-room/change-claim-property-income-allowance                            controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/total-income-amount                                         controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
+POST        /:taxYear/rentals-rent-a-room/total-income-amount                                         controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsAndRentARoom)
+GET         /:taxYear/rentals-rent-a-room/change-total-income-amount                                  controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)
+POST        /:taxYear/rentals-rent-a-room/change-total-income-amount                                  controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsAndRentARoom)

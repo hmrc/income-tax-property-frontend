@@ -34,8 +34,8 @@ object CreateOrUpdateJourneyAnswersResponse {
         response.status match {
           case NO_CONTENT | CREATED => CreateOrUpdateJourneyAnswersResponse(response, Right(()))
           case NOT_FOUND | INTERNAL_SERVER_ERROR | SERVICE_UNAVAILABLE | BAD_REQUEST | UNPROCESSABLE_ENTITY =>
-            CreateOrUpdateJourneyAnswersResponse(response, Right(()))
-          case _ => CreateOrUpdateJourneyAnswersResponse(response, Right(()))
+            CreateOrUpdateJourneyAnswersResponse(response, handleError(response, response.status))
+          case _ => CreateOrUpdateJourneyAnswersResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
         }
     }
 }
