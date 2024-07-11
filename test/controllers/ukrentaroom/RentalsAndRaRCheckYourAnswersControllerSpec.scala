@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import audit.AuditService
 import base.SpecBase
-import models.{ClaimExpensesOrRRR, RaRAbout, UserAnswers}
+import models.{BalancingCharge, ClaimExpensesOrRRR, RaRAbout, RentalsAndRaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
 import org.mockito.MockitoSugar.{times, verify, when}
@@ -34,14 +34,14 @@ import views.html.ukrentaroom.CheckYourAnswersView
 
 import scala.concurrent.Future
 
-class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
+class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
   val taxYear: Int = 2023
 
   def onwardRoute: Call =
     Call("GET", "/update-and-submit-income-tax-return/property/2023/uk-rent-a-room/about-section-complete-yes-no")
 
-  "UK Rent a Room Check Your Answers Controller" - {
+  "Rentals and Rent a Room Check Your Answers Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -92,15 +92,24 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
 
-      val rarAbout = RaRAbout(ukRentARoomJointlyLet = true, 22.23, ClaimExpensesOrRRR(claimRRROrExpenses = false, Some(22.11)))
+      val rentalsAndRaRAbout =
+        RentalsAndRaRAbout(
+          ukRentARoomJointlyLet = true,
+          22.23,
+          BalancingCharge(
+            true,
+            Some(45.67)
+          ),
+          ClaimExpensesOrRRR(claimRRROrExpenses = false, Some(22.11))
+        )
       val userAnswersWithRaRAbout =
-        userAnswers.set(RaRAbout, rarAbout).get
+        userAnswers.set(RentalsAndRaRAbout, rentalsAndRaRAbout).get
 
       val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
       val audit: AuditService = mock[AuditService]
 
       when(
-        propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rarAbout))(any(), any())
+        propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rentalsAndRaRAbout))(any(), any())
       ) thenReturn Future.successful(Right(()))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)

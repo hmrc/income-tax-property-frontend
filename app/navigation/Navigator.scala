@@ -208,7 +208,7 @@ class Navigator @Inject() () {
       taxYear =>
         _ =>
           _ =>
-            controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
+            controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
         // Rent a Room
     case RentsRatesAndInsuranceRRPage =>
@@ -353,12 +353,12 @@ class Navigator @Inject() () {
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
     case TotalIncomeAmountPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     case UkRentARoomJointlyLetPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
     case ClaimExpensesOrRRRPage =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear, RentARoom)
+      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
     case RaRCapitalAllowancesForACarPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)

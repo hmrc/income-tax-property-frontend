@@ -63,7 +63,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
     val propertyUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/${ctx.journeyName}/${ctx.nino}/answers"
-
+    println("AAAAAAAAAAA" + propertyUrl)
     httpClient
       .post(url"$propertyUrl")
       .setHeader("mtditid" -> ctx.mtditid)

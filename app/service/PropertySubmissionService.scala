@@ -19,7 +19,7 @@ package service
 import audit.RentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
-import models.backend.{HttpParserError, UKPropertyDetailsError, ServiceError}
+import models.backend.{HttpParserError, ServiceError, UKPropertyDetailsError}
 import models.{FetchedBackendData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
@@ -54,7 +54,7 @@ class PropertySubmissionService @Inject() (
     }
 
   def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: RentalsIncome)(implicit
-                                                                                           hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] =
     saveJourneyAnswers(ctx, propertyRentalsIncome)
 
