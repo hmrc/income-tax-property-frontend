@@ -25,7 +25,7 @@ import play.api.libs.json.{JsSuccess, Json}
 class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   val raRAboutJson: String = """{
-                               |    "jointlyLet" : true,
+                               |    "jointlyLetYesOrNo" : true,
                                |    "totalIncomeAmount" : 34,
                                |    "claimExpensesOrRRR" : {
                                |        "claimRRROrExpenses" : true,
@@ -38,7 +38,7 @@ class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChec
 
       Json.parse(raRAboutJson).validate[RaRAbout] mustBe JsSuccess(
         RaRAbout(
-          jointlyLet = true,
+          jointlyLetYesOrNo = true,
           34,
           ClaimExpensesOrRRR(
             claimRRROrExpenses = true,

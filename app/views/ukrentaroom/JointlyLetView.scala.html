@@ -42,7 +42,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("jointlyLet"),
+                field = form("jointlyLetYesOrNo"),
                 legend = LegendViewModel(messages(s"jointlyLet.heading.${request.user.isAgentMessageKey}")).asPageHeading(LegendSize.Medium)
             )
         )

@@ -156,7 +156,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", "true"))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", "true"))
 
           val rentARoomResult = route(application, rentARoomRequest).value
 
@@ -165,7 +165,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
           val rentalsAndRentARoomRequest =
             FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", "true"))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", "true"))
 
           val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
@@ -181,9 +181,9 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", ""))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", ""))
 
-          val boundForm = form.bind(Map("jointlyLet" -> ""))
+          val boundForm = form.bind(Map("jointlyLetYesOrNo" -> ""))
           val view = application.injector.instanceOf[JointlyLetView]
 
           val rentARoomResult = route(application, rentARoomRequest).value
@@ -196,7 +196,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
           val rentalsAndRentARoomRequest =
             FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", ""))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", ""))
 
           val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
@@ -241,7 +241,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val rentARoomRequest =
             FakeRequest(POST, rentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", "true"))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", "true"))
 
           val rentARoomResult = route(application, rentARoomRequest).value
 
@@ -250,7 +250,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
           val rentalsAndRentARoomRequest =
             FakeRequest(POST, rentalsArndRentARoomJointlyLetRoute)
-              .withFormUrlEncodedBody(("jointlyLet", "true"))
+              .withFormUrlEncodedBody(("jointlyLetYesOrNo", "true"))
 
           val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 

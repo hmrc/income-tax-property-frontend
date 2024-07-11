@@ -30,7 +30,7 @@ class JointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
     s".value $agencyOrIndividual" - {
 
-      val fieldName = "jointlyLet"
+      val fieldName = "jointlyLetYesOrNo"
 
       behave like booleanField(
         form,

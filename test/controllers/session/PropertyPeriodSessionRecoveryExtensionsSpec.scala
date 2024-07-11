@@ -156,7 +156,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |
       |    },
       |    "raRAbout" : {
-      |            "jointlyLet" : false,
+      |            "jointlyLetYesOrNo" : false,
       |            "totalIncomeAmount" : 30,
       |            "claimExpensesOrRRR" : {
       |                "claimRRROrExpenses" : false,
