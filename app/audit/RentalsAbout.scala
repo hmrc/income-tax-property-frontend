@@ -18,7 +18,6 @@ package audit
 
 import models.Rentals
 import pages.PageConstants.aboutPath
-import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json._
 import queries.Gettable
 
