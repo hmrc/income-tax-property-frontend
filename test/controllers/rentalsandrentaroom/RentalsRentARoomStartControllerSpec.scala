@@ -46,7 +46,7 @@ class RentalsRentARoomStartControllerSpec extends SpecBase {
         running(application) {
           val request = FakeRequest(
             GET,
-            controllers.rentalsandrentaroom.routes.RentalsAndRentARoomStartController.onPageLoad(taxYear).url
+            controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear).url
           )
 
           val result = route(application, request).value

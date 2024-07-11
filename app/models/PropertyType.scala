@@ -28,9 +28,9 @@ object PropertyType {
 
   implicit val jsLiteral: JavascriptLiteral[PropertyType] = new JavascriptLiteral[PropertyType] {
     override def to(value: PropertyType): String = value match {
-      case Rentals             => "Rentals"
-      case RentARoom           => "RentARoom"
-      case RentalsRentARoom => "RentalsAndRentARoom"
+      case Rentals          => "Rentals"
+      case RentARoom        => "RentARoom"
+      case RentalsRentARoom => "RentalsRentARoom"
     }
   }
 }

@@ -255,7 +255,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       val combinedItems: Seq[TaskListItem] = Seq(
         TaskListItem(
           "summary.about",
-          controllers.rentalsandrentaroom.routes.RentalsAndRentARoomStartController.onPageLoad(taxYear),
+          controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
           TaskListTag.NotStarted,
           "combined_rentals_and_rent_a_room_about_link"
         )

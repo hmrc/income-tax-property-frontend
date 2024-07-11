@@ -25,7 +25,7 @@ import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
 
 import javax.inject.Inject
 
-class RentalsAndRentARoomStartController @Inject() (
+class RentalsRentARoomStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
