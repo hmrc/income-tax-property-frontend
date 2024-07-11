@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers.rentalsandrentaroom
 
 import audit.AuditService
 import base.SpecBase
-import models.{BalancingCharge, ClaimExpensesOrRRR, RaRAbout, RentalsAndRaRAbout, UserAnswers}
+import controllers.rentalsandrentaroom.routes
+import models.{BalancingCharge, ClaimExpensesOrRRR, RentalsAndRaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
 import org.mockito.MockitoSugar.{times, verify, when}
@@ -30,7 +31,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
-import views.html.ukrentaroom.RentalsAndRaRCheckYourAnswersView
+import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
 
 import scala.concurrent.Future
 
@@ -51,7 +52,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         val request =
           FakeRequest(
             GET,
-            controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear).url
+            controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear).url
           )
 
         val result = route(application, request).value
@@ -85,7 +86,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       running(application) {
         val request = FakeRequest(
           POST,
-          controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
+          controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
         )
 
         val result = route(application, request).value
@@ -102,10 +103,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         RentalsAndRaRAbout(
           ukRentARoomJointlyLet = true,
           22.23,
-          BalancingCharge(
-            true,
-            Some(45.67)
-          ),
+          true,
           ClaimExpensesOrRRR(claimRRROrExpenses = false, Some(22.11))
         )
       val userAnswersWithRaRAbout =
@@ -128,7 +126,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       running(application) {
         val request = FakeRequest(
           POST,
-          controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
+          controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
         )
 
         val result = route(application, request).value

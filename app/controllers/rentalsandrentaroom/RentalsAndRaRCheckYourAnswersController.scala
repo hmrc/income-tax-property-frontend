@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom
+package controllers.rentalsandrentaroom
 
-import audit.RentARoomAuditModel._
 import audit.RentalsAndRentARoomAuditModel._
-import audit.{AuditService, RentARoomAuditModel, RentalsAndRentARoomAuditModel}
+import audit.{AuditService, RentalsAndRentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
-import models.{JourneyContext, PropertyType, RaRAbout, RentARoom, RentalsAndRaRAbout, RentalsAndRentARoom}
+import models.{JourneyContext, RentalsAndRaRAbout, RentalsAndRentARoom}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Writes
@@ -33,7 +32,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments.BalancingChargeSummary
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
 import viewmodels.govuk.summarylist._
-import views.html.ukrentaroom.{CheckYourAnswersView, RentalsAndRaRCheckYourAnswersView}
+import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -61,15 +60,17 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       val totalIncomeAmountSummary =
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsAndRentARoom)
       val claimExpensesOrRRRSummary =
-        ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers) //Todo: Update in related ticket to parameterise
+        ClaimExpensesOrRRRSummary.rows(
+          taxYear,
+          request.user.isAgentMessageKey,
+          request.userAnswers
+        ) // Todo: Update in related ticket to parameterise
 
-      val balancingChargeSummary =
-        BalancingChargeSummary.row(taxYear, request.userAnswers) //Todo: Update in related ticket to parameterise
       val list = SummaryListViewModel(
         rows = (Seq(
           ukRentARoomJointlyLetSummary,
           totalIncomeAmountSummary
-        ) ++ claimExpensesOrRRRSummary ++ Seq(balancingChargeSummary)).flatten
+        ) ++ claimExpensesOrRRRSummary).flatten
       )
 
       Ok(view(list, taxYear))
@@ -110,8 +111,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
     }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], about: RentalsAndRaRAbout)(implicit
-    hc: HeaderCarrier,
-    writesRentalsAndRentARoom: Writes[RentalsAndRentARoomAuditModel[RentalsAndRaRAbout]]
+    hc: HeaderCarrier
   ): Unit = {
 
     val auditModel = RentalsAndRentARoomAuditModel(
