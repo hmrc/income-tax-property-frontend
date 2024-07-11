@@ -490,3 +490,6 @@ GET         /:taxYear/rentals-rent-a-room/total-income-amount                   
 POST        /:taxYear/rentals-rent-a-room/total-income-amount                                         controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/change-total-income-amount                                  controllers.ukrentaroom.TotalIncomeAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/change-total-income-amount                                  controllers.ukrentaroom.TotalIncomeAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/check-your-answers                                          controllers.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/check-your-answers                                          controllers.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear: Int)
