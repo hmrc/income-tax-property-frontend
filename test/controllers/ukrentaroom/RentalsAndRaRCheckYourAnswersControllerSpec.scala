@@ -30,7 +30,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
-import views.html.ukrentaroom.CheckYourAnswersView
+import views.html.ukrentaroom.RentalsAndRaRCheckYourAnswersView
 
 import scala.concurrent.Future
 
@@ -49,11 +49,14 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       running(application) {
         val request =
-          FakeRequest(GET, controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear).url)
+          FakeRequest(
+            GET,
+            controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear).url
+          )
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CheckYourAnswersView]
+        val view = application.injector.instanceOf[RentalsAndRaRCheckYourAnswersView]
         val list = SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
@@ -66,7 +69,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
@@ -80,7 +83,10 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(POST, controllers.ukrentaroom.routes.CheckYourAnswersController.onSubmit(taxYear).url)
+        val request = FakeRequest(
+          POST,
+          controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
+        )
 
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
@@ -120,7 +126,10 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, controllers.ukrentaroom.routes.CheckYourAnswersController.onSubmit(taxYear).url)
+        val request = FakeRequest(
+          POST,
+          controllers.ukrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
+        )
 
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
