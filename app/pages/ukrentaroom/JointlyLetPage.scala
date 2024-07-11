@@ -25,5 +25,5 @@ case class JointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boole
 
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
-  override def toString: String = "jointlyLet"
+  override def toString: String = "jointlyLetYesOrNo"
 }
