@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{RentARoom, Rentals, RentalsAndRentARoom}
+import models.{RentARoom, Rentals, RentalsRentARoom}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -28,7 +28,7 @@ class PageConstantsSpec extends AnyWordSpec with Matchers {
     "should the correct label for the corresponding property type" in {
       PageConstants.labelForPropertyType(Rentals, "Foo") shouldBe "rentalsFoo"
       PageConstants.labelForPropertyType(RentARoom, "Foo") shouldBe "rentARoomFoo"
-      PageConstants.labelForPropertyType(RentalsAndRentARoom, "Foo") shouldBe "rentalsAndRentARoomFoo"
+      PageConstants.labelForPropertyType(RentalsRentARoom, "Foo") shouldBe "rentalsRentARoomFoo"
 
       PageConstants.expensesPath(Rentals) shouldBe "rentalsExpenses"
       PageConstants.expensesPath(RentARoom) shouldBe "rentARoomExpenses"

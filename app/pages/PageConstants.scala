@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{PropertyType, RentARoom, Rentals, RentalsAndRentARoom}
+import models.{PropertyType, RentARoom, Rentals, RentalsRentARoom}
 
 object PageConstants {
 
@@ -32,7 +32,7 @@ object PageConstants {
     propertyType match {
       case Rentals             => s"rentals$suffix"
       case RentARoom           => s"rentARoom$suffix"
-      case RentalsAndRentARoom => s"rentalsAndRentARoom$suffix"
+      case RentalsRentARoom => s"rentalsRentARoom$suffix"
     }
 
   // About

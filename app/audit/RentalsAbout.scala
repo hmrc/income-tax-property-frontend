@@ -18,6 +18,7 @@ package audit
 
 import models.Rentals
 import pages.PageConstants.aboutPath
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json._
 import queries.Gettable
 
@@ -25,13 +26,7 @@ case class RentalsAbout(toexpensesLessThan1000: Boolean, claimPropertyIncomeAllo
 
 case object RentalsAbout extends Gettable[RentalsAbout] {
 
-  implicit val reads: Reads[RentalsAbout] = Json.reads[RentalsAbout]
-  implicit val formats: Writes[RentalsAbout] = new Writes[RentalsAbout] {
-    override def writes(rentalsAbout: RentalsAbout): JsValue = Json.obj(
-      "toexpensesLessThan1000"       -> rentalsAbout.toexpensesLessThan1000,
-      "claimPropertyIncomeAllowance" -> rentalsAbout.claimPropertyIncomeAllowanceYesOrNo
-    )
-  }
+  implicit val format: Format[RentalsAbout] = Json.format[RentalsAbout]
 
   override def path: JsPath = JsPath \ toString
 

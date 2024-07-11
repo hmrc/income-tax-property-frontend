@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.JointlyLetFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, RentARoom, RentalsAndRentARoom, User, UserAnswers}
+import models.{NormalMode, RentARoom, RentalsRentARoom, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -49,7 +49,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val rentalsArndRentARoomJointlyLetRoute =
     controllers.ukrentaroom.routes.JointlyLetController
-      .onPageLoad(taxYear, NormalMode, RentalsAndRentARoom)
+      .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
       .url
 
   val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
@@ -84,7 +84,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
           val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
           status(rentalsAndRentARoomResult) mustEqual OK
-          contentAsString(rentalsAndRentARoomResult) mustEqual view(form, taxYear, NormalMode, RentalsAndRentARoom)(
+          contentAsString(rentalsAndRentARoomResult) mustEqual view(form, taxYear, NormalMode, RentalsRentARoom)(
             DataRequest(rentalsAndRentARoomRequest, "", user, emptyUserAnswers),
             messages(application)
           ).toString
@@ -205,7 +205,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
             boundForm,
             taxYear,
             NormalMode,
-            RentalsAndRentARoom
+            RentalsRentARoom
           )(
             DataRequest(rentalsAndRentARoomRequest, "", user, emptyUserAnswers),
             messages(application)

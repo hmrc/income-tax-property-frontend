@@ -23,7 +23,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
-class RentalsAndRentARoomStartControllerSpec extends SpecBase {
+class RentalsRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
   "RentalsAndRentARoomStart Controller" - {
     val scenarios = Table[Boolean, String](

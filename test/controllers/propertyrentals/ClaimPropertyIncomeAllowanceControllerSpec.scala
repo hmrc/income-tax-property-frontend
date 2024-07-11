@@ -19,7 +19,7 @@ package controllers.propertyrentals
 import base.SpecBase
 import controllers.{propertyrentals, routes}
 import forms.propertyrentals.ClaimPropertyIncomeAllowanceFormProvider
-import models.{NormalMode, Rentals, RentalsAndRentARoom, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -48,7 +48,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
   lazy val rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute =
     propertyrentals.routes.ClaimPropertyIncomeAllowanceController
-      .onPageLoad(taxYear, NormalMode, RentalsAndRentARoom)
+      .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
       .url
 
   "ClaimPropertyIncomeAllowance Controller" - {
@@ -76,7 +76,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
           form,
           taxYear,
           NormalMode,
-          RentalsAndRentARoom,
+          RentalsRentARoom,
           "individual"
         )(
           rentalsAndRentARoomRequest,
@@ -104,7 +104,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       }
 
       val rentalsAndRentARoomUserAnswers =
-        UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage(RentalsAndRentARoom), true).success.value
+        UserAnswers(userAnswersId).set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), true).success.value
 
       val rentalsAndRentARoomApplication =
         applicationBuilder(userAnswers = Some(rentalsAndRentARoomUserAnswers), isAgent = false).build()
@@ -115,7 +115,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
         val result = route(rentalsAndRentARoomApplication, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, RentalsAndRentARoom, "individual")(
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, RentalsRentARoom, "individual")(
           request,
           messages(rentalsApplication)
         ).toString
@@ -188,7 +188,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
           boundForm,
           taxYear,
           NormalMode,
-          RentalsAndRentARoom,
+          RentalsRentARoom,
           "individual"
         )(
           rentalsAndRentARoomRequest,
