@@ -52,7 +52,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
         rows = Seq(
           ExpensesLessThan1000Summary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           ClaimPropertyIncomeAllowanceSummary
-            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
+            .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
         ).flatten
       )
 

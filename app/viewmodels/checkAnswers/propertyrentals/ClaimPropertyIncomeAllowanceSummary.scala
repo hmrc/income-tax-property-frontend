@@ -26,7 +26,7 @@ import viewmodels.implicits._
 
 object ClaimPropertyIncomeAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
+  def rows(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ClaimPropertyIncomeAllowancePage(propertyType)).map { answer =>

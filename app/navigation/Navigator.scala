@@ -24,6 +24,7 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
+import controllers.rentalsandrentaroom.routes
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
 import controllers.ukrentaroom.adjustments.routes._
@@ -247,7 +248,16 @@ class Navigator @Inject() () {
 
         // Rentals and Rent a Room About
     case JointlyLetPage(RentalsRentARoom) =>
+      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+
+    case TotalIncomeAmountPage(RentalsRentARoom) =>
       taxYear => _ => _ => ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+
+    case ClaimExpensesOrRRRPage(RentalsRentARoom) =>
+      taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+
+    case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
 
@@ -386,9 +396,28 @@ class Navigator @Inject() () {
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
-    case _ => taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
+          // Rentals and Rent a Room
+
+        // About
+    case JointlyLetPage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    case TotalIncomeAmountPage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    case ClaimExpensesOrRRRPage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+
+    case _ =>
+      taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
+
   }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =

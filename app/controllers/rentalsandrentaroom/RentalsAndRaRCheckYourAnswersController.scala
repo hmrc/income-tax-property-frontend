@@ -28,6 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers.propertyrentals.ClaimPropertyIncomeAllowanceSummary
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, JointlyLetSummary, TotalIncomeAmountSummary}
 import viewmodels.govuk.summarylist._
 import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
@@ -65,10 +66,19 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
           RentalsRentARoom
         )
 
+      val claimPropertyIncomeAllowanceSummary =
+        ClaimPropertyIncomeAllowanceSummary.rows(
+          taxYear,
+          request.userAnswers,
+          request.user.isAgentMessageKey,
+          RentalsRentARoom
+        )
+
       val list = SummaryListViewModel(
         rows = (Seq(
           ukRentARoomJointlyLetSummary,
-          totalIncomeAmountSummary
+          totalIncomeAmountSummary,
+          claimPropertyIncomeAllowanceSummary
         ) ++ claimExpensesOrRRRSummary).flatten
       )
 
