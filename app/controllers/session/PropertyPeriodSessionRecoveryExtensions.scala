@@ -29,7 +29,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.libs.json.Writes
 import queries.Settable
 
@@ -90,7 +90,10 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsAbout) =>
           for {
             ua1 <- userAnswers.set(ExpensesLessThan1000Page, propertyRentalsAbout.toexpensesLessThan1000)
-            ua2 <- ua1.set(ClaimPropertyIncomeAllowancePage(Rentals), propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo)
+            ua2 <- ua1.set(
+                     ClaimPropertyIncomeAllowancePage(Rentals),
+                     propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo
+                   )
           } yield ua2
       }
 
@@ -259,7 +262,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.jointlyLetYesOrNo)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentARoom), raRAbout.totalIncomeAmount)
-            ua3 <- ua2.set(ClaimExpensesOrRRRPage, raRAbout.claimExpensesOrRRR)
+            ua3 <- ua2.set(ClaimExpensesOrRRRPage(RentARoom), raRAbout.claimExpensesOrRRR)
           } yield ua3
       }
 

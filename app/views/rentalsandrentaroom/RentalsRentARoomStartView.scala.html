@@ -15,12 +15,17 @@
  *@
 
 @import models.requests._
+@import models.PropertyType
+@import models.RentalsRentARoom
+@import controllers.ukrentaroom.routes._
+
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(taxYear: Int, mode: models.Mode)(implicit request: DataRequest[_], messages: Messages)
+
+@(propertyType: PropertyType, taxYear: Int, mode: Mode)(implicit request: DataRequest[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"rentalsAndRentARoom.start.title.${request.user.isAgentMessageKey}"))) {
 

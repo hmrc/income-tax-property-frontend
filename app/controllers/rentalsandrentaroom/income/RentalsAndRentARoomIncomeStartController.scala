@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package controllers.rentalsandrentaroom
+package controllers.rentalsandrentaroom.income
 
 import controllers.actions._
-import models.{NormalMode, RentalsRentARoom}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.rentalsandrentaroom.RentalsRentARoomStartView
+import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeStartView
 
 import javax.inject.Inject
 
-class RentalsRentARoomStartController @Inject() (
+class RentalsAndRentARoomIncomeStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: RentalsRentARoomStartView
+  view: RentalsAndRentARoomIncomeStartView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(RentalsRentARoom, taxYear, NormalMode))
+      Ok(view(taxYear, request.user.isAgentMessageKey))
   }
 }

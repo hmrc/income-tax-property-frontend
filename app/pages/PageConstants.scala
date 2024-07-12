@@ -30,8 +30,8 @@ object PageConstants {
 
   val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
     propertyType match {
-      case Rentals             => s"rentals$suffix"
-      case RentARoom           => s"rentARoom$suffix"
+      case Rentals          => s"rentals$suffix"
+      case RentARoom        => s"rentARoom$suffix"
       case RentalsRentARoom => s"rentalsRentARoom$suffix"
     }
 
@@ -48,5 +48,4 @@ object PageConstants {
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
-
 }

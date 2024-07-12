@@ -690,7 +690,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from ClaimExpensesOrRRRPage to CheckYourAnswersController" in {
         navigator.nextPage(
-          ClaimExpensesOrRRRPage,
+          ClaimExpensesOrRRRPage(RentARoom),
           taxYear,
           NormalMode,
           UserAnswers("test"),

@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom
+package controllers.exceptions
 
-import models.{ClaimExpensesOrRRR, PropertyType}
-import pages.PageConstants.aboutPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-
-case class ClaimExpensesOrRRRPage(propertyType: PropertyType) extends QuestionPage[ClaimExpensesOrRRR] {
-  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
-
-  override def toString: String = "claimExpensesOrRRR"
-}
+case class NotFoundException(message: String) extends Exception(message)

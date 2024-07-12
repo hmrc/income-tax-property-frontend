@@ -18,11 +18,11 @@ package controllers.rentalsandrentaroom
 
 import base.SpecBase
 import models.requests.DataRequest
-import models.{NormalMode, User}
+import models.{NormalMode, RentalsRentARoom, User}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
+import views.html.rentalsandrentaroom.RentalsRentARoomStartView
 class RentalsRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
   "RentalsAndRentARoomStart Controller" - {
@@ -53,10 +53,13 @@ class RentalsRentARoomStartControllerSpec extends SpecBase {
           val dataRequest =
             DataRequest(request, "", user, emptyUserAnswers)
 
-          val view = application.injector.instanceOf[RentalsAndRentARoomStartView]
+          val view = application.injector.instanceOf[RentalsRentARoomStartView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(taxYear, NormalMode)(dataRequest, messages(application)).toString
+          contentAsString(result) mustEqual view(RentalsRentARoom, taxYear, NormalMode)(
+            dataRequest,
+            messages(application)
+          ).toString
         }
       }
     }
