@@ -17,10 +17,11 @@
 package viewmodels.checkAnswers.propertyrentals
 
 import controllers.propertyrentals.routes
-import models.{CheckMode, PropertyType, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -30,11 +31,12 @@ object ClaimPropertyIncomeAllowanceSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ClaimPropertyIncomeAllowancePage(propertyType)).map { answer =>
-      val value = if (answer) "claimPropertyIncomeAllowance.yes" else "claimPropertyIncomeAllowance.no"
+      val value = if (answer) "claimPropertyIncomeAllowance.summary.yes" else "claimPropertyIncomeAllowance.summary.no"
 
       SummaryListRowViewModel(
-        key = s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent",
-        value = ValueViewModel(value),
+        key = KeyViewModel(s"claimPropertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent")
+          .withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

@@ -409,7 +409,7 @@ class Navigator @Inject() () {
     case TotalIncomeAmountPage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case ClaimExpensesOrRRRPage(RentalsRentARoom) =>
-      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, RentalsRentARoom)
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
