@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom
+package audit
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import play.api.libs.json.{Format, Json, OFormat}
 
-import javax.inject.Inject
+case class RentalsAndRentARoomAuditModel[T](
+  nino: String,
+  userType: String,
+  mtdItId: String,
+  agentReferenceNumber: Option[String],
+  taxYear: Int,
+  isUpdate: Boolean,
+  sectionName: String,
+  userEnteredRentalsAndRentARoomDetails: T
+)
 
-class UkRentARoomJointlyLetFormProvider @Inject() extends Mappings {
-
-  def apply(agentOrIndividual: String): Form[Boolean] =
-    Form(
-      "ukRentARoomJointlyLet" -> boolean(s"ukRentARoom.jointlyLet.error.required.$agentOrIndividual")
-    )
+object RentalsAndRentARoomAuditModel {
+  implicit def format[T](implicit
+    rentalsAndRentARoomAuditModelFormat: Format[T]
+  ): OFormat[RentalsAndRentARoomAuditModel[T]] =
+    Json.format[RentalsAndRentARoomAuditModel[T]]
 }

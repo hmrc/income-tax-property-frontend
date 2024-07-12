@@ -28,13 +28,21 @@ class AuditService @Inject() (auditConnector: AuditConnector)(implicit ec: Execu
 
   private val rentalsAuditType = "CreateOrAmendRentalsUpdate"
   private val rentARoomAuditType = "CreateOrAmendRentARoomUpdate"
+  private val rentalsAndARoomAuditType = "CreateOrAmendRentalsAndRentARoomUpdate"
 
-  def sendRentalsAuditEvent[T](event: RentalsAuditModel[T])(implicit hc: HeaderCarrier, writes: Writes[RentalsAuditModel[T]]): Unit =
+  def sendRentalsAuditEvent[T](
+    event: RentalsAuditModel[T]
+  )(implicit hc: HeaderCarrier, writes: Writes[RentalsAuditModel[T]]): Unit =
     auditConnector.sendExplicitAudit(rentalsAuditType, event)
 
   def sendRentARoomAuditEvent[T](
     event: RentARoomAuditModel[T]
   )(implicit hc: HeaderCarrier, writes: Writes[RentARoomAuditModel[T]]): Unit =
     auditConnector.sendExplicitAudit(rentARoomAuditType, event)
+
+  def sendRentalsAndRentARoomAuditEvent[T](
+    event: RentalsAndRentARoomAuditModel[T]
+  )(implicit hc: HeaderCarrier, writes: Writes[RentalsAndRentARoomAuditModel[T]]): Unit =
+    auditConnector.sendExplicitAudit(rentalsAndARoomAuditType, event)
 
 }

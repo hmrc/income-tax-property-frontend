@@ -16,12 +16,14 @@
 
 package pages.ukrentaroom
 
-import pages.{PageConstants, QuestionPage}
+import models.PropertyType
+import pages.PageConstants.aboutPath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object TotalIncomeAmountPage extends QuestionPage[BigDecimal] {
+case class TotalIncomeAmountPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAbout \ toString
+  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
   override def toString: String = "totalIncomeAmount"
 }

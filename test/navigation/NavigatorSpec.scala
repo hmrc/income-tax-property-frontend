@@ -222,12 +222,12 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
-          ClaimPropertyIncomeAllowancePage,
+          ClaimPropertyIncomeAllowancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -634,7 +634,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
-          ClaimPropertyIncomeAllowancePage,
+          ClaimPropertyIncomeAllowancePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

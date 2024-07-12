@@ -17,14 +17,13 @@
 package controllers.rentalsandrentaroom
 
 import base.SpecBase
-import controllers.routes
-import models.{RentARoom, RentalsAndRentARoom, User}
 import models.requests.DataRequest
+import models.{NormalMode, RentalsRentARoom, User}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
-class RentalsAndRentARoomStartControllerSpec extends SpecBase {
+import views.html.rentalsandrentaroom.RentalsRentARoomStartView
+class RentalsRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
   "RentalsAndRentARoomStart Controller" - {
     val scenarios = Table[Boolean, String](
@@ -47,17 +46,17 @@ class RentalsAndRentARoomStartControllerSpec extends SpecBase {
         running(application) {
           val request = FakeRequest(
             GET,
-            controllers.rentalsandrentaroom.routes.RentalsAndRentARoomStartController.onPageLoad(taxYear).url
+            controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear).url
           )
 
           val result = route(application, request).value
           val dataRequest =
             DataRequest(request, "", user, emptyUserAnswers)
 
-          val view = application.injector.instanceOf[RentalsAndRentARoomStartView]
+          val view = application.injector.instanceOf[RentalsRentARoomStartView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(RentalsAndRentARoom, taxYear)(
+          contentAsString(result) mustEqual view(RentalsRentARoom, taxYear, NormalMode)(
             dataRequest,
             messages(application)
           ).toString

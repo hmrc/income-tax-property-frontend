@@ -16,12 +16,14 @@
 
 package pages.propertyrentals
 
+import models.Rentals
+import pages.PageConstants.aboutPath
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object ExpensesLessThan1000Page extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
+  override def path: JsPath = JsPath \ aboutPath(Rentals) \ toString
 
   override def toString: String = "toexpensesLessThan1000"
 }

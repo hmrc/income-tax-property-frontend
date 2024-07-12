@@ -29,7 +29,7 @@ import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -73,7 +73,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "propertyRentalsAbout" : {
       |            "toexpensesLessThan1000" : false,
-      |            "claimPropertyIncomeAllowance" : false
+      |            "claimPropertyIncomeAllowanceYesOrNo" : false
       |        },
       |        "propertyRentalsIncome" : {
       |            "isNonUKLandlord" : false,
@@ -156,7 +156,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |
       |    },
       |    "raRAbout" : {
-      |            "ukRentARoomJointlyLet" : false,
+      |            "jointlyLetYesOrNo" : false,
       |            "totalIncomeAmount" : 30,
       |            "claimExpensesOrRRR" : {
       |                "claimRRROrExpenses" : false,
@@ -194,7 +194,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(TotalIncomePage).get mustBe TotalIncome.Between
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
       updated.get(ExpensesLessThan1000Page).get mustBe false
-      updated.get(ClaimPropertyIncomeAllowancePage).get mustBe false
+      updated.get(ClaimPropertyIncomeAllowancePage(Rentals)).get mustBe false
       updated.get(IsNonUKLandlordPage).get mustBe false
       updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
       updated.get(ReceivedGrantLeaseAmountPage) mustBe None // Lease clean up test
@@ -204,8 +204,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       // Todo: do we need this? updated.get(LeasePremiumPaymentPage).get mustBe true
       updated.get(CalculatedFigureYourselfPage).get mustBe CalculatedFigureYourself(true, Some(45))
       updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
-      updated.get(UkRentARoomJointlyLetPage(RentARoom)).get mustBe false
-      updated.get(TotalIncomeAmountPage).get mustBe 30
+      updated.get(JointlyLetPage(RentARoom)).get mustBe false
+      updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
       updated.get(ClaimExpensesOrRRRPage(RentARoom)).get mustBe ClaimExpensesOrRRR(false, Some(50))
       updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
       updated.get(LoanInterestPage).get mustBe 56

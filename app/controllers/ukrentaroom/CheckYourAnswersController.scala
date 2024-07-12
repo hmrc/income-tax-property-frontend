@@ -27,7 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
+import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, JointlyLetSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.CheckYourAnswersView
 
@@ -48,9 +48,9 @@ class CheckYourAnswersController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val ukRentARoomJointlyLetSummary =
-        UkRentARoomJointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
+        JointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val totalIncomeAmountSummary =
-        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val claimExpensesOrRRRSummary =
         ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers, RentARoom)
 

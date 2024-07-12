@@ -19,10 +19,11 @@ package controllers.propertyrentals
 import audit.{AuditService, RentalsAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
+import models.{JourneyContext, PropertyType}
 import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{Json, Reads}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
@@ -45,17 +46,18 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
           ExpensesLessThan1000Summary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          ClaimPropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          ClaimPropertyIncomeAllowanceSummary
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
         ).flatten
       )
 
       Ok(view(list, taxYear))
-  }
+    }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
@@ -85,8 +87,8 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsAbout: RentalsAbout)(
-    implicit hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsAbout: RentalsAbout)(implicit
+    hc: HeaderCarrier
   ): Unit = {
     val auditModel = RentalsAuditModel(
       request.user.nino,

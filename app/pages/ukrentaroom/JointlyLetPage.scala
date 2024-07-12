@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.expenses
+package pages.ukrentaroom
 
-import models.Rentals
-import pages.PageConstants.expensesPath
+import models.PropertyType
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object LoanInterestPage extends QuestionPage[BigDecimal] {
-
-  override def path: JsPath = JsPath \ expensesPath(Rentals) \ toString
-
-  override def toString: String = "loanInterestOrOtherFinancialCost"
+case class JointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
+  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
+  override def toString: String = "jointlyLetYesOrNo"
 }

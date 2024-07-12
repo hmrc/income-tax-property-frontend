@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom
+package forms.ukrentaroom
 
-import models.PropertyType
-import pages.PageConstants.aboutPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case class UkRentARoomJointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
+class JointlyLetFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "jointlyLet"
+  def apply(agentOrIndividual: String): Form[Boolean] =
+    Form(
+      "jointlyLetYesOrNo" -> boolean(s"jointlyLet.error.required.$agentOrIndividual")
+    )
 }

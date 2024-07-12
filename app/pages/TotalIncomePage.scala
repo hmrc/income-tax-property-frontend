@@ -19,6 +19,7 @@ package pages
 import models.TotalIncome.{Between, Over}
 import models.{TotalIncome, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
+import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -39,9 +40,10 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
     totalIncome match {
       case Some(Over) =>
         for {
-          answers     <- updatedUserAnswers
-          userAnswers <- answers.remove(ConsolidatedExpensesPage)
-        } yield userAnswers
+          answers           <- updatedUserAnswers
+          userAnswers       <- answers.remove(ConsolidatedExpensesPage)
+          withOutRRExpenses <- userAnswers.remove(ConsolidatedExpensesRRPage)
+        } yield withOutRRExpenses
       case _ => super.cleanup(totalIncome, userAnswers)
     }
   }

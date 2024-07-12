@@ -15,6 +15,7 @@
  *@
 
 @import controllers.ukrentaroom.routes
+@import models.PropertyType
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 
@@ -27,11 +28,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"ukrentaroom.income.totalIncomeAmount.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

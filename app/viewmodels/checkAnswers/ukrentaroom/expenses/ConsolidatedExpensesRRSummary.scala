@@ -16,8 +16,7 @@
 
 package viewmodels.checkAnswers.ukrentaroom.expenses
 
-import controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
-import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import controllers.ukrentaroom.expenses.routes
 import models.{CheckMode, ConsolidatedRRExpenses, UserAnswers}
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.i18n.Messages
@@ -28,36 +27,54 @@ import viewmodels.implicits._
 
 object ConsolidatedExpensesRRSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    if (isTotalIncomeUnder85K(answers)) {
-      val consolidated: Option[SummaryListRow] = Some(
-        SummaryListRowViewModel(
-          key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("Individual").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
-          )
-        )
-      )
-
-      val individual: BigDecimal => Option[SummaryListRow] = amount =>
+  def rows(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[Seq[SummaryListRow]] =
+    answers.get(ConsolidatedExpensesRRPage).flatMap {
+      case ConsolidatedRRExpenses(true, Some(amount)) =>
         Some(
-          SummaryListRowViewModel(
-            key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel("site.change", ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+          Seq(
+            SummaryListRowViewModel(
+              key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("consolidatedRRExpenses.yes").withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+              )
+            ),
+            SummaryListRowViewModel(
+              key = KeyViewModel(s"consolidatedRRExpenses.checkYourAnswersLabel.amount.$individualOrAgent")
+                .withCssClass(keyCssClass),
+              value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+              )
             )
           )
         )
-
-      answers.get(ConsolidatedExpensesRRPage) match {
-        case Some(ConsolidatedRRExpenses(true, Some(amount))) => individual(amount)
-        case Some(ConsolidatedRRExpenses(false, None))        => consolidated
-      }
-    } else {
-      Option.empty[SummaryListRow]
+      case ConsolidatedRRExpenses(false, _) =>
+        Some(
+          Seq(
+            SummaryListRowViewModel(
+              key = KeyViewModel("consolidatedRRExpenses.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("consolidatedRRExpenses.no").withCssClass(valueCssClass),
+              actions = Seq(
+                ActionItemViewModel(
+                  "site.change",
+                  routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, CheckMode).url
+                )
+                  .withVisuallyHiddenText(messages("consolidatedRRExpenses.change.hidden"))
+              )
+            )
+          )
+        )
+      case _ => Option.empty
     }
 }

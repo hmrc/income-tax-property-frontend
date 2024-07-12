@@ -16,12 +16,12 @@
 
 package controllers.propertyrentals.income
 
-import audit.{RentalsAuditModel, AuditService, RentalsIncome}
+import audit.{AuditService, RentalsAuditModel, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
 import models.requests.DataRequest
-import pages.PageConstants
+import models.{JourneyContext, Rentals}
+import pages.PageConstants.incomePath
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -82,7 +82,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
           }
 
         case None =>
-          logger.error(s"${PageConstants.propertyRentalsIncome} section is not present in userAnswers")
+          logger.error(s"${incomePath(Rentals)} section is not present in userAnswers")
       }
 
       Future.successful(
@@ -90,8 +90,8 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
       )
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(
-    implicit hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(implicit
+    hc: HeaderCarrier
   ): Unit = {
     val auditModel = RentalsAuditModel(
       request.user.nino,

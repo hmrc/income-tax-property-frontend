@@ -19,22 +19,18 @@ package forms.ukrentaroom
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class UkRentARoomJointlyLetFormProviderSpec extends BooleanFieldBehaviours {
+class JointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
-
-  val scenarios = Table[String](
-    ("AgencyOrIndividual"),
-    ("agency"),
-    ("individual"))
+  val scenarios = Table[String]("AgencyOrIndividual", "agency", "individual")
   val invalidKey = s"error.boolean"
 
   forAll(scenarios) { (agencyOrIndividual: String) =>
-    val form = new UkRentARoomJointlyLetFormProvider()(agencyOrIndividual)
-    val requiredKey = s"ukRentARoom.jointlyLet.error.required.$agencyOrIndividual"
+    val form = new JointlyLetFormProvider()(agencyOrIndividual)
+    val requiredKey = s"jointlyLet.error.required.$agencyOrIndividual"
 
     s".value $agencyOrIndividual" - {
 
-      val fieldName = "ukRentARoomJointlyLet"
+      val fieldName = "jointlyLetYesOrNo"
 
       behave like booleanField(
         form,

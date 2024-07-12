@@ -610,7 +610,11 @@ consolidatedExpenses.error.twoDecimalPlaces.individual = Amount can only include
 consolidatedExpenses.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 consolidatedExpenses.error.outOfRange = Enter an amount between £{0} and £{1}
 consolidatedExpenses.change.hidden = Consolidated expenses
-consolidatedExpenses.checkYourAnswersLabel = Consolidated expenses
+consolidatedExpenses.checkYourAnswersLabel.type = Consolidated or individual expenses
+consolidatedExpenses.checkYourAnswersLabel.amount.individual = How much were your consolidated expenses?
+consolidatedExpenses.checkYourAnswersLabel.amount.agent = How much were your client's consolidated expenses?
+consolidatedExpenses.yes = Consolidated
+consolidatedExpenses.no = Individual
 
 loanInterest.title = Loan interest or other financial costs
 loanInterest.heading = Loan interest or other financial costs
@@ -1246,20 +1250,20 @@ ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent = Enter an amount be
 ukrentaroom.income.totalIncomeAmount.change.hidden.agent = How much total rent a room income did your client receive?
 ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.agent = How much total rent a room income did your client receive?
 
-rentARoomJointlyLet.title = Jointly let rent a room
-ukRentARoom.jointlyLet.title.individual = Jointly let rent a room
-ukRentARoom.jointlyLet.heading.individual = Is your rent a room jointly let?
-ukRentARoom.jointlyLet.p.individual = The Rent-a-Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
-ukRentARoom.jointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
-ukRentARoom.jointlyLet.error.required.individual = Select yes if your rent a room is jointly let
-ukRentARoom.jointlyLet.change.hidden.individual = RentARoomJointlyLet
+jointlyLet.title = Jointly let rent a room
+jointlyLet.title.individual = Jointly let rent a room
+jointlyLet.heading.individual = Is your rent a room jointly let?
+jointlyLet.p.individual = The Rent-a-Room Scheme lets you earn up to £7,500 per year tax-free. This is halved if you share the income with a joint owner of the property, your partner or someone else. If your rent a room is jointly let you can each claim a maximum of £3,750 tax free.
+jointlyLet.checkYourAnswersLabel.individual = Is your rent a room jointly let?
+jointlyLet.error.required.individual = Select yes if your rent a room is jointly let
+jointlyLet.change.hidden.individual = RentARoomJointlyLet
 
-ukRentARoom.jointlyLet.title.agent = Jointly let rent a room
-ukRentARoom.jointlyLet.heading.agent = Is your client’s rent a room jointly let?
-ukRentARoom.jointlyLet.p.agent = The Rent-a-Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
-ukRentARoom.jointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
-ukRentARoom.jointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
-ukRentARoom.jointlyLet.change.hidden.agent = RentARoomJointlyLet
+jointlyLet.title.agent = Jointly let rent a room
+jointlyLet.heading.agent = Is your client’s rent a room jointly let?
+jointlyLet.p.agent = The Rent-a-Room Scheme lets your client earn up to £7,500 per year tax-free. This is halved if your client shares the income with a joint owner of the property, their partner or someone else. If your client’s rent a room is jointly let they can claim a maximum of £3,750 tax free.
+jointlyLet.checkYourAnswersLabel.agent = Is your client’s rent a room jointly let?
+jointlyLet.error.required.agent = Select yes if your client’s rent a room is jointly let
+jointlyLet.change.hidden.agent = RentARoomJointlyLet
 
 ukRentARoom.expensesIntro.title = Rent a room expenses
 ukRentARoom.expensesIntro.heading = Rent a room expenses
@@ -1357,7 +1361,11 @@ consolidatedRRExpenses.consolidated = Claim consolidated expenses
 consolidatedRRExpenses.indiv = Claim individual expenses
 
 consolidatedRRExpenses.change.hidden = Consolidated rent a room expenses
-consolidatedRRExpenses.checkYourAnswersLabel = Consolidated rent a room expenses
+consolidatedRRExpenses.checkYourAnswersLabel.type = Consolidated or individual expenses
+consolidatedRRExpenses.checkYourAnswersLabel.amount.individual = How much were your consolidated expenses?
+consolidatedRRExpenses.checkYourAnswersLabel.amount.agent = How much were your client's consolidated expenses?
+consolidatedRRExpenses.yes = Consolidated
+consolidatedRRExpenses.no = Individual
 
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs

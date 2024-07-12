@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.ukrentaroom
 
 import controllers.ukrentaroom.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.ukrentaroom.TotalIncomeAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,16 +27,19 @@ import viewmodels.implicits._
 
 object TotalIncomeAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, isAgentMessageKey: String)(implicit
+  def row(taxYear: Int, answers: UserAnswers, isAgentMessageKey: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(TotalIncomeAmountPage).map { answer =>
+    answers.get(TotalIncomeAmountPage(propertyType)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel(s"ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.$isAgentMessageKey")
           .withCssClass(keyCssClass),
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.TotalIncomeAmountController.onPageLoad(taxYear, CheckMode).url)
+          ActionItemViewModel(
+            "site.change",
+            routes.TotalIncomeAmountController.onPageLoad(taxYear, CheckMode, propertyType).url
+          )
             .withVisuallyHiddenText(messages("ukrentaroom.income.totalIncomeAmount.change.hidden"))
         )
       )

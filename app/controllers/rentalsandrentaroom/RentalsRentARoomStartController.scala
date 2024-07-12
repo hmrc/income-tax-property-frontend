@@ -17,25 +17,25 @@
 package controllers.rentalsandrentaroom
 
 import controllers.actions._
-import models.RentalsAndRentARoom
+import models.{NormalMode, RentalsRentARoom}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.rentalsandrentaroom.RentalsAndRentARoomStartView
+import views.html.rentalsandrentaroom.RentalsRentARoomStartView
 
 import javax.inject.Inject
 
-class RentalsAndRentARoomStartController @Inject() (
+class RentalsRentARoomStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: RentalsAndRentARoomStartView
+  view: RentalsRentARoomStartView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(RentalsAndRentARoom, taxYear))
+      Ok(view(RentalsRentARoom, taxYear, NormalMode))
   }
 }
