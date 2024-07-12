@@ -18,8 +18,7 @@ package controllers.rentalsandrentaroom
 
 import audit.AuditService
 import base.SpecBase
-import controllers.rentalsandrentaroom.routes
-import models.{BalancingCharge, ClaimExpensesOrRRR, RentalsAndRaRAbout, UserAnswers}
+import models.{ClaimExpensesOrRRR, RentalsAndRaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
 import org.mockito.MockitoSugar.{times, verify, when}

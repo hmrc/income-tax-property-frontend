@@ -16,8 +16,8 @@
 
 package audit
 
-import models.CapitalAllowancesForACar
-import pages.PageConstants
+import models.{CapitalAllowancesForACar, RentARoom}
+import pages.PageConstants.allowancesPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
@@ -38,5 +38,5 @@ case object RentARoomAllowance extends Gettable[RentARoomAllowance] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentARoomAllowance
+  override def toString: String = allowancesPath(RentARoom)
 }

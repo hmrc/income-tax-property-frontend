@@ -16,13 +16,14 @@
 
 package pages.propertyrentals.income
 
-import models.DeductingTax
-import pages.{PageConstants, QuestionPage}
+import models.{DeductingTax, Rentals}
+import pages.PageConstants.incomePath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object DeductingTaxPage extends QuestionPage[DeductingTax] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
+  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
 
   override def toString: String = "deductingTax"
 }

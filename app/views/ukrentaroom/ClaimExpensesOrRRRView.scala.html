@@ -18,6 +18,7 @@
 @import viewmodels.InputWidth._
 @import viewmodels.LegendSize
 @import viewmodels.govuk._
+@import models.PropertyType
 
 @this(
         layout: templates.Layout,
@@ -29,11 +30,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, maxIncome: BigDecimal)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, maxIncome: BigDecimal, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRRR.title"))) {
 
-        @formHelper(action = routes.ClaimExpensesOrRRRController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.ClaimExpensesOrRRRController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

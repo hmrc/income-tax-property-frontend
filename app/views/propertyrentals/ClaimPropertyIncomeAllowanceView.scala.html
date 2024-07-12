@@ -15,6 +15,7 @@
  *@
 
 @import controllers.propertyrentals.routes._
+@import models.PropertyType
 
 @this(
     layout: templates.Layout,
@@ -25,13 +26,13 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}"))) {
 
     <h1 class="govuk-heading-l">@messages("claimPropertyIncomeAllowance.heading")</h1>
 
-    @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ClaimPropertyIncomeAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -54,7 +55,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithOtherNames(
-                field = form("value"),
+                field = form("claimPropertyIncomeAllowanceYesOrNo"),
                 legend = LegendViewModel(messages(s"claimPropertyIncomeAllowance.title.${individualOrAgent}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 yesText = "claimPropertyIncomeAllowance.yes",
                 noText = "claimPropertyIncomeAllowance.no"

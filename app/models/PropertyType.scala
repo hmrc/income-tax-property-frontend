@@ -22,15 +22,15 @@ sealed trait PropertyType
 
 case object Rentals extends PropertyType
 case object RentARoom extends PropertyType
-case object RentalsAndRentARoom extends PropertyType
+case object RentalsRentARoom extends PropertyType
 
 object PropertyType {
 
   implicit val jsLiteral: JavascriptLiteral[PropertyType] = new JavascriptLiteral[PropertyType] {
     override def to(value: PropertyType): String = value match {
-      case Rentals             => "Rentals"
-      case RentARoom           => "RentARoom"
-      case RentalsAndRentARoom => "RentalsAndRentARoom"
+      case Rentals          => "Rentals"
+      case RentARoom        => "RentARoom"
+      case RentalsRentARoom => "RentalsRentARoom"
     }
   }
 }

@@ -18,11 +18,12 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance}
 import base.SpecBase
-import models.{ElectricChargePointAllowance, UserAnswers}
+import models.{ElectricChargePointAllowance, RentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.PageConstants
+import pages.PageConstants.allowancesPath
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -98,7 +99,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val userAnswersJson = Json.obj(
         (
-          PageConstants.rentARoomAllowance,
+          allowancesPath(RentARoom),
           Json.toJson(
             RentARoomAllowance(
               capitalAllowancesForACar = None,

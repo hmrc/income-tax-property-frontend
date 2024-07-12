@@ -17,6 +17,7 @@
 package models
 
 import pages.PageConstants
+import pages.PageConstants.aboutPath
 import play.api.libs.json.{JsPath, Json}
 import queries.{Gettable, Settable}
 
@@ -30,5 +31,5 @@ final case class RentalsAndRaRAbout(
 object RentalsAndRaRAbout extends Settable[RentalsAndRaRAbout] with Gettable[RentalsAndRaRAbout] {
   implicit val format = Json.format[RentalsAndRaRAbout]
 
-  override def path: JsPath = JsPath \ PageConstants.rentalsAndRentARoomAbout
+  override def path: JsPath = JsPath \ aboutPath(RentalsRentARoom)
 }

@@ -16,8 +16,9 @@
 
 package audit
 
-import models.ConsolidatedExpenses
+import models.{ConsolidatedExpenses, RentARoom}
 import pages.PageConstants
+import pages.PageConstants.expensesPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
@@ -35,5 +36,5 @@ object RentARoomExpenses extends Gettable[RentARoomExpenses] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.rentARoomExpense
+  override def toString: String = expensesPath(RentARoom)
 }

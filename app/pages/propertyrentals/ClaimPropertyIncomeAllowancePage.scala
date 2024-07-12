@@ -16,12 +16,14 @@
 
 package pages.propertyrentals
 
+import models.PropertyType
+import pages.PageConstants.aboutPath
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object ClaimPropertyIncomeAllowancePage extends QuestionPage[Boolean] {
+case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsAbout \ toString
+  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
-  override def toString: String = "claimPropertyIncomeAllowance"
+  override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
 }

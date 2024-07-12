@@ -16,16 +16,16 @@
 
 package models
 
-import pages.PageConstants
+import pages.PageConstants.adjustmentsPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RaRAdjustments(
-                                 balancingCharge: BalancingCharge
+  balancingCharge: BalancingCharge
 )
 
 object RaRAdjustments extends Settable[RaRAdjustments] with Gettable[RaRAdjustments] {
   implicit val format: Format[RaRAdjustments] = Json.format[RaRAdjustments]
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAdjustment
+  override def path: JsPath = JsPath \ adjustmentsPath(RentARoom)
 }
