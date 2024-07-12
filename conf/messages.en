@@ -1737,3 +1737,14 @@ rentalsAndRentARoom.start.heading.agent = About your client’s property rental 
 
 rentalsAndRentARoom.start.p.individual = In this section we’re going to ask you about your rent a room income.
 rentalsAndRentARoom.start.p.agent = In this section we're going to ask you about your client’s rent a room income.
+
+rentalsAndRentARoomIncomeStart.title = Income
+rentalsAndRentARoomIncomeStart.heading = Income
+rentalsAndRentARoomIncomeStart.p1.individual = In this section you'll need to have these figures for all of your properties:
+rentalsAndRentARoomIncomeStart.p1.agent = In this section you'll need to have these figures for all of your client's properties:
+rentalsAndRentARoomIncomeStart.l1 = rental income
+rentalsAndRentARoomIncomeStart.l2 = premiums for the grant of a lease
+rentalsAndRentARoomIncomeStart.l3 = reverse premiums received
+rentalsAndRentARoomIncomeStart.l4 = other income from property
+rentalsAndRentARoomIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your portion of these figures.
+rentalsAndRentARoomIncomeStart.p2.agent = If their properties are jointly owned, only tell us about their portion of these figures.
