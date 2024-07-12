@@ -22,7 +22,7 @@ import play.api.libs.json.{JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RentalsAndRaRAbout(
-  ukRentARoomJointlyLet: Boolean,
+  jointlyLetYesOrNo: Boolean,
   totalIncomeAmount: BigDecimal,
   claimPropertyIncomeAllowanceYesOrNo: Boolean,
   claimExpensesOrRRR: ClaimExpensesOrRRR
