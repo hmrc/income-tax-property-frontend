@@ -498,3 +498,5 @@ POST        /:taxYear/rentals-rent-a-room/change-total-income-amount            
 
 GET         /:taxYear/rentals-rent-a-room/check-your-answers                                          controllers.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/check-your-answers                                          controllers.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/rentals-and-rent-a-room/income/start                                             controllers.rentalsandrentaroom.income.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear: Int)
