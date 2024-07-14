@@ -131,31 +131,78 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.about.routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes" in {
-        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
+      import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
+      val scenarios = Table[PropertyType, String](
+        ("property type", "type definition"),
+        (RentalsRentARoom, "rentalsAndRaR"),
+        (Rentals, "rentals")
+      )
 
-        navigator.nextPage(
-          LeasePremiumPaymentPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+      forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+        s"must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes for $propertyTypeDefinition" in {
+          val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), true).get
+
+          navigator.nextPage(
+            LeasePremiumPaymentPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+        }
+
+        s"must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no for $propertyTypeDefinition" in {
+          val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), false).get
+
+          navigator.nextPage(
+            LeasePremiumPaymentPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
+            .onPageLoad(taxYear, NormalMode)
+        }
+
+        s"must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes and the previous answer was no for for $propertyTypeDefinition" in {
+          val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), false).get
+          val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), true).get
+          navigator.nextPage(
+            LeasePremiumPaymentPage(propertyType),
+            taxYear,
+            CheckMode,
+            previousUserAnswers,
+            userAnswers
+          ) mustBe CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode)
+        }
+
+        s"must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects yes and the previous answer was yes for $propertyTypeDefinition" in {
+          val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), true).get
+          val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), true).get
+          navigator.nextPage(
+            LeasePremiumPaymentPage(propertyType),
+            taxYear,
+            CheckMode,
+            previousUserAnswers,
+            userAnswers
+          ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
+            .onPageLoad(taxYear)
+        }
+
+        s"must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects no for $propertyTypeDefinition" in {
+          val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), true).get
+          val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(propertyType), false).get
+          navigator.nextPage(
+            LeasePremiumPaymentPage(propertyType),
+            taxYear,
+            CheckMode,
+            previousUserAnswers,
+            userAnswers
+          ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
+            .onPageLoad(taxYear)
+        }
+
       }
-
-      "must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
-
-        navigator.nextPage(
-          LeasePremiumPaymentPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-          .onPageLoad(taxYear, NormalMode)
-      }
-
       "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
         val testUserAnswer =
           UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
@@ -253,7 +300,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes" in {
@@ -910,42 +957,6 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes and the previous answer was no" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        navigator.nextPage(
-          LeasePremiumPaymentPage,
-          taxYear,
-          CheckMode,
-          previousUserAnswers,
-          userAnswers
-        ) mustBe CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode)
-      }
-
-      "must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects yes and the previous answer was yes" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        navigator.nextPage(
-          LeasePremiumPaymentPage,
-          taxYear,
-          CheckMode,
-          previousUserAnswers,
-          userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects no" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
-        navigator.nextPage(
-          LeasePremiumPaymentPage,
-          taxYear,
-          CheckMode,
-          previousUserAnswers,
-          userAnswers
         ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
       }
 
