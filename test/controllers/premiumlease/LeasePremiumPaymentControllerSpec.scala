@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.premiumlease.routes._
 import controllers.routes
 import forms.premiumlease.LeasePremiumPaymentFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -32,157 +32,174 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.premiumlease.LeasePremiumPaymentView
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
 class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRouteYes : Call = Call("GET", "/calculated-figure-yourself")
+  def onwardRouteYes: Call = Call("GET", "/calculated-figure-yourself")
   def onwardRouteNo: Call = Call("GET", "/reverse-premiums-received")
   private val formProvider = new LeasePremiumPaymentFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
+  val scenarios = Table[PropertyType, String](
+    ("property type", "type definition"),
+    (RentalsRentARoom, "rentalsAndRaR"),
+    (Rentals, "rentals")
+  )
 
-  private lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode).url
+  forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+    lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode, propertyType).url
 
-  "LeasePremiumPayment Controller" - {
+    s"LeasePremiumPayment Controller $propertyTypeDefinition" - {
 
-    "must return OK and the correct view for a GET" in {
+      "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
-      running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        running(application) {
+          val request = FakeRequest(GET, leasePremiumPaymentRoute)
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[LeasePremiumPaymentView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+      "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(LeasePremiumPaymentPage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(LeasePremiumPaymentPage(propertyType), true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
-      running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        running(application) {
+          val request = FakeRequest(GET, leasePremiumPaymentRoute)
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[LeasePremiumPaymentView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual", propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to the next page when valid data is submitted - yes" in {
+      "must redirect to the next page when valid data is submitted - yes" in {
 
-      val mockSessionRepository = mock[SessionRepository]
+        val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+        when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
-            .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+        running(application) {
+          val request =
+            FakeRequest(POST, leasePremiumPaymentRoute)
+              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRouteYes.url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRouteYes.url
+        }
       }
-    }
 
-    "must redirect to the next page when valid data is submitted - no" in {
+      "must redirect to the next page when valid data is submitted - no" in {
 
-      val mockSessionRepository = mock[SessionRepository]
+        val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+        when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
-            .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+        running(application) {
+          val request =
+            FakeRequest(POST, leasePremiumPaymentRoute)
+              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRouteNo.url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRouteNo.url
+        }
       }
-    }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+      "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
-            .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", ""))
+        running(application) {
+          val request =
+            FakeRequest(POST, leasePremiumPaymentRoute)
+              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", ""))
 
-        val boundForm = form.bind(Map("leasePremiumPaymentYesOrNo" -> ""))
+          val boundForm = form.bind(Map("leasePremiumPaymentYesOrNo" -> ""))
 
-        val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[LeasePremiumPaymentView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
-      running(application) {
-        val request = FakeRequest(GET, leasePremiumPaymentRoute)
+        running(application) {
+          val request = FakeRequest(GET, leasePremiumPaymentRoute)
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+      "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, leasePremiumPaymentRoute)
-            .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+        running(application) {
+          val request =
+            FakeRequest(POST, leasePremiumPaymentRoute)
+              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
   }

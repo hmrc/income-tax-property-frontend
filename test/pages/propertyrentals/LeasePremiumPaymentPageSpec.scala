@@ -17,42 +17,58 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.{CalculatedFigureYourself, PremiumsGrantLease}
+import models.{CalculatedFigureYourself, PremiumsGrantLease, PropertyType, Rentals, RentalsRentARoom}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 class LeasePremiumPaymentPageSpec extends SpecBase {
+  val scenarios = Table[PropertyType, String](
+    ("property type", "type definition"),
+    (RentalsRentARoom, "rentalsAndRaR"),
+    (Rentals, "rentals")
+  )
+  forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+    s"must remove the correct data when the answer is no for $propertyTypeDefinition" in {
 
-  "must remove the correct data when the answer is no" in {
+      val userData = emptyUserAnswers
+        .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11))
+        .get
+        .set(YearLeaseAmountPage, 10)
+        .get
+        .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12))))
+        .get
+        .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None))
+        .get
 
-    val userData = emptyUserAnswers
-      .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).get
-      .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).get
-      .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+      val result = userData.set(LeasePremiumPaymentPage(propertyType), false).success.value
 
-    val result = userData.set(LeasePremiumPaymentPage, false).success.value
+      result.get(LeasePremiumPaymentPage(propertyType)) must be(defined)
+      result.get(CalculatedFigureYourselfPage) must not be defined
+      result.get(ReceivedGrantLeaseAmountPage) must not be defined
+      result.get(YearLeaseAmountPage) must not be defined
+      result.get(PremiumsGrantLeasePage) must not be defined
 
-    result.get(LeasePremiumPaymentPage) must be(defined)
-    result.get(CalculatedFigureYourselfPage) must not be defined
-    result.get(ReceivedGrantLeaseAmountPage) must not be defined
-    result.get(YearLeaseAmountPage) must not be defined
-    result.get(PremiumsGrantLeasePage) must not be defined
+    }
 
-  }
+    s"must keep that data value when the answer is yes for $propertyTypeDefinition" in {
 
-  "must keep that data value when the answer is yes" in {
+      val userData = emptyUserAnswers
+        .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11))
+        .get
+        .set(YearLeaseAmountPage, 10)
+        .get
+        .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12))))
+        .get
+        .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None))
+        .get
 
-    val userData = emptyUserAnswers.set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).get
-      .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage,  PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).get
-      .set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+      val result = userData.set(LeasePremiumPaymentPage(propertyType), true).success.value
 
-    val result = userData.set(LeasePremiumPaymentPage, true).success.value
-
-    result.get(LeasePremiumPaymentPage) must be(defined)
-    result.get(CalculatedFigureYourselfPage) must be(defined)
-    result.get(ReceivedGrantLeaseAmountPage) must be(defined)
-    result.get(YearLeaseAmountPage) must be(defined)
-    result.get(PremiumsGrantLeasePage) must be(defined)
+      result.get(LeasePremiumPaymentPage(propertyType)) must be(defined)
+      result.get(CalculatedFigureYourselfPage) must be(defined)
+      result.get(ReceivedGrantLeaseAmountPage) must be(defined)
+      result.get(YearLeaseAmountPage) must be(defined)
+      result.get(PremiumsGrantLeasePage) must be(defined)
+    }
   }
 }
