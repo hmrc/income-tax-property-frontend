@@ -17,7 +17,7 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.DeductingTax
+import models.{DeductingTax, Rentals}
 import pages.propertyrentals.income.{DeductingTaxPage, IsNonUKLandlordPage}
 
 class IsNonUKLandlordPageSpec extends SpecBase {
@@ -25,25 +25,25 @@ class IsNonUKLandlordPageSpec extends SpecBase {
   "must remove the DeductingTax value when the answer is no" in {
 
     val answers = emptyUserAnswers.set(
-      DeductingTaxPage,
+      DeductingTaxPage(Rentals),
       DeductingTax(false, None)).success.value
 
     val result = answers.set(IsNonUKLandlordPage, false).success.value
 
     result.get(IsNonUKLandlordPage) must be(defined)
-    result.get(DeductingTaxPage)    must not be defined
+    result.get(DeductingTaxPage(Rentals))    must not be defined
   }
 
   "must keep the DeductingTax value when the answer is yes" in {
 
     val answers = emptyUserAnswers.set(
-      DeductingTaxPage,
+      DeductingTaxPage(Rentals),
       DeductingTax(true, Some(120.45))).success.value
 
     val result = answers.set(IsNonUKLandlordPage, true).success.value
 
     result.get(IsNonUKLandlordPage) must be(defined)
-    result.get(DeductingTaxPage)    must be(defined)
+    result.get(DeductingTaxPage(Rentals))    must be(defined)
   }
 
 }

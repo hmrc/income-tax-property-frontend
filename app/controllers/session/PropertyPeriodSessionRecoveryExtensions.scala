@@ -144,7 +144,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua2.set(OtherIncomeFromPropertyPage, propertyRentalsIncome.otherIncomeFromProperty)
 
             ua4 <-
-              propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage, dt))
+              propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage(Rentals), dt))
 
             ua5 <-
               propertyRentalsIncome.receivedGrantLeaseAmount.fold(Try(ua4))(rgla =>

@@ -48,4 +48,5 @@ object PageConstants {
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
+
 }

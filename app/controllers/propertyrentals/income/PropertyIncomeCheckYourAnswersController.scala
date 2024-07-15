@@ -52,7 +52,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
-          DeductingTaxSummary.row(taxYear, request.userAnswers),
+          DeductingTaxSummary.row(taxYear, request.userAnswers, Rentals),
           IncomeFromPropertyRentalsSummary.row(taxYear, request.userAnswers),
           LeasePremiumPaymentSummary.row(taxYear, request.userAnswers, Rentals),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers),
