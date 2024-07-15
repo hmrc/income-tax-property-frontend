@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, UkRentARoomJointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -43,13 +43,14 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
   val form: Form[ClaimExpensesOrRRR] = formProvider("individual")
   val taxYear = 2023
 
-  lazy val claimExpensesOrRRRRoute: String = routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode).url
+  lazy val claimExpensesOrRRRRoute: String =
+    routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
   "ClaimExpensesOrRRR Controller" - {
 
     "must return OK and the correct view for a GET" in {
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
+        withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
       } yield withTotalIncome
 
@@ -68,7 +69,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          BusinessConstants.jointlyLetTaxFreeAmount
+          BusinessConstants.jointlyLetTaxFreeAmount,
+          RentARoom
         )(
           request,
           messages(application)
@@ -80,10 +82,13 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
       val maxIncome = BigDecimal(5000)
 
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
+        withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), false)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
         withClaimExpenses <-
-          withTotalIncome.set(ClaimExpensesOrRRRPage, ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65)))
+          withTotalIncome.set(
+            ClaimExpensesOrRRRPage(RentARoom),
+            ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65))
+          )
       } yield withClaimExpenses
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
@@ -101,7 +106,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          maxIncome
+          maxIncome,
+          RentARoom
         )(request, messages(application)).toString
       }
     }
@@ -109,7 +115,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the next page when valid data is submitted" in {
 
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), true)
+        withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
       } yield withTotalIncome
 
@@ -141,7 +147,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       val maxIncome = BigDecimal(8000)
       val answers: Try[UserAnswers] = for {
-        withJointLet    <- emptyUserAnswers.set(UkRentARoomJointlyLetPage(RentARoom), false)
+        withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), false)
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
       } yield withTotalIncome
 
@@ -164,7 +170,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          BusinessConstants.notJointlyLetTaxFreeAmount
+          BusinessConstants.notJointlyLetTaxFreeAmount,
+          RentARoom
         )(
           request,
           messages(application)

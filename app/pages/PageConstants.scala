@@ -16,6 +16,8 @@
 
 package pages
 
+import models.{PropertyType, RentARoom, Rentals, RentalsRentARoom}
+
 object PageConstants {
 
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
@@ -25,23 +27,26 @@ object PageConstants {
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
   val propertyAbout: String = "propertyAbout"
-  val propertyRentalsAbout: String = "propertyRentalsAbout"
 
-  val propertyRentalsAllowance: String = "propertyRentalsAllowance"
-  val propertyRentalsAdjustment: String = "propertyRentalsAdjustment"
+  val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
+    propertyType match {
+      case Rentals          => s"rentals$suffix"
+      case RentARoom        => s"rentARoom$suffix"
+      case RentalsRentARoom => s"rentalsRentARoom$suffix"
+    }
 
-  val propertyRentalsIncome: String = "propertyRentalsIncome"
-  val propertyRentalsExpense: String = "propertyRentalsExpense"
-
-  val rentARoomAbout: String = "rentARoomAbout"
-  val rentARoomExpense: String = "rentARoomExpenses"
-  val rentARoomAdjustment: String = "rentARoomAdjustments"
-  val rentARoomAllowance: String = "rentARoomAllowances"
+  // About
+  val aboutPath: PropertyType => String = labelForPropertyType(_, "About")
+  // Allowance
+  val allowancesPath: PropertyType => String = labelForPropertyType(_, "Allowances")
+  // Adjustments
+  val adjustmentsPath: PropertyType => String = labelForPropertyType(_, "Adjustments")
+  // Expenses
+  val expensesPath: PropertyType => String = labelForPropertyType(_, "Expenses")
+  // Income
+  val incomePath: PropertyType => String = labelForPropertyType(_, "Income")
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
-
-  val rentalsAndRentARoomAbout: String = "rentalsAndRentARoomAbout"
-  val rentalsAndRentARoomIncome: String = "rentalsAndRentARoomIncome"
 
 }

@@ -19,7 +19,7 @@ package controllers.ukrentaroom
 import base.SpecBase
 import forms.ukrentaroom.TotalIncomeAmountFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, RentARoom, RentalsAndRentARoom, UserAnswers}
+import models.{NormalMode, RentARoom, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -45,7 +45,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer = BigDecimal.valueOf(totalIncomeAmountAnswer)
 
   lazy val rentARoomTotalIncomeAmountRoute: String = routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom).url
-  lazy val rentalsAndRentARoomIncomeAmountRoute: String = routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsAndRentARoom).url
+  lazy val rentalsAndRentARoomIncomeAmountRoute: String = routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
   val taxYear: Int = 2023
 
   "TotalIncomeAmount Controller" - {
@@ -77,7 +77,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[TotalIncomeAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -103,7 +103,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the Rentals and Rent a Room journey view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TotalIncomeAmountPage(RentalsAndRentARoom), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(TotalIncomeAmountPage(RentalsRentARoom), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -115,7 +115,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -181,7 +181,7 @@ class TotalIncomeAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 

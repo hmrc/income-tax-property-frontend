@@ -21,16 +21,15 @@ import audit.{AuditService, RentalsAndRentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
-import models.{JourneyContext, RentalsAndRaRAbout, RentalsAndRentARoom}
+import models.{JourneyContext, RentalsAndRaRAbout, RentalsRentARoom}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Writes
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.adjustments.BalancingChargeSummary
-import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, UkRentARoomJointlyLetSummary}
+import viewmodels.checkAnswers.propertyrentals.ClaimPropertyIncomeAllowanceSummary
+import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, JointlyLetSummary, TotalIncomeAmountSummary}
 import viewmodels.govuk.summarylist._
 import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
 
@@ -51,25 +50,35 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val ukRentARoomJointlyLetSummary =
-        UkRentARoomJointlyLetSummary.row(
+        JointlyLetSummary.row(
           taxYear,
           request.userAnswers,
           request.user.isAgentMessageKey,
-          RentalsAndRentARoom
+          RentalsRentARoom
         )
       val totalIncomeAmountSummary =
-        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsAndRentARoom)
+        TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom)
       val claimExpensesOrRRRSummary =
         ClaimExpensesOrRRRSummary.rows(
           taxYear,
           request.user.isAgentMessageKey,
-          request.userAnswers
-        ) // Todo: Update in related ticket to parameterise
+          request.userAnswers,
+          RentalsRentARoom
+        )
+
+      val claimPropertyIncomeAllowanceSummary =
+        ClaimPropertyIncomeAllowanceSummary.rows(
+          taxYear,
+          request.userAnswers,
+          request.user.isAgentMessageKey,
+          RentalsRentARoom
+        )
 
       val list = SummaryListViewModel(
         rows = (Seq(
           ukRentARoomJointlyLetSummary,
-          totalIncomeAmountSummary
+          totalIncomeAmountSummary,
+          claimPropertyIncomeAllowanceSummary
         ) ++ claimExpensesOrRRRSummary).flatten
       )
 

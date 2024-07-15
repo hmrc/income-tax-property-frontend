@@ -17,8 +17,9 @@
 package pages.propertyrentals.income
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{ReversePremiumsReceived, UserAnswers}
-import pages.{PageConstants, QuestionPage}
+import models.{Rentals, ReversePremiumsReceived, UserAnswers}
+import pages.PageConstants.incomePath
+import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
@@ -26,7 +27,7 @@ import scala.util.Try
 
 case object ReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsReceived] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
+  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
 
   override def toString: String = "reversePremiumsReceived"
 

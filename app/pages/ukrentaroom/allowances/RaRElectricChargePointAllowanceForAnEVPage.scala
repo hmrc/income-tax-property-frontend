@@ -16,12 +16,14 @@
 
 package pages.ukrentaroom.allowances
 
-import pages.{PageConstants, QuestionPage}
+import models.RentARoom
+import pages.PageConstants.allowancesPath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object RaRElectricChargePointAllowanceForAnEVPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ PageConstants.rentARoomAllowance \ toString
+  override def path: JsPath = JsPath \ allowancesPath(RentARoom) \ toString
 
   override def toString: String = "electricChargePointAllowance"
 }

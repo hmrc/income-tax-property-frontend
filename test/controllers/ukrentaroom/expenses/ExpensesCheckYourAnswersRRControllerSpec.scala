@@ -19,12 +19,12 @@ package controllers.ukrentaroom.expenses
 import audit.{AuditService, RentARoomExpenses}
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes._
-import models.{JourneyContext, UserAnswers}
+import models.{JourneyContext, RentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.PageConstants
+import pages.PageConstants.expensesPath
 import play.api.inject.bind
 import play.api.libs.json.{JsNumber, Json}
 import play.api.mvc.Call
@@ -94,7 +94,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
       val answers = UserAnswers(
         id = "rent-a-room-expenses-userId",
         data = Json.obj(
-          PageConstants.rentARoomExpense -> Json.obj(
+          expensesPath(RentARoom) -> Json.obj(
             "rentsRatesAndInsurance"          -> JsNumber(rentsRatesAndInsurance),
             "repairsAndMaintenanceCosts"      -> JsNumber(repairsAndMaintenanceCosts),
             "legalManagementOtherFee"         -> JsNumber(legalManagementOtherFee),

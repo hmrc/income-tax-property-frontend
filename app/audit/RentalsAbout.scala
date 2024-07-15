@@ -16,17 +16,18 @@
 
 package audit
 
-import pages.PageConstants
-import play.api.libs.json.{Format, JsPath, Json}
+import models.Rentals
+import pages.PageConstants.aboutPath
+import play.api.libs.json._
 import queries.Gettable
 
-case class RentalsAbout(toexpensesLessThan1000: Boolean, claimPropertyIncomeAllowance: Boolean)
+case class RentalsAbout(toexpensesLessThan1000: Boolean, claimPropertyIncomeAllowanceYesOrNo: Boolean)
 
 case object RentalsAbout extends Gettable[RentalsAbout] {
 
-  implicit val formats: Format[RentalsAbout] = Json.format[RentalsAbout]
+  implicit val format: Format[RentalsAbout] = Json.format[RentalsAbout]
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = PageConstants.propertyRentalsAbout
+  override def toString: String = aboutPath(Rentals)
 }

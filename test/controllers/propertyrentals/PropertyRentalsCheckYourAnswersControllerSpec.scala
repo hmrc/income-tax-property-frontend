@@ -18,7 +18,7 @@ package controllers.propertyrentals
 
 import audit.RentalsAbout
 import base.SpecBase
-import models.{JourneyContext, UserAnswers}
+import models.{JourneyContext, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -79,12 +79,12 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers =
-        UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage, true).get
+        UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
       val propertyRentalsAbout =
-        RentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowance = true)
+        RentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowanceYesOrNo = true)
 
       when(
         propertySubmissionService

@@ -17,20 +17,25 @@
 package pages.propertyrentals.income
 
 import models.{Rentals, UserAnswers}
-import pages.{PageConstants, QuestionPage}
+import pages.PageConstants.incomePath
+import pages.QuestionPage
+
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
 case object IsNonUKLandlordPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalsIncome \ toString
+  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
 
   override def toString: String = "isNonUKLandlord"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => super.cleanup(value, userAnswers)
-      case false => userAnswers.remove(DeductingTaxPage(Rentals))
-    }.getOrElse(super.cleanup(value, userAnswers))
+    value
+      .map {
+        case true  => super.cleanup(value, userAnswers)
+        case false => userAnswers.remove(DeductingTaxPage(Rentals))
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
+
 }
