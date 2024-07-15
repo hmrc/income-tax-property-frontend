@@ -32,7 +32,7 @@
 
 @layout(pageTitle = title(form, messages("incomeFromPropertyRentals.title"))) {
 
-    @formHelper(action = routes.IncomeFromPropertyRentalsController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.IncomeFromPropertyController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))

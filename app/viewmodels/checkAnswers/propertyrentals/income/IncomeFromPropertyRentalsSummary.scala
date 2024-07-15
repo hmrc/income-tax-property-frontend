@@ -35,7 +35,7 @@ object IncomeFromPropertyRentalsSummary  {
             key = KeyViewModel("incomeFromPropertyRentals.checkYourAnswersLabel").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", routes.IncomeFromPropertyRentalsController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel("site.change", routes.IncomeFromPropertyController.onPageLoad(taxYear, CheckMode).url)
                 .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))
             )
           )

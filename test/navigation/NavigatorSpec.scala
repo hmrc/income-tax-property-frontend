@@ -242,7 +242,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyRentalsController
+        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
           .onPageLoad(taxYear, NormalMode)
       }
 
@@ -275,7 +275,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyRentalsController
+        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
           .onPageLoad(taxYear, NormalMode)
       }
 

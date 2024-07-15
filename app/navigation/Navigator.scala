@@ -107,7 +107,7 @@ class Navigator @Inject() () {
             PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
         // property income
     case IsNonUKLandlordPage => taxYear => _ => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
-    case DeductingTaxPage    => taxYear => _ => _ => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    case DeductingTaxPage    => taxYear => _ => _ => IncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage =>
       taxYear => _ => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
     case premiumlease.LeasePremiumPaymentPage =>
@@ -518,7 +518,7 @@ class Navigator @Inject() () {
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(IsNonUKLandlordPage) match {
       case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode)
-      case _          => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+      case _          => IncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
     }
 
   private def isNonUKLandlordNavigationCheckMode(
