@@ -1229,3 +1229,14 @@ ukPropertySelect.error.required.individual =	Dewiswch y math o eiddo sydd gennyc
 ukPropertySelect.error.required.agent =	Dewiswch y math o eiddo sydd gan eich cleient
 ukPropertySelect.checkYourAnswersLabel.agent =	Pa eiddo rhent sydd gan eich cleient yn y DU?
 ukPropertySelect.change.hidden.agent =	pa eiddo rhent sydd gan eich cleient yn y DU?
+
+rentalsAndRentARoomIncomeStart.title = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.heading = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.p1.individual = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.p1.agent = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.l1 = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.l2 = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.l3 = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.l4 = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.p2.individual = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.p2.agent = *Missing Welsh*
