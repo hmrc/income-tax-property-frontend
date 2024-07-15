@@ -16,7 +16,7 @@
 
 package pages.propertyrentals.income
 
-import models.{DeductingTax, PropertyType, Rentals, RentalsAndRentARoom}
+import models.{DeductingTax, PropertyType, Rentals, RentalsRentARoom}
 import pages.PageConstants.incomePath
 import pages.QuestionPage
 

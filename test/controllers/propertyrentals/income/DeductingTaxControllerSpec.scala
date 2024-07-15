@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.DeductingTaxFormProvider
-import models.{DeductingTax, NormalMode, Rentals, RentalsAndRentARoom, UserAnswers}
+import models.{DeductingTax, NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -42,7 +42,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
   val taxYear = 2023
 
   lazy val RentalsRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, Rentals).url
-  lazy val RentalsAndRaRRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, RentalsAndRentARoom).url
+  lazy val RentalsAndRaRRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "DeductingTax Controller" - {
 
@@ -74,7 +74,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[DeductingTaxView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -159,7 +159,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
