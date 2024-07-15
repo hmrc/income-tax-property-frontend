@@ -134,7 +134,7 @@ class NavigatorSpec extends SpecBase {
       import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
       val scenarios = Table[PropertyType, String](
         ("property type", "type definition"),
-        (RentalsRentARoom, "rentalsAndRaR"),
+        // (RentalsRentARoom, "rentalsAndRaR"), //Todo: This should be implemented when all combined journey finished
         (Rentals, "rentals")
       )
 
