@@ -16,10 +16,10 @@
 
 package controllers.propertyrentals.income
 
-import audit.{RentalsAuditModel, AuditService, RentalsIncome}
+import audit.{AuditService, RentalsAuditModel, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
+import models.{JourneyContext, Rentals}
 import models.requests.DataRequest
 import pages.PageConstants
 import play.api.Logging
@@ -52,7 +52,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers),
-          DeductingTaxSummary.row(taxYear, request.userAnswers),
+          DeductingTaxSummary.row(taxYear, request.userAnswers, Rentals),
           IncomeFromPropertyRentalsSummary.row(taxYear, request.userAnswers),
           LeasePremiumPaymentSummary.row(taxYear, request.userAnswers),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers),

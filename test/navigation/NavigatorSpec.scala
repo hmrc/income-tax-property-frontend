@@ -237,7 +237,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from DeductingTax to IncomeFromPropertyRentalsPage" in {
         navigator.nextPage(
-          DeductingTaxPage,
+          DeductingTaxPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -264,7 +264,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
@@ -675,12 +675,12 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           previousUserAnswers,
           userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, CheckMode)
+        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from DeductingTax to CheckYourAnswers" in {
         navigator.nextPage(
-          DeductingTaxPage,
+          DeductingTaxPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

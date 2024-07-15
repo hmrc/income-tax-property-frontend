@@ -16,7 +16,7 @@
 
 package pages.propertyrentals.income
 
-import models.UserAnswers
+import models.{Rentals, UserAnswers}
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
@@ -31,6 +31,6 @@ case object IsNonUKLandlordPage extends QuestionPage[Boolean] {
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value.map {
       case true  => super.cleanup(value, userAnswers)
-      case false => userAnswers.remove(DeductingTaxPage)
+      case false => userAnswers.remove(DeductingTaxPage(Rentals))
     }.getOrElse(super.cleanup(value, userAnswers))
 }

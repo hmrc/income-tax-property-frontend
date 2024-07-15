@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.DeductingTaxFormProvider
-import models.{DeductingTax, NormalMode, UserAnswers}
+import models.{DeductingTax, NormalMode, Rentals, RentalsAndRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -41,34 +41,51 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider("individual")
   val taxYear = 2023
 
-  lazy val deductingTaxRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode).url
+  lazy val RentalsRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val RentalsAndRaRRoute = routes.DeductingTaxController.onPageLoad(taxYear, NormalMode, RentalsAndRentARoom).url
 
   "DeductingTax Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET Rentals" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
+        val request = FakeRequest(GET, RentalsRoute)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[DeductingTaxView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a GET RentalsAndRaR" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, RentalsAndRaRRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[DeductingTaxView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage, DeductingTax(true, Some(100.65))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(DeductingTaxPage(Rentals), DeductingTax(true, Some(100.65))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
+        val request = FakeRequest(GET, RentalsRoute)
 
         val view = application.injector.instanceOf[DeductingTaxView]
 
@@ -76,7 +93,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form.fill(DeductingTax(true, Some(100.65))), taxYear,
-          NormalMode, "individual")(request, messages(application)).toString
+          NormalMode, "individual", Rentals)(request, messages(application)).toString
       }
     }
 
@@ -96,7 +113,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
+          FakeRequest(POST, RentalsRoute)
             .withFormUrlEncodedBody(("taxDeductedYesNo", "false"))
 
         val result = route(application, request).value
@@ -106,13 +123,13 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted Rentals" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
+          FakeRequest(POST, RentalsRoute)
             .withFormUrlEncodedBody(("taxDeductedAmount", ""))
 
         val boundForm = form.bind(Map("taxDeductedAmount" -> ""))
@@ -122,7 +139,27 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "must return a Bad Request and errors when invalid data is submitted Rentals and RaR" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, RentalsAndRaRRoute)
+            .withFormUrlEncodedBody(("taxDeductedAmount", ""))
+
+        val boundForm = form.bind(Map("taxDeductedAmount" -> ""))
+
+        val view = application.injector.instanceOf[DeductingTaxView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", RentalsAndRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -131,7 +168,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, deductingTaxRoute)
+        val request = FakeRequest(GET, RentalsRoute)
 
         val result = route(application, request).value
 
@@ -145,7 +182,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, deductingTaxRoute)
+          FakeRequest(POST, RentalsRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

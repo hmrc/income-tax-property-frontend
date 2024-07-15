@@ -106,7 +106,7 @@ class Navigator @Inject() () {
             PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
         // property income
     case IsNonUKLandlordPage => taxYear => _ => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers)
-    case DeductingTaxPage    => taxYear => _ => _ => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
+    case DeductingTaxPage(Rentals)    => taxYear => _ => _ => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     case IncomeFromPropertyRentalsPage =>
       taxYear => _ => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode)
     case premiumlease.LeasePremiumPaymentPage =>
@@ -280,7 +280,7 @@ class Navigator @Inject() () {
       taxYear =>
         previousUserAnswers =>
           userAnswers => isNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
-    case DeductingTaxPage => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+    case DeductingTaxPage(Rentals) => taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case IncomeFromPropertyRentalsPage =>
       taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case premiumlease.LeasePremiumPaymentPage =>
@@ -478,7 +478,7 @@ class Navigator @Inject() () {
 
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(IsNonUKLandlordPage) match {
-      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode)
+      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode, Rentals)
       case _          => IncomeFromPropertyRentalsController.onPageLoad(taxYear, NormalMode)
     }
 
@@ -489,7 +489,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(IsNonUKLandlordPage) match {
       case Some(true) if !previousUserAnswers.get(IsNonUKLandlordPage).getOrElse(false) =>
-        DeductingTaxController.onPageLoad(taxYear, CheckMode)
+        DeductingTaxController.onPageLoad(taxYear, CheckMode, Rentals)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 
