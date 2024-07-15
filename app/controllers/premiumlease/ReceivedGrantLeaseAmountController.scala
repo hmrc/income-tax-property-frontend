@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.ReceivedGrantLeaseAmountFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.premiumlease.ReceivedGrantLeaseAmountPage
 import play.api.data.Form
@@ -31,25 +31,25 @@ import views.html.premiumlease.ReceivedGrantLeaseAmountView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReceivedGrantLeaseAmountController @Inject()(
-                                                    override val messagesApi: MessagesApi,
-                                                    sessionRepository: SessionRepository,
-                                                    navigator: Navigator,
-                                                    identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    formProvider: ReceivedGrantLeaseAmountFormProvider,
-                                                    val controllerComponents: MessagesControllerComponents,
-                                                    view: ReceivedGrantLeaseAmountView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ReceivedGrantLeaseAmountController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ReceivedGrantLeaseAmountFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ReceivedGrantLeaseAmountView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[BigDecimal] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.get(ReceivedGrantLeaseAmountPage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(ReceivedGrantLeaseAmountPage(Rentals)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,16 +58,18 @@ class ReceivedGrantLeaseAmountController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReceivedGrantLeaseAmountPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReceivedGrantLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ReceivedGrantLeaseAmountPage(Rentals), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(ReceivedGrantLeaseAmountPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

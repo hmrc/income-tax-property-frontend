@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.income
 
 import controllers.propertyrentals.income.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.propertyrentals.income.OtherIncomeFromPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object OtherIncomeFromPropertySummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherIncomeFromPropertyPage).map {
+    answers.get(OtherIncomeFromPropertyPage(Rentals)).map {
       answer =>
         SummaryListRowViewModel(
           key = KeyViewModel("otherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),

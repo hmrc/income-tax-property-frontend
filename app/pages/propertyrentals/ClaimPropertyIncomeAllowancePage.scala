@@ -18,7 +18,7 @@ package pages.propertyrentals
 
 import models.PropertyType
 import pages.PageConstants.aboutPath
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {

@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import forms.propertyrentals.expenses.RepairsAndMaintenanceCostsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.OK
 import play.api.mvc.Call
@@ -66,7 +66,7 @@ class RepairsAndMaintenanceCostControllerSpec extends SpecBase with MockitoSugar
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RepairsAndMaintenanceCostsPage, BigDecimal(12.34)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(RepairsAndMaintenanceCostsPage(Rentals), BigDecimal(12.34)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

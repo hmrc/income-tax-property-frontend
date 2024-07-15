@@ -17,17 +17,17 @@
 package pages.premiumlease
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{PremiumsGrantLease, Rentals, UserAnswers}
+import models.{PremiumsGrantLease, PropertyType, UserAnswers}
 import pages.PageConstants.incomePath
+import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
-import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
+case class PremiumsGrantLeasePage(propertyType: PropertyType) extends QuestionPage[PremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
+  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
   override def toString: String = "premiumsGrantLease"
 
@@ -36,14 +36,15 @@ case object PremiumsGrantLeasePage extends QuestionPage[PremiumsGrantLease] {
 
   def minusOne(periods: Int): Int = periods - 1
 
-  override def cleanup(value: Option[PremiumsGrantLease], userAnswers: UserAnswers): Try[UserAnswers] = {
-    if (isTotalIncomeUnder85K(userAnswers)) {
+  override def cleanup(value: Option[PremiumsGrantLease], userAnswers: UserAnswers): Try[UserAnswers] =
+    if (isTotalIncomeUnder85K(userAnswers, propertyType)) {
       super.cleanup(value, userAnswers)
-    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo)) {
-      userAnswers.remove(ConsolidatedExpensesPage)
+    } else if (
+      userAnswers.get(ConsolidatedExpensesPage(propertyType)).fold(false)(data => data.consolidatedExpensesYesOrNo)
+    ) {
+      userAnswers.remove(ConsolidatedExpensesPage(propertyType))
     } else {
       super.cleanup(value, userAnswers)
     }
-  }
 
 }

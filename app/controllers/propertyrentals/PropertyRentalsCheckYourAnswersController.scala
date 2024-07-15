@@ -19,11 +19,10 @@ package controllers.propertyrentals
 import audit.{AuditService, RentalsAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{JourneyContext, PropertyType}
 import models.requests.DataRequest
+import models.{JourneyContext, PropertyType}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{Json, Reads}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier

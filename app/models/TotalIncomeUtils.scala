@@ -20,33 +20,33 @@ import models.TotalIncome.{Between, Under}
 import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage}
-import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income.{IncomeFromPropertyPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
 
 object TotalIncomeUtils {
 
-  def totalIncome(userAnswers: UserAnswers): BigDecimal = {
-    val incomeFromPropertyRentals = userAnswers.get(IncomeFromPropertyRentalsPage).getOrElse(BigDecimal(0))
-    val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
-    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage).getOrElse(BigDecimal(0))
+  def totalIncome(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
+    val incomeFromPropertyRentals = userAnswers.get(IncomeFromPropertyPage(propertyType)).getOrElse(BigDecimal(0))
+    val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage(propertyType)).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
+    val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage(propertyType)).getOrElse(BigDecimal(0))
 
     incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
   }
 
-  def isTotalIncomeUnder85K(userAnswers: UserAnswers): Boolean = {
+  def isTotalIncomeUnder85K(userAnswers: UserAnswers, propertyType: PropertyType): Boolean = {
     val totalIncomeCapped = 85000
-    userAnswers.get(IncomeFromPropertyRentalsPage) match {
+    userAnswers.get(IncomeFromPropertyPage(propertyType)) match {
       case Some(_) =>
-        totalIncome(userAnswers) < BigDecimal(totalIncomeCapped)
+        totalIncome(userAnswers, propertyType) < BigDecimal(totalIncomeCapped)
       case None =>
         val userSelectedIncome = userAnswers.get(TotalIncomePage).getOrElse(0)
         userSelectedIncome == Under || userSelectedIncome == Between
     }
   }
 
-  def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers): BigDecimal = {
+  def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
     val balancingCharge = userAnswers.get(BalancingChargePage).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
-    totalIncome(userAnswers) + balancingCharge
+    totalIncome(userAnswers, propertyType) + balancingCharge
   }
 }

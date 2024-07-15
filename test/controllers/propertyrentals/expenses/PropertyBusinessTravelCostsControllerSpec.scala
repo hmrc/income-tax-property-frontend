@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import base.SpecBase
 import controllers.routes
 import forms.PropertyBusinessTravelCostsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -45,13 +45,16 @@ class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSug
 
   val validAnswer: BigDecimal = BigDecimal(0)
 
-  lazy val propertyBusinessTravelCostsRoute: String = controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode).url
+  lazy val propertyBusinessTravelCostsRoute: String =
+    controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController
+      .onPageLoad(taxYear, NormalMode)
+      .url
 
   "PropertyBusinessTravelCosts Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, propertyBusinessTravelCostsRoute)
@@ -61,13 +64,17 @@ class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSug
         val view = application.injector.instanceOf[PropertyBusinessTravelCostsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PropertyBusinessTravelCostsPage, validAnswer).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(PropertyBusinessTravelCostsPage(Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -79,7 +86,10 @@ class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -90,7 +100,7 @@ class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSug
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -125,7 +135,10 @@ class PropertyBusinessTravelCostsControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

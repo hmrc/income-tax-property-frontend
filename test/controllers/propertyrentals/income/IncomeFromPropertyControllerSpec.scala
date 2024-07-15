@@ -18,19 +18,19 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
+import pages.propertyrentals.income.IncomeFromPropertyPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
+import views.html.propertyrentals.income.IncomeFromPropertyView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -43,7 +43,7 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
   val form = formProvider("individual")
   val taxYear = LocalDate.now.getYear
   private val incomeFromPropertyRentals = BigDecimal(12345)
-  lazy val incomeFromPropertyRentalsRoute = routes.IncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
+  lazy val incomeFromPropertyRentalsRoute = routes.IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   "incomeFromPropertyRentals Controller" - {
 
@@ -61,17 +61,23 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(IncomeFromPropertyRentalsPage, incomeFromPropertyRentals).success.value
+        UserAnswers(userAnswersId).set(IncomeFromPropertyPage(Rentals), incomeFromPropertyRentals).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, incomeFromPropertyRentalsRoute)
-        val view = application.injector.instanceOf[IncomeFromPropertyRentalsView]
+        val view = application.injector.instanceOf[IncomeFromPropertyView]
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(incomeFromPropertyRentals), taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(
+          form.fill(incomeFromPropertyRentals),
+          taxYear,
+          NormalMode,
+          "individual",
+          Rentals
+        )(
           request,
           messages(application)
         ).toString
@@ -115,12 +121,12 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[IncomeFromPropertyRentalsView]
+        val view = application.injector.instanceOf[IncomeFromPropertyView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString

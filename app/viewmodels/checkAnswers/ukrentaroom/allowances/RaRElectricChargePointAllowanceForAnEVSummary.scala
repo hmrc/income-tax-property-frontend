@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.ukrentaroom.allowances
 
 import controllers.ukrentaroom.allowances.routes
-import models.{CheckMode, ElectricChargePointAllowance, UserAnswers}
+import models.{CheckMode, UserAnswers}
 import pages.ukrentaroom.allowances.RaRElectricChargePointAllowanceForAnEVPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow

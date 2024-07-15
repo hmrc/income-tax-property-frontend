@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.OtherProfessionalFeesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object OtherProfessionalFeesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherProfessionalFeesPage) match {
+    answers.get(OtherProfessionalFeesPage(Rentals)) match {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("otherProfessionalFees.checkYourAnswersLabel").withCssClass(keyCssClass),

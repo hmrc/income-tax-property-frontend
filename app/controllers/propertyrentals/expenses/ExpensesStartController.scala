@@ -17,8 +17,8 @@
 package controllers.propertyrentals.expenses
 
 import controllers.actions._
-import models.NormalMode
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
+import models.{NormalMode, Rentals}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -26,23 +26,24 @@ import views.html.propertyrentals.expenses.ExpensesStartView
 
 import javax.inject.Inject
 
-class ExpensesStartController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ExpensesStartView
-                                       ) extends FrontendBaseController with I18nSupport {
+class ExpensesStartController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: ExpensesStartView
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers)) {
+      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, Rentals)) {
         controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
-      }
-      else {
+      } else {
         controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
       }
-      Ok(view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers), under85KUrl))
+      Ok(
+        view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers, Rentals), under85KUrl)
+      )
   }
 }

@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import base.SpecBase
 import forms.premiumlease.CalculatedFigureYourselfFormProvider
-import models.{CalculatedFigureYourself, NormalMode, UserAnswers}
+import models.{CalculatedFigureYourself, NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -37,13 +37,14 @@ import scala.concurrent.Future
 class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRouteNo = Call("GET", "/received-grant-lease-amount")
-  def onwardRouteYes = Call("GET","/reverse-premiums-received")
+  def onwardRouteYes = Call("GET", "/reverse-premiums-received")
 
   private val formProvider = new CalculatedFigureYourselfFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
 
-  private lazy val calculatedFigureYourselfRoute = routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode).url
+  private lazy val calculatedFigureYourselfRoute =
+    routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode).url
 
   "CalculatedFigureYourself Controller" - {
 
@@ -59,13 +60,19 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(3242.65))).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(3242.65)))
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -77,7 +84,12 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CalculatedFigureYourself(true, Some(3242.65))), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(CalculatedFigureYourself(true, Some(3242.65))),
+          taxYear,
+          NormalMode,
+          "individual"
+        )(request, messages(application)).toString
       }
     }
 
@@ -88,7 +100,8 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-      val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(866.65))).get
+      val userData =
+        emptyUserAnswers.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(866.65))).get
 
       val application =
         applicationBuilder(userAnswers = Some(userData), isAgent = false)
@@ -117,8 +130,8 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-
-      val userData = emptyUserAnswers.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+      val userData =
+        emptyUserAnswers.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
 
       val application =
         applicationBuilder(userAnswers = Some(userData), isAgent = false)
@@ -156,7 +169,10 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

@@ -17,7 +17,7 @@
 package pages
 
 import models.TotalIncome.{Between, Over}
-import models.{TotalIncome, UserAnswers}
+import models.{Rentals, TotalIncome, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.libs.json.JsPath
@@ -41,7 +41,7 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
       case Some(Over) =>
         for {
           answers           <- updatedUserAnswers
-          userAnswers       <- answers.remove(ConsolidatedExpensesPage)
+          userAnswers       <- answers.remove(ConsolidatedExpensesPage(Rentals))
           withOutRRExpenses <- userAnswers.remove(ConsolidatedExpensesRRPage)
         } yield withOutRRExpenses
       case _ => super.cleanup(totalIncome, userAnswers)

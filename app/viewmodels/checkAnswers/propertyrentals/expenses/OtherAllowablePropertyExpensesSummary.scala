@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.OtherAllowablePropertyExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,16 +28,20 @@ import viewmodels.implicits._
 object OtherAllowablePropertyExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherAllowablePropertyExpensesPage) match {
+    answers.get(OtherAllowablePropertyExpensesPage(Rentals)) match {
       case Some(answer) =>
-      Some(
-        SummaryListRowViewModel(
-          key = KeyViewModel("otherAllowablePropertyExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("otherAllowablePropertyExpenses.change.hidden"))
-          ))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("otherAllowablePropertyExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("otherAllowablePropertyExpenses.change.hidden"))
+            )
+          )
         )
       case _ => Option.empty[SummaryListRow]
     }

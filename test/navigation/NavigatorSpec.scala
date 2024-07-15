@@ -132,10 +132,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes" in {
-        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
+        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), true).get
 
         navigator.nextPage(
-          LeasePremiumPaymentPage,
+          LeasePremiumPaymentPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -144,10 +144,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
+        val testUserAnswer = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), false).get
 
         navigator.nextPage(
-          LeasePremiumPaymentPage,
+          LeasePremiumPaymentPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -158,10 +158,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
         val testUserAnswer =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
 
         navigator.nextPage(
-          CalculatedFigureYourselfPage,
+          CalculatedFigureYourselfPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -171,10 +171,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
         val testUserAnswer =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(100))).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(100))).get
 
         navigator.nextPage(
-          CalculatedFigureYourselfPage,
+          CalculatedFigureYourselfPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -185,7 +185,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
         navigator.nextPage(
-          premiumlease.ReceivedGrantLeaseAmountPage,
+          premiumlease.ReceivedGrantLeaseAmountPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -195,7 +195,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from YearLeaseAmountPage to PremiumsGrantLeasePage" in {
         navigator.nextPage(
-          premiumlease.YearLeaseAmountPage,
+          premiumlease.YearLeaseAmountPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -205,7 +205,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from reverse to OtherIncomeFromPropertyPage" in {
         navigator.nextPage(
-          ReversePremiumsReceivedPage,
+          ReversePremiumsReceivedPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -243,12 +243,12 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from IncomeFromPropertyRentalsPage to LeasePremiumPaymentPage" in {
         navigator.nextPage(
-          IncomeFromPropertyRentalsPage,
+          IncomeFromPropertyPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -276,12 +276,12 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           userAnswers
         ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from OtherIncomeFromPropertyPage to PropertyIncomeCheckYourAnswersPage" in {
         navigator.nextPage(
-          OtherIncomeFromPropertyPage,
+          OtherIncomeFromPropertyPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -350,10 +350,11 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from ConsolidatedExpensesPage to RentsRatesAndInsurancePage when user selects no" in {
-        val testUserAnswer = UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(false, None)).get
+        val testUserAnswer =
+          UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(false, None)).get
 
         navigator.nextPage(
-          ConsolidatedExpensesPage,
+          ConsolidatedExpensesPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -364,10 +365,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
         val testUserAnswer =
-          UserAnswers("test").set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(100))).get
+          UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(true, Some(100))).get
 
         navigator.nextPage(
-          ConsolidatedExpensesPage,
+          ConsolidatedExpensesPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -377,7 +378,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage" in {
         navigator.nextPage(
-          RentsRatesAndInsurancePage,
+          RentsRatesAndInsurancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -387,7 +388,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RepairsAndMaintenanceCostsPage to LoanInterestPage" in {
         navigator.nextPage(
-          RepairsAndMaintenanceCostsPage,
+          RepairsAndMaintenanceCostsPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -397,7 +398,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
         navigator.nextPage(
-          LoanInterestPage,
+          LoanInterestPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -407,7 +408,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage" in {
         navigator.nextPage(
-          OtherProfessionalFeesPage,
+          OtherProfessionalFeesPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -417,7 +418,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
         navigator.nextPage(
-          CostsOfServicesProvidedPage,
+          CostsOfServicesProvidedPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -428,7 +429,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage" in {
         navigator.nextPage(
-          PropertyBusinessTravelCostsPage,
+          PropertyBusinessTravelCostsPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -712,7 +713,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from OtherAllowablePropertyExpensesPage to ExpensesCheckYourAnswersController" in {
         navigator.nextPage(
-          OtherAllowablePropertyExpensesPage,
+          OtherAllowablePropertyExpensesPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -905,7 +906,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from IncomeFromPropertyRentals to CheckYourAnswers" in {
         navigator.nextPage(
-          IncomeFromPropertyRentalsPage,
+          IncomeFromPropertyPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -914,10 +915,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes and the previous answer was no" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
+        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), false).get
+        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), true).get
         navigator.nextPage(
-          LeasePremiumPaymentPage,
+          LeasePremiumPaymentPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -926,10 +927,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects yes and the previous answer was yes" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
+        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), true).get
+        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), true).get
         navigator.nextPage(
-          LeasePremiumPaymentPage,
+          LeasePremiumPaymentPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -938,10 +939,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects no" in {
-        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, true).get
-        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage, false).get
+        val previousUserAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), true).get
+        val userAnswers = UserAnswers("test").set(LeasePremiumPaymentPage(Rentals), false).get
         navigator.nextPage(
-          LeasePremiumPaymentPage,
+          LeasePremiumPaymentPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -951,11 +952,11 @@ class NavigatorSpec extends SpecBase {
 
       "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmount when user selects no and the previous answer was yes" in {
         val previousUserAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, None)).get
         val userAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
         navigator.nextPage(
-          CalculatedFigureYourselfPage,
+          CalculatedFigureYourselfPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -965,11 +966,11 @@ class NavigatorSpec extends SpecBase {
 
       "must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects no and the previous answer was no" in {
         val previousUserAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
         val userAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
         navigator.nextPage(
-          CalculatedFigureYourselfPage,
+          CalculatedFigureYourselfPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -979,11 +980,11 @@ class NavigatorSpec extends SpecBase {
 
       "must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects" in {
         val previousUserAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
         val userAnswers =
-          UserAnswers("test").set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(100))).get
+          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(100))).get
         navigator.nextPage(
-          CalculatedFigureYourselfPage,
+          CalculatedFigureYourselfPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -993,7 +994,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmount" in {
         navigator.nextPage(
-          ReceivedGrantLeaseAmountPage,
+          ReceivedGrantLeaseAmountPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -1003,7 +1004,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from YearLeaseAmountPage to PremiumsGrantLease" in {
         navigator.nextPage(
-          YearLeaseAmountPage,
+          YearLeaseAmountPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -1013,7 +1014,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from PremiumsGrantLeasePage to CheckYourAnswers" in {
         navigator.nextPage(
-          PremiumsGrantLeasePage,
+          PremiumsGrantLeasePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -1023,7 +1024,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from ReversePremiumsReceivedPage to CheckYourAnswers" in {
         navigator.nextPage(
-          ReversePremiumsReceivedPage,
+          ReversePremiumsReceivedPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
@@ -1033,7 +1034,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from OtherIncomeFromPropertyPage to CheckYourAnswers" in {
         navigator.nextPage(
-          OtherIncomeFromPropertyPage,
+          OtherIncomeFromPropertyPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

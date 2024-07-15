@@ -47,7 +47,7 @@
     <p class="govuk-body">@messages("premiumsGrantLease.calculation.formula", premiumAmount.toString, (periods - 1).toString)</p>
 
     <p class="govuk-body">
-        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span> <span> £@{PremiumsGrantLeasePage.calculateTaxableAmount(premiumAmount, periods)}</span>
+        <span class="govuk-!-font-weight-bold">@messages("premiumsGrantLease.calculation.taxableAmount")</span> <span> £@{PremiumsGrantLeasePage(models.Rentals).calculateTaxableAmount(premiumAmount, periods)}</span>
     </p>
 
     <details class="govuk-details" data-module="govuk-details">

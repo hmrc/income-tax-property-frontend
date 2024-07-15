@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.ConsolidatedExpensesFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,24 +30,24 @@ import views.html.propertyrentals.expenses.ConsolidatedExpensesView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConsolidatedExpensesController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ConsolidatedExpensesFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ConsolidatedExpensesView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class ConsolidatedExpensesController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ConsolidatedExpensesFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ConsolidatedExpensesView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ConsolidatedExpensesPage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(ConsolidatedExpensesPage(Rentals)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,15 +57,18 @@ class ConsolidatedExpensesController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedExpensesPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ConsolidatedExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedExpensesPage(Rentals), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(ConsolidatedExpensesPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

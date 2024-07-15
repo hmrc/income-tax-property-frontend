@@ -135,31 +135,33 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsIncome) =>
           for {
             ua1 <-
-              userAnswers.set(IncomeFromPropertyRentalsPage, propertyRentalsIncome.incomeFromPropertyRentals)
+              userAnswers.set(IncomeFromPropertyPage(Rentals), propertyRentalsIncome.incomeFromPropertyRentals)
 
             ua2 <-
               ua1.set(IsNonUKLandlordPage, propertyRentalsIncome.isNonUKLandlord)
 
             ua3 <-
-              ua2.set(OtherIncomeFromPropertyPage, propertyRentalsIncome.otherIncomeFromProperty)
+              ua2.set(OtherIncomeFromPropertyPage(Rentals), propertyRentalsIncome.otherIncomeFromProperty)
 
             ua4 <-
               propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage, dt))
 
             ua5 <-
               propertyRentalsIncome.receivedGrantLeaseAmount.fold(Try(ua4))(rgla =>
-                ua4.set(ReceivedGrantLeaseAmountPage, rgla)
+                ua4.set(ReceivedGrantLeaseAmountPage(Rentals), rgla)
               )
 
-            ua6 <- propertyRentalsIncome.premiumsGrantLease.fold(Try(ua5))(pgl => ua5.set(PremiumsGrantLeasePage, pgl))
+            ua6 <- propertyRentalsIncome.premiumsGrantLease.fold(Try(ua5))(pgl =>
+                     ua5.set(PremiumsGrantLeasePage(Rentals), pgl)
+                   )
             ua7 <- propertyRentalsIncome.yearLeaseAmount.fold(Try(ua6))(yla =>
-                     ua6.set(YearLeaseAmountPage, yla.toInt)
+                     ua6.set(YearLeaseAmountPage(Rentals), yla.toInt)
                    ) // Recheck
             ua8 <- propertyRentalsIncome.calculatedFigureYourself.fold(Try(ua7))(cfy =>
-                     ua7.set(CalculatedFigureYourselfPage, cfy)
+                     ua7.set(CalculatedFigureYourselfPage(Rentals), cfy)
                    )
             ua9 <- propertyRentalsIncome.reversePremiumsReceived.fold(Try(ua8))(rpr =>
-                     ua8.set(ReversePremiumsReceivedPage, rpr)
+                     ua8.set(ReversePremiumsReceivedPage(Rentals), rpr)
                    )
           } yield ua9
       }
@@ -173,26 +175,32 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsExpenses) =>
           for {
             ua1 <- propertyRentalsExpenses.loanInterestOrOtherFinancialCost.fold(Try(userAnswers))(r =>
-                     userAnswers.set(LoanInterestPage, r)
+                     userAnswers.set(LoanInterestPage(Rentals), r)
                    )
             ua2 <-
-              propertyRentalsExpenses.consolidatedExpenses.fold(Try(ua1))(r => ua1.set(ConsolidatedExpensesPage, r))
+              propertyRentalsExpenses.consolidatedExpenses.fold(Try(ua1))(r =>
+                ua1.set(ConsolidatedExpensesPage(Rentals), r)
+              )
             ua3 <- propertyRentalsExpenses.otherAllowablePropertyExpenses.fold(Try(ua2))(r =>
-                     ua2.set(OtherAllowablePropertyExpensesPage, r)
+                     ua2.set(OtherAllowablePropertyExpensesPage(Rentals), r)
                    )
             ua4 <- propertyRentalsExpenses.propertyBusinessTravelCosts.fold(Try(ua3))(r =>
-                     ua3.set(PropertyBusinessTravelCostsPage, r)
+                     ua3.set(PropertyBusinessTravelCostsPage(Rentals), r)
                    )
             ua5 <- propertyRentalsExpenses.costsOfServicesProvided.fold(Try(ua4))(r =>
-                     ua4.set(CostsOfServicesProvidedPage, r)
+                     ua4.set(CostsOfServicesProvidedPage(Rentals), r)
                    )
             ua6 <-
-              propertyRentalsExpenses.otherProfessionalFees.fold(Try(ua5))(r => ua5.set(OtherProfessionalFeesPage, r))
+              propertyRentalsExpenses.otherProfessionalFees.fold(Try(ua5))(r =>
+                ua5.set(OtherProfessionalFeesPage(Rentals), r)
+              )
             ua7 <-
-              propertyRentalsExpenses.rentsRatesAndInsurance.fold(Try(ua6))(r => ua6.set(RentsRatesAndInsurancePage, r))
+              propertyRentalsExpenses.rentsRatesAndInsurance.fold(Try(ua6))(r =>
+                ua6.set(RentsRatesAndInsurancePage(Rentals), r)
+              )
             ua8 <-
               propertyRentalsExpenses.repairsAndMaintenanceCosts.fold(Try(ua7))(r =>
-                ua7.set(RepairsAndMaintenanceCostsPage, r)
+                ua7.set(RepairsAndMaintenanceCostsPage(Rentals), r)
               )
           } yield ua8
       }

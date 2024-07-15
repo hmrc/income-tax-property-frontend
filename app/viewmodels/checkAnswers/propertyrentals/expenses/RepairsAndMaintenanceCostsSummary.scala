@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.RepairsAndMaintenanceCostsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ object RepairsAndMaintenanceCostsSummary {
   import viewmodels.implicits._
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RepairsAndMaintenanceCostsPage) match {
+    answers.get(RepairsAndMaintenanceCostsPage(Rentals)) match {
       case Some(answer) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("repairsAndMaintenanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),

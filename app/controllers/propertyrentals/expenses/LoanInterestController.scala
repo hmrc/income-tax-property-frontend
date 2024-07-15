@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.LoanInterestFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,25 +30,24 @@ import views.html.propertyrentals.expenses.LoanInterestView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class LoanInterestController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: LoanInterestFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: LoanInterestView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-
+class LoanInterestController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: LoanInterestFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: LoanInterestView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(LoanInterestPage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(LoanInterestPage(Rentals)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,15 +57,18 @@ class LoanInterestController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(LoanInterestPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(LoanInterestPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(LoanInterestPage(Rentals), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(LoanInterestPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

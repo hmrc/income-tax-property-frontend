@@ -24,7 +24,7 @@ import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{IncomeFromPropertyRentalsPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income.{IncomeFromPropertyPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
 import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
@@ -196,27 +196,27 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ExpensesLessThan1000Page).get mustBe false
       updated.get(ClaimPropertyIncomeAllowancePage(Rentals)).get mustBe false
       updated.get(IsNonUKLandlordPage).get mustBe false
-      updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
-      updated.get(ReceivedGrantLeaseAmountPage) mustBe None // Lease clean up test
+      updated.get(IncomeFromPropertyPage(Rentals)).get mustBe 45
+      updated.get(ReceivedGrantLeaseAmountPage(Rentals)) mustBe None // Lease clean up test
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
       // Todo: do we need this? updated.get(LeasePremiumPaymentPage).get mustBe true
-      updated.get(CalculatedFigureYourselfPage).get mustBe CalculatedFigureYourself(true, Some(45))
-      updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
+      updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(true, Some(45))
+      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
       updated.get(ClaimExpensesOrRRRPage(RentARoom)).get mustBe ClaimExpensesOrRRR(false, Some(50))
-      updated.get(RepairsAndMaintenanceCostsPage).get mustBe 7
-      updated.get(LoanInterestPage).get mustBe 56
-      updated.get(OtherProfessionalFeesPage).get mustBe 4
-      updated.get(CostsOfServicesProvidedPage).get mustBe 34
-      updated.get(PropertyBusinessTravelCostsPage).get mustBe 4
-      updated.get(OtherAllowablePropertyExpensesPage).get mustBe 3
+      updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
+      updated.get(LoanInterestPage(Rentals)).get mustBe 56
+      updated.get(OtherProfessionalFeesPage(Rentals)).get mustBe 4
+      updated.get(CostsOfServicesProvidedPage(Rentals)).get mustBe 34
+      updated.get(PropertyBusinessTravelCostsPage(Rentals)).get mustBe 4
+      updated.get(OtherAllowablePropertyExpensesPage(Rentals)).get mustBe 3
       updated.get(PrivateUseAdjustmentPage).get mustBe PrivateUseAdjustment(2)
       updated.get(BalancingChargePage).get mustBe BalancingCharge(true, Some(3))
       updated.get(PropertyIncomeAllowancePage).get mustBe 4
-      updated.get(ReversePremiumsReceivedPage).get mustBe ReversePremiumsReceived(true, Some(45))
+      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(RenovationAllowanceBalancingChargePage).get mustBe RenovationAllowanceBalancingCharge(true, Some(23))
       updated.get(ResidentialFinanceCostPage).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3

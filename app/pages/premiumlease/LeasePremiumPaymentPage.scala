@@ -16,29 +16,30 @@
 
 package pages.premiumlease
 
-import models.{Rentals, UserAnswers}
+import models.{PropertyType, UserAnswers}
 import pages.PageConstants.incomePath
-import pages.{PageConstants, QuestionPage}
-import pages.premiumlease.CalculatedFigureYourselfPage
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object LeasePremiumPaymentPage extends QuestionPage[Boolean] {
+case class LeasePremiumPaymentPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
+  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
   override def toString: String = "leasePremiumPaymentYesOrNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value.map {
-      case true  => super.cleanup(value, userAnswers)
-      case false =>
-        for {
-           rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
-           yLAP <- rGLAP.remove(YearLeaseAmountPage)
-           pGLP <- yLAP.remove(PremiumsGrantLeasePage)
-           cFYP <- pGLP.remove(CalculatedFigureYourselfPage)
-        } yield cFYP
-    }.getOrElse(super.cleanup(value, userAnswers))
+    value
+      .map {
+        case true => super.cleanup(value, userAnswers)
+        case false =>
+          for {
+            rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage(propertyType))
+            yLAP  <- rGLAP.remove(YearLeaseAmountPage(propertyType))
+            pGLP  <- yLAP.remove(PremiumsGrantLeasePage(propertyType))
+            cFYP  <- pGLP.remove(CalculatedFigureYourselfPage(propertyType))
+          } yield cFYP
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }

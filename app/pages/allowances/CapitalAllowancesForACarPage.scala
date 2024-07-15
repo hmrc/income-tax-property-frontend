@@ -18,7 +18,7 @@ package pages.allowances
 
 import models.{CapitalAllowancesForACar, Rentals}
 import pages.PageConstants.allowancesPath
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object CapitalAllowancesForACarPage extends QuestionPage[CapitalAllowancesForACar] {

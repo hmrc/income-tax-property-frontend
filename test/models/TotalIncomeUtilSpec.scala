@@ -22,37 +22,38 @@ import models.TotalIncomeUtils.{isTotalIncomeUnder85K, maxPropertyIncomeAllowanc
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
-import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
+import pages.propertyrentals.income.IncomeFromPropertyPage
 
 class TotalIncomeUtilSpec extends SpecBase {
   "Total Income util" - {
-      "return sum of all income section" in {
-        val userAnswers = UserAnswers("test").set(IncomeFromPropertyRentalsPage, BigDecimal(80000)).get
-        totalIncome(userAnswers) shouldEqual 80000
-      }
-
-      "return sum of all income section and balancing charge" in {
-        val userAnswers = UserAnswers("test")
-          .set(IncomeFromPropertyRentalsPage, BigDecimal(80000))
-          .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
-          .get
-
-        maxPropertyIncomeAllowanceCombined(userAnswers) shouldEqual 90000
-      }
-
-
-      "under 85k if user selected total income is Under" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
-        isTotalIncomeUnder85K(userAnswers) shouldBe true
-      }
-      "over 85k if user selected total income is Over" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
-        isTotalIncomeUnder85K(userAnswers) shouldBe false
-      }
-      "under 85k if sum of all income section" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, Over)
-          .flatMap(_.set(IncomeFromPropertyRentalsPage, BigDecimal(80000))).get
-        isTotalIncomeUnder85K(userAnswers) shouldBe true
-      }
+    "return sum of all income section" in {
+      val userAnswers = UserAnswers("test").set(IncomeFromPropertyPage(Rentals), BigDecimal(80000)).get
+      totalIncome(userAnswers, Rentals) shouldEqual 80000
     }
+
+    "return sum of all income section and balancing charge" in {
+      val userAnswers = UserAnswers("test")
+        .set(IncomeFromPropertyPage(Rentals), BigDecimal(80000))
+        .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
+        .get
+
+      maxPropertyIncomeAllowanceCombined(userAnswers, Rentals) shouldEqual 90000
+    }
+
+    "under 85k if user selected total income is Under" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
+      isTotalIncomeUnder85K(userAnswers, Rentals) shouldBe true
+    }
+    "over 85k if user selected total income is Over" in {
+      val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
+      isTotalIncomeUnder85K(userAnswers, Rentals) shouldBe false
+    }
+    "under 85k if sum of all income section" in {
+      val userAnswers = UserAnswers("test")
+        .set(TotalIncomePage, Over)
+        .flatMap(_.set(IncomeFromPropertyPage(Rentals), BigDecimal(80000)))
+        .get
+      isTotalIncomeUnder85K(userAnswers, Rentals) shouldBe true
+    }
+  }
 }

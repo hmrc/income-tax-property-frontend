@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import forms.propertyrentals.expenses.RentsRatesAndInsuranceFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.http.Status.OK
@@ -32,6 +32,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.inject.bind
 import play.api.test.Helpers._
+
 import java.time.LocalDate
 import scala.concurrent.Future
 
@@ -65,7 +66,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RentsRatesAndInsurancePage, BigDecimal(12.34)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(RentsRatesAndInsurancePage(Rentals), BigDecimal(12.34)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

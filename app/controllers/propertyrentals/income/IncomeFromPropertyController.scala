@@ -18,59 +18,74 @@ package controllers.propertyrentals.income
 
 import controllers.actions._
 import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
-import models.{Mode, UserAnswers}
+import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
-import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
+import pages.propertyrentals.income.IncomeFromPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
+import views.html.propertyrentals.income.IncomeFromPropertyView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IncomeFromPropertyController @Inject()(
-                                                     override val messagesApi: MessagesApi,
-                                                     sessionRepository: SessionRepository,
-                                                     navigator: Navigator,
-                                                     identify: IdentifierAction,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     formProvider: IncomeFromPropertyRentalsFormProvider,
-                                                     sessionService: SessionService,
-                                                     val controllerComponents: MessagesControllerComponents,
-                                                     view: IncomeFromPropertyRentalsView
-                                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IncomeFromPropertyController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: IncomeFromPropertyRentalsFormProvider,
+  sessionService: SessionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: IncomeFromPropertyView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       if (request.userAnswers.isEmpty) {
         sessionService.createNewEmptySession(request.userId)
       }
 
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(IncomeFromPropertyRentalsPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
-  }
+      val preparedForm =
+        request.userAnswers
+          .getOrElse(UserAnswers(request.userId))
+          .get(IncomeFromPropertyPage(propertyType)) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeFromPropertyRentalsPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IncomeFromPropertyRentalsPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(IncomeFromPropertyPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                IncomeFromPropertyPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

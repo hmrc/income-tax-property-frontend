@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.LeasePremiumPaymentFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.premiumlease.LeasePremiumPaymentPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -46,7 +46,7 @@ class LeasePremiumPaymentController @Inject()(
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val preparedForm = request.userAnswers.get(LeasePremiumPaymentPage) match {
+      val preparedForm = request.userAnswers.get(LeasePremiumPaymentPage(Rentals)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class LeasePremiumPaymentController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage(Rentals), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(LeasePremiumPaymentPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

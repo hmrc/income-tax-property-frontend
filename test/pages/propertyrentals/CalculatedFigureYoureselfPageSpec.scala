@@ -17,7 +17,7 @@
 package pages.propertyrentals
 
 import base.SpecBase
-import models.{CalculatedFigureYourself, PremiumsGrantLease}
+import models.{CalculatedFigureYourself, PremiumsGrantLease, Rentals}
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 
 class CalculatedFigureYoureselfPageSpec extends SpecBase {
@@ -25,32 +25,49 @@ class CalculatedFigureYoureselfPageSpec extends SpecBase {
   "must remove the correct data when the answer is yes" in {
 
     val userData = emptyUserAnswers
-                      .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.11)).success.value
-                      .set(YearLeaseAmountPage, 10).success.value
-                      .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).success.value
+      .set(ReceivedGrantLeaseAmountPage(Rentals), BigDecimal(10.11))
+      .success
+      .value
+      .set(YearLeaseAmountPage(Rentals), 10)
+      .success
+      .value
+      .set(
+        PremiumsGrantLeasePage(Rentals),
+        PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))
+      )
+      .success
+      .value
 
-    val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(true, Some(10.13))).success.value
+    val result =
+      userData.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(10.13))).success.value
 
-    result.get(CalculatedFigureYourselfPage)  must be(defined)
-    result.get(ReceivedGrantLeaseAmountPage)  must not be defined
-    result.get(YearLeaseAmountPage)           must not be defined
-    result.get(PremiumsGrantLeasePage)        must not be defined
+    result.get(CalculatedFigureYourselfPage(Rentals)) must be(defined)
+    result.get(ReceivedGrantLeaseAmountPage(Rentals)) must not be defined
+    result.get(YearLeaseAmountPage(Rentals)) must not be defined
+    result.get(PremiumsGrantLeasePage(Rentals)) must not be defined
 
   }
 
   "must keep that data value when the answer is yes" in {
 
     val userData = emptyUserAnswers
-      .set(ReceivedGrantLeaseAmountPage, BigDecimal(10.10)).get
-      .set(YearLeaseAmountPage, 10).get
-      .set(PremiumsGrantLeasePage, PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))).get
+      .set(ReceivedGrantLeaseAmountPage(Rentals), BigDecimal(10.10))
+      .get
+      .set(YearLeaseAmountPage(Rentals), 10)
+      .get
+      .set(
+        PremiumsGrantLeasePage(Rentals),
+        PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(BigDecimal(10.12)))
+      )
+      .get
 
-    val result = userData.set(CalculatedFigureYourselfPage, CalculatedFigureYourself(false, None)).success.value
+    val result =
+      userData.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).success.value
 
-    result.get(CalculatedFigureYourselfPage)    must be(defined)
-    result.get(ReceivedGrantLeaseAmountPage)    must be(defined)
-    result.get(YearLeaseAmountPage)             must be(defined)
-    result.get(PremiumsGrantLeasePage)          must be(defined)
+    result.get(CalculatedFigureYourselfPage(Rentals)) must be(defined)
+    result.get(ReceivedGrantLeaseAmountPage(Rentals)) must be(defined)
+    result.get(YearLeaseAmountPage(Rentals)) must be(defined)
+    result.get(PremiumsGrantLeasePage(Rentals)) must be(defined)
   }
 
 }

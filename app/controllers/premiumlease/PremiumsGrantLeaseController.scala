@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.PremiumsGrantLeaseFormProvider
-import models.{Mode, PremiumsGrantLease}
+import models.{Mode, PremiumsGrantLease, Rentals}
 import navigation.Navigator
 import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, YearLeaseAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,30 +30,30 @@ import views.html.premiumlease.PremiumsGrantLeaseView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PremiumsGrantLeaseController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              navigator: Navigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: PremiumsGrantLeaseFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: PremiumsGrantLeaseView
-                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class PremiumsGrantLeaseController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: PremiumsGrantLeaseFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PremiumsGrantLeaseView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ReceivedGrantLeaseAmountPage)
-      val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ReceivedGrantLeaseAmountPage(Rentals))
+      val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage(Rentals))
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) => Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode))
         case (_, None) => Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode))
         case (Some(amount), Some(period)) =>
-          val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage) match {
-            case None => formProvider(request.user.isAgentMessageKey)
+          val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage(Rentals)) match {
+            case None        => formProvider(request.user.isAgentMessageKey)
             case Some(value) => formProvider(request.user.isAgentMessageKey).fill(value)
           }
 
@@ -63,24 +63,42 @@ class PremiumsGrantLeaseController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ReceivedGrantLeaseAmountPage)
-      val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ReceivedGrantLeaseAmountPage(Rentals))
+      val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage(Rentals))
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
-        case (None, _) => Future.successful(Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
+        case (None, _) =>
+          Future.successful(Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode)))
         case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
         case (Some(amount), Some(period)) =>
-          formProvider(request.user.isAgentMessageKey).bindFromRequest().fold(
-            formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.user.isAgentMessageKey))),
-
-            value =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumsGrantLeasePage,
-                  PremiumsGrantLease(value.premiumsGrantLeaseYesOrNo, Some(value.premiumsGrantLease.getOrElse(PremiumsGrantLeasePage.calculateTaxableAmount(amount, period))))))
-                _ <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(PremiumsGrantLeasePage, taxYear, mode, request.userAnswers, updatedAnswers))
-          )
+          formProvider(request.user.isAgentMessageKey)
+            .bindFromRequest()
+            .fold(
+              formWithErrors =>
+                Future.successful(
+                  BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.user.isAgentMessageKey))
+                ),
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(
+                                      request.userAnswers.set(
+                                        PremiumsGrantLeasePage(Rentals),
+                                        PremiumsGrantLease(
+                                          value.premiumsGrantLeaseYesOrNo,
+                                          Some(
+                                            value.premiumsGrantLease.getOrElse(
+                                              PremiumsGrantLeasePage(Rentals).calculateTaxableAmount(amount, period)
+                                            )
+                                          )
+                                        )
+                                      )
+                                    )
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator
+                    .nextPage(PremiumsGrantLeasePage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+                )
+            )
       }
   }
 }

@@ -18,7 +18,7 @@ package pages.adjustments
 
 import models.Rentals
 import pages.PageConstants.adjustmentsPath
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ResidentialFinanceCostPage extends QuestionPage[BigDecimal] {

@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import audit.RentalsExpense
 import base.SpecBase
-import models.{ConsolidatedExpenses, JourneyContext, UserAnswers}
+import models.{ConsolidatedExpenses, JourneyContext, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -83,7 +83,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
     "must return OK and the correct view for a POST (onSubmit)" in {
 
       val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
-      val userAnswers = UserAnswers("test").set(ConsolidatedExpensesPage, consolidatedExpenses).toOption
+      val userAnswers = UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), consolidatedExpenses).toOption
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")

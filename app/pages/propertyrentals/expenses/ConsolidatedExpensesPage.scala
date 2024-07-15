@@ -16,16 +16,16 @@
 
 package pages.propertyrentals.expenses
 
-import models.{ConsolidatedExpenses, Rentals, UserAnswers}
+import models.{ConsolidatedExpenses, PropertyType, UserAnswers}
 import pages.PageConstants.expensesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] {
+case class ConsolidatedExpensesPage(propertyType: PropertyType) extends QuestionPage[ConsolidatedExpenses] {
 
-  override def path: JsPath = JsPath \ expensesPath(Rentals) \ toString
+  override def path: JsPath = JsPath \ expensesPath(propertyType) \ toString
 
   override def toString: String = "consolidatedExpenses"
 
@@ -36,13 +36,13 @@ case object ConsolidatedExpensesPage extends QuestionPage[ConsolidatedExpenses] 
 
         case ConsolidatedExpenses(true, _) =>
           for {
-            rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage)
-            rAMC  <- rRRAI.remove(RepairsAndMaintenanceCostsPage)
-            cOSP  <- rAMC.remove(CostsOfServicesProvidedPage)
-            lI    <- cOSP.remove(LoanInterestPage)
-            pBTC  <- lI.remove(PropertyBusinessTravelCostsPage)
-            oPF   <- pBTC.remove(OtherProfessionalFeesPage)
-            oAPE  <- oPF.remove(OtherAllowablePropertyExpensesPage)
+            rRRAI <- userAnswers.remove(RentsRatesAndInsurancePage(propertyType))
+            rAMC  <- rRRAI.remove(RepairsAndMaintenanceCostsPage(propertyType))
+            cOSP  <- rAMC.remove(CostsOfServicesProvidedPage(propertyType))
+            lI    <- cOSP.remove(LoanInterestPage(propertyType))
+            pBTC  <- lI.remove(PropertyBusinessTravelCostsPage(propertyType))
+            oPF   <- pBTC.remove(OtherProfessionalFeesPage(propertyType))
+            oAPE  <- oPF.remove(OtherAllowablePropertyExpensesPage(propertyType))
           } yield oAPE
       }
       .getOrElse(super.cleanup(value, userAnswers))

@@ -17,27 +17,30 @@
 package viewmodels.checkAnswers.propertyrentals.income
 
 import controllers.propertyrentals.income.routes
-import models.{CheckMode, UserAnswers}
-import pages.propertyrentals.income.IncomeFromPropertyRentalsPage
+import models.{CheckMode, PropertyType, UserAnswers}
+import pages.propertyrentals.income.IncomeFromPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object IncomeFromPropertyRentalsSummary  {
+object IncomeFromPropertySummary {
 
-    def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-      answers.get(IncomeFromPropertyRentalsPage).map {
-        answer =>
-
-          SummaryListRowViewModel(
-            key = KeyViewModel("incomeFromPropertyRentals.checkYourAnswersLabel").withCssClass(keyCssClass),
-            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-            actions = Seq(
-              ActionItemViewModel("site.change", routes.IncomeFromPropertyController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))
-            )
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(IncomeFromPropertyPage(propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("incomeFromPropertyRentals.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.IncomeFromPropertyController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
-      }
+            .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))
+        )
+      )
+    }
 }
