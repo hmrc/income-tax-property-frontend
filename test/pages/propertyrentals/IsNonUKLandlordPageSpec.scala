@@ -28,9 +28,9 @@ class IsNonUKLandlordPageSpec extends SpecBase {
       DeductingTaxPage(Rentals),
       DeductingTax(false, None)).success.value
 
-    val result = answers.set(IsNonUKLandlordPage, false).success.value
+    val result = answers.set(IsNonUKLandlordPage(Rentals), false).success.value
 
-    result.get(IsNonUKLandlordPage) must be(defined)
+    result.get(IsNonUKLandlordPage(Rentals)) must be(defined)
     result.get(DeductingTaxPage(Rentals))    must not be defined
   }
 
@@ -40,9 +40,9 @@ class IsNonUKLandlordPageSpec extends SpecBase {
       DeductingTaxPage(Rentals),
       DeductingTax(true, Some(120.45))).success.value
 
-    val result = answers.set(IsNonUKLandlordPage, true).success.value
+    val result = answers.set(IsNonUKLandlordPage(Rentals), true).success.value
 
-    result.get(IsNonUKLandlordPage) must be(defined)
+    result.get(IsNonUKLandlordPage(Rentals)) must be(defined)
     result.get(DeductingTaxPage(Rentals))    must be(defined)
   }
 

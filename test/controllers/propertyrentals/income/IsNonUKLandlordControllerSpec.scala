@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.IsNonUKLandlordFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -42,7 +42,9 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
 
-  private lazy val isNonUKLandlordRoute = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode).url
+  private lazy val isNonUKLandlordRoute = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url
+  private lazy val isNonUKLandlordRentalsRARRoute =
+    routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "IsNonUKLandlord Controller" - {
 
@@ -58,13 +60,35 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[IsNonUKLandlordView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "for RentalsAndRaR it must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, isNonUKLandlordRentalsRARRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[IsNonUKLandlordView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsNonUKLandlordPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsNonUKLandlordPage(Rentals), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -76,7 +100,10 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual", Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -122,7 +149,10 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

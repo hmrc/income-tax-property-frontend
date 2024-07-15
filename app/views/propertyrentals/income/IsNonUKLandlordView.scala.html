@@ -16,6 +16,7 @@
 
 @import controllers.propertyrentals.income.routes._
 @import viewmodels.LegendSize
+@import models.PropertyType
 
 @this(
     layout: templates.Layout,
@@ -25,13 +26,13 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("isNonUKLandlord.title"))) {
 
     <h1 class="govuk-heading-l">@messages("isNonUKLandlord.heading")</h1>
 
-    @formHelper(action = IsNonUKLandlordController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = IsNonUKLandlordController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

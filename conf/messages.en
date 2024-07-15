@@ -1748,3 +1748,9 @@ rentalsAndRentARoomIncomeStart.l3 = reverse premiums received
 rentalsAndRentARoomIncomeStart.l4 = other income from property
 rentalsAndRentARoomIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your portion of these figures.
 rentalsAndRentARoomIncomeStart.p2.agent = If their properties are jointly owned, only tell us about their portion of these figures.
+
+rentalsAndRentARoom.income.nonUKResidentialLandlord.title = nonUKResidentialLandlord
+rentalsAndRentARoom.income.nonUKResidentialLandlord.heading = nonUKResidentialLandlord
+rentalsAndRentARoom.income.nonUKResidentialLandlord.checkYourAnswersLabel = nonUKResidentialLandlord
+rentalsAndRentARoom.income.nonUKResidentialLandlord.error.required = Select yes if nonUKResidentialLandlord
+rentalsAndRentARoom.income.nonUKResidentialLandlord.change.hidden = NonUKResidentialLandlord

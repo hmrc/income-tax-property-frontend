@@ -138,7 +138,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               userAnswers.set(IncomeFromPropertyRentalsPage, propertyRentalsIncome.incomeFromPropertyRentals)
 
             ua2 <-
-              ua1.set(IsNonUKLandlordPage, propertyRentalsIncome.isNonUKLandlord)
+              ua1.set(IsNonUKLandlordPage(Rentals), propertyRentalsIncome.isNonUKLandlord)
 
             ua3 <-
               ua2.set(OtherIncomeFromPropertyPage, propertyRentalsIncome.otherIncomeFromProperty)

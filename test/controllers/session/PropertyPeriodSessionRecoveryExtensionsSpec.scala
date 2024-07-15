@@ -195,7 +195,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
       updated.get(ExpensesLessThan1000Page).get mustBe false
       updated.get(ClaimPropertyIncomeAllowancePage(Rentals)).get mustBe false
-      updated.get(IsNonUKLandlordPage).get mustBe false
+      updated.get(IsNonUKLandlordPage(Rentals)).get mustBe false
       updated.get(IncomeFromPropertyRentalsPage).get mustBe 45
       updated.get(ReceivedGrantLeaseAmountPage) mustBe None // Lease clean up test
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5

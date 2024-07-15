@@ -16,8 +16,7 @@
 
 package controllers.structuresbuildingallowance
 
-import audit.{RentalsAuditModel, AuditService}
-import controllers.ControllerUtils.statusForPage
+import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest

@@ -70,10 +70,10 @@ POST       /:taxYear/rentals/about/complete-yes-no                              
 
 GET         /:taxYear/rentals/income/start                                                controllers.propertyrentals.income.PropertyIncomeStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/income/deducting-tax                                        controllers.propertyrentals.income.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/income/deducting-tax                                        controllers.propertyrentals.income.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
@@ -513,3 +513,7 @@ POST        /:taxYear/rentals-rent-a-room/income/deducting-tax                  
 GET         /:taxYear/rentals-rent-a-room/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
+GET         /:taxYear/rentals-rent-a-room/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)

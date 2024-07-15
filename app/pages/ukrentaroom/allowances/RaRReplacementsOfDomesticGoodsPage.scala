@@ -18,7 +18,7 @@ package pages.ukrentaroom.allowances
 
 import models.RentARoom
 import pages.PageConstants.allowancesPath
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object RaRReplacementsOfDomesticGoodsPage extends QuestionPage[BigDecimal] {
