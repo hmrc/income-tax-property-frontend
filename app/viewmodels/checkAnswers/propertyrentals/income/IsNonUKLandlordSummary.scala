@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.propertyrentals.income
 
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ import controllers.propertyrentals.income.routes
 object IsNonUKLandlordSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(IsNonUKLandlordPage).map {
+    answers.get(IsNonUKLandlordPage(Rentals)).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
@@ -37,7 +37,7 @@ object IsNonUKLandlordSummary {
           key = KeyViewModel("isNonUKLandlord.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.IsNonUKLandlordController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.IsNonUKLandlordController.onPageLoad(taxYear, CheckMode, Rentals).url)
               .withVisuallyHiddenText(messages("isNonUKLandlord.change.hidden"))
           )
         )

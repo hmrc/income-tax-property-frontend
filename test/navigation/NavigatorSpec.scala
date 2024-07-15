@@ -332,9 +332,9 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes" in {
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), true).get
         navigator.nextPage(
-          IsNonUKLandlordPage,
+          IsNonUKLandlordPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -344,9 +344,9 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), false).get
         navigator.nextPage(
-          IsNonUKLandlordPage,
+          IsNonUKLandlordPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -720,10 +720,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from IsNonUKLandlordPage to the CheckYourAnswers page when answer is no" in {
-        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
+        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), false).get
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), false).get
         navigator.nextPage(
-          IsNonUKLandlordPage,
+          IsNonUKLandlordPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -732,10 +732,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from IsNonUKLandlordPage to the CheckYourAnswers page when answer is yes and the previous answer was yes" in {
-        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
+        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), true).get
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), true).get
         navigator.nextPage(
-          IsNonUKLandlordPage,
+          IsNonUKLandlordPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
@@ -744,10 +744,10 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from IsNonUKLandlordPage to the DeductingTax page when answer is yes and the previous answer was no" in {
-        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage, false).get
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage, true).get
+        val previousUserAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), false).get
+        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), true).get
         navigator.nextPage(
-          IsNonUKLandlordPage,
+          IsNonUKLandlordPage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
