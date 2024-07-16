@@ -131,7 +131,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
         verify(audit, times(1)).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
-        redirectLocation(result).value mustEqual controllers.ukrentaroom.routes.AboutSectionCompleteController
+        redirectLocation(result).value mustEqual controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController
           .onPageLoad(taxYear)
           .url
 

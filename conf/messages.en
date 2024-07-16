@@ -279,7 +279,7 @@ deductingTax.details.content.line1.individual = You need to pay tax on your rent
 deductingTax.details.content.line2.individual = You can get your rent either:
 deductingTax.details.content.line3.individual = in full and pay tax through Self Assessment - if HMRC allows you
 deductingTax.details.content.line4.individual = with tax already deducted by your letting agent or tenant
-deductingTax.details.content.line1.agent. = Your client will need to pay tax on their rental income if they live abroad and rented out property in the UK.
+deductingTax.details.content.line1.agent = Your client will need to pay tax on their rental income if they live abroad and rented out property in the UK.
 deductingTax.details.content.line2.agent = They can get their rent either:
 deductingTax.details.content.line3.agent = in full and pay tax through Self Assessment - if HMRC allows them
 deductingTax.details.content.line4.agent = with tax already deducted by their letting agent or tenant
@@ -1726,7 +1726,7 @@ raRAllowancesCYA.heading = raRAllowancesCYA
 
 haveYouFinishedThisSection.heading = Have you finished this section?
 haveYouFinishedThisSection.title = Have you finished this section?
-haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you ve given us once you’ve ve finished.
+haveYouFinishedThisSection.hint = You’ll still be able to go back and review the information that you've given us once you've finished.
 haveYouFinishedThisSection.error.required = Select yes if you have completed this section
 
 rentalsAndRentARoom.start.title.individual = About your property rental and rent a room
