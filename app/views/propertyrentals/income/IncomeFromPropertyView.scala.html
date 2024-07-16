@@ -54,7 +54,7 @@
         @govukInput(
             InputViewModel(
                 field = form("incomeFromPropertyRentals"),
-                label = LabelViewModel(messages(s"incomeFromPropertyRentals.para2.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
+                label = LabelViewModel(messages(s"incomeFromPropertyRentals.para2.${propertyType}.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
             )
             .asNumeric()
             .withWidth(Fixed10)
