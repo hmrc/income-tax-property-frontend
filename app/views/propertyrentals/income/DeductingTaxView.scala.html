@@ -16,6 +16,7 @@
 
 @import controllers.propertyrentals.income.routes
 @import viewmodels.InputWidth._
+@import models.PropertyType
 @import viewmodels.LabelSize
 @import viewmodels.govuk._
 
@@ -29,11 +30,11 @@
     govukInput : GovukInput
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("deductingTax.title"))) {
 
-    @formHelper(action = routes.DeductingTaxController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.DeductingTaxController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
