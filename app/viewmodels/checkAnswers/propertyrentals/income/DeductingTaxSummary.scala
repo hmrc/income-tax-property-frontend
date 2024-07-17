@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.income
 
 import controllers.propertyrentals.income.routes
-import models.{CheckMode, DeductingTax, UserAnswers}
+import models.{CheckMode, DeductingTax, PropertyType, UserAnswers}
 import pages.propertyrentals.income.DeductingTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,14 +27,14 @@ import viewmodels.implicits._
 
 object DeductingTaxSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(DeductingTaxPage).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(DeductingTaxPage(propertyType)).flatMap {
       case DeductingTax(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("deductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode,propertyType).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )))
       case DeductingTax(false, _) =>
@@ -42,7 +42,7 @@ object DeductingTaxSummary  {
           key = KeyViewModel("deductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )
         ))
