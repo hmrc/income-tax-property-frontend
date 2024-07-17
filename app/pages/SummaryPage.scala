@@ -23,6 +23,7 @@ import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
@@ -103,7 +104,7 @@ case object SummaryPage {
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     if (isRentARoomSelected && isPropertyRentalsSelected) {
-      Seq(rentalsAndRaRAboutItem(taxYear), rentalsAndRaRIncomeItem(taxYear))
+      Seq(rentalsAndRaRAboutItem(userAnswers, taxYear), rentalsAndRaRIncomeItem(taxYear))
     } else {
       Seq.empty
     }
@@ -252,11 +253,24 @@ case object SummaryPage {
       "rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRAboutItem(taxYear: Int) =
+  private def rentalsAndRaRAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear), {
+
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (
+            userAnswers
+              .flatMap(_.get(ConsolidatedExpensesRRPage))
+              .isDefined || userAnswers.flatMap(_.get(RentsRatesAndInsuranceRRPage)).isDefined
+          ) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_about_link"
     )
 

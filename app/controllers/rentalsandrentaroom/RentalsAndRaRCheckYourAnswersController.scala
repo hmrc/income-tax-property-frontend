@@ -110,12 +110,13 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       propertySubmissionService
         .saveJourneyAnswers[RentalsAndRaRAbout](context, about)
         .map {
-          case Left(_) =>
+          case Left(error) =>
+            print(error)
             Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
           case Right(_) =>
             auditCYA(taxYear, request, about)
 
-            Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+            Redirect(controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear))
         }
     }
 
