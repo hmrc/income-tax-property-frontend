@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -45,7 +45,8 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
   val taxYear: Int = LocalDate.now.getYear
   val otherIncomeFromProperty: BigDecimal = BigDecimal(12345)
 
-  lazy val otherIncomeFromPropertyRoute: String = routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
+  lazy val otherIncomeFromPropertyRoute: String =
+    routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
 
   "incomeFromPropertyRentals Controller" - {
 
@@ -62,8 +63,8 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(OtherIncomeFromPropertyPage,
-        otherIncomeFromProperty).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(OtherIncomeFromPropertyPage(Rentals), otherIncomeFromProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -73,8 +74,10 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(otherIncomeFromProperty), taxYear,
-          NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(otherIncomeFromProperty), taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -120,7 +123,10 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -134,7 +140,7 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        //redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        // redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 

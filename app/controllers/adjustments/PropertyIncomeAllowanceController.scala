@@ -18,7 +18,7 @@ package controllers.adjustments
 
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import models.TotalIncomeUtils.maxPropertyIncomeAllowanceCombined
 import navigation.Navigator
 import pages.adjustments.PropertyIncomeAllowancePage
@@ -45,7 +45,7 @@ class PropertyIncomeAllowanceController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
+      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers, Rentals))
       val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -56,7 +56,7 @@ class PropertyIncomeAllowanceController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers))
+      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers, Rentals))
 
       form.bindFromRequest().fold(
         formWithErrors =>

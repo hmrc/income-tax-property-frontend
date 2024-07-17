@@ -17,7 +17,7 @@
 package pages.propertyrentals.income
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{Rentals, UserAnswers}
+import models.{PropertyType, UserAnswers}
 import pages.PageConstants.incomePath
 import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -25,17 +25,19 @@ import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object OtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
+case class OtherIncomeFromPropertyPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
+  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
   override def toString: String = "otherIncomeFromProperty"
 
   override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
-    if (isTotalIncomeUnder85K(userAnswers)) {
+    if (isTotalIncomeUnder85K(userAnswers, propertyType)) {
       super.cleanup(value, userAnswers)
-    } else if (userAnswers.get(ConsolidatedExpensesPage).fold(false)(data => data.consolidatedExpensesYesOrNo)) {
-      userAnswers.remove(ConsolidatedExpensesPage)
+    } else if (
+      userAnswers.get(ConsolidatedExpensesPage(propertyType)).fold(false)(data => data.consolidatedExpensesYesOrNo)
+    ) {
+      userAnswers.remove(ConsolidatedExpensesPage(propertyType))
     } else {
       super.cleanup(value, userAnswers)
     }

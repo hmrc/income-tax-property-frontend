@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes
 import forms.ConsolidatedExpensesFormProvider
-import models.{ConsolidatedExpenses, NormalMode, UserAnswers}
+import models.{ConsolidatedExpenses, NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -66,7 +66,7 @@ import scala.concurrent.Future
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedExpensesPage, ConsolidatedExpenses(true, Some(12.34))).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(true, Some(12.34))).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

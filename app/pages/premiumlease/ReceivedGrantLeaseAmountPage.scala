@@ -16,14 +16,14 @@
 
 package pages.premiumlease
 
-import models.Rentals
+import models.PropertyType
 import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ReceivedGrantLeaseAmountPage extends QuestionPage[BigDecimal] {
+case class ReceivedGrantLeaseAmountPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
+  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
   override def toString: String = "receivedGrantLeaseAmount"
 }

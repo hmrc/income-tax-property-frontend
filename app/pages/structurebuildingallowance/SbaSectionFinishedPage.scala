@@ -16,7 +16,7 @@
 
 package pages.structurebuildingallowance
 
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object SbaSectionFinishedPage extends QuestionPage[Boolean] {

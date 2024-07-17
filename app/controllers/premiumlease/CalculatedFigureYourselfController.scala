@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.CalculatedFigureYourselfFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,7 +45,7 @@ class CalculatedFigureYourselfController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(CalculatedFigureYourselfPage) match {
+      val preparedForm = request.userAnswers.get(CalculatedFigureYourselfPage(Rentals)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -62,9 +62,9 @@ class CalculatedFigureYourselfController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage(Rentals), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

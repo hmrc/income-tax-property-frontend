@@ -17,7 +17,7 @@
 package pages.premiumlease
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{CalculatedFigureYourself, Rentals, UserAnswers}
+import models.{CalculatedFigureYourself, PropertyType, UserAnswers}
 import pages.PageConstants.incomePath
 import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -25,9 +25,9 @@ import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYourself] {
+case class CalculatedFigureYourselfPage(propertyType: PropertyType) extends QuestionPage[CalculatedFigureYourself] {
 
-  override def path: JsPath = JsPath \ incomePath(Rentals) \ toString
+  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
   override def toString: String = "calculatedFigureYourself"
 
@@ -37,22 +37,23 @@ case object CalculatedFigureYourselfPage extends QuestionPage[CalculatedFigureYo
         case CalculatedFigureYourself(false, _) => super.cleanup(value, userAnswers)
         case CalculatedFigureYourself(true, amount) =>
           if (
-            !isTotalIncomeUnder85K(userAnswers) && userAnswers
-              .get(ConsolidatedExpensesPage)
+            !isTotalIncomeUnder85K(userAnswers, propertyType) && userAnswers
+              .get(ConsolidatedExpensesPage(propertyType))
               .fold(false)(data => data.consolidatedExpensesYesOrNo)
-          )
+          ) {
             for {
-              rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
-              yLAP  <- rGLAP.remove(YearLeaseAmountPage)
-              pGLP  <- yLAP.remove(PremiumsGrantLeasePage)
-              cE    <- pGLP.remove(ConsolidatedExpensesPage)
+              rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage(propertyType))
+              yLAP  <- rGLAP.remove(YearLeaseAmountPage(propertyType))
+              pGLP  <- yLAP.remove(PremiumsGrantLeasePage(propertyType))
+              cE    <- pGLP.remove(ConsolidatedExpensesPage(propertyType))
             } yield cE
-          else
+          } else {
             for {
-              rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage)
-              yLAP  <- rGLAP.remove(YearLeaseAmountPage)
-              pGLP  <- yLAP.remove(PremiumsGrantLeasePage)
+              rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage(propertyType))
+              yLAP  <- rGLAP.remove(YearLeaseAmountPage(propertyType))
+              pGLP  <- yLAP.remove(PremiumsGrantLeasePage(propertyType))
             } yield pGLP
+          }
       }
       .getOrElse(super.cleanup(value, userAnswers))
 }

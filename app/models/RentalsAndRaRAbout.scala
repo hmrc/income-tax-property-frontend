@@ -16,7 +16,6 @@
 
 package models
 
-import pages.PageConstants
 import pages.PageConstants.aboutPath
 import play.api.libs.json.{JsPath, Json}
 import queries.{Gettable, Settable}

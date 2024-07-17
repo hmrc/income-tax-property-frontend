@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import base.SpecBase
 import controllers.routes
 import forms.OtherAllowablePropertyExpensesFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -68,7 +68,7 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(OtherAllowablePropertyExpensesPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(OtherAllowablePropertyExpensesPage(Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 

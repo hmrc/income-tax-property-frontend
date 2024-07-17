@@ -22,15 +22,15 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 case class RentalsIncome(
-  isNonUKLandlord: Boolean,
-  incomeFromPropertyRentals: BigDecimal,
-  otherIncomeFromProperty: BigDecimal,
-  deductingTax: Option[DeductingTax],
-  calculatedFigureYourself: Option[CalculatedFigureYourself],
-  yearLeaseAmount: Option[BigDecimal],
-  receivedGrantLeaseAmount: Option[BigDecimal],
-  premiumsGrantLease: Option[PremiumsGrantLease],
-  reversePremiumsReceived: Option[ReversePremiumsReceived]
+                          isNonUKLandlord: Boolean,
+                          incomeFromPropertyRentals: BigDecimal,
+                          otherIncomeFromProperty: BigDecimal,
+                          deductingTax: Option[DeductingTax],
+                          calculatedFigureYourself: Option[CalculatedFigureYourself],
+                          yearLeaseAmount: Option[BigDecimal],
+                          receivedGrantLeaseAmount: Option[BigDecimal],
+                          premiumsGrantLease: Option[PremiumsGrantLease],
+                          reversePremiumsReceived: Option[ReversePremiumsReceived]
 )
 
 case object RentalsIncome extends Gettable[RentalsIncome] with Settable[RentalsIncome] {

@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import base.SpecBase
 import forms.propertyrentals.income.ReversePremiumsReceivedFormProvider
-import models.{NormalMode, ReversePremiumsReceived, UserAnswers}
+import models.{NormalMode, Rentals, ReversePremiumsReceived, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -64,7 +64,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReversePremiumsReceivedPage, ReversePremiumsReceived(true, Some(12.34))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReversePremiumsReceivedPage(Rentals), ReversePremiumsReceived(true, Some(12.34))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

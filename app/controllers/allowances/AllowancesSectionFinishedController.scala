@@ -16,7 +16,6 @@
 
 package controllers.allowances
 
-import controllers.ControllerUtils
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.allowances.AllowancesSectionFinishedFormProvider

@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import audit.{AuditService, RentalsAuditModel, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
+import models.{JourneyContext, Rentals}
 import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
@@ -57,7 +57,7 @@ class ExpensesCheckYourAnswersController @Inject() (
   private def generateRows(taxYear: Int, request: DataRequest[AnyContent])(implicit
     messages: Messages
   ): Seq[SummaryListRow] = {
-    val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage) match {
+    val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage(Rentals)) match {
       case Some(_) =>
         ConsolidatedExpensesSummary
           .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey)

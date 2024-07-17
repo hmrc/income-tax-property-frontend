@@ -16,14 +16,14 @@
 
 package pages.propertyrentals.expenses
 
-import models.Rentals
+import models.PropertyType
 import pages.PageConstants.expensesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object OtherProfessionalFeesPage extends QuestionPage[BigDecimal] {
+case class OtherProfessionalFeesPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ expensesPath(Rentals) \ toString
+  override def path: JsPath = JsPath \ expensesPath(propertyType) \ toString
 
   override def toString: String = "otherProfessionalFees"
 }

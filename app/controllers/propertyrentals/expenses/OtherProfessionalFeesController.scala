@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.OtherProfessionalFeesFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.OtherProfessionalFeesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -46,7 +46,7 @@ class OtherProfessionalFeesController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(OtherProfessionalFeesPage) match {
+      val preparedForm = request.userAnswers.get(OtherProfessionalFeesPage(Rentals)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -63,9 +63,9 @@ class OtherProfessionalFeesController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherProfessionalFeesPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherProfessionalFeesPage(Rentals), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(OtherProfessionalFeesPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(OtherProfessionalFeesPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

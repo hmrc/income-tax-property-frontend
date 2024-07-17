@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.premiumlease
 
 import controllers.premiumlease.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.premiumlease.YearLeaseAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,16 +28,14 @@ import viewmodels.implicits._
 object YearLeaseAmountSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(YearLeaseAmountPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
-          )
+    answers.get(YearLeaseAmountPage(Rentals)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
         )
+      )
     }
 }

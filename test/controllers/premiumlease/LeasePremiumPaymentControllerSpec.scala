@@ -25,6 +25,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.premiumlease.LeasePremiumPaymentPage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -32,7 +33,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.premiumlease.LeasePremiumPaymentView
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 import java.time.LocalDate
 import scala.concurrent.Future

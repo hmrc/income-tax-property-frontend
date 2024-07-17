@@ -80,10 +80,10 @@ POST        /:taxYear/rentals/income/deducting-tax                              
 GET         /:taxYear/rentals/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyRentalsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyRentalsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/income/lease-premium-payment                                controllers.premiumlease.LeasePremiumPaymentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/income/lease-premium-payment                                controllers.premiumlease.LeasePremiumPaymentController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
@@ -512,8 +512,12 @@ POST        /:taxYear/rentals-rent-a-room/about-section-complete-yes-no         
 
 GET        /:taxYear/rentals-and-rent-a-room/income/start                                             controllers.rentalsandrentaroom.income.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear: Int)
 
+GET         /:taxYear/rentals-rent-a-room/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/income-from-property-rentals                         controllers.propertyrentals.income.IncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/change-income-from-property-rentals                  controllers.propertyrentals.income.IncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
 GET         /:taxYear/rentals-rent-a-room/income/deducting-tax                                        controllers.propertyrentals.income.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/deducting-tax                                        controllers.propertyrentals.income.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-deducting-tax                                 controllers.propertyrentals.income.DeductingTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-

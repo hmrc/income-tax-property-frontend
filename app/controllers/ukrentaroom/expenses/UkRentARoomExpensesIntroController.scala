@@ -19,7 +19,7 @@ package controllers.ukrentaroom.expenses
 import controllers.actions._
 import controllers.routes
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{NormalMode, TotalIncome}
+import models.{NormalMode, RentARoom, TotalIncome}
 import pages.TotalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -40,7 +40,7 @@ class UkRentARoomExpensesIntroController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val under85KUrl =
-        if (isTotalIncomeUnder85K(request.userAnswers)) {
+        if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
           controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, NormalMode).url
         } else {
           controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode).url

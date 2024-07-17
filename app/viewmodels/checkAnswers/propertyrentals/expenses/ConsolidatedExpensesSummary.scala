@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, ConsolidatedExpenses, UserAnswers}
+import models.{CheckMode, ConsolidatedExpenses, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -30,7 +30,7 @@ object ConsolidatedExpensesSummary {
   def rows(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[Seq[SummaryListRow]] =
-    answers.get(ConsolidatedExpensesPage).flatMap {
+    answers.get(ConsolidatedExpensesPage(Rentals)).flatMap {
       case ConsolidatedExpenses(true, Some(amount)) =>
         Some(
           Seq(

@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.YearLeaseAmountFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.premiumlease.YearLeaseAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -48,7 +48,7 @@ class YearLeaseAmountController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(YearLeaseAmountPage) match {
+      val preparedForm = request.userAnswers.get(YearLeaseAmountPage(Rentals)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class YearLeaseAmountController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage(Rentals), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(YearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(YearLeaseAmountPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
