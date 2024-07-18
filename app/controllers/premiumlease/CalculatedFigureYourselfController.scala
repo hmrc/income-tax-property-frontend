@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.CalculatedFigureYourselfFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,41 +30,55 @@ import views.html.premiumlease.CalculatedFigureYourselfView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CalculatedFigureYourselfController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: CalculatedFigureYourselfFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: CalculatedFigureYourselfView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CalculatedFigureYourselfController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CalculatedFigureYourselfFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CalculatedFigureYourselfView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(CalculatedFigureYourselfPage(Rentals)) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(CalculatedFigureYourselfPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
-  }
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage(Rentals), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CalculatedFigureYourselfPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(CalculatedFigureYourselfPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(
+                  CalculatedFigureYourselfPage(propertyType),
+                  taxYear,
+                  mode,
+                  request.userAnswers,
+                  updatedAnswers
+                )
+            )
+        )
+    }
 }

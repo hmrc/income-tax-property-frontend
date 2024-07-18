@@ -38,14 +38,14 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
+import pages.propertyrentals._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals._
 import pages.structurebuildingallowance._
+import pages.ukrentaroom._
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
-import pages.ukrentaroom._
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -530,7 +530,7 @@ class Navigator @Inject() () {
 
   private def leasePremiumPaymentNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(LeasePremiumPaymentPage(propertyType)) match {
-      case Some(true) => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+      case Some(true) => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode, propertyType)
       case _          => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     }
 
@@ -542,7 +542,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(LeasePremiumPaymentPage(propertyType)) match {
       case Some(true) if !previousUserAnswers.get(LeasePremiumPaymentPage(propertyType)).getOrElse(false) =>
-        CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode)
+        CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 

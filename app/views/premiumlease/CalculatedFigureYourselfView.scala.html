@@ -18,6 +18,7 @@
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
 @import viewmodels.LegendSize
+@import models.PropertyType
 
 @this(
     layout: templates.Layout,
@@ -28,11 +29,11 @@
     govukInput : GovukInput
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"calculatedFigureYourself.title.$individualOrAgent"))) {
 
-    @formHelper(action = CalculatedFigureYourselfController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = CalculatedFigureYourselfController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
