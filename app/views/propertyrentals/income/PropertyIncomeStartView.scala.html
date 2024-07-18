@@ -15,6 +15,7 @@
  *@
 
 @import controllers.propertyrentals.income.routes._
+@import models.Rentals
 
 @this(
         layout: templates.Layout,
@@ -37,7 +38,7 @@
     <p class="govuk-body">
         @govukButton(
         ButtonViewModel(messages("propertyIncomeStart.button"))
-        .asLink(IsNonUKLandlordController.onPageLoad(taxYear, NormalMode).url)
+        .asLink(IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url)
         .withId("continue")
         )
     </p>
