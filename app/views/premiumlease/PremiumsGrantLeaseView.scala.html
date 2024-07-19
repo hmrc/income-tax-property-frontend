@@ -19,6 +19,7 @@
 @import pages.premiumlease.PremiumsGrantLeasePage
 @import viewmodels.govuk._
 @import viewmodels.LegendSize
+@import models.PropertyType
 
 
 @this(
@@ -30,7 +31,7 @@
     govukRadios: GovukRadios
 )
 
-@(form: Form[_],taxYear: Int , periods: Int, premiumAmount: BigDecimal, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_],taxYear: Int , periods: Int, premiumAmount: BigDecimal, mode: Mode, agentOrIndividual: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("premiumsGrantLease.title"))) {
 
@@ -75,7 +76,7 @@
     </details>
 
 
-@formHelper(action = PremiumsGrantLeaseController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+@formHelper(action = PremiumsGrantLeaseController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
