@@ -60,7 +60,7 @@ class PropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PropertyIncomeAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear, isAgentMessageKey)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, isAgentMessageKey, 0)(request, messages(application)).toString
       }
     }
 
@@ -78,7 +78,7 @@ class PropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, taxYear, isAgentMessageKey)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, taxYear, isAgentMessageKey, 0)(request, messages(application)).toString
       }
     }
 
@@ -124,7 +124,7 @@ class PropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, isAgentMessageKey)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, isAgentMessageKey, 0)(request, messages(application)).toString
       }
     }
 

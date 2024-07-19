@@ -18,8 +18,8 @@ package controllers.adjustments
 
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
+import models.TotalIncomeUtils.{incomeAndBalancingChargeCombined, maxAllowedPIA}
 import models.{Mode, Rentals}
-import models.TotalIncomeUtils.maxPropertyIncomeAllowanceCombined
 import navigation.Navigator
 import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,42 +31,50 @@ import views.html.adjustments.PropertyIncomeAllowanceView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyIncomeAllowanceController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: PropertyIncomeAllowanceFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyIncomeAllowanceView)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class PropertyIncomeAllowanceController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: PropertyIncomeAllowanceFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PropertyIncomeAllowanceView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers, Rentals))
+      val combinedAmount = incomeAndBalancingChargeCombined(request.userAnswers, Rentals)
+      val form = formProvider(request.user.isAgentMessageKey, combinedAmount)
       val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
-
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAmount)))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, maxPropertyIncomeAllowanceCombined(request.userAnswers, Rentals))
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyIncomeAllowancePage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      val combinedAllowance = incomeAndBalancingChargeCombined(request.userAnswers, Rentals)
+      val form = formProvider(request.user.isAgentMessageKey, combinedAllowance)
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(
+                view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAllowance))
+              )
+            ),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyIncomeAllowancePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(PropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }
