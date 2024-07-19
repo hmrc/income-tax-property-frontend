@@ -16,14 +16,13 @@
 
 package controllers.propertyrentals
 
-import audit.RentalsAbout
 import base.SpecBase
 import models.{JourneyContext, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.inject
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -79,7 +78,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers =
-        UserAnswers("test").set(ExpensesLessThan1000Page, true).get.set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
+        UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")

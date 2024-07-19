@@ -38,14 +38,14 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
+import pages.propertyrentals._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals._
 import pages.structurebuildingallowance._
+import pages.ukrentaroom._
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
-import pages.ukrentaroom._
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -98,8 +98,7 @@ class Navigator @Inject() () {
     case ReportPropertyIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertyPage => taxYear => _ => _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case ExpensesLessThan1000Page =>
-      taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+
     case ClaimPropertyIncomeAllowancePage(Rentals) =>
       taxYear =>
         _ =>
@@ -291,8 +290,7 @@ class Navigator @Inject() () {
     case RepairsAndMaintenanceCostsRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case RentsRatesAndInsuranceRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-    case ExpensesLessThan1000Page =>
-      taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+
     case ClaimPropertyIncomeAllowancePage(Rentals) =>
       taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomePage =>

@@ -50,11 +50,6 @@ POST        /:taxYear/uk-property/about/complete-yes-no                         
 
 GET         /:taxYear/rentals/about/start                                                 controllers.propertyrentals.PropertyRentalsStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/about/expenses-less-than-1000                               controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/about/expenses-less-than-1000                               controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/about/change-expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/about/change-expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 GET         /:taxYear/rentals/about/claim-property-income-allowance                       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/about/claim-property-income-allowance                       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 GET         /:taxYear/rentals/about/change-claim-property-income-allowance                controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)

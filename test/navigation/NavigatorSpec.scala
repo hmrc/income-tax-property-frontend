@@ -29,9 +29,9 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease._
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
@@ -289,16 +289,6 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
-        navigator.nextPage(
-          ExpensesLessThan1000Page,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
@@ -699,15 +689,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
-      "must go from ExpensesLessThan1000Page to CheckYourAnswersPage" in {
-        navigator.nextPage(
-          ExpensesLessThan1000Page,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
-      }
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
