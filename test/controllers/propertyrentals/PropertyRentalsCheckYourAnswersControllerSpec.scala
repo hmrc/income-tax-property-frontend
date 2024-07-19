@@ -16,6 +16,7 @@
 
 package controllers.propertyrentals
 
+import audit.RentalsAbout
 import base.SpecBase
 import models.{JourneyContext, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers
@@ -83,7 +84,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
       val propertyRentalsAbout =
-        RentalsAbout(toexpensesLessThan1000 = true, claimPropertyIncomeAllowanceYesOrNo = true)
+        RentalsAbout(claimPropertyIncomeAllowanceYesOrNo = true)
 
       when(
         propertySubmissionService

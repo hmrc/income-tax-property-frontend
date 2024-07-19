@@ -17,8 +17,6 @@
 package controllers.propertyrentals
 
 import base.SpecBase
-import controllers.propertyrentals.routes.AboutPropertyRentalsSectionFinishedController
-import controllers.routes
 import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
@@ -53,7 +51,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
   )
 
   lazy val aboutExpenseIncomeAllowanceSectionFinishedRoute =
-    AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear).url
+    routes.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear).url
 
   "AboutExpenseIncomeAllowanceSectionFinished Controller" - {
 
@@ -164,7 +162,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -180,7 +178,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

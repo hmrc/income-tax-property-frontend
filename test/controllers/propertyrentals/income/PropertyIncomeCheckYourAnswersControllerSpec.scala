@@ -75,13 +75,10 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
 
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = emptyUserAnswers
-        .set(ExpensesLessThan1000Page, false)
-        .flatMap(
-          _.set(
+        .set(
             RentalsIncome,
             RentalsIncome(true, 500, 2, None, None, None, None, None, None)
           )
-        )
         .get
 
       val mockPropertySubmissionService = mock[PropertySubmissionService]
