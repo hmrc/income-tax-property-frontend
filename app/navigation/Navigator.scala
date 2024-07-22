@@ -98,8 +98,7 @@ class Navigator @Inject() () {
     case ReportPropertyIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigationNormalMode(taxYear, userAnswers)
     case UKPropertyPage => taxYear => _ => _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
-    case ExpensesLessThan1000Page =>
-      taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+
     case ClaimPropertyIncomeAllowancePage(Rentals) =>
       taxYear =>
         _ =>
@@ -119,7 +118,7 @@ class Navigator @Inject() () {
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
       taxYear => _ => _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
     case ReversePremiumsReceivedPage(Rentals) =>
@@ -291,8 +290,7 @@ class Navigator @Inject() () {
     case RepairsAndMaintenanceCostsRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case RentsRatesAndInsuranceRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-    case ExpensesLessThan1000Page =>
-      taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+
     case ClaimPropertyIncomeAllowancePage(Rentals) =>
       taxYear => _ => _ => PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomePage =>
@@ -319,7 +317,7 @@ class Navigator @Inject() () {
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, CheckMode)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
       taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case ReversePremiumsReceivedPage(Rentals) =>

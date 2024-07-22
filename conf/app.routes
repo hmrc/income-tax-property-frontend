@@ -50,11 +50,6 @@ POST        /:taxYear/uk-property/about/complete-yes-no                         
 
 GET         /:taxYear/rentals/about/start                                                 controllers.propertyrentals.PropertyRentalsStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/about/expenses-less-than-1000                               controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/about/expenses-less-than-1000                               controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/about/change-expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/about/change-expenses-less-than-1000                        controllers.propertyrentals.ExpensesLessThan1000Controller.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
 GET         /:taxYear/rentals/about/claim-property-income-allowance                       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/about/claim-property-income-allowance                       controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 GET         /:taxYear/rentals/about/change-claim-property-income-allowance                controllers.propertyrentals.ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
@@ -105,10 +100,10 @@ POST        /:taxYear/rentals/income/year-lease-amount                          
 GET         /:taxYear/rentals/income/change-year-lease-amount                             controllers.premiumlease.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rentals/income/change-year-lease-amount                             controllers.premiumlease.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/rentals/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -527,7 +522,14 @@ POST        /:taxYear/rentals-rent-a-room/income/is-non-uk-landlord             
 GET         /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
+
 GET         /:taxYear/rentals-rent-a-room/income/calculated-figure-yourself                           controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/calculated-figure-yourself                           controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/income/change-calculated-figure-yourself                    controllers.premiumlease.CalculatedFigureYourselfController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-calculated-figure-yourself                    controllers.premiumlease.CalculatedFigureYourselfController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+

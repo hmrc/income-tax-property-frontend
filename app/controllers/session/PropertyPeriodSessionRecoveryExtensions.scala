@@ -23,9 +23,9 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease._
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
@@ -89,8 +89,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(propertyRentalsAbout) =>
           for {
-            ua1 <- userAnswers.set(ExpensesLessThan1000Page, propertyRentalsAbout.toexpensesLessThan1000)
-            ua2 <- ua1.set(
+            ua2 <- userAnswers.set(
                      ClaimPropertyIncomeAllowancePage(Rentals),
                      propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo
                    )

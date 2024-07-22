@@ -23,9 +23,9 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IncomeFromPropertyPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
@@ -72,7 +72,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        "esbaClaims" : false
       |        },
       |        "propertyRentalsAbout" : {
-      |            "toexpensesLessThan1000" : false,
       |            "claimPropertyIncomeAllowanceYesOrNo" : false
       |        },
       |        "propertyRentalsIncome" : {
@@ -193,7 +192,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(TotalIncomePage).get mustBe TotalIncome.Between
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
-      updated.get(ExpensesLessThan1000Page).get mustBe false
       updated.get(ClaimPropertyIncomeAllowancePage(Rentals)).get mustBe false
       updated.get(IsNonUKLandlordPage(Rentals)).get mustBe false
       updated.get(IncomeFromPropertyPage(Rentals)).get mustBe 45
