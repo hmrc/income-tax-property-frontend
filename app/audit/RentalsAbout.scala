@@ -21,7 +21,7 @@ import pages.PageConstants.aboutPath
 import play.api.libs.json._
 import queries.Gettable
 
-case class RentalsAbout(toexpensesLessThan1000: Boolean, claimPropertyIncomeAllowanceYesOrNo: Boolean)
+case class RentalsAbout(claimPropertyIncomeAllowanceYesOrNo: Boolean)
 
 case object RentalsAbout extends Gettable[RentalsAbout] {
 
