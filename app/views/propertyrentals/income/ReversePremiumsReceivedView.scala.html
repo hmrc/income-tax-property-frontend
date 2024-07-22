@@ -44,22 +44,30 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+    @if(propertyType == Rentals){
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                          @messages("reversePremiumsReceived.details.heading")
-                        </span>
+                                <span class="govuk-details__summary-text">
+                                  @messages("reversePremiumsReceived.details.heading")
+                                </span>
             </summary>
             <div class="govuk-details__text">
                 <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
-                <p>@messages("reversePremiumsReceived.details.line2")
+                <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
                     <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                     @messages("reversePremiumsReceived.details.line2.link.text")
                     </a>
                 </p>
             </div>
         </details>
-
+    } else if(propertyType == RentalsRentARoom) {
+        <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
+        <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
+            <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+            @messages("reversePremiumsReceived.details.line2.link.text")
+            </a>
+        </p>
+    }
 
     <div class="govuk-hint">
         @messages(s"reversePremiumsReceived.hint.$individualOrAgent")
