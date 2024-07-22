@@ -26,7 +26,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.propertyrentals.income.IncomeFromPropertyView
+import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,7 +41,7 @@ class IncomeFromPropertyController @Inject() (
   formProvider: IncomeFromPropertyRentalsFormProvider,
   sessionService: SessionService,
   val controllerComponents: MessagesControllerComponents,
-  view: IncomeFromPropertyView
+  view: IncomeFromPropertyRentalsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 

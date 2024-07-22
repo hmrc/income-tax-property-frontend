@@ -41,9 +41,10 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
   private val formProvider = new IsNonUKLandlordFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
+  private val isNonUKLandlordField = "isNonUKLandlord"
 
-  private lazy val isNonUKLandlordRoute = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url
-  private lazy val isNonUKLandlordRentalsRARRoute =
+  private lazy val rentalsIsNonUKLandlord = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url
+  private lazy val rentalsRentARoomIsNonUKLandlord =
     routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "IsNonUKLandlord Controller" - {
@@ -53,7 +54,7 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val result = route(application, request).value
 
@@ -72,7 +73,7 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRentalsRARRoute)
+        val request = FakeRequest(GET, rentalsRentARoomIsNonUKLandlord)
 
         val result = route(application, request).value
 
@@ -93,7 +94,7 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val view = application.injector.instanceOf[IsNonUKLandlordView]
 
@@ -123,8 +124,8 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, "true"))
 
         val result = route(application, request).value
 
@@ -139,10 +140,10 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", ""))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map(isNonUKLandlordField -> ""))
 
         val view = application.injector.instanceOf[IsNonUKLandlordView]
 
@@ -161,7 +162,7 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val result = route(application, request).value
 
@@ -176,8 +177,8 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, "true"))
 
         val result = route(application, request).value
 

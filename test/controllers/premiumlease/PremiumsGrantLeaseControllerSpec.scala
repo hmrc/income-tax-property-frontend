@@ -46,6 +46,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val rentalsPremiumsGrantLeaseRoute =
     routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals).url
+
   lazy val rentalsRentARoomPremiumsGrantLeaseRoute =
     routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
@@ -198,7 +199,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
           .url
       }
 
@@ -216,7 +217,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
           .url
       }
     }
@@ -352,14 +353,6 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           )
           .build()
 
-      val rentalsRentARoomApplication =
-        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
       running(rentalsApplication) {
         val request =
           FakeRequest(POST, rentalsPremiumsGrantLeaseRoute)
@@ -369,9 +362,17 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
           .url
       }
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
 
       running(rentalsRentARoomApplication) {
         val request =
@@ -382,7 +383,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
           .url
       }
     }
@@ -398,21 +399,8 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .success
         .value
 
-      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
-        .set(ReceivedGrantLeaseAmountPage(RentalsRentARoom), BigDecimal(100))
-        .success
-        .value
-
       val rentalsApplication =
         applicationBuilder(userAnswers = Some(rentalsUserAnswers), true)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
-      val rentalsRentARoomApplication =
-        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -431,6 +419,19 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           .onPageLoad(taxYear, NormalMode)
           .url
       }
+
+      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
+        .set(ReceivedGrantLeaseAmountPage(RentalsRentARoom), BigDecimal(100))
+        .success
+        .value
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
 
       running(rentalsRentARoomApplication) {
         val request =
@@ -456,17 +457,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .success
         .value
 
-      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
-        .set(ReceivedGrantLeaseAmountPage(RentalsRentARoom), BigDecimal(100))
-        .success
-        .value
-        .set(YearLeaseAmountPage(RentalsRentARoom), 10)
-        .success
-        .value
-
       val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), true).build()
-      val rentalsRentARoomApplication =
-        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true).build()
 
       running(rentalsApplication) {
         val request =
@@ -485,6 +476,17 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           messages(rentalsApplication)
         ).toString
       }
+
+      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
+        .set(ReceivedGrantLeaseAmountPage(RentalsRentARoom), BigDecimal(100))
+        .success
+        .value
+        .set(YearLeaseAmountPage(RentalsRentARoom), 10)
+        .success
+        .value
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true).build()
 
       running(rentalsRentARoomApplication) {
         val request =
