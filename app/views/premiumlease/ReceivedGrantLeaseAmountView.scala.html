@@ -26,7 +26,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, agentOrIndividual: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, agentOrIndividual: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"receivedGrantLeaseAmount.title.${agentOrIndividual}"))) {
 

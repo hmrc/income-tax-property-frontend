@@ -36,15 +36,17 @@ import scala.concurrent.Future
 
 class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ReceivedGrantLeaseAmountFormProvider()
-  val form = formProvider()
+  private val formProvider = new ReceivedGrantLeaseAmountFormProvider()
+  private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
   private val validAnswer = BigDecimal(100)
   private def onwardRoute = Call("GET", "/year-lease-amount")
 
-  lazy val recievedGrantLeaseAmountRoute = routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+  private lazy val recievedGrantLeaseAmountRoute =
+    routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals).url
 
-  "recievedGrantLeaseAmount Controller" - {
+  "receivedGrantLeaseAmount Controller" - {
+
 
     "must return OK and the correct view for a GET" in {
 
@@ -58,7 +60,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[ReceivedGrantLeaseAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
@@ -79,7 +81,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
@@ -128,7 +130,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
