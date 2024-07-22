@@ -275,7 +275,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from reverse to OtherIncomeFromPropertyPage" in {
@@ -1065,7 +1065,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+        ) mustBe PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from PremiumsGrantLeasePage to CheckYourAnswers" in {
