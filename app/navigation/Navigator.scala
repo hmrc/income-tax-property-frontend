@@ -118,7 +118,7 @@ class Navigator @Inject() () {
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
       taxYear => _ => _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, Rentals)
     case ReversePremiumsReceivedPage(Rentals) =>
@@ -317,7 +317,7 @@ class Navigator @Inject() () {
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, CheckMode)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
       taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     case ReversePremiumsReceivedPage(Rentals) =>
