@@ -1321,5 +1321,5 @@ claimExpensesOrRRR.rentARoom = Rhyddhad Rhentu Ystafell
 claimExpensesOrRRR.expenses = Treuliau
 claimExpensesOrRRR.radio.question.label.individual = Faint yr hoffech ei hawlio?
 claimExpensesOrRRR.radio.question.label.agent = Faint hoffai’ch cleient ei hawlio?
-claimExpensesOrRRR.para1.jointlyLet.individual = Gallwch hawlio hyd at £{0} y flwyddyn yn rhydd o dreth drwy rentu ystafell yn eich cartref. Os byddwch yn hawlio’r rhyddhad hwn, ni fyddwch yn gallu hawlio treuliau ar gyfer yr un ystafell.
-claimExpensesOrRRR.para1.notJointlyLet.individual = Gallwch hawlio hyd at £{0} y flwyddyn yn rhydd o dreth drwy rentu ystafell yn eich cartref. Os byddwch yn hawlio’r rhyddhad hwn, ni fyddwch yn gallu hawlio treuliau ar gyfer yr un ystafell.
+claimExpensesOrRRR.para1.jointlyLet.individual = Gallwch hawlio hyd at ¬£3,750 y flwyddyn yn rhydd o dreth drwy rentu ystafell yn eich cartref. Os byddwch yn hawlio’r rhyddhad hwn, ni fyddwch yn gallu hawlio treuliau ar gyfer yr un ystafell.
+claimExpensesOrRRR.para1.jointlyLet.agent = Gall eich cleient hawlio hyd at ¬£3,750 y flwyddyn yn rhydd o dreth drwy rentu ystafell yn ei gartref. Os bydd eich cleient yn hawlio’r rhyddhad hwn, ni fydd yn gallu hawlio treuliau ar gyfer yr un ystafell.
