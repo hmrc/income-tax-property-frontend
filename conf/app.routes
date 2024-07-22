@@ -105,10 +105,10 @@ POST        /:taxYear/rentals/income/premiums-grant-lease                       
 GET         /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rentals/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/income/other-income-from-property                           controllers.propertyrentals.income.OtherIncomeFromPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/income/other-income-from-property                           controllers.propertyrentals.income.OtherIncomeFromPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -521,3 +521,8 @@ GET         /:taxYear/rentals-rent-a-room/income/is-non-uk-landlord             
 POST        /:taxYear/rentals-rent-a-room/income/is-non-uk-landlord                                   controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-is-non-uk-landlord                            controllers.propertyrentals.income.IsNonUKLandlordController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/reverse-premiums-received                            controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/income/change-reverse-premiums-received                     controllers.propertyrentals.income.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
