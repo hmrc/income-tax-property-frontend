@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.propertyrentals.income.IncomeFromPropertyView
+import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -82,7 +82,7 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
 
       running(rentalsRentARoomApplication) {
         val request = FakeRequest(GET, incomeFromPropertyRentalsRentARoomRoute)
-        val view = rentalsApplication.injector.instanceOf[IncomeFromPropertyView]
+        val view = rentalsApplication.injector.instanceOf[IncomeFromPropertyRentalsView]
         val result = route(rentalsRentARoomApplication, request).value
 
         status(result) mustEqual OK
@@ -100,7 +100,7 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
 
       running(rentalsApplication) {
         val request = FakeRequest(GET, incomeFromPropertyRentalsRoute)
-        val view = rentalsApplication.injector.instanceOf[IncomeFromPropertyView]
+        val view = rentalsApplication.injector.instanceOf[IncomeFromPropertyRentalsView]
         val result = route(rentalsApplication, request).value
 
         status(result) mustEqual OK
@@ -167,7 +167,7 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
-        val view = application.injector.instanceOf[IncomeFromPropertyView]
+        val view = application.injector.instanceOf[IncomeFromPropertyRentalsView]
         val rentalsResult = route(application, rentalsRequest).value
 
         status(rentalsResult) mustEqual BAD_REQUEST
