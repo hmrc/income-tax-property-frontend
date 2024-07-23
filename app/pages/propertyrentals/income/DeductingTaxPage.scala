@@ -16,10 +16,9 @@
 
 package pages.propertyrentals.income
 
-import models.{DeductingTax, PropertyType, Rentals, RentalsRentARoom}
+import models.{DeductingTax, PropertyType}
 import pages.PageConstants.incomePath
 import pages.QuestionPage
-
 import play.api.libs.json.JsPath
 
 case class DeductingTaxPage(propertyType: PropertyType) extends QuestionPage[DeductingTax] {

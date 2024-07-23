@@ -241,7 +241,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           testUserAnswer
-        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
@@ -1017,7 +1017,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           previousUserAnswers,
           userAnswers
-        ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
+        ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects no and the previous answer was no" in {
