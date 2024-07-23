@@ -528,7 +528,7 @@ class Navigator @Inject() () {
 
   private def leasePremiumPaymentNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(LeasePremiumPaymentPage(propertyType)) match {
-      case Some(true) => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+      case Some(true) => CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode, propertyType)
       case _          => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, propertyType)
     }
 
@@ -540,7 +540,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(LeasePremiumPaymentPage(propertyType)) match {
       case Some(true) if !previousUserAnswers.get(LeasePremiumPaymentPage(propertyType)).getOrElse(false) =>
-        CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode)
+        CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 

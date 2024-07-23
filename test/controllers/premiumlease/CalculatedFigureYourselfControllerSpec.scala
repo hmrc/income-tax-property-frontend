@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import base.SpecBase
 import forms.premiumlease.CalculatedFigureYourselfFormProvider
-import models.{CalculatedFigureYourself, NormalMode, Rentals, UserAnswers}
+import models.{CalculatedFigureYourself, NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -43,80 +43,147 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
 
-  private lazy val calculatedFigureYourselfRoute =
-    routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode).url
+  private lazy val rentalsCalculatedFigureYourselfRoute =
+    routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode, Rentals).url
+
+  private lazy val rentalsRentARoomCalculatedFigureYourselfRoute =
+    routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "CalculatedFigureYourself Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET for Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
-
-        val result = route(application, request).value
 
         val view = application.injector.instanceOf[CalculatedFigureYourselfView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
-          request,
+        val rentalsRequest = FakeRequest(GET, rentalsCalculatedFigureYourselfRoute)
+        val rentalsResult = route(application, rentalsRequest).value
+
+        status(rentalsResult) mustEqual OK
+        contentAsString(rentalsResult) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
+
+        val rentalsRentARoomRequest = FakeRequest(GET, rentalsRentARoomCalculatedFigureYourselfRoute)
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual OK
+        contentAsString(rentalsRentARoomResult) mustEqual view(
+          form,
+          taxYear,
+          NormalMode,
+          "individual",
+          RentalsRentARoom
+        )(
+          rentalsRentARoomRequest,
           messages(application)
         ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "must populate the view correctly on a GET when the question has previously been answered for Rentals and Rentals and Rent a Room journeys" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val rentalsUserAnswers = UserAnswers(userAnswersId)
         .set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(3242.65)))
         .success
         .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+      val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), isAgent = false).build()
 
-      running(application) {
-        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
-
-        val view = application.injector.instanceOf[CalculatedFigureYourselfView]
-
-        val result = route(application, request).value
+      running(rentalsApplication) {
+        val request = FakeRequest(GET, rentalsCalculatedFigureYourselfRoute)
+        val view = rentalsApplication.injector.instanceOf[CalculatedFigureYourselfView]
+        val result = route(rentalsApplication, request).value
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
           form.fill(CalculatedFigureYourself(true, Some(3242.65))),
           taxYear,
           NormalMode,
-          "individual"
-        )(request, messages(application)).toString
+          "individual",
+          Rentals
+        )(request, messages(rentalsApplication)).toString
       }
+
+      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
+        .set(CalculatedFigureYourselfPage(RentalsRentARoom), CalculatedFigureYourself(true, Some(3242.65)))
+        .success
+        .value
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), isAgent = false).build()
+
+      running(rentalsRentARoomApplication) {
+        val request = FakeRequest(GET, rentalsRentARoomCalculatedFigureYourselfRoute)
+        val view = rentalsRentARoomApplication.injector.instanceOf[CalculatedFigureYourselfView]
+        val result = route(rentalsRentARoomApplication, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(
+          form.fill(CalculatedFigureYourself(true, Some(3242.65))),
+          taxYear,
+          NormalMode,
+          "individual",
+          RentalsRentARoom
+        )(request, messages(rentalsRentARoomApplication)).toString
+      }
+
     }
 
-    "must redirect to the next page when valid data is submitted for yes" in {
+    "must redirect to the next page when valid data is submitted for yes for Rentals and Rentals and Rent a Room journeys" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-      val userData =
+      val rentalsUserData =
         emptyUserAnswers.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(866.65))).get
 
-      val application =
-        applicationBuilder(userAnswers = Some(userData), isAgent = false)
+      // Rentals
+      val rentalsApplication =
+        applicationBuilder(userAnswers = Some(rentalsUserData), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
-      running(application) {
+      running(rentalsApplication) {
         val request =
-          FakeRequest(POST, calculatedFigureYourselfRoute)
+          FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
             .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
 
-        val result = route(application, request).value
+        val result = route(rentalsApplication, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRouteYes.url
+      }
+
+      // Rent a room journey
+      val rentalsRentARoomUserData =
+        emptyUserAnswers
+          .set(CalculatedFigureYourselfPage(RentalsRentARoom), CalculatedFigureYourself(true, Some(866.65)))
+          .get
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserData), isAgent = false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteYes)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(rentalsRentARoomApplication) {
+        val request =
+          FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
+            .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
+
+        val result = route(rentalsRentARoomApplication, request).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRouteYes.url
@@ -130,79 +197,146 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
-      val userData =
+      val rentalsUserData =
         emptyUserAnswers.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
 
-      val application =
-        applicationBuilder(userAnswers = Some(userData), isAgent = false)
+      val rentalsApplication =
+        applicationBuilder(userAnswers = Some(rentalsUserData), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
-      running(application) {
+      running(rentalsApplication) {
         val request =
-          FakeRequest(POST, calculatedFigureYourselfRoute)
+          FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
             .withFormUrlEncodedBody("calculatedFigureYourself" -> "false")
 
-        val result = route(application, request).value
+        val result = route(rentalsApplication, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRouteNo.url
+      }
+
+      // Rent a room journey
+      val rentalsRentARoomUserData =
+        emptyUserAnswers.set(CalculatedFigureYourselfPage(RentalsRentARoom), CalculatedFigureYourself(false, None)).get
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserData), isAgent = false)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRouteNo)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(rentalsRentARoomApplication) {
+        val request =
+          FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
+            .withFormUrlEncodedBody("calculatedFigureYourself" -> "false")
+
+        val result = route(rentalsRentARoomApplication, request).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRouteNo.url
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted for Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, calculatedFigureYourselfRoute)
+
+        // Rentals journey
+        val rentalsRequest =
+          FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
-
         val view = application.injector.instanceOf[CalculatedFigureYourselfView]
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val result = route(application, request).value
+        status(rentalsResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsResult) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
-          request,
+        // Rent a room journey
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
+            .withFormUrlEncodedBody(("value", ""))
+
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsRentARoomResult) mustEqual view(
+          boundForm,
+          taxYear,
+          NormalMode,
+          "individual",
+          RentalsRentARoom
+        )(
+          rentalsRentARoomRequest,
           messages(application)
         ).toString
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found for Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, calculatedFigureYourselfRoute)
 
-        val result = route(application, request).value
+        // Rentals journey
+        val rentalsRequest = FakeRequest(GET, rentalsCalculatedFigureYourselfRoute)
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+
+        // Rentals and rent a room journey
+        val rentalsRentARoomRequest = FakeRequest(GET, rentalsRentARoomCalculatedFigureYourselfRoute)
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsRentARoomResult).value mustEqual controllers.routes.JourneyRecoveryController
+          .onPageLoad()
+          .url
+
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "must redirect to Journey Recovery for a POST if no existing data is found for Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, calculatedFigureYourselfRoute)
+
+        // Rentals journey
+        val rentalsRequest =
+          FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
-        val result = route(application, request).value
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+
+        // Rentals and Rent a Room journey
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsRentARoomResult).value mustEqual controllers.routes.JourneyRecoveryController
+          .onPageLoad()
+          .url
       }
     }
   }

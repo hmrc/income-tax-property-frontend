@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.premiumlease
 
 import controllers.premiumlease.routes.CalculatedFigureYourselfController
-import models.{CalculatedFigureYourself, CheckMode, Rentals, UserAnswers}
+import models.{CalculatedFigureYourself, CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,7 +27,9 @@ import viewmodels.implicits._
 
 object CalculatedFigureYourselfSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
     answers.get(CalculatedFigureYourselfPage(Rentals)).flatMap {
       case CalculatedFigureYourself(true, Some(amount)) =>
         Some(
@@ -35,7 +37,10 @@ object CalculatedFigureYourselfSummary {
             key = KeyViewModel("calculatedFigureYourself.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel(
+                "site.change",
+                CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
+              )
                 .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
             )
           )
@@ -46,7 +51,10 @@ object CalculatedFigureYourselfSummary {
             key = KeyViewModel("calculatedFigureYourself.checkYourAnswersQuestionLabel").withCssClass(keyCssClass),
             value = ValueViewModel("site.no").withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel(
+                "site.change",
+                CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
+              )
                 .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
             )
           )

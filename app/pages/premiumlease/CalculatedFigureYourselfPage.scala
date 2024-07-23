@@ -35,12 +35,12 @@ case class CalculatedFigureYourselfPage(propertyType: PropertyType) extends Ques
     value
       .map {
         case CalculatedFigureYourself(false, _) => super.cleanup(value, userAnswers)
-        case CalculatedFigureYourself(true, amount) =>
-          if (
-            !isTotalIncomeUnder85K(userAnswers, propertyType) && userAnswers
-              .get(ConsolidatedExpensesPage(propertyType))
-              .fold(false)(data => data.consolidatedExpensesYesOrNo)
-          ) {
+        case CalculatedFigureYourself(true, _) =>
+          val consolidatedExpensesYesOrNo: Boolean = userAnswers
+            .get(ConsolidatedExpensesPage(propertyType))
+            .fold(false)(data => data.consolidatedExpensesYesOrNo)
+
+          if (!isTotalIncomeUnder85K(userAnswers, propertyType) && consolidatedExpensesYesOrNo) {
             for {
               rGLAP <- userAnswers.remove(ReceivedGrantLeaseAmountPage(propertyType))
               yLAP  <- rGLAP.remove(YearLeaseAmountPage(propertyType))
