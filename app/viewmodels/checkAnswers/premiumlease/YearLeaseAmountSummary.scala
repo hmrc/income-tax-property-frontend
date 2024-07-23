@@ -33,7 +33,7 @@ object YearLeaseAmountSummary {
         key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode).url)
+          ActionItemViewModel("site.change", routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals).url)
             .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
         )
       )

@@ -116,7 +116,7 @@ class Navigator @Inject() () {
     case CalculatedFigureYourselfPage(Rentals) =>
       taxYear => _ => userAnswers => calculatedFigureYourselfNavigation(taxYear, userAnswers, Rentals)
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
@@ -315,7 +315,7 @@ class Navigator @Inject() () {
         previousUserAnswers =>
           userAnswers => calculatedFigureYourselfNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, Rentals)
     case premiumlease.ReceivedGrantLeaseAmountPage(Rentals) =>
-      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, CheckMode)
+      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals)
     case premiumlease.YearLeaseAmountPage(Rentals) =>
       taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, Rentals)
     case premiumlease.PremiumsGrantLeasePage(Rentals) =>
