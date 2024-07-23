@@ -26,9 +26,9 @@ class IsNonUKLandlordFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new IsNonUKLandlordFormProvider()("individual")
 
-  ".value" - {
+  ".isNonUKLandlord" - {
 
-    val fieldName = "value"
+    val fieldName = "isNonUKLandlord"
 
     behave like booleanField(
       form,

@@ -26,9 +26,9 @@ class IncomeFromPropertyRentalsFormProviderSpec extends IntFieldBehaviours {
 
   val form = new IncomeFromPropertyRentalsFormProvider()("agent")
 
-  ".value" - {
+  ".incomeFromPropertyRentals" - {
 
-    val fieldName = "value"
+    val fieldName = "incomeFromPropertyRentals"
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 

@@ -552,7 +552,7 @@ class Navigator @Inject() () {
     userAnswers.get(CalculatedFigureYourselfPage(propertyType)) match {
       case Some(CalculatedFigureYourself(true, _)) => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       case Some(CalculatedFigureYourself(false, _)) =>
-        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
     }
 
   private def calculatedFigureYourselfNavigationCheckMode(
@@ -567,7 +567,7 @@ class Navigator @Inject() () {
             .get(CalculatedFigureYourselfPage(propertyType))
             .map(_.calculatedFigureYourself)
             .getOrElse(true) =>
-        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
+        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals)
       case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
     }
 
