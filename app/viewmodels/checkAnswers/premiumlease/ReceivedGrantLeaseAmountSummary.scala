@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.premiumlease
 
 import controllers.premiumlease.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.premiumlease.ReceivedGrantLeaseAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,7 +27,7 @@ import viewmodels.implicits._
 
 object ReceivedGrantLeaseAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ReceivedGrantLeaseAmountPage(Rentals)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("receivedGrantLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
@@ -35,7 +35,7 @@ object ReceivedGrantLeaseAmountSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode).url
+            routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
             .withVisuallyHiddenText(messages("receivedGrantLeaseAmount.change.hidden"))
         )

@@ -41,19 +41,19 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
   private val formProvider = new IsNonUKLandlordFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
+  private val isNonUKLandlordField = "isNonUKLandlord"
 
-  private lazy val isNonUKLandlordRoute = routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url
-  private lazy val isNonUKLandlordRentalsRARRoute =
-    routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+  "For Rentals IsNonUKLandlord Controller" - {
 
-  "IsNonUKLandlord Controller" - {
+    lazy val rentalsIsNonUKLandlord =
+      routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, Rentals).url
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val result = route(application, request).value
 
@@ -67,25 +67,6 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "for RentalsAndRaR it must return OK and the correct view for a GET" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-
-      running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRentalsRARRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[IsNonUKLandlordView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(
-          request,
-          messages(application)
-        ).toString
-      }
-    }
-
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(IsNonUKLandlordPage(Rentals), true).success.value
@@ -93,7 +74,7 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val view = application.injector.instanceOf[IsNonUKLandlordView]
 
@@ -123,8 +104,8 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, "true"))
 
         val result = route(application, request).value
 
@@ -139,10 +120,10 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", ""))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map(isNonUKLandlordField -> ""))
 
         val view = application.injector.instanceOf[IsNonUKLandlordView]
 
@@ -156,12 +137,12 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found for an Agent" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, isNonUKLandlordRoute)
+        val request = FakeRequest(GET, rentalsIsNonUKLandlord)
 
         val result = route(application, request).value
 
@@ -170,14 +151,14 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "must redirect to Journey Recovery for a POST if no existing data is found for an Agent" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, isNonUKLandlordRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, rentalsIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, "true"))
 
         val result = route(application, request).value
 
@@ -185,5 +166,61 @@ class IsNonUKLandlordControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
+  }
+
+  "For RentalsRentARoom IsNonUKLandlord Controller " - {
+
+    lazy val rentalsRentARoomIsNonUKLandlord =
+      routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+
+    "must return OK and the correct view for a GET for an individual" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRentARoomIsNonUKLandlord)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[IsNonUKLandlordView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found for an Agent" in {
+
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRentARoomIsNonUKLandlord)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found for an Agent" in {
+
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, rentalsRentARoomIsNonUKLandlord)
+            .withFormUrlEncodedBody((isNonUKLandlordField, "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
   }
 }

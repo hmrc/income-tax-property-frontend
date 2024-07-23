@@ -18,11 +18,10 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance}
 import base.SpecBase
-import models.{ElectricChargePointAllowance, RentARoom, UserAnswers}
+import models.{RentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.PageConstants
 import pages.PageConstants.allowancesPath
 import play.api.inject.bind
 import play.api.libs.json.Json

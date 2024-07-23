@@ -34,7 +34,7 @@ class SummaryPageSpec extends SpecBase {
     val summaryItem = TaskListItem(
       "summary.about",
       controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      TaskListTag.InProgress,
       "rentals_about_link"
     )
     val incomeListItem = TaskListItem(
@@ -79,6 +79,13 @@ class SummaryPageSpec extends SpecBase {
     }
 
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
+      val summaryItem = TaskListItem(
+        "summary.about",
+        controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear),
+        TaskListTag.NotStarted,
+        "rentals_about_link"
+      )
+
       val userAnswersWithPropertyRentals = emptyUserAnswers
         .set(
           UKPropertyPage,

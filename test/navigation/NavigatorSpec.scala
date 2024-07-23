@@ -29,9 +29,9 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease._
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.propertyrentals.{ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
@@ -188,7 +188,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test"),
             testUserAnswer
           ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-            .onPageLoad(taxYear, NormalMode)
+            .onPageLoad(taxYear, NormalMode, propertyType)
         }
 
         s"must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes and the previous answer was no for for $propertyTypeDefinition" in {
@@ -241,7 +241,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           testUserAnswer
-        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
@@ -255,7 +255,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           testUserAnswer
         ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
@@ -275,7 +275,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from reverse to OtherIncomeFromPropertyPage" in {
@@ -287,17 +287,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController
           .onPageLoad(taxYear, NormalMode)
-      }
-
-      "must go from ExpensesLessThan1000Page to ClaimPropertyIncomeAllowancePage" in {
-        navigator.nextPage(
-          ExpensesLessThan1000Page,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.ClaimPropertyIncomeAllowanceController
-          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
@@ -699,16 +688,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
-      "must go from ExpensesLessThan1000Page to CheckYourAnswersPage" in {
-        navigator.nextPage(
-          ExpensesLessThan1000Page,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
           ClaimPropertyIncomeAllowancePage(Rentals),
@@ -1038,7 +1017,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           previousUserAnswers,
           userAnswers
-        ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode)
+        ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects no and the previous answer was no" in {
@@ -1086,7 +1065,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+        ) mustBe PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from PremiumsGrantLeasePage to CheckYourAnswers" in {

@@ -21,7 +21,6 @@ import base.SpecBase
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.ExpensesLessThan1000Page
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -76,13 +75,10 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
 
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = emptyUserAnswers
-        .set(ExpensesLessThan1000Page, false)
-        .flatMap(
-          _.set(
+        .set(
             RentalsIncome,
             RentalsIncome(true, 500, 2, None, None, None, None, None, None)
           )
-        )
         .get
 
       val mockPropertySubmissionService = mock[PropertySubmissionService]

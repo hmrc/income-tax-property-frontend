@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.ReceivedGrantLeaseAmountFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.premiumlease.ReceivedGrantLeaseAmountPage
 import play.api.data.Form
@@ -44,32 +44,41 @@ class ReceivedGrantLeaseAmountController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form: Form[BigDecimal] = formProvider()
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(ReceivedGrantLeaseAmountPage(Rentals)) match {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val form: Form[BigDecimal] = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(ReceivedGrantLeaseAmountPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
-  }
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      val form: Form[BigDecimal] = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ReceivedGrantLeaseAmountPage(Rentals), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ReceivedGrantLeaseAmountPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ReceivedGrantLeaseAmountPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(
+                ReceivedGrantLeaseAmountPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
         )
-  }
+    }
 }

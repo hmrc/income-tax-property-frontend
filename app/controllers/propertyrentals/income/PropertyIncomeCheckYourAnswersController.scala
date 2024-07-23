@@ -56,10 +56,10 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
           DeductingTaxSummary.row(taxYear, request.userAnswers, Rentals),
           LeasePremiumPaymentSummary.row(taxYear, request.userAnswers, Rentals),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers),
-          ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers),
+          ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, Rentals),
           YearLeaseAmountSummary.row(taxYear, request.userAnswers),
-          PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers),
-          ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers),
+          ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers, Rentals),
+          PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers, Rentals),
           OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers)
         ).flatten
       )

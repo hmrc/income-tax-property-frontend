@@ -22,7 +22,7 @@ import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IncomeSectionFinishedPage
-import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage, ExpensesLessThan1000Page}
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
@@ -226,7 +226,7 @@ case object SummaryPage {
         val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyRentalsSectionFinishedPage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(ExpensesLessThan1000Page)).isDefined) {
+          if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals))).isDefined) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted
