@@ -189,7 +189,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test"),
             testUserAnswer
           ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-            .onPageLoad(taxYear, NormalMode)
+            .onPageLoad(taxYear, NormalMode, propertyType)
         }
 
         s"must go from LeasePremiumPaymentPage to CalculateFigureYourselfPage when user selects yes and the previous " +
@@ -257,7 +257,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           testUserAnswer
         ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
@@ -290,7 +290,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController
           .onPageLoad(taxYear, NormalMode)
       }
-
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
@@ -690,7 +689,6 @@ class NavigatorSpec extends SpecBase {
           userAnswers
         ) mustBe controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
-
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
         navigator.nextPage(
