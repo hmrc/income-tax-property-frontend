@@ -238,7 +238,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.YearLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
           .url
       }
 
@@ -257,7 +257,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.YearLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
           .url
       }
     }
@@ -416,7 +416,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.YearLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
           .url
       }
 
@@ -442,7 +442,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.premiumlease.routes.YearLeaseAmountController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
           .url
       }
     }

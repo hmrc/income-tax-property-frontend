@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import controllers.actions._
 import forms.premiumlease.YearLeaseAmountFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.premiumlease.YearLeaseAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,29 +45,29 @@ class YearLeaseAmountController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(YearLeaseAmountPage(Rentals)) match {
+      val preparedForm = request.userAnswers.get(YearLeaseAmountPage(propertyType)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
+      Ok(view(preparedForm, taxYear, mode, propertyType))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage(Rentals), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage(propertyType), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(YearLeaseAmountPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(YearLeaseAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

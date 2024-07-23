@@ -267,7 +267,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from YearLeaseAmountPage to PremiumsGrantLeasePage" in {
@@ -1057,7 +1057,7 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe YearLeaseAmountController.onPageLoad(taxYear, CheckMode)
+        ) mustBe YearLeaseAmountController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from YearLeaseAmountPage to PremiumsGrantLease" in {

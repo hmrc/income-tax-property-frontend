@@ -18,7 +18,7 @@ package controllers.premiumlease
 
 import base.SpecBase
 import forms.premiumlease.YearLeaseAmountFormProvider
-import models.{NormalMode, Rentals, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -40,12 +40,13 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
   private val taxYear = LocalDate.now.getYear
 
-
   def onwardRoute = Call("GET", "/premiums-grant-lease")
 
   val validAnswer = 3
 
-  lazy val yearLeaseAmountRoute = routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val yearLeaseAmountRoute = routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val yearLeaseAmountRentalsRARRoute =
+    routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "YearLeaseAmount Controller" - {
 
@@ -61,7 +62,29 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[YearLeaseAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, Rentals)(
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "for RentalsAndRaR it must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, yearLeaseAmountRentalsRARRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[YearLeaseAmountView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, RentalsRentARoom)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -79,7 +102,31 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, Rentals)(
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "for RentalsAndRaR must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(YearLeaseAmountPage(RentalsRentARoom), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, yearLeaseAmountRentalsRARRoute)
+
+        val view = application.injector.instanceOf[YearLeaseAmountView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode, RentalsRentARoom)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -125,7 +172,27 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "for RentalsAndRaR must return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, yearLeaseAmountRentalsRARRoute)
+            .withFormUrlEncodedBody(("yearLeaseAmount", "invalid value"))
+
+        val boundForm = form.bind(Map("yearLeaseAmount" -> "invalid value"))
+
+        val view = application.injector.instanceOf[YearLeaseAmountView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, RentalsRentARoom)(request, messages(application)).toString
       }
     }
 

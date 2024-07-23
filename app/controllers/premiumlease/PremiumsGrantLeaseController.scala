@@ -50,8 +50,9 @@ class PremiumsGrantLeaseController @Inject() (
       val totalYearPeriods: Option[Int] = request.userAnswers.get(YearLeaseAmountPage(propertyType))
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
+
         case (None, _) => Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode, propertyType))
-        case (_, None) => Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode))
+        case (_, None) => Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode, propertyType))
         case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(PremiumsGrantLeasePage(propertyType)) match {
             case None        => formProvider(request.user.isAgentMessageKey)
@@ -71,7 +72,7 @@ class PremiumsGrantLeaseController @Inject() (
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) =>
           Future.successful(Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode, propertyType)))
-        case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode)))
+        case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode, propertyType)))
         case (Some(amount), Some(period)) =>
           formProvider(request.user.isAgentMessageKey)
             .bindFromRequest()
