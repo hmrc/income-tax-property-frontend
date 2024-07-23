@@ -28,6 +28,7 @@ import viewmodels.implicits._
 object StructureBuildingAllowanceSummary {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    println("----" + answers)
     answers.get(SbaOnIndex(index)).map { answer =>
       val value = HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingName).toString + ", " +
         HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingNumber).toString + ", " + HtmlFormat
