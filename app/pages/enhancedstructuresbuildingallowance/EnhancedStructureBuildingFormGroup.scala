@@ -22,8 +22,11 @@ import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-case class EnhancedStructureBuildingFormGroup(esbaQualifyingDate: LocalDate,
-                                                esbaQualifyingAmount: BigDecimal, esbaClaim: BigDecimal)
+case class EnhancedStructureBuildingFormGroup(
+  esbaQualifyingDate: LocalDate,
+  esbaQualifyingAmount: BigDecimal,
+  esbaClaim: BigDecimal
+)
 
 case object EnhancedStructureBuildingFormGroup extends Gettable[Array[EnhancedStructureBuildingFormGroup]] {
 
@@ -34,7 +37,8 @@ case object EnhancedStructureBuildingFormGroup extends Gettable[Array[EnhancedSt
   override def toString: String = PageConstants.esbaFormGroup
 }
 
-case class EnhancedStructureBuildingFormGroupWithIndex(index: Int) extends Settable[Array[EnhancedStructureBuildingFormGroup]] {
+case class EnhancedStructureBuildingFormGroupWithIndex(index: Int)
+    extends Settable[Array[EnhancedStructureBuildingFormGroup]] {
 
   implicit val format: Format[EnhancedStructureBuildingFormGroup] = Json.format
 

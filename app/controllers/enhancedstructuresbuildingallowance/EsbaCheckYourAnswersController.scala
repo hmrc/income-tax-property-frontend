@@ -16,7 +16,7 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.{RentalsAuditModel, AuditService}
+import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import models.requests.DataRequest
 import models.{EsbasWithSupportingQuestions, JourneyContext}
@@ -83,14 +83,14 @@ class EsbaCheckYourAnswersController @Inject() (
             case Right(_) =>
               auditCYA(taxYear, request, e)
               Redirect(
-                controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
+                controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimsController.onPageLoad(taxYear)
               )
             case Left(_) => InternalServerError
           }
       case None =>
         Future.successful(
           Redirect(
-            controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
+            controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimsController.onPageLoad(taxYear)
           )
         )
     }
