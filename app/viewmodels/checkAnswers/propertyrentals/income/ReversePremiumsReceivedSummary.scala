@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.income
 
 import controllers.propertyrentals.income.routes
-import models.{CheckMode, Rentals, ReversePremiumsReceived, UserAnswers}
+import models.{CheckMode, PropertyType, ReversePremiumsReceived, UserAnswers}
 import pages.propertyrentals.income.ReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,8 +27,10 @@ import viewmodels.implicits._
 
 object ReversePremiumsReceivedSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReversePremiumsReceivedPage(Rentals)).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ReversePremiumsReceivedPage(propertyType)).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
         Some(
           SummaryListRowViewModel(
@@ -37,7 +39,7 @@ object ReversePremiumsReceivedSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url
+                routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
             )
@@ -51,7 +53,7 @@ object ReversePremiumsReceivedSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode).url
+                routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
             )

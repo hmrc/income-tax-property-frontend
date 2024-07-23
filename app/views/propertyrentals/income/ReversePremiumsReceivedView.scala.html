@@ -19,7 +19,7 @@
 @import viewmodels.LabelSize
 @import viewmodels.InputWidth._
 @import controllers.propertyrentals.income.routes
-
+@import models.PropertyType
 
 @this(
     layout: templates.Layout,
@@ -31,35 +31,43 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("reversePremiumsReceived.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("reversePremiumsReceived.heading")</h1>
 
 
-    @formHelper(action = routes.ReversePremiumsReceivedController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ReversePremiumsReceivedController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+    @if(propertyType == Rentals){
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                          @messages("reversePremiumsReceived.details.heading")
-                        </span>
+                                <span class="govuk-details__summary-text">
+                                  @messages("reversePremiumsReceived.details.heading")
+                                </span>
             </summary>
             <div class="govuk-details__text">
                 <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
-                <p>@messages("reversePremiumsReceived.details.line2")
+                <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
                     <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                     @messages("reversePremiumsReceived.details.line2.link.text")
                     </a>
                 </p>
             </div>
         </details>
-
+    } else if(propertyType == RentalsRentARoom) {
+        <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
+        <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
+            <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+            @messages("reversePremiumsReceived.details.line2.link.text")
+            </a>
+        </p>
+    }
 
     <div class="govuk-hint">
         @messages(s"reversePremiumsReceived.hint.$individualOrAgent")
