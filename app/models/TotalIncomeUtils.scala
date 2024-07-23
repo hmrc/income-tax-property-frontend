@@ -26,9 +26,12 @@ object TotalIncomeUtils {
 
   def totalIncome(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
     val incomeFromPropertyRentals = userAnswers.get(IncomeFromPropertyPage(propertyType)).getOrElse(BigDecimal(0))
-    val leasePremiumCalculated = userAnswers.get(CalculatedFigureYourselfPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived = userAnswers.get(ReversePremiumsReceivedPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
-    val premiumsGrantLease = userAnswers.get(PremiumsGrantLeasePage(propertyType)).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
+    val leasePremiumCalculated =
+      userAnswers.get(CalculatedFigureYourselfPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val reversePremiumsReceived =
+      userAnswers.get(ReversePremiumsReceivedPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
+    val premiumsGrantLease =
+      userAnswers.get(PremiumsGrantLeasePage(propertyType)).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
     val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage(propertyType)).getOrElse(BigDecimal(0))
 
     incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
@@ -45,8 +48,12 @@ object TotalIncomeUtils {
     }
   }
 
-  def maxPropertyIncomeAllowanceCombined(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
+  def incomeAndBalancingChargeCombined(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
     val balancingCharge = userAnswers.get(BalancingChargePage).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
     totalIncome(userAnswers, propertyType) + balancingCharge
   }
+
+  def maxAllowedPIA(incomeAndBalancingChargeCombined: BigDecimal): BigDecimal =
+    incomeAndBalancingChargeCombined min 1000
+
 }

@@ -18,7 +18,7 @@ package models
 
 import base.SpecBase
 import models.TotalIncome.{Over, Under}
-import models.TotalIncomeUtils.{isTotalIncomeUnder85K, maxPropertyIncomeAllowanceCombined, totalIncome}
+import models.TotalIncomeUtils.{incomeAndBalancingChargeCombined, isTotalIncomeUnder85K, totalIncome}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
@@ -37,7 +37,7 @@ class TotalIncomeUtilSpec extends SpecBase {
         .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
         .get
 
-      maxPropertyIncomeAllowanceCombined(userAnswers, Rentals) shouldEqual 90000
+      incomeAndBalancingChargeCombined(userAnswers, Rentals) shouldEqual 90000
     }
 
     "under 85k if user selected total income is Under" in {

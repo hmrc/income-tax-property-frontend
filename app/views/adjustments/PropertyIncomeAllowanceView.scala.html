@@ -14,50 +14,50 @@
  * limitations under the License.
  *@
 
+@import controllers.adjustments.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
-@import controllers.adjustments.routes
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear:Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, maxPIA: BigDecimal)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"propertyIncomeAllowance.title.${individualOrAgent}"))) {
+    @layout(pageTitle = title(form, messages(s"propertyIncomeAllowance.title.$individualOrAgent"))) {
 
-    <h1 class="govuk-heading-l">@messages(s"propertyIncomeAllowance.heading.${individualOrAgent}")</h1>
+        <h1 class="govuk-heading-l">@messages(s"propertyIncomeAllowance.heading.$individualOrAgent")</h1>
 
-    @formHelper(action = routes.PropertyIncomeAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.PropertyIncomeAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
 
-        <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content1.${individualOrAgent}")</p>
-        <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content2.${individualOrAgent}")</p>
-        <p class="govuk-body">@messages("propertyIncomeAllowance.details.content3")
-            <a href="@messages("propertyIncomeAllowance.details.content3.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-            @messages("propertyIncomeAllowance.details.content3.link.text")
-            </a>
-        </p>
+            <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content1.$individualOrAgent", maxPIA)</p>
+            <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content2.$individualOrAgent")</p>
+            <p class="govuk-body">@messages("propertyIncomeAllowance.details.content3")
+                <a href="@messages("propertyIncomeAllowance.details.content3.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("propertyIncomeAllowance.details.content3.link.text")
+                </a>
+            </p>
 
-        @govukInput(
-            InputViewModel(
-                field = form("propertyIncomeAllowance"),
-                label = LabelViewModel(messages(s"propertyIncomeAllowance.input.heading.${individualOrAgent}")).asPageHeading(LabelSize.Medium)
+            @govukInput(
+                InputViewModel(
+                    field = form("propertyIncomeAllowance"),
+                    label = LabelViewModel(messages(s"propertyIncomeAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
+                )
+                .asNumeric()
+                .withWidth(Fixed10)
+                .withPrefix(PrefixOrSuffix(content = Text("£")))
             )
-            .asNumeric()
-            .withWidth(Fixed10)
-            .withPrefix(PrefixOrSuffix(content = Text("£")))
-        )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     }
-}
