@@ -26,9 +26,6 @@ import javax.inject.Inject
 
 class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
 
-  private val minValue = BigDecimal(0)
-  private val maxValue = BigDecimal(100000000)
-
   def apply(individualOrAgent: String, maxAllowedIncome: BigDecimal): Form[ClaimExpensesOrRelief] =
     Form[ClaimExpensesOrRelief](
       mapping(

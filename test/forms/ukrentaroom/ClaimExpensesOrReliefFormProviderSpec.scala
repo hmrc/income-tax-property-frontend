@@ -60,8 +60,8 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       form,
       fieldName,
       maximum,
-      expectedError = FormError(fieldName, "claimExpensesOrRRR.amount.error.maxAllowedClaim", List(maximum)),
-      ("claimExpensesOrRRR", "true")
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.maxAllowedClaim", List(maximum)),
+      ("claimExpensesOrRelief", "true")
     )
 
     behave like currencyFieldWithMinimum(
