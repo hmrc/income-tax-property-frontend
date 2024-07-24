@@ -29,7 +29,7 @@ import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
+import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.libs.json.Writes
 import queries.Settable
 
@@ -269,7 +269,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.jointlyLetYesOrNo)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentARoom), raRAbout.totalIncomeAmount)
-            ua3 <- ua2.set(ClaimExpensesOrRRRPage(RentARoom), raRAbout.claimExpensesOrRRR)
+            ua3 <- ua2.set(ClaimExpensesOrReliefPage(RentARoom), raRAbout.claimExpensesOrRelief)
           } yield ua3
       }
 

@@ -18,9 +18,9 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
-import models.{ClaimExpensesOrRRR, NormalMode, RentARoom, Rentals, UKPropertySelect}
+import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
-import pages.ukrentaroom.ClaimExpensesOrRRRPage
+import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import pages.{SummaryPage, UKPropertyPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
@@ -225,7 +225,7 @@ class SummaryPageSpec extends SpecBase {
         )
         .success
         .value
-        .set(ClaimExpensesOrRRRPage(RentARoom), ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(12.34)))
+        .set(ClaimExpensesOrReliefPage(RentARoom), ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(12.34)))
         .success
         .value
 
@@ -243,7 +243,7 @@ class SummaryPageSpec extends SpecBase {
         )
         .success
         .value
-        .set(ClaimExpensesOrRRRPage(RentARoom), ClaimExpensesOrRRR(false, Some(12.34)))
+        .set(ClaimExpensesOrReliefPage(RentARoom), ClaimExpensesOrRelief(false, Some(12.34)))
         .success
         .value
 

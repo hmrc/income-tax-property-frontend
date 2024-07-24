@@ -17,60 +17,60 @@
 package viewmodels.checkAnswers.ukrentaroom
 
 import controllers.ukrentaroom.routes
-import models.{CheckMode, ClaimExpensesOrRRR, PropertyType, UserAnswers}
-import pages.ukrentaroom.ClaimExpensesOrRRRPage
+import models.{CheckMode, ClaimExpensesOrRelief, PropertyType, UserAnswers}
+import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ClaimExpensesOrRRRSummary {
+object ClaimExpensesOrReliefSummary {
 
   def rows(taxYear: Int, individualOrAgent: String, answers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[Seq[SummaryListRow]] =
-    answers.get(ClaimExpensesOrRRRPage(propertyType)).flatMap {
-      case ClaimExpensesOrRRR(true, Some(amount)) =>
+    answers.get(ClaimExpensesOrReliefPage(propertyType)).flatMap {
+      case ClaimExpensesOrRelief(true, Some(amount)) =>
         Some(
           Seq(
             SummaryListRowViewModel(
-              key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel.type").withCssClass(keyCssClass),
-              value = ValueViewModel("claimExpensesOrRRR.yes").withCssClass(valueCssClass),
+              key = KeyViewModel("claimExpensesOrRelief.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("claimExpensesOrRelief.yes").withCssClass(valueCssClass),
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
+                  routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
-                  .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+                  .withVisuallyHiddenText(messages("claimExpensesOrRelief.change.hidden"))
               )
             ),
             SummaryListRowViewModel(
-              key = KeyViewModel(s"claimExpensesOrRRR.checkYourAnswersLabel.amount.$individualOrAgent")
+              key = KeyViewModel(s"claimExpensesOrRelief.checkYourAnswersLabel.amount.$individualOrAgent")
                 .withCssClass(keyCssClass),
               value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
+                  routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
-                  .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+                  .withVisuallyHiddenText(messages("claimExpensesOrRelief.change.hidden"))
               )
             )
           )
         )
-      case ClaimExpensesOrRRR(false, _) =>
+      case ClaimExpensesOrRelief(false, _) =>
         Some(
           Seq(
             SummaryListRowViewModel(
-              key = KeyViewModel("claimExpensesOrRRR.checkYourAnswersLabel.type").withCssClass(keyCssClass),
-              value = ValueViewModel("claimExpensesOrRRR.no").withCssClass(valueCssClass),
+              key = KeyViewModel("claimExpensesOrRelief.checkYourAnswersLabel.type").withCssClass(keyCssClass),
+              value = ValueViewModel("claimExpensesOrRelief.no").withCssClass(valueCssClass),
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, CheckMode, propertyType).url
+                  routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
-                  .withVisuallyHiddenText(messages("claimExpensesOrRRR.change.hidden"))
+                  .withVisuallyHiddenText(messages("claimExpensesOrRelief.change.hidden"))
               )
             )
           )

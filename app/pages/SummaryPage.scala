@@ -28,7 +28,7 @@ import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage, JointlyLetPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case object SummaryPage {
@@ -86,7 +86,7 @@ case object SummaryPage {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
-    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrRRRPage(RentARoom))).map(_.claimRRROrExpenses)
+    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.claimExpensesOrReliefYesNo)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {

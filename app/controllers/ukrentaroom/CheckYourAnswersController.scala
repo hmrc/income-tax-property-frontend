@@ -27,7 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, TotalIncomeAmountSummary, JointlyLetSummary}
+import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, TotalIncomeAmountSummary, JointlyLetSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.CheckYourAnswersView
 
@@ -51,11 +51,11 @@ class CheckYourAnswersController @Inject() (
         JointlyLetSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val totalIncomeAmountSummary =
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
-      val claimExpensesOrRRRSummary =
-        ClaimExpensesOrRRRSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers, RentARoom)
+      val claimExpensesOrReliefSummary =
+        ClaimExpensesOrReliefSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers, RentARoom)
 
       val list = SummaryListViewModel(
-        rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrRRRSummary).flatten
+        rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrReliefSummary).flatten
       )
 
       Ok(view(list, taxYear))
@@ -63,7 +63,7 @@ class CheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "uk-rent-a-room-about")
+      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-about")
 
       val rarAboutMaybe: Option[RaRAbout] = request.userAnswers.get(RaRAbout)
 

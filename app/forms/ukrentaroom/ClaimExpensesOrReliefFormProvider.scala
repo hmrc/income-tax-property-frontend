@@ -17,30 +17,33 @@
 package forms.ukrentaroom
 
 import forms.mappings.Mappings
-import models.ClaimExpensesOrRRR
+import models.ClaimExpensesOrRelief
 import play.api.data.Form
 import play.api.data.Forms._
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import javax.inject.Inject
 
-class ClaimExpensesOrRRRFormProvider @Inject() extends Mappings {
+class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[ClaimExpensesOrRRR] =
-    Form[ClaimExpensesOrRRR](
+  private val minValue = BigDecimal(0)
+  private val maxValue = BigDecimal(100000000)
+
+  def apply(individualOrAgent: String): Form[ClaimExpensesOrRelief] =
+    Form[ClaimExpensesOrRelief](
       mapping(
-        "claimExpensesOrRRR" -> boolean(s"claimExpensesOrRRR.error.required.$individualOrAgent"),
+        "claimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent"),
         "rentARoomAmount" -> {
           mandatoryIfTrue(
-            "claimExpensesOrRRR",
+            "claimExpensesOrRelief",
             currency(
-              s"claimExpensesOrRRR.amount.error.required.$individualOrAgent",
-              s"claimExpensesOrRRR.amount.error.twoDecimalPlaces.$individualOrAgent",
-              s"claimExpensesOrRRR.amount.error.nonNumeric.$individualOrAgent"
+              s"claimExpensesOrRelief.amount.error.required.$individualOrAgent",
+              s"claimExpensesOrRelief.amount.error.twoDecimalPlaces.$individualOrAgent",
+              s"claimExpensesOrRelief.amount.error.nonNumeric.$individualOrAgent"
             )
-              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "claimExpensesOrRRR.amount.error.outOfRange"))
+              .verifying(inRange(minValue, maxValue, "claimExpensesOrRelief.amount.error.outOfRange"))
           )
         }
-      )(ClaimExpensesOrRRR.apply)(ClaimExpensesOrRRR.unapply)
+      )(ClaimExpensesOrRelief.apply)(ClaimExpensesOrRelief.unapply)
     )
 }

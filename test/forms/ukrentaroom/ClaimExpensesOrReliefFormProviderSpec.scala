@@ -19,18 +19,18 @@ package forms.ukrentaroom
 import forms.behaviours.CurrencyFieldBehaviours
 import play.api.data.FormError
 
-class ClaimExpensesOrRRRFormProviderSpec extends CurrencyFieldBehaviours {
+class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ClaimExpensesOrRRRFormProvider()("individual")
+  val form = new ClaimExpensesOrReliefFormProvider()("individual")
 
-  ".claimExpensesOrRRR" - {
+  ".claimExpensesOrRelief" - {
 
-    val fieldName = "claimExpensesOrRRR"
+    val fieldName = "claimExpensesOrRelief"
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "claimExpensesOrRRR.error.required.individual")
+      requiredError = FormError(fieldName, "claimExpensesOrRelief.error.required.individual")
     )
   }
 
@@ -52,9 +52,9 @@ class ClaimExpensesOrRRRFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "claimExpensesOrRRR.amount.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "claimExpensesOrRRR.amount.error.twoDecimalPlaces.individual"),
-      ("claimExpensesOrRRR", "true")
+      nonNumericError = FormError(fieldName, "claimExpensesOrRelief.amount.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "claimExpensesOrRelief.amount.error.twoDecimalPlaces.individual"),
+      ("claimExpensesOrRelief", "true")
     )
 
     behave like currencyFieldWithRange(
@@ -62,8 +62,8 @@ class ClaimExpensesOrRRRFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       minimum = minimum,
       maximum = maximum,
-      expectedError = FormError(fieldName, "claimExpensesOrRRR.amount.error.outOfRange", Seq(minimum, maximum)),
-      ("claimExpensesOrRRR", "true")
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.outOfRange", Seq(minimum, maximum)),
+      ("claimExpensesOrRelief", "true")
     )
   }
 }

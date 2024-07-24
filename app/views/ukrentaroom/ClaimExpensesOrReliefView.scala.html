@@ -32,37 +32,37 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, maxIncome: BigDecimal, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = title(form, messages("claimExpensesOrRRR.title"))) {
+    @layout(pageTitle = title(form, messages("claimExpensesOrRelief.title"))) {
 
-        @formHelper(action = routes.ClaimExpensesOrRRRController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.ClaimExpensesOrReliefController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))
             }
 
-            <h1 class="govuk-heading-l">@messages(s"claimExpensesOrRRR.heading.${individualOrAgent}")</h1>
+            <h1 class="govuk-heading-l">@messages(s"claimExpensesOrRelief.heading.${individualOrAgent}")</h1>
 
-            <p class="govuk-body">@messages(s"claimExpensesOrRRR.para1.jointlyLet.$individualOrAgent", maxIncome)</p>
+            <p class="govuk-body">@messages(s"claimExpensesOrRelief.para1.jointlyLet.$individualOrAgent", maxIncome)</p>
 
             @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("claimExpensesOrRRR"),
-                    legend = LegendViewModel(messages(s"claimExpensesOrRRR.legend.$individualOrAgent")).asPageHeading(LegendSize.Medium),
+                    field = form("claimExpensesOrRelief"),
+                    legend = LegendViewModel(messages(s"claimExpensesOrRelief.legend.$individualOrAgent")).asPageHeading(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("rentARoomAmount"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(
                                     field = form("rentARoomAmount"),
-                                    label = LabelViewModel(messages(s"claimExpensesOrRRR.radio.question.label.$individualOrAgent"))
+                                    label = LabelViewModel(messages(s"claimExpensesOrRelief.radio.question.label.$individualOrAgent"))
                                 )
                                 .asNumeric()
                                 .withWidth(Fixed10)
                                 .withPrefix(PrefixOrSuffix(content = Text("£")))
                             )
                         ),
-                        yesText = "claimExpensesOrRRR.rentARoom",
-                        noText = "claimExpensesOrRRR.expenses"
+                        yesText = "claimExpensesOrRelief.rentARoom",
+                        noText = "claimExpensesOrRelief.expenses"
                     )
                 )
             )

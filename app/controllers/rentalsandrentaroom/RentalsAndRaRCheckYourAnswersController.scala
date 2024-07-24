@@ -29,7 +29,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.propertyrentals.ClaimPropertyIncomeAllowanceSummary
-import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrRRRSummary, JointlyLetSummary, TotalIncomeAmountSummary}
+import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, JointlyLetSummary, TotalIncomeAmountSummary}
 import viewmodels.govuk.summarylist._
 import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
 
@@ -58,8 +58,8 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
         )
       val totalIncomeAmountSummary =
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom)
-      val claimExpensesOrRRRSummary =
-        ClaimExpensesOrRRRSummary.rows(
+      val claimExpensesOrReliefSummary =
+        ClaimExpensesOrReliefSummary.rows(
           taxYear,
           request.user.isAgentMessageKey,
           request.userAnswers,
@@ -79,7 +79,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
           ukRentARoomJointlyLetSummary,
           totalIncomeAmountSummary,
           claimPropertyIncomeAllowanceSummary
-        ) ++ claimExpensesOrRRRSummary).flatten
+        ) ++ claimExpensesOrReliefSummary).flatten
       )
 
       Ok(view(list, taxYear))

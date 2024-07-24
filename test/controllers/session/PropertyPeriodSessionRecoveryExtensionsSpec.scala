@@ -29,7 +29,7 @@ import pages.propertyrentals.income.{IncomeFromPropertyPage, IsNonUKLandlordPage
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
+import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
 import testHelpers.Fixture
@@ -157,8 +157,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |    "raRAbout" : {
       |            "jointlyLetYesOrNo" : false,
       |            "totalIncomeAmount" : 30,
-      |            "claimExpensesOrRRR" : {
-      |                "claimRRROrExpenses" : false,
+      |            "claimExpensesOrRelief" : {
+      |                "claimExpensesOrReliefYesNo" : false,
       |                "rentARoomAmount" : 50
       |            }
       |        },
@@ -204,7 +204,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
-      updated.get(ClaimExpensesOrRRRPage(RentARoom)).get mustBe ClaimExpensesOrRRR(false, Some(50))
+      updated.get(ClaimExpensesOrReliefPage(RentARoom)).get mustBe ClaimExpensesOrRelief(false, Some(50))
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56
       updated.get(OtherProfessionalFeesPage(Rentals)).get mustBe 4
