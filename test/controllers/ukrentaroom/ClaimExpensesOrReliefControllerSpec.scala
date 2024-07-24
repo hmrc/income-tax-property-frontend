@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.{ClaimExpensesOrReliefPage, TotalIncomeAmountPage, JointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -39,19 +39,20 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
+  private val maxIncome = BigDecimal(5000)
   val formProvider = new ClaimExpensesOrReliefFormProvider()
   val form: Form[ClaimExpensesOrRelief] = formProvider("individual")
-  val taxYear = 2023
+  val taxYear = 2024
 
   lazy val claimExpensesOrReliefRoute: String =
     routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
-  "ClaimExpensesOrRRR Controller" - {
+  "ClaimExpensesOrRelief Controller" - {
 
     "must return OK and the correct view for a GET" in {
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
       } yield withTotalIncome
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
@@ -79,7 +80,6 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
-      val maxIncome = BigDecimal(5000)
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), false)
@@ -87,7 +87,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
         withClaimExpenses <-
           withTotalIncome.set(
             ClaimExpensesOrReliefPage(RentARoom),
-            ClaimExpensesOrRelief(claimRRROrExpenses = true, Some(100.65))
+            ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))
           )
       } yield withClaimExpenses
 
@@ -102,7 +102,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ClaimExpensesOrRelief(claimRRROrExpenses = true, Some(100.65))),
+          form.fill(ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))),
           taxYear,
           NormalMode,
           "individual",
@@ -116,7 +116,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(5000))
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
       } yield withTotalIncome
 
       val mockSessionRepository = mock[SessionRepository]
@@ -145,10 +145,9 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val maxIncome = BigDecimal(8000)
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), false)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), BigDecimal(8000))
       } yield withTotalIncome
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()

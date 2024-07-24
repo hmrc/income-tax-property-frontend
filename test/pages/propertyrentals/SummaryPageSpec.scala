@@ -225,7 +225,7 @@ class SummaryPageSpec extends SpecBase {
         )
         .success
         .value
-        .set(ClaimExpensesOrReliefPage(RentARoom), ClaimExpensesOrRelief(claimRRROrExpenses = true, Some(12.34)))
+        .set(ClaimExpensesOrReliefPage(RentARoom), ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(12.34)))
         .success
         .value
 

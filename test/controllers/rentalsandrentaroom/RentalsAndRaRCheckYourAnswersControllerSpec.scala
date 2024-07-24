@@ -103,7 +103,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
           jointlyLetYesOrNo = true,
           22.23,
           true,
-          ClaimExpensesOrRelief(claimRRROrExpenses = false, Some(22.11))
+          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11))
         )
       val userAnswersWithRaRAbout =
         userAnswers.set(RentalsAndRaRAbout, rentalsAndRaRAbout).get
