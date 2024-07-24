@@ -1317,6 +1317,7 @@ claimExpensesOrRRR.amount.error.nonNumeric.agent = Gall cyfanswm y Rhyddhad Rhen
 claimExpensesOrRRR.amount.error.twoDecimalPlaces.individual = Gall cyfanswm y Rhyddhad Rhentu Ystafell a hawliwyd gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
 claimExpensesOrRRR.amount.error.twoDecimalPlaces.agent = Gall cyfanswm y Rhyddhad Rhentu Ystafell a hawliwyd gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
 claimExpensesOrRRR.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
+claimExpensesOrRRR.amount.error.maxAllowedClaim = *Missing Welsh*
 claimExpensesOrRRR.change.hidden = Hawlio treuliau neu Ryddhad Rhentu Ystafell
 claimExpensesOrRRR.rentARoom = Rhyddhad Rhentu Ystafell
 claimExpensesOrRRR.expenses = Treuliau

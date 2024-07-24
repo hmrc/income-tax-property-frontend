@@ -26,10 +26,7 @@ import javax.inject.Inject
 
 class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
 
-  private val minValue = BigDecimal(0)
-  private val maxValue = BigDecimal(100000000)
-
-  def apply(individualOrAgent: String): Form[ClaimExpensesOrRelief] =
+  def apply(individualOrAgent: String, maxAllowedIncome: BigDecimal): Form[ClaimExpensesOrRelief] =
     Form[ClaimExpensesOrRelief](
       mapping(
         "claimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent"),
@@ -41,7 +38,14 @@ class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
               s"claimExpensesOrRelief.amount.error.twoDecimalPlaces.$individualOrAgent",
               s"claimExpensesOrRelief.amount.error.nonNumeric.$individualOrAgent"
             )
-              .verifying(inRange(minValue, maxValue, "claimExpensesOrRelief.amount.error.outOfRange"))
+              .verifying(
+                minimumValueWithCustomArgument(
+                  BigDecimal(0),
+                  "claimExpensesOrRelief.amount.error.outOfRange",
+                  maxAllowedIncome
+                )
+              )
+              .verifying(maximumValue(maxAllowedIncome, "claimExpensesOrRelief.amount.error.maxAllowedClaim"))
           )
         }
       )(ClaimExpensesOrRelief.apply)(ClaimExpensesOrRelief.unapply)

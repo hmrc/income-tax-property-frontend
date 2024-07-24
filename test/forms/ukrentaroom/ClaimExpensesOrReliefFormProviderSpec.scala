@@ -21,7 +21,9 @@ import play.api.data.FormError
 
 class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new ClaimExpensesOrReliefFormProvider()("individual")
+  val minimum = 0
+  val maximum = 10000
+  val form = new ClaimExpensesOrReliefFormProvider()("individual", maximum)
 
   ".claimExpensesOrRelief" - {
 
@@ -37,9 +39,6 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
   ".rentARoomAmount" - {
 
     val fieldName = "rentARoomAmount"
-
-    val minimum = 0
-    val maximum = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -57,12 +56,19 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       ("claimExpensesOrRelief", "true")
     )
 
-    behave like currencyFieldWithRange(
+    behave like currencyFieldWithMaximum(
       form,
       fieldName,
-      minimum = minimum,
-      maximum = maximum,
-      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.outOfRange", Seq(minimum, maximum)),
+      maximum,
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.maxAllowedClaim", List(maximum)),
+      ("claimExpensesOrRelief", "true")
+    )
+
+    behave like currencyFieldWithMinimum(
+      form,
+      fieldName,
+      0,
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.outOfRange", List(minimum, maximum)),
       ("claimExpensesOrRelief", "true")
     )
   }

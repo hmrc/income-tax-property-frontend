@@ -46,26 +46,25 @@ class ClaimExpensesOrReliefController @Inject()(
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimExpensesOrReliefPage(propertyType)) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
-
-      maxAllowedIncome(request, propertyType)
-        .map(maxIncome =>
+      maxAllowedClaim(request, propertyType)
+        .map { maxIncome =>
+          val form = formProvider(request.user.isAgentMessageKey, maxIncome)
+          val preparedForm = request.userAnswers.get(ClaimExpensesOrReliefPage(propertyType)) match {
+            case None        => form
+            case Some(value) => form.fill(value)
+          }
           Future.successful(
             Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, maxIncome, propertyType))
           )
-        )
+        }
         .getOrElse(Future.failed(NotFoundException))
     }
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      maxAllowedIncome(request, propertyType)
-        .map(maxIncome =>
+      maxAllowedClaim(request, propertyType)
+        .map { maxClaim =>
+          val form = formProvider(request.user.isAgentMessageKey, maxClaim)
           form
             .bindFromRequest()
             .fold(
@@ -73,7 +72,7 @@ class ClaimExpensesOrReliefController @Inject()(
                 Future
                   .successful(
                     BadRequest(
-                      view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, maxIncome, propertyType)
+                      view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, maxClaim, propertyType)
                     )
                   ),
               value =>
@@ -85,11 +84,11 @@ class ClaimExpensesOrReliefController @Inject()(
                     .nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
                 )
             )
-        )
+        }
         .getOrElse(Future.failed(NotFoundException))
     }
 
-  private def maxAllowedIncome(request: DataRequest[AnyContent], propertyType: PropertyType): Option[BigDecimal] =
+  private def maxAllowedClaim(request: DataRequest[AnyContent], propertyType: PropertyType): Option[BigDecimal] =
     for {
       isJointlyLet <- request.userAnswers.get(JointlyLetPage(propertyType))
       income       <- request.userAnswers.get(TotalIncomeAmountPage(propertyType))

@@ -39,9 +39,9 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  private val maxIncome = BigDecimal(5000)
+  private val maxAllowedIncome = BigDecimal(5000)
   val formProvider = new ClaimExpensesOrReliefFormProvider()
-  val form: Form[ClaimExpensesOrRelief] = formProvider("individual")
+  val form: Form[ClaimExpensesOrRelief] = formProvider("individual",maxAllowedIncome)
   val taxYear = 2024
 
   lazy val claimExpensesOrReliefRoute: String =
@@ -52,7 +52,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the correct view for a GET" in {
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxAllowedIncome)
       } yield withTotalIncome
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
@@ -83,7 +83,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), false)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxAllowedIncome)
         withClaimExpenses <-
           withTotalIncome.set(
             ClaimExpensesOrReliefPage(RentARoom),
@@ -106,7 +106,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
           taxYear,
           NormalMode,
           "individual",
-          maxIncome,
+          maxAllowedIncome,
           RentARoom
         )(request, messages(application)).toString
       }
@@ -116,7 +116,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
       val answers: Try[UserAnswers] = for {
         withJointLet    <- emptyUserAnswers.set(JointlyLetPage(RentARoom), true)
-        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
+        withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxAllowedIncome)
       } yield withTotalIncome
 
       val mockSessionRepository = mock[SessionRepository]
