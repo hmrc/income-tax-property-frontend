@@ -40,7 +40,7 @@ import scala.concurrent.Future
 class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
 
   private def postOnwardRoute =
-    Call("POST", "/income-tax-property/2024/rentals-rent-a-room/about-section-complete-yes-no ")
+    Call("POST", "/income-tax-property/2024/rentals-rent-a-room/complete-yes-no ")
 
   val formProvider = new RentalsAndRaRAboutCompleteFormProvider()
   val form = formProvider()

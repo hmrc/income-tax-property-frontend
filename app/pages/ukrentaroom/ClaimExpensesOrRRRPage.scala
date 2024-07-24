@@ -16,14 +16,14 @@
 
 package pages.ukrentaroom
 
-import models.{ClaimExpensesOrRRR, PropertyType}
+import models.{ClaimExpensesOrRelief, PropertyType}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ClaimExpensesOrRRRPage(propertyType: PropertyType) extends QuestionPage[ClaimExpensesOrRRR] {
+case class ClaimExpensesOrReliefPage(propertyType: PropertyType) extends QuestionPage[ClaimExpensesOrRelief] {
 
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
-  override def toString: String = "claimExpensesOrRRR"
+  override def toString: String = "claimExpensesOrRelief"
 }

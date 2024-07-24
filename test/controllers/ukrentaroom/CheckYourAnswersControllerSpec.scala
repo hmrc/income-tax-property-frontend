@@ -18,7 +18,7 @@ package controllers.ukrentaroom
 
 import audit.AuditService
 import base.SpecBase
-import models.{ClaimExpensesOrRRR, RaRAbout, UserAnswers}
+import models.{ClaimExpensesOrRelief, RaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
 import org.mockito.MockitoSugar.{times, verify, when}
@@ -39,7 +39,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
   val taxYear: Int = 2023
 
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2023/uk-rent-a-room/about-section-complete-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2023/rent-a-room/complete-yes-no")
 
   "UK Rent a Room Check Your Answers Controller" - {
 
@@ -92,7 +92,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
 
-      val rarAbout = RaRAbout(jointlyLetYesOrNo = true, 22.23, ClaimExpensesOrRRR(claimRRROrExpenses = false, Some(22.11)))
+      val rarAbout = RaRAbout(jointlyLetYesOrNo = true, 22.23, ClaimExpensesOrRelief(claimRRROrExpenses = false, Some(22.11)))
       val userAnswersWithRaRAbout =
         userAnswers.set(RaRAbout, rarAbout).get
 

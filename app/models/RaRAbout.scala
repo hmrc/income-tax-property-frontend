@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 final case class RaRAbout(
   jointlyLetYesOrNo: Boolean,
   totalIncomeAmount: BigDecimal,
-  claimExpensesOrRRR: ClaimExpensesOrRRR
+  claimExpensesOrRelief: ClaimExpensesOrRelief
 )
 
 object RaRAbout extends Settable[RaRAbout] with Gettable[RaRAbout] {

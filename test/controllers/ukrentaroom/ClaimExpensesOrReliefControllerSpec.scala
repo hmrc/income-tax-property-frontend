@@ -17,34 +17,34 @@
 package controllers.ukrentaroom
 
 import base.SpecBase
-import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
-import models.{BusinessConstants, ClaimExpensesOrRRR, NormalMode, RentARoom, UserAnswers}
+import forms.ukrentaroom.ClaimExpensesOrReliefFormProvider
+import models.{BusinessConstants, ClaimExpensesOrRelief, NormalMode, RentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, TotalIncomeAmountPage, JointlyLetPage}
+import pages.ukrentaroom.{ClaimExpensesOrReliefPage, TotalIncomeAmountPage, JointlyLetPage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.ClaimExpensesOrRRRView
+import views.html.ukrentaroom.ClaimExpensesOrReliefView
 
 import scala.concurrent.Future
 import scala.util.Try
 
-class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
+class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new ClaimExpensesOrRRRFormProvider()
-  val form: Form[ClaimExpensesOrRRR] = formProvider("individual")
+  val formProvider = new ClaimExpensesOrReliefFormProvider()
+  val form: Form[ClaimExpensesOrRelief] = formProvider("individual")
   val taxYear = 2023
 
-  lazy val claimExpensesOrRRRRoute: String =
-    routes.ClaimExpensesOrRRRController.onPageLoad(taxYear, NormalMode, RentARoom).url
+  lazy val claimExpensesOrReliefRoute: String =
+    routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom).url
 
   "ClaimExpensesOrRRR Controller" - {
 
@@ -57,11 +57,11 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
+        val request = FakeRequest(GET, claimExpensesOrReliefRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
+        val view = application.injector.instanceOf[ClaimExpensesOrReliefView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
@@ -86,23 +86,23 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
         withTotalIncome <- withJointLet.set(TotalIncomeAmountPage(RentARoom), maxIncome)
         withClaimExpenses <-
           withTotalIncome.set(
-            ClaimExpensesOrRRRPage(RentARoom),
-            ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65))
+            ClaimExpensesOrReliefPage(RentARoom),
+            ClaimExpensesOrRelief(claimRRROrExpenses = true, Some(100.65))
           )
       } yield withClaimExpenses
 
       val application = applicationBuilder(userAnswers = answers.toOption, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
+        val request = FakeRequest(GET, claimExpensesOrReliefRoute)
 
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
+        val view = application.injector.instanceOf[ClaimExpensesOrReliefView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ClaimExpensesOrRRR(claimRRROrExpenses = true, Some(100.65))),
+          form.fill(ClaimExpensesOrRelief(claimRRROrExpenses = true, Some(100.65))),
           taxYear,
           NormalMode,
           "individual",
@@ -133,8 +133,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", "false"))
+          FakeRequest(POST, claimExpensesOrReliefRoute)
+            .withFormUrlEncodedBody(("claimExpensesOrRelief", "false"))
 
         val result = route(application, request).value
 
@@ -155,12 +155,12 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", ""))
+          FakeRequest(POST, claimExpensesOrReliefRoute)
+            .withFormUrlEncodedBody(("claimExpensesOrRelief", ""))
 
-        val boundForm = form.bind(Map("claimExpensesOrRRR" -> ""))
+        val boundForm = form.bind(Map("claimExpensesOrRelief" -> ""))
 
-        val view = application.injector.instanceOf[ClaimExpensesOrRRRView]
+        val view = application.injector.instanceOf[ClaimExpensesOrReliefView]
 
         val result = route(application, request).value
 
@@ -184,7 +184,7 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, claimExpensesOrRRRRoute)
+        val request = FakeRequest(GET, claimExpensesOrReliefRoute)
 
         val result = route(application, request).value
 
@@ -199,8 +199,8 @@ class ClaimExpensesOrRRRControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, claimExpensesOrRRRRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRRR", "true"))
+          FakeRequest(POST, claimExpensesOrReliefRoute)
+            .withFormUrlEncodedBody(("claimExpensesOrRelief", "true"))
 
         val result = route(application, request).value
 

@@ -17,37 +17,37 @@
 package controllers.ukrentaroom
 
 import controllers.actions._
-import forms.ukrentaroom.ClaimExpensesOrRRRFormProvider
+import forms.ukrentaroom.ClaimExpensesOrReliefFormProvider
 import models.requests.DataRequest
 import models.{BusinessConstants, Mode, PropertyType}
 import navigation.Navigator
-import pages.ukrentaroom.{ClaimExpensesOrRRRPage, JointlyLetPage, TotalIncomeAmountPage}
+import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukrentaroom.ClaimExpensesOrRRRView
+import views.html.ukrentaroom.ClaimExpensesOrReliefView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimExpensesOrRRRController @Inject() (
-  override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
-  navigator: Navigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  formProvider: ClaimExpensesOrRRRFormProvider,
-  val controllerComponents: MessagesControllerComponents,
-  view: ClaimExpensesOrRRRView
+class ClaimExpensesOrReliefController @Inject()(
+                                                 override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: ClaimExpensesOrReliefFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: ClaimExpensesOrReliefView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimExpensesOrRRRPage(propertyType)) match {
+      val preparedForm = request.userAnswers.get(ClaimExpensesOrReliefPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -78,11 +78,11 @@ class ClaimExpensesOrRRRController @Inject() (
                   ),
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrRRRPage(propertyType), value))
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
                   _              <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
                   navigator
-                    .nextPage(ClaimExpensesOrRRRPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+                    .nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
                 )
             )
         )

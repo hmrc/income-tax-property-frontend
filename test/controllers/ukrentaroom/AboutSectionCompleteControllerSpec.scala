@@ -41,7 +41,7 @@ import scala.concurrent.Future
 class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
   private def postOnwardRoute =
-    Call("POST", "/income-tax-property/2024/uk-rent-a-room/about-section-complete-yes-no")
+    Call("POST", "/income-tax-property/2024/rent-a-room/complete-yes-no")
 
   val formProvider = new AboutSectionCompleteFormProvider()
   val form = formProvider()

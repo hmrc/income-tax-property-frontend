@@ -1305,36 +1305,36 @@ ukRentARoom.expensesIntro.p4.agent = or
 
 ukRentARoom.expensesIntro.p5.individual = Individual expenses, where you enter an amount for each separate expenses type.
 ukRentARoom.expensesIntro.p5.agent = Individual expenses, where you enter an amount for each separate expenses type.
-claimExpensesOrRRR.title = Claim expenses or rent a room relief
-claimExpensesOrRRR.heading.agent = Claim expenses or rent a room relief
-claimExpensesOrRRR.heading.individual = Claim expenses or rent a room relief
-claimExpensesOrRRR.checkYourAnswersLabel.amount.individual = How much do you want to claim?
-claimExpensesOrRRR.checkYourAnswersLabel.amount.agent = How much does your client want to claim?
-claimExpensesOrRRR.checkYourAnswersLabel.type = Claim expenses or rent a room relief
-claimExpensesOrRRR.no = Expenses
-claimExpensesOrRRR.yes = Rent a room relief
-claimExpensesOrRRR.legend.individual = Which one do you want to claim?
-claimExpensesOrRRR.legend.agent = Which one does your client want to claim?
+claimExpensesOrRelief.title = Claim expenses or rent a room relief
+claimExpensesOrRelief.heading.agent = Claim expenses or rent a room relief
+claimExpensesOrRelief.heading.individual = Claim expenses or rent a room relief
+claimExpensesOrRelief.checkYourAnswersLabel.amount.individual = How much do you want to claim?
+claimExpensesOrRelief.checkYourAnswersLabel.amount.agent = How much does your client want to claim?
+claimExpensesOrRelief.checkYourAnswersLabel.type = Claim expenses or rent a room relief
+claimExpensesOrRelief.no = Expenses
+claimExpensesOrRelief.yes = Rent a room relief
+claimExpensesOrRelief.legend.individual = Which one do you want to claim?
+claimExpensesOrRelief.legend.agent = Which one does your client want to claim?
 
 
-claimExpensesOrRRR.error.required.individual = Select if you want to claim rent a room relief or expenses
-claimExpensesOrRRR.error.required.agent = Select if your client wants to claim rent a room relief or expenses
-claimExpensesOrRRR.amount.error.required.individual = Enter the amount of rent a room relief you want to claim
-claimExpensesOrRRR.amount.error.required.agent = Enter the amount of rent a room relief your client wants to claim
-claimExpensesOrRRR.amount.error.nonNumeric.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
-claimExpensesOrRRR.amount.error.nonNumeric.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
-claimExpensesOrRRR.amount.error.twoDecimalPlaces.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
-claimExpensesOrRRR.amount.error.twoDecimalPlaces.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
-claimExpensesOrRRR.amount.error.outOfRange = Enter an amount between £{0} and £{1}
-claimExpensesOrRRR.change.hidden = Claim expenses or rent a room relief
+claimExpensesOrRelief.error.required.individual = Select if you want to claim rent a room relief or expenses
+claimExpensesOrRelief.error.required.agent = Select if your client wants to claim rent a room relief or expenses
+claimExpensesOrRelief.amount.error.required.individual = Enter the amount of rent a room relief you want to claim
+claimExpensesOrRelief.amount.error.required.agent = Enter the amount of rent a room relief your client wants to claim
+claimExpensesOrRelief.amount.error.nonNumeric.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRelief.amount.error.nonNumeric.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRelief.amount.error.twoDecimalPlaces.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRelief.amount.error.twoDecimalPlaces.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+claimExpensesOrRelief.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+claimExpensesOrRelief.change.hidden = Claim expenses or rent a room relief
 
-claimExpensesOrRRR.rentARoom = Rent a room relief
-claimExpensesOrRRR.expenses = Expenses
-claimExpensesOrRRR.radio.question.label.individual = How much do you want to claim?
-claimExpensesOrRRR.radio.question.label.agent = How much does your client want to claim?
+claimExpensesOrRelief.rentARoom = Rent a room relief
+claimExpensesOrRelief.expenses = Expenses
+claimExpensesOrRelief.radio.question.label.individual = How much do you want to claim?
+claimExpensesOrRelief.radio.question.label.agent = How much does your client want to claim?
 
-claimExpensesOrRRR.para1.jointlyLet.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
-claimExpensesOrRRR.para1.jointlyLet.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
+claimExpensesOrRelief.para1.jointlyLet.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
+claimExpensesOrRelief.para1.jointlyLet.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
 ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 
 consolidatedRRExpenses.title = Consolidated rent a room expenses

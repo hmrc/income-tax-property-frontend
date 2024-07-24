@@ -37,10 +37,10 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
 
   val withNoLinks = "Rent a room expenses"
   val lessThan85KURL =
-    s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/consolidated-rr-expenses"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rent-a-room/expenses/consolidated-expenses"
 
   val moreThan85KURL =
-    s"/update-and-submit-income-tax-return/property/$taxYear/uk-rent-a-room/expenses/rents-rates-and-insurance"
+    s"/update-and-submit-income-tax-return/property/$taxYear/rent-a-room/expenses/rents-rates-and-insurance"
 
   val scenarios: TableFor5[Boolean, String, UserAnswers, Option[(Boolean, String)], String] =
     Table[Boolean, String, UserAnswers, Option[(Boolean, String)], String](

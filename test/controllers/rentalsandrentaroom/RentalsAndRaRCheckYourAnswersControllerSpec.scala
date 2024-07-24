@@ -18,7 +18,7 @@ package controllers.rentalsandrentaroom
 
 import audit.AuditService
 import base.SpecBase
-import models.{ClaimExpensesOrRRR, RentalsAndRaRAbout, UserAnswers}
+import models.{ClaimExpensesOrRelief, RentalsAndRaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
 import org.mockito.MockitoSugar.{times, verify, when}
@@ -39,7 +39,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
   val taxYear: Int = 2023
 
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2023/uk-rent-a-room/about-section-complete-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2023/rent-a-room/complete-yes-no")
 
   "Rentals and Rent a Room Check Your Answers Controller" - {
 
@@ -103,7 +103,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
           jointlyLetYesOrNo = true,
           22.23,
           true,
-          ClaimExpensesOrRRR(claimRRROrExpenses = false, Some(22.11))
+          ClaimExpensesOrRelief(claimRRROrExpenses = false, Some(22.11))
         )
       val userAnswersWithRaRAbout =
         userAnswers.set(RentalsAndRaRAbout, rentalsAndRaRAbout).get

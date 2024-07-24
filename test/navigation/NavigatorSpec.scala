@@ -36,7 +36,7 @@ import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, 
 import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrRRRPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage}
 
 import java.time.LocalDate
 
@@ -747,9 +747,9 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
       }
 
-      "must go from ClaimExpensesOrRRRPage to CheckYourAnswersController" in {
+      "must go from ClaimExpensesOrReliefPage to CheckYourAnswersController" in {
         navigator.nextPage(
-          ClaimExpensesOrRRRPage(RentARoom),
+          ClaimExpensesOrReliefPage(RentARoom),
           taxYear,
           NormalMode,
           UserAnswers("test"),

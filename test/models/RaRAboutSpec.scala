@@ -27,7 +27,7 @@ class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChec
   val raRAboutJson: String = """{
                                |    "jointlyLetYesOrNo" : true,
                                |    "totalIncomeAmount" : 34,
-                               |    "claimExpensesOrRRR" : {
+                               |    "claimExpensesOrRelief" : {
                                |        "claimRRROrExpenses" : true,
                                |        "rentARoomAmount" : 23
                                |    }
@@ -40,7 +40,7 @@ class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChec
         RaRAbout(
           jointlyLetYesOrNo = true,
           34,
-          ClaimExpensesOrRRR(
+          ClaimExpensesOrRelief(
             claimRRROrExpenses = true,
             Some(23)
           )
