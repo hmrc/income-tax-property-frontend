@@ -85,11 +85,17 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
     }
   }
 
-  def currencyFieldWithMaximum(form: Form[_], fieldName: String, maximum: Int, expectedError: FormError): Unit =
+  def currencyFieldWithMaximum(
+    form: Form[_],
+    fieldName: String,
+    maximum: Int,
+    expectedError: FormError,
+    defaultFields: (String, String)*
+  ): Unit =
     s"not bind integers above $maximum" in {
 
       forAll(intsAboveValue(maximum) -> "intAboveMax") { number: Int =>
-        val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+        val result = form.bind(Map(fieldName -> number.toString) concat defaultFields).apply(fieldName)
         result.errors must contain only expectedError
       }
     }
@@ -103,12 +109,18 @@ trait CurrencyFieldBehaviours extends FieldBehaviours {
       }
     }
 
-  def currencyFieldWithMinimum(form: Form[_], fieldName: String, minimum: Int, expectedError: FormError): Unit = {
+  def currencyFieldWithMinimum(
+    form: Form[_],
+    fieldName: String,
+    minimum: Int,
+    expectedError: FormError,
+    defaultFields: (String, String)*
+  ): Unit = {
 
     s"not bind integers below $minimum" in {
 
       forAll(intsBelowValue(minimum) -> "intBelowMin") { number: Int =>
-        val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+        val result = form.bind(Map(fieldName -> number.toString) concat defaultFields).apply(fieldName)
         result.errors must contain only expectedError
       }
     }

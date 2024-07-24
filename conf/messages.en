@@ -1326,6 +1326,7 @@ claimExpensesOrRelief.amount.error.nonNumeric.agent = The total amount of rent a
 claimExpensesOrRelief.amount.error.twoDecimalPlaces.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
 claimExpensesOrRelief.amount.error.twoDecimalPlaces.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
 claimExpensesOrRelief.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+claimExpensesOrRelief.amount.error.maxAllowedClaim = The amount of rent a room relief claimed can not be more than your rent a room income
 claimExpensesOrRelief.change.hidden = Claim expenses or rent a room relief
 
 claimExpensesOrRelief.rentARoom = Rent a room relief
