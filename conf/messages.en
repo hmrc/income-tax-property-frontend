@@ -1761,3 +1761,9 @@ rentalsAndRentARoom.income.nonUKResidentialLandlord.heading = nonUKResidentialLa
 rentalsAndRentARoom.income.nonUKResidentialLandlord.checkYourAnswersLabel = nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.error.required = Select yes if nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.change.hidden = NonUKResidentialLandlord
+
+claimEsbaCheckYourAnswers.title = claimEsbaCheckYourAnswers
+claimEsbaCheckYourAnswers.heading = claimEsbaCheckYourAnswers
+
+claimSbaCheckYourAnswers.title = claimSbaCheckYourAnswers
+claimSbaCheckYourAnswers.heading = claimSbaCheckYourAnswers

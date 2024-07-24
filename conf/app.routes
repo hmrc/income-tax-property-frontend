@@ -302,6 +302,9 @@ POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim
 GET        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                  controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                  controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST       /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int)
+
 ############## Rentals  Enhanced Structure Building Allowance  ##############
 
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no                           controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
@@ -342,6 +345,9 @@ POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/rem
 
 GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                         controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                         controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersController.onSubmit(taxYear: Int)
 
 #################### UK RENT A ROOM ##########################
 
@@ -550,4 +556,3 @@ GET         /:taxYear/rentals-rent-a-room/income/premiums-grant-lease           
 POST        /:taxYear/rentals-rent-a-room/income/premiums-grant-lease                                 controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/income/change-premiums-grant-lease                          controllers.premiumlease.PremiumsGrantLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-
