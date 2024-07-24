@@ -24,21 +24,21 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ClaimEnhancedSBASummary  {
+object ClaimEnhancedSBASummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ClaimEsbaPage).map {
-      answer =>
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ClaimEsbaPage).map { answer =>
+      val value = if (answer) "site.yes" else "site.no"
 
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key     = "claimEnhancedSBA.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode).url)
-              .withVisuallyHiddenText(messages("claimEnhancedSBA.change.hidden"))
-          )
+      SummaryListRowViewModel(
+        key = s"claimEnhancedSBA.legend.$individualOrAgent",
+        value = ValueViewModel(value),
+        actions = Seq(
+          ActionItemViewModel("site.change", ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode).url)
+            .withVisuallyHiddenText(messages("claimEnhancedSBA.change.hidden"))
         )
+      )
     }
 }

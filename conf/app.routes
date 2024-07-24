@@ -302,6 +302,9 @@ POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim
 GET        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                              controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                              controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST       /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int)
+
 ############## Rentals  Enhanced Structure Building Allowance  ##############
 
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no                       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
@@ -342,6 +345,9 @@ POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/rem
 
 GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                     controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/complete-yes-no                     controllers.enhancedstructuresbuildingallowance.EsbaSectionFinishedController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersController.onSubmit(taxYear: Int)
 
 #################### Rent A Room About##########################
 
