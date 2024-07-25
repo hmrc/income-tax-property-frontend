@@ -86,7 +86,8 @@ case object SummaryPage {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
-    val claimRentARoomRelief = userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.claimExpensesOrReliefYesNo)
+    val claimRentARoomRelief =
+      userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.claimExpensesOrReliefYesNo)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {
@@ -99,14 +100,18 @@ case object SummaryPage {
     }
   }
 
-  def createCombinedRentalsAndRaRRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
+  def createRentalsAndRentARoomRows(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] = {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
-
+    val aboutItem = rentalsAndRaRAboutItem(userAnswers, taxYear)
     if (isRentARoomSelected && isPropertyRentalsSelected) {
-      Seq(rentalsAndRaRAboutItem(userAnswers, taxYear), rentalsAndRaRIncomeItem(taxYear))
+      if (userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage)).isDefined) {
+        Seq(aboutItem, rentalsAndRaRIncomeItem(taxYear))
+      } else {
+        Seq(aboutItem)
+      }
     } else {
-      Seq.empty
+      Seq.empty[TaskListItem]
     }
   }
 
