@@ -34,7 +34,7 @@ object DeductingTaxSummary  {
           key = KeyViewModel("deductingTax.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode,propertyType).url)
+            ActionItemViewModel("site.change", routes.DeductingTaxController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("deductingTax.change.hidden"))
           )))
       case DeductingTax(false, _) =>
