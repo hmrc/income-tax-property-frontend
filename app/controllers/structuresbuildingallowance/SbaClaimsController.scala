@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, SbasWithSupportingQuestions}
 import navigation.Navigator
 import pages.structurebuildingallowance._
 import play.api.Logging
@@ -29,10 +29,10 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.{JourneyAnswersService, PropertySubmissionService}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceClaimSummary
+import viewmodels.checkAnswers.structurebuildingallowance.{StructureBuildingAllowanceClaimSummary, StructureBuildingAllowanceSummary}
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaClaimsView
 
@@ -85,12 +85,14 @@ class SbaClaimsController @Inject() (
   }
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
-    val sbaForm = request.userAnswers.get(StructureBuildingFormGroup).getOrElse(Array())
 
-    val rows = sbaForm.zipWithIndex
-      .map(claim =>
-        StructureBuildingAllowanceClaimSummary.row(taxYear, claim._2, claim._1.structureBuildingAllowanceClaim)
-      )
+    val sbasWithSupportingQuestions =
+      request.userAnswers.get(StructureBuildingFormGroup).map(_.toArray).getOrElse(Array())
+
+    val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.map { sbaWithIndex =>
+      val (_, index) = sbaWithIndex
+      StructureBuildingAllowanceSummary.row(taxYear, index, request.userAnswers)
+    }.flatten
 
     SummaryListViewModel(rows)
   }

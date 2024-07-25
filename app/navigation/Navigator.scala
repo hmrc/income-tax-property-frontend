@@ -653,8 +653,9 @@ class Navigator @Inject() () {
 
   private def enhancedStructureBuildingAllowanceNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ClaimEsbaPage) match {
-      case Some(true) => EsbaAddClaimController.onPageLoad(taxYear)
-      case _          => SummaryController.show(taxYear)
+      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
+      case Some(false) => EsbaClaimsController.onPageLoad(taxYear)
+      case _           => SummaryController.show(taxYear)
     }
 
   private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
@@ -672,8 +673,9 @@ class Navigator @Inject() () {
 
   private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(EsbaClaimsPage) match {
-      case Some(true) => EsbaAddClaimController.onPageLoad(taxYear)
-      case _          => SummaryController.show(taxYear)
+      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
+      case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear)
+      case _           => SummaryController.show(taxYear)
     }
 
   private def esbaRemoveConfirmationNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =

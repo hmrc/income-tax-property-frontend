@@ -34,6 +34,11 @@ object Esba {
   implicit val formatter: OFormat[Esba] = Json.format[Esba]
 }
 
+final case class EsbaOnIndex(index: Int) extends Gettable[Esba] {
+  override def path: JsPath =
+    JsPath \ PageConstants.esbasWithSupportingQuestions \ PageConstants.esbaFormGroup \ index
+}
+
 object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
 
   override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString

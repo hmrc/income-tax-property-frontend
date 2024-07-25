@@ -17,6 +17,7 @@
 package models
 
 import audit._
+import pages.PageConstants
 import pages.PageConstants.{esbasWithSupportingQuestions, sbasWithSupportingQuestions}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
@@ -82,6 +83,11 @@ object Sba {
   implicit val format: OFormat[Sba] = Json.format[Sba]
 }
 
+final case class SbaOnIndex(index: Int) extends Gettable[Sba] {
+  override def path: JsPath =
+    JsPath \ PageConstants.structureBuildingFormGroup \ index
+}
+
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
   sbaClaims: Option[Boolean],
@@ -89,7 +95,7 @@ final case class SbasWithSupportingQuestions(
 )
 
 object SbasWithSupportingQuestions
-  extends Gettable[SbasWithSupportingQuestions] with Settable[SbasWithSupportingQuestions]{
+    extends Gettable[SbasWithSupportingQuestions] with Settable[SbasWithSupportingQuestions] {
   implicit val format: OFormat[SbasWithSupportingQuestions] = Json.format[SbasWithSupportingQuestions]
 
   override def path: JsPath = JsPath \ toString
