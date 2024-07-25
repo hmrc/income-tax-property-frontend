@@ -258,12 +258,6 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
           TaskListTag.NotStarted,
           "rentals_and_rent_a_room_about_link"
-        ),
-        TaskListItem(
-          "summary.income",
-          controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear),
-          TaskListTag.NotStarted,
-          "rentals_and_rent_a_room_income_link"
         )
       )
 
