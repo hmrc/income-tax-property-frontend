@@ -37,7 +37,7 @@ object EsbaSummary {
 
       SummaryListRowViewModel(
         key = value,
-        value = ValueViewModel(bigDecimalCurrency(answer.esbaClaim)), // ValueViewModel(HtmlContent(value)),
+        value = ValueViewModel(bigDecimalCurrency(answer.esbaClaim)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

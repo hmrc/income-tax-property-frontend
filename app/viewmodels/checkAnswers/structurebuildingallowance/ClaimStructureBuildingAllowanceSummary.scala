@@ -26,20 +26,22 @@ import viewmodels.implicits._
 
 object ClaimStructureBuildingAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ClaimStructureBuildingAllowancePage).map {
-      answer =>
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ClaimStructureBuildingAllowancePage).map { answer =>
+      val value = if (answer) "site.yes" else "site.no"
 
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key = "claimStructureBuildingAllowance.checkYourAnswersLabel",
-          value = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change",
-              ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("claimStructureBuildingAllowance.change.hidden"))
+      SummaryListRowViewModel(
+        key = s"claimStructureBuildingAllowance.legend.$individualOrAgent",
+        value = ValueViewModel(value),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("claimStructureBuildingAllowance.change.hidden"))
         )
+      )
     }
 }
