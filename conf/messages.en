@@ -1305,6 +1305,7 @@ ukRentARoom.expensesIntro.p4.agent = or
 
 ukRentARoom.expensesIntro.p5.individual = Individual expenses, where you enter an amount for each separate expenses type.
 ukRentARoom.expensesIntro.p5.agent = Individual expenses, where you enter an amount for each separate expenses type.
+
 claimExpensesOrRelief.title = Claim expenses or rent a room relief
 claimExpensesOrRelief.heading.agent = Claim expenses or rent a room relief
 claimExpensesOrRelief.heading.individual = Claim expenses or rent a room relief
@@ -1315,7 +1316,6 @@ claimExpensesOrRelief.no = Expenses
 claimExpensesOrRelief.yes = Rent a room relief
 claimExpensesOrRelief.legend.individual = Which one do you want to claim?
 claimExpensesOrRelief.legend.agent = Which one does your client want to claim?
-
 
 claimExpensesOrRelief.error.required.individual = Select if you want to claim rent a room relief or expenses
 claimExpensesOrRelief.error.required.agent = Select if your client wants to claim rent a room relief or expenses
@@ -1336,6 +1336,7 @@ claimExpensesOrRelief.radio.question.label.agent = How much does your client wan
 
 claimExpensesOrRelief.para1.jointlyLet.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same room.
 claimExpensesOrRelief.para1.jointlyLet.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same room.
+
 ukRentARoomJointlyLet.checkYourAnswersLabel = Jointly let rent a room
 
 consolidatedRRExpenses.title = Consolidated rent a room expenses
