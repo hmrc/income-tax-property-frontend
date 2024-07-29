@@ -364,9 +364,17 @@ class Navigator @Inject() () {
         previousUserAnswers =>
           userAnswers => isNonUKLandlordNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, RentalsRentARoom)
     case DeductingTaxPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
     case IncomeFromPropertyPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
     case premiumlease.LeasePremiumPaymentPage(RentalsRentARoom) =>
       taxYear =>
         previousUserAnswers =>
@@ -382,14 +390,23 @@ class Navigator @Inject() () {
     case premiumlease.YearLeaseAmountPage(RentalsRentARoom) =>
       taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode, RentalsRentARoom)
     case premiumlease.PremiumsGrantLeasePage(RentalsRentARoom) =>
-      taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
     case ReversePremiumsReceivedPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
     case OtherIncomeFromPropertyPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
           _ =>
-            PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
           //
         // Adjustments
     case PrivateUseAdjustmentPage | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage |
