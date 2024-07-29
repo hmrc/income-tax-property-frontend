@@ -161,7 +161,7 @@ class NavigatorSpec extends SpecBase {
       import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
       val scenarios = Table[PropertyType, String](
         ("property type", "type definition"),
-        // (RentalsRentARoom, "rentalsAndRaR"), //Todo: This should be implemented when all combined journey finished
+        (RentalsRentARoom, "rentalsAndRaR"),
         (Rentals, "rentals")
       )
 
@@ -176,7 +176,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test"),
             testUserAnswer
           ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController
-            .onPageLoad(taxYear, NormalMode, Rentals)
+            .onPageLoad(taxYear, NormalMode, propertyType)
         }
 
         s"must go from LeasePremiumPaymentPage to reversePremiumReceivedPage when user selects no for $propertyTypeDefinition" in {
@@ -202,7 +202,7 @@ class NavigatorSpec extends SpecBase {
               CheckMode,
               previousUserAnswers,
               userAnswers
-            ) mustBe CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, Rentals)
+            ) mustBe CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType)
           }
 
         s"must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects yes and the previous answer was yes for $propertyTypeDefinition" in {
@@ -214,8 +214,15 @@ class NavigatorSpec extends SpecBase {
             CheckMode,
             previousUserAnswers,
             userAnswers
-          ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
-            .onPageLoad(taxYear)
+          ) mustBe
+            (propertyType match {
+              case Rentals =>
+                controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
+                  .onPageLoad(taxYear)
+              case RentalsRentARoom =>
+                controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+                  .onPageLoad(taxYear)
+            })
         }
 
         s"must go from LeasePremiumPaymentPage to CheckYourAnswers when user selects no for $propertyTypeDefinition" in {
@@ -227,8 +234,14 @@ class NavigatorSpec extends SpecBase {
             CheckMode,
             previousUserAnswers,
             userAnswers
-          ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
-            .onPageLoad(taxYear)
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
         }
 
       }
@@ -243,7 +256,8 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           testUserAnswer
-        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
+        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
