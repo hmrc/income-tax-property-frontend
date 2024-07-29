@@ -592,7 +592,7 @@ class Navigator @Inject() () {
     userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
       case Some(true) if !previousUserAnswers.get(IsNonUKLandlordPage(propertyType)).getOrElse(false) =>
         DeductingTaxController.onPageLoad(taxYear, CheckMode, propertyType)
-      case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      case _ => toIncomeCYA(propertyType, taxYear)
     }
 
   private def leasePremiumPaymentNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
@@ -611,12 +611,7 @@ class Navigator @Inject() () {
       case Some(true) if !previousUserAnswers.get(LeasePremiumPaymentPage(propertyType)).getOrElse(false) =>
         CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType)
       case _ =>
-        propertyType match {
-          case Rentals => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
-          case RentalsRentARoom =>
-            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
-              .onPageLoad(taxYear)
-        }
+        toIncomeCYA(propertyType, taxYear)
 
     }
 
@@ -645,9 +640,16 @@ class Navigator @Inject() () {
             .map(_.calculatedFigureYourself)
             .getOrElse(true) =>
         ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType)
-      case _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      case _ =>
+        toIncomeCYA(propertyType, taxYear)
     }
-
+  private def toIncomeCYA(propertyType: PropertyType, taxYear: Int) =
+    propertyType match {
+      case Rentals => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      case RentalsRentARoom =>
+        controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+          .onPageLoad(taxYear)
+    }
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(ConsolidatedExpensesPage(propertyType)) match {
       case Some(ConsolidatedExpenses(true, _))  => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
