@@ -124,7 +124,37 @@ class Navigator @Inject() () {
     case ReversePremiumsReceivedPage(Rentals) =>
       taxYear => _ => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode, Rentals)
     case OtherIncomeFromPropertyPage(Rentals) =>
-      taxYear => _ => _ => PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+        // rentals and rent a room income
+    case IsNonUKLandlordPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers, RentalsRentARoom)
+    case DeductingTaxPage(RentalsRentARoom) =>
+      taxYear => _ => _ => IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case IncomeFromPropertyPage(RentalsRentARoom) =>
+      taxYear => _ => _ => LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case premiumlease.LeasePremiumPaymentPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => leasePremiumPaymentNavigation(taxYear, userAnswers, RentalsRentARoom)
+    case CalculatedFigureYourselfPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => calculatedFigureYourselfNavigation(taxYear, userAnswers, RentalsRentARoom)
+    case premiumlease.ReceivedGrantLeaseAmountPage(RentalsRentARoom) =>
+      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case premiumlease.YearLeaseAmountPage(RentalsRentARoom) =>
+      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case premiumlease.PremiumsGrantLeasePage(RentalsRentARoom) =>
+      taxYear => _ => _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case ReversePremiumsReceivedPage(RentalsRentARoom) =>
+      taxYear => _ => _ => OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case OtherIncomeFromPropertyPage(RentalsRentARoom) =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onPageLoad(taxYear)
+
+        //
     case PrivateUseAdjustmentPage => taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode)
     case BalancingChargePage => taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case PropertyIncomeAllowancePage =>
@@ -515,8 +545,8 @@ class Navigator @Inject() () {
 
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
-      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode, Rentals)
-      case _          => IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, Rentals)
+      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode, propertyType)
+      case _          => IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, propertyType)
     }
 
   private def isNonUKLandlordNavigationCheckMode(
@@ -558,7 +588,7 @@ class Navigator @Inject() () {
       case Some(CalculatedFigureYourself(true, _)) =>
         ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, propertyType)
       case Some(CalculatedFigureYourself(false, _)) =>
-        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
+        ReceivedGrantLeaseAmountController.onPageLoad(taxYear, NormalMode, propertyType)
     }
 
   private def calculatedFigureYourselfNavigationCheckMode(
