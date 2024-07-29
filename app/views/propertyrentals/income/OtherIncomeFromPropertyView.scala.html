@@ -28,11 +28,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("otherIncomeFromProperty.title"))) {
 
-    @formHelper(action = OtherIncomeFromPropertyController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = OtherIncomeFromPropertyController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))

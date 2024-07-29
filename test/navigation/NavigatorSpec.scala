@@ -288,7 +288,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
