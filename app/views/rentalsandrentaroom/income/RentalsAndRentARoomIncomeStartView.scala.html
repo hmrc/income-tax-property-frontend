@@ -37,6 +37,7 @@
 
     @govukButton(
         ButtonViewModel(messages("site.continue"))
-        .asLink(routes.SummaryController.show(taxYear).url).withId("continue")
+        .withId("continue")
+        .asLink(controllers.propertyrentals.income.routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, models.RentalsRentARoom).url)
     )
 }
