@@ -217,10 +217,10 @@ leasePremiumPayment.details.l2 = regular rent payments
 leasePremiumPayment.details.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
 leasePremiumPayment.details.p3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
 leasePremiumPayment.question.agent = Did your client receive a payment to take on a lease?
-leasePremiumPayment.question.individual = Did you receive a payment to take on a lease?
+leasePremiumPayment.question.individual = Did you receive a premium for granting a lease?
 leasePremiumPayment.error.required.agent = Select yes if your client received a payment to take on a lease
 leasePremiumPayment.error.required.individual = Select yes if you received a payment to take on a lease
-leasePremiumPayment.change.hidden = Did you receive a payment to take on a lease?
+leasePremiumPayment.change.hidden = Did you receive a premium for granting a lease?
 
 premiumsGrantLease.title = Premiums for a grant of a lease
 premiumsGrantLease.heading = Premiums for the grant of a lease
@@ -290,7 +290,7 @@ deductingTax.details.content.link.href = https://www.gov.uk/tax-uk-income-live-a
 
 incomeFromPropertyRentals.title = Income from Property Rentals
 incomeFromPropertyRentals.heading = Income from Property Rentals
-incomeFromPropertyRentals.checkYourAnswersLabel = Income from property Rentals
+incomeFromPropertyRentals.checkYourAnswersLabel = Income from property rentals
 incomeFromPropertyRentals.change.hidden = Income from property rentals
 incomeFromPropertyRentals.para1.individual = Rental income is the rent you get from your tenants. This includes any payments for:
 incomeFromPropertyRentals.para1.agent = Rental income is the rent your client gets from their tenants. This includes any payments for:
@@ -378,7 +378,7 @@ propertyIncomeStart.button = Continue
 
 isNonUKLandlord.title = Non-UK resident landlord
 isNonUKLandlord.heading = Non-UK resident landlord
-isNonUKLandlord.checkYourAnswersLabel = Non-UK landlords
+isNonUKLandlord.checkYourAnswersLabel = Were you a non-UK resident landlord?
 isNonUKLandlord.error.required.agent = Select yes if your client was a non-UK resident landlord
 isNonUKLandlord.error.required.individual = Select yes if you were a non-UK resident landlord
 isNonUKLandlord.change.hidden = Non-UK resident landlords
