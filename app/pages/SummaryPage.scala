@@ -24,6 +24,7 @@ import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
+import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
@@ -106,7 +107,7 @@ case object SummaryPage {
     val aboutItem = rentalsAndRaRAboutItem(userAnswers, taxYear)
     if (isRentARoomSelected && isPropertyRentalsSelected) {
       if (userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage)).isDefined) {
-        Seq(aboutItem, rentalsAndRaRIncomeItem(taxYear))
+        Seq(aboutItem, rentalsAndRaRIncomeItem(userAnswers, taxYear))
       } else {
         Seq(aboutItem)
       }
@@ -279,11 +280,21 @@ case object SummaryPage {
       "rentals_and_rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRIncomeItem(taxYear: Int) =
+  private def rentalsAndRaRIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
-      controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear),
-      TaskListTag.NotStarted,
+      controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear), {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (
+            userAnswers.flatMap(_.get(IncomeSectionFinishedPage)).isDefined
+          ) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_income_link"
     )
 

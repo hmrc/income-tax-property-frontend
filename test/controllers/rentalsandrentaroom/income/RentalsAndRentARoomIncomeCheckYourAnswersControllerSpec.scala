@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.rentalsandrentaroom
+package controllers.rentalsandrentaroom.income
 
 import base.SpecBase
 import models.User

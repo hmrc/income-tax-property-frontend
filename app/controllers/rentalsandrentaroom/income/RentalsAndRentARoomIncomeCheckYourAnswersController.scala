@@ -77,7 +77,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
               case Right(_) =>
                 Future.successful(
                   Redirect(
-                    controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear)
+                    controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
                   )
                 )
               case Left(_) =>
