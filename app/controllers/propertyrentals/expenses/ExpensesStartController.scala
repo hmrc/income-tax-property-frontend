@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{NormalMode, Rentals}
+import models.{NormalMode, PropertyType}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,15 +35,20 @@ class ExpensesStartController @Inject() (
   view: ExpensesStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, Rentals)) {
-        controllers.propertyrentals.expenses.routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
+        routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
       } else {
-        controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
+        routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
       }
       Ok(
-        view(taxYear, request.user.isAgentMessageKey, isTotalIncomeUnder85K(request.userAnswers, Rentals), under85KUrl)
+        view(
+          taxYear,
+          request.user.isAgentMessageKey,
+          isTotalIncomeUnder85K(request.userAnswers, propertyType),
+          under85KUrl
+        )
       )
-  }
+    }
 }

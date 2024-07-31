@@ -33,15 +33,22 @@ class ExpensesStartControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear).url)
+        val request = FakeRequest(
+          GET,
+          controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals).url
+        )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = true,
-          "/update-and-submit-income-tax-return/property/2024/rentals/expenses/consolidated-expenses")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          taxYear,
+          "agent",
+          isUnder85K = true,
+          "/update-and-submit-income-tax-return/property/2024/rentals/expenses/consolidated-expenses"
+        )(request, messages(application)).toString
       }
     }
 
@@ -52,15 +59,22 @@ class ExpensesStartControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear).url)
+        val request = FakeRequest(
+          GET,
+          controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals).url
+        )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent", isUnder85K = false,
-          "/update-and-submit-income-tax-return/property/2024/rentals/expenses/rents-rates-and-insurance")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          taxYear,
+          "agent",
+          isUnder85K = false,
+          "/update-and-submit-income-tax-return/property/2024/rentals/expenses/rents-rates-and-insurance"
+        )(request, messages(application)).toString
       }
     }
   }

@@ -163,7 +163,7 @@ POST       /:taxYear/rentals/adjustments/complete-yes-no                        
 
 ############## Rentals  Expenses  ##############
 
-GET         /:taxYear/rentals/expenses/start                                                controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int)
+GET         /:taxYear/rentals/expenses/start                                                controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -566,3 +566,7 @@ POST        /:taxYear/rentals-rent-a-room/income/check-your-answers             
 
 GET         /:taxYear/rentals-rent-a-room/income/complete-yes-no                                         controllers.rentalsandrentaroom.income.RentalsRaRIncomeCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals-rent-a-room/income/complete-yes-no                                         controllers.rentalsandrentaroom.income.RentalsRaRIncomeCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
+#################### Expenses Rentals And Rent A Room  ##########################
+
+GET         /:taxYear/rentals-rent-a-room/expenses/start                                                 controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int, propertyType: PropertyType = RentalsRentARoom)

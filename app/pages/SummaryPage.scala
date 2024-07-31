@@ -206,7 +206,7 @@ case object SummaryPage {
   private def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear),
+      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals),
       userAnswers
         .flatMap { answers =>
           answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
@@ -305,7 +305,7 @@ case object SummaryPage {
   private def rentalsAndRaRExpensesItem(taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.routes.SummaryController.show(taxYear),
+      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom),
       TaskListTag.NotStarted,
       "rentals_and_rent_a_room_expenses_link"
     )
