@@ -18,7 +18,7 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
-import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, UKPropertySelect}
+import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.ukrentaroom.ClaimExpensesOrReliefPage
@@ -268,11 +268,18 @@ class SummaryPageSpec extends SpecBase {
       TaskListTag.NotStarted,
       "rentals_and_rent_a_room_about_link"
     )
-    val summaryExpensesItem = TaskListItem(
+    val summaryIncomeItem = TaskListItem(
       "summary.income",
       controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "rentals_and_rent_a_room_income_link"
+    )
+
+    val summaryExpenseItem = TaskListItem(
+      "summary.expenses",
+      controllers.routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_expenses_link"
     )
 
     "return empty rows, given an empty user data" in {
@@ -314,12 +321,43 @@ class SummaryPageSpec extends SpecBase {
         .set(RentalsRaRAboutCompletePage, true)
         .success
         .value
+        .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), true)
+        .success
+        .value
 
       SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(2)
       SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
-        Seq(summaryAboutItem, summaryExpensesItem)
+        Seq(summaryAboutItem, summaryIncomeItem)
+      )
+    }
+
+    "createRentalsAndRentARoomRows return three rows when user has selected claim expenses" in {
+
+      val summaryAboutItem = TaskListItem(
+        "summary.about",
+        controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
+        TaskListTag.Completed,
+        "rentals_and_rent_a_room_about_link"
       )
 
+      val userAnswersWithRentalsAndRentARoom = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals, UKPropertySelect.RentARoom)
+        )
+        .success
+        .value
+        .set(RentalsRaRAboutCompletePage, true)
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), false)
+        .success
+        .value
+
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(3)
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
+        Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem)
+      )
     }
   }
 
