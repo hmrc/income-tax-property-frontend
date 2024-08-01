@@ -30,14 +30,19 @@ object RepairsAndMaintenanceCostsSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RepairsAndMaintenanceCostsPage(Rentals)) match {
       case Some(answer) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("repairsAndMaintenanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("RepairsAndMaintenanceCosts.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("repairsAndMaintenanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode, Rentals).url
+              )
+                .withVisuallyHiddenText(messages("RepairsAndMaintenanceCosts.change.hidden"))
+            )
           )
-        ))
+        )
       case _ => Option.empty[SummaryListRow]
     }
 }
