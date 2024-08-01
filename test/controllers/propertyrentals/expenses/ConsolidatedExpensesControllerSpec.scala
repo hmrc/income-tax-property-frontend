@@ -77,7 +77,7 @@ class ConsolidatedExpensesControllerSpec extends SpecBase with MockitoSugar {
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
         val userAnswers = UserAnswers(userAnswersId)
-          .set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(true, Some(12.34)))
+          .set(ConsolidatedExpensesPage(propertyType), ConsolidatedExpenses(true, Some(12.34)))
           .success
           .value
 
