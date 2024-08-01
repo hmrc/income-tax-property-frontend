@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.ConsolidatedExpensesFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,32 +43,41 @@ class ConsolidatedExpensesController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ConsolidatedExpensesPage(Rentals)) match {
+      val preparedForm = request.userAnswers.get(ConsolidatedExpensesPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
-  }
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
+            Future.successful(
+              BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedExpensesPage(Rentals), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ConsolidatedExpensesPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ConsolidatedExpensesPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(
+                ConsolidatedExpensesPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
         )
-  }
+    }
 }

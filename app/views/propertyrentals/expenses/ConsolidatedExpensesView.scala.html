@@ -29,13 +29,13 @@
         govukDetails: GovukDetails
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("consolidatedExpenses.title"))) {
 
         <h1 class="govuk-heading-l">@messages("consolidatedExpenses.heading")</h1>
 
-        @formHelper(action = ConsolidatedExpensesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = ConsolidatedExpensesController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

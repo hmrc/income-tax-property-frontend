@@ -165,10 +165,10 @@ POST       /:taxYear/rentals/adjustments/complete-yes-no                        
 
 GET         /:taxYear/rentals/expenses/start                                                controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/expenses/rents-rates-and-insurance                            controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/expenses/rents-rates-and-insurance                            controllers.propertyrentals.expenses.RentsRatesAndInsuranceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -570,3 +570,9 @@ POST        /:taxYear/rentals-rent-a-room/income/complete-yes-no                
 #################### Expenses Rentals And Rent A Room  ##########################
 
 GET         /:taxYear/rentals-rent-a-room/expenses/start                                                 controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int, propertyType: PropertyType = RentalsRentARoom)
+
+
+GET         /:taxYear/rentals-rent-a-room/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode,  propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/expenses/consolidated-expenses                                controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode,  propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode,  propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/expenses/change-consolidated-expenses                         controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode,  propertyType: PropertyType = RentalsRentARoom)

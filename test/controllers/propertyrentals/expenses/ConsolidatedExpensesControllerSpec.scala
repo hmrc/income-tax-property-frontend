@@ -15,11 +15,11 @@
  */
 
 package controllers.propertyrentals.expenses
-
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import base.SpecBase
 import controllers.propertyrentals.expenses.routes
 import forms.ConsolidatedExpensesFormProvider
-import models.{ConsolidatedExpenses, NormalMode, Rentals, UserAnswers}
+import models.{ConsolidatedExpenses, NormalMode, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -35,22 +35,29 @@ import views.html.propertyrentals.expenses.ConsolidatedExpensesView
 import java.time.LocalDate
 import scala.concurrent.Future
 
+class ConsolidatedExpensesControllerSpec extends SpecBase with MockitoSugar {
 
-  class ConsolidatedExpensesControllerSpec extends SpecBase with MockitoSugar {
+  def onwardRoute = Call("GET", "/")
+  private val taxYear = LocalDate.now.getYear
 
-    def onwardRoute = Call("GET", "/")
-    private val taxYear = LocalDate.now.getYear
+  val formProvider = new ConsolidatedExpensesFormProvider()
+  val form = formProvider("individual")
 
-    val formProvider = new ConsolidatedExpensesFormProvider()
-    val form = formProvider("individual")
+  val scenarios = Table[PropertyType, String](
+    ("property type", "type definition"),
+    (RentalsRentARoom, "rentalsAndRaR"),
+    (Rentals, "rentals")
+  )
 
-    lazy val consolidatedExpensesRoute = routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode).url
+  forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+    lazy val consolidatedExpensesRoute =
+      routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
 
-    "ConsolidatedExpenses Controller" - {
+    s"ConsolidatedExpenses Controller for $propertyTypeDefinition" - {
 
       "must return OK and the correct view for a GET" in {
 
-        val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
         running(application) {
           val request = FakeRequest(GET, consolidatedExpensesRoute)
@@ -60,13 +67,19 @@ import scala.concurrent.Future
           val view = application.injector.instanceOf[ConsolidatedExpensesView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual", propertyType)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(true, Some(12.34))).success.value
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ConsolidatedExpensesPage(propertyType), ConsolidatedExpenses(true, Some(12.34)))
+          .success
+          .value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -78,7 +91,13 @@ import scala.concurrent.Future
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(ConsolidatedExpenses(true, Some(12.34))), NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(
+            form.fill(ConsolidatedExpenses(true, Some(12.34))),
+            NormalMode,
+            taxYear,
+            "individual",
+            propertyType
+          )(request, messages(application)).toString
         }
       }
 
@@ -124,7 +143,10 @@ import scala.concurrent.Future
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual")(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual", propertyType)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
@@ -159,3 +181,4 @@ import scala.concurrent.Future
       }
     }
   }
+}

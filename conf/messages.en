@@ -589,8 +589,8 @@ expensesStart.details.content7.link.text = Individual expenses (opens in new tab
 expensesStart.details.content7.link.href = https://www.gov.uk/government/publications/self-assessment-uk-property-sa105/uk-property-notes-2022#property-expenses
 
 
-consolidatedExpenses.title = Consolidated expenses
-consolidatedExpenses.heading = Consolidated expenses
+consolidatedExpenses.title = Consolidated or individual expenses
+consolidatedExpenses.heading = Consolidated or individual expenses
 consolidatedExpenses.details.line1.individual = If your total property income before expenses is less than £85,000, you can just add up all of these expenses and enter the total amount:
 consolidatedExpenses.details.line1.agent = If your client’s total property income before expenses is less than £85,000, add up all of these expenses and enter the total amount:
 consolidatedExpenses.details.bullet1 = rents, rates, insurance and ground rents

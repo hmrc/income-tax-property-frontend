@@ -40,7 +40,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
@@ -52,7 +52,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
@@ -68,7 +68,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
