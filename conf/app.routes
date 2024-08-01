@@ -350,6 +350,7 @@ GET        /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-n
 POST       /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-no-check-your-answers         controllers.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersController.onSubmit(taxYear: Int)
 
 #################### Rent A Room About##########################
+GET         /:taxYear/rent-a-room/about/start                                                            controllers.ukrentaroom.RentARoomStartController.onPageLoad(taxYear: Int)
 
 GET         /:taxYear/rent-a-room/about/jointly-let                                                      controllers.ukrentaroom.JointlyLetController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
 POST        /:taxYear/rent-a-room/about/jointly-let                                                      controllers.ukrentaroom.JointlyLetController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)

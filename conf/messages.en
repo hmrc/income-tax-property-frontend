@@ -1772,3 +1772,19 @@ claimSbaCheckYourAnswers.heading = claimSbaCheckYourAnswers
 
 rentalsAndRentARoomIncomeCheckYourAnswers.title = rentalsAndRentARoomIncomeCheckYourAnswers
 rentalsAndRentARoomIncomeCheckYourAnswers.heading = rentalsAndRentARoomIncomeCheckYourAnswers
+
+ukRentARoom.about.start.title = Rent a room
+ukRentARoom.about.start.heading = Rent a room
+ukRentARoom.about.start.p1.individual = You’ll need information about your income and expenses to answer the questions starting on the next page.
+ukRentARoom.about.start.p1.agent = You’ll need information about your client’s income and expenses to answer the questions starting on the next page.
+ukRentARoom.about.start.p2.individual = If your room is jointly let just tell us about your share of the rental income.
+ukRentARoom.about.start.p2.agent = If your client’s room is jointly let just tell us about their share of the rental income.
+ukRentARoom.about.start.p3.individual = You must pay tax on any profit you make from renting out rooms in your home. How much you pay depends on:
+ukRentARoom.about.start.p3.agent = Your client must pay tax on any profit they make from renting out rooms in their home. How much they pay depends on:
+ukRentARoom.about.start.l1.individual = how much profit you make
+ukRentARoom.about.start.l1.agent = how much profit they make
+ukRentARoom.about.start.l2.individual = your personal circumstances
+ukRentARoom.about.start.l2.agent = their personal circumstances
+ukRentARoom.about.start.p4 = Read more about
+ukRentARoom.about.start.linkText = the Rent a Room Scheme at GOV.UK (opens in new tab)
+ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
