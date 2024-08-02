@@ -251,7 +251,7 @@ case object SummaryPage {
   private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom), {
+      controllers.ukrentaroom.routes.RentARoomStartController.onPageLoad(taxYear), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {

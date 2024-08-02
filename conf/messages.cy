@@ -1328,3 +1328,19 @@ claimExpensesOrRelief.radio.question.label.agent = Faint hoffai’ch cleient ei 
 
 claimExpensesOrRelief.para1.jointlyLet.individual = Gallwch hawlio hyd at £{0} y flwyddyn yn rhydd o dreth drwy rentu ystafell yn eich cartref. Os byddwch yn hawlio’r rhyddhad hwn, ni fyddwch yn gallu hawlio treuliau ar gyfer yr un ystafell.
 claimExpensesOrRelief.para1.jointlyLet.agent = Gall eich cleient hawlio hyd at £{0} y flwyddyn yn rhydd o dreth drwy rentu ystafell yn ei gartref. Os bydd eich cleient yn hawlio’r rhyddhad hwn, ni fydd yn gallu hawlio treuliau ar gyfer yr un ystafell.
+
+ukRentARoom.about.start.title = *Missing Welsh*
+ukRentARoom.about.start.heading = *Missing Welsh*
+ukRentARoom.about.start.p1.individual = *Missing Welsh*
+ukRentARoom.about.start.p1.agent = *Missing Welsh*
+ukRentARoom.about.start.p2.individual = *Missing Welsh*
+ukRentARoom.about.start.p2.agent = *Missing Welsh*
+ukRentARoom.about.start.p3.individual = *Missing Welsh*
+ukRentARoom.about.start.p3.agent = *Missing Welsh*
+ukRentARoom.about.start.l1.individual = *Missing Welsh*
+ukRentARoom.about.start.l1.agent = *Missing Welsh*
+ukRentARoom.about.start.l2.individual = *Missing Welsh*
+ukRentARoom.about.start.l2.agent = *Missing Welsh*
+ukRentARoom.about.start.p4 = *Missing Welsh*
+ukRentARoom.about.start.linkText = *Missing Welsh*
+ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income

@@ -176,7 +176,7 @@ class SummaryPageSpec extends SpecBase {
     val taxYear = LocalDate.now.getYear
     val summaryAboutItem = TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom),
+      controllers.ukrentaroom.routes.RentARoomStartController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "rent_a_room_about_link"
     )
@@ -211,7 +211,6 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      // ToDo: Should be updated when expenses selection page ticket is merged.
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(1)
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
         Seq(summaryAboutItem)
@@ -247,11 +246,13 @@ class SummaryPageSpec extends SpecBase {
         )
         .success
         .value
-        .set(ClaimExpensesOrReliefPage(RentARoom), ClaimExpensesOrRelief(false, Some(12.34)))
+        .set(
+          ClaimExpensesOrReliefPage(RentARoom),
+          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(12.34))
+        )
         .success
         .value
 
-      // ToDo: Should be updated when expenses selection page ticket is merged.
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear).length should be(4)
       SummaryPage.createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
         Seq(summaryAboutItem, summaryExpensesItem, summaryAllowancesItem, summaryAdjustmentsItem)
