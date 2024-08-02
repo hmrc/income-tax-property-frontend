@@ -442,8 +442,8 @@ expensesStart.details.content7	=	lle rydych yn nodi swm ar gyfer pob math o drau
 expensesStart.details.content7.link.text	=	Treuliau unigol (yn agor tab newydd)
 
 
-consolidatedExpenses.title	=	Treuliau cyfunol
-consolidatedExpenses.heading	=	Treuliau cyfunol
+consolidatedExpenses.title	=	*Missing Welsh*
+consolidatedExpenses.heading	=	*Missing Welsh*
 consolidatedExpenses.details.line1.individual	=	Os yw cyfanswm eich incwm o eiddo yn llai na £85,000 cyn treuliau, gallwch adio’r holl dreuliau hyn a nodi’r cyfanswm:
 consolidatedExpenses.details.line1.agent	=	Os yw cyfanswm incwm o eiddo eich cleient yn llai na £85,000 cyn treuliau, adiwch yr holl dreuliau hyn a nodi’r cyfanswm:
 consolidatedExpenses.details.bullet1	=	rhenti, ardrethi, yswiriant a rhenti tir
