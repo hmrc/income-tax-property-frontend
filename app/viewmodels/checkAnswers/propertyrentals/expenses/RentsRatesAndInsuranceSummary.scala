@@ -34,7 +34,7 @@ object RentsRatesAndInsuranceSummary {
           key = KeyViewModel("rentsRatesAndInsurance.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode, Rentals).url)
               .withVisuallyHiddenText(messages("RentsRatesAndInsurance.change.hidden"))
           )
         ))

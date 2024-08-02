@@ -26,11 +26,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"rentsRatesAndInsurance.title.${individualOrAgent}"))) {
 
-    @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = RentsRatesAndInsuranceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -38,11 +38,6 @@
 
         <h1 class="govuk-heading-l">@messages(s"rentsRatesAndInsurance.heading.${individualOrAgent}")</h1>
 
-<details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-        @messages("rentsRatesAndInsurance.details.summary")
-    </summary>
-    <div class="govuk-details__text">
         <ul class="govuk-list govuk-list--bullet">
             <li>@messages(s"rentsRatesAndInsurance.details.bulletPoint.l1.${individualOrAgent}")</li>
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l2")</li>
@@ -51,9 +46,8 @@
             <li>@messages("rentsRatesAndInsurance.details.bulletPoint.l5")</li>
         </ul>
         <p class="govuk-body">@messages(s"rentsRatesAndInsurance.details.content.p1.${individualOrAgent}")</p>
-        <p class="govuk-body">@messages(s"rentsRatesAndInsurance.details.content.p2.${individualOrAgent}")</p>
-    </div>
-</details>
+
+
 
 
 @govukInput(

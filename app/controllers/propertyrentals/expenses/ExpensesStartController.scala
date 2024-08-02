@@ -40,7 +40,7 @@ class ExpensesStartController @Inject() (
       val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
         routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
       } else {
-        routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
+        routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType).url
       }
       Ok(
         view(
