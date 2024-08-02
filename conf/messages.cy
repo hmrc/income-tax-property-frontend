@@ -1344,3 +1344,43 @@ ukRentARoom.about.start.l2.agent = *Missing Welsh*
 ukRentARoom.about.start.p4 = *Missing Welsh*
 ukRentARoom.about.start.linkText = *Missing Welsh*
 ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
+
+consolidatedRRExpenses.title = Treuliau Rhentu Ystafell cyfunol
+consolidatedRRExpenses.heading = Treuliau Rhentu Ystafell cyfunol
+consolidatedRRExpenses.details.line1.individual = Gallwch adio’r holl dreuliau hyn at ei gilydd a nodi’r cyfanswm, neu gallwch nodi swm ar gyfer pob traul ar wahân.
+consolidatedRRExpenses.details.line1.agent = Gall eich cleient adio’r holl dreuliau hyn at ei gilydd a nodi’r cyfanswm, neu gall nodi swm ar gyfer pob traul ar wahân.
+consolidatedRRExpenses.details.bullet1 = rhenti, ardrethi ac yswiriant
+consolidatedRRExpenses.details.bullet2 = gwaith atgyweirio a chynnal a chadw eiddo
+consolidatedRRExpenses.details.bullet3 = llog ar fenthyciadau a chostau ariannol eraill
+consolidatedRRExpenses.details.bullet4 = ffioedd cyfreithiol, ffioedd rheoli a ffioedd proffesiynol eraill
+consolidatedRRExpenses.details.bullet5 = costau gwasanaethau a ddarparwyd, gan gynnwys cyflogau
+consolidatedRRExpenses.details.bullet6 = costau teithio yn sgil busnes eiddo
+consolidatedRRExpenses.details.bullet7 = treuliau eiddo caniataol eraill
+consolidatedRRExpenses.details.line2 = Peidiwch â chynnwys y gost o brynu, gwerthu, gwella neu addasu unrhyw dir, eiddo, cyfarpar, gosodiadau neu ddodrefn. Dyma’r costau cyfalaf.
+consolidatedRRExpenses.details.line3.individual = Os yw’ch eiddo, sydd wedi’i rentu, wedi’i osod ar y cyd, y cyfan y mae angen i chi roi gwybod i ni amdano yw eich cyfran chi o’r treuliau ar gyfer yr eiddo.
+consolidatedRRExpenses.details.line3.agent = Os yw eiddo wedi’i rentu eich cleient wedi’i osod ar y cyd, y cyfan y mae angen i chi roi gwybod i ni amdano yw ei gyfran o’r treuliau ar gyfer yr eiddo.
+consolidatedRRExpenses.checkYourAnswersLabel.individual = Faint oedd eich treuliau cyfunol?
+consolidatedRRExpenses.checkYourAnswersLabel.agent = Faint oedd treuliau cyfunol eich cleient?
+consolidatedRRExpenses.radio.legend.individual = Beth hoffech chi ei wneud?
+consolidatedRRExpenses.radio.legend.agent = Beth hoffai’ch cleient ei wneud?
+
+consolidatedRRExpenses.error.required.individual = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
+consolidatedRRExpenses.error.required.agent = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
+consolidatedRRExpenses.error.required.amount.individual = Nodwch y swm ar gyfer eich treuliau cyfunol
+consolidatedRRExpenses.error.required.amount.agent = Nodwch y swm ar gyfer treuliau cyfunol eich cleient
+consolidatedRRExpenses.error.nonNumeric.individual = Nodwch swm ar gyfer eich treuliau cyfunol
+consolidatedRRExpenses.error.nonNumeric.agent = Nodwch swm ar gyfer treuliau cyfunol eich cleient
+consolidatedRRExpenses.error.twoDecimalPlaces.individual = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
+consolidatedRRExpenses.error.twoDecimalPlaces.agent = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
+consolidatedRRExpenses.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
+
+consolidatedRRExpenses.consolidated = Hawlio treuliau cyfunol
+consolidatedRRExpenses.indiv = Hawlio treuliau unigol
+
+consolidatedRRExpenses.change.hidden = Treuliau Rhentu Ystafell cyfunol
+consolidatedRRExpenses.checkYourAnswersLabel.type = *Missing Welsh*
+consolidatedRRExpenses.checkYourAnswersLabel.amount.individual = *Missing Welsh*
+consolidatedRRExpenses.checkYourAnswersLabel.amount.agent = *Missing Welsh*
+consolidatedRRExpenses.yes = *Missing Welsh*
+consolidatedRRExpenses.no = *Missing Welsh*
+
