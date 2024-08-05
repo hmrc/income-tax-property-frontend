@@ -1680,3 +1680,38 @@ haveYouFinishedThisSection.heading = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.title = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.hint = Byddwch yn dal i allu mynd yn ôl ac adolygu’r wybodaeth rydych wedi’i rhoi i ni ar ôl i chi ei gorffen.
 haveYouFinishedThisSection.error.required = Dewiswch ‘Iawn’ os ydych wedi llenwi’r adran hon
+
+raRAdjustmentsIntro.title = Addasiadau
+raRAdjustmentsIntro.heading = Addasiadau
+raRAdjustmentsStart.para1 = Yn yr adran hon, byddwn yn gofyn i chi am yr addasiadau canlynol:
+raRAdjustmentsIntro.bullet.content.l1 = tâl mantoli
+raRAdjustmentsIntro.bullet.content.l2 = costau ariannol eiddo preswyl sydd heb eu defnyddio a ddygwyd ymlaen
+
+raRbalancingCharge.title.agent = Tâl mantoli
+raRbalancingCharge.title.individual = Tâl mantoli
+raRbalancingCharge.heading.agent = Faint oedd tâl mantoli eich cleient?
+raRbalancingCharge.heading.individual = Tâl mantoli
+raRbalancingCharge.para.individual = Deall tâl mantoli
+raRbalancingCharge.para.agent = Deall tâl mantoli
+
+raRbalancingCharge.checkYourAnswersAmountLabel = Ffigur hunangyfrifedig
+raRbalancingCharge.checkYourAnswersLabel.individual = A oes rhaid i chi roi gwybod am dâl mantoli?
+raRbalancingCharge.checkYourAnswersLabel.agent = A oes rhaid i’ch cleient roi gwybod am dâl mantoli?
+raRbalancingCharge.error.required.agent = Dewiswch ‘Iawn’ os oes rhaid i’ch cleient roi gwybod am dâl mantoli
+raRbalancingCharge.error.required.individual = Dewiswch ‘Iawn’ os oes rhaid i chi roi gwybod am dâl mantoli
+raRbalancingCharge.change.hidden = Tâl mantoli
+raRbalancingCharge.details.line1 = Os gwnaethoch werthu, rhoi am ddim neu roi’r gorau i ddefnyddio eitem wrth redeg eich cynllun rhentu ystafell y buoch yn hawlio lwfansau cyfalaf ar ei chyfer, efallai y bydd yn rhaid i chi gynnwys tâl mantoli.
+raRbalancingCharge.details.line2 = Ystyrir unrhyw daliadau mantoli yn incwm os ydych yn hawlio lwfans incwm o eiddo.
+raRbalancingCharge.details.line2.link.text = Bydd ‘Nid yw’n ofynnol’ yn newid i ryw werth yn ddiofyn
+raRbalancingCharge.radio.legend.individual = A oes rhaid i chi roi gwybod am dâl mantoli?
+raRbalancingCharge.radio.legend.agent = A oes rhaid i’ch cleient roi gwybod am dâl mantoli?
+raRbalancingCharge.radio.question.label = Faint yw’r tâl mantoli?
+raRbalancingCharge.label = Nodwch y ffigur
+
+raRbalancingCharge.amount.error.required.individual = Nodwch y swm ar gyfer y tâl mantoli
+raRbalancingCharge.amount.error.required.agent = Nodwch y swm ar gyfer y tâl mantoli
+raRbalancingCharge.amount.error.nonNumeric.individual = Gall y swm ar gyfer eich tâl mantoli gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.nonNumeric.agent = Gall y swm ar gyfer tâl mantoli eich cleient gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.individual = Gall y swm ar gyfer eich tâl mantoli gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.agent = Gall y swm ar gyfer tâl mantoli eich cleient gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}

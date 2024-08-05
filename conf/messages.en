@@ -1706,7 +1706,6 @@ raRbalancingCharge.para.individual = Understanding balancing charge
 raRbalancingCharge.para.agent = Understanding balancing charge
 
 raRbalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
-
 raRbalancingCharge.checkYourAnswersLabel.individual = Do you have to report a balancing charge?
 raRbalancingCharge.checkYourAnswersLabel.agent = Does your client have to report a balancing charge?
 raRbalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
@@ -1726,12 +1725,12 @@ raRbalancingCharge.amount.error.nonNumeric.individual = The amount for your bala
 raRbalancingCharge.amount.error.nonNumeric.agent = The amount for your client’s balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client’s balancing charge can only include pounds and pence, for example £600 or £600.20
-
 raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
+# Remove?
 raRAdjustmentsCYA.title = raRAdjustmentsCYA
 raRAdjustmentsCYA.heading = raRAdjustmentsCYA
-
+# Remove?
 raRAllowancesCYA.title = raRAllowancesCYA
 raRAllowancesCYA.heading = raRAllowancesCYA
 
@@ -1766,12 +1765,13 @@ rentalsAndRentARoom.income.nonUKResidentialLandlord.checkYourAnswersLabel = nonU
 rentalsAndRentARoom.income.nonUKResidentialLandlord.error.required = Select yes if nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.change.hidden = NonUKResidentialLandlord
 
+# Remove?
 claimEsbaCheckYourAnswers.title = claimEsbaCheckYourAnswers
 claimEsbaCheckYourAnswers.heading = claimEsbaCheckYourAnswers
-
+# Remove?
 claimSbaCheckYourAnswers.title = claimSbaCheckYourAnswers
 claimSbaCheckYourAnswers.heading = claimSbaCheckYourAnswers
-
+# Remove?
 rentalsAndRentARoomIncomeCheckYourAnswers.title = rentalsAndRentARoomIncomeCheckYourAnswers
 rentalsAndRentARoomIncomeCheckYourAnswers.heading = rentalsAndRentARoomIncomeCheckYourAnswers
 
