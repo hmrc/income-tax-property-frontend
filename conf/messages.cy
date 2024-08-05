@@ -112,33 +112,33 @@ totalIncome.title.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eidd
 totalIncome.title.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 totalIncome.heading.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eiddo yn y DU?
 totalIncome.heading.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-totalIncome.body.individual = *Missing Welsh*
-totalIncome.body.agent = *Missing Welsh*
+totalIncome.body.individual = Dyma’r swm cyn i unrhyw ddidyniadau gael eu gwneud.
+totalIncome.body.agent = Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 totalIncome.under	=	O dan £1,000
 totalIncome.between	=	Rhwng £1,000 a £85,000
 totalIncome.over	=	Dros £85,000
 totalIncome.checkYourAnswersLabel.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eiddo yn y DU?
 totalIncome.checkYourAnswersLabel.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i eiddo yn y DU?
 totalIncome.change.hidden.individual	=	Incwm o eiddo yn y DU
-totalIncome.change.hidden.agent	=	*Missing Welsh*
+totalIncome.change.hidden.agent	=	beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 
 ukPropertySelect.title.individual	=	Dewiswch eiddo yn y DU
 ukPropertySelect.title.agent	=	Dewiswch eiddo yn y DU
 ukPropertySelect.heading.individual	=	Eiddo yn y DU
 ukPropertySelect.heading.message.individual	=	Dewiswch bob un sy’n berthnasol
-ukPropertySelect.heading.message.agent	=	*Missing Welsh*
+ukPropertySelect.heading.message.agent	=	Dewiswch bob un sy’n berthnasol i’ch cleient
 ukPropertySelect.heading.agent	=	Eiddo yn y DU
 ukPropertySelect.property.rentals	=	Eiddo wedi’u rhentu
-ukPropertySelect.property.rentals.hint = *Missing Welsh*
+ukPropertySelect.property.rentals.hint =	Fflat, tŷ neu fan preswyl arall sy’n cael ei roi ar osod i denantiaid ar sail tymor byr neu dymor hir. Dylech gynnwys rhentu eiddo a thir arall gan gynnwys llynnoedd, tiroedd hamdden ac eiddo dibreswyl
 ukPropertySelect.furnished.holiday.lettings	=	Llety gwyliau wedi’i ddodrefnu (FHL)
 ukPropertySelect.rent.a.room	=	Rhentu ystafell
-ukPropertySelect.rent.a.room.hint = *Missing Welsh*
+ukPropertySelect.rent.a.room.hint = Ystafell wedi’i dodrefnu yn eich prif gartref sy’n cael ei rhoi ar osod i denantiaid.
 ukPropertySelect.error.required.individual = Dewiswch y math o eiddo sydd gennych
 ukPropertySelect.error.required.agent = Dewiswch y math o eiddo sydd gan eich cleient
 ukPropertySelect.checkYourAnswersLabel.individual	=	Mathau o eiddo yn y DU
-ukPropertySelect.checkYourAnswersLabel.agent	=	*Missing Welsh*
+ukPropertySelect.checkYourAnswersLabel.agent	=	Pa eiddo rhent sydd gan eich cleient yn y DU?
 ukPropertySelect.change.hidden.individual	=	Eiddo yn y DU
-ukPropertySelect.change.hidden.agent	=	*Missing Welsh*
+ukPropertySelect.change.hidden.agent	=	pa eiddo rhent sydd gan eich cleient yn y DU?
 
 expensesLessThan1000.title	=	Treuliau’n llai na £1,000
 expensesLessThan1000.heading	=	Treuliau’n llai na £1,000
@@ -724,7 +724,7 @@ otherCapitalAllowance.input.heading.agent	=	Faint yw lwfansau cyfalaf eraill eic
 otherCapitalAllowance.checkYourAnswersLabel	=	Lwfansau cyfalaf eraill
 otherCapitalAllowance.change.hidden	=	Lwfansau cyfalaf eraill
 
-#################### Error messages
+#################### Error messages.en
 
 totalIncome.error.required = Dewiswch gyfanswm yr incwm a gawsoch o’ch eiddo yn y DU
 
@@ -1219,17 +1219,6 @@ sbaRemoveConfirmation.title =	A ydych am ddileu’r hawliad {0} hwn am lwfans st
 sbaRemoveConfirmation.heading =	A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau?
 sbaRemoveConfirmation.error.required.individual =	Dewiswch ‘Iawn’ os ydych am ddileu’r hawliad
 sbaRemoveConfirmation.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient am ddileu’r hawliad
-
-totalIncome.body.individual	= Dyma’r swm cyn i unrhyw ddidyniadau gael eu gwneud.
-totalIncome.body.agent =	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-totalIncome.change.hidden.agent =	beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-ukPropertySelect.heading.message.agent =	Dewiswch bob un sy’n berthnasol i’ch cleient
-ukPropertySelect.property.rentals.hint =	Fflat, tŷ neu fan preswyl arall sy’n cael ei roi ar osod i denantiaid ar sail tymor byr neu dymor hir. Dylech gynnwys rhentu eiddo a thir arall gan gynnwys llynnoedd, tiroedd hamdden ac eiddo dibreswyl
-ukPropertySelect.rent.a.room.hint =	Ystafell wedi’i dodrefnu yn eich prif gartref sy’n cael ei rhoi ar osod i denantiaid.
-ukPropertySelect.error.required.individual =	Dewiswch y math o eiddo sydd gennych
-ukPropertySelect.error.required.agent =	Dewiswch y math o eiddo sydd gan eich cleient
-ukPropertySelect.checkYourAnswersLabel.agent =	Pa eiddo rhent sydd gan eich cleient yn y DU?
-ukPropertySelect.change.hidden.agent =	pa eiddo rhent sydd gan eich cleient yn y DU?
 
 rentalsAndRentARoomIncomeStart.title = *Missing Welsh*
 rentalsAndRentARoomIncomeStart.heading = *Missing Welsh*

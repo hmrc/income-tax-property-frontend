@@ -1727,12 +1727,6 @@ raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for you
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client’s balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
-# Remove?
-raRAdjustmentsCYA.title = raRAdjustmentsCYA
-raRAdjustmentsCYA.heading = raRAdjustmentsCYA
-# Remove?
-raRAllowancesCYA.title = raRAllowancesCYA
-raRAllowancesCYA.heading = raRAllowancesCYA
 
 haveYouFinishedThisSection.heading = Have you finished this section?
 haveYouFinishedThisSection.title = Have you finished this section?
@@ -1764,16 +1758,6 @@ rentalsAndRentARoom.income.nonUKResidentialLandlord.heading = nonUKResidentialLa
 rentalsAndRentARoom.income.nonUKResidentialLandlord.checkYourAnswersLabel = nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.error.required = Select yes if nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.change.hidden = NonUKResidentialLandlord
-
-# Remove?
-claimEsbaCheckYourAnswers.title = claimEsbaCheckYourAnswers
-claimEsbaCheckYourAnswers.heading = claimEsbaCheckYourAnswers
-# Remove?
-claimSbaCheckYourAnswers.title = claimSbaCheckYourAnswers
-claimSbaCheckYourAnswers.heading = claimSbaCheckYourAnswers
-# Remove?
-rentalsAndRentARoomIncomeCheckYourAnswers.title = rentalsAndRentARoomIncomeCheckYourAnswers
-rentalsAndRentARoomIncomeCheckYourAnswers.heading = rentalsAndRentARoomIncomeCheckYourAnswers
 
 ukRentARoom.about.start.title = Rent a room
 ukRentARoom.about.start.heading = Rent a room
