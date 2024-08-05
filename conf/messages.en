@@ -1378,6 +1378,7 @@ consolidatedRRExpenses.checkYourAnswersLabel.amount.agent = How much were your c
 consolidatedRRExpenses.yes = Consolidated
 consolidatedRRExpenses.no = Individual
 
+# Remove?
 ukrentaroom.expenses.residentialPropertyFinanceCosts.title.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.heading.individual = Residential property finance costs
 ukrentaroom.expenses.residentialPropertyFinanceCosts.label.individual = How much did you spend on residential property finance costs?
@@ -1606,6 +1607,7 @@ rRAllowancesStart.bullet.content.l3 = replacing domestic goods
 rRAllowancesStart.bullet.content.l4 = other capital allowances
 rRAllowancesStart.details.content.l5 = Capital allowances for a car
 
+# Remove?
 ukrentaroom.allowancesComplete.title = Have you completed this section?
 ukrentaroom.allowancesComplete.heading = Have you completed this section?
 ukrentaroom.allowancesComplete.error.required = Select yes if you have completed this section
