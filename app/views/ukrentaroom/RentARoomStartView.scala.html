@@ -1,0 +1,50 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.ukrentaroom.routes
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(taxYear: Int, userType: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("ukRentARoom.about.start.title"))) {
+
+    <h1 class="govuk-heading-l">@messages("ukRentARoom.about.start.heading")</h1>
+    <p class="govuk-body">@messages(s"ukRentARoom.about.start.p1.$userType")</p>
+    <p class="govuk-body">@messages(s"ukRentARoom.about.start.p2.$userType")</p>
+    <p class="govuk-body">@messages(s"ukRentARoom.about.start.p3.$userType")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages(s"ukRentARoom.about.start.l1.$userType")</li>
+        <li>@messages(s"ukRentARoom.about.start.l2.$userType")</li>
+    </ul>
+
+    <p class="govuk-body">
+        @messages("ukRentARoom.about.start.p4")
+        <a href="@messages("ukRentARoom.about.start.link")" target="_blank" class="govuk-link">
+        @messages("ukRentARoom.about.start.linkText")
+        </a>
+    </p>
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+        .asLink(routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom).url)
+        .withId("continue")
+    )
+}

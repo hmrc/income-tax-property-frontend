@@ -464,7 +464,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode)
+        ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from RepairsAndMaintenanceCostsPage to LoanInterestPage" in {
