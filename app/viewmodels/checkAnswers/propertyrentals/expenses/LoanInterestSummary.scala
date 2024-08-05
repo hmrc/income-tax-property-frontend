@@ -34,7 +34,10 @@ object LoanInterestSummary {
             key = KeyViewModel("loanInterest.checkYourAnswersLabel").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", routes.LoanInterestController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel(
+                "site.change",
+                routes.LoanInterestController.onPageLoad(taxYear, CheckMode, Rentals).url
+              )
                 .withVisuallyHiddenText(messages("loanInterest.change.hidden"))
             )
           )

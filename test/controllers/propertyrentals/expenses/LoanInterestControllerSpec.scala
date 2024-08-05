@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import base.SpecBase
 import controllers.routes
 import forms.LoanInterestFormProvider
-import models.{NormalMode, Rentals, UserAnswers}
+import models.{NormalMode, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -34,6 +34,7 @@ import repositories.SessionRepository
 import views.html.propertyrentals.expenses.LoanInterestView
 
 import scala.concurrent.Future
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
 
@@ -46,118 +47,138 @@ class LoanInterestControllerSpec extends SpecBase with MockitoSugar {
 
   val validAnswer: BigDecimal = BigDecimal(100)
 
-  lazy val loanInterestRoute: String = controllers.propertyrentals.expenses.routes.LoanInterestController.onPageLoad(taxYear, NormalMode).url
+  val scenarios = Table[PropertyType, String](
+    ("property type", "type definition"),
+    (RentalsRentARoom, "rentalsAndRaR"),
+    (Rentals, "rentals")
+  )
 
-  "LoanInterest Controller" - {
+  forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+    lazy val loanInterestRoute: String =
+      controllers.propertyrentals.expenses.routes.LoanInterestController
+        .onPageLoad(taxYear, NormalMode, propertyType)
+        .url
 
-    "must return OK and the correct view for a GET" in {
+    s"LoanInterest Controller $propertyTypeDefinition" - {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      "must return OK and the correct view for a GET" in {
 
-      running(application) {
-        val request = FakeRequest(GET, loanInterestRoute)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request = FakeRequest(GET, loanInterestRoute)
 
-        val view = application.injector.instanceOf[LoanInterestView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode)(request, messages(application)).toString
+          val view = application.injector.instanceOf[LoanInterestView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, taxYear, individual, NormalMode, propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+      "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(LoanInterestPage(Rentals), validAnswer).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(LoanInterestPage(propertyType), validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
-      running(application) {
-        val request = FakeRequest(GET, loanInterestRoute)
+        running(application) {
+          val request = FakeRequest(GET, loanInterestRoute)
 
-        val view = application.injector.instanceOf[LoanInterestView]
+          val view = application.injector.instanceOf[LoanInterestView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode)(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individual, NormalMode, propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to the next page when valid data is submitted" in {
+      "must redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
+        val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, loanInterestRoute)
-            .withFormUrlEncodedBody(("loanInterestOrOtherFinancialCost", validAnswer.toString))
+        running(application) {
+          val request =
+            FakeRequest(POST, loanInterestRoute)
+              .withFormUrlEncodedBody(("loanInterestOrOtherFinancialCost", validAnswer.toString))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRoute.url
+        }
       }
-    }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+      "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, loanInterestRoute)
-            .withFormUrlEncodedBody(("otherProfessionalFees", "invalid value"))
+        running(application) {
+          val request =
+            FakeRequest(POST, loanInterestRoute)
+              .withFormUrlEncodedBody(("otherProfessionalFees", "invalid value"))
 
-        val boundForm = form.bind(Map("otherProfessionalFees" -> "invalid value"))
+          val boundForm = form.bind(Map("otherProfessionalFees" -> "invalid value"))
 
-        val view = application.injector.instanceOf[LoanInterestView]
+          val view = application.injector.instanceOf[LoanInterestView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode)(request, messages(application)).toString
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, taxYear, individual, NormalMode, propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
-      running(application) {
-        val request = FakeRequest(GET, loanInterestRoute)
+        running(application) {
+          val request = FakeRequest(GET, loanInterestRoute)
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+      "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, loanInterestRoute)
-            .withFormUrlEncodedBody(("otherProfessionalFees", validAnswer.toString))
+        running(application) {
+          val request =
+            FakeRequest(POST, loanInterestRoute)
+              .withFormUrlEncodedBody(("otherProfessionalFees", validAnswer.toString))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
+          status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
   }
