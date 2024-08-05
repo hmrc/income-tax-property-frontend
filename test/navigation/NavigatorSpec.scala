@@ -517,7 +517,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
         navigator.nextPage(

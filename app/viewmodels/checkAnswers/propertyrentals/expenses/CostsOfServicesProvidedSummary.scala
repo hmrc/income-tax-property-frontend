@@ -37,7 +37,7 @@ object CostsOfServicesProvidedSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.CostsOfServicesProvidedController.onPageLoad(taxYear, CheckMode).url
+                routes.CostsOfServicesProvidedController.onPageLoad(taxYear, CheckMode, Rentals).url
               )
                 .withVisuallyHiddenText(messages("costsOfServicesProvided.change.hidden"))
             )

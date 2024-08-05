@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.CostsOfServicesProvidedFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.CostsOfServicesProvidedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,43 +30,49 @@ import views.html.propertyrentals.expenses.CostsOfServicesProvidedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CostsOfServicesProvidedController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: CostsOfServicesProvidedFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CostsOfServicesProvidedView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CostsOfServicesProvidedController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CostsOfServicesProvidedFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CostsOfServicesProvidedView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(CostsOfServicesProvidedPage(Rentals)) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(CostsOfServicesProvidedPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors,taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CostsOfServicesProvidedPage(Rentals), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CostsOfServicesProvidedPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(CostsOfServicesProvidedPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(CostsOfServicesProvidedPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }
