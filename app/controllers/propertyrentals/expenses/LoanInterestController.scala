@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.LoanInterestFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,32 +43,34 @@ class LoanInterestController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(LoanInterestPage(Rentals)) match {
+      val preparedForm = request.userAnswers.get(LoanInterestPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(LoanInterestPage(Rentals), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(LoanInterestPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(LoanInterestPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(LoanInterestPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

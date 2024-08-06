@@ -244,130 +244,151 @@ class NavigatorSpec extends SpecBase {
           })
         }
 
-      }
+        s"must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no for $propertyTypeDefinition" in {
+          val testUserAnswer =
+            UserAnswers("test")
+              .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
+              .get
 
-      "must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmountPage when user selects no" in {
-        val testUserAnswer =
-          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(false, None)).get
+          navigator.nextPage(
+            CalculatedFigureYourselfPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-        navigator.nextPage(
-          CalculatedFigureYourselfPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.premiumlease.routes.ReceivedGrantLeaseAmountController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes for $propertyTypeDefinition" in {
+          val testUserAnswer =
+            UserAnswers("test")
+              .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(true, Some(100)))
+              .get
 
-      "must go from CalculatedFigureYourselfPage to ReversePremiumReceivedPage when user selects yes" in {
-        val testUserAnswer =
-          UserAnswers("test").set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(100))).get
+          navigator.nextPage(
+            CalculatedFigureYourselfPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-        navigator.nextPage(
-          CalculatedFigureYourselfPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            premiumlease.ReceivedGrantLeaseAmountPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.premiumlease.routes.YearLeaseAmountController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from RecievedGrantLeaseAmountPage to YearLeaseAmountPage" in {
-        navigator.nextPage(
-          premiumlease.ReceivedGrantLeaseAmountPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from YearLeaseAmountPage to PremiumsGrantLeasePage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            premiumlease.YearLeaseAmountPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from YearLeaseAmountPage to PremiumsGrantLeasePage" in {
-        navigator.nextPage(
-          premiumlease.YearLeaseAmountPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from reverse to OtherIncomeFromPropertyPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ReversePremiumsReceivedPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from reverse to OtherIncomeFromPropertyPage" in {
-        navigator.nextPage(
-          ReversePremiumsReceivedPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.income.routes.OtherIncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ClaimPropertyIncomeAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe
+            (propertyType match {
+              case Rentals =>
+                controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController
+                  .onPageLoad(taxYear)
+              case RentalsRentARoom =>
+                controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController
+                  .onPageLoad(taxYear)
+            })
+        }
 
-      "must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage" in {
-        navigator.nextPage(
-          ClaimPropertyIncomeAllowancePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
-      }
+        s"must go from DeductingTax to CheckYourAnswers for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            DeductingTaxPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from DeductingTax to CheckYourAnswers" in {
-        navigator.nextPage(
-          DeductingTaxPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from IncomeFromPropertyRentalsPage to LeasePremiumPaymentPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            IncomeFromPropertyPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.premiumlease.routes.LeasePremiumPaymentController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from IncomeFromPropertyRentalsPage to LeasePremiumPaymentPage" in {
-        navigator.nextPage(
-          IncomeFromPropertyPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.premiumlease.routes.LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes for $propertyTypeDefinition" in {
+          val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(propertyType), true).get
+          navigator.nextPage(
+            IsNonUKLandlordPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from IsNonUKLandlordPage to DeductingTaxPage when answer is yes" in {
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), true).get
-        navigator.nextPage(
-          IsNonUKLandlordPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.DeductingTaxController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no for $propertyTypeDefinition" in {
+          val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(propertyType), false).get
+          navigator.nextPage(
+            IsNonUKLandlordPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from IsNonUKLandlordPage to IncomeFromPropertyRentalsPage when answer is no" in {
-        val userAnswers = UserAnswers("test").set(IsNonUKLandlordPage(Rentals), false).get
-        navigator.nextPage(
-          IsNonUKLandlordPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          userAnswers
-        ) mustBe controllers.propertyrentals.income.routes.IncomeFromPropertyController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from OtherIncomeFromPropertyPage to PropertyIncomeCheckYourAnswersPage" in {
-        navigator.nextPage(
-          OtherIncomeFromPropertyPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+        s"must go from OtherIncomeFromPropertyPage to PropertyIncomeCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            OtherIncomeFromPropertyPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
       }
 
       "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
@@ -474,7 +495,8 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.LoanInterestController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.propertyrentals.expenses.routes.LoanInterestController
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
@@ -916,6 +938,24 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test"),
             UserAnswers("test")
           ) mustBe checkCYARouteForPropertyType(propertyType, taxYear)
+        }
+
+        s"must go from ClaimPropertyIncomeAllowancePage to CheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ClaimPropertyIncomeAllowancePage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe
+            (propertyType match {
+              case Rentals =>
+                controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController
+                  .onPageLoad(taxYear)
+              case RentalsRentARoom =>
+                controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController
+                  .onPageLoad(taxYear)
+            })
         }
       }
       "must go from ClaimExpensesOrReliefPage to CheckYourAnswersController" in {
