@@ -34,7 +34,7 @@ object OtherProfessionalFeesSummary {
           key = KeyViewModel("otherProfessionalFees.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.OtherProfessionalFeesController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.OtherProfessionalFeesController.onPageLoad(taxYear, CheckMode, Rentals).url)
               .withVisuallyHiddenText(messages("otherProfessionalFees.change.hidden"))
           )
         ))

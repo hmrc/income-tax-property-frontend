@@ -489,7 +489,6 @@ otherProfessionalFees.checkYourAnswersLabel	=	Ffioedd cyfreithiol, ffioedd rheol
 otherProfessionalFees.change.hidden	=	Ffioedd cyfreithiol, ffioedd rheoli a ffioedd proffesiynol eraill
 otherProfessionalFees.input.heading.individual	=	Faint wnaethoch chi wario ar ffioedd cyfreithiol, ffioedd rheoli a ffioedd proffesiynol eraill?
 otherProfessionalFees.input.heading.agent	=	Faint wnaeth eich cleient wario ar ffioedd cyfreithiol, ffioedd rheoli a ffioedd proffesiynol eraill?
-otherProfessionalFees.details.content.link.text	=	Deall ffioedd cyfreithiol, ffioedd rheoli a ffioedd proffesiynol eraill
 otherProfessionalFees.details.content1.individual	=	Gallwch hawlio:
 otherProfessionalFees.details.content1.agent	=	Gall eich cleient hawlio:
 otherProfessionalFees.details.content1.l1	=	ffioedd rheoli a delir i asiant ar gyfer casglu rhent, hysbysebu a gweinyddu
