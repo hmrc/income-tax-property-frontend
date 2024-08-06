@@ -45,7 +45,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def update(fetchedData: FetchedBackendData): UserAnswers = {
       for {
-        ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage, fetchedData.capitalAllowancesForACar)
+        ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage(Rentals), fetchedData.capitalAllowancesForACar)
         ua2 <- updatePropertyAboutPages(ua1, fetchedData.propertyAbout)
         ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.propertyRentalsAbout)
         ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)

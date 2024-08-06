@@ -14,10 +14,9 @@
  * limitations under the License.
  *@
 
-@import viewmodels.govuk._
 @import controllers.allowances.routes._
-@import viewmodels.LabelSize
 @import viewmodels.InputWidth._
+@import viewmodels.govuk._
 
 
 @this(
@@ -30,13 +29,13 @@
         govukDetails: GovukDetails
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("capitalAllowancesForACar.title"))) {
 
         <h1 class="govuk-heading-l">@messages("capitalAllowancesForACar.heading")</h1>
 
-        @formHelper(action = CapitalAllowancesForACarController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = CapitalAllowancesForACarController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

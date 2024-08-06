@@ -16,11 +16,11 @@
 
 package controllers.allowances
 
-import audit.{RentalsAuditModel, AuditService, RentalsAllowance}
+import audit.{AuditService, RentalsAllowance, RentalsAuditModel}
 import controllers.actions._
-import models.JourneyContext
 import models.backend.ServiceError
 import models.requests.DataRequest
+import models.{JourneyContext, Rentals}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -50,7 +50,7 @@ class AllowancesCheckYourAnswersController @Inject() (
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers),
+          CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers, Rentals),
           AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers),
           ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
           ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers),
