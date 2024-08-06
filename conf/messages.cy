@@ -570,10 +570,10 @@ repairsAndMaintenanceCosts.label.agent	=	Faint wnaeth eich cleient wario ar wait
 repairsAndMaintenanceCosts.checkYourAnswersLabel	=	Atgyweirio a chynnal a chadw eiddo
 repairsAndMaintenanceCosts.change.hidden	=	Atgyweirio a chynnal a chadw eiddo
 
-rentsRatesAndInsurance.title.agent	=	Rhenti, ardrethi ac yswiriant ar gyfer eiddo eich cleient
-rentsRatesAndInsurance.heading.agent	=	Rhenti, ardrethi ac yswiriant ar gyfer eiddo eich cleient
-rentsRatesAndInsurance.title.individual	=	Rhenti, ardrethi ac yswiriant
-rentsRatesAndInsurance.heading.individual	=	Rhenti, ardrethi ac yswiriant
+rentsRatesAndInsurance.title.agent	=	*Missing Welsh*
+rentsRatesAndInsurance.heading.agent	=	*Missing Welsh*
+rentsRatesAndInsurance.title.individual	=	*Missing Welsh*
+rentsRatesAndInsurance.heading.individual	=	*Missing Welsh*
 rentsRatesAndInsurance.details.summary	=	Y costau rhedeg y gellir eu hawlio:
 rentsRatesAndInsurance.details.bulletPoint.l1.individual	=	rhent ar gyfer prydles eiddo rydych yn ei osod
 rentsRatesAndInsurance.details.bulletPoint.l1.agent	=	rhent ar gyfer prydles eiddo mae’ch cleient yn ei osod

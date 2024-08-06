@@ -462,7 +462,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           testUserAnswer
         ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {

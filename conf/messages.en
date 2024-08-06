@@ -769,10 +769,10 @@ repairsAndMaintenanceCosts.error.twoDecimalPlaces = Amount can only include poun
 repairsAndMaintenanceCosts.error.outOfRange = Enter an amount between £{0} and £{1}
 repairsAndMaintenanceCosts.change.hidden = Property repairs and maintenance
 
-rentsRatesAndInsurance.title.agent = Rents, rates and insurance for your client’s property
-rentsRatesAndInsurance.heading.agent = Rents, rates and insurance for your client’s property
-rentsRatesAndInsurance.title.individual = Rents, rates and insurance
-rentsRatesAndInsurance.heading.individual = Rents, rates and insurance
+rentsRatesAndInsurance.title.agent = Rents, rates and insurance costs for your client’s property
+rentsRatesAndInsurance.heading.agent = Rents, rates and insurance costs for your client’s property
+rentsRatesAndInsurance.title.individual = Rents, rates and insurance costs for your property
+rentsRatesAndInsurance.heading.individual = Rents, rates and insurance costs for your property
 rentsRatesAndInsurance.details.summary = Which running costs can be claimed:
 rentsRatesAndInsurance.details.bulletPoint.l1.individual = the rent for a lease of a property you let
 rentsRatesAndInsurance.details.bulletPoint.l1.agent = the rent for a lease of a property your client lets

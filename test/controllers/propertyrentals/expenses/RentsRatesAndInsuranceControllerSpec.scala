@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import forms.propertyrentals.expenses.RentsRatesAndInsuranceFormProvider
-import models.{NormalMode, Rentals, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.http.Status.OK
@@ -44,41 +44,76 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new RentsRatesAndInsuranceFormProvider()
   val form = formProvider("individual")
 
-  lazy val rentsRoute = routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentalsRentsRoute = routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val rentalsAndRaRRentsRoute = routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "RentsRatesAndInsurance Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "For rentals only must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder( userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rentsRoute)
+        val request = FakeRequest(GET, rentalsRentsRoute)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[RentsRatesAndInsuranceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode,"individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode,"individual", Rentals)(request, messages(application)).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "For rentals and RaR must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsAndRaRRentsRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RentsRatesAndInsuranceView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
+      }
+    }
+
+    "For rentals only must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(RentsRatesAndInsurancePage(Rentals), BigDecimal(12.34)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rentsRoute)
+        val request = FakeRequest(GET, rentalsRentsRoute)
 
         val view = application.injector.instanceOf[RentsRatesAndInsuranceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(BigDecimal(12.34)), taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(BigDecimal(12.34)), taxYear, NormalMode, "individual", Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "For rentals and RaR must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(RentsRatesAndInsurancePage(RentalsRentARoom), BigDecimal(12.34)).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsAndRaRRentsRoute)
+
+        val view = application.injector.instanceOf[RentsRatesAndInsuranceView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(BigDecimal(12.34)), taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -98,7 +133,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, rentsRoute)
+          FakeRequest(POST, rentalsRentsRoute)
             .withFormUrlEncodedBody("rentsRatesAndInsurance" -> "1234")
 
         val result = route(application, request).value
@@ -114,7 +149,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, rentsRoute)
+          FakeRequest(POST, rentalsRentsRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -124,7 +159,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(request, messages(application)).toString
       }
     }
 
@@ -133,7 +168,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, rentsRoute)
+        val request = FakeRequest(GET, rentalsRentsRoute)
 
         val result = route(application, request).value
 
@@ -148,7 +183,7 @@ class RentsRatesAndInsuranceControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, rentsRoute)
+          FakeRequest(POST, rentalsRentsRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
