@@ -17,7 +17,10 @@
 package controllers.allowances
 
 import base.SpecBase
-import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
+import connectors.error.{ApiError, SingleErrorBody}
+import controllers.exceptions.InternalErrorFailure
+import models.Rentals
+import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -40,25 +43,26 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, Rentals).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false))(
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, Rentals))(
           request,
           messages(application)
         ).toString
@@ -69,25 +73,26 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
       val propertyDetails =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(true), "incomeSourceId")
-      val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(Right(businessDetails))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, Rentals).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true))(
+        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, Rentals))(
           request,
           messages(application)
         ).toString
@@ -97,8 +102,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must redirect to the overview if there is no result" in {
       val businessService = mock[BusinessService]
 
-      when(businessService.getBusinessDetails(any())(any())) thenReturn Future.successful(
-        Left(HttpParserError(NOT_FOUND))
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Left(ApiError(NOT_FOUND, SingleErrorBody(NOT_FOUND.toString, "No data found")))
       )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
@@ -106,12 +111,11 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.SummaryController.show(taxYear).url)
+        val failure = intercept[InternalErrorFailure] {
+          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, Rentals).url)
+          status(route(application, request).value)
+        }
+        failure.getMessage mustBe "Encountered an issue retrieving property data from the business API"
       }
     }
   }

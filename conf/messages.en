@@ -807,7 +807,8 @@ allowancesStart.details.content.l3 = zero-emission car allowance
 allowancesStart.details.content.l4 = zero-emission goods vehicle allowance
 allowancesStart.details.content.l5 = business premises renovation allowance
 allowancesStart.details.content.l6 = replacing domestic goods
-allowancesStart.details.content.l7 = Capital allowances for a car
+allowancesStart.details.content.l7 = other capital allowances
+allowancesStart.details.content.l8 = Capital allowances for a car
 
 capitalAllowancesForACar.title = Capital allowances for a car
 capitalAllowancesForACar.heading = Capital allowances for a car

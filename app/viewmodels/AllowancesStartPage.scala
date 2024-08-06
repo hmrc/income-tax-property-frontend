@@ -16,9 +16,14 @@
 
 package viewmodels
 
-import models.NormalMode
+import models.{NormalMode, PropertyType}
 
-case class AllowancesStartPage(taxYear: Int, individualOrAgent: String, cashOrAccruals: Boolean) {
+case class AllowancesStartPage(
+  taxYear: Int,
+  individualOrAgent: String,
+  cashOrAccruals: Boolean,
+  propertyType: PropertyType
+) {
   def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
   def nextPageUrl: String = if (cashOrAccruals) {

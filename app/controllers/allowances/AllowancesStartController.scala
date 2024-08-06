@@ -17,8 +17,8 @@
 package controllers.allowances
 
 import controllers.actions._
-import controllers.routes
-import models.backend.PropertyDetails
+import controllers.exceptions.InternalErrorFailure
+import models.PropertyType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
@@ -28,7 +28,7 @@ import viewmodels.AllowancesStartPage
 import views.html.allowances.AllowancesStartView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class AllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,
@@ -39,18 +39,25 @@ class AllowancesStartController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async { implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = identify.async { implicit request =>
     val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    businessService.getBusinessDetails(request.user)(hc).map {
-      case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-        val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-        Ok(view(AllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.cashOrAccruals.get)))
-      case _ => Redirect(routes.SummaryController.show(taxYear))
+    businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
+      case Right(Some(propertyData)) =>
+        Future.successful(
+          Ok(
+            view(
+              AllowancesStartPage(
+                taxYear,
+                request.user.isAgentMessageKey,
+                propertyData.cashOrAccruals.get,
+                propertyType
+              )
+            )
+          )
+        )
+      case _ =>
+        Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
     }
   }
 
-  private def existsUkProperty(property: PropertyDetails): Boolean =
-    property.incomeSourceType.contains(
-      "uk-property"
-    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
 }
