@@ -708,7 +708,6 @@ costsOfServicesProvided.checkYourAnswersLabel = Costs of services provided, incl
 costsOfServicesProvided.change.hidden = Costs of services provided, including wages
 costsOfServicesProvided.input.heading.individual = How much did you spend on costs of services provided, including wages?
 costsOfServicesProvided.input.heading.agent = How much did your client spend on costs of services provided, including wages?
-costsOfServicesProvided.details.content.link.text= Understanding costs of services provided, including wages
 costsOfServicesProvided.details.content1.individual = Any services that you provide to your tenants such as:
 costsOfServicesProvided.details.content1.agent = Any services that your client provides to their tenants:
 costsOfServicesProvided.details.content.l1 = communal hot water

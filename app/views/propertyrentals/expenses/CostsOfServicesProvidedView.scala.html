@@ -38,13 +38,8 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages("costsOfServicesProvided.details.content.link.text")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
+
+
                 <p class="govuk-body">@messages(s"costsOfServicesProvided.details.content1.$individualOrAgent")</p>
                 <ul class="govuk-list govuk-list--bullet">
                     <li>@messages("costsOfServicesProvided.details.content.l1")</li>
@@ -53,9 +48,6 @@
                     <li>@messages("costsOfServicesProvided.details.content.l4")</li>
                 </ul>
                 <p class="govuk-body">@messages(s"costsOfServicesProvided.details.content2.$individualOrAgent")</p>
-            </div>
-        </details>
-
 
         @govukInput(
             InputViewModel(

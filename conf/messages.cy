@@ -529,7 +529,6 @@ costsOfServicesProvided.checkYourAnswersLabel	=	Costau gwasanaethau a ddarperir,
 costsOfServicesProvided.change.hidden	=	Costau gwasanaethau a ddarperir, gan gynnwys cyflogau
 costsOfServicesProvided.input.heading.individual	=	Faint wnaethoch chi wario ar gostau gwasanaethau a ddarperir, gan gynnwys cyflogau?
 costsOfServicesProvided.input.heading.agent	=	Faint wnaeth eich cleient wario ar gostau gwasanaethau a ddarperir, gan gynnwys cyflogau?
-costsOfServicesProvided.details.content.link.text	=	Deall costau gwasanaethau a ddarparwyd, gan gynnwys cyflogau
 costsOfServicesProvided.details.content1.individual	=	Unrhyw wasanaethau rydych yn eu darparu i’ch tenantiaid, megis:
 costsOfServicesProvided.details.content1.agent	=	Unrhyw wasanaethau mae’n eu darparu i’w denantiaid, megis:
 costsOfServicesProvided.details.content.l1	=	dŵr poeth cymunedol
