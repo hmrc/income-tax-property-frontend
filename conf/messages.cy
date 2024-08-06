@@ -603,7 +603,8 @@ allowancesStart.details.content.l3	=	lwfans car ag allyriadau sero
 allowancesStart.details.content.l4	=	lwfans allyriadau sero ar gyfer cerbyd cario nwyddau
 allowancesStart.details.content.l5	=	lwfans adnewyddu safleoedd busnes
 allowancesStart.details.content.l6	=	amnewid nwyddau domestig
-allowancesStart.details.content.l7	=	Lwfansau cyfalaf ar gyfer car
+allowancesStart.details.content.l7	=	*Missing Welsh*
+allowancesStart.details.content.l8	=	Lwfansau cyfalaf ar gyfer car
 
 capitalAllowancesForACar.title	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.heading	=	Lwfansau cyfalaf ar gyfer car

@@ -113,8 +113,9 @@ case object SummaryPage {
         case Some(_) =>
           val baseItems = Seq(aboutItem, incomeItem)
           userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
-            case Some(false) => baseItems :+ rentalsAndRaRExpensesItem(taxYear)
-            case _           => baseItems
+            case Some(false) =>
+              baseItems concat Seq(rentalsAndRaRExpensesItem(taxYear), rentalsAndRaRAllowancesItem(taxYear))
+            case _ => baseItems
           }
       }
     } else {
@@ -192,7 +193,7 @@ case object SummaryPage {
   private def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
-      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
+      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, Rentals),
       userAnswers
         .flatMap { answers =>
           answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
@@ -308,6 +309,14 @@ case object SummaryPage {
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom),
       TaskListTag.NotStarted,
       "rentals_and_rent_a_room_expenses_link"
+    )
+
+  private def rentalsAndRaRAllowancesItem(taxYear: Int) =
+    TaskListItem(
+      "summary.allowances",
+      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_allowances_link"
     )
 
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
