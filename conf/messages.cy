@@ -475,7 +475,6 @@ loanInterest.checkYourAnswersLabel	=	Llog ar fenthyciadau a chostau ariannol era
 loanInterest.change.hidden	=	Llog ar fenthyciadau a chostau ariannol eraill
 loanInterest.input.heading.individual	=	Faint wnaethoch chi wario ar log ar fenthychiadau neu gostau ariannol eraill?
 loanInterest.input.heading.agent	=	Faint wnaeth eich cleient wario ar log ar fenthychiadau neu gostau ariannol eraill?
-loanInterest.details.content.link.text	=	Deall llog ar fenthyciadau a chostau ariannol eraill
 loanInterest.details.content1.individual	=	Os ydych yn rhoi eiddo dibreswyl ar osod, gallwch hawlio’r canlynol:
 loanInterest.details.content1.agent	=	Os yw’ch cleient yn rhoi eiddo dibreswyl ar osod, gall hawlio’r canlynol:
 loanInterest.details.content.l1	=	costau cael benthyciad neu gyllid amgen i’w brynu

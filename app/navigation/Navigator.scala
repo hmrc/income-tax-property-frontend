@@ -174,7 +174,7 @@ class Navigator @Inject() () {
     case RentsRatesAndInsurancePage(Rentals) =>
       taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode, Rentals)
     case RepairsAndMaintenanceCostsPage(Rentals) =>
-      taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode, Rentals)
     case LoanInterestPage(Rentals) =>
       taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode)
     case OtherProfessionalFeesPage(Rentals) =>
