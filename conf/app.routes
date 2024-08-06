@@ -589,6 +589,7 @@ GET         /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenanc
 POST        /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenance-costs                 controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
 
+
 GET         /:taxYear/rentals-rent-a-room/expenses/loan-interest                                        controllers.propertyrentals.expenses.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/loan-interest                                        controllers.propertyrentals.expenses.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/expenses/change-loan-interest                                 controllers.propertyrentals.expenses.LoanInterestController.onPageLoad(taxYear: Int,mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
