@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.allowances
 
 import controllers.allowances.routes
-import models.{CapitalAllowancesForACar, CheckMode, UserAnswers}
+import models.{CapitalAllowancesForACar, CheckMode, PropertyType, UserAnswers}
 import pages.allowances.CapitalAllowancesForACarPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,8 +27,10 @@ import viewmodels.implicits._
 
 object CapitalAllowancesForACarSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CapitalAllowancesForACarPage).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(CapitalAllowancesForACarPage(propertyType)).flatMap {
       case CapitalAllowancesForACar(true, Some(amount)) =>
         Some(
           SummaryListRowViewModel(
@@ -37,7 +39,7 @@ object CapitalAllowancesForACarSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
             )
@@ -51,7 +53,7 @@ object CapitalAllowancesForACarSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode).url
+                routes.CapitalAllowancesForACarController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("capitalAllowancesForACar.change.hidden"))
             )

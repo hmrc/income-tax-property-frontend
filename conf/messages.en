@@ -812,11 +812,11 @@ allowancesStart.details.content.l8 = Capital allowances for a car
 
 capitalAllowancesForACar.title = Capital allowances for a car
 capitalAllowancesForACar.heading = Capital allowances for a car
-capitalAllowancesForACar.details.heading = Understanding capital allowances for a car
 capitalAllowancesForACar.details.line1.individual = You can claim capital allowances on cars you buy and use for running your property rentals. This means you can deduct part of the value from your profits before you pay tax.
 capitalAllowancesForACar.details.line1.agent = Your client can claim capital allowances on cars they buy and use for running their property rentals. This means they can deduct part of the value from their profits before they pay tax.
 capitalAllowancesForACar.details.link.href = https://www.gov.uk/capital-allowances/business-cars
-capitalAllowancesForACar.details.link.text = Read more about capital allowances for a car at GOV.UK (opens in new tab)
+capitalAllowancesForACar.details.link.text1 = Read more about
+capitalAllowancesForACar.details.link.text2 = capital allowances for a car at GOV.UK (opens in new tab)
 capitalAllowancesForACar.checkYourAnswersLabel = Capital allowances for a car
 capitalAllowancesForACar.radio.legend.individual = Do you want to claim capital allowance for a car?
 capitalAllowancesForACar.radio.legend.agent = Does your client want to claim capital allowance for a car?

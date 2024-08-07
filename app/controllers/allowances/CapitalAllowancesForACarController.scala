@@ -18,7 +18,7 @@ package controllers.allowances
 
 import controllers.actions._
 import forms.allowances.CapitalAllowancesForACarFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.allowances.CapitalAllowancesForACarPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,42 +30,51 @@ import views.html.allowances.CapitalAllowancesForACarView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CapitalAllowancesForACarController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                sessionRepository: SessionRepository,
-                                                navigator: Navigator,
-                                                identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                formProvider: CapitalAllowancesForACarFormProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: CapitalAllowancesForACarView
-                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CapitalAllowancesForACarController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CapitalAllowancesForACarFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CapitalAllowancesForACarView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(CapitalAllowancesForACarPage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(CapitalAllowancesForACarPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, propertyType))
+    }
 
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey))
-  }
-
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CapitalAllowancesForACarPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CapitalAllowancesForACarPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(CapitalAllowancesForACarPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                CapitalAllowancesForACarPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

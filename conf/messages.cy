@@ -608,10 +608,10 @@ allowancesStart.details.content.l8	=	Lwfansau cyfalaf ar gyfer car
 
 capitalAllowancesForACar.title	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.heading	=	Lwfansau cyfalaf ar gyfer car
-capitalAllowancesForACar.details.heading	=	Deall lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.details.line1.individual	=	Gallwch hawlio lwfansau cyfalaf ar geir rydych yn eu prynu ac yn eu defnyddio er mwyn cynnal eich eiddo wedi’u rhentu. Mae hyn yn golygu y gallwch ddidynnu rhan o’r gwerth o’ch elw cyn i chi dalu treth.
 capitalAllowancesForACar.details.line1.agent	=	Gall eich cleient hawlio lwfansau cyfalaf ar geir y mae’n eu prynu ac yn eu defnyddio er mwyn cynnal ei eiddo wedi’u rhentu. Mae hyn yn golygu y gall ddidynnu rhan o’r gwerth o’ch elw cyn iddo dalu treth.
-capitalAllowancesForACar.details.link.text	=	Darllenwch ragor am lwfansau cyfalaf ar gyfer car ar GOV.UK (yn agor tab newydd)
+capitalAllowancesForACar.details.link.text1	=	*Missing Welsh*
+capitalAllowancesForACar.details.link.text2	=	*Missing Welsh*
 capitalAllowancesForACar.checkYourAnswersLabel	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.radio.legend.individual	=	A ydych am hawlio lwfans cyfalaf ar gyfer car?
 capitalAllowancesForACar.radio.legend.agent	=	A yw’ch cleient am hawlio lwfans cyfalaf ar gyfer car?
