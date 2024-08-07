@@ -652,7 +652,6 @@ otherProfessionalFees.checkYourAnswersLabel = Legal, management or other profess
 otherProfessionalFees.change.hidden = Legal, management or other professional fees
 otherProfessionalFees.input.heading.individual = How much did you spend on legal, management or other professional fees?
 otherProfessionalFees.input.heading.agent = How much did your client spend on legal, management or other professional fees?
-otherProfessionalFees.details.content.link.text= Understanding legal, management or other professional fees
 otherProfessionalFees.details.content1.individual = You can claim:
 otherProfessionalFees.details.content1.agent = Your client can claim:
 otherProfessionalFees.details.content1.l1 = management fees paid to an agent for rent collection, advertising and administration
