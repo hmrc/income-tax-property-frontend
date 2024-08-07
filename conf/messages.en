@@ -678,8 +678,7 @@ otherAllowablePropertyExpenses.checkYourAnswersLabel= Other allowable property e
 otherAllowablePropertyExpenses.change.hidden = Other allowable property expenses
 otherAllowablePropertyExpenses.input.heading.individual = How much were your other allowable property expenses?
 otherAllowablePropertyExpenses.input.heading.agent = How much were your client’s other allowable property expenses?
-otherAllowablePropertyExpenses.details.content.link.text.individual = What you can claim
-otherAllowablePropertyExpenses.details.content.link.text.agent = What your client can claim:
+
 
 otherAllowablePropertyExpenses.details.content.l1 = office costs, for example stationery or phone bills
 otherAllowablePropertyExpenses.details.content.l2 = clothing expenses, for example uniforms

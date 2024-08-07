@@ -508,8 +508,7 @@ otherAllowablePropertyExpenses.checkYourAnswersLabel	=	Treuliau eiddo caniataol 
 otherAllowablePropertyExpenses.change.hidden	=	Treuliau eiddo caniataol eraill
 otherAllowablePropertyExpenses.input.heading.individual	=	Faint wnaethoch chi wario ar dreuliau eiddo caniataol eraill?
 otherAllowablePropertyExpenses.input.heading.agent	=	Faint wnaeth eich cleient wario ar dreuliau eiddo caniataol eraill?
-otherAllowablePropertyExpenses.details.content.link.text.individual	=	Yr hyn y gallwch ei hawlio:
-otherAllowablePropertyExpenses.details.content.link.text.agent	=	Yr hyn y gall eich cleient ei hawlio:
+
 
 otherAllowablePropertyExpenses.details.content.l1	=	costau swyddfa, er enghraifft deunydd ysgrifennu neu filiau ffôn
 otherAllowablePropertyExpenses.details.content.l2	=	treuliau dillad, er enghraifft gwisgoedd unffurf
