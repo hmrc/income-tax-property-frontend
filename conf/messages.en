@@ -806,7 +806,8 @@ allowancesStart.details.content.l3 = zero-emission car allowance
 allowancesStart.details.content.l4 = zero-emission goods vehicle allowance
 allowancesStart.details.content.l5 = business premises renovation allowance
 allowancesStart.details.content.l6 = replacing domestic goods
-allowancesStart.details.content.l7 = Capital allowances for a car
+allowancesStart.details.content.l7 = other capital allowances
+allowancesStart.details.content.l8 = Capital allowances for a car
 
 capitalAllowancesForACar.title = Capital allowances for a car
 capitalAllowancesForACar.heading = Capital allowances for a car
@@ -1703,7 +1704,6 @@ raRbalancingCharge.para.individual = Understanding balancing charge
 raRbalancingCharge.para.agent = Understanding balancing charge
 
 raRbalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
-
 raRbalancingCharge.checkYourAnswersLabel.individual = Do you have to report a balancing charge?
 raRbalancingCharge.checkYourAnswersLabel.agent = Does your client have to report a balancing charge?
 raRbalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
@@ -1723,14 +1723,8 @@ raRbalancingCharge.amount.error.nonNumeric.individual = The amount for your bala
 raRbalancingCharge.amount.error.nonNumeric.agent = The amount for your client’s balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.individual = The amount for your balancing charge can only include pounds and pence, for example £600 or £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = The amount for your client’s balancing charge can only include pounds and pence, for example £600 or £600.20
-
 raRbalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
-raRAdjustmentsCYA.title = raRAdjustmentsCYA
-raRAdjustmentsCYA.heading = raRAdjustmentsCYA
-
-raRAllowancesCYA.title = raRAllowancesCYA
-raRAllowancesCYA.heading = raRAllowancesCYA
 
 haveYouFinishedThisSection.heading = Have you finished this section?
 haveYouFinishedThisSection.title = Have you finished this section?
@@ -1762,15 +1756,6 @@ rentalsAndRentARoom.income.nonUKResidentialLandlord.heading = nonUKResidentialLa
 rentalsAndRentARoom.income.nonUKResidentialLandlord.checkYourAnswersLabel = nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.error.required = Select yes if nonUKResidentialLandlord
 rentalsAndRentARoom.income.nonUKResidentialLandlord.change.hidden = NonUKResidentialLandlord
-
-claimEsbaCheckYourAnswers.title = claimEsbaCheckYourAnswers
-claimEsbaCheckYourAnswers.heading = claimEsbaCheckYourAnswers
-
-claimSbaCheckYourAnswers.title = claimSbaCheckYourAnswers
-claimSbaCheckYourAnswers.heading = claimSbaCheckYourAnswers
-
-rentalsAndRentARoomIncomeCheckYourAnswers.title = rentalsAndRentARoomIncomeCheckYourAnswers
-rentalsAndRentARoomIncomeCheckYourAnswers.heading = rentalsAndRentARoomIncomeCheckYourAnswers
 
 ukRentARoom.about.start.title = Rent a room
 ukRentARoom.about.start.heading = Rent a room

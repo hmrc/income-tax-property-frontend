@@ -52,7 +52,7 @@ class SummaryPageSpec extends SpecBase {
     )
     val propertyAllowances: TaskListItem = TaskListItem(
       "summary.allowances",
-      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear),
+      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, Rentals),
       TaskListTag.NotStarted,
       "rentals_allowances_link"
     )
@@ -283,6 +283,13 @@ class SummaryPageSpec extends SpecBase {
       "rentals_and_rent_a_room_expenses_link"
     )
 
+    val summaryAllowancesItem = TaskListItem(
+      "summary.allowances",
+      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_allowances_link"
+    )
+
     "return empty rows, given an empty user data" in {
       SummaryPage.createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
     }
@@ -355,9 +362,9 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(3)
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(4)
       SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
-        Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem)
+        Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem, summaryAllowancesItem)
       )
     }
   }

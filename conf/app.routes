@@ -213,7 +213,7 @@ POST       /:taxYear/rentals/expenses/complete-yes-no                           
 
 ############## Rentals  Allowances  ##############
 
-GET         /:taxYear/rentals/allowances/start                                              controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/rentals/allowances/start                                              controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/allowances/capital-allowances-for-a-car                       controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/allowances/capital-allowances-for-a-car                       controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -588,6 +588,7 @@ POST        /:taxYear/rentals-rent-a-room/expenses/repairs-and-maintenance-costs
 GET         /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenance-costs                 controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenance-costs                 controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
+
 GET         /:taxYear/rentals-rent-a-room/expenses/loan-interest                                        controllers.propertyrentals.expenses.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/loan-interest                                        controllers.propertyrentals.expenses.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/expenses/change-loan-interest                                 controllers.propertyrentals.expenses.LoanInterestController.onPageLoad(taxYear: Int,mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
@@ -602,3 +603,8 @@ GET         /:taxYear/rentals-rent-a-room/expenses/legal-or-other-professional-f
 POST        /:taxYear/rentals-rent-a-room/expenses/legal-or-other-professional-fees                                 controllers.propertyrentals.expenses.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-professional-fees                          controllers.propertyrentals.expenses.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-professional-fees                          controllers.propertyrentals.expenses.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+
+#################### Allowances Rentals And Rent A Room  ##########################
+
+GET         /:taxYear/rentals-rent-a-room/allowances/start                                              controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)

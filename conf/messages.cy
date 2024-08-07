@@ -112,33 +112,33 @@ totalIncome.title.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eidd
 totalIncome.title.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 totalIncome.heading.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eiddo yn y DU?
 totalIncome.heading.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-totalIncome.body.individual = *Missing Welsh*
-totalIncome.body.agent = *Missing Welsh*
+totalIncome.body.individual = Dyma’r swm cyn i unrhyw ddidyniadau gael eu gwneud.
+totalIncome.body.agent = Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 totalIncome.under	=	O dan £1,000
 totalIncome.between	=	Rhwng £1,000 a £85,000
 totalIncome.over	=	Dros £85,000
 totalIncome.checkYourAnswersLabel.individual	=	Beth oedd cyfanswm yr incwm a gawsoch o’ch eiddo yn y DU?
 totalIncome.checkYourAnswersLabel.agent	=	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i eiddo yn y DU?
 totalIncome.change.hidden.individual	=	Incwm o eiddo yn y DU
-totalIncome.change.hidden.agent	=	*Missing Welsh*
+totalIncome.change.hidden.agent	=	beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
 
 ukPropertySelect.title.individual	=	Dewiswch eiddo yn y DU
 ukPropertySelect.title.agent	=	Dewiswch eiddo yn y DU
 ukPropertySelect.heading.individual	=	Eiddo yn y DU
 ukPropertySelect.heading.message.individual	=	Dewiswch bob un sy’n berthnasol
-ukPropertySelect.heading.message.agent	=	*Missing Welsh*
+ukPropertySelect.heading.message.agent	=	Dewiswch bob un sy’n berthnasol i’ch cleient
 ukPropertySelect.heading.agent	=	Eiddo yn y DU
 ukPropertySelect.property.rentals	=	Eiddo wedi’u rhentu
-ukPropertySelect.property.rentals.hint = *Missing Welsh*
+ukPropertySelect.property.rentals.hint =	Fflat, tŷ neu fan preswyl arall sy’n cael ei roi ar osod i denantiaid ar sail tymor byr neu dymor hir. Dylech gynnwys rhentu eiddo a thir arall gan gynnwys llynnoedd, tiroedd hamdden ac eiddo dibreswyl
 ukPropertySelect.furnished.holiday.lettings	=	Llety gwyliau wedi’i ddodrefnu (FHL)
 ukPropertySelect.rent.a.room	=	Rhentu ystafell
-ukPropertySelect.rent.a.room.hint = *Missing Welsh*
+ukPropertySelect.rent.a.room.hint = Ystafell wedi’i dodrefnu yn eich prif gartref sy’n cael ei rhoi ar osod i denantiaid.
 ukPropertySelect.error.required.individual = Dewiswch y math o eiddo sydd gennych
 ukPropertySelect.error.required.agent = Dewiswch y math o eiddo sydd gan eich cleient
 ukPropertySelect.checkYourAnswersLabel.individual	=	Mathau o eiddo yn y DU
-ukPropertySelect.checkYourAnswersLabel.agent	=	*Missing Welsh*
+ukPropertySelect.checkYourAnswersLabel.agent	=	Pa eiddo rhent sydd gan eich cleient yn y DU?
 ukPropertySelect.change.hidden.individual	=	Eiddo yn y DU
-ukPropertySelect.change.hidden.agent	=	*Missing Welsh*
+ukPropertySelect.change.hidden.agent	=	pa eiddo rhent sydd gan eich cleient yn y DU?
 
 expensesLessThan1000.title	=	Treuliau’n llai na £1,000
 expensesLessThan1000.heading	=	Treuliau’n llai na £1,000
@@ -602,7 +602,8 @@ allowancesStart.details.content.l3	=	lwfans car ag allyriadau sero
 allowancesStart.details.content.l4	=	lwfans allyriadau sero ar gyfer cerbyd cario nwyddau
 allowancesStart.details.content.l5	=	lwfans adnewyddu safleoedd busnes
 allowancesStart.details.content.l6	=	amnewid nwyddau domestig
-allowancesStart.details.content.l7	=	Lwfansau cyfalaf ar gyfer car
+allowancesStart.details.content.l7	=	*Missing Welsh*
+allowancesStart.details.content.l8	=	Lwfansau cyfalaf ar gyfer car
 
 capitalAllowancesForACar.title	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.heading	=	Lwfansau cyfalaf ar gyfer car
@@ -721,7 +722,7 @@ otherCapitalAllowance.input.heading.agent	=	Faint yw lwfansau cyfalaf eraill eic
 otherCapitalAllowance.checkYourAnswersLabel	=	Lwfansau cyfalaf eraill
 otherCapitalAllowance.change.hidden	=	Lwfansau cyfalaf eraill
 
-#################### Error messages
+#################### Error messages.en
 
 totalIncome.error.required = Dewiswch gyfanswm yr incwm a gawsoch o’ch eiddo yn y DU
 
@@ -1217,17 +1218,6 @@ sbaRemoveConfirmation.heading =	A ydych am ddileu’r hawliad {0} hwn am lwfans 
 sbaRemoveConfirmation.error.required.individual =	Dewiswch ‘Iawn’ os ydych am ddileu’r hawliad
 sbaRemoveConfirmation.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient am ddileu’r hawliad
 
-totalIncome.body.individual	= Dyma’r swm cyn i unrhyw ddidyniadau gael eu gwneud.
-totalIncome.body.agent =	Beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-totalIncome.change.hidden.agent =	beth oedd cyfanswm yr incwm a gafodd eich cleient o’i holl eiddo?
-ukPropertySelect.heading.message.agent =	Dewiswch bob un sy’n berthnasol i’ch cleient
-ukPropertySelect.property.rentals.hint =	Fflat, tŷ neu fan preswyl arall sy’n cael ei roi ar osod i denantiaid ar sail tymor byr neu dymor hir. Dylech gynnwys rhentu eiddo a thir arall gan gynnwys llynnoedd, tiroedd hamdden ac eiddo dibreswyl
-ukPropertySelect.rent.a.room.hint =	Ystafell wedi’i dodrefnu yn eich prif gartref sy’n cael ei rhoi ar osod i denantiaid.
-ukPropertySelect.error.required.individual =	Dewiswch y math o eiddo sydd gennych
-ukPropertySelect.error.required.agent =	Dewiswch y math o eiddo sydd gan eich cleient
-ukPropertySelect.checkYourAnswersLabel.agent =	Pa eiddo rhent sydd gan eich cleient yn y DU?
-ukPropertySelect.change.hidden.agent =	pa eiddo rhent sydd gan eich cleient yn y DU?
-
 rentalsAndRentARoomIncomeStart.title = *Missing Welsh*
 rentalsAndRentARoomIncomeStart.heading = *Missing Welsh*
 rentalsAndRentARoomIncomeStart.p1.individual = *Missing Welsh*
@@ -1677,3 +1667,38 @@ haveYouFinishedThisSection.heading = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.title = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.hint = Byddwch yn dal i allu mynd yn ôl ac adolygu’r wybodaeth rydych wedi’i rhoi i ni ar ôl i chi ei gorffen.
 haveYouFinishedThisSection.error.required = Dewiswch ‘Iawn’ os ydych wedi llenwi’r adran hon
+
+raRAdjustmentsIntro.title = Addasiadau
+raRAdjustmentsIntro.heading = Addasiadau
+raRAdjustmentsStart.para1 = Yn yr adran hon, byddwn yn gofyn i chi am yr addasiadau canlynol:
+raRAdjustmentsIntro.bullet.content.l1 = tâl mantoli
+raRAdjustmentsIntro.bullet.content.l2 = costau ariannol eiddo preswyl sydd heb eu defnyddio a ddygwyd ymlaen
+
+raRbalancingCharge.title.agent = Tâl mantoli
+raRbalancingCharge.title.individual = Tâl mantoli
+raRbalancingCharge.heading.agent = Faint oedd tâl mantoli eich cleient?
+raRbalancingCharge.heading.individual = Tâl mantoli
+raRbalancingCharge.para.individual = Deall tâl mantoli
+raRbalancingCharge.para.agent = Deall tâl mantoli
+
+raRbalancingCharge.checkYourAnswersAmountLabel = Ffigur hunangyfrifedig
+raRbalancingCharge.checkYourAnswersLabel.individual = A oes rhaid i chi roi gwybod am dâl mantoli?
+raRbalancingCharge.checkYourAnswersLabel.agent = A oes rhaid i’ch cleient roi gwybod am dâl mantoli?
+raRbalancingCharge.error.required.agent = Dewiswch ‘Iawn’ os oes rhaid i’ch cleient roi gwybod am dâl mantoli
+raRbalancingCharge.error.required.individual = Dewiswch ‘Iawn’ os oes rhaid i chi roi gwybod am dâl mantoli
+raRbalancingCharge.change.hidden = Tâl mantoli
+raRbalancingCharge.details.line1 = Os gwnaethoch werthu, rhoi am ddim neu roi’r gorau i ddefnyddio eitem wrth redeg eich cynllun rhentu ystafell y buoch yn hawlio lwfansau cyfalaf ar ei chyfer, efallai y bydd yn rhaid i chi gynnwys tâl mantoli.
+raRbalancingCharge.details.line2 = Ystyrir unrhyw daliadau mantoli yn incwm os ydych yn hawlio lwfans incwm o eiddo.
+raRbalancingCharge.details.line2.link.text = Bydd ‘Nid yw’n ofynnol’ yn newid i ryw werth yn ddiofyn
+raRbalancingCharge.radio.legend.individual = A oes rhaid i chi roi gwybod am dâl mantoli?
+raRbalancingCharge.radio.legend.agent = A oes rhaid i’ch cleient roi gwybod am dâl mantoli?
+raRbalancingCharge.radio.question.label = Faint yw’r tâl mantoli?
+raRbalancingCharge.label = Nodwch y ffigur
+
+raRbalancingCharge.amount.error.required.individual = Nodwch y swm ar gyfer y tâl mantoli
+raRbalancingCharge.amount.error.required.agent = Nodwch y swm ar gyfer y tâl mantoli
+raRbalancingCharge.amount.error.nonNumeric.individual = Gall y swm ar gyfer eich tâl mantoli gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.nonNumeric.agent = Gall y swm ar gyfer tâl mantoli eich cleient gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.individual = Gall y swm ar gyfer eich tâl mantoli gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.twoDecimalPlaces.agent = Gall y swm ar gyfer tâl mantoli eich cleient gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+raRbalancingCharge.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
