@@ -17,7 +17,6 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import models.{SbaOnIndex, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaOnIndex
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow

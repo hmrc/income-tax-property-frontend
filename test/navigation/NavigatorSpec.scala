@@ -24,6 +24,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages._
 import pages.adjustments._
 import pages.allowances._
@@ -39,7 +40,6 @@ import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage}
 
 import java.time.LocalDate
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 class NavigatorSpec extends SpecBase {
 
@@ -527,7 +527,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage" in {
@@ -737,8 +737,8 @@ class NavigatorSpec extends SpecBase {
       }
       val scenarios = Table[PropertyType, String](
         ("property type", "type definition"),
-        (RentalsRentARoom, "rentalsAndRaR"),
-        (Rentals, "rentals")
+        (Rentals, "rentals"),
+        (RentalsRentARoom, "rentalsAndRaR")
       )
 
       forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>

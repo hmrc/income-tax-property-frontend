@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.income
 
 import controllers.propertyrentals.income.routes
-import models.{CheckMode, PropertyType, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.propertyrentals.income.OtherIncomeFromPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow

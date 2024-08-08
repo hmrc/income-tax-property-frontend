@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.PropertyBusinessTravelCostsFormProvider
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.expenses.PropertyBusinessTravelCostsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,42 +30,54 @@ import views.html.propertyrentals.expenses.PropertyBusinessTravelCostsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyBusinessTravelCostsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: PropertyBusinessTravelCostsFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyBusinessTravelCostsView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class PropertyBusinessTravelCostsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: PropertyBusinessTravelCostsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PropertyBusinessTravelCostsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(PropertyBusinessTravelCostsPage(Rentals)) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(PropertyBusinessTravelCostsPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
+      
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+    }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
-  }
-
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyBusinessTravelCostsPage(Rentals), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PropertyBusinessTravelCostsPage(Rentals), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(PropertyBusinessTravelCostsPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                PropertyBusinessTravelCostsPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

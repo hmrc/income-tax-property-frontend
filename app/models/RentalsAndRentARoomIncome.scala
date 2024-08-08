@@ -16,8 +16,6 @@
 
 package models
 
-import queries.{Gettable, Settable}
-import models.{CalculatedFigureYourself, DeductingTax, PremiumsGrantLease, Rentals, ReversePremiumsReceived}
 import pages.PageConstants.incomePath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}

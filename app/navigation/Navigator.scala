@@ -180,7 +180,7 @@ class Navigator @Inject() () {
     case OtherProfessionalFeesPage(Rentals) =>
       taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode, Rentals)
     case CostsOfServicesProvidedPage(Rentals) =>
-      taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, Rentals)
     case PropertyBusinessTravelCostsPage(Rentals) =>
       taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
     case AnnualInvestmentAllowancePage =>
@@ -190,7 +190,8 @@ class Navigator @Inject() () {
             ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
 
         // allowances
-    case CapitalAllowancesForACarPage(Rentals) => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case CapitalAllowancesForACarPage(Rentals) =>
+      taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case AnnualInvestmentAllowancePage =>
       taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
     case ElectricChargePointAllowancePage =>
@@ -669,8 +670,9 @@ class Navigator @Inject() () {
     }
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(ConsolidatedExpensesPage(propertyType)) match {
-      case Some(ConsolidatedExpenses(true, _))  => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-      case Some(ConsolidatedExpenses(false, _)) => RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
+      case Some(ConsolidatedExpenses(true, _)) => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(ConsolidatedExpenses(false, _)) =>
+        RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType)
     }
 
   private def consolidatedExpensesRRNavigationCheckMode(
@@ -698,7 +700,7 @@ class Navigator @Inject() () {
             .get(ConsolidatedExpensesPage(propertyType))
             .map(_.consolidatedExpensesYesOrNo)
             .getOrElse(true) =>
-        RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, Rentals)
+        RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType)
       case _ =>
         ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     }

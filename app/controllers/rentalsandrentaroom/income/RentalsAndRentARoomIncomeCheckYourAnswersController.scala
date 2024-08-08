@@ -19,16 +19,15 @@ package controllers.rentalsandrentaroom.income
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.{JourneyContext, RentalsAndRentARoomIncome, RentalsRentARoom}
-import pages.PageConstants.incomePath
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.premiumlease.{CalculatedFigureYourselfSummary, LeasePremiumPaymentSummary, PremiumsGrantLeaseSummary, ReceivedGrantLeaseAmountSummary, YearLeaseAmountSummary}
-import viewmodels.checkAnswers.propertyrentals.income.{DeductingTaxSummary, IncomeFromPropertySummary, IsNonUKLandlordSummary, OtherIncomeFromPropertySummary, ReversePremiumsReceivedSummary}
-import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
+import viewmodels.checkAnswers.premiumlease._
+import viewmodels.checkAnswers.propertyrentals.income._
 import viewmodels.govuk.summarylist._
+import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

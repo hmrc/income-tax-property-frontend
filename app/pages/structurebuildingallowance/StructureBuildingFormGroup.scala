@@ -16,7 +16,7 @@
 
 package pages.structurebuildingallowance
 
-import models.{Sba, StructuredBuildingAllowanceAddress}
+import models.StructuredBuildingAllowanceAddress
 import pages.PageConstants
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}

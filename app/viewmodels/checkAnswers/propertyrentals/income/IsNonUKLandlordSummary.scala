@@ -16,14 +16,14 @@
 
 package viewmodels.checkAnswers.propertyrentals.income
 
-import models.{CheckMode, PropertyType, Rentals, UserAnswers}
+import controllers.propertyrentals.income.routes
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import controllers.propertyrentals.income.routes
 
 object IsNonUKLandlordSummary {
 

@@ -18,7 +18,7 @@ package controllers.about
 
 import base.SpecBase
 import forms.about.AboutPropertyCompleteFormProvider
-import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

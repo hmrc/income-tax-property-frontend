@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.propertyrentals.expenses.RentsRatesAndInsuranceFormProvider
-import models.{Mode, PropertyType, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
