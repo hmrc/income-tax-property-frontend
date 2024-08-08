@@ -77,14 +77,19 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       }
     }
 
-    "must return OK and the correct view for a POST (onSubmit)" in {
+    s"must return OK and the correct view for a POST (onSubmit) for $agencyOrIndividual" in {
 
       val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
       val userAnswers =
         UserAnswers("test").set(ConsolidatedExpensesPage(RentalsRentARoom), consolidatedExpenses).toOption
 
       val context =
-        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
+        JourneyContext(
+          taxYear = taxYear,
+          mtditid = "mtditid",
+          nino = "nino",
+          journeyName = "rentals-and-rent-a-room-expenses"
+        )
       val rentalsExpense =
         RentalsAndRentARoomExpenses(Some(consolidatedExpenses), None, None, None, None, None, None, None)
 
