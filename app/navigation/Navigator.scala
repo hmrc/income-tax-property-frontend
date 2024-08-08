@@ -292,7 +292,26 @@ class Navigator @Inject() () {
       taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
 
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
-      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+
+        // Rentals and Rent A Room Expenses
+    case ConsolidatedExpensesPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers, RentalsRentARoom)
+    case RentsRatesAndInsurancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case RepairsAndMaintenanceCostsPage(RentalsRentARoom) =>
+      taxYear => _ => _ => LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case LoanInterestPage(RentalsRentARoom) =>
+      taxYear => _ => _ => OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case OtherProfessionalFeesPage(RentalsRentARoom) =>
+      taxYear => _ => _ => CostsOfServicesProvidedController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case CostsOfServicesProvidedPage(RentalsRentARoom) =>
+      taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case PropertyBusinessTravelCostsPage(Rentals) =>
+      taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode)
 
     case _ => _ => _ => _ => IndexController.onPageLoad
 
