@@ -23,6 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.propertyrentals.expenses.OtherAllowablePropertyExpensesPage
 import play.api.data.Form
 import play.api.inject.bind
@@ -33,7 +34,6 @@ import repositories.SessionRepository
 import views.html.propertyrentals.expenses.OtherAllowablePropertyExpensesView
 
 import scala.concurrent.Future
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 
 class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with MockitoSugar {
 
@@ -131,9 +131,9 @@ class OtherAllowablePropertyExpensesControllerSpec extends SpecBase with Mockito
         running(application) {
           val request =
             FakeRequest(POST, OtherAllowablePropertyExpensesRoute)
-              .withFormUrlEncodedBody(("costsOfServicesProvided", "invalid value"))
+              .withFormUrlEncodedBody(("otherAllowablePropertyExpenses", "invalid non currency value"))
 
-          val boundForm = form.bind(Map("costsOfServicesProvided" -> "invalid value"))
+          val boundForm = form.bind(Map("otherAllowablePropertyExpenses" -> "invalid non currency value"))
 
           val view = application.injector.instanceOf[OtherAllowablePropertyExpensesView]
 

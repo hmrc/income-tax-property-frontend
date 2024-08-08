@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.OtherAllowablePropertyExpensesFormProvider
-import models.{Mode, PropertyType, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.expenses.OtherAllowablePropertyExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,8 +43,8 @@ class OtherAllowablePropertyExpensesController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(OtherAllowablePropertyExpensesPage(propertyType)) match {
         case None        => form
@@ -52,16 +52,18 @@ class OtherAllowablePropertyExpensesController @Inject() (
       }
 
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <-
@@ -77,5 +79,5 @@ class OtherAllowablePropertyExpensesController @Inject() (
               )
             )
         )
-  }
+    }
 }
