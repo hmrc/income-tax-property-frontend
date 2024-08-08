@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.OtherProfessionalFeesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,17 +27,24 @@ import viewmodels.implicits._
 
 object OtherProfessionalFeesSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(OtherProfessionalFeesPage(Rentals)) match {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(OtherProfessionalFeesPage(propertyType)) match {
       case Some(answer) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("otherProfessionalFees.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.OtherProfessionalFeesController.onPageLoad(taxYear, CheckMode, Rentals).url)
-              .withVisuallyHiddenText(messages("otherProfessionalFees.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("otherProfessionalFees.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.OtherProfessionalFeesController.onPageLoad(taxYear, CheckMode, propertyType).url
+              )
+                .withVisuallyHiddenText(messages("otherProfessionalFees.change.hidden"))
+            )
           )
-        ))
+        )
       case _ => Option.empty[SummaryListRow]
     }
 }

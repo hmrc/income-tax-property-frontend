@@ -18,7 +18,7 @@ package controllers.rentalsandrentaroom.expenses
 
 import controllers.actions._
 import controllers.exceptions.{InternalErrorFailure, NotFoundException}
-import models.{JourneyContext, RentalsAndRentARoomExpenses, RentalsRentARoom}
+import models.{JourneyContext, PropertyType, RentalsAndRentARoomExpenses, RentalsRentARoom}
 import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
@@ -47,7 +47,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val rows: Seq[SummaryListRow] = generateRows(taxYear, request)
+      val rows: Seq[SummaryListRow] = generateRowsForRentalsRentARoomExpenses(taxYear, request)
       val list = SummaryListViewModel(rows = rows)
       Ok(view(list, taxYear))
 
@@ -80,27 +80,29 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
       }
 
   }
-  private def generateRows(taxYear: Int, request: DataRequest[AnyContent])(implicit
+  private def generateRowsForRentalsRentARoomExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit
     messages: Messages
   ): Seq[SummaryListRow] = {
     val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage(RentalsRentARoom)) match {
       case Some(_) =>
         ConsolidatedExpensesSummary
-          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom)
           .getOrElse(Seq.empty)
       case None => Seq.empty
     }
-    consolidatedExpensesRows ++ individualExpenses(taxYear, request).flatten
+    consolidatedExpensesRows ++ individualForRentalsRentARoomExpenses(taxYear, request).flatten
   }
 
-  private def individualExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) =
+  private def individualForRentalsRentARoomExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit
+    messages: Messages
+  ) =
     Seq(
-      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
-      RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
-      LoanInterestSummary.row(taxYear, request.userAnswers),
-      OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
-      CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
-      PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
-      OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
+      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      LoanInterestSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      OtherProfessionalFeesSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
     )
 }

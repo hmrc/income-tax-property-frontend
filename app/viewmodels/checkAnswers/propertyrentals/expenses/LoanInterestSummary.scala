@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,8 +26,10 @@ import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 object LoanInterestSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LoanInterestPage(Rentals)) match {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(LoanInterestPage(propertyType)) match {
       case Some(answer) =>
         Some(
           SummaryListRowViewModel(
@@ -36,7 +38,7 @@ object LoanInterestSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.LoanInterestController.onPageLoad(taxYear, CheckMode, Rentals).url
+                routes.LoanInterestController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("loanInterest.change.hidden"))
             )

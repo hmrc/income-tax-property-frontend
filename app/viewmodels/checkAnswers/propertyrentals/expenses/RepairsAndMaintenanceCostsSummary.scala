@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.RepairsAndMaintenanceCostsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,8 +27,10 @@ object RepairsAndMaintenanceCostsSummary {
   import viewmodels.govuk.summarylist._
   import viewmodels.implicits._
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RepairsAndMaintenanceCostsPage(Rentals)) match {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(RepairsAndMaintenanceCostsPage(propertyType)) match {
       case Some(answer) =>
         Some(
           SummaryListRowViewModel(
@@ -37,7 +39,7 @@ object RepairsAndMaintenanceCostsSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode, Rentals).url
+                routes.RepairsAndMaintenanceCostsController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("RepairsAndMaintenanceCosts.change.hidden"))
             )
