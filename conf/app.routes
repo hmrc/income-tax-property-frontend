@@ -605,10 +605,10 @@ GET         /:taxYear/rentals-rent-a-room/expenses/change-other-allowable-proper
 POST        /:taxYear/rentals-rent-a-room/expenses/change-other-allowable-property-expenses             controllers.propertyrentals.expenses.OtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
 
-GET         /:taxYear/rentals/rentals-rent-a-room/property-business-travel-costs                       controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals/rentals-rent-a-room/property-business-travel-costs                       controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-GET         /:taxYear/rentals/rentals-rent-a-room/change-property-business-travel-costs                controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals/rentals-rent-a-room/change-property-business-travel-costs                controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/expenses/property-business-travel-costs                       controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/expenses/property-business-travel-costs                       controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/expenses/change-property-business-travel-costs                controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/expenses/change-property-business-travel-costs                controllers.propertyrentals.expenses.PropertyBusinessTravelCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
 
 GET         /:taxYear/rentals-rent-a-room/expenses/legal-or-other-professional-fees                    controllers.propertyrentals.expenses.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
