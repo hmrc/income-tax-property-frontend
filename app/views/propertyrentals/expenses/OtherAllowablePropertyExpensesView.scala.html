@@ -26,25 +26,18 @@
 )
 
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("otherAllowablePropertyExpenses.title"))) {
 
     <h1 class="govuk-heading-l">@messages("otherAllowablePropertyExpenses.heading")</h1>
 
-    @formHelper(action = OtherAllowablePropertyExpensesController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = OtherAllowablePropertyExpensesController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
         @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages(s"otherAllowablePropertyExpenses.details.content.link.text.$individualOrAgent")
-                </span>
-        </summary>
-        <div class="govuk-details__text">
             <ul class="govuk-list govuk-list--bullet">
                 <li>@messages("otherAllowablePropertyExpenses.details.content.l1")</li>
                 <li>@messages("otherAllowablePropertyExpenses.details.content.l2")</li>
@@ -57,8 +50,9 @@
             <a href="@messages("otherAllowablePropertyExpenses.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
             @messages("otherAllowablePropertyExpenses.details.link.text")
             </a>
-        </div>
-        </details>
+        <p></p>
+
+
 
         @govukInput(
         InputViewModel(

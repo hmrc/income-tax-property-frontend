@@ -538,7 +538,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.expenses.routes.OtherAllowablePropertyExpensesController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {

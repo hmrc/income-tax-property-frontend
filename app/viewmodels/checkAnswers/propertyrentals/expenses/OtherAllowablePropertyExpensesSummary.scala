@@ -37,7 +37,7 @@ object OtherAllowablePropertyExpensesSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode).url
+                routes.OtherAllowablePropertyExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
               )
                 .withVisuallyHiddenText(messages("otherAllowablePropertyExpenses.change.hidden"))
             )
