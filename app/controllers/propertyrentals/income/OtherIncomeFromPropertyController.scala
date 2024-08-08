@@ -18,7 +18,7 @@ package controllers.propertyrentals.income
 
 import controllers.actions._
 import forms.propertyrentals.income.OtherIncomeFromPropertyFormProvider
-import models.{Mode, PropertyType, Rentals, UserAnswers}
+import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
 import pages.propertyrentals.income.OtherIncomeFromPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}

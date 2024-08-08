@@ -902,8 +902,8 @@ costsOfServicesProvided.error.twoDecimalPlaces.individual = Gall y swm gynnwys p
 costsOfServicesProvided.error.twoDecimalPlaces.agent = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
 costsOfServicesProvided.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
 
-propertyBusinessTravelCosts.error.required.individual = Nodwch swm ar gyfer faint rydych am ei hawlio ar gyfer costau teithio yn sgil busnes eiddo
-propertyBusinessTravelCosts.error.required.agent = Nodwch swm ar gyfer faint mae’ch cleient am ei hawlio ar gyfer costau teithio yn sgil busnes eiddo
+propertyBusinessTravelCosts.error.required.individual = *Missing Welsh*
+propertyBusinessTravelCosts.error.required.agent = *Missing Welsh*
 propertyBusinessTravelCosts.error.nonNumeric.individual = Nodwch swm ar gyfer faint rydych am ei hawlio ar gyfer costau teithio yn sgil busnes eiddo
 propertyBusinessTravelCosts.error.nonNumeric.agent = Nodwch swm ar gyfer faint mae’ch cleient am ei hawlio ar gyfer costau teithio yn sgil busnes eiddo
 propertyBusinessTravelCosts.error.twoDecimalPlaces.individual = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20

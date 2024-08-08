@@ -19,7 +19,7 @@ package controllers.propertyrentals.income
 import base.SpecBase
 import controllers.routes
 import forms.propertyrentals.income.IncomeSectionFinishedFormProvider
-import models.{FetchedBackendData, JourneyContext, User, UserAnswers}
+import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

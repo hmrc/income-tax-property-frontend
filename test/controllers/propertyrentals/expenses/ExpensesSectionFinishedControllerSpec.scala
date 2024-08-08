@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 import controllers.routes
 import forms.ExpensesSectionFinishedFormProvider
-import models.{FetchedBackendData, JourneyContext, User, UserAnswers}
+import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

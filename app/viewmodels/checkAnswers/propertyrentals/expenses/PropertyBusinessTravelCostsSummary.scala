@@ -37,7 +37,7 @@ object PropertyBusinessTravelCostsSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, CheckMode).url
+                routes.PropertyBusinessTravelCostsController.onPageLoad(taxYear, CheckMode, Rentals).url
               )
                 .withVisuallyHiddenText(messages("propertyBusinessTravelCosts.change.hidden"))
             )

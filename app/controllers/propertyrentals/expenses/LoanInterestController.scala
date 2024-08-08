@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.actions._
 import forms.LoanInterestFormProvider
-import models.{Mode, PropertyType, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.{I18nSupport, MessagesApi}

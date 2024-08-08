@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{JourneyContext, NormalMode, SbasWithSupportingQuestions}
+import models.{JourneyContext, NormalMode}
 import navigation.Navigator
 import pages.structurebuildingallowance._
 import play.api.Logging
@@ -32,7 +32,7 @@ import service.{JourneyAnswersService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.structurebuildingallowance.{StructureBuildingAllowanceClaimSummary, StructureBuildingAllowanceSummary}
+import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceSummary
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaClaimsView
 

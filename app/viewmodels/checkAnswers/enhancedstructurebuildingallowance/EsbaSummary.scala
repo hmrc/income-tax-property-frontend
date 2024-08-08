@@ -16,11 +16,10 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.{Esba, EsbaAddressPage, EsbaOnIndex}
+import models.UserAnswers
+import pages.enhancedstructuresbuildingallowance.EsbaOnIndex
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._

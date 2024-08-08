@@ -19,7 +19,6 @@ package controllers.rentalsandrentaroom
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
-import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
 import navigation.Navigator
 import pages.UKPropertySelectPage
