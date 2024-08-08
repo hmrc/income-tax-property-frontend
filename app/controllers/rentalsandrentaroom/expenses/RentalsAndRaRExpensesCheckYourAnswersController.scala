@@ -17,9 +17,9 @@
 package controllers.rentalsandrentaroom.expenses
 
 import controllers.actions._
-import controllers.exceptions.{InternalErrorFailure, NotFoundException}
-import models.{JourneyContext, PropertyType, RentalsAndRentARoomExpenses, RentalsRentARoom}
+import controllers.exceptions.InternalErrorFailure
 import models.requests.DataRequest
+import models.{JourneyContext, RentalsAndRentARoomExpenses, RentalsRentARoom}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -27,7 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.propertyrentals.expenses.{ConsolidatedExpensesSummary, CostsOfServicesProvidedSummary, LoanInterestSummary, OtherAllowablePropertyExpensesSummary, OtherProfessionalFeesSummary, PropertyBusinessTravelCostsSummary, RentsRatesAndInsuranceSummary, RepairsAndMaintenanceCostsSummary}
+import viewmodels.checkAnswers.propertyrentals.expenses._
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersView
 
@@ -64,14 +64,9 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
             .saveJourneyAnswers(context, propertyRentalsExpenses)
             .flatMap {
               case Right(_) =>
-                Future.successful(
-                  Redirect(
-                    controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
-                      .onPageLoad(taxYear)
-                  )
-                )
+                Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
               case Left(_) =>
-                Future.failed(InternalErrorFailure("Property submission save error"))
+                Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
             }
 
         case None =>

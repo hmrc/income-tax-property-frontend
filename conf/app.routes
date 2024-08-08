@@ -619,6 +619,9 @@ POST        /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-profess
 GET        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                    controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                   controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onSubmit(taxYear: Int)
 
+GET         /:taxYear/rentals-rent-a-room/expenses/complete-yes-no                                      controllers.rentalsandrentaroom.expenses.RentalsRaRExpensesCompleteController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/expenses/complete-yes-no                                      controllers.rentalsandrentaroom.expenses.RentalsRaRExpensesCompleteController.onSubmit(taxYear: Int)
+
 #################### Allowances Rentals And Rent A Room  ##########################
 
 GET         /:taxYear/rentals-rent-a-room/allowances/start                                              controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
