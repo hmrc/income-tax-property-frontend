@@ -38,23 +38,16 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages("propertyBusinessTravelCosts.details.content.link.text")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages(s"propertyBusinessTravelCosts.details.content1.$individualOrAgent")</p>
-                <ul class="govuk-list govuk-list--bullet">
-                    <li>@messages("propertyBusinessTravelCosts.details.content.l1")</li>
-                    <li>@messages("propertyBusinessTravelCosts.details.content.l2")</li>
-                    <li>@messages("propertyBusinessTravelCosts.details.content.l3")</li>
-                    <li>@messages("propertyBusinessTravelCosts.details.content.l4")</li>
-                </ul>
-                <p class="govuk-body">@messages(s"propertyBusinessTravelCosts.details.content2.$individualOrAgent")</p>
-            </div>
-        </details>
+
+
+        <p class="govuk-body">@messages(s"propertyBusinessTravelCosts.details.content1.$individualOrAgent")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("propertyBusinessTravelCosts.details.content.l1")</li>
+            <li>@messages("propertyBusinessTravelCosts.details.content.l2")</li>
+            <li>@messages("propertyBusinessTravelCosts.details.content.l3")</li>
+            <li>@messages("propertyBusinessTravelCosts.details.content.l4")</li>
+        </ul>
+        <p class="govuk-body">@messages(s"propertyBusinessTravelCosts.details.content2.$individualOrAgent")</p>
 
         @govukInput(
             InputViewModel(
