@@ -718,7 +718,13 @@ class Navigator @Inject() () {
     }
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(ConsolidatedExpensesPage(propertyType)) match {
-      case Some(ConsolidatedExpenses(true, _)) => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(ConsolidatedExpenses(true, _)) =>
+        propertyType match {
+          case Rentals => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+          case RentalsRentARoom =>
+            controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
+              .onPageLoad(taxYear)
+        }
       case Some(ConsolidatedExpenses(false, _)) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType)
     }
@@ -750,7 +756,12 @@ class Navigator @Inject() () {
             .getOrElse(true) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType)
       case _ =>
-        ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+        propertyType match {
+          case Rentals => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+          case RentalsRentARoom =>
+            controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
+              .onPageLoad(taxYear)
+        }
     }
 
   private def balancingChargeNavigationCheckMode(
