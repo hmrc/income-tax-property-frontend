@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,17 +27,25 @@ import viewmodels.implicits._
 
 object RentsRatesAndInsuranceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RentsRatesAndInsurancePage(Rentals)) match {
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(RentsRatesAndInsurancePage(propertyType)) match {
       case Some(answer) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("rentsRatesAndInsurance.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode, Rentals).url)
-              .withVisuallyHiddenText(messages("RentsRatesAndInsurance.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel(s"rentsRatesAndInsurance.checkYourAnswersLabel.$individualOrAgent")
+              .withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, CheckMode, propertyType).url
+              )
+                .withVisuallyHiddenText(messages("RentsRatesAndInsurance.change.hidden"))
+            )
           )
-        ))
+        )
       case _ => Option.empty[SummaryListRow]
     }
 }

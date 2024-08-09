@@ -389,6 +389,104 @@ class NavigatorSpec extends SpecBase {
                 .onPageLoad(taxYear)
           })
         }
+
+        s"must go from ConsolidatedExpensesPage to RentsRatesAndInsurancePage when user selects no for $propertyTypeDefinition" in {
+          val testUserAnswer =
+            UserAnswers("test").set(ConsolidatedExpensesPage(propertyType), ConsolidatedExpenses(false, None)).get
+
+          navigator.nextPage(
+            ConsolidatedExpensesPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes for $propertyTypeDefinition" in {
+          val testUserAnswer =
+            UserAnswers("test").set(ConsolidatedExpensesPage(propertyType), ConsolidatedExpenses(true, Some(100))).get
+
+          navigator.nextPage(
+            ConsolidatedExpensesPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            testUserAnswer
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+
+        }
+
+        s"must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            RentsRatesAndInsurancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from RepairsAndMaintenanceCostsPage to LoanInterestPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            RepairsAndMaintenanceCostsPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.expenses.routes.LoanInterestController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from LoanInterestPage to OtherProfessionalFeesPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            LoanInterestPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            OtherProfessionalFeesPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            CostsOfServicesProvidedPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            PropertyBusinessTravelCostsPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.expenses.routes.OtherAllowablePropertyExpensesController
+            .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
       }
 
       "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
@@ -449,96 +547,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from ConsolidatedExpensesPage to RentsRatesAndInsurancePage when user selects no" in {
-        val testUserAnswer =
-          UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(false, None)).get
-
-        navigator.nextPage(
-          ConsolidatedExpensesPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.propertyrentals.expenses.routes.RentsRatesAndInsuranceController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from ConsolidatedExpensesPage to ReversePremiumReceivedPage when user selects yes" in {
-        val testUserAnswer =
-          UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), ConsolidatedExpenses(true, Some(100))).get
-
-        navigator.nextPage(
-          ConsolidatedExpensesPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          testUserAnswer
-        ) mustBe controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage" in {
-        navigator.nextPage(
-          RentsRatesAndInsurancePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe RepairsAndMaintenanceCostsController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from RepairsAndMaintenanceCostsPage to LoanInterestPage" in {
-        navigator.nextPage(
-          RepairsAndMaintenanceCostsPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.LoanInterestController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from LoanInterestPage to OtherProfessionalFeesPage" in {
-        navigator.nextPage(
-          LoanInterestPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-      "must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage" in {
-        navigator.nextPage(
-          OtherProfessionalFeesPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-      "must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage" in {
-        navigator.nextPage(
-          CostsOfServicesProvidedPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.PropertyBusinessTravelCostsController
-          .onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from PropertyBusinessTravelCostsPage to OtherAllowablePropertyExpensesPage" in {
-        navigator.nextPage(
-          PropertyBusinessTravelCostsPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.propertyrentals.expenses.routes.OtherAllowablePropertyExpensesController
-          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {

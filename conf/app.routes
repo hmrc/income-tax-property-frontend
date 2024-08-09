@@ -616,6 +616,8 @@ POST        /:taxYear/rentals-rent-a-room/expenses/legal-or-other-professional-f
 GET         /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-professional-fees             controllers.propertyrentals.expenses.OtherProfessionalFeesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-professional-fees             controllers.propertyrentals.expenses.OtherProfessionalFeesController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
+GET        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                    controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                   controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onSubmit(taxYear: Int)
 
 #################### Allowances Rentals And Rent A Room  ##########################
 

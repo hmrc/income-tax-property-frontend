@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import audit.{AuditService, RentalsAuditModel, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{JourneyContext, Rentals}
+import models.{JourneyContext, Rentals, RentalsRentARoom}
 import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
@@ -60,7 +60,7 @@ class ExpensesCheckYourAnswersController @Inject() (
     val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage(Rentals)) match {
       case Some(_) =>
         ConsolidatedExpensesSummary
-          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom)
           .getOrElse(Seq.empty)
       case None => Seq.empty
     }
@@ -69,13 +69,13 @@ class ExpensesCheckYourAnswersController @Inject() (
 
   private def individualExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) =
     Seq(
-      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers),
-      RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers),
-      LoanInterestSummary.row(taxYear, request.userAnswers),
-      OtherProfessionalFeesSummary.row(taxYear, request.userAnswers),
-      CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers),
-      PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers),
-      OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers)
+      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, Rentals),
+      RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers, Rentals),
+      LoanInterestSummary.row(taxYear, request.userAnswers, Rentals),
+      OtherProfessionalFeesSummary.row(taxYear, request.userAnswers, Rentals),
+      CostsOfServicesProvidedSummary.row(taxYear, request.userAnswers, Rentals),
+      PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers, Rentals),
+      OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers, Rentals)
     )
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {

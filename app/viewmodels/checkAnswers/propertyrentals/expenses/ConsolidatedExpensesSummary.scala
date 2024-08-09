@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, ConsolidatedExpenses, Rentals, UserAnswers}
+import models.{CheckMode, ConsolidatedExpenses, PropertyType, Rentals, UserAnswers}
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,10 +27,10 @@ import viewmodels.implicits._
 
 object ConsolidatedExpensesSummary {
 
-  def rows(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+  def rows(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[Seq[SummaryListRow]] =
-    answers.get(ConsolidatedExpensesPage(Rentals)).flatMap {
+    answers.get(ConsolidatedExpensesPage(propertyType)).flatMap {
       case ConsolidatedExpenses(true, Some(amount)) =>
         Some(
           Seq(
@@ -40,7 +40,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
@@ -52,7 +52,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
@@ -68,7 +68,7 @@ object ConsolidatedExpensesSummary {
               actions = Seq(
                 ActionItemViewModel(
                   "site.change",
-                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, Rentals).url
+                  routes.ConsolidatedExpensesController.onPageLoad(taxYear, CheckMode, propertyType).url
                 )
                   .withVisuallyHiddenText(messages("consolidatedExpenses.change.hidden"))
               )
