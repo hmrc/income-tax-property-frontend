@@ -27,14 +27,15 @@ import viewmodels.implicits._
 
 object RentsRatesAndInsuranceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(RentsRatesAndInsurancePage(propertyType)) match {
       case Some(answer) =>
         Some(
           SummaryListRowViewModel(
-            key = KeyViewModel("rentsRatesAndInsurance.checkYourAnswersLabel").withCssClass(keyCssClass),
+            key =
+              KeyViewModel(s"rentsRatesAndInsurance.checkYourAnswersLabel$individualOrAgent").withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
             actions = Seq(
               ActionItemViewModel(
