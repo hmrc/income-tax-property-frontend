@@ -69,7 +69,7 @@ class ExpensesCheckYourAnswersController @Inject() (
 
   private def individualExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) =
     Seq(
-      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, Rentals),
+      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, Rentals),
       RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers, Rentals),
       LoanInterestSummary.row(taxYear, request.userAnswers, Rentals),
       OtherProfessionalFeesSummary.row(taxYear, request.userAnswers, Rentals),

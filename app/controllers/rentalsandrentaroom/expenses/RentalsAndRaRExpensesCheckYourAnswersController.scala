@@ -97,7 +97,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
     messages: Messages
   ) =
     Seq(
-      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+      RentsRatesAndInsuranceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom),
       RepairsAndMaintenanceCostsSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
       LoanInterestSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
       OtherProfessionalFeesSummary.row(taxYear, request.userAnswers, RentalsRentARoom),

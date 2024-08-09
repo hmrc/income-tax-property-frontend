@@ -34,8 +34,8 @@ object RentsRatesAndInsuranceSummary {
       case Some(answer) =>
         Some(
           SummaryListRowViewModel(
-            key =
-              KeyViewModel(s"rentsRatesAndInsurance.checkYourAnswersLabel$individualOrAgent").withCssClass(keyCssClass),
+            key = KeyViewModel(s"rentsRatesAndInsurance.checkYourAnswersLabel.$individualOrAgent")
+              .withCssClass(keyCssClass),
             value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
             actions = Seq(
               ActionItemViewModel(
