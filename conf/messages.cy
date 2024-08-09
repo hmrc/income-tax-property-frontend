@@ -584,7 +584,8 @@ rentsRatesAndInsurance.details.content.p2.individual	=	Rhowch wybod i ni am y tr
 rentsRatesAndInsurance.details.content.p2.agent	=	Rhowch wybod i ni am y treuliau sy’n berthnasol i gynllun rhentu ystafell eich cleient yn unig. Os oes gan eich cleient fwy nag un lletywr yn ei gartref, rhowch wybod i ni am y treuliau sy’n berthnasol i ystafelloedd y lletywyr hyn.
 rentsRatesAndInsurance.label.individual	=	Faint wnaethoch wario ar renti, ardrethi ac yswiriant ar gyfer eich eiddo?
 rentsRatesAndInsurance.label.agent	=	Faint wnaeth eich cleient wario ar renti, ardrethi ac yswiriant ar gyfer ei eiddo?
-rentsRatesAndInsurance.checkYourAnswersLabel	=	Costau rhedeg ar gyfer eich eiddo
+rentsRatesAndInsurance.checkYourAnswersLabel.individual	= *Missing Welsh*
+rentsRatesAndInsurance.checkYourAnswersLabel.agent = *Missing Welsh*
 rentsRatesAndInsurance.change.hidden	=	Rhenti, ardrethi ac yswiriant ar gyfer eiddo eich cleient
 
 allowancesStart.title	=	Lwfansau
