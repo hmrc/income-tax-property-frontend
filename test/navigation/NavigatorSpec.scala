@@ -414,7 +414,14 @@ class NavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             testUserAnswer
-          ) mustBe controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+
         }
 
         s"must go from RentsRatesAndInsurancePage to RepairsAndMaintenanceCostsPage for $propertyTypeDefinition" in {
