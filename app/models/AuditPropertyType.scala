@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package audit
+package models
 
-import play.api.libs.json.{Format, Json, OFormat}
+sealed trait AuditPropertyType
 
-case class RentalsAndRentARoomAuditModel[T](
-  nino: String,
-  userType: String,
-  mtdItId: String,
-  agentReferenceNumber: Option[String],
-  taxYear: Int,
-  isUpdate: Boolean,
-  sectionName: String,
-  userEnteredRentalsAndRentARoomDetails: T
-)
+object AuditPropertyType extends Enumerable.Implicits {
+  case object UKProperty extends WithName("uk-property") with AuditPropertyType
+  case object ForeignProperty extends WithName("foreign-property") with AuditPropertyType
 
-object RentalsAndRentARoomAuditModel {
-  implicit def format[T](implicit
-    rentalsAndRentARoomAuditModelFormat: Format[T]
-  ): OFormat[RentalsAndRentARoomAuditModel[T]] =
-    Json.format[RentalsAndRentARoomAuditModel[T]]
+  val values: Seq[AuditPropertyType] = Seq(
+    UKProperty,
+    ForeignProperty
+  )
+  implicit val enumerable: Enumerable[AuditPropertyType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

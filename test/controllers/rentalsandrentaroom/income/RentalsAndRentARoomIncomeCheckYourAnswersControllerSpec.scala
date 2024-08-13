@@ -16,15 +16,26 @@
 
 package controllers.rentalsandrentaroom.income
 
+import audit.AuditService
 import base.SpecBase
-import models.User
+import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, User, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency
+import play.api.inject.bind
+import org.mockito.Mockito.{doNothing, when}
+import org.mockito.MockitoSugar.{times, verify}
+import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyPage, IsNonUKLandlordPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import service.PropertySubmissionService
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
-class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+import scala.concurrent.Future
+
+class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
+    extends SpecBase with MockitoSugar with SummaryListFluency {
   private val taxYear = 2024
 
   val scenarios = Table[Boolean, String](
@@ -43,8 +54,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec extends SpecBase w
     s"RentalsAndRentARoomIncomeCheckYourAnswers Controller for $agencyOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+          .build()
 
         running(application) {
           val request = FakeRequest(
@@ -62,6 +73,51 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec extends SpecBase w
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+
+        }
+      }
+
+      "must call the right services for a POST" in {
+        val mockAuditService = mock[AuditService]
+        val mockPropertySubmissionService = mock[PropertySubmissionService]
+        val userAnswers =
+          (for {
+            ua1 <- UserAnswers(userAnswersId).set(IsNonUKLandlordPage(RentalsRentARoom), true)
+            ua2 <- ua1.set(IncomeFromPropertyPage(RentalsRentARoom), BigDecimal(1.01))
+            ua3 <- ua2.set(OtherIncomeFromPropertyPage(RentalsRentARoom), BigDecimal(1.01))
+            ua4 <- ua3.set(DeductingTaxPage(RentalsRentARoom), DeductingTax(true, Some(BigDecimal(1.01))))
+            ua5 <- ua4.set(
+                     ReversePremiumsReceivedPage(RentalsRentARoom),
+                     ReversePremiumsReceived(true, Some(BigDecimal(1.01)))
+                   )
+          } yield ua5).success.value
+
+        when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+          Right(())
+        )
+        doNothing().when(mockAuditService).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), false)
+          .overrides(
+            bind[AuditService].toInstance(mockAuditService),
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(
+            POST,
+            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
+              .onSubmit(taxYear)
+              .url
+          )
+
+          val result = route(application, request).value
+
+          whenReady(result) { r =>
+            verify(mockAuditService, times(1)).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
+          }
+
         }
       }
     }

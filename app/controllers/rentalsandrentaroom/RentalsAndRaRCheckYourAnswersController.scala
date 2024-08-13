@@ -16,12 +16,13 @@
 
 package controllers.rentalsandrentaroom
 
-import audit.RentalsAndRentARoomAuditModel._
-import audit.{AuditService, RentalsAndRentARoomAuditModel}
+import audit.AuditModel._
+import audit.{AuditService, AuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
 import models.{JourneyContext, RentalsAndRaRAbout, RentalsRentARoom, UserAnswers}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRaRAbout, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -89,7 +90,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
         .saveJourneyAnswers[RentalsAndRaRAbout](context, about)
         .map {
           case Left(error) =>
-            print(error)
+            logger.error(error.toString)
             Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
           case Right(_) =>
             auditCYA(taxYear, request, about)
@@ -102,14 +103,17 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
 
-    val auditModel = RentalsAndRentARoomAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentalsRentARoom",
+      SectionName.About,
+      AuditPropertyType.UKProperty,
+      JourneyName.RentalsRentARoom,
+      AccountingMethod.Traditional,
       about
     )
 
