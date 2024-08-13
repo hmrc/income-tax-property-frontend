@@ -72,7 +72,7 @@ class RentalsRaRExpensesCompleteController @Inject() (
                          taxYear = taxYear,
                          mtditid = request.user.mtditid,
                          nino = request.user.nino,
-                         journeyName = "rentals-and-rent-a-room-expenses"
+                         journeyName = "property-rentals-and-rent-a-room-expenses"
                        ),
                        status = statusForPage(value),
                        request.user
