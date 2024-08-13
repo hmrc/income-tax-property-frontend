@@ -16,8 +16,8 @@
 
 package viewmodels.checkAnswers.premiumlease
 
-import controllers.premiumlease.routes.CalculatedFigureYourselfController
-import models.{CalculatedFigureYourself, CheckMode, PropertyType, Rentals, UserAnswers}
+import controllers.premiumlease.routes
+import models.{CalculatedFigureYourself, CheckMode, PropertyType, UserAnswers}
 import pages.premiumlease.CalculatedFigureYourselfPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -30,7 +30,7 @@ object CalculatedFigureYourselfSummary {
   def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(CalculatedFigureYourselfPage(Rentals)).flatMap {
+    answers.get(CalculatedFigureYourselfPage(propertyType)).flatMap {
       case CalculatedFigureYourself(true, Some(amount)) =>
         Some(
           SummaryListRowViewModel(
@@ -39,7 +39,7 @@ object CalculatedFigureYourselfSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
+                routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
             )
@@ -53,7 +53,7 @@ object CalculatedFigureYourselfSummary {
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
-                CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
+                routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
                 .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
             )
