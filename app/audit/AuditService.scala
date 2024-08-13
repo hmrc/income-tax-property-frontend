@@ -41,8 +41,8 @@ class AuditService @Inject() (auditConnector: AuditConnector)(implicit ec: Execu
     auditConnector.sendExplicitAudit(rentARoomAuditType, event)
 
   def sendRentalsAndRentARoomAuditEvent[T](
-    event: RentalsAndRentARoomAuditModel[T]
-  )(implicit hc: HeaderCarrier, writes: Writes[RentalsAndRentARoomAuditModel[T]]): Unit =
+    event: AuditModel[T]
+  )(implicit hc: HeaderCarrier, writes: Writes[AuditModel[T]]): Unit =
     auditConnector.sendExplicitAudit(rentalsAndARoomAuditType, event)
 
 }
