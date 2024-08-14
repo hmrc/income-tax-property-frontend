@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes._
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.structurebuildingallowance.ClaimStructureBuildingAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -29,7 +29,7 @@ object ClaimStructureBuildingAllowanceSummary {
   def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ClaimStructureBuildingAllowancePage).map { answer =>
+    answers.get(ClaimStructureBuildingAllowancePage(Rentals)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
@@ -38,7 +38,7 @@ object ClaimStructureBuildingAllowanceSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode).url
+            ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode, Rentals).url
           )
             .withVisuallyHiddenText(messages("claimStructureBuildingAllowance.change.hidden"))
         )

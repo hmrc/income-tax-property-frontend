@@ -291,7 +291,7 @@ class SummaryPageSpec extends SpecBase {
     )
 
     "return empty rows, given an empty user data" in {
-      SummaryPage.createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
+      SummaryPage.createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear,).length should be(0)
     }
 
     "createRentalsAndRentARoomRows return only one row when user has selected Rentals and Rent a room" in {
@@ -303,8 +303,8 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(1)
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,).length should be(1)
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,) should be(
         Seq(summaryAboutItem)
       )
 
@@ -333,8 +333,8 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(2)
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,).length should be(2)
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,) should be(
         Seq(summaryAboutItem, summaryIncomeItem)
       )
     }
@@ -362,8 +362,8 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear).length should be(4)
-      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear) should be(
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,).length should be(4)
+      SummaryPage.createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear,) should be(
         Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem, summaryAllowancesItem)
       )
     }
