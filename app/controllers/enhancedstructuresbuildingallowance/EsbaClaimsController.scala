@@ -19,8 +19,8 @@ package controllers.enhancedstructuresbuildingallowance
 import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.{EsbasWithSupportingQuestions, NormalMode}
 import models.requests.DataRequest
+import models.{EsbasWithSupportingQuestions, NormalMode}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
@@ -33,7 +33,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.enhancedstructurebuildingallowance.{EsbaClaimAmountSummary, EsbaSummary}
+import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaSummary
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
 

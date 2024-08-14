@@ -20,8 +20,6 @@ import models.{RentARoom, Rentals, RentalsRentARoom}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-import scala.language.postfixOps
-
 class PageConstantsSpec extends AnyWordSpec with Matchers {
 
   ".labelForPropertyType" should {
