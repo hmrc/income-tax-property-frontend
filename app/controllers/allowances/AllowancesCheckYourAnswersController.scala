@@ -53,7 +53,7 @@ class AllowancesCheckYourAnswersController @Inject() (
           CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers, Rentals),
           AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers),
           ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
-          ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers),
+          ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
           BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers),
           ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
