@@ -19,7 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.ClaimStructureBuildingAllowanceFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -45,7 +45,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
   val taxYear = 2023
 
   lazy val claimStructureBuildingAllowanceRoute: String =
-    routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode).url
+    routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   "ClaimStructureBuildingAllowance Controller" - {
 
@@ -61,7 +61,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val view = application.injector.instanceOf[ClaimStructureBuildingAllowanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
@@ -70,7 +70,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimStructureBuildingAllowancePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimStructureBuildingAllowancePage(Rentals), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -82,7 +82,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
@@ -131,7 +131,7 @@ class ClaimStructureBuildingAllowanceControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
           request,
           messages(application)
         ).toString
