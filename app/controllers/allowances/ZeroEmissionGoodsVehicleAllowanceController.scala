@@ -18,8 +18,9 @@ package controllers.allowances
 
 import controllers.actions._
 import forms.allowances.ZeroEmissionGoodsVehicleAllowanceFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.allowances.ZeroEmissionGoodsVehicleAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,43 +31,54 @@ import views.html.allowances.ZeroEmissionGoodsVehicleAllowanceView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ZeroEmissionGoodsVehicleAllowanceController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ZeroEmissionGoodsVehicleAllowanceFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ZeroEmissionGoodsVehicleAllowanceView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ZeroEmissionGoodsVehicleAllowanceController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ZeroEmissionGoodsVehicleAllowanceFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ZeroEmissionGoodsVehicleAllowanceView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ZeroEmissionGoodsVehicleAllowancePage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(ZeroEmissionGoodsVehicleAllowancePage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionGoodsVehicleAllowancePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ZeroEmissionGoodsVehicleAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                ZeroEmissionGoodsVehicleAllowancePage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

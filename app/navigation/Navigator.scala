@@ -198,8 +198,8 @@ class Navigator @Inject() () {
       taxYear =>
         _ => _ => controllers.allowances.routes.ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
     case ZeroEmissionCarAllowancePage =>
-      taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode)
-    case ZeroEmissionGoodsVehicleAllowancePage =>
+      taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+    case ZeroEmissionGoodsVehicleAllowancePage(Rentals) =>
       taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
     case BusinessPremisesRenovationPage =>
       taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
@@ -470,7 +470,7 @@ class Navigator @Inject() () {
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
     case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage | ElectricChargePointAllowancePage |
-        ZeroEmissionCarAllowancePage | ZeroEmissionGoodsVehicleAllowancePage | BusinessPremisesRenovationPage |
+        ZeroEmissionCarAllowancePage | ZeroEmissionGoodsVehicleAllowancePage(Rentals) | BusinessPremisesRenovationPage |
         ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage =>
       taxYear =>
         _ =>
