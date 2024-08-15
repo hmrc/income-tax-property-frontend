@@ -551,7 +551,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {
         navigator.nextPage(
-          AnnualInvestmentAllowancePage,
+          AnnualInvestmentAllowancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1267,7 +1267,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from AnnualInvestmentAllowancePage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          AnnualInvestmentAllowancePage,
+          AnnualInvestmentAllowancePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

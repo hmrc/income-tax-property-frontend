@@ -183,7 +183,7 @@ class Navigator @Inject() () {
       taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, Rentals)
     case PropertyBusinessTravelCostsPage(Rentals) =>
       taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, Rentals)
-    case AnnualInvestmentAllowancePage =>
+    case AnnualInvestmentAllowancePage(Rentals) =>
       taxYear =>
         _ =>
           _ =>
@@ -192,7 +192,7 @@ class Navigator @Inject() () {
         // allowances
     case CapitalAllowancesForACarPage(Rentals) =>
       taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-    case AnnualInvestmentAllowancePage =>
+    case AnnualInvestmentAllowancePage(Rentals) =>
       taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
     case ElectricChargePointAllowancePage =>
       taxYear =>
@@ -470,9 +470,10 @@ class Navigator @Inject() () {
           // expenses
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
-    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage | ElectricChargePointAllowancePage |
-        ZeroEmissionCarAllowancePage(Rentals) | ZeroEmissionGoodsVehicleAllowancePage(Rentals) |
-        BusinessPremisesRenovationPage | ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage =>
+    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) |
+        ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
+        ZeroEmissionGoodsVehicleAllowancePage(Rentals) | BusinessPremisesRenovationPage |
+        ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage =>
       taxYear =>
         _ =>
           _ =>
