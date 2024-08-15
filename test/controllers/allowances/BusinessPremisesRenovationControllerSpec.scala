@@ -53,7 +53,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
 
   "BusinessPremisesRenovationController Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
@@ -89,7 +89,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "must populate the view correctly on a GET when the question has previously been answered for both Rentals and Rentals and Rent a Room journeys" in {
 
       // Rentals
       val rentalsUserAnswers =
@@ -139,7 +139,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page when valid data is submitted for both Rentals and Rentals and Rent a Room journeys" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -176,7 +176,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
@@ -218,7 +218,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
@@ -243,7 +243,7 @@ class BusinessPremisesRenovationControllerSpec extends SpecBase with MockitoSuga
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "must redirect to Journey Recovery for a POST if no existing data is found for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
