@@ -27,7 +27,7 @@ case class AllowancesStartPage(
   def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
   def nextPageUrl: String = if (cashOrAccruals) {
-    controllers.allowances.routes.AnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode).url
+    controllers.allowances.routes.AnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode, propertyType).url
   } else {
     controllers.allowances.routes.CapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode, propertyType).url
   }
