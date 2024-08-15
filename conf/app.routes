@@ -220,10 +220,10 @@ POST        /:taxYear/rentals/allowances/capital-allowances-for-a-car           
 GET         /:taxYear/rentals/allowances/change-capital-allowances-for-a-car                controllers.allowances.CapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/allowances/change-capital-allowances-for-a-car                controllers.allowances.CapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/allowances/electric-charge-point-allowance                    controllers.allowances.ElectricChargePointAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/allowances/electric-charge-point-allowance                    controllers.allowances.ElectricChargePointAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -635,3 +635,8 @@ GET         /:taxYear/rentals-rent-a-room/allowances/zero-emission-goods-vehicle
 POST        /:taxYear/rentals-rent-a-room/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/allowances/annual-investment-allowance                        controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/allowances/change-annual-investment-allowance                 controllers.allowances.AnnualInvestmentAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)

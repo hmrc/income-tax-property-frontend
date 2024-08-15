@@ -51,7 +51,7 @@ class AllowancesCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers, Rentals),
-          AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers),
+          AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
           ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers),
           ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
