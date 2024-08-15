@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package pages.allowances
+package models
 
-import models.{PropertyType, Rentals}
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+sealed trait JourneyName
 
-final case class ZeroEmissionGoodsVehicleAllowancePage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
+object JourneyName extends Enumerable.Implicits {
+  case object Rentals extends WithName("Rentals") with JourneyName
+  case object RentARoom extends WithName("RentARoom") with JourneyName
+  case object RentalsRentARoom extends WithName("RentalsRentARoom") with JourneyName
 
-  override def path: JsPath = JsPath \ allowancesPath(propertyType) \ toString
-
-  override def toString: String = "zeroEmissionGoodsVehicleAllowance"
+  val values: Seq[JourneyName] = Seq(
+    Rentals,
+    RentARoom,
+    RentalsRentARoom
+  )
+  implicit val enumerable: Enumerable[JourneyName] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

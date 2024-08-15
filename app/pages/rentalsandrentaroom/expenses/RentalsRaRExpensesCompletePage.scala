@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package audit
+package pages.rentalsandrentaroom.expenses
 
-import play.api.libs.json.{Format, Json, OFormat}
+import models.RentalsRentARoom
+import pages.PageConstants.expensesPath
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-case class RentalsAndRentARoomAuditModel[T](
-  nino: String,
-  userType: String,
-  mtdItId: String,
-  agentReferenceNumber: Option[String],
-  taxYear: Int,
-  isUpdate: Boolean,
-  sectionName: String,
-  userEnteredRentalsAndRentARoomDetails: T
-)
+case object RentalsRaRExpensesCompletePage extends QuestionPage[Boolean] {
 
-object RentalsAndRentARoomAuditModel {
-  implicit def format[T](implicit
-    rentalsAndRentARoomAuditModelFormat: Format[T]
-  ): OFormat[RentalsAndRentARoomAuditModel[T]] =
-    Json.format[RentalsAndRentARoomAuditModel[T]]
+  override def path: JsPath = JsPath \ expensesPath(RentalsRentARoom) \ toString
+
+  override def toString: String = "isRentalsRaRExpenseComplete"
 }

@@ -20,10 +20,11 @@ import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelec
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.AllowancesSectionFinishedPage
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
-import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSectionFinishedPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
+import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance.SbaSectionFinishedPage
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
@@ -114,7 +115,7 @@ case object SummaryPage {
           val baseItems = Seq(aboutItem, incomeItem)
           userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
             case Some(false) =>
-              baseItems concat Seq(rentalsAndRaRExpensesItem(taxYear), rentalsAndRaRAllowancesItem(taxYear))
+              baseItems concat Seq(rentalsAndRaRExpensesItem(taxYear, userAnswers), rentalsAndRaRAllowancesItem(taxYear))
             case _ => baseItems
           }
       }
@@ -303,11 +304,24 @@ case object SummaryPage {
       "rentals_and_rent_a_room_income_link"
     )
 
-  private def rentalsAndRaRExpensesItem(taxYear: Int) =
+  private def rentalsAndRaRExpensesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.expenses",
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom),
-      TaskListTag.NotStarted,
+      {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRExpensesCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (
+            userAnswers
+              .flatMap(_.get(ConsolidatedExpensesPage(RentalsRentARoom)))
+              .isDefined || userAnswers.flatMap(_.get(RentsRatesAndInsurancePage(RentalsRentARoom))).isDefined
+          ) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_expenses_link"
     )
 

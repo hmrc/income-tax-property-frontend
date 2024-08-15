@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package pages.allowances
+package models
 
-import models.{PropertyType, Rentals}
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+sealed trait AuditPropertyType
 
-final case class ZeroEmissionGoodsVehicleAllowancePage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
+object AuditPropertyType extends Enumerable.Implicits {
+  case object UKProperty extends WithName("uk-property") with AuditPropertyType
+  case object ForeignProperty extends WithName("foreign-property") with AuditPropertyType
 
-  override def path: JsPath = JsPath \ allowancesPath(propertyType) \ toString
-
-  override def toString: String = "zeroEmissionGoodsVehicleAllowance"
+  val values: Seq[AuditPropertyType] = Seq(
+    UKProperty,
+    ForeignProperty
+  )
+  implicit val enumerable: Enumerable[AuditPropertyType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

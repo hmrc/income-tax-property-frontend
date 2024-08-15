@@ -16,13 +16,16 @@
 
 package controllers.rentalsandrentaroom.income
 
+import audit.{AuditService, AuditModel}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.{JourneyContext, RentalsAndRentARoomIncome, RentalsRentARoom}
+import models.requests.DataRequest
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.premiumlease._
 import viewmodels.checkAnswers.propertyrentals.income._
@@ -39,7 +42,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  view: RentalsAndRentARoomIncomeCheckYourAnswersView
+  view: RentalsAndRentARoomIncomeCheckYourAnswersView,
+  auditService: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -48,8 +52,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          IncomeFromPropertySummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           DeductingTaxSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          IncomeFromPropertySummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           LeasePremiumPaymentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
@@ -74,6 +78,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
             .saveJourneyAnswers(context, propertyRentalsIncome)
             .flatMap {
               case Right(_) =>
+                auditIncomeCYA(taxYear, request, propertyRentalsIncome)
                 Future.successful(
                   Redirect(
                     controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
@@ -88,5 +93,26 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
           Future.failed(InternalErrorFailure("RentalsAndRentARoomIncome section is not present in userAnswers"))
       }
 
+  }
+
+  private def auditIncomeCYA(taxYear: Int, request: DataRequest[AnyContent], income: RentalsAndRentARoomIncome)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
+      isUpdate = false,
+      SectionName.Income,
+      AuditPropertyType.UKProperty,
+      JourneyName.RentalsRentARoom,
+      AccountingMethod.Traditional,
+      income
+    )
+
+    auditService.sendRentalsAndRentARoomAuditEvent(auditModel)
   }
 }

@@ -235,10 +235,10 @@ POST        /:taxYear/rentals/allowances/zero-emission-car-allowance            
 GET         /:taxYear/rentals/allowances/change-zero-emission-car-allowance                 controllers.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/allowances/change-zero-emission-car-allowance                 controllers.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/allowances/other-capital-allowance                            controllers.allowances.OtherCapitalAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/allowances/other-capital-allowance                            controllers.allowances.OtherCapitalAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -619,6 +619,9 @@ POST        /:taxYear/rentals-rent-a-room/expenses/change-legal-or-other-profess
 GET        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                    controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/expenses/check-your-answers                                   controllers.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersController.onSubmit(taxYear: Int)
 
+GET         /:taxYear/rentals-rent-a-room/expenses/complete-yes-no                                      controllers.rentalsandrentaroom.expenses.RentalsRaRExpensesCompleteController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/expenses/complete-yes-no                                      controllers.rentalsandrentaroom.expenses.RentalsRaRExpensesCompleteController.onSubmit(taxYear: Int)
+
 #################### Allowances Rentals And Rent A Room  ##########################
 
 GET         /:taxYear/rentals-rent-a-room/allowances/start                                              controllers.allowances.AllowancesStartController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
@@ -632,3 +635,8 @@ GET         /:taxYear/rentals-rent-a-room/allowances/zero-emission-car-allowance
 POST        /:taxYear/rentals-rent-a-room/allowances/zero-emission-car-allowance                        controllers.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-car-allowance                 controllers.allowances.ZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-car-allowance                 controllers.allowances.ZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/allowances/zero-emission-goods-vehicle-allowance              controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/allowances/change-zero-emission-goods-vehicle-allowance       controllers.allowances.ZeroEmissionGoodsVehicleAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
