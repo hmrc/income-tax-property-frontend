@@ -470,10 +470,9 @@ class Navigator @Inject() () {
           // expenses
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
-    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) |
-        ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
-        ZeroEmissionGoodsVehicleAllowancePage(Rentals) | BusinessPremisesRenovationPage |
-        ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage =>
+    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) | ElectricChargePointAllowancePage |
+        ZeroEmissionCarAllowancePage(Rentals) | ZeroEmissionGoodsVehicleAllowancePage(Rentals) |
+        BusinessPremisesRenovationPage | ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage =>
       taxYear =>
         _ =>
           _ =>
