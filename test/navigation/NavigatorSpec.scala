@@ -583,11 +583,11 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
+        ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage" in {
         navigator.nextPage(
-          BusinessPremisesRenovationPage,
+          BusinessPremisesRenovationPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1303,7 +1303,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from BusinessPremisesRenovationPage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          BusinessPremisesRenovationPage,
+          BusinessPremisesRenovationPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
