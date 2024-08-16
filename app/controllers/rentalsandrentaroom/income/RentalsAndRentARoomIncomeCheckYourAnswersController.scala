@@ -16,7 +16,7 @@
 
 package controllers.rentalsandrentaroom.income
 
-import audit.{AuditService, AuditModel}
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.requests.DataRequest
@@ -95,22 +95,28 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
 
   }
 
-  private def auditIncomeCYA(taxYear: Int, request: DataRequest[AnyContent], income: RentalsAndRentARoomIncome)(implicit
+  private def auditIncomeCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    income: RentalsAndRentARoomIncome,
+    isFailed: Boolean
+  )(implicit
     hc: HeaderCarrier
   ): Unit = {
 
     val auditModel = AuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      request.user.agentRef,
-      taxYear,
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
       isUpdate = false,
-      SectionName.Income,
-      AuditPropertyType.UKProperty,
-      JourneyName.RentalsRentARoom,
-      AccountingMethod.Traditional,
-      income
+      sectionName = SectionName.Income,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.RentalsRentARoom,
+      accountingMethod = AccountingMethod.Cash,
+      isFailed = isFailed,
+      userEnteredRentalsAndRentARoomDetails = income
     )
 
     auditService.sendRentalsAndRentARoomAuditEvent(auditModel)

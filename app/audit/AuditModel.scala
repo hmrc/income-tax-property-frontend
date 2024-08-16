@@ -30,6 +30,7 @@ final case class AuditModel[T](
   propertyType: AuditPropertyType,
   journeyName: JourneyName,
   accountingMethod: AccountingMethod,
+  isFailed: Boolean,
   userEnteredRentalsAndRentARoomDetails: T
 )
 
