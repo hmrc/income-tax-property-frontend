@@ -118,7 +118,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua1 <- userAnswers.set(AnnualInvestmentAllowancePage(Rentals), allowances.annualInvestmentAllowance)
             ua2 <- ua1.set(BusinessPremisesRenovationPage, allowances.businessPremisesRenovationAllowance)
             ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
-            ua4 <- ua3.set(OtherCapitalAllowancePage, allowances.otherCapitalAllowance)
+            ua4 <- ua3.set(OtherCapitalAllowancePage(Rentals), allowances.otherCapitalAllowance)
             ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoodsAllowance)
             ua6 <- ua5.set(ZeroEmissionCarAllowancePage(Rentals), allowances.zeroEmissionCarAllowance)
             ua7 <- ua6.set(ZeroEmissionGoodsVehicleAllowancePage(Rentals), allowances.zeroEmissionGoodsVehicleAllowance)
