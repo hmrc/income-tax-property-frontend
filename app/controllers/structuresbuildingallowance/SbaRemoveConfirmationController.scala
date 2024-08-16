@@ -21,7 +21,7 @@ import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
 import models.Mode
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingFormGroupWithIndex}
+import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingAllowanceWithIndex}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -71,7 +71,7 @@ class SbaRemoveConfirmationController @Inject()(
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaRemoveConfirmationPage, value))
             updatedAnswers <- Future.fromTry {
               if (value) {
-                updatedAnswers.remove(StructureBuildingFormGroupWithIndex(index))
+                updatedAnswers.remove(StructureBuildingAllowanceWithIndex(index))
               } else {
                 Success(updatedAnswers)
               }
