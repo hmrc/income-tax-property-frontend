@@ -78,13 +78,14 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
             .saveJourneyAnswers(context, propertyRentalsIncome)
             .flatMap {
               case Right(_) =>
-                auditIncomeCYA(taxYear, request, propertyRentalsIncome)
+                auditIncomeCYA(taxYear, request, propertyRentalsIncome, false)
                 Future.successful(
                   Redirect(
                     controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
                   )
                 )
               case Left(_) =>
+                auditIncomeCYA(taxYear, request, propertyRentalsIncome, true)
                 Future.failed(InternalErrorFailure("Property submission save error"))
             }
 
