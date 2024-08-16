@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.allowances
 
 import controllers.allowances.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.allowances.ReplacementOfDomesticGoodsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,15 +27,15 @@ import viewmodels.implicits._
 
 object ReplacementOfDomesticGoodsSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReplacementOfDomesticGoodsPage).map {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ReplacementOfDomesticGoodsPage(propertyType)).map {
       answer =>
 
         SummaryListRowViewModel(
           key = KeyViewModel("replacementOfDomesticGoods.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.ReplacementOfDomesticGoodsController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.ReplacementOfDomesticGoodsController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("replacementOfDomesticGoods.change.hidden"))
           )
         )

@@ -203,8 +203,8 @@ class Navigator @Inject() () {
     case ZeroEmissionGoodsVehicleAllowancePage(Rentals) =>
       taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, Rentals)
     case BusinessPremisesRenovationPage(Rentals) =>
-      taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
-    case ReplacementOfDomesticGoodsPage =>
+      taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
+    case ReplacementOfDomesticGoodsPage(Rentals) =>
       taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case OtherCapitalAllowancePage(Rentals) =>
       taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
@@ -475,7 +475,7 @@ class Navigator @Inject() () {
         ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
         ZeroEmissionGoodsVehicleAllowancePage(
           Rentals
-        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage(
+        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) | OtherCapitalAllowancePage(
           Rentals
         ) =>
       taxYear =>

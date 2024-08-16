@@ -16,7 +16,7 @@
 
 package pages.allowances
 
-import models.{PropertyType, Rentals}
+import models.PropertyType
 import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath

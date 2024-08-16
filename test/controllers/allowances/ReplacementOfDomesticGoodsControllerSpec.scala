@@ -18,7 +18,7 @@ package controllers.allowances
 
 import base.SpecBase
 import forms.allowances.ReplacementOfDomesticGoodsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -45,7 +45,7 @@ class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSuga
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
 
-  lazy val replacementOfDomesticGoodsControllerRoute = routes.ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode).url
+  lazy val replacementOfDomesticGoodsControllerRoute = routes.ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   "ReplacementOfDomesticGoodsController Controller" - {
 
@@ -61,13 +61,13 @@ class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSuga
         val view = application.injector.instanceOf[ReplacementOfDomesticGoodsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReplacementOfDomesticGoodsPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReplacementOfDomesticGoodsPage(Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -79,7 +79,7 @@ class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -125,7 +125,7 @@ class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
