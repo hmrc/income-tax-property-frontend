@@ -24,7 +24,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.structurebuildingallowance.StructureBuildingFormGroup
+import pages.structurebuildingallowance.StructureBuildingAllowance
 import play.api.Application
 import play.api.data.Form
 import play.api.inject.bind
@@ -155,9 +155,9 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers: Option[UserAnswers] =
         UserAnswers("structures-buildings-allowance-user-answers")
           .set(
-            page = StructureBuildingFormGroup,
+            page = StructureBuildingAllowance,
             value = Array(
-              StructureBuildingFormGroup(
+              StructureBuildingAllowance(
                 structureBuildingQualifyingDate = LocalDate.now,
                 structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
                 structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,

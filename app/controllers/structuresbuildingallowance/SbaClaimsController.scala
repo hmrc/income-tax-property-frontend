@@ -87,7 +87,7 @@ class SbaClaimsController @Inject() (
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
 
     val sbasWithSupportingQuestions =
-      request.userAnswers.get(StructureBuildingFormGroup).map(_.toArray).getOrElse(Array())
+      request.userAnswers.get(StructureBuildingAllowance).map(_.toArray).getOrElse(Array())
 
     val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.flatMap { sbaWithIndex =>
       val (_, index) = sbaWithIndex
@@ -101,7 +101,7 @@ class SbaClaimsController @Inject() (
     Future {
       val sbaInfoOpt = for {
         claimSummaryPage <- request.userAnswers.get(ClaimStructureBuildingAllowancePage(Rentals))
-        sbaGroup         <- request.userAnswers.get(StructureBuildingFormGroup)
+        sbaGroup         <- request.userAnswers.get(StructureBuildingAllowance)
       } yield SbaInfo(claimSummaryPage, sbaGroup)
 
       sbaInfoOpt.fold {

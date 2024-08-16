@@ -23,26 +23,26 @@ import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-case class StructureBuildingFormGroup(
+case class StructureBuildingAllowance(
   structureBuildingQualifyingDate: LocalDate,
   structureBuildingQualifyingAmount: BigDecimal,
   structureBuildingAllowanceClaim: BigDecimal,
   structuredBuildingAllowanceAddress: StructuredBuildingAllowanceAddress
 )
 
-case object StructureBuildingFormGroup
-    extends Gettable[Array[StructureBuildingFormGroup]] with Settable[Array[StructureBuildingFormGroup]] {
+case object StructureBuildingAllowance
+    extends Gettable[Array[StructureBuildingAllowance]] with Settable[Array[StructureBuildingAllowance]] {
 
-  implicit val format: Format[StructureBuildingFormGroup] = Json.format
+  implicit val format: Format[StructureBuildingAllowance] = Json.format
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = PageConstants.structureBuildingFormGroup
 }
 
-case class StructureBuildingFormGroupWithIndex(index: Int) extends Settable[Array[StructureBuildingFormGroup]] {
+case class StructureBuildingAllowanceWithIndex(index: Int) extends Settable[Array[StructureBuildingAllowance]] {
 
-  implicit val format: Format[StructureBuildingFormGroup] = Json.format
+  implicit val format: Format[StructureBuildingAllowance] = Json.format
 
   override def path: JsPath = JsPath \ toString \ index
 
