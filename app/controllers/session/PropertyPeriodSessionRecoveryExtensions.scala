@@ -241,7 +241,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(sbasWithSupportingQuestions) =>
           for {
             ua1 <- userAnswers.set(
-                     ClaimStructureBuildingAllowancePage,
+                     ClaimStructureBuildingAllowancePage(Rentals),
                      sbasWithSupportingQuestions.claimStructureBuildingAllowance
                    )
             ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.sbas)

@@ -27,11 +27,11 @@ class UKPropertyDetailsPageSpec extends AnyWordSpec with Matchers {
     val taxYear = LocalDate.now().getYear
 
     "output the cash message key when it is false" in {
-      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, cashOrAccruals = true).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
+      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = true).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
     }
 
     "output the cash message key when it is true" in {
-      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, cashOrAccruals = false).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
+      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = false).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
     }
   }
 }
