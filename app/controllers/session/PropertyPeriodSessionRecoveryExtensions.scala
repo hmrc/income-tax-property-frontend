@@ -120,7 +120,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
             ua4 <- ua3.set(OtherCapitalAllowancePage, allowances.otherCapitalAllowance)
             ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoodsAllowance)
-            ua6 <- ua5.set(ZeroEmissionCarAllowancePage, allowances.zeroEmissionCarAllowance)
+            ua6 <- ua5.set(ZeroEmissionCarAllowancePage(Rentals), allowances.zeroEmissionCarAllowance)
             ua7 <- ua6.set(ZeroEmissionGoodsVehicleAllowancePage(Rentals), allowances.zeroEmissionGoodsVehicleAllowance)
           } yield ua7
       }
