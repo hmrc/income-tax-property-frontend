@@ -20,14 +20,14 @@ import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.structurebuildingallowance.StructureBuildingFormGroup
+import pages.structurebuildingallowance.StructureBuildingAllowance
 import play.api.libs.json.{JsSuccess, Json}
 
 import java.time.LocalDate
 
-class StructureBuildingFormGroupSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class StructureBuildingAllowanceSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val structureBuildingFormGroupJson =
+  val structureBuildingFormGroupJson: String =
     """
       |[{
       |	"structureBuildingQualifyingDate" : "2024-04-22",
@@ -49,11 +49,11 @@ class StructureBuildingFormGroupSpec extends AnyFreeSpec with Matchers with Scal
   val day = 22
 
   "Structure Building Allowances" - {
-    "must deserialise from json" in {
-      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingFormGroup]]
-      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingFormGroup]] mustBe JsSuccess(
+    "must deserialize from json" in {
+      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingAllowance]]
+      Json.parse(structureBuildingFormGroupJson).validate[List[StructureBuildingAllowance]] mustBe JsSuccess(
         List(
-          StructureBuildingFormGroup(
+          StructureBuildingAllowance(
             structureBuildingQualifyingDate = LocalDate.of(year, month, day),
             structureBuildingQualifyingAmount = structureBuildingQualifyingAmount,
             structureBuildingAllowanceClaim = structureBuildingAllowanceClaim,

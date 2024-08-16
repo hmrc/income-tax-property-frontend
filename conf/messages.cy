@@ -693,6 +693,7 @@ zeroEmissionCarAllowance.checkYourAnswersLabel	=	Lwfans car ag allyriadau sero
 zeroEmissionCarAllowance.input.heading.individual	=	Faint hoffech ei hawlio ar gyfer lwfans car ag allyriadau sero?
 zeroEmissionCarAllowance.input.heading.agent	=	Faint hoffai’ch cleient ei hawlio ar gyfer lwfans car ag allyriadau sero?
 zeroEmissionCarAllowance.details.content.link.text	=	Deall lwfans car ag allyriadau sero
+zeroEmissionCarAllowance.details.content.link.intro	=	Darllenwch ragor am
 zeroEmissionCarAllowance.details.content.l1.individual	=	Os oes gennych incwm o eiddo, gallwch hawlio 100% o’r gost o brynu car trydan ag allyriadau sero newydd neu sydd heb ei ddefnyddio. Felly, os ydych yn defnyddio car y tu allan i’ch busnes, mae’n rhaid i chi ostwng yr hawliad yn gymesur â’r defnydd nad yw’n ymwneud â’r busnes.
 zeroEmissionCarAllowance.details.content.l1.agent	=	Os oes gan eich cleient incwm o eiddo, gall hawlio 100% o’r gost o brynu car trydan ag allyriadau sero newydd neu sydd heb ei ddefnyddio. Os yw’n defnyddio’r car y tu allan i’r gwaith o gynnal ei eiddo wedi’u rhentu, mae’n rhaid iddo ostwng yr hawliad yn gymesur â’r defnydd nad yw’n ymwneud â’r eiddo wedi’u rhentu.
 zeroEmissionCarAllowance.details.content.l2.individual	=	Felly, os ydych yn defnyddio’ch car y tu allan i’ch busnes am 20% o’r amser, yna mae’n rhaid i chi ostwng yr hawliad gan 20%.

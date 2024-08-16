@@ -18,14 +18,14 @@ package controllers.allowances
 
 import controllers.actions._
 import forms.allowances.ZeroEmissionCarAllowanceFormProvider
-import views.html.allowances.ZeroEmissionCarAllowanceView
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.allowances.ZeroEmissionCarAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.allowances.ZeroEmissionCarAllowanceView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,32 +43,41 @@ class ZeroEmissionCarAllowanceController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ZeroEmissionCarAllowancePage) match {
+      val preparedForm = request.userAnswers.get(ZeroEmissionCarAllowancePage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ZeroEmissionCarAllowancePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ZeroEmissionCarAllowancePage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ZeroEmissionCarAllowancePage, taxYear: Int, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(
+                ZeroEmissionCarAllowancePage(propertyType),
+                taxYear: Int,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
         )
-  }
+    }
 }

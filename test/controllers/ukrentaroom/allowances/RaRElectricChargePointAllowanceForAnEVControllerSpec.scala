@@ -18,7 +18,7 @@ package controllers.ukrentaroom.allowances
 
 import base.SpecBase
 import forms.ukrentaroom.allowances.ElectricChargePointAllowanceForAnEVFormProvider
-import models.{ElectricChargePointAllowance, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

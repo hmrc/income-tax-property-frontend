@@ -565,11 +565,11 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
+        ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage" in {
         navigator.nextPage(
-          ZeroEmissionCarAllowancePage,
+          ZeroEmissionCarAllowancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1285,7 +1285,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          ZeroEmissionCarAllowancePage,
+          ZeroEmissionCarAllowancePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

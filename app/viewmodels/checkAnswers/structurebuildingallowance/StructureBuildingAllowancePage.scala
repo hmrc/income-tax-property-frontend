@@ -16,4 +16,11 @@
 
 package viewmodels.checkAnswers.structurebuildingallowance
 
-case class StructureBuildingAllowancePage(taxYear: Int, nextIndex: Int, individualOrAgent: String)
+import models.PropertyType
+
+case class StructureBuildingAllowancePage(
+  taxYear: Int,
+  nextIndex: Int,
+  individualOrAgent: String,
+  propertyType: PropertyType
+)
