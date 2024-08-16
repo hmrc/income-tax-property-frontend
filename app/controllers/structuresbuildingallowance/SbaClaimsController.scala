@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.structurebuildingallowance._
 import play.api.Logging
@@ -89,10 +89,10 @@ class SbaClaimsController @Inject() (
     val sbasWithSupportingQuestions =
       request.userAnswers.get(StructureBuildingFormGroup).map(_.toArray).getOrElse(Array())
 
-    val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.map { sbaWithIndex =>
+    val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.flatMap { sbaWithIndex =>
       val (_, index) = sbaWithIndex
       StructureBuildingAllowanceSummary.row(taxYear, index, request.userAnswers)
-    }.flatten
+    }
 
     SummaryListViewModel(rows)
   }
@@ -100,7 +100,7 @@ class SbaClaimsController @Inject() (
   private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent])(implicit hc: HeaderCarrier) =
     Future {
       val sbaInfoOpt = for {
-        claimSummaryPage <- request.userAnswers.get(ClaimStructureBuildingAllowancePage)
+        claimSummaryPage <- request.userAnswers.get(ClaimStructureBuildingAllowancePage(Rentals))
         sbaGroup         <- request.userAnswers.get(StructureBuildingFormGroup)
       } yield SbaInfo(claimSummaryPage, sbaGroup)
 

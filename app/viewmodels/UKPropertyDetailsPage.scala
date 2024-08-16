@@ -19,9 +19,14 @@ package viewmodels
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.ofPattern
 
-case class UKPropertyDetailsPage(taxYear: Int, individualOrAgent: String, tradingStartDate: LocalDate, cashOrAccruals: Boolean) {
+case class UKPropertyDetailsPage(
+  taxYear: Int,
+  individualOrAgent: String,
+  tradingStartDate: LocalDate,
+  accrualsOrCash: Boolean
+) {
 
-  def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
+  def cashOrAccrualsMessageKey: String = if (accrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
 
   def tradingStartDateFormatted: String = tradingStartDate.format(ofPattern("dd/MM/yyyy"))
 
