@@ -16,12 +16,14 @@
 
 package pages.structurebuildingallowance
 
+import models.PropertyType
+import pages.PageConstants.sbaPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ClaimStructureBuildingAllowancePage extends QuestionPage[Boolean] {
+case class ClaimStructureBuildingAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ sbaPath(propertyType) \ toString
 
   override def toString: String = "claimStructureBuildingAllowance"
 }

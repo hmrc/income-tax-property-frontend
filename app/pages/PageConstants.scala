@@ -46,6 +46,8 @@ object PageConstants {
   // Income
   val incomePath: PropertyType => String = labelForPropertyType(_, "Income")
 
+  val sbaPath: PropertyType => String = labelForPropertyType(_, "SBA")
+
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
 

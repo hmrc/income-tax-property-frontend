@@ -213,10 +213,10 @@ class Navigator @Inject() () {
             ExpensesCheckYourAnswersController.onPageLoad(taxYear)
 
         // Structured building allowance
-    case ClaimStructureBuildingAllowancePage =>
+    case ClaimStructureBuildingAllowancePage(Rentals) =>
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers)
     case StructureBuildingAllowancePage =>
-      taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case SbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
@@ -509,7 +509,7 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear, CheckMode, index)
     case ClaimEsbaPage =>
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers)
-    case ClaimStructureBuildingAllowancePage =>
+    case ClaimStructureBuildingAllowancePage(Rentals) =>
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers)
 
     case TotalIncomeAmountPage(RentARoom) =>
@@ -803,7 +803,7 @@ class Navigator @Inject() () {
     }
 
   private def structureBuildingAllowanceNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(ClaimStructureBuildingAllowancePage) match {
+    userAnswers.get(ClaimStructureBuildingAllowancePage(Rentals)) match {
       case Some(true)  => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear)
       case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear)
       case _           => SummaryController.show(taxYear)
