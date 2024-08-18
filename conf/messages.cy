@@ -861,8 +861,8 @@ propertyIncomeAllowance.error.maxCapped.agent = Mae’n rhaid i swm y lwfans inc
 propertyIncomeAllowance.error.outOfRange.individual = Nodwch swm rhwng £{0} a £{1}
 propertyIncomeAllowance.error.outOfRange.agent = Nodwch swm rhwng £{0} a £{1}
 
-consolidatedExpenses.error.required.individual = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
-consolidatedExpenses.error.required.agent = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
+consolidatedExpenses.error.required.individual = *Missing Welsh*
+consolidatedExpenses.error.required.agent = *Missing Welsh*
 consolidatedExpenses.error.required.amount.individual = Nodwch y swm ar gyfer eich treuliau cyfunol
 consolidatedExpenses.error.required.amount.agent = Nodwch y swm ar gyfer treuliau cyfunol eich cleient
 consolidatedExpenses.error.nonNumeric.individual = Nodwch swm ar gyfer eich treuliau cyfunol
@@ -1352,8 +1352,8 @@ consolidatedRRExpenses.checkYourAnswersLabel.agent = Faint oedd treuliau cyfunol
 consolidatedRRExpenses.radio.legend.individual = Beth hoffech chi ei wneud?
 consolidatedRRExpenses.radio.legend.agent = Beth hoffai’ch cleient ei wneud?
 
-consolidatedRRExpenses.error.required.individual = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
-consolidatedRRExpenses.error.required.agent = Dewiswch ‘Iawn’ os ydych am hawlio treuliau cyfunol
+consolidatedRRExpenses.error.required.individual = *Missing Welsh*
+consolidatedRRExpenses.error.required.agent = *Missing Welsh*
 consolidatedRRExpenses.error.required.amount.individual = Nodwch y swm ar gyfer eich treuliau cyfunol
 consolidatedRRExpenses.error.required.amount.agent = Nodwch y swm ar gyfer treuliau cyfunol eich cleient
 consolidatedRRExpenses.error.nonNumeric.individual = Nodwch swm ar gyfer eich treuliau cyfunol
