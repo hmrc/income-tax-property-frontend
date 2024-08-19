@@ -56,7 +56,7 @@ class AllowancesCheckYourAnswersController @Inject() (
           ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
           BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, Rentals),
-          ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
+          ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers, Rentals),
           OtherCapitalAllowanceSummary.row(taxYear, request.userAnswers, Rentals)
         ).flatten
       )

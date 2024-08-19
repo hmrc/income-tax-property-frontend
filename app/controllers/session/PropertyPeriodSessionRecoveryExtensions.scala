@@ -38,7 +38,8 @@ import scala.util.{Success, Try}
 object PropertyPeriodSessionRecoveryExtensions {
 
   implicit class UserAnswersExtension(userAnswersArg: UserAnswers) {
-    def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
+
+    private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
       writes: Writes[T]
     ): Try[UserAnswers] =
       value.fold[Try[UserAnswers]](Success(userAnswers))(v => userAnswers.set(page, v))
@@ -67,7 +68,7 @@ object PropertyPeriodSessionRecoveryExtensions {
       } yield ua12
     }.getOrElse(userAnswersArg)
 
-    def updatePropertyAboutPages(
+    private def updatePropertyAboutPages(
       userAnswers: UserAnswers,
       maybePropertyAbout: Option[PropertyAbout]
     ): Try[UserAnswers] =
@@ -81,7 +82,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua3
       }
 
-    def updatePropertyRentalsAboutPages(
+    private def updatePropertyRentalsAboutPages(
       userAnswers: UserAnswers,
       maybePropertyRentalsAbout: Option[RentalsAbout]
     ): Try[UserAnswers] =
@@ -96,7 +97,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua2
       }
 
-    def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] =
+    private def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] =
       maybeAdjustments match {
         case None => Success(userAnswers)
         case Some(adjustments) =>
@@ -110,7 +111,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua6
       }
 
-    def updateAllowancesPages(userAnswers: UserAnswers, maybeAllowances: Option[Allowances]): Try[UserAnswers] =
+    private def updateAllowancesPages(userAnswers: UserAnswers, maybeAllowances: Option[Allowances]): Try[UserAnswers] =
       maybeAllowances match {
         case None => Success(userAnswers)
         case Some(allowances) =>
@@ -119,13 +120,13 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua2 <- ua1.set(BusinessPremisesRenovationPage(Rentals), allowances.businessPremisesRenovationAllowance)
             ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
             ua4 <- ua3.set(OtherCapitalAllowancePage(Rentals), allowances.otherCapitalAllowance)
-            ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoodsAllowance)
+            ua5 <- ua4.set(ReplacementOfDomesticGoodsPage(Rentals), allowances.replacementOfDomesticGoodsAllowance)
             ua6 <- ua5.set(ZeroEmissionCarAllowancePage(Rentals), allowances.zeroEmissionCarAllowance)
             ua7 <- ua6.set(ZeroEmissionGoodsVehicleAllowancePage(Rentals), allowances.zeroEmissionGoodsVehicleAllowance)
           } yield ua7
       }
 
-    def updatePropertyRentalsIncomePages(
+    private def updatePropertyRentalsIncomePages(
       userAnswers: UserAnswers,
       maybePropertyRentalsIncome: Option[RentalsIncome]
     ): Try[UserAnswers] =
@@ -165,7 +166,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua9
       }
 
-    def updatePropertyRentalsExpensesPages(
+    private def updatePropertyRentalsExpensesPages(
       userAnswers: UserAnswers,
       maybePropertyRentalsExpenses: Option[RentalsExpense]
     ): Try[UserAnswers] =
@@ -204,7 +205,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua8
       }
 
-    def updateEnhancedStructureBuildingPages(
+    private def updateEnhancedStructureBuildingPages(
       userAnswers: UserAnswers,
       maybeEsbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
     ): Try[UserAnswers] =
@@ -218,7 +219,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua3
       }
 
-    def updateEsba(userAnswers: UserAnswers, index: Int, esba: Esba): Try[UserAnswers] =
+    private def updateEsba(userAnswers: UserAnswers, index: Int, esba: Esba): Try[UserAnswers] =
       for {
         ua1 <- userAnswers.set(EsbaAddressPage(index), esba.esbaAddress)
         ua2 <- ua1.set(EsbaQualifyingDatePage(index), esba.esbaQualifyingDate)

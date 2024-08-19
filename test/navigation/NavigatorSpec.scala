@@ -592,11 +592,11 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
+        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage" in {
         navigator.nextPage(
-          ReplacementOfDomesticGoodsPage,
+          ReplacementOfDomesticGoodsPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1312,7 +1312,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          ReplacementOfDomesticGoodsPage,
+          ReplacementOfDomesticGoodsPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
