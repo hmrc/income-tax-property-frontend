@@ -311,7 +311,6 @@ isNonUKLandlord.button	=	Yn eich blaen
 
 reversePremiumsReceived.title	=	Premiymau gwrthdro a gafwyd
 reversePremiumsReceived.heading	=	Premiymau gwrthdro a gafwyd
-reversePremiumsReceived.details.heading	=	Deall premiymau gwrthdro
 reversePremiumsReceived.details.line1	=	Premiwm gwrthdro yw swm sy’n cael ei dalu gan landlord i denant, er mwyn annog y tenant i ymrwymo i’r brydles. Mae premiymau gwrthdro yn gyffredin wrth roi eiddo masnachol ar osod.
 reversePremiumsReceived.details.line2	=	Darllenwch ragor am
 reversePremiumsReceived.details.line2.link.text	=	ganiatáu prydles: premiymau gwrthdro, ar GOV.UK (yn agor tab newydd)
