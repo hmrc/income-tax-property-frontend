@@ -51,35 +51,6 @@ govukButton: GovukButton
     </p>
 </div>
 
-<!--@if(propertyType == Rentals){
-<details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages(s"zeroEmissionCarAllowance.details.content.link.text")
-                </span>
-    </summary>
-    <div class="govuk-details__text">
-        <p>@messages(s"zeroEmissionCarAllowance.details.content.l1.$individualOrAgent")</p>
-        <p>@messages(s"zeroEmissionCarAllowance.details.content.l2.$individualOrAgent")</p>
-
-        <p class="govuk-body">@messages("zeroEmissionCarAllowance.details.content.link.intro")
-            <a href="@messages("zeroEmissionCarAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-            @messages("zeroEmissionCarAllowance.details.link.text")
-            </a>
-        </p>
-    </div>
-</details>
-} else if(propertyType == RentalsRentARoom) {
-      <p class="govuk-body">@messages(s"zeroEmissionCarAllowance.details.content.l1.$individualOrAgent")</p>
-      <p class="govuk-body">@messages(s"zeroEmissionCarAllowance.details.content.l2.$individualOrAgent")</p>
-
-      <p class="govuk-body">@messages("zeroEmissionCarAllowance.details.content.link.intro")
-           <a href="@messages("zeroEmissionCarAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-           @messages("zeroEmissionCarAllowance.details.link.text")
-           </a>
-      </p>
-}-->
-
     @govukInput(
         InputViewModel(
             field = form("zeroEmissionCarAllowanceAmount"),
