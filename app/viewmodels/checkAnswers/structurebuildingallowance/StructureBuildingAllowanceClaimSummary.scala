@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -29,7 +29,7 @@ import viewmodels.implicits._
 object StructureBuildingAllowanceClaimSummary {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingAllowanceClaimPage(index)).map {
+    answers.get(StructureBuildingAllowanceClaimPage(index, Rentals)).map {
       answer =>
 
         SummaryListRowViewModel(

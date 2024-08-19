@@ -18,7 +18,7 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.StructureBuildingQualifyingDateFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.data.Form
@@ -32,42 +32,53 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class StructureBuildingQualifyingDateController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: StructureBuildingQualifyingDateFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: StructureBuildingQualifyingDateView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class StructureBuildingQualifyingDateController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: StructureBuildingQualifyingDateFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: StructureBuildingQualifyingDateView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[LocalDate] = formProvider()
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingDatePage(index)) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingDatePage(index, propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[LocalDate] = formProvider()
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage(index), value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingDatePage(index), taxYear, mode, index, updatedAnswers, request.userAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage(index, propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                StructureBuildingQualifyingDatePage(index, propertyType),
+                taxYear,
+                mode,
+                index,
+                updatedAnswers,
+                request.userAnswers
+              )
+            )
+        )
+    }
 }

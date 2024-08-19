@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 object StructureBuildingQualifyingDateSummary {
 
   def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingDatePage(idx)).map {
+    answers.get(StructureBuildingQualifyingDatePage(idx, Rentals)).map {
       answer =>
 
         val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
@@ -38,7 +38,7 @@ object StructureBuildingQualifyingDateSummary {
           key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
           value = ValueViewModel(answer.format(dateFormatter)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode, idx).url)
+            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode, idx, Rentals).url)
               .withVisuallyHiddenText(messages("structureBuildingQualifyingDate.change.hidden"))
           )
         )

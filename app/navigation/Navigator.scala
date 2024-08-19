@@ -587,13 +587,13 @@ class Navigator @Inject() () {
     taxYear: Int,
     index: Int
   ): Call = page match {
-    case StructureBuildingQualifyingDatePage(_) =>
+    case StructureBuildingQualifyingDatePage(_, Rentals) =>
       StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
-    case StructureBuildingQualifyingAmountPage(_) =>
+    case StructureBuildingQualifyingAmountPage(_, Rentals) =>
       StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
-    case StructureBuildingAllowanceClaimPage(_) =>
+    case StructureBuildingAllowanceClaimPage(_, Rentals) =>
       StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
-    case StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
+    case StructuredBuildingAllowanceAddressPage(_, Rentals) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _                                         => IndexController.onPageLoad
   }
 
@@ -602,8 +602,8 @@ class Navigator @Inject() () {
     taxYear: Int,
     index: Int
   ): Call = page match {
-    case StructureBuildingQualifyingDatePage(_) | StructureBuildingQualifyingAmountPage(_) |
-        StructureBuildingAllowanceClaimPage(_) | StructuredBuildingAllowanceAddressPage(_) =>
+    case StructureBuildingQualifyingDatePage(_, Rentals) | StructureBuildingQualifyingAmountPage(_, Rentals) |
+        StructureBuildingAllowanceClaimPage(_, Rentals) | StructuredBuildingAllowanceAddressPage(_, Rentals) =>
       SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }

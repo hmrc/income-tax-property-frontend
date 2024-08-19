@@ -615,7 +615,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
         navigator.nextPage(
-          StructureBuildingQualifyingDatePage(index),
+          StructureBuildingQualifyingDatePage(index, Rentals),
           taxYear,
           NormalMode,
           0,
@@ -627,7 +627,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
         navigator.nextPage(
-          StructureBuildingQualifyingAmountPage(index),
+          StructureBuildingQualifyingAmountPage(index, Rentals),
           taxYear,
           NormalMode,
           0,
@@ -1331,7 +1331,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
         navigator.nextPage(
-          StructureBuildingQualifyingDatePage(index),
+          StructureBuildingQualifyingDatePage(index, Rentals),
           taxYear,
           CheckMode,
           0,
@@ -1342,7 +1342,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
         navigator.nextPage(
-          StructureBuildingQualifyingAmountPage(index),
+          StructureBuildingQualifyingAmountPage(index, Rentals),
           taxYear,
           CheckMode,
           0,
