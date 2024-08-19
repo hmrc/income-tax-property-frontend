@@ -182,12 +182,10 @@ class Navigator @Inject() () {
     case CostsOfServicesProvidedPage(Rentals) =>
       taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, Rentals)
     case PropertyBusinessTravelCostsPage(Rentals) =>
-      taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, Rentals)
-    case AnnualInvestmentAllowancePage(Rentals) =>
       taxYear =>
         _ =>
           _ =>
-            ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+            OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, Rentals)
 
         // allowances
     case CapitalAllowancesForACarPage(Rentals) =>
