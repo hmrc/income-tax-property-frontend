@@ -60,7 +60,7 @@ error.year.invalid = Year must include 4 numbers
 
 businessDetails.accruals = Traditional (accrual)
 businessDetails.cash = Cash basis
-
+amount.hint = For example, £900 or £100.20
 
 index.title = income-tax-property-frontend
 index.heading = income-tax-property-frontend
@@ -196,8 +196,7 @@ calculatedFigureYourself.checkYourAnswersQuestionLabel = Have you calculated the
 calculatedFigureYourself.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
-calculatedFigureYourself.amount.legend = Enter the figure
-calculatedFigureYourselfAmount.label = Enter the figure
+calculatedFigureYourselfAmount.label = Enter the amount
 calculatedFigureYourselfAmount.amount.error.required.individual = Enter the amount you’ve calculated yourself
 calculatedFigureYourselfAmount.amount.error.required.agent = Enter the amount your client has calculated
 calculatedFigureYourselfAmount.amount.error.nonNumeric.individual = Enter the amount you’ve calculated yourself
@@ -411,8 +410,7 @@ reversePremiumsReceived.error.nonNumeric.individual= Enter the amount for the re
 reversePremiumsReceived.error.nonNumeric.agent = Enter the amount for the reverse premium that your client received
 reversePremiumsReceived.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 reversePremiumsReceived.error.outOfRange = Enter an amount between £{0} and £{1}
-reversePremiumsReceived.amount.legend = Enter the figure
-reversePremiumsReceived.amount.label = Enter the figure
+reversePremiumsReceived.amount.label = Enter the amount
 reversePremiumsReceived.change.hidden = Reverse premiums received
 
 renovationAllowanceBalancingCharge.title = Business premises renovation allowance balancing charge
@@ -1239,7 +1237,7 @@ esbaClaims.error.required.agent = Select yes if your client wants to add another
 esbaClaims.legend = Do you want to add another claim?
 
 ############ UK RENT A ROOM ############
-
+ukrentaroom.income.totalIncomeAmount.hint = For example, £900 or £100.20
 ukrentaroom.income.totalIncomeAmount.title.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.heading.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.error.required.individual = Enter the the total rent a room income received

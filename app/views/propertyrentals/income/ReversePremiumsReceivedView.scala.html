@@ -17,17 +17,19 @@
 @import controllers.propertyrentals.income.routes
 @import models.PropertyType
 @import viewmodels.InputWidth._
+@import viewmodels.LegendSize.Medium
 @import viewmodels.govuk._
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput : GovukInput,
-    govukDetails: GovukDetails,
-    govukRadios: GovukRadios,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukDetails: GovukDetails,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
 )
+
 
 @(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
@@ -42,50 +44,51 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-    @if(propertyType == Rentals){
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                                <span class="govuk-details__summary-text">
-                                  @messages("reversePremiumsReceived.details.heading")
-                                </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
-                <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
-                    <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                    @messages("reversePremiumsReceived.details.line2.link.text")
-                    </a>
-                </p>
-            </div>
-        </details>
-    } else if(propertyType == RentalsRentARoom) {
+        @if(propertyType == Rentals) {
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                    @messages("reversePremiumsReceived.details.heading")
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
+                    <p class="govuk-body">@messages("reversePremiumsReceived.details.line2")
+                        <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                        @messages("reversePremiumsReceived.details.line2.link.text")
+                        </a>
+                    </p>
+                </div>
+            </details>
+        } else if(propertyType == RentalsRentARoom) {
         <p class="govuk-body">@messages("reversePremiumsReceived.details.line1") </p>
-        <p  class="govuk-body">@messages("reversePremiumsReceived.details.line2")
+        <p class="govuk-body">@messages("reversePremiumsReceived.details.line2")
             <a href="@messages("reversePremiumsReceived.details.line2.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
             @messages("reversePremiumsReceived.details.line2.link.text")
             </a>
         </p>
-    }
+        }
 
-    <div class="govuk-hint">
+        <div class="govuk-hint">
         @messages(s"reversePremiumsReceived.hint.$individualOrAgent")
-    </div>
+        </div>
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("reversePremiumsReceived"),
-                legend = LegendViewModel(messages(s"reversePremiumsReceived.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                legend = LegendViewModel(messages(s"reversePremiumsReceived.radio.legend.$individualOrAgent")).withSize(Medium),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("reversePremiumsReceived"),
-                        conditionalYesHtml = Some(
+                    conditionalYesHtml = Some(
                         govukInput(InputViewModel(
                             field = form("reversePremiumsReceivedAmount"),
-                            label = LabelViewModel(messages("reversePremiumsReceived.checkYourAnswersLabel"))
+                            label = LabelViewModel(messages("reversePremiumsReceived.amount.label"))
                         )
                         .withWidth(Fixed10)
+                        .withHint(HintViewModel(messages("amount.hint")))
                         .withPrefix(PrefixOrSuffix(content = Text("£")))
                         )
-                     )
+                    )
                 )
             )
         )
@@ -94,4 +97,7 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
+}
+@{
+    // $COVERAGE-OFF$
 }

@@ -55,6 +55,7 @@ error.summary.title	=	Mae problem wedi codi
 
 businessDetails.accruals	=	Traddodiadol (ar sail croniadau)
 businessDetails.cash	=	Sail arian parod
+amount.hint = *Missing Welsh*
 
 checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
@@ -173,7 +174,6 @@ calculatedFigureYourself.radio.noText	=	Na, cyfrifwch y ffigur ar fy rhan
 calculatedFigureYourself.checkYourAnswersAmountLabel	=	Ffigur hunangyfrifedig
 calculatedFigureYourself.checkYourAnswersQuestionLabel	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
 calculatedFigureYourself.change.hidden	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
-calculatedFigureYourself.amount.legend	=	Nodwch y ffigur
 calculatedFigureYourselfAmount.label	=	Nodwch y ffigur
 
 leasePremiumPayment.title	=	Premiymau am ganiatáu prydles
@@ -320,7 +320,6 @@ reversePremiumsReceived.hint.agent	=	Os gwnaeth eich cleient dalu premiwm gwrthd
 reversePremiumsReceived.radio.legend.individual	=	A gawsoch bremiwm gwrthdro?
 reversePremiumsReceived.radio.legend.agent	=	A gafodd eich cleient bremiwm gwrthdro?
 reversePremiumsReceived.checkYourAnswersLabel	=	Premiymau gwrthdro a gafwyd
-reversePremiumsReceived.amount.legend	=	Nodwch y ffigur
 reversePremiumsReceived.amount.label	=	Nodwch y ffigur
 reversePremiumsReceived.change.hidden	=	Premiymau gwrthdro a gafwyd
 
