@@ -601,11 +601,11 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode)
+        ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
       }
       "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          OtherCapitalAllowancePage,
+          OtherCapitalAllowancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1321,7 +1321,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
         navigator.nextPage(
-          OtherCapitalAllowancePage,
+          OtherCapitalAllowancePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
