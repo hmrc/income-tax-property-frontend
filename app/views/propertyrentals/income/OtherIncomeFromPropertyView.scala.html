@@ -15,18 +15,18 @@
  *@
 
 @import controllers.propertyrentals.income.routes._
-@import viewmodels.LegendSize
-@import viewmodels.InputWidth._
 @import models.Mode
-@import models.NormalMode
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize.Medium
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
@@ -35,7 +35,7 @@
     @formHelper(action = OtherIncomeFromPropertyController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
         <h1 class="govuk-heading-l">@messages("otherIncomeFromProperty.heading")</h1>
@@ -55,10 +55,10 @@
         @govukInput(
             InputViewModel(
                 field = form("otherIncomeFromProperty"),
-                label = LabelViewModel(messages(s"otherIncomeFromProperty.para2.${individualOrAgent}"))
+                label = LabelViewModel(messages(s"otherIncomeFromProperty.para2.${individualOrAgent}")).asPageHeading(Medium)
             )
-            .withCssClass("govuk-fieldset__legend govuk-label--m")
             .asNumeric()
+            .withHint(HintViewModel(messages("amount.hint")))
             .withWidth(Fixed10)
             .withPrefix(PrefixOrSuffix(content = Text("£")))
         )
@@ -71,5 +71,5 @@
 }
 
 @{
-// $COVERAGE-OFF$
+    // $COVERAGE-OFF$
 }
