@@ -116,7 +116,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(allowances) =>
           for {
             ua1 <- userAnswers.set(AnnualInvestmentAllowancePage(Rentals), allowances.annualInvestmentAllowance)
-            ua2 <- ua1.set(BusinessPremisesRenovationPage, allowances.businessPremisesRenovationAllowance)
+            ua2 <- ua1.set(BusinessPremisesRenovationPage(Rentals), allowances.businessPremisesRenovationAllowance)
             ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
             ua4 <- ua3.set(OtherCapitalAllowancePage(Rentals), allowances.otherCapitalAllowance)
             ua5 <- ua4.set(ReplacementOfDomesticGoodsPage, allowances.replacementOfDomesticGoodsAllowance)

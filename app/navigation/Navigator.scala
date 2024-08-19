@@ -201,12 +201,13 @@ class Navigator @Inject() () {
     case ZeroEmissionCarAllowancePage(Rentals) =>
       taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case ZeroEmissionGoodsVehicleAllowancePage(Rentals) =>
-      taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
-    case BusinessPremisesRenovationPage =>
+      taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, Rentals)
+    case BusinessPremisesRenovationPage(Rentals) =>
       taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
     case ReplacementOfDomesticGoodsPage =>
       taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-    case OtherCapitalAllowancePage(Rentals) => taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+    case OtherCapitalAllowancePage(Rentals) =>
+      taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case OtherAllowablePropertyExpensesPage(Rentals) =>
       taxYear =>
         _ =>
@@ -470,9 +471,13 @@ class Navigator @Inject() () {
           // expenses
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
-    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) | ElectricChargePointAllowancePage |
-        ZeroEmissionCarAllowancePage(Rentals) | ZeroEmissionGoodsVehicleAllowancePage(Rentals) |
-        BusinessPremisesRenovationPage | ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage(Rentals) =>
+    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) |
+        ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
+        ZeroEmissionGoodsVehicleAllowancePage(
+          Rentals
+        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage | OtherCapitalAllowancePage(
+          Rentals
+        ) =>
       taxYear =>
         _ =>
           _ =>
@@ -803,7 +808,11 @@ class Navigator @Inject() () {
       case _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
     }
 
-  private def structureBuildingAllowanceNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
+  private def structureBuildingAllowanceNavigation(
+    taxYear: Int,
+    userAnswers: UserAnswers,
+    propertyType: PropertyType
+  ): Call =
     userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
       case Some(true)  => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
       case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear)

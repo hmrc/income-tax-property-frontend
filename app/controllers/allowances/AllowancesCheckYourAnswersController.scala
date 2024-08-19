@@ -55,7 +55,7 @@ class AllowancesCheckYourAnswersController @Inject() (
           ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
           ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers),
-          BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers),
+          BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, Rentals),
           ReplacementOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
           OtherCapitalAllowanceSummary.row(taxYear, request.userAnswers, Rentals)
         ).flatten
@@ -96,8 +96,8 @@ class AllowancesCheckYourAnswersController @Inject() (
     propertySubmissionService.saveJourneyAnswers[RentalsAllowance](context, allowance)
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentalsAllowance)(
-    implicit hc: HeaderCarrier
+  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentalsAllowance)(implicit
+    hc: HeaderCarrier
   ): Unit = {
     val event = RentalsAuditModel[RentalsAllowance](
       nino = request.user.nino,
