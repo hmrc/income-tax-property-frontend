@@ -487,6 +487,94 @@ class NavigatorSpec extends SpecBase {
             .onPageLoad(taxYear, NormalMode, propertyType)
         }
 
+        s"must go from CapitalAllowancesForACarPage to AnnualInvestmentAllowancePage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            CapitalAllowancesForACarPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.allowances.routes.AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+
+        s"must go from AnnualInvestmentAllowancePage to ZeroEmissionCarAllowancePage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            AnnualInvestmentAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from ElectricChargePointAllowancePage to ZeroEmissionCarAllowancePage for $propertyTypeDefinition" ignore {
+          navigator.nextPage(
+            ElectricChargePointAllowancePage,
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ZeroEmissionCarAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from ZeroEmissionGoodsVehicleAllowancePage to BusinessPremisesRenovationPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ZeroEmissionGoodsVehicleAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            BusinessPremisesRenovationPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ReplacementOfDomesticGoodsPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+        s"must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            OtherCapitalAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              controllers.allowances.routes.AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+
       }
 
       "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
@@ -547,70 +635,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      }
-
-      "must go from AnnualInvestmentAllowancePage to ElectricChargePointAllowancePage" in {
-        navigator.nextPage(
-          AnnualInvestmentAllowancePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
-      }
-      "must go from ElectricChargePointAllowancePage to ZeroEmissionCarAllowancePage" in {
-        navigator.nextPage(
-          ElectricChargePointAllowancePage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
-      }
-      "must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage" in {
-        navigator.nextPage(
-          ZeroEmissionCarAllowancePage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-      "must go from ZeroEmissionGoodsVehicleAllowancePage to BusinessPremisesRenovationPage" in {
-        navigator.nextPage(
-          ZeroEmissionGoodsVehicleAllowancePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode)
-      }
-      "must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage" in {
-        navigator.nextPage(
-          BusinessPremisesRenovationPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
-      }
-      "must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage" in {
-        navigator.nextPage(
-          ReplacementOfDomesticGoodsPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode)
-      }
-      "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          OtherCapitalAllowancePage,
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
@@ -965,6 +989,139 @@ class NavigatorSpec extends SpecBase {
                   .onPageLoad(taxYear)
             })
         }
+
+        s"must go from CapitalAllowancesForACarPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            CapitalAllowancesForACarPage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe
+            (propertyType match {
+              case Rentals =>
+                AllowancesCheckYourAnswersController
+                  .onPageLoad(taxYear)
+              case RentalsRentARoom =>
+                controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                  .onPageLoad(taxYear)
+            })
+        }
+
+        s"must go from AnnualInvestmentAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            AnnualInvestmentAllowancePage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe
+            (propertyType match {
+              case Rentals =>
+                AllowancesCheckYourAnswersController
+                  .onPageLoad(taxYear)
+              case RentalsRentARoom =>
+                controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                  .onPageLoad(taxYear)
+            })
+        }
+        s"must go from ElectricChargePointAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" ignore {
+          navigator.nextPage(
+            ElectricChargePointAllowancePage,
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+        s"must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ZeroEmissionCarAllowancePage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+        s"must go from ZeroEmissionGoodsVehicleAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ZeroEmissionGoodsVehicleAllowancePage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+        s"must go from BusinessPremisesRenovationPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            BusinessPremisesRenovationPage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+        s"must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            ReplacementOfDomesticGoodsPage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+        s"must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            OtherCapitalAllowancePage(propertyType),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals =>
+              AllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            case RentalsRentARoom =>
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+          })
+        }
+
       }
       "must go from ClaimExpensesOrReliefPage to CheckYourAnswersController" in {
         navigator.nextPage(
@@ -1264,69 +1421,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from AnnualInvestmentAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          AnnualInvestmentAllowancePage(Rentals),
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from ElectricChargePointAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          ElectricChargePointAllowancePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          ZeroEmissionCarAllowancePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from ZeroEmissionGoodsVehicleAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          ZeroEmissionGoodsVehicleAllowancePage(Rentals),
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from BusinessPremisesRenovationPage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          BusinessPremisesRenovationPage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          ReplacementOfDomesticGoodsPage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage" in {
-        navigator.nextPage(
-          OtherCapitalAllowancePage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe AllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {

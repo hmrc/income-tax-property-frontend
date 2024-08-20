@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.allowances
 
 import controllers.allowances.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.allowances.BusinessPremisesRenovationPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,17 +27,20 @@ import viewmodels.implicits._
 
 object BusinessPremisesRenovationSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(BusinessPremisesRenovationPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = KeyViewModel("businessPremisesRenovation.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.BusinessPremisesRenovationController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("businessPremisesRenovation.change.hidden"))
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(BusinessPremisesRenovationPage(propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("businessPremisesRenovation.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.BusinessPremisesRenovationController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
+            .withVisuallyHiddenText(messages("businessPremisesRenovation.change.hidden"))
         )
+      )
     }
 }

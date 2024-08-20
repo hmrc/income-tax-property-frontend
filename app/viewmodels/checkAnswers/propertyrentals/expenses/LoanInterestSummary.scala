@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.propertyrentals.expenses
 
 import controllers.propertyrentals.expenses.routes
-import models.{CheckMode, PropertyType, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.propertyrentals.expenses.LoanInterestPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow

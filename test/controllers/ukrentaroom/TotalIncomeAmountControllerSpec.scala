@@ -18,7 +18,6 @@ package controllers.ukrentaroom
 
 import base.SpecBase
 import forms.ukrentaroom.TotalIncomeAmountFormProvider
-import models.requests.DataRequest
 import models.{NormalMode, RentARoom, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
