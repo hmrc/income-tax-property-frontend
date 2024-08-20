@@ -60,7 +60,9 @@ class CapitalAllowancesForACarController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <-
