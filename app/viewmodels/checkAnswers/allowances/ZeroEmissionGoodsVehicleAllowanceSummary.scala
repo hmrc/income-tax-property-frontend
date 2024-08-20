@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.allowances
 
 import controllers.allowances.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.allowances.ZeroEmissionGoodsVehicleAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,15 +27,17 @@ import viewmodels.implicits._
 
 object ZeroEmissionGoodsVehicleAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ZeroEmissionGoodsVehicleAllowancePage(Rentals)).map { answer =>
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ZeroEmissionGoodsVehicleAllowancePage(propertyType)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("zeroEmissionGoodsVehicleAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, CheckMode, Rentals).url
+            routes.ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
             .withVisuallyHiddenText(messages("zeroEmissionGoodsVehicleAllowance.change.hidden"))
         )

@@ -182,18 +182,16 @@ class Navigator @Inject() () {
     case CostsOfServicesProvidedPage(Rentals) =>
       taxYear => _ => _ => PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, Rentals)
     case PropertyBusinessTravelCostsPage(Rentals) =>
-      taxYear => _ => _ => OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, Rentals)
-    case AnnualInvestmentAllowancePage(Rentals) =>
       taxYear =>
         _ =>
           _ =>
-            ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+            OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, Rentals)
 
         // allowances
     case CapitalAllowancesForACarPage(Rentals) =>
       taxYear => _ => _ => AllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case AnnualInvestmentAllowancePage(Rentals) =>
-      taxYear => _ => _ => ElectricChargePointAllowanceController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case ElectricChargePointAllowancePage =>
       taxYear =>
         _ =>
@@ -213,6 +211,34 @@ class Navigator @Inject() () {
         _ =>
           _ =>
             ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+
+        // rentals and rent a room allowances
+    case CapitalAllowancesForACarPage(RentalsRentARoom) =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+              .onPageLoad(taxYear)
+    case AnnualInvestmentAllowancePage(RentalsRentARoom) =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.allowances.routes.ZeroEmissionCarAllowanceController
+              .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case ZeroEmissionCarAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case BusinessPremisesRenovationPage(RentalsRentARoom) =>
+      taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case ReplacementOfDomesticGoodsPage(RentalsRentARoom) =>
+      taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case OtherCapitalAllowancePage(RentalsRentARoom) =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+              .onPageLoad(taxYear)
 
         // Structured building allowance
     case ClaimStructureBuildingAllowancePage(propertyType) =>
@@ -475,13 +501,28 @@ class Navigator @Inject() () {
         ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
         ZeroEmissionGoodsVehicleAllowancePage(
           Rentals
-        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) | OtherCapitalAllowancePage(
+        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) |
+        OtherCapitalAllowancePage(
           Rentals
         ) =>
       taxYear =>
         _ =>
           _ =>
             AllowancesCheckYourAnswersController.onPageLoad(taxYear)
+        // Rentals and Rent A Room Allowances
+    case CapitalAllowancesForACarPage(RentalsRentARoom) | AnnualInvestmentAllowancePage(RentalsRentARoom) |
+        ZeroEmissionCarAllowancePage(RentalsRentARoom) | ZeroEmissionGoodsVehicleAllowancePage(
+          RentalsRentARoom
+        ) | BusinessPremisesRenovationPage(RentalsRentARoom) | ReplacementOfDomesticGoodsPage(RentalsRentARoom) |
+        OtherCapitalAllowancePage(
+          RentalsRentARoom
+        ) =>
+      taxYear =>
+        _ =>
+          _ =>
+            controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+              .onPageLoad(taxYear)
+
         // Expenses
     case RentsRatesAndInsurancePage(Rentals) | RepairsAndMaintenanceCostsPage(Rentals) | LoanInterestPage(Rentals) |
         OtherProfessionalFeesPage(Rentals) | CostsOfServicesProvidedPage(Rentals) | PropertyBusinessTravelCostsPage(

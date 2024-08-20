@@ -670,3 +670,6 @@ POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/change-
 
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/add-claim                       controllers.structuresbuildingallowance.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
 
+GET         /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                  controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                  controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
+
