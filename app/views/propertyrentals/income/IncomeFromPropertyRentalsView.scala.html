@@ -15,18 +15,18 @@
  *@
 
 @import controllers.propertyrentals.income.routes
-@import viewmodels.LegendSize
+@import models.{Mode, PropertyType}
 @import viewmodels.InputWidth._
-@import models.Mode
-@import models.NormalMode
-@import models.PropertyType
+@import viewmodels.LabelSize.Medium
+
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
@@ -54,7 +54,7 @@
         @govukInput(
             InputViewModel(
                 field = form("incomeFromPropertyRentals"),
-                label = LabelViewModel(messages(s"incomeFromPropertyRentals.para2.${propertyType}.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
+                label = LabelViewModel(messages(s"incomeFromPropertyRentals.para2.${individualOrAgent}")).asPageHeading(Medium)
             )
             .asNumeric()
             .withWidth(Fixed10)
@@ -70,5 +70,5 @@
 }
 
 @{
-// $COVERAGE-OFF$
+    // $COVERAGE-OFF$
 }
