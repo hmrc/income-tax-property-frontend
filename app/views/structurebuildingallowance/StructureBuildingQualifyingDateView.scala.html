@@ -26,11 +26,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, index: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("structureBuildingQualifyingDate.title"))) {
 
-    @formHelper(action = routes.StructureBuildingQualifyingDateController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.StructureBuildingQualifyingDateController.onSubmit(taxYear, mode, index, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))

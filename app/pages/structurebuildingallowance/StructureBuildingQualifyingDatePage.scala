@@ -16,15 +16,16 @@
 
 package pages.structurebuildingallowance
 
-import pages.PageConstants.structureBuildingFormGroup
+import models.PropertyType
+import pages.PageConstants.{sbaPath, structureBuildingFormGroup}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-case class StructureBuildingQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
+case class StructureBuildingQualifyingDatePage(index: Int, propertyType: PropertyType) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ structureBuildingFormGroup \ index \ toString
+  override def path: JsPath = JsPath \ sbaPath(propertyType) \ structureBuildingFormGroup \ index \ toString
 
   override def toString: String = "structureBuildingQualifyingDate"
 }

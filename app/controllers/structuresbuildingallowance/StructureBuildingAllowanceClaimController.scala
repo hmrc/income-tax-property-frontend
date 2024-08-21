@@ -61,7 +61,9 @@ class StructureBuildingAllowanceClaimController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <-

@@ -18,7 +18,7 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import navigation.Navigator
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -47,7 +47,7 @@ class StructuredBuildingAllowanceAddressController @Inject()(
     def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
       implicit request =>
         val form = formProvider(request.userAnswers)
-        val preparedForm = request.userAnswers.get(StructuredBuildingAllowanceAddressPage(index)) match {
+        val preparedForm = request.userAnswers.get(StructuredBuildingAllowanceAddressPage(index, Rentals)) match {
           case None => form
           case Some(value) => form.fill(value)
         }
@@ -64,9 +64,9 @@ class StructuredBuildingAllowanceAddressController @Inject()(
 
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(StructuredBuildingAllowanceAddressPage(index), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(StructuredBuildingAllowanceAddressPage(index, Rentals), value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(StructuredBuildingAllowanceAddressPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
+            } yield Redirect(navigator.nextPage(StructuredBuildingAllowanceAddressPage(index, Rentals), taxYear, mode, index, request.userAnswers, updatedAnswers))
         )
     }
 }

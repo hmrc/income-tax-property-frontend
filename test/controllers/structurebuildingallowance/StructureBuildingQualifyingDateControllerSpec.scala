@@ -19,7 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructureBuildingQualifyingDateFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -37,8 +37,11 @@ import scala.concurrent.Future
 
 class StructureBuildingQualifyingDateControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val structureBuildingQualifyingDateRoute: String =
-    routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val rentalsRoute: String =
+    routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, NormalMode, index, Rentals).url
+  lazy val rentalsRaRRoute: String =
+    routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, NormalMode, index, RentalsRentARoom).url
+
   override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
   val formProvider = new StructureBuildingQualifyingDateFormProvider()
   val taxYear = 2024
@@ -48,11 +51,11 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, structureBuildingQualifyingDateRoute)
+  def getRequest(route: String): FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, route)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, structureBuildingQualifyingDateRoute)
+    FakeRequest(POST, rentalsRoute)
       .withFormUrlEncodedBody(
         "structureBuildingQualifyingDate.day"   -> validAnswer.getDayOfMonth.toString,
         "structureBuildingQualifyingDate.month" -> validAnswer.getMonthValue.toString,
@@ -68,34 +71,55 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val result = route(application, getRequest).value
+        val result = route(application, getRequest(rentalsRoute)).value
 
         val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(
-          getRequest,
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
+          getRequest(rentalsRoute),
           messages(application)
         ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "Rentals journey must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(StructureBuildingQualifyingDatePage(index), validAnswer).success.value
+        UserAnswers(userAnswersId).set(StructureBuildingQualifyingDatePage(index, Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
 
-        val result = route(application, getRequest).value
+        val result = route(application, getRequest(rentalsRoute)).value
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual
-          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(
-            getRequest,
+          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
+            getRequest(rentalsRoute),
+            messages(application)
+          ).toString
+      }
+    }
+
+    "Rentals and RaR journey must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers =
+        UserAnswers(userAnswersId).set(StructureBuildingQualifyingDatePage(index, RentalsRentARoom), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+      running(application) {
+        val view = application.injector.instanceOf[StructureBuildingQualifyingDateView]
+
+        val result = route(application, getRequest(rentalsRaRRoute)).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual
+          view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index, RentalsRentARoom)(
+            getRequest(rentalsRaRRoute),
             messages(application)
           ).toString
       }
@@ -128,7 +152,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       val request =
-        FakeRequest(POST, structureBuildingQualifyingDateRoute)
+        FakeRequest(POST, rentalsRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {
@@ -139,7 +163,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
           request,
           messages(application)
         ).toString
@@ -151,7 +175,7 @@ class StructureBuildingQualifyingDateControllerSpec extends SpecBase with Mockit
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val result = route(application, getRequest).value
+        val result = route(application, getRequest(rentalsRoute)).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url

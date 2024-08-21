@@ -19,6 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructureBuildingAllowanceClaimFormProvider
+import models.Rentals
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -72,7 +73,7 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(StructureBuildingAllowanceClaimPage(index), validAnswer).success.value
+        UserAnswers(userAnswersId).set(StructureBuildingAllowanceClaimPage(index, Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 

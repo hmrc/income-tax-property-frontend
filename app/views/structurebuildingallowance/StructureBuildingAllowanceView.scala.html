@@ -35,7 +35,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("structureBuildingAllowance.button"))
-                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, page.nextIndex).url)
+                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, page.nextIndex, Rentals).url)
                 .withId("continue")
         )
     </p>

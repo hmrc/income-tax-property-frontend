@@ -52,7 +52,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
         ua5 <- updateAllowancesPages(ua4, fetchedData.allowances)
         ua6 <-
-          updateStructureBuildingPages(ua5, fetchedData.sbasWithSupportingQuestions)
+          updateStructureBuildingPages(ua5, fetchedData.rentalsSBA)
 
         ua7 <-
           updateEnhancedStructureBuildingPages(
@@ -248,7 +248,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimStructureBuildingAllowancePage(Rentals),
                      sbasWithSupportingQuestions.claimStructureBuildingAllowance
                    )
-            ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.sbas)
+            ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup)
           } yield ua3
       }
 
@@ -260,9 +260,9 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updateSba(userAnswers: UserAnswers, index: Int, sba: Sba): Try[UserAnswers] =
       for {
-        ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index), sba.structuredBuildingAllowanceAddress)
-        ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index), sba.structureBuildingQualifyingDate)
-        ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index), sba.structureBuildingQualifyingAmount)
+        ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index, Rentals), sba.structuredBuildingAllowanceAddress)
+        ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index, Rentals), sba.structureBuildingQualifyingDate)
+        ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index, Rentals), sba.structureBuildingQualifyingAmount)
         ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index, Rentals), sba.structureBuildingAllowanceClaim)
       } yield ua4
 

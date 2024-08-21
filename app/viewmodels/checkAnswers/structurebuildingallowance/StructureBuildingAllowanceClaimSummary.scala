@@ -28,18 +28,21 @@ import viewmodels.implicits._
 
 object StructureBuildingAllowanceClaimSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingAllowanceClaimPage(index, propertyType)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = "structureBuildingAllowanceClaim.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index, propertyType).url)
-              .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(StructureBuildingAllowanceClaimPage(index, propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = "structureBuildingAllowanceClaim.checkYourAnswersLabel",
+        value = ValueViewModel(bigDecimalCurrency(answer)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, CheckMode, index, propertyType).url
           )
+            .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
         )
+      )
     }
 
   def row(taxYear: Int, index: Int, claimValue: BigDecimal)(implicit messages: Messages): SummaryListRow = {
