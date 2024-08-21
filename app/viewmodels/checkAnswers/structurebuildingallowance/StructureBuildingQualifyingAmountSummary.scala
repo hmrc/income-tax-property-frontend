@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object StructureBuildingQualifyingAmountSummary {
 
   def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingAmountPage(idx)).map {
+    answers.get(StructureBuildingQualifyingAmountPage(idx, Rentals)).map {
       answer =>
 
         SummaryListRowViewModel(

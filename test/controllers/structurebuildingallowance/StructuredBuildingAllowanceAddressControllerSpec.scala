@@ -19,7 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
-import models.{NormalMode, StructuredBuildingAllowanceAddress, UserAnswers}
+import models.{NormalMode, Rentals, StructuredBuildingAllowanceAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -87,7 +87,7 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
 
       val userAnswers = UserAnswers(userAnswersId)
         .set(
-          StructuredBuildingAllowanceAddressPage(index),
+          StructuredBuildingAllowanceAddressPage(index, Rentals),
           StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")
         )
         .success

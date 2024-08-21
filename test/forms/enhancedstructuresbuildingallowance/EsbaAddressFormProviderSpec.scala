@@ -18,7 +18,7 @@ package forms.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import forms.behaviours.StringFieldBehaviours
-import models.{EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
+import models.{EsbaAddress, Rentals, StructuredBuildingAllowanceAddress, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.data.FormError
@@ -39,7 +39,7 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
   ).get
 
   val uaDuplicateInSba: UserAnswers = emptyUserAnswers.set(
-        StructuredBuildingAllowanceAddressPage(0),
+        StructuredBuildingAllowanceAddressPage(0, Rentals),
         StructuredBuildingAllowanceAddress(buildingNameInSba, buildingNumberInSba, postCodeInSba)
     ).get
 
