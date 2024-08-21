@@ -17,7 +17,7 @@
 package controllers.rentalsandrentaroom
 
 import audit.AuditModel._
-import audit.{AuditService, AuditModel}
+import audit.{AuditModel, AuditService}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
@@ -91,30 +91,32 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
         .map {
           case Left(error) =>
             logger.error(error.toString)
+            auditCYA(taxYear, request, about, true)
             Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
           case Right(_) =>
-            auditCYA(taxYear, request, about)
+            auditCYA(taxYear, request, about, false)
 
             Redirect(controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear))
         }
     }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], about: RentalsAndRaRAbout)(implicit
-    hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], about: RentalsAndRaRAbout, isFailed: Boolean)(
+    implicit hc: HeaderCarrier
   ): Unit = {
 
     val auditModel = AuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      request.user.agentRef,
-      taxYear,
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
       isUpdate = false,
-      SectionName.About,
-      AuditPropertyType.UKProperty,
-      JourneyName.RentalsRentARoom,
-      AccountingMethod.Traditional,
-      about
+      sectionName = SectionName.About,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.RentalsRentARoom,
+      accountingMethod = AccountingMethod.Cash,
+      isFailed = isFailed,
+      userEnteredRentalsAndRentARoomDetails = about
     )
 
     audit.sendRentalsAndRentARoomAuditEvent(auditModel)

@@ -18,6 +18,8 @@ package controllers.rentalsandrentaroom.income
 
 import audit.AuditService
 import base.SpecBase
+import connectors.error.ApiError
+import models.backend.PropertyDetails
 import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, User, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -29,9 +31,10 @@ import play.api.inject.bind
 import org.mockito.Mockito.{doNothing, when}
 import org.mockito.MockitoSugar.{times, verify}
 import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyPage, IsNonUKLandlordPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
@@ -80,6 +83,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
       "must call the right services for a POST" in {
         val mockAuditService = mock[AuditService]
         val mockPropertySubmissionService = mock[PropertySubmissionService]
+        val mockBusinessService = mock[BusinessService]
         val userAnswers =
           (for {
             ua1 <- UserAnswers(userAnswersId).set(IsNonUKLandlordPage(RentalsRentARoom), true)
@@ -95,12 +99,19 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
         when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
           Right(())
         )
+        when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future
+          .successful[Either[ApiError, Option[PropertyDetails]]](
+            Right(
+              Some(PropertyDetails(Some("incomeSourceTyoe"), Some(LocalDate.now()), Some(true), "incomeSourceId"))
+            )
+          )
         doNothing().when(mockAuditService).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), false)
           .overrides(
             bind[AuditService].toInstance(mockAuditService),
-            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService),
+            bind[BusinessService].toInstance(mockBusinessService)
           )
           .build()
 
@@ -116,6 +127,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
 
           whenReady(result) { r =>
             verify(mockAuditService, times(1)).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
+            verify(mockBusinessService, times(1)).getUkPropertyDetails(any(), any())(any())
           }
 
         }

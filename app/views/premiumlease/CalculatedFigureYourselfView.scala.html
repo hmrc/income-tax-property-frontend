@@ -15,53 +15,57 @@
  *@
 
 @import controllers.premiumlease.routes._
-@import viewmodels.InputWidth._
-@import viewmodels.govuk._
-@import viewmodels.LegendSize
 @import models.PropertyType
+@import viewmodels.InputWidth._
+@import viewmodels.LegendSize
+@import viewmodels.govuk._
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
-    govukButton: GovukButton,
-    govukInput : GovukInput
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton,
+        govukInput: GovukInput
 )
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"calculatedFigureYourself.title.$individualOrAgent"))) {
+    @layout(pageTitle = title(form, messages(s"calculatedFigureYourself.title.$individualOrAgent"))) {
 
-    @formHelper(action = CalculatedFigureYourselfController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = CalculatedFigureYourselfController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
 
-        @govukRadios(
+            @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("calculatedFigureYourself"),
                     legend = LegendViewModel(messages(s"calculatedFigureYourself.heading.$individualOrAgent")).asPageHeading(LegendSize.Large),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("calculatedFigureYourself"),
                         conditionalYesHtml = Some(
-                            govukInput(InputViewModel(
-                                field = form("calculatedFigureYourselfAmount"),
-                                label = LabelViewModel(messages("calculatedFigureYourselfAmount.label"))
-                            )
-                            .asNumeric()
-                            .withWidth(Fixed10)
-                            .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            govukInput(
+                                InputViewModel(
+                                    field = form("calculatedFigureYourselfAmount"),
+                                    label = LabelViewModel(messages("calculatedFigureYourselfAmount.label"))
+                                ).asNumeric()
+                                .withHint(HintViewModel(messages("amount.hint")))
+                                .withWidth(Fixed10)
+                                .withPrefix(PrefixOrSuffix(content = Text("£")))
                             )
                         ),
                         noText = "calculatedFigureYourself.radio.noText"
                     )
                 )
-        )
+            )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     }
-}
+    @{
+        // $COVERAGE-OFF$
+    }

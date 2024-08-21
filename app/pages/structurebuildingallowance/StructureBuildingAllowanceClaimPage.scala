@@ -17,14 +17,14 @@
 package pages.structurebuildingallowance
 
 import models.PropertyType
-import pages.PageConstants.sbaPath
+import pages.PageConstants.{sbaPath, structureBuildingFormGroup}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case class StructureBuildingAllowanceClaimPage(index: Int, propertyType: PropertyType)
     extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ sbaPath(propertyType) \ index \ toString
+  override def path: JsPath = JsPath \ sbaPath(propertyType) \ structureBuildingFormGroup \ index \ toString
 
   override def toString: String = "structureBuildingAllowanceClaim"
 }

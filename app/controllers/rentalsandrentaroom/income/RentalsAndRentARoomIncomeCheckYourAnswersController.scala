@@ -16,15 +16,17 @@
 
 package controllers.rentalsandrentaroom.income
 
-import audit.{AuditService, AuditModel}
+import audit.{AuditModel, AuditService}
+import connectors.error.ApiError
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.premiumlease._
@@ -41,6 +43,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   propertySubmissionService: PropertySubmissionService,
+  businessService: BusinessService,
   val controllerComponents: MessagesControllerComponents,
   view: RentalsAndRentARoomIncomeCheckYourAnswersView,
   auditService: AuditService
@@ -78,13 +81,14 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
             .saveJourneyAnswers(context, propertyRentalsIncome)
             .flatMap {
               case Right(_) =>
-                auditIncomeCYA(taxYear, request, propertyRentalsIncome)
+                auditIncomeCYA(taxYear, request, propertyRentalsIncome, false)
                 Future.successful(
                   Redirect(
                     controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
                   )
                 )
               case Left(_) =>
+                auditIncomeCYA(taxYear, request, propertyRentalsIncome, true)
                 Future.failed(InternalErrorFailure("Property submission save error"))
             }
 
@@ -95,24 +99,34 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
 
   }
 
-  private def auditIncomeCYA(taxYear: Int, request: DataRequest[AnyContent], income: RentalsAndRentARoomIncome)(implicit
+  private def auditIncomeCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    income: RentalsAndRentARoomIncome,
+    isFailed: Boolean
+  )(implicit
     hc: HeaderCarrier
-  ): Unit = {
+  ): Future[Unit] =
+    businessService
+      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+      .map {
+        case Right(Some(PropertyDetails(_, _, Some(cashOrAccruals), _))) =>
+          val auditModel = AuditModel(
+            nino = request.user.nino,
+            userType = request.user.affinityGroup,
+            mtdItId = request.user.mtditid,
+            agentReferenceNumber = request.user.agentRef,
+            taxYear = taxYear,
+            isUpdate = false,
+            sectionName = SectionName.Income,
+            propertyType = AuditPropertyType.UKProperty,
+            journeyName = JourneyName.RentalsRentARoom,
+            accountingMethod = if (cashOrAccruals) AccountingMethod.Cash else AccountingMethod.Traditional,
+            userEnteredRentalsAndRentARoomDetails = income,
+            isFailed = isFailed
+          )
+          auditService.sendRentalsAndRentARoomAuditEvent(auditModel)
+        case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
+      }
 
-    val auditModel = AuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      SectionName.Income,
-      AuditPropertyType.UKProperty,
-      JourneyName.RentalsRentARoom,
-      AccountingMethod.Traditional,
-      income
-    )
-
-    auditService.sendRentalsAndRentARoomAuditEvent(auditModel)
-  }
 }
