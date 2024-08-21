@@ -475,7 +475,8 @@ class Navigator @Inject() () {
         ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
         ZeroEmissionGoodsVehicleAllowancePage(
           Rentals
-        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) | OtherCapitalAllowancePage(
+        ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) |
+        OtherCapitalAllowancePage(
           Rentals
         ) =>
       taxYear =>
@@ -596,8 +597,8 @@ class Navigator @Inject() () {
     case StructureBuildingQualifyingDatePage(_) =>
       StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
     case StructureBuildingQualifyingAmountPage(_) =>
-      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
-    case StructureBuildingAllowanceClaimPage(_) =>
+      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, Rentals)
+    case StructureBuildingAllowanceClaimPage(_, Rentals) =>
       StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
     case StructuredBuildingAllowanceAddressPage(_) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _                                         => IndexController.onPageLoad
@@ -609,7 +610,7 @@ class Navigator @Inject() () {
     index: Int
   ): Call = page match {
     case StructureBuildingQualifyingDatePage(_) | StructureBuildingQualifyingAmountPage(_) |
-        StructureBuildingAllowanceClaimPage(_) | StructuredBuildingAllowanceAddressPage(_) =>
+        StructureBuildingAllowanceClaimPage(_, Rentals) | StructuredBuildingAllowanceAddressPage(_) =>
       SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }

@@ -97,7 +97,10 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua2
       }
 
-    private def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] =
+    private def updateAdjustmentsPages(
+      userAnswers: UserAnswers,
+      maybeAdjustments: Option[Adjustments]
+    ): Try[UserAnswers] =
       maybeAdjustments match {
         case None => Success(userAnswers)
         case Some(adjustments) =>
@@ -260,7 +263,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index), sba.structuredBuildingAllowanceAddress)
         ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index), sba.structureBuildingQualifyingDate)
         ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index), sba.structureBuildingQualifyingAmount)
-        ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index), sba.structureBuildingAllowanceClaim)
+        ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index, Rentals), sba.structureBuildingAllowanceClaim)
       } yield ua4
 
     def updateRentARoomAbout(userAnswers: UserAnswers, maybeRentARoomAbout: Option[RaRAbout]): Try[UserAnswers] =

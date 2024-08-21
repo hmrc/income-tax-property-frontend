@@ -18,7 +18,7 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
-import models.Mode
+import models.{Mode, Rentals}
 import models.requests.DataRequest
 import navigation.Navigator
 import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingAllowanceWithIndex}
@@ -54,7 +54,7 @@ class SbaRemoveConfirmationController @Inject()(
   }
 
   private def claimValue(index: Int, request: DataRequest[AnyContent]): String = {
-    val value = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index)).getOrElse(BigDecimal(0))
+    val value = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index, Rentals)).getOrElse(BigDecimal(0))
     bigDecimalCurrency(value)
   }
 

@@ -18,7 +18,7 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.StructureBuildingAllowanceClaimFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,43 +30,53 @@ import views.html.structurebuildingallowance.StructureBuildingAllowanceClaimView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class StructureBuildingAllowanceClaimController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: StructureBuildingAllowanceClaimFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: StructureBuildingAllowanceClaimView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class StructureBuildingAllowanceClaimController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: StructureBuildingAllowanceClaimFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: StructureBuildingAllowanceClaimView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index)) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index, propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
-  }
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage(index), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingAllowanceClaimPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage(index, propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                StructureBuildingAllowanceClaimPage(index, propertyType),
+                taxYear,
+                mode,
+                index,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }
