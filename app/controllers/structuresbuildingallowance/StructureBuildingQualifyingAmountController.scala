@@ -18,7 +18,7 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.StructureBuildingQualifyingAmountFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -44,29 +44,29 @@ class StructureBuildingQualifyingAmountController @Inject()(
 
 
 
-  def onPageLoad(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage(index)) match {
+      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage(index, propertyType)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage(index, propertyType), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingAmountPage(index), taxYear, mode, index, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(StructureBuildingQualifyingAmountPage(index, propertyType), taxYear, mode, index, request.userAnswers, updatedAnswers))
       )
   }
 }

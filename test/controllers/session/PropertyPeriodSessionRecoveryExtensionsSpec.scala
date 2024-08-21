@@ -113,10 +113,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "replacementOfDomesticGoodsAllowance" : 4,
       |            "otherCapitalAllowance" : 4
       |        },
-      |        "sbasWithSupportingQuestions": {
+      |        "rentalsSBA": {
       |        "claimStructureBuildingAllowance" : true,
       |        "sbaClaims" : true,
-      |        "sbas" : [
+      |        "structureBuildingFormGroup" : [
       |            {
       |                "structureBuildingQualifyingDate" : "2022-04-03",
       |                "structureBuildingQualifyingAmount" : 3,
@@ -238,7 +238,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
 // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
       updated.get(StructureBuildingQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-04-03")
-      updated.get(StructureBuildingQualifyingAmountPage(0)).get mustBe 3
+      updated.get(StructureBuildingQualifyingAmountPage(0, Rentals)).get mustBe 3
       updated.get(StructureBuildingAllowanceClaimPage(0)).get mustBe 4
       updated.get(StructuredBuildingAllowanceAddressPage(0)).get mustBe StructuredBuildingAllowanceAddress(
         "3",
@@ -246,7 +246,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "EH1 AB2"
       )
       updated.get(StructureBuildingQualifyingDatePage(1)).get mustBe LocalDate.parse("2022-02-02")
-      updated.get(StructureBuildingQualifyingAmountPage(1)).get mustBe 4
+      updated.get(StructureBuildingQualifyingAmountPage(1, Rentals)).get mustBe 4
       updated.get(StructureBuildingAllowanceClaimPage(1)).get mustBe 5
       updated.get(StructuredBuildingAllowanceAddressPage(1)).get mustBe StructuredBuildingAllowanceAddress(
         "4",

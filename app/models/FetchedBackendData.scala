@@ -18,7 +18,7 @@ package models
 
 import audit._
 import pages.PageConstants
-import pages.PageConstants.{esbasWithSupportingQuestions, sbasWithSupportingQuestions}
+import pages.PageConstants.{esbasWithSupportingQuestions, sbaPath, sbasWithSupportingQuestions}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
@@ -91,7 +91,7 @@ final case class SbaOnIndex(index: Int) extends Gettable[Sba] {
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
   sbaClaims: Option[Boolean],
-  sbas: List[Sba]
+  structureBuildingFormGroup: List[Sba]
 )
 
 object SbasWithSupportingQuestions
@@ -100,7 +100,7 @@ object SbasWithSupportingQuestions
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = sbasWithSupportingQuestions
+  override def toString: String = sbaPath(Rentals)
 }
 
 final case class EsbasWithSupportingQuestions(
@@ -125,7 +125,7 @@ final case class FetchedBackendData(
   adjustments: Option[Adjustments],
   allowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-  sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
+  rentalsSBA: Option[SbasWithSupportingQuestions],
   propertyRentals: Option[PropertyRentals],
   propertyRentalsIncome: Option[RentalsIncome],
   propertyRentalsExpenses: Option[RentalsExpense],

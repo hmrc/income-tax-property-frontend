@@ -1075,8 +1075,8 @@ structureBuildingQualifyingDate.error.maxDate = Qualifying date for structures a
 structureBuildingQualifyingDate.error.minDate = Qualifying date for structures and buildings allowance must be after 29 October 2018
 structureBuildingQualifyingDate.change.hidden = Qualifying date
 
-structureBuildingQualifyingAmount.title = Qualifying amount
-structureBuildingQualifyingAmount.heading = Qualifying amount
+structureBuildingQualifyingAmount.title = Structures and buildings allowance qualifying amount
+structureBuildingQualifyingAmount.heading = Structures and buildings allowance qualifying amount
 structureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
 structureBuildingQualifyingAmount.details.content.individual = You may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
 structureBuildingQualifyingAmount.details.content.agent = Your client may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
