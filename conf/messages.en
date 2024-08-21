@@ -1234,7 +1234,6 @@ esbaClaims.error.required.agent = Select yes if your client wants to add another
 esbaClaims.legend = Do you want to add another claim?
 
 ############ UK RENT A ROOM ############
-ukrentaroom.income.totalIncomeAmount.hint = For example, £900 or £100.20
 ukrentaroom.income.totalIncomeAmount.title.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.heading.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.error.required.individual = Enter the the total rent a room income received
