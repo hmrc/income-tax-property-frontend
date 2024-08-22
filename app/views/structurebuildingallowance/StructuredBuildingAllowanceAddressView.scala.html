@@ -25,13 +25,13 @@
         govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("structureBuildingAllowanceAddress.title"))) {
 
         <h1 class="govuk-heading-l">@messages("structureBuildingAllowanceAddress.heading")</h1>
 
-        @formHelper(action = routes.StructuredBuildingAllowanceAddressController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.StructuredBuildingAllowanceAddressController.onSubmit(taxYear, mode, index, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

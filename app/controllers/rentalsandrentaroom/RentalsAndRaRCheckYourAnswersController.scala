@@ -21,8 +21,7 @@ import audit.{AuditModel, AuditService}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
-import models.{JourneyContext, RentalsAndRaRAbout, RentalsRentARoom, UserAnswers}
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRaRAbout, RentalsRentARoom, SectionName}
+import models._
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}

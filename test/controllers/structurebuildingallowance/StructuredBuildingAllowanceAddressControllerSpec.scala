@@ -19,11 +19,13 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructuredBuildingAllowanceAddressFormProvider
-import models.{NormalMode, Rentals, StructuredBuildingAllowanceAddress, UserAnswers}
+import models._
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.data.Form
 import play.api.http.Status.{BAD_REQUEST, OK, SEE_OTHER}
@@ -35,154 +37,166 @@ import repositories.SessionRepository
 import views.html.structurebuildingallowance.StructuredBuildingAllowanceAddressView
 
 import scala.concurrent.Future
+import scala.util.Random
 
 class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with MockitoSugar {
-
-  val formProvider = new StructuredBuildingAllowanceAddressFormProvider
-  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider(emptyUserAnswers)
 
   val taxYear = 2024
   val index = 0
   val validAnswer = "Building"
   val validPostCode = "GV92 8VB"
+  private val individualAgent = Array("individual", "agent")
+  private val individualOrAgent = individualAgent(Random.nextInt(individualAgent.length))
+  private val isAgent = individualOrAgent.equals("individual")
+  private val formProvider = new StructuredBuildingAllowanceAddressFormProvider
+  private val scenarios = Table[PropertyType, String](
+    ("property type", "type definition"),
+    (Rentals, "rentals"),
+    (RentalsRentARoom, "rentalsAndRaR")
+  )
+
   def onwardRoute: Call = Call("GET", "/foo")
-  private val isAgentMessageKey = "individual"
 
-  lazy val structureBuildingAllowanceAddressDateRoute: String =
-    routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index).url
+  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider(emptyUserAnswers)
 
-  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
+    lazy val structureBuildingAllowanceAddressDateRoute: String =
+      routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index, propertyType).url
 
-  def getRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, structureBuildingAllowanceAddressDateRoute)
+    val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
-      .withFormUrlEncodedBody(
-        "buildingName"   -> "building-name",
-        "buildingNumber" -> "building-number",
-        "postcode"       -> "postcode"
-      )
+    def getRequest: FakeRequest[AnyContentAsEmpty.type] =
+      FakeRequest(GET, structureBuildingAllowanceAddressDateRoute)
 
-  "StructureBuildingAllowanceAddress Controller" - {
-
-    "must return OK and the correct view for a GET" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-
-      running(application) {
-        val result = route(application, getRequest).value
-
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, index)(
-          getRequest,
-          messages(application)
-        ).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId)
-        .set(
-          StructuredBuildingAllowanceAddressPage(index, Rentals),
-          StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")
+    def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+      FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
+        .withFormUrlEncodedBody(
+          "buildingName"   -> "building-name",
+          "buildingNumber" -> "building-number",
+          "postcode"       -> "postcode"
         )
-        .success
-        .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+    s"StructureBuildingAllowanceAddress Controller for property type: $propertyTypeDefinition and for an $individualOrAgent " - {
 
-      running(application) {
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+      "must return OK and the correct view for a GET" in {
 
-        val result = route(application, getRequest).value
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")),
-          taxYear,
-          NormalMode,
-          index
-        )(getRequest, messages(application)).toString
+        running(application) {
+          val result = route(application, getRequest).value
+
+          val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, taxYear, NormalMode, index, propertyType)(
+            getRequest,
+            messages(application)
+          ).toString
+        }
       }
-    }
-    "must redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
+      "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(
+            StructuredBuildingAllowanceAddressPage(index, propertyType),
+            StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")
           )
-          .build()
+          .success
+          .value
 
-      running(application) {
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+        running(application) {
+          val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+
+          val result = route(application, getRequest).value
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(
+            form.fill(StructuredBuildingAllowanceAddress("building-name", "building-number", "post-code")),
+            taxYear,
+            NormalMode,
+            index,
+            propertyType
+          )(getRequest, messages(application)).toString
+        }
+      }
+      "must redirect to the next page when valid data is submitted" in {
+
+        val mockSessionRepository = mock[SessionRepository]
+
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
+              .withFormUrlEncodedBody(
+                ("buildingName", validAnswer),
+                ("buildingNumber", validAnswer),
+                ("postcode", validPostCode)
+              )
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRoute.url
+        }
+      }
+
+      "must return a Bad Request and errors when invalid data is submitted" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
+
         val request =
           FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
-            .withFormUrlEncodedBody(
-              ("buildingName", validAnswer),
-              ("buildingNumber", validAnswer),
-              ("postcode", validPostCode)
-            )
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val result = route(application, request).value
+        running(application) {
+          val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+          val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index, propertyType)(
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = None, isAgent).build()
 
-      val request =
-        FakeRequest(POST, structureBuildingAllowanceAddressDateRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        running(application) {
+          val result = route(application, getRequest).value
 
-      running(application) {
-        val boundForm = form.bind(Map("value" -> "invalid value"))
-
-        val view = application.injector.instanceOf[StructuredBuildingAllowanceAddressView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index)(
-          request,
-          messages(application)
-        ).toString
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        val application = applicationBuilder(userAnswers = None, isAgent).build()
 
-      running(application) {
-        val result = route(application, getRequest).value
+        running(application) {
+          val result = route(application, postRequest()).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
-      }
-    }
-
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-      running(application) {
-        val result = route(application, postRequest()).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
   }
