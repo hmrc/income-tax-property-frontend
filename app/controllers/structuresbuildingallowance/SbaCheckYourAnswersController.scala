@@ -19,7 +19,7 @@ package controllers.structuresbuildingallowance
 import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import models.requests.DataRequest
-import models.{JourneyContext, SbasWithSupportingQuestions}
+import models.{JourneyContext, Rentals, SbasWithSupportingQuestions}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
@@ -50,7 +50,7 @@ class SbaCheckYourAnswersController @Inject() (
         rows = Seq(
           StructureBuildingQualifyingDateSummary.row(taxYear, index, request.userAnswers),
           StructureBuildingQualifyingAmountSummary.row(taxYear, index, request.userAnswers),
-          StructureBuildingAllowanceClaimSummary.row(taxYear, index, request.userAnswers),
+          StructureBuildingAllowanceClaimSummary.row(taxYear, index, request.userAnswers, Rentals),
           StructuredBuildingAllowanceAddressSummary.row(taxYear, index, request.userAnswers)
         ).flatten
       )

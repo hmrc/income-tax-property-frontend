@@ -658,7 +658,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingAllowanceClaimController
-          .onPageLoad(taxYear, NormalMode, 0)
+          .onPageLoad(taxYear, NormalMode, 0, Rentals)
       }
 
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
@@ -868,23 +868,24 @@ class NavigatorSpec extends SpecBase {
           ) mustBe checkCYARouteForPropertyType(propertyType, taxYear)
         }
 
-        s"must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmount when user selects no and the previous answer was yes for $propertyTypeDefinition" in {
-          val previousUserAnswers =
-            UserAnswers("test")
-              .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(true, None))
-              .get
-          val userAnswers =
-            UserAnswers("test")
-              .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
-              .get
-          navigator.nextPage(
-            CalculatedFigureYourselfPage(propertyType),
-            taxYear,
-            CheckMode,
-            previousUserAnswers,
-            userAnswers
-          ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType)
-        }
+        s"must go from CalculatedFigureYourselfPage to RecievedGrantLeaseAmount when user selects " +
+          s"no and the previous answer was yes for $propertyTypeDefinition" in {
+            val previousUserAnswers =
+              UserAnswers("test")
+                .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(true, None))
+                .get
+            val userAnswers =
+              UserAnswers("test")
+                .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
+                .get
+            navigator.nextPage(
+              CalculatedFigureYourselfPage(propertyType),
+              taxYear,
+              CheckMode,
+              previousUserAnswers,
+              userAnswers
+            ) mustBe ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType)
+          }
 
         s"must go from CalculatedFigureYourselfPage to CheckYourAnswers when user selects no and the previous answer was no for $propertyTypeDefinition" in {
           val previousUserAnswers =

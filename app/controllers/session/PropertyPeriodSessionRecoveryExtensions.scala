@@ -97,7 +97,10 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua2
       }
 
-    private def updateAdjustmentsPages(userAnswers: UserAnswers, maybeAdjustments: Option[Adjustments]): Try[UserAnswers] =
+    private def updateAdjustmentsPages(
+      userAnswers: UserAnswers,
+      maybeAdjustments: Option[Adjustments]
+    ): Try[UserAnswers] =
       maybeAdjustments match {
         case None => Success(userAnswers)
         case Some(adjustments) =>

@@ -637,11 +637,11 @@ class Navigator @Inject() () {
     case StructureBuildingQualifyingDatePage(_, Rentals) =>
       StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructureBuildingQualifyingAmountPage(_, Rentals) =>
-      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index)
+      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructureBuildingAllowanceClaimPage(_, Rentals) =>
       StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
     case StructuredBuildingAllowanceAddressPage(_, Rentals) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
-    case _                                         => IndexController.onPageLoad
+    case _                                                  => IndexController.onPageLoad
   }
 
   private def structureBuildingCheckModeRoutes(
