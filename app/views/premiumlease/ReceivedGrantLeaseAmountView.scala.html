@@ -14,16 +14,16 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
 @import controllers.premiumlease.routes
+@import viewmodels.InputWidth._
 @import viewmodels.LabelSize
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
@@ -41,6 +41,7 @@
                 field = form("receivedGrantLeaseAmount"),
                 label = LabelViewModel(messages(s"receivedGrantLeaseAmount.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
             )
+            .withHint(HintViewModel(messages("amount.hint")))
             .asNumeric()
             .withWidth(Fixed10)
             .withPrefix(PrefixOrSuffix(content = Text("£")))
@@ -50,4 +51,7 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
+}
+@{
+    // $COVERAGE-OFF$
 }

@@ -18,7 +18,7 @@ package models
 
 import audit._
 import pages.PageConstants
-import pages.PageConstants.{esbasWithSupportingQuestions, sbaPath, sbasWithSupportingQuestions}
+import pages.PageConstants.{esbasWithSupportingQuestions, sbaPath, sbasWithSupportingQuestions, structureBuildingFormGroup}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}

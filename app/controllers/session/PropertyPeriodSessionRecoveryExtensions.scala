@@ -257,10 +257,10 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updateSba(userAnswers: UserAnswers, index: Int, sba: Sba): Try[UserAnswers] =
       for {
-        ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index), sba.structuredBuildingAllowanceAddress)
-        ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index), sba.structureBuildingQualifyingDate)
+        ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index, Rentals), sba.structuredBuildingAllowanceAddress)
+        ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index, Rentals), sba.structureBuildingQualifyingDate)
         ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index, Rentals), sba.structureBuildingQualifyingAmount)
-        ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index), sba.structureBuildingAllowanceClaim)
+        ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index, Rentals), sba.structureBuildingAllowanceClaim)
       } yield ua4
 
     def updateRentARoomAbout(userAnswers: UserAnswers, maybeRentARoomAbout: Option[RaRAbout]): Try[UserAnswers] =

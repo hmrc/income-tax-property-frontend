@@ -60,7 +60,7 @@ error.year.invalid = Year must include 4 numbers
 
 businessDetails.accruals = Traditional (accrual)
 businessDetails.cash = Cash basis
-
+amount.hint = For example, £900 or £100.20
 
 index.title = income-tax-property-frontend
 index.heading = income-tax-property-frontend
@@ -196,8 +196,7 @@ calculatedFigureYourself.checkYourAnswersQuestionLabel = Have you calculated the
 calculatedFigureYourself.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
-calculatedFigureYourself.amount.legend = Enter the figure
-calculatedFigureYourselfAmount.label = Enter the figure
+calculatedFigureYourselfAmount.label = Enter the amount
 calculatedFigureYourselfAmount.amount.error.required.individual = Enter the amount you’ve calculated yourself
 calculatedFigureYourselfAmount.amount.error.required.agent = Enter the amount your client has calculated
 calculatedFigureYourselfAmount.amount.error.nonNumeric.individual = Enter the amount you’ve calculated yourself
@@ -299,10 +298,8 @@ incomeFromPropertyRentals.bullet1.agent = the use of furniture
 incomeFromPropertyRentals.bullet2.individual = charges for services you provide (such as cleaning of communal areas, hot water, heating and repairs)
 incomeFromPropertyRentals.bullet2.agent = charges for services your client provides (such as cleaning of communal areas, hot water, heating and repairs)
 incomeFromPropertyRentals.link = work out your rental income when you let property at GOV.UK (opens in new tab)
-incomeFromPropertyRentals.para2.Rentals.individual = How much total income did you receive from all of your property rentals?
-incomeFromPropertyRentals.para2.RentalsRentARoom.individual = How much total income did you receive from all of your property rental and your rent a room?
-incomeFromPropertyRentals.para2.Rentals.agent = How much total income did your client receive from all of their property rentals?
-incomeFromPropertyRentals.para2.RentalsRentARoom.agent = How much total income did your client receive from all of their property rental and their rent a room?
+incomeFromPropertyRentals.para2.individual = How much total income did you receive from all of your property rentals?
+incomeFromPropertyRentals.para2.agent = How much total income did your client receive from all of their property rentals?
 incomeFromPropertyRentals.deductions.hint = This is the amount before any deductions have been made.
 incomeFromPropertyRentals.error.nonNumeric.individual = Enter the amount for your total income from property rentals
 incomeFromPropertyRentals.error.nonNumeric.agent = Enter your client’s total income from all their property rentals
@@ -393,7 +390,6 @@ isNonUKLandlord.button = Continue
 
 reversePremiumsReceived.title = Reverse premiums received
 reversePremiumsReceived.heading = Reverse premiums received
-reversePremiumsReceived.details.heading = Understanding reverse premiums
 reversePremiumsReceived.details.line1 = A reverse premium is a sum paid to a tenant by a landlord in order to get that tenant to enter into the lease. Reverse premiums are common in the letting of commercial properties.
 reversePremiumsReceived.details.line2 = Read more about
 reversePremiumsReceived.details.line2.link.text = granting of a lease: reverse premiums at GOV.UK (opens in new tab)
@@ -411,8 +407,7 @@ reversePremiumsReceived.error.nonNumeric.individual= Enter the amount for the re
 reversePremiumsReceived.error.nonNumeric.agent = Enter the amount for the reverse premium that your client received
 reversePremiumsReceived.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 reversePremiumsReceived.error.outOfRange = Enter an amount between £{0} and £{1}
-reversePremiumsReceived.amount.legend = Enter the figure
-reversePremiumsReceived.amount.label = Enter the figure
+reversePremiumsReceived.amount.label = Enter the amount
 reversePremiumsReceived.change.hidden = Reverse premiums received
 
 renovationAllowanceBalancingCharge.title = Business premises renovation allowance balancing charge
@@ -1239,7 +1234,6 @@ esbaClaims.error.required.agent = Select yes if your client wants to add another
 esbaClaims.legend = Do you want to add another claim?
 
 ############ UK RENT A ROOM ############
-
 ukrentaroom.income.totalIncomeAmount.title.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.heading.individual = How much total rent a room income did you receive?
 ukrentaroom.income.totalIncomeAmount.error.required.individual = Enter the the total rent a room income received

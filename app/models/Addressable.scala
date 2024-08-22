@@ -66,7 +66,7 @@ object Addressable {
       override def getBuildingNumber(address: StructuredBuildingAllowanceAddress): String = address.buildingNumber
 
       override def get(index: Int): Gettable[StructuredBuildingAllowanceAddress] =
-        StructuredBuildingAllowanceAddressPage(index)
+        StructuredBuildingAllowanceAddressPage(index, Rentals)
     }
 
   implicit val esbaAddressable: Addressable[EsbaAddress] = new Addressable[EsbaAddress] {

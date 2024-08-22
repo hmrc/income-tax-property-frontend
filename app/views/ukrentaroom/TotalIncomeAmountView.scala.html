@@ -20,40 +20,41 @@
 @import viewmodels.LabelSize
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"ukrentaroom.income.totalIncomeAmount.title.${individualOrAgent}"))) {
+    @layout(pageTitle = title(form, messages(s"ukrentaroom.income.totalIncomeAmount.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.TotalIncomeAmountController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
 
-        @govukInput(
-            InputViewModel(
-                field = form("totalIncomeAmount"),
-                label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
+            @govukInput(
+                InputViewModel(
+                    field = form("totalIncomeAmount"),
+                    label = LabelViewModel(messages(s"ukrentaroom.income.totalIncomeAmount.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
+                )
+                .withHint(HintViewModel(messages("amount.hint")))
+                .asNumeric()
+                .withWidth(Fixed10)
+                .withPrefix(PrefixOrSuffix(content = Text("£")))
             )
-            .asNumeric()
-            .withWidth(Fixed10)
-            .withPrefix(PrefixOrSuffix(content = Text("£")))
-        )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue")).withId("continue")
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     }
-}
 
-@{
-// $COVERAGE-OFF$
-}
+    @{
+        // $COVERAGE-OFF$
+    }
