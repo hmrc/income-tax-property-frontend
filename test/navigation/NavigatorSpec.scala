@@ -646,7 +646,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingQualifyingAmountController
-          .onPageLoad(taxYear, NormalMode, 0)
+          .onPageLoad(taxYear, NormalMode, 0, Rentals)
       }
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {

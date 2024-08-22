@@ -35,7 +35,7 @@ object StructureBuildingQualifyingAmountSummary {
           key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
           value = ValueViewModel(bigDecimalCurrency(answer)),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx).url)
+            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx, Rentals).url)
               .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))
           )
         )

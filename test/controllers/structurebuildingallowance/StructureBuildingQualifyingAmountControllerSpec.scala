@@ -19,7 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.StructureBuildingQualifyingAmountFormProvider
-import models.{NormalMode, Rentals, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -47,8 +47,11 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
   val taxYear = 2023
   val index = 0
 
-  lazy val structureBuildingQualifyingAmountRoute: String =
-    routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val rentalsRoute: String =
+    routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, Rentals).url
+
+  lazy val rentalsRaRRoute: String =
+    routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, RentalsRentARoom).url
 
   "StructureBuildingQualifyingAmount Controller" - {
 
@@ -57,21 +60,21 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
           request,
           messages(application)
         ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "On rentals only journey must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
         UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index, Rentals), validAnswer).success.value
@@ -79,14 +82,36 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "On rentals RaR journey must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers =
+        UserAnswers(userAnswersId).set(StructureBuildingQualifyingAmountPage(index, RentalsRentARoom), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRaRRoute)
+
+        val view = application.injector.instanceOf[StructureBuildingQualifyingAmountView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index, RentalsRentARoom)(
           request,
           messages(application)
         ).toString
@@ -109,7 +134,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("structureBuildingQualifyingAmount", validAnswer.toString))
 
         val result = route(application, request).value
@@ -125,7 +150,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -135,7 +160,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
           request,
           messages(application)
         ).toString
@@ -147,7 +172,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, structureBuildingQualifyingAmountRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
@@ -162,7 +187,7 @@ class StructureBuildingQualifyingAmountControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, structureBuildingQualifyingAmountRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("value", validAnswer.toString))
 
         val result = route(application, request).value

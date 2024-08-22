@@ -1167,9 +1167,9 @@ structureBuildingQualifyingDate.error.maxDate =	Mae’n rhaid i’r dyddiad cymh
 structureBuildingQualifyingDate.error.minDate =	Mae’n rhaid i’r dyddiad cymhwysol ar gyfer lwfans strwythurau ac adeiladau fod ar ôl 29 Hydref 2018
 structureBuildingQualifyingDate.change.hidden =	Dyddiad cymhwysol
 
-structureBuildingQualifyingAmount.title = 	Swm cymhwysol
-structureBuildingQualifyingAmount.heading =	Swm cymhwysol
-structureBuildingQualifyingAmount.checkYourAnswersLabel =	Swm cymhwysol
+structureBuildingQualifyingAmount.title = 	*Missing Welsh*
+structureBuildingQualifyingAmount.heading =	*Missing Welsh*
+structureBuildingQualifyingAmount.checkYourAnswersLabel =	*Missing Welsh*
 structureBuildingQualifyingAmount.details.content.individual =	Gallwch hawlio 3% y flwyddyn o 6 Ebrill 2020 ymlaen ar gostau cymhwysol, a bydd cyfnod y lwfans yn dod i ben 33 mlynedd a thraean ar ôl yr hwyraf o’r canlynol:
 structureBuildingQualifyingAmount.details.content.agent =	Gall eich cleient hawlio 3% y flwyddyn o 6 Ebrill 2020 ymlaen ar gostau cymhwysol, a bydd cyfnod y lwfans yn dod i ben 33 mlynedd a thraean ar ôl yr hwyraf o’r canlynol:
 structureBuildingQualifyingAmount.details.l1 =	y dyddiad daeth y strwythur i ddefnydd dibreswyl am y tro cyntaf
