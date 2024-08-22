@@ -72,7 +72,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
               case Right(_) =>
                 Future.successful(
                   Redirect(
-                    controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                    controllers.rentalsandrentaroom.allowances.routes.RentalsRaRAllowancesCompleteController
                       .onPageLoad(taxYear)
                   )
                 )
