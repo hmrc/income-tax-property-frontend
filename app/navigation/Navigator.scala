@@ -635,7 +635,7 @@ class Navigator @Inject() () {
     index: Int
   ): Call = page match {
     case StructureBuildingQualifyingDatePage(_, Rentals) =>
-      StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index)
+      StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructureBuildingQualifyingAmountPage(_, Rentals) =>
       StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructureBuildingAllowanceClaimPage(_, Rentals) =>
