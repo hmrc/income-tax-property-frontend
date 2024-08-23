@@ -46,5 +46,5 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
   private def isUkProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
       "uk-property"
-    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
+    ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
 }

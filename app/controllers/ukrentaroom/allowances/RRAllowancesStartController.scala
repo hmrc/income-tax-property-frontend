@@ -44,7 +44,7 @@ class RRAllowancesStartController @Inject() (
     businessService.getBusinessDetails(request.user)(hc).map {
       case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
         val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-        Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.cashOrAccruals.get)))
+        Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.accrualsOrCash.get)))
       case _ => Redirect(routes.SummaryController.show(taxYear))
     }
   }
@@ -52,5 +52,5 @@ class RRAllowancesStartController @Inject() (
   private def existsUkProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
       "uk-property"
-    ) && property.tradingStartDate.isDefined && property.cashOrAccruals.isDefined
+    ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
 }
