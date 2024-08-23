@@ -124,7 +124,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
             userEnteredDetails = income,
             isFailed = isFailed
           )
-          auditService.sendRentalsAndRentARoomAuditEvent(auditModel)
+          auditService.sendAuditEvent(auditModel)
         case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
       }
 

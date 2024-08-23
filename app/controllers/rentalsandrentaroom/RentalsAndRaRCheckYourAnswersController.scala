@@ -118,7 +118,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       userEnteredDetails = about
     )
 
-    audit.sendRentalsAndRentARoomAuditEvent(auditModel)
+    audit.sendAuditEvent(auditModel)
   }
 
 }
