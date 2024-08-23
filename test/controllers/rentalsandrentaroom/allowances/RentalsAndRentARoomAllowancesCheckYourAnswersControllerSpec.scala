@@ -16,26 +16,30 @@
 
 package controllers.rentalsandrentaroom.allowances
 
+import audit.AuditService
 import base.SpecBase
+import models.backend.PropertyDetails
 import models.{CapitalAllowancesForACar, RentalsRentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.MockitoSugar.{times, verify}
+import org.scalatest.prop.TableFor2
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
+import pages.allowances._
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import play.api.inject.bind
-import org.mockito.Mockito.{doNothing, when}
-import org.mockito.MockitoSugar.{times, verify}
-import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.allowances.{AnnualInvestmentAllowancePage, BusinessPremisesRenovationPage, CapitalAllowancesForACarPage, OtherCapitalAllowancePage, ReplacementOfDomesticGoodsPage, ZeroEmissionCarAllowancePage, ZeroEmissionGoodsVehicleAllowancePage}
-import service.PropertySubmissionService
 import views.html.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
   private val taxYear = 2024
-  val scenarios = Table[Boolean, String](
+  val scenarios: TableFor2[Boolean, String] = Table[Boolean, String](
     ("isAgent", "individualOrAgent"),
     (false, "individual"),
     (true, "agent")
@@ -68,12 +72,17 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
 
       "must call the right services for a POST" in {
         val mockPropertySubmissionService = mock[PropertySubmissionService]
+        val mockAuditService = mock[AuditService]
+        val mockBusinessService = mock[BusinessService]
 
         val userAnswers =
           (for {
             ua1 <-
               UserAnswers(userAnswersId)
-                .set(CapitalAllowancesForACarPage(RentalsRentARoom), CapitalAllowancesForACar(true, Some(1.23)))
+                .set(
+                  CapitalAllowancesForACarPage(RentalsRentARoom),
+                  CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(1.23))
+                )
             ua2 <- ua1.set(AnnualInvestmentAllowancePage(RentalsRentARoom), BigDecimal(1.01))
             ua3 <- ua2.set(ZeroEmissionCarAllowancePage(RentalsRentARoom), BigDecimal(1.01))
             ua4 <- ua3.set(ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom), BigDecimal(1.01))
@@ -86,9 +95,24 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
           Right(())
         )
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), false)
+        when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+          Right(
+            Option(
+              PropertyDetails(
+                incomeSourceType = Some("incomeSourceId"),
+                tradingStartDate = Some(LocalDate.now),
+                accrualsOrCash = Some(true),
+                incomeSourceId = "incomeSourceId"
+              )
+            )
+          )
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
           .overrides(
-            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService),
+            bind[BusinessService].toInstance(mockBusinessService),
+            bind[AuditService].toInstance(mockAuditService)
           )
           .build()
 
@@ -104,6 +128,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
 
           whenReady(result) { _ =>
             verify(mockPropertySubmissionService, times(1)).saveJourneyAnswers(any(), any())(any(), any())
+            verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
           }
 
         }
