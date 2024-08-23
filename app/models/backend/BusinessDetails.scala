@@ -26,10 +26,11 @@ object BusinessDetails {
   implicit val format: OFormat[BusinessDetails] = Json.format[BusinessDetails]
 }
 
+// accrualsOrCash - false = "CASH"
 case class PropertyDetails(
   incomeSourceType: Option[String],
   tradingStartDate: Option[LocalDate],
-  cashOrAccruals: Option[Boolean],
+  accrualsOrCash: Option[Boolean],
   incomeSourceId: String
 )
 

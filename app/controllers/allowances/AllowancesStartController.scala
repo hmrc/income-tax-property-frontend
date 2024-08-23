@@ -49,7 +49,7 @@ class AllowancesStartController @Inject() (
               AllowancesStartPage(
                 taxYear,
                 request.user.isAgentMessageKey,
-                propertyData.cashOrAccruals.get,
+                propertyData.accrualsOrCash.get,
                 propertyType
               )
             )

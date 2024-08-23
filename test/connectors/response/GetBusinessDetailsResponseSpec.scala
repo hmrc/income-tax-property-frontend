@@ -39,7 +39,7 @@ class GetBusinessDetailsResponseSpec extends AnyWordSpec with Matchers {
     "convert JsValue to GetBusinessDetailsResponse" when {
       "status is OK and valid jsValue" in {
         val propertyDetails =
-          PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+          PropertyDetails(Some("property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
         val businessDetails = BusinessDetails(List(propertyDetails))
         val jsValue: JsValue = Json.toJson(businessDetails)
 

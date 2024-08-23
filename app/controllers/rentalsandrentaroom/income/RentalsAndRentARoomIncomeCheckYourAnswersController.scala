@@ -17,7 +17,6 @@
 package controllers.rentalsandrentaroom.income
 
 import audit.{AuditModel, AuditService}
-import connectors.error.ApiError
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.backend.PropertyDetails
@@ -110,7 +109,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
     businessService
       .getUkPropertyDetails(request.user.nino, request.user.mtditid)
       .map {
-        case Right(Some(PropertyDetails(_, _, Some(cashOrAccruals), _))) =>
+        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
           val auditModel = AuditModel(
             nino = request.user.nino,
             userType = request.user.affinityGroup,
@@ -121,8 +120,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
             sectionName = SectionName.Income,
             propertyType = AuditPropertyType.UKProperty,
             journeyName = JourneyName.RentalsRentARoom,
-            accountingMethod = if (cashOrAccruals) AccountingMethod.Cash else AccountingMethod.Traditional,
-            userEnteredRentalsAndRentARoomDetails = income,
+            accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+            userEnteredDetails = income,
             isFailed = isFailed
           )
           auditService.sendRentalsAndRentARoomAuditEvent(auditModel)
