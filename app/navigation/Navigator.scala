@@ -874,10 +874,10 @@ class Navigator @Inject() () {
     }
 
   private def sbaRemoveConfirmationNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    (userAnswers.get(SbaRemoveConfirmationPage), userAnswers.get(StructureBuildingAllowance)) match {
+    (userAnswers.get(SbaRemoveConfirmationPage), userAnswers.get(StructureBuildingAllowanceGroup(Rentals))) match {
       case (Some(true), Some(sbaForm)) if sbaForm.isEmpty =>
         AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, Rentals)
-      case (_, Some(sbaForm)) if sbaForm.nonEmpty => SbaClaimsController.onPageLoad(taxYear)
+      case (_, Some(sbaForm)) if sbaForm.nonEmpty => SbaClaimsController.onPageLoad(taxYear, Rentals)
     }
 
   private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =

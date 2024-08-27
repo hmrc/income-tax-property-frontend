@@ -16,6 +16,7 @@
 
 @import viewmodels.LegendSize
 @import controllers.structuresbuildingallowance.routes
+@import models.PropertyType
 
 @this(
     layout: templates.Layout,
@@ -27,11 +28,11 @@
 )
 
 
-@(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"sbaClaims.title.$individualOrAgent"))) {
 
-    @formHelper(action = routes.SbaClaimsController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.SbaClaimsController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

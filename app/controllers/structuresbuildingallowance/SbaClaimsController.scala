@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{JourneyContext, NormalMode, Rentals}
+import models.{JourneyContext, NormalMode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.structurebuildingallowance._
 import play.api.Logging
@@ -28,7 +28,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.{JourneyAnswersService, PropertySubmissionService}
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -50,58 +50,63 @@ class SbaClaimsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: SbaClaimsView,
   propertySubmissionService: PropertySubmissionService,
-  auditService: AuditService,
-  journeyAnswersService: JourneyAnswersService
+  auditService: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request)
+      val list: SummaryList = summaryList(taxYear, request, propertyType: PropertyType)
 
-      Ok(view(form, list, taxYear, request.user.isAgentMessageKey))
-  }
+      Ok(view(form, list, taxYear, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request)
+      val list: SummaryList = summaryList(taxYear, request, propertyType)
 
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
+            Future.successful(
+              BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _              <- if (!value) saveSBAClaims(taxYear, request) else Future.successful(())
+              _              <- if (!value) saveSBAClaims(taxYear, request, propertyType) else Future.successful(())
             } yield Redirect(
               navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 
-  private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
+  private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
+    messages: Messages
+  ) = {
 
     val sbasWithSupportingQuestions =
-      request.userAnswers.get(StructureBuildingAllowance).map(_.toArray).getOrElse(Array())
+      request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType)).map(_.toArray).getOrElse(Array())
 
     val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.flatMap { sbaWithIndex =>
       val (_, index) = sbaWithIndex
-      StructureBuildingAllowanceSummary.row(taxYear, index, request.userAnswers)
+      StructureBuildingAllowanceSummary.row(taxYear, index, request.userAnswers, propertyType)
     }
 
     SummaryListViewModel(rows)
   }
 
-  private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent])(implicit hc: HeaderCarrier) =
+  private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
+    hc: HeaderCarrier
+  ) =
     Future {
       val sbaInfoOpt = for {
         claimSummaryPage <- request.userAnswers.get(ClaimStructureBuildingAllowancePage(Rentals))
-        sbaGroup         <- request.userAnswers.get(StructureBuildingAllowance)
+        sbaGroup         <- request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType))
       } yield SbaInfo(claimSummaryPage, sbaGroup)
 
       sbaInfoOpt.fold {
