@@ -79,7 +79,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
                 auditAllowancesCYA(taxYear, request, rentalsAndRentARoomAllowance, isFailed = false)
                 Future.successful(
                   Redirect(
-                    controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                    controllers.rentalsandrentaroom.allowances.routes.RentalsRaRAllowancesCompleteController
                       .onPageLoad(taxYear)
                   )
                 )
