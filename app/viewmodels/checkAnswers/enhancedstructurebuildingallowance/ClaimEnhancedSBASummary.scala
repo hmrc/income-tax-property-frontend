@@ -16,8 +16,8 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
-import models.{CheckMode, UserAnswers}
+import controllers.enhancedstructuresbuildingallowance.routes
+import models.{CheckMode, Rentals, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -29,14 +29,17 @@ object ClaimEnhancedSBASummary {
   def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ClaimEsbaPage).map { answer =>
+    answers.get(ClaimEsbaPage(Rentals)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
         key = s"claimEnhancedSBA.legend.$individualOrAgent",
         value = ValueViewModel(value),
         actions = Seq(
-          ActionItemViewModel("site.change", ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode).url)
+          ActionItemViewModel(
+            "site.change",
+            routes.ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode, Rentals).url
+          )
             .withVisuallyHiddenText(messages("claimEnhancedSBA.change.hidden"))
         )
       )

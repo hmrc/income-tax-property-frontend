@@ -1054,7 +1054,6 @@ claimEnhancedSBA.heading.individual               = Lwfans strwythurau ac adeila
 claimEnhancedSBA.heading.agent                    = Lwfans strwythurau ac adeiladau uwch
 claimEnhancedSBA.legend.individual                = A hoffech hawlio’r lwfans strwythurau ac adeiladau uwch?
 claimEnhancedSBA.legend.agent                     = A hoffai’ch cleient hawlio’r lwfans strwythurau ac adeiladau uwch?
-claimEnhancedSBA.details.summary                  = Deall y lwfans strwythurau ac adeiladau uwch
 claimEnhancedSBA.details.content                  = Gallwch hawlio rhyddhad lwfans strwythurau ac adeiladau uwch pan fyddwch chi’n gwneud gwaith adeiladu penodol ar strwythurau ac adeiladau mewn safle treth Porthladd Rhydd dynodedig.
 claimEnhancedSBA.details.p1                       = Ardaloedd arbennig o fewn ffiniau’r Deyrnas Unedig yw Porthladdoedd Rhydd lle bo rheoliadau economaidd gwahanol ar waith.
 claimEnhancedSBA.details.p2                       = Mae’n rhaid i chi fod wedi cofrestru ar gyfer naill ai Treth Gorfforaeth neu Dreth Incwm.

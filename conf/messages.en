@@ -1187,7 +1187,6 @@ claimEnhancedSBA.heading.individual = Enhanced Structures and buildings allowanc
 claimEnhancedSBA.heading.agent = Enhanced Structures and buildings allowance
 claimEnhancedSBA.legend.individual = Do you want to claim enhanced structures and buildings allowance?
 claimEnhancedSBA.legend.agent = Does your client want to claim enhanced structures and buildings allowance?
-claimEnhancedSBA.details.summary = Understanding enhanced structures and buildings allowance
 claimEnhancedSBA.details.content = You can claim enhanced structures and buildings allowance relief when you do some specific building work on structures and buildings in a designated Freeport tax site.
 claimEnhancedSBA.details.p1 = Freeports are special areas within the UK’s borders where different economic regulations apply.
 claimEnhancedSBA.details.p2 = You must be registered for either Corporation Tax or Income Tax.

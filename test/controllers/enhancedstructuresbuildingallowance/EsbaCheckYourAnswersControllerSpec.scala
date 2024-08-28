@@ -17,7 +17,7 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
-import models.UserAnswers
+import models.{Rentals, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -53,7 +53,7 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "must return OK and the correct view for a POST (onSubmit)" in {
-      val userAnswers = UserAnswers("test").set(ClaimEsbaPage, true).get
+      val userAnswers = UserAnswers("test").set(ClaimEsbaPage(Rentals), true).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
