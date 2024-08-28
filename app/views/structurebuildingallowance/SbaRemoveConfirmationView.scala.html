@@ -25,11 +25,11 @@
 )
 
 
-@(form: Form[_], taxYear:Int, index: Int, mode: Mode, claimValue: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear:Int, index: Int, mode: Mode, claimValue: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("sbaRemoveConfirmation.title", claimValue))) {
 
-    @formHelper(action = routes.SbaRemoveConfirmationController.onSubmit(taxYear, index), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.SbaRemoveConfirmationController.onSubmit(taxYear, index, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

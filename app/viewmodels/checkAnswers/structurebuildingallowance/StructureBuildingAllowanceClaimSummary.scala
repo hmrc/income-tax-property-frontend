@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, PropertyType, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -54,7 +54,7 @@ object StructureBuildingAllowanceClaimSummary {
       actions = Seq(
         ActionItemViewModel("site.change", routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
           .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden")),
-        ActionItemViewModel("site.remove", routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index).url)
+        ActionItemViewModel("site.remove", routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index, Rentals).url)
           .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
       ),
       actionsCss = "w-25"

@@ -296,8 +296,8 @@ POST        /:taxYear/rentals/structures-buildings-allowance/check-your-answers 
 GET         /:taxYear/rentals/structures-buildings-allowance/claims                                      controllers.structuresbuildingallowance.SbaClaimsController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/claims                                      controllers.structuresbuildingallowance.SbaClaimsController.onSubmit(taxYear: Int)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 
 GET        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                              controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                              controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
@@ -690,3 +690,6 @@ GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/qualifying-date          controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-qualifying-date   controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-qualifying-date   controllers.structuresbuildingallowance.StructureBuildingQualifyingDateController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                         controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
