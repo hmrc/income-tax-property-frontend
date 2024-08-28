@@ -31,7 +31,7 @@ final case class AuditModel[T](
   journeyName: JourneyName,
   accountingMethod: AccountingMethod,
   isFailed: Boolean,
-  userEnteredRentalsAndRentARoomDetails: T
+  userEnteredDetails: T
 )
 
 object AuditModel {

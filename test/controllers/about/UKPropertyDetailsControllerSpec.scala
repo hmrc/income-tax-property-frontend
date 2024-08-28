@@ -60,7 +60,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
         new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       when(
@@ -94,7 +94,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             taxYear,
             "individual",
             propertyDetails.tradingStartDate.get,
-            propertyDetails.cashOrAccruals.get
+            propertyDetails.accrualsOrCash.get
           )
         )(request, messages(application)).toString
 
@@ -105,7 +105,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       when(
@@ -141,7 +141,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             taxYear,
             "agent",
             propertyDetails.tradingStartDate.get,
-            propertyDetails.cashOrAccruals.get
+            propertyDetails.accrualsOrCash.get
           )
         )(request, messages(application)).toString
       }

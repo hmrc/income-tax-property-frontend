@@ -121,7 +121,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       val propertyDetails = PropertyDetails(
         Some("uk-property"),
         Some(LocalDate.of(taxYear, 1, 2)),
-        cashOrAccruals = Some(false),
+        accrualsOrCash = Some(false),
         "incomeSourceId"
       )
 

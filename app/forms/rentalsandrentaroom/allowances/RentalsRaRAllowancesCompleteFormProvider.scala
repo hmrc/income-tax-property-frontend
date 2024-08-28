@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.allowances
+package forms.rentalsandrentaroom.allowances
 
-import models.PropertyType
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-final case class ZeroEmissionGoodsVehicleAllowancePage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ allowancesPath(propertyType) \ toString
+class RentalsRaRAllowancesCompleteFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "zeroEmissionGoodsVehicleAllowance"
+  def apply(): Form[Boolean] =
+    Form(
+      "isRentalsRaRAllowanceComplete" -> boolean("haveYouFinishedThisSection.error.required")
+    )
 }

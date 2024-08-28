@@ -1085,9 +1085,9 @@ structureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying 
 structureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
 structureBuildingQualifyingAmount.change.hidden = Qualifying amount
 
-structureBuildingAllowanceAddress.title = Where is the new structure or building located?
-structureBuildingAllowanceAddress.heading = Where is the new structure or building located?
-structureBuildingAllowanceAddress.caption = Structures and buildings allowance
+structureBuildingAllowanceAddress.title = Structures and buildings allowance address
+structureBuildingAllowanceAddress.heading = Structures and buildings allowance address
+structureBuildingAllowanceAddress.caption = Structures and buildings allowance address
 structureBuildingAllowanceAddress.buildingName.legend = Building name
 structureBuildingAllowanceAddress.buildingName.error.required  = Enter a building name for the structure or building
 structureBuildingAllowanceAddress.buildingName.error.max = Building name for the qualifying structure or building must not be more than 90 characters long

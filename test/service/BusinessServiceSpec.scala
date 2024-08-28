@@ -53,7 +53,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
 
     "return data" in {
       val businessDetails = BusinessDetails(
-        List(PropertyDetails(Some("property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId"))
+        List(PropertyDetails(Some("property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"))
       )
 
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(Right(businessDetails))
@@ -77,7 +77,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
 
     "return data" in {
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       val businessDetails = BusinessDetails(List(details))
 

@@ -62,7 +62,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       )
       val incomeSourceId = "incomeSourceId"
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), incomeSourceId)
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
       when(
@@ -81,7 +81,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
       val incomeSourceId = "incomeSourceId"
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), incomeSourceId)
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
@@ -120,7 +120,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
     "return empty for successful save" in {
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
@@ -133,7 +133,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
     "return error for failure save" in {
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 

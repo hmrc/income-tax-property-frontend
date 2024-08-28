@@ -639,7 +639,7 @@ class Navigator @Inject() () {
     case StructureBuildingQualifyingAmountPage(_, Rentals) =>
       StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructureBuildingAllowanceClaimPage(_, Rentals) =>
-      StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index)
+      StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index, Rentals)
     case StructuredBuildingAllowanceAddressPage(_, Rentals) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _                                                  => IndexController.onPageLoad
   }

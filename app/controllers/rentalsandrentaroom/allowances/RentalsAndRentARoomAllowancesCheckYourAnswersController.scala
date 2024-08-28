@@ -16,13 +16,17 @@
 
 package controllers.rentalsandrentaroom.allowances
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.{JourneyContext, RentalsAndRentARoomAllowance, RentalsRentARoom}
+import models.backend.PropertyDetails
+import models.requests.DataRequest
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAllowance, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.allowances._
 import viewmodels.govuk.SummaryListFluency
@@ -38,7 +42,9 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  view: RentalsAndRentARoomAllowancesCheckYourAnswersView
+  view: RentalsAndRentARoomAllowancesCheckYourAnswersView,
+  businessService: BusinessService,
+  auditService: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with SummaryListFluency with Logging {
 
@@ -70,13 +76,15 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
             .saveJourneyAnswers(context, rentalsAndRentARoomAllowance)
             .flatMap {
               case Right(_) =>
+                auditAllowancesCYA(taxYear, request, rentalsAndRentARoomAllowance, isFailed = false)
                 Future.successful(
                   Redirect(
-                    controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                    controllers.rentalsandrentaroom.allowances.routes.RentalsRaRAllowancesCompleteController
                       .onPageLoad(taxYear)
                   )
                 )
               case Left(_) =>
+                auditAllowancesCYA(taxYear, request, rentalsAndRentARoomAllowance, isFailed = true)
                 Future.failed(InternalErrorFailure("Property submission save error"))
             }
 
@@ -86,4 +94,35 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
       }
 
   }
+
+  private def auditAllowancesCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    allowances: RentalsAndRentARoomAllowance,
+    isFailed: Boolean
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Unit] =
+    businessService
+      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+      .map {
+        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
+          val auditModel = AuditModel(
+            nino = request.user.nino,
+            userType = request.user.affinityGroup,
+            mtdItId = request.user.mtditid,
+            agentReferenceNumber = request.user.agentRef,
+            taxYear = taxYear,
+            isUpdate = false,
+            sectionName = SectionName.Allowances,
+            propertyType = AuditPropertyType.UKProperty,
+            journeyName = JourneyName.RentalsRentARoom,
+            accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+            userEnteredDetails = allowances,
+            isFailed = isFailed
+          )
+          auditService.sendAuditEvent(auditModel)
+        case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
+      }
+
 }

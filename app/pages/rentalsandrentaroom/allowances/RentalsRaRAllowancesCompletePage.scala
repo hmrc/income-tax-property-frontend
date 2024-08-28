@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package pages.structurebuildingallowance
+package pages.rentalsandrentaroom.allowances
 
-import models.{PropertyType, StructuredBuildingAllowanceAddress}
-import pages.PageConstants.{sbaPath, structureBuildingFormGroup}
+import models.RentalsRentARoom
+import pages.PageConstants.expensesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class StructuredBuildingAllowanceAddressPage(index: Int, propertyType: PropertyType)
-    extends QuestionPage[StructuredBuildingAllowanceAddress] {
+case object RentalsRaRAllowancesCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ sbaPath(propertyType) \ structureBuildingFormGroup \ index \ toString
-  override def toString: String = "structuredBuildingAllowanceAddress"
+  override def path: JsPath = JsPath \ expensesPath(RentalsRentARoom) \ toString
 
+  override def toString: String = "isRentalsRaRAllowanceComplete"
 }
