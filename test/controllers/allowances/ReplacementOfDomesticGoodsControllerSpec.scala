@@ -39,7 +39,6 @@ import scala.util.Random
 
 class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ReplacementOfDomesticGoodsFormProvider()
   val taxYear = 2024
   val validAnswer: BigDecimal = BigDecimal(0)
 
@@ -47,7 +46,9 @@ class ReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSuga
   private val individualOrAgent = individualAgent(Random.nextInt(individualAgent.length))
   private val isAgent = individualOrAgent.equals("agent")
 
+  private val formProvider = new ReplacementOfDomesticGoodsFormProvider()
   private val form: Form[BigDecimal] = formProvider(individualOrAgent)
+
   private val scenarios = Table[PropertyType, String](
     ("property type", "type definition"),
     (Rentals, "rentals"),

@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, Rentals, UserAnswers}
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -28,20 +28,24 @@ import viewmodels.implicits._
 
 object StructuredBuildingAllowanceAddressSummary {
 
-  def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructuredBuildingAllowanceAddressPage(idx, Rentals)).map {
-      answer =>
-        val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
-          HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
+  def row(taxYear: Int, idx: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(StructuredBuildingAllowanceAddressPage(idx, Rentals)).map { answer =>
+      val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
+        HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 
-        SummaryListRowViewModel(
-          key = "structureBuildingAllowanceAddress.checkYourAnswersLabel",
-          value = ValueViewModel(HtmlContent(value)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, CheckMode, idx).url)
-              .withVisuallyHiddenText(messages("structureBuildingAllowanceAddress.change.hidden"))
+      SummaryListRowViewModel(
+        key = "structureBuildingAllowanceAddress.checkYourAnswersLabel",
+        value = ValueViewModel(HtmlContent(value)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, CheckMode, idx, propertyType).url
           )
+            .withVisuallyHiddenText(messages("structureBuildingAllowanceAddress.change.hidden"))
         )
+      )
     }
 
 }
