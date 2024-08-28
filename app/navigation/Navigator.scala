@@ -255,7 +255,7 @@ class Navigator @Inject() () {
             SummaryController.show(taxYear)
 
         // Enhanced structured building allowance
-    case ClaimEsbaPage =>
+    case ClaimEsbaPage(Rentals) =>
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers)
     case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
     case EsbaRemoveConfirmationPage =>
@@ -554,7 +554,7 @@ class Navigator @Inject() () {
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
-    case ClaimEsbaPage =>
+    case ClaimEsbaPage(Rentals) =>
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers)
     case ClaimStructureBuildingAllowancePage(propertyType) =>
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
@@ -861,7 +861,7 @@ class Navigator @Inject() () {
     }
 
   private def enhancedStructureBuildingAllowanceNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(ClaimEsbaPage) match {
+    userAnswers.get(ClaimEsbaPage(Rentals)) match {
       case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
       case Some(false) => ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear)
       case _           => SummaryController.show(taxYear)

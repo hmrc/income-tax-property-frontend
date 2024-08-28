@@ -71,7 +71,8 @@ class SummaryPageSpec extends SpecBase {
     )
     val enhancedStructuresAndBuildingAllowance: TaskListItem = TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
-      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+        .onPageLoad(taxYear, NormalMode, Rentals),
       TaskListTag.NotStarted,
       "rentals_enhanced_structures_and_building_allowance_link"
     )
@@ -298,6 +299,14 @@ class SummaryPageSpec extends SpecBase {
       "rentals_and_rent_a_room_structures_and_building_allowance_link"
     )
 
+    val summaryESBAItem = TaskListItem(
+      "summary.enhancedStructuresAndBuildingAllowance",
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+        .onPageLoad(taxYear, NormalMode, RentalsRentARoom),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_enhanced_structures_and_building_allowance_link"
+    )
+
     "return empty rows, given an empty user data" in {
       SummaryPage
         .createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear, accrualsOrCash = true)
@@ -396,7 +405,7 @@ class SummaryPageSpec extends SpecBase {
       )
     }
 
-    "createRentalsAndRentARoomRows return five rows when user has selected claim expenses for cash basis" in {
+    "createRentalsAndRentARoomRows return six rows when user has selected claim expenses for cash basis" in {
 
       val summaryAboutItem = TaskListItem(
         "summary.about",
@@ -421,13 +430,20 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(5)
+        .length should be(6)
       SummaryPage.createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
       ) should be(
-        Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem, summaryAllowancesItem, summarySBAItem)
+        Seq(
+          summaryAboutItem,
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          summarySBAItem,
+          summaryESBAItem
+        )
       )
     }
 

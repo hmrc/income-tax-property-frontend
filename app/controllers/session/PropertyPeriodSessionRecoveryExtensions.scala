@@ -216,7 +216,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(esbasWithSupportingQuestions) =>
           for {
-            ua1 <- userAnswers.set(ClaimEsbaPage, esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance)
+            ua1 <- userAnswers.set(ClaimEsbaPage(Rentals), esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance)
             ua2 <- ua1.set(EsbaClaimsPage, esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
             ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas)
           } yield ua3

@@ -14,19 +14,20 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize.Medium
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("claimEnhancedSBA.title"))) {
 
-    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -34,34 +35,25 @@
 
         <h1 class="govuk-heading-l">@messages(s"claimEnhancedSBA.heading.$individualOrAgent")</h1>
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text">
-                          @messages("claimEnhancedSBA.details.summary")
-                        </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages("claimEnhancedSBA.details.content")</p>
-                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p1")</p>
-                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p2")</p>
-                <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p3")
-                    <a href="@messages("claimEnhancedSBA.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                    @messages("claimEnhancedSBA.details.content.link.text")
-                    </a>
-                </p>
-            </div>
-        </details>
+        <p class="govuk-body">@messages("claimEnhancedSBA.details.content")</p>
+        <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p1")</p>
+        <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p2")</p>
+        <p class="govuk-body">@messages(s"claimEnhancedSBA.details.p3")
+            <a href="@messages("claimEnhancedSBA.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+            @messages("claimEnhancedSBA.details.content.link.text")
+            </a>
+        </p>
 
 
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("claimEnhancedStructureBuildingAllowance"),
-                legend = LegendViewModel(messages(s"claimEnhancedSBA.legend.$individualOrAgent")).withCssClass("govuk-label govuk-label--m")
+                legend = LegendViewModel(messages(s"claimEnhancedSBA.legend.$individualOrAgent")).asPageHeading(Medium)
             )
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }

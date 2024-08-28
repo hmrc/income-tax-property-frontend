@@ -123,7 +123,8 @@ case object SummaryPage {
               baseItems concat Seq(
                 rentalsAndRaRExpensesItem(taxYear, userAnswers),
                 rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-                rentalsAndRaRSBAItem(taxYear)
+                rentalsAndRaRSBAItem(taxYear),
+                rentalsAndRaRESBAItem(taxYear)
               )
             case Some(false) if !accrualsOrCash =>
               baseItems concat Seq(
@@ -162,7 +163,7 @@ case object SummaryPage {
   private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
-      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode),
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode, Rentals),
       userAnswers
         .flatMap { answers =>
           answers.get(EsbaSectionFinishedPage).map { finishedYesOrNo =>
@@ -365,6 +366,15 @@ case object SummaryPage {
         .onPageLoad(taxYear, NormalMode, RentalsRentARoom),
       TaskListTag.NotStarted,
       "rentals_and_rent_a_room_structures_and_building_allowance_link"
+    )
+
+  private def rentalsAndRaRESBAItem(taxYear: Int) =
+    TaskListItem(
+      "summary.enhancedStructuresAndBuildingAllowance",
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+        .onPageLoad(taxYear, NormalMode, RentalsRentARoom),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_enhanced_structures_and_building_allowance_link"
     )
 
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
