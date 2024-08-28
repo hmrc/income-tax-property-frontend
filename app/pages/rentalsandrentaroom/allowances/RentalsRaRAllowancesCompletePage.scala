@@ -17,13 +17,13 @@
 package pages.rentalsandrentaroom.allowances
 
 import models.RentalsRentARoom
-import pages.PageConstants.expensesPath
+import pages.PageConstants.{allowancesPath, expensesPath}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object RentalsRaRAllowancesCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ expensesPath(RentalsRentARoom) \ toString
+  override def path: JsPath = JsPath \ allowancesPath(RentalsRentARoom) \ toString
 
   override def toString: String = "isRentalsRaRAllowanceComplete"
 }
