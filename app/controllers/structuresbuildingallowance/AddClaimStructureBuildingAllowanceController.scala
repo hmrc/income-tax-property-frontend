@@ -40,7 +40,7 @@ class AddClaimStructureBuildingAllowanceController @Inject() (
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val nextIndex = request.userAnswers.get(StructureBuildingAllowanceGroup(Rentals)).map(_.length).getOrElse(0)
+      val nextIndex = request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType)).map(_.length).getOrElse(0)
       Ok(view(StructureBuildingAllowancePage(taxYear, nextIndex, request.user.isAgentMessageKey, propertyType)))
     }
 }
