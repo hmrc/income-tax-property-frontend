@@ -664,6 +664,9 @@ POST        /:taxYear/rentals-rent-a-room/allowances/change-replacement-of-domes
 GET         /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                  controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                  controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
 
+GET         /:taxYear/rentals-rent-a-room/allowances/complete-yes-no                                      controllers.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompleteController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/allowances/complete-yes-no                                      controllers.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompleteController.onSubmit(taxYear: Int)
+
 ############## Rentals  and Rent a room Structure Building Allowance  ##############
 
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/claim-yes-no                           controllers.structuresbuildingallowance.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
@@ -677,6 +680,7 @@ GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/claim-amount                    controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-claim-amount             controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-claim-amount             controllers.structuresbuildingallowance.StructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
+
 
 GET         /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                         controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/allowances/check-your-answers                                         controllers.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
@@ -695,4 +699,3 @@ GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/address                         controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-address                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-address                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
-

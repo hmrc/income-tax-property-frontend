@@ -18,12 +18,13 @@ package pages
 
 import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
-import pages.allowances.AllowancesSectionFinishedPage
+import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSectionFinishedPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
+import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance.SbaSectionFinishedPage
@@ -121,13 +122,13 @@ case object SummaryPage {
             case Some(false) if accrualsOrCash =>
               baseItems concat Seq(
                 rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                rentalsAndRaRAllowancesItem(taxYear),
+                rentalsAndRaRAllowancesItem(taxYear, userAnswers),
                 rentalsAndRaRSBAItem(taxYear)
               )
             case Some(false) if !accrualsOrCash =>
               baseItems concat Seq(
                 rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                rentalsAndRaRAllowancesItem(taxYear)
+                rentalsAndRaRAllowancesItem(taxYear, userAnswers)
               )
             case _ => baseItems
           }
@@ -337,11 +338,23 @@ case object SummaryPage {
       "rentals_and_rent_a_room_expenses_link"
     )
 
-  private def rentalsAndRaRAllowancesItem(taxYear: Int) =
+  private def rentalsAndRaRAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
-      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom),
-      TaskListTag.NotStarted,
+      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom), {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAllowancesCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (
+            userAnswers
+              .flatMap(_.get(AnnualInvestmentAllowancePage(RentalsRentARoom)))
+              .isDefined || userAnswers.flatMap(_.get(CapitalAllowancesForACarPage(RentalsRentARoom))).isDefined
+          ) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_allowances_link"
     )
 

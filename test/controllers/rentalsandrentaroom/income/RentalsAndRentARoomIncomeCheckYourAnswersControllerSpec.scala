@@ -22,16 +22,16 @@ import connectors.error.ApiError
 import models.backend.PropertyDetails
 import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, User, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import viewmodels.govuk.SummaryListFluency
-import play.api.inject.bind
 import org.mockito.Mockito.{doNothing, when}
 import org.mockito.MockitoSugar.{times, verify}
-import pages.propertyrentals.income.{DeductingTaxPage, IncomeFromPropertyPage, IsNonUKLandlordPage, OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
+import pages.propertyrentals.income._
+import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
+import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
 import java.time.LocalDate
@@ -105,7 +105,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
               Some(PropertyDetails(Some("incomeSourceTyoe"), Some(LocalDate.now()), Some(true), "incomeSourceId"))
             )
           )
-        doNothing().when(mockAuditService).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
+        doNothing().when(mockAuditService).sendAuditEvent(any())(any(), any())
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), false)
           .overrides(
@@ -126,7 +126,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
           val result = route(application, request).value
 
           whenReady(result) { r =>
-            verify(mockAuditService, times(1)).sendRentalsAndRentARoomAuditEvent(any())(any(), any())
+            verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
             verify(mockBusinessService, times(1)).getUkPropertyDetails(any(), any())(any())
           }
 

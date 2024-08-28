@@ -47,10 +47,10 @@ class SummaryController @Inject() (
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
-            SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+            SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
           val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
           val startItems = SummaryPage.propertyAboutItems(request.userAnswers, taxYear)
-          val combinedItems = SummaryPage.createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.cashOrAccruals.get)
+          val combinedItems = SummaryPage.createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
           Future.successful(
             Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems))
           )

@@ -115,10 +115,10 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       journeyName = JourneyName.RentalsRentARoom,
       accountingMethod = AccountingMethod.Cash,
       isFailed = isFailed,
-      userEnteredRentalsAndRentARoomDetails = about
+      userEnteredDetails = about
     )
 
-    audit.sendRentalsAndRentARoomAuditEvent(auditModel)
+    audit.sendAuditEvent(auditModel)
   }
 
 }

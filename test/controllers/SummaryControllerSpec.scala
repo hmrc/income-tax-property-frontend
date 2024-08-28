@@ -70,7 +70,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
       val year = LocalDate.now().getYear
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
@@ -104,7 +104,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     "must display the property rentals section if property rentals is selected in the about section" in {
       val year = LocalDate.now().getYear
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
       val propertyRentalsItems: Seq[TaskListItem] = Seq(
         TaskListItem(
@@ -153,7 +153,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     "must NOT display the property rentals section if property rentals is not selected in the about section" in {
       val year = LocalDate.now().getYear
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
       val userAnswersWithoutPropertyRentals = emptyUserAnswers
         .set(
@@ -193,7 +193,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     "must display the UK rent a room section if rent a room is selected in the about section" in {
       val year = LocalDate.now().getYear
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
@@ -245,7 +245,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     "must display the UK combined section if rent a room  & rentals are selected in the about section" in {
       val year = LocalDate.now().getYear
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), cashOrAccruals = Some(false), "incomeSourceId")
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
