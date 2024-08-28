@@ -15,6 +15,7 @@
  *@
 
 @import controllers.structuresbuildingallowance.routes
+@import models.Rentals
 @this(
         layout: templates.Layout,
         govukButton: GovukButton,
@@ -32,7 +33,7 @@
 
     @govukButton(
         ButtonViewModel(messages("site.saveAndContinue"))
-        .asLink(routes.SbaClaimsController.onPageLoad(taxYear).url).withId("continue")
+        .asLink(routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url).withId("continue")
     )
 }
 

@@ -17,8 +17,8 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import models.PropertyType
-import pages.structurebuildingallowance.StructureBuildingAllowance
+import models.{PropertyType, Rentals}
+import pages.structurebuildingallowance.{StructureBuildingAllowance, StructureBuildingAllowanceGroup}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -40,7 +40,7 @@ class AddClaimStructureBuildingAllowanceController @Inject() (
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val nextIndex = request.userAnswers.get(StructureBuildingAllowance).map(_.length).getOrElse(0)
+      val nextIndex = request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType)).map(_.length).getOrElse(0)
       Ok(view(StructureBuildingAllowancePage(taxYear, nextIndex, request.user.isAgentMessageKey, propertyType)))
     }
 }

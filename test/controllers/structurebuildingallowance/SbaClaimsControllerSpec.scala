@@ -19,12 +19,13 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaClaimsFormProvider
-import models.{StructuredBuildingAllowanceAddress, UserAnswers}
+import models.PropertyType.toPath
+import models.{PropertyType, Rentals, RentalsRentARoom, StructuredBuildingAllowanceAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.structurebuildingallowance.StructureBuildingAllowance
+import pages.structurebuildingallowance.{StructureBuildingAllowance, StructureBuildingAllowanceGroup}
 import play.api.Application
 import play.api.data.Form
 import play.api.inject.bind
@@ -41,7 +42,8 @@ import scala.concurrent.Future
 
 class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val sbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear).url
+  lazy val rentalsSbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url
+  lazy val rentalsRentARoomSbaClaimsRoute: String = routes.SbaClaimsController.onPageLoad(taxYear, RentalsRentARoom).url
   val formProvider = new SbaClaimsFormProvider()
   val form: Form[Boolean] = formProvider("agent")
   val taxYear = 2024
@@ -50,31 +52,49 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   val structureBuildingQualifyingAmount = 100
   val structureBuildingAllowanceClaim = 200
 
-  def onwardRouteAddClaim: Call =
-    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/structures-buildings-allowance/add-claim")
-
-  def onwardRouteNoOtherClaim: Call =
-    Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/rentals/structures-buildings-allowance/complete-yes-no")
+  def rentalsOnwardRouteAddClaim(propertyType: PropertyType): Call =
+    Call(
+      "GET",
+      s"/update-and-submit-income-tax-return/property/$taxYear/${toPath(propertyType)}/structures-buildings-allowance/add-claim"
+    )
+  def onwardRouteNoOtherClaim(propertyType: PropertyType): Call =
+    Call(
+      "GET",
+      s"/update-and-submit-income-tax-return/property/$taxYear/${toPath(propertyType)}/structures-buildings-allowance/complete-yes-no"
+    )
 
   "SbaClaims Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
+      val view = application.injector.instanceOf[SbaClaimsView]
+
       running(application) {
-        val request = FakeRequest(GET, sbaClaimsRoute)
+        // Rentals
+        val rentalsRequest = FakeRequest(GET, rentalsSbaClaimsRoute)
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val result = route(application, request).value
+        status(rentalsResult) mustEqual OK
+        contentAsString(rentalsResult) mustEqual view(form, list, taxYear, agent, Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        val view = application.injector.instanceOf[SbaClaimsView]
+        // Rentals and Rent a Room
+        val rentalsAndRentARoomRequest = FakeRequest(GET, rentalsRentARoomSbaClaimsRoute)
+        val rentalsRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, list, taxYear, agent)(request, messages(application)).toString
+        status(rentalsRentARoomResult) mustEqual OK
+        contentAsString(rentalsRentARoomResult) mustEqual view(form, list, taxYear, agent, RentalsRentARoom)(
+          rentalsAndRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page when valid data is submitted for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -83,79 +103,125 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRouteAddClaim)),
+            bind[Navigator].toInstance(new FakeNavigator(rentalsOnwardRouteAddClaim(Rentals))),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, sbaClaimsRoute)
+        // Rentals
+        val rentalsRequest =
+          FakeRequest(POST, rentalsSbaClaimsRoute)
             .withFormUrlEncodedBody(("anotherClaim", "true"))
 
-        val result = route(application, request).value
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRouteAddClaim.url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual rentalsOnwardRouteAddClaim(Rentals).url
+
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
+            .withFormUrlEncodedBody(("anotherClaim", "true"))
+
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+        status(rentalsRentARoomResult) mustEqual SEE_OTHER
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val boundForm = form.bind(Map("anotherClaim" -> ""))
+      val view = application.injector.instanceOf[SbaClaimsView]
 
       running(application) {
-        val request =
-          FakeRequest(POST, sbaClaimsRoute)
+        // Rentals
+        val rentalsRequest =
+          FakeRequest(POST, rentalsSbaClaimsRoute)
             .withFormUrlEncodedBody(("anotherClaim", ""))
 
-        val boundForm = form.bind(Map("anotherClaim" -> ""))
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val view = application.injector.instanceOf[SbaClaimsView]
+        status(rentalsResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsResult) mustEqual view(boundForm, list, taxYear, agent, Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        val result = route(application, request).value
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
+            .withFormUrlEncodedBody(("anotherClaim", ""))
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent)(request, messages(application)).toString
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsRentARoomResult) mustEqual view(boundForm, list, taxYear, agent, RentalsRentARoom)(
+          rentalsRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, sbaClaimsRoute)
+        // Rentals
+        val rentalsRequest = FakeRequest(GET, rentalsSbaClaimsRoute)
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val result = route(application, request).value
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest = FakeRequest(GET, rentalsRentARoomSbaClaimsRoute)
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsRentARoomResult).value mustEqual controllers.routes.JourneyRecoveryController
+          .onPageLoad()
+          .url
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "must redirect to Journey Recovery for a POST if no existing data is found for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, sbaClaimsRoute)
+        // Rentals
+        val rentalsRequest =
+          FakeRequest(POST, rentalsSbaClaimsRoute)
             .withFormUrlEncodedBody(("anotherClaim", "true"))
 
-        val result = route(application, request).value
+        val rentalsResult = route(application, rentalsRequest).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
+            .withFormUrlEncodedBody(("anotherClaim", "true"))
+
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsRentARoomResult).value mustEqual controllers.routes.JourneyRecoveryController
+          .onPageLoad()
+          .url
       }
     }
 
-    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+    "must return OK and the POST for onSubmit() should redirect to the correct URL for both the Rentals and Rentals and Rent a Room journeys" in {
 
-      val userAnswers: Option[UserAnswers] =
+      def userAnswers(propertyType: PropertyType): Option[UserAnswers] =
         UserAnswers("structures-buildings-allowance-user-answers")
           .set(
-            page = StructureBuildingAllowance,
+            page = StructureBuildingAllowanceGroup(propertyType),
             value = Array(
               StructureBuildingAllowance(
                 structureBuildingQualifyingDate = LocalDate.now,
@@ -171,24 +237,47 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           )
           .toOption
 
-      val application: Application = applicationBuilder(userAnswers = userAnswers, isAgent = false).build()
+      // Rentals
+      val rentalsApplication: Application =
+        applicationBuilder(userAnswers = userAnswers(Rentals), isAgent = false).build()
 
-      running(application) {
-        val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url)
+      running(rentalsApplication) {
+        val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url)
           .withFormUrlEncodedBody(("anotherClaim", "true"))
 
-        val addOtherClaimResult = route(application, addOtherClaimRequest).value
+        val addOtherClaimResult = route(rentalsApplication, addOtherClaimRequest).value
 
         status(addOtherClaimResult) mustEqual SEE_OTHER
-        redirectLocation(addOtherClaimResult).value mustEqual onwardRouteAddClaim.url
+        redirectLocation(addOtherClaimResult).value mustEqual rentalsOnwardRouteAddClaim(Rentals).url
 
-        val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear).url)
+        val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url)
           .withFormUrlEncodedBody(("anotherClaim", "false"))
 
-        val noOtherClaimResult = route(application, noOtherClaimRequest).value
+        val noOtherClaimResult = route(rentalsApplication, noOtherClaimRequest).value
 
         status(noOtherClaimResult) mustEqual SEE_OTHER
-        redirectLocation(noOtherClaimResult).value mustEqual onwardRouteNoOtherClaim.url
+        redirectLocation(noOtherClaimResult).value mustEqual onwardRouteNoOtherClaim(Rentals).url
+      }
+
+      // Rentals and Rent a Room
+      val rentalsRentARoomApplication: Application =
+        applicationBuilder(userAnswers = userAnswers(RentalsRentARoom), isAgent = false).build()
+      running(rentalsRentARoomApplication) {
+        val addOtherClaimRequest =
+          FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, RentalsRentARoom).url)
+            .withFormUrlEncodedBody(("anotherClaim", "true"))
+
+        val addOtherClaimResult = route(rentalsRentARoomApplication, addOtherClaimRequest).value
+
+        status(addOtherClaimResult) mustEqual SEE_OTHER
+
+        val noOtherClaimRequest =
+          FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, RentalsRentARoom).url)
+            .withFormUrlEncodedBody(("anotherClaim", "false"))
+
+        val noOtherClaimResult = route(rentalsRentARoomApplication, noOtherClaimRequest).value
+
+        status(noOtherClaimResult) mustEqual SEE_OTHER
       }
     }
   }

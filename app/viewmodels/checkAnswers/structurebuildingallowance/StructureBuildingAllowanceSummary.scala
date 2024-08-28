@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.structurebuildingallowance
 
-import models.{SbaOnIndex, UserAnswers}
+import models.{PropertyType, SbaOnIndex, UserAnswers}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,8 +26,8 @@ import viewmodels.implicits._
 
 object StructureBuildingAllowanceSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(SbaOnIndex(index)).map { answer =>
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(SbaOnIndex(index, propertyType)).map { answer =>
       val value = HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingName).toString + ", " +
         HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingNumber).toString + ", " + HtmlFormat
           .escape(answer.structuredBuildingAllowanceAddress.postCode)
