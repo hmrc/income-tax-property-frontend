@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.structuresbuildingallowance.routes
 @import models.NormalMode
 @import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
-@import controllers.structuresbuildingallowance.routes
 
 @this(
         layout: templates.Layout,
@@ -35,7 +35,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("structureBuildingAllowance.button"))
-                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, page.nextIndex, Rentals).url)
+                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, page.nextIndex, page.propertyType).url)
                 .withId("continue")
         )
     </p>

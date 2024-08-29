@@ -42,7 +42,7 @@ object StructureBuildingAllowanceSummary {
           ActionItemViewModel(
             "site.change",
             controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController
-              .onPageLoad(taxYear, index)
+              .onPageLoad(taxYear, index, propertyType)
               .url
           )
             .withVisuallyHiddenText(messages("structureBuildingAllowanceAddress.change.hidden"))

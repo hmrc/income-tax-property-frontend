@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, PropertyType, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.StructuredBuildingAllowanceAddressPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -31,7 +31,7 @@ object StructuredBuildingAllowanceAddressSummary {
   def row(taxYear: Int, idx: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(StructuredBuildingAllowanceAddressPage(idx, Rentals)).map { answer =>
+    answers.get(StructuredBuildingAllowanceAddressPage(idx, propertyType)).map { answer =>
       val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
         HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 

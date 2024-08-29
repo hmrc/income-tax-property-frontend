@@ -20,7 +20,6 @@ import controllers.structuresbuildingallowance.routes
 import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
@@ -45,19 +44,4 @@ object StructureBuildingAllowanceClaimSummary {
       )
     }
 
-  def row(taxYear: Int, index: Int, claimValue: BigDecimal)(implicit messages: Messages): SummaryListRow = {
-
-    val value = HtmlFormat.escape(bigDecimalCurrency(claimValue)).toString()
-    SummaryListRowViewModel(
-      key = KeyViewModel("structureBuildingAllowanceClaim.checkYourAnswersLabel"),
-      value = ValueViewModel(value),
-      actions = Seq(
-        ActionItemViewModel("site.change", routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
-          .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden")),
-        ActionItemViewModel("site.remove", routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index).url)
-          .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
-      ),
-      actionsCss = "w-25"
-    )
-  }
 }

@@ -1432,7 +1432,7 @@ class NavigatorSpec extends SpecBase {
           0,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear, 0)
+        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear, 0, Rentals)
       }
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
@@ -1443,7 +1443,7 @@ class NavigatorSpec extends SpecBase {
           0,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear, 0)
+        ) mustBe controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController.onPageLoad(taxYear, 0, Rentals)
       }
 
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {

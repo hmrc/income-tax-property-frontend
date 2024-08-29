@@ -76,11 +76,11 @@ class SbaClaimsController @Inject() (
             ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
               _              <- if (!value) saveSBAClaims(taxYear, request, propertyType) else Future.successful(())
             } yield Redirect(
-              navigator.nextPage(SbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(SbaClaimsPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
     }
