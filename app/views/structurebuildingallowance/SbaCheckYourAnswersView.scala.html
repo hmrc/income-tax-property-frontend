@@ -15,14 +15,13 @@
  *@
 
 @import controllers.structuresbuildingallowance.routes
-@import models.Rentals
 @this(
         layout: templates.Layout,
         govukButton: GovukButton,
         govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
@@ -32,8 +31,8 @@
     @govukSummaryList(list)
 
     @govukButton(
-        ButtonViewModel(messages("site.saveAndContinue"))
-        .asLink(routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url).withId("continue")
+        ButtonViewModel(messages("site.continue"))
+        .asLink(routes.SbaClaimsController.onPageLoad(taxYear, propertyType).url).withId("continue")
     )
 }
 

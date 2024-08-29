@@ -14,65 +14,61 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize.Medium
+
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
 )
+
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("claimStructureBuildingAllowance.title"))) {
+    @layout(pageTitle = title(form, messages("claimStructureBuildingAllowance.title"))) {
 
-    @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
 
-        <h1 class="govuk-heading-l">@messages("claimStructureBuildingAllowance.heading")</h1>
+            <h1 class="govuk-heading-l">@messages("claimStructureBuildingAllowance.heading")</h1>
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                  @messages("claimStructureBuildingAllowance.details.summary")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages("claimStructureBuildingAllowance.details.content")</p>
-                <p class="govuk-body">@messages(s"claimStructureBuildingAllowance.details.p1")</p>
-                <ul id="thing">
-                    <li>@messages("claimStructureBuildingAllowance.details.l1")</li>
-                    <li>@messages("claimStructureBuildingAllowance.details.l2")</li>
-                    <li>@messages("claimStructureBuildingAllowance.details.l3")</li>
-                    <li>@messages("claimStructureBuildingAllowance.details.l4")</li>
-                    <li>@messages("claimStructureBuildingAllowance.details.l5")</li>
-                </ul>
-                <p class="govuk-body">@messages(s"claimStructureBuildingAllowance.details.p2")
-                    <a href="@messages("claimStructureBuildingAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                        @messages("claimStructureBuildingAllowance.details.content.link.text")
-                    </a>
-                </p>
-            </div>
-        </details>
 
-        @govukRadios(
+            <p class="govuk-body">@messages("claimStructureBuildingAllowance.details.content")</p>
+            <p class="govuk-body">@messages(s"claimStructureBuildingAllowance.details.p1")</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>@messages("claimStructureBuildingAllowance.details.l1")</li>
+                <li>@messages("claimStructureBuildingAllowance.details.l2")</li>
+                <li>@messages("claimStructureBuildingAllowance.details.l3")</li>
+                <li>@messages("claimStructureBuildingAllowance.details.l4")</li>
+                <li>@messages("claimStructureBuildingAllowance.details.l5")</li>
+            </ul>
+            <p class="govuk-body">@messages(s"claimStructureBuildingAllowance.details.p2")
+                <a href="@messages("claimStructureBuildingAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("claimStructureBuildingAllowance.details.content.link.text")
+                </a>
+            </p>
+
+
+            @govukRadios(
                 RadiosViewModel.yesNoWithOtherNames(
-                field = form("claimStructureBuildingAllowance"),
-                legend = LegendViewModel(messages(s"claimStructureBuildingAllowance.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
-                yesText = "claimStructureBuildingAllowance.yes",
-                noText = "claimStructureBuildingAllowance.no"
+                    field = form("claimStructureBuildingAllowance"),
+                    legend = LegendViewModel(messages(s"claimStructureBuildingAllowance.legend.$individualOrAgent")).asPageHeading(Medium),
+                    yesText = "claimStructureBuildingAllowance.yes",
+                    noText = "claimStructureBuildingAllowance.no"
+                )
             )
-        )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue"))
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue"))
+            )
+        }
     }
-}
 
-@{
-// $COVERAGE-OFF$
-}
+    @{
+        // $COVERAGE-OFF$
+    }

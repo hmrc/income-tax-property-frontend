@@ -16,105 +16,38 @@
 
 package controllers.structuresbuildingallowance
 
-import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
-import models.requests.DataRequest
 import models._
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance._
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class SbaCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  audit: AuditService,
   view: SbaCheckYourAnswersView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          StructureBuildingQualifyingDateSummary.row(taxYear, index, request.userAnswers),
-          StructureBuildingQualifyingAmountSummary.row(taxYear, index, request.userAnswers),
-          StructureBuildingAllowanceClaimSummary.row(taxYear, index, request.userAnswers, Rentals),
-          StructuredBuildingAllowanceAddressSummary.row(taxYear, index, request.userAnswers, Rentals)
+          StructureBuildingQualifyingDateSummary.row(taxYear, index, request.userAnswers, propertyType),
+          StructureBuildingQualifyingAmountSummary.row(taxYear, index, request.userAnswers, propertyType),
+          StructureBuildingAllowanceClaimSummary.row(taxYear, index, request.userAnswers, propertyType),
+          StructuredBuildingAllowanceAddressSummary.row(taxYear, index, request.userAnswers, propertyType)
         ).flatten
       )
-      Ok(view(list, taxYear))
-  }
-
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions] =
-        request.userAnswers.get(SbasWithSupportingQuestions)
-      saveSba(taxYear, request, sbasWithSupportingQuestions)
-
-  }
-
-  private def saveSba(
-    taxYear: Int,
-    request: DataRequest[AnyContent],
-    sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions]
-  )(implicit
-    hc: HeaderCarrier,
-    ec: ExecutionContext
-  ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "sba")
-
-    sbasWithSupportingQuestions match {
-      case Some(e) =>
-        propertySubmissionService
-          .saveJourneyAnswers(context, e.copy(sbaClaims = Some(e.sbaClaims.getOrElse(false))))
-          .map {
-            case Right(_) =>
-              auditCYA(taxYear, request, e)
-              Redirect(
-                controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear)
-              )
-            case Left(_) => InternalServerError
-          }
-      case None =>
-        Future.successful(
-          Redirect(
-            controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear)
-          )
-        )
+      Ok(view(list, taxYear, propertyType))
     }
-
-  }
-
-  private def auditCYA(
-    taxYear: Int,
-    request: DataRequest[AnyContent],
-    sbasWithSupportingQuestions: SbasWithSupportingQuestions
-  )(implicit
-    hc: HeaderCarrier
-  ): Unit = {
-    val auditModel = RentalsAuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      "Sba",
-      sbasWithSupportingQuestions
-    )
-
-    audit.sendRentalsAuditEvent(auditModel)
-  }
 }

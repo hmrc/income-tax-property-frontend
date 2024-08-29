@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,17 +27,20 @@ import viewmodels.implicits._
 
 object StructureBuildingQualifyingAmountSummary {
 
-  def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingAmountPage(idx, Rentals)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx, Rentals).url)
-              .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))
+  def row(taxYear: Int, idx: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(StructureBuildingQualifyingAmountPage(idx, propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = "structureBuildingQualifyingAmount.checkYourAnswersLabel",
+        value = ValueViewModel(bigDecimalCurrency(answer)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.StructureBuildingQualifyingAmountController.onPageLoad(taxYear, CheckMode, idx, propertyType).url
           )
+            .withVisuallyHiddenText(messages("structureBuildingQualifyingAmount.change.hidden"))
         )
+      )
     }
 }

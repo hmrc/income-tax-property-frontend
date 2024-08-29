@@ -18,6 +18,7 @@ package controllers.structurebuildingallowance
 
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
+import models.Rentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.summarylist._
@@ -34,14 +35,14 @@ class SbaCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
       val list = SummaryListViewModel(Seq.empty)
       running(application) {
-        val request = FakeRequest(GET, routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
+        val request = FakeRequest(GET, routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index, Rentals).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[SbaCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -50,7 +51,7 @@ class SbaCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
+        val request = FakeRequest(GET, routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index, Rentals).url)
 
         val result = route(application, request).value
 

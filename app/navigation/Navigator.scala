@@ -245,7 +245,7 @@ class Navigator @Inject() () {
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
     case StructureBuildingAllowancePage =>
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-    case SbaClaimsPage => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers)
+    case SbaClaimsPage(propertyType) => taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers, propertyType)
     case SbaRemoveConfirmationPage =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
     case SbaSectionFinishedPage =>
@@ -630,28 +630,29 @@ class Navigator @Inject() () {
   }
 
   private def structureBuildingNormalRoutes(
-    page: Page,
-    taxYear: Int,
-    index: Int
-  ): Call = page match {
-    case StructureBuildingQualifyingDatePage(_, Rentals) =>
-      StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, Rentals)
-    case StructureBuildingQualifyingAmountPage(_, Rentals) =>
-      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, Rentals)
-    case StructureBuildingAllowanceClaimPage(_, Rentals) =>
-      StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index, Rentals)
-    case StructuredBuildingAllowanceAddressPage(_, Rentals) => SbaCheckYourAnswersController.onPageLoad(taxYear, index)
-    case _                                                  => IndexController.onPageLoad
+                                             page: Page,
+                                             taxYear: Int,
+                                             index: Int
+                                           ): Call = page match {
+    case StructureBuildingQualifyingDatePage(_, propertyType) =>
+      StructureBuildingQualifyingAmountController.onPageLoad(taxYear, NormalMode, index, propertyType)
+    case StructureBuildingQualifyingAmountPage(_, propertyType) =>
+      StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, propertyType)
+    case StructureBuildingAllowanceClaimPage(_, propertyType) =>
+      StructuredBuildingAllowanceAddressController.onPageLoad(taxYear, NormalMode, index, propertyType)
+    case StructuredBuildingAllowanceAddressPage(_, propertyType) => SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType)
+    case _ => IndexController.onPageLoad
   }
 
   private def structureBuildingCheckModeRoutes(
-    page: Page,
-    taxYear: Int,
-    index: Int
-  ): Call = page match {
-    case StructureBuildingQualifyingDatePage(_, Rentals) | StructureBuildingQualifyingAmountPage(_, Rentals) |
-        StructureBuildingAllowanceClaimPage(_, Rentals) | StructuredBuildingAllowanceAddressPage(_, Rentals) =>
-      SbaCheckYourAnswersController.onPageLoad(taxYear, index)
+                                                page: Page,
+                                                taxYear: Int,
+                                                index: Int
+                                              ): Call = page match {
+    case StructureBuildingQualifyingDatePage(_, propertyType) => SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType)
+    case StructureBuildingQualifyingAmountPage(_, propertyType) => SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType)
+    case StructureBuildingAllowanceClaimPage(_, propertyType) => SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType)
+    case StructuredBuildingAllowanceAddressPage(_, propertyType) => SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType)
     case _ => IndexController.onPageLoad
   }
 
@@ -867,9 +868,9 @@ class Navigator @Inject() () {
       case _           => SummaryController.show(taxYear)
     }
 
-  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(SbaClaimsPage) match {
-      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, Rentals)
+  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
+    userAnswers.get(SbaClaimsPage(propertyType)) match {
+      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
       case _          => SbaSectionFinishedController.onPageLoad(taxYear)
     }
 

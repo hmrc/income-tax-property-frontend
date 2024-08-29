@@ -290,8 +290,7 @@ POST        /:taxYear/rentals/structures-buildings-allowance/:index/address     
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/change-address                              controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/change-address                              controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/:index/check-your-answers                          controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int)
-POST        /:taxYear/rentals/structures-buildings-allowance/check-your-answers                                 controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onSubmit(taxYear: Int)
+GET         /:taxYear/rentals/structures-buildings-allowance/:index/check-your-answers                          controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/structures-buildings-allowance/claims                                             controllers.structuresbuildingallowance.SbaClaimsController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/structures-buildings-allowance/claims                                             controllers.structuresbuildingallowance.SbaClaimsController.onSubmit(taxYear: Int, propertyType: PropertyType = Rentals)
@@ -698,6 +697,8 @@ GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/address                         controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = NormalMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-address                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/change-address                  controllers.structuresbuildingallowance.StructuredBuildingAllowanceAddressController.onSubmit(taxYear: Int, mode: Mode = CheckMode, index: Int, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/check-your-answers              controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int, propertyType: PropertyType = RentalsRentARoom)
 
 ############## Rentals  and Rent a room Enhanced Structure Building Allowance  ##############
 

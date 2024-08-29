@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.structurebuildingallowance
 
 import controllers.structuresbuildingallowance.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,19 +28,22 @@ import java.time.format.DateTimeFormatter
 
 object StructureBuildingQualifyingDateSummary {
 
-  def row(taxYear: Int, idx: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(StructureBuildingQualifyingDatePage(idx, Rentals)).map {
-      answer =>
+  def row(taxYear: Int, idx: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(StructureBuildingQualifyingDatePage(idx, propertyType)).map { answer =>
+      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
-        SummaryListRowViewModel(
-          key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
-          value = ValueViewModel(answer.format(dateFormatter)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode, idx, Rentals).url)
-              .withVisuallyHiddenText(messages("structureBuildingQualifyingDate.change.hidden"))
+      SummaryListRowViewModel(
+        key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
+        value = ValueViewModel(answer.format(dateFormatter)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.StructureBuildingQualifyingDateController.onPageLoad(taxYear, CheckMode, idx, propertyType).url
           )
+            .withVisuallyHiddenText(messages("structureBuildingQualifyingDate.change.hidden"))
         )
+      )
     }
 }
