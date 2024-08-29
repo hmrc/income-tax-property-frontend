@@ -17,9 +17,9 @@
 package controllers.adjustments
 
 import audit.RentalsAdjustment._
-import audit.{RentalsAuditModel, AuditService, RentalsAdjustment}
+import audit.{AuditService, RentalsAdjustment, RentalsAuditModel}
 import controllers.actions._
-import models.JourneyContext
+import models.{JourneyContext, Rentals}
 import models.requests.DataRequest
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -53,7 +53,7 @@ class AdjustmentsCheckYourAnswersController @Inject()(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers),
           BalancingChargeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
-          RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
+          RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers)
         ).flatten

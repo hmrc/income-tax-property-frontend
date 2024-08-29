@@ -324,7 +324,6 @@ reversePremiumsReceived.change.hidden	=	Premiymau gwrthdro a gafwyd
 
 renovationAllowanceBalancingCharge.title	=	Tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
 renovationAllowanceBalancingCharge.heading	=	Tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
-renovationAllowanceBalancingCharge.details.content.link.text	=	Deall Taliadau mantoli ar gyfer lwfans adnewyddu safleoedd busnes
 renovationAllowanceBalancingCharge.details.content.link.content1	=	Mae yna addasiad mantoli os oes digwyddiad mantoli cyn pen 7 mlynedd i ddefnydd cyntaf yr adeilad ar ôl gwaith trawsnewid neu waith adnewyddu.
 renovationAllowanceBalancingCharge.details.content.link.content2	=	Y prif ddigwyddiadau mantoli yw gwerthu’r gyfran berthnasol a chaniatáu prydles hir ar gyfer premiwm allan o’r gyfran berthnasol.
 renovationAllowanceBalancingCharge.legend	=	A oes rhaid i chi roi gwybod am dâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes?

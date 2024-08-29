@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,8 +27,8 @@ import viewmodels.implicits._
 
 object RenovationAllowanceBalancingChargeSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RenovationAllowanceBalancingChargePage).map {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(RenovationAllowanceBalancingChargePage(propertyType)).map {
       answer =>
 
         val value = if (answer.renovationAllowanceBalancingChargeYesNo) {
@@ -41,7 +41,7 @@ object RenovationAllowanceBalancingChargeSummary {
           key = KeyViewModel("renovationAllowanceBalancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = value.withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("renovationAllowanceBalancingCharge.change.hidden"))
           )
         )
