@@ -19,7 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
-import models.NormalMode
+import models.{NormalMode, Rentals}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -43,7 +43,8 @@ class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
   val taxYear = 2024
   val index = 1
 
-  lazy val sbaRemoveConfirmationRoute: String = routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index).url
+  lazy val sbaRemoveConfirmationRoute: String =
+    routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index, Rentals).url
 
   "SbaRemoveConfirmation Controller" - {
 
@@ -59,7 +60,7 @@ class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SbaRemoveConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, "£0")(
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, "£0", Rentals)(
           request,
           messages(application)
         ).toString
@@ -108,7 +109,7 @@ class SbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, "£0")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, "£0", Rentals)(
           request,
           messages(application)
         ).toString

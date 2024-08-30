@@ -16,38 +16,44 @@
 
 package viewmodels.checkAnswers.structurebuildingallowance
 
+import controllers.structuresbuildingallowance.routes
 import models.{PropertyType, SbaOnIndex, UserAnswers}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object StructureBuildingAllowanceSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
     answers.get(SbaOnIndex(index, propertyType)).map { answer =>
-      val value = HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingName).toString + ", " +
-        HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingNumber).toString + ", " + HtmlFormat
-          .escape(answer.structuredBuildingAllowanceAddress.postCode)
-          .toString
+      val value = s"""${HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingName)},
+        ${HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.buildingNumber)} <br>
+        ${HtmlFormat.escape(answer.structuredBuildingAllowanceAddress.postCode)}"""
 
       SummaryListRowViewModel(
-        key = value,
+        key = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
         value = ValueViewModel(
           bigDecimalCurrency(answer.structureBuildingAllowanceClaim)
-        ),
+        ).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.structuresbuildingallowance.routes.SbaCheckYourAnswersController
-              .onPageLoad(taxYear, index, propertyType)
-              .url
+            routes.SbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType).url
+          ).withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden")),
+          ActionItemViewModel(
+            "site.remove",
+            routes.SbaRemoveConfirmationController.onPageLoad(taxYear, index, propertyType).url
           )
-            .withVisuallyHiddenText(messages("structureBuildingAllowanceAddress.change.hidden"))
-        )
+            .withVisuallyHiddenText(messages("structureBuildingAllowanceClaim.change.hidden"))
+        ),
+        actionsCss = "w-25"
       )
+
     }
-  }
 }

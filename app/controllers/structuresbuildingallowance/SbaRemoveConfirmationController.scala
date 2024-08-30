@@ -18,8 +18,8 @@ package controllers.structuresbuildingallowance
 
 import controllers.actions._
 import forms.structurebuildingallowance.SbaRemoveConfirmationFormProvider
-import models.{Mode, Rentals}
 import models.requests.DataRequest
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.structurebuildingallowance.{SbaRemoveConfirmationPage, StructureBuildingAllowanceClaimPage, StructureBuildingAllowanceWithIndex}
 import play.api.data.Form
@@ -34,50 +34,59 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 
-class SbaRemoveConfirmationController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: Navigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: SbaRemoveConfirmationFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: SbaRemoveConfirmationView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SbaRemoveConfirmationController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: SbaRemoveConfirmationFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: SbaRemoveConfirmationView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      Ok(view(form, taxYear, index, mode, claimValue(index, request)))
-  }
+      Ok(view(form, taxYear, index, mode, claimValue(index, request, propertyType), propertyType))
+    }
 
-  private def claimValue(index: Int, request: DataRequest[AnyContent]): String = {
-    val value = request.userAnswers.get(StructureBuildingAllowanceClaimPage(index, Rentals)).getOrElse(BigDecimal(0))
+  private def claimValue(index: Int, request: DataRequest[AnyContent], propertyType: PropertyType): String = {
+    val value =
+      request.userAnswers.get(StructureBuildingAllowanceClaimPage(index, propertyType)).getOrElse(BigDecimal(0))
     bigDecimalCurrency(value)
   }
 
-  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, index: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, claimValue(index, request)))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaRemoveConfirmationPage, value))
-            updatedAnswers <- Future.fromTry {
-              if (value) {
-                updatedAnswers.remove(StructureBuildingAllowanceWithIndex(index))
-              } else {
-                Success(updatedAnswers)
-              }
-            }
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SbaRemoveConfirmationPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(
+                view(formWithErrors, taxYear, index, mode, claimValue(index, request, propertyType), propertyType)
+              )
+            ),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaRemoveConfirmationPage(propertyType), value))
+              updatedAnswers <- Future.fromTry {
+                                  if (value) {
+                                    updatedAnswers.remove(StructureBuildingAllowanceWithIndex(index, propertyType))
+                                  } else {
+                                    Success(updatedAnswers)
+                                  }
+                                }
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(SbaRemoveConfirmationPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }
