@@ -16,46 +16,44 @@
 
 package controllers.rentalsandrentaroom.expenses
 
+import audit.AuditService
 import base.SpecBase
-import models.{ConsolidatedExpenses, JourneyContext, RentalsAndRentARoomExpenses, RentalsRentARoom, User, UserAnswers}
+import connectors.error.ApiError
+import models._
+import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{doNothing, when}
+import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
-import service.PropertySubmissionService
+import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.expenses.RentalsAndRaRExpensesCheckYourAnswersView
-import org.mockito.Mockito.when
+
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.inject.bind
 
 class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
-  private val taxYear = 2024
-  private val propertySubmissionService = mock[PropertySubmissionService]
-
-  val scenarios = Table[Boolean, String](
+  private val scenarios = Table[Boolean, String](
     ("isAgent", "individualOrAgent"),
     (false, "individual"),
     (true, "agent")
   )
+  private val taxYear = 2024
+
   forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    val user = User(
-      "",
-      "",
-      "",
-      isAgent,
-      agentRef = Some("agentReferenceNumber")
-    )
-    s"RentalsAndRentARoomExpenseCheckYourAnswers Controller for $agencyOrIndividual" - {
+    s"RentalsAndRentARoomExpenseCheckYourAnswers Controller for an $agencyOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
         running(application) {
           val request = FakeRequest(
@@ -77,9 +75,31 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       }
     }
 
-    s"must return OK and the correct view for a POST (onSubmit) for $agencyOrIndividual" in {
+    s"must return OK and the correct view for a POST (onSubmit) for an $agencyOrIndividual" in {
 
-      val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
+      val mockBusinessService = mock[BusinessService]
+      val mockAuditService = mock[AuditService]
+      val propertySubmissionService = mock[PropertySubmissionService]
+
+      doNothing().when(mockAuditService).sendAuditEvent(any())(any(), any())
+
+      when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future
+        .successful[Either[ApiError, Option[PropertyDetails]]](
+          Right(
+            Some(
+              PropertyDetails(
+                Some("incomeSourceType"),
+                Some(LocalDate.now()),
+                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                incomeSourceId = "incomeSourceId"
+              )
+            )
+          )
+        )
+
+      val expenses = 12
+      val consolidatedExpenses =
+        ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, consolidatedExpensesAmount = Some(expenses))
       val userAnswers =
         UserAnswers("test").set(ConsolidatedExpensesPage(RentalsRentARoom), consolidatedExpenses).toOption
 
@@ -102,7 +122,11 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       ) thenReturn Future(Right())
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
-        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(
+          bind[PropertySubmissionService].toInstance(propertySubmissionService),
+          bind[BusinessService].toInstance(mockBusinessService),
+          bind[AuditService].toInstance(mockAuditService)
+        )
         .build()
 
       running(application) {
@@ -110,8 +134,12 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        // redirectLocation(result).value mustEqual onwardRoute.url
+        whenReady(result) { _ =>
+          status(result) mustEqual SEE_OTHER
+          // redirectLocation(result).value mustEqual onwardRoute.url
+          verify(mockAuditService, times(wantedNumberOfInvocations = 1)).sendAuditEvent(any())(any(), any())
+          verify(mockBusinessService, times(wantedNumberOfInvocations = 1)).getUkPropertyDetails(any(), any())(any())
+        }
       }
     }
   }

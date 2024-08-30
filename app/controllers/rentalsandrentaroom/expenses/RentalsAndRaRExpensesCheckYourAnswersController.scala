@@ -16,16 +16,19 @@
 
 package controllers.rentalsandrentaroom.expenses
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.requests.DataRequest
-import models.{JourneyContext, RentalsAndRentARoomExpenses, RentalsRentARoom}
+import models._
+import models.backend.PropertyDetails
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.propertyrentals.expenses._
 import viewmodels.govuk.SummaryListFluency
@@ -41,7 +44,9 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  view: RentalsAndRaRExpensesCheckYourAnswersView
+  view: RentalsAndRaRExpensesCheckYourAnswersView,
+  businessService: BusinessService,
+  auditService: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with SummaryListFluency with Logging {
 
@@ -53,28 +58,6 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
 
   }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-expenses")
-
-      request.userAnswers.get(RentalsAndRentARoomExpenses) match {
-        case Some(propertyRentalsExpenses) =>
-          propertySubmissionService
-            .saveJourneyAnswers(context, propertyRentalsExpenses)
-            .flatMap {
-              case Right(_) =>
-                Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
-              case Left(_) =>
-                Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
-            }
-
-        case None =>
-          logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
-      }
-
-  }
   private def generateRowsForRentalsRentARoomExpenses(taxYear: Int, request: DataRequest[AnyContent])(implicit
     messages: Messages
   ): Seq[SummaryListRow] = {
@@ -100,4 +83,60 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
       PropertyBusinessTravelCostsSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
       OtherAllowablePropertyExpensesSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
     )
+
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val context =
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-expenses")
+
+      request.userAnswers.get(RentalsAndRentARoomExpenses) match {
+        case Some(rentalsRentARoomExpenses) =>
+          propertySubmissionService
+            .saveJourneyAnswers(context, rentalsRentARoomExpenses)
+            .flatMap {
+              case Right(_) =>
+                auditExpensesCYA(taxYear, request, rentalsRentARoomExpenses, isFailed = false)
+                Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
+              case Left(_) =>
+                auditExpensesCYA(taxYear, request, rentalsRentARoomExpenses, isFailed = true)
+                Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
+            }
+
+        case None =>
+          logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
+          Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
+      }
+
+  }
+
+  private def auditExpensesCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    rentalsAndRentARoomExpenses: RentalsAndRentARoomExpenses,
+    isFailed: Boolean
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Unit] =
+    businessService
+      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+      .map {
+        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
+          val auditModel = AuditModel(
+            nino = request.user.nino,
+            userType = request.user.affinityGroup,
+            mtdItId = request.user.mtditid,
+            agentReferenceNumber = request.user.agentRef,
+            taxYear = taxYear,
+            isUpdate = false,
+            sectionName = SectionName.Income,
+            propertyType = AuditPropertyType.UKProperty,
+            journeyName = JourneyName.RentalsRentARoom,
+            accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+            userEnteredDetails = rentalsAndRentARoomExpenses,
+            isFailed = isFailed
+          )
+          auditService.sendAuditEvent(auditModel)
+        case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
+      }
+
 }
