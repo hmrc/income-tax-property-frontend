@@ -18,7 +18,7 @@ package controllers.adjustments
 
 import controllers.actions._
 import forms.adjustments.RenovationAllowanceBalancingChargeFormProvider
-import models.{Mode, UserAnswers}
+import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
 import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,45 +31,50 @@ import views.html.adjustments.RenovationAllowanceBalancingChargeView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RenovationAllowanceBalancingChargeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: RenovationAllowanceBalancingChargeFormProvider,
-                                         sessionService: SessionService,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RenovationAllowanceBalancingChargeView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class RenovationAllowanceBalancingChargeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: RenovationAllowanceBalancingChargeFormProvider,
+  sessionService: SessionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: RenovationAllowanceBalancingChargeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {
-        sessionService.createNewEmptySession(request.userId)
-      }
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(RenovationAllowanceBalancingChargePage) match {
-        case None => form
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    val form = formProvider(request.user.isAgentMessageKey)
+    if (request.userAnswers.isEmpty) {
+      sessionService.createNewEmptySession(request.userId)
+    }
+    val preparedForm =
+      request.userAnswers.getOrElse(UserAnswers(request.userId)).get(RenovationAllowanceBalancingChargePage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+    Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
   }
 
-  def onSubmit(taxYear: Int,mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RenovationAllowanceBalancingChargePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RenovationAllowanceBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RenovationAllowanceBalancingChargePage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(RenovationAllowanceBalancingChargePage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

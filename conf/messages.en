@@ -412,7 +412,6 @@ reversePremiumsReceived.change.hidden = Reverse premiums received
 
 renovationAllowanceBalancingCharge.title = Business premises renovation allowance balancing charge
 renovationAllowanceBalancingCharge.heading = Business premises renovation allowance balancing charge
-renovationAllowanceBalancingCharge.details.content.link.text = Understanding Business premises renovation allowance balancing charges
 renovationAllowanceBalancingCharge.details.content.link.content1 = There’s a balancing adjustment if there’s a balancing event within 7 years of the first use of the building after conversion or renovation.
 renovationAllowanceBalancingCharge.details.content.link.content2 = The main balancing events are the sale of the relevant interest and the grant of a long lease for a premium out of the relevant interest.
 renovationAllowanceBalancingCharge.legend = Do you have to report a business premises renovation allowance balancing charge?

@@ -604,12 +604,12 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode)
+        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
         navigator.nextPage(
-          RenovationAllowanceBalancingChargePage,
+          RenovationAllowanceBalancingChargePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1396,7 +1396,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from RenovationAllowanceBalancingChargePage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          RenovationAllowanceBalancingChargePage,
+          RenovationAllowanceBalancingChargePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

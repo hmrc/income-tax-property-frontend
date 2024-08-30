@@ -215,7 +215,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(BalancingChargePage).get mustBe BalancingCharge(true, Some(3))
       updated.get(PropertyIncomeAllowancePage).get mustBe 4
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
-      updated.get(RenovationAllowanceBalancingChargePage).get mustBe RenovationAllowanceBalancingCharge(true, Some(23))
+      updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(true, Some(23))
       updated.get(ResidentialFinanceCostPage).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3
       updated.get(ClaimEsbaPage(Rentals)).get mustBe true

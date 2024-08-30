@@ -29,28 +29,21 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("renovationAllowanceBalancingCharge.title"))) {
 
     <h1 class="govuk-heading-l">@messages("renovationAllowanceBalancingCharge.heading")</h1>
 
-    @formHelper(action = routes.RenovationAllowanceBalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.RenovationAllowanceBalancingChargeController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    @messages("renovationAllowanceBalancingCharge.details.content.link.text")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
+
                 <p class="govuk-body">@messages("renovationAllowanceBalancingCharge.details.content.link.content1")</p>
                 <p class="govuk-body">@messages("renovationAllowanceBalancingCharge.details.content.link.content2")</p>
-            </div>
-        </details>
+
 
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
