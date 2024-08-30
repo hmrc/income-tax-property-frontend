@@ -16,10 +16,10 @@
 
 package pages.structurebuildingallowance
 
-import models.{PropertyType, Rentals, StructuredBuildingAllowanceAddress}
+import models.{PropertyType, StructuredBuildingAllowanceAddress}
 import pages.PageConstants
 import pages.PageConstants.sbaPath
-import play.api.libs.json.{Format, JsPath, Json, Reads}
+import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
@@ -42,11 +42,12 @@ case class StructureBuildingAllowanceGroup(propertyType: PropertyType)
   override def toString: String = PageConstants.structureBuildingFormGroup
 }
 
-case class StructureBuildingAllowanceWithIndex(index: Int) extends Settable[Array[StructureBuildingAllowance]] {
+case class StructureBuildingAllowanceWithIndex(index: Int, propertyType: PropertyType)
+    extends Settable[Array[StructureBuildingAllowance]] {
 
   implicit val format: Format[StructureBuildingAllowance] = Json.format
 
-  override def path: JsPath = JsPath \ toString \ index
+  override def path: JsPath = JsPath \ sbaPath(propertyType) \ toString \ index
 
   override def toString: String = PageConstants.structureBuildingFormGroup
 }
