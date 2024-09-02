@@ -48,8 +48,8 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
   )
   private val taxYear = 2024
 
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    s"RentalsAndRentARoomExpenseCheckYourAnswers Controller for an $agencyOrIndividual" - {
+  forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
+    s"RentalsAndRentARoomExpenseCheckYourAnswers Controller for an $agentOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
 
@@ -75,7 +75,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       }
     }
 
-    s"must return OK and the correct view for a POST (onSubmit) for an $agencyOrIndividual" in {
+    s"must return OK and the correct view for a POST (onSubmit) for an $agentOrIndividual" in {
 
       val mockBusinessService = mock[BusinessService]
       val mockAuditService = mock[AuditService]

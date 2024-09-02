@@ -88,47 +88,52 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
     implicit request =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-expenses")
-
-      val propertyDetailsF = businessService
+      businessService
         .getUkPropertyDetails(request.user.nino, request.user.mtditid)
-        .map {
-          case Right(Some(propertyDetails)) => propertyDetails
+        .flatMap {
+          case Right(Some(propertyDetails)) => saveExpenses(request, context, propertyDetails)
           case Left(_) =>
             logger.error("CashOrAccruals information could not be retrieved from downstream.")
-            PropertyDetails(None, None, Some(false), "0")
+            Future.failed(InternalErrorFailure("CashOrAccruals information could not be retrieved from downstream."))
         }
 
-      propertyDetailsF.flatMap { propertyDetails =>
-        request.userAnswers.get(RentalsAndRentARoomExpenses) match {
-          case Some(rentalsRentARoomExpenses) =>
-            propertySubmissionService
-              .saveJourneyAnswers(context, rentalsRentARoomExpenses, propertyDetails.incomeSourceId)
-              .flatMap {
-                case Right(_) =>
-                  auditExpensesCYA(
-                    taxYear,
-                    request,
-                    rentalsRentARoomExpenses,
-                    isFailed = false,
-                    propertyDetails.accrualsOrCash.get
-                  )
-                  Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
-                case Left(_) =>
-                  auditExpensesCYA(
-                    taxYear,
-                    request,
-                    rentalsRentARoomExpenses,
-                    isFailed = true,
-                    propertyDetails.accrualsOrCash.get
-                  )
-                  Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
-              }
-          case None =>
-            logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
-            Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
-        }
-      }
   }
+
+  private def saveExpenses(
+    request: DataRequest[AnyContent],
+    context: JourneyContext,
+    propertyDetails: PropertyDetails
+  )(implicit
+    hc: HeaderCarrier
+  ) =
+    request.userAnswers.get(RentalsAndRentARoomExpenses) match {
+      case Some(rentalsRentARoomExpenses) =>
+        propertySubmissionService
+          .saveJourneyAnswers(context, rentalsRentARoomExpenses, propertyDetails.incomeSourceId)
+          .flatMap {
+            case Right(_) =>
+              auditExpensesCYA(
+                context.taxYear,
+                request,
+                rentalsRentARoomExpenses,
+                isFailed = false,
+                propertyDetails.accrualsOrCash.get
+              )
+              Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(context.taxYear)))
+            case Left(_) =>
+              auditExpensesCYA(
+                context.taxYear,
+                request,
+                rentalsRentARoomExpenses,
+                isFailed = true,
+                propertyDetails.accrualsOrCash.get
+              )
+              Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
+          }
+      case None =>
+        logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
+        Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
+    }
 
   private def auditExpensesCYA(
     taxYear: Int,
@@ -146,7 +151,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
       agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
       isUpdate = false,
-      sectionName = SectionName.Income,
+      sectionName = SectionName.Expenses,
       propertyType = AuditPropertyType.UKProperty,
       journeyName = JourneyName.RentalsRentARoom,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
