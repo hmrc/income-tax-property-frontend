@@ -19,9 +19,9 @@ package controllers.rentalsandrentaroom.expenses
 import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.requests.DataRequest
 import models._
 import models.backend.PropertyDetails
+import models.requests.DataRequest
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -89,54 +89,70 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-expenses")
 
-      request.userAnswers.get(RentalsAndRentARoomExpenses) match {
-        case Some(rentalsRentARoomExpenses) =>
-          propertySubmissionService
-            .saveJourneyAnswers(context, rentalsRentARoomExpenses)
-            .flatMap {
-              case Right(_) =>
-                auditExpensesCYA(taxYear, request, rentalsRentARoomExpenses, isFailed = false)
-                Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
-              case Left(_) =>
-                auditExpensesCYA(taxYear, request, rentalsRentARoomExpenses, isFailed = true)
-                Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
-            }
+      val propertyDetailsF = businessService
+        .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+        .map {
+          case Right(Some(propertyDetails)) => propertyDetails
+          case Left(_) =>
+            logger.error("CashOrAccruals information could not be retrieved from downstream.")
+            PropertyDetails(None, None, Some(false), "0")
+        }
 
-        case None =>
-          logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
+      propertyDetailsF.flatMap { propertyDetails =>
+        request.userAnswers.get(RentalsAndRentARoomExpenses) match {
+          case Some(rentalsRentARoomExpenses) =>
+            propertySubmissionService
+              .saveJourneyAnswers(context, rentalsRentARoomExpenses, propertyDetails.incomeSourceId)
+              .flatMap {
+                case Right(_) =>
+                  auditExpensesCYA(
+                    taxYear,
+                    request,
+                    rentalsRentARoomExpenses,
+                    isFailed = false,
+                    propertyDetails.accrualsOrCash.get
+                  )
+                  Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(taxYear)))
+                case Left(_) =>
+                  auditExpensesCYA(
+                    taxYear,
+                    request,
+                    rentalsRentARoomExpenses,
+                    isFailed = true,
+                    propertyDetails.accrualsOrCash.get
+                  )
+                  Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
+              }
+          case None =>
+            logger.error("RentalsAndRentARoomExpenses section is not present in userAnswers")
+            Future.failed(InternalErrorFailure("RentalsAndRentARoomExpenses section is not present in userAnswers"))
+        }
       }
-
   }
 
   private def auditExpensesCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     rentalsAndRentARoomExpenses: RentalsAndRentARoomExpenses,
-    isFailed: Boolean
+    isFailed: Boolean,
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
-  ): Future[Unit] =
-    businessService
-      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
-      .map {
-        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
-          val auditModel = AuditModel(
-            nino = request.user.nino,
-            userType = request.user.affinityGroup,
-            mtdItId = request.user.mtditid,
-            agentReferenceNumber = request.user.agentRef,
-            taxYear = taxYear,
-            isUpdate = false,
-            sectionName = SectionName.Income,
-            propertyType = AuditPropertyType.UKProperty,
-            journeyName = JourneyName.RentalsRentARoom,
-            accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-            userEnteredDetails = rentalsAndRentARoomExpenses,
-            isFailed = isFailed
-          )
-          auditService.sendAuditEvent(auditModel)
-        case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
-      }
-
+  ): Unit = {
+    val auditModel = AuditModel(
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = SectionName.Income,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.RentalsRentARoom,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      userEnteredDetails = rentalsAndRentARoomExpenses,
+      isFailed = isFailed
+    )
+    auditService.sendAuditEvent(auditModel)
+  }
 }
