@@ -426,9 +426,9 @@ class SummaryPageSpec extends SpecBase {
         Seq(
           summaryAboutItem,
           summaryIncomeItem,
-          rentalsRaRSummaryAdjustmentsItem,
           summaryExpenseItem,
-          summaryAllowancesItem
+          summaryAllowancesItem,
+          rentalsRaRSummaryAdjustmentsItem
         )
       )
     }
@@ -478,11 +478,11 @@ class SummaryPageSpec extends SpecBase {
         Seq(
           summaryAboutItem,
           summaryIncomeItem,
-          rentalsRaRSummaryAdjustmentsItem,
           summaryExpenseItem,
           summaryAllowancesItem,
           summarySBAItem,
-          summaryESBAItem
+          summaryESBAItem,
+          rentalsRaRSummaryAdjustmentsItem
         )
       )
     }

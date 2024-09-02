@@ -118,31 +118,32 @@ case object SummaryPage {
       userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage)) match {
         case None => Seq(aboutItem)
         case Some(_) =>
-          val baseItems = Seq(aboutItem, incomeItem) concat
-            (if (
-               userAnswers
-                 .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
-                 .getOrElse(false)
-             ) {
-               Seq.empty
-             } else {
-               Seq(adjustmentsItem)
-             })
-          userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
-            case Some(false) if accrualsOrCash =>
-              baseItems concat Seq(
-                rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-                rentalsAndRaRSBAItem(taxYear),
-                rentalsAndRaRESBAItem(taxYear)
-              )
-            case Some(false) if !accrualsOrCash =>
-              baseItems concat Seq(
-                rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                rentalsAndRaRAllowancesItem(taxYear, userAnswers)
-              )
-            case _ => baseItems
-          }
+          val baseItems = Seq(aboutItem, incomeItem)
+          val taskListWithoutAdjustments =
+            userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
+              case Some(false) if accrualsOrCash =>
+                baseItems concat Seq(
+                  rentalsAndRaRExpensesItem(taxYear, userAnswers),
+                  rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+                  rentalsAndRaRSBAItem(taxYear),
+                  rentalsAndRaRESBAItem(taxYear)
+                )
+              case Some(false) if !accrualsOrCash =>
+                baseItems concat Seq(
+                  rentalsAndRaRExpensesItem(taxYear, userAnswers),
+                  rentalsAndRaRAllowancesItem(taxYear, userAnswers)
+                )
+              case _ => baseItems
+            }
+          // If the user selects to claim expenses and NOT a rent a room relief then add in the task list adjustments
+          if (
+            !userAnswers
+              .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
+              .getOrElse(false)
+          )
+            taskListWithoutAdjustments :+ adjustmentsItem
+          else
+            taskListWithoutAdjustments
       }
     } else {
       Seq.empty[TaskListItem]
