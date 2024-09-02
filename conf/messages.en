@@ -430,13 +430,13 @@ renovationAllowanceBalancingCharge.checkYourAnswersLabel = Business premises ren
 
 residentialFinanceCost.title = Residential finance costs
 residentialFinanceCost.heading = Residential finance costs
-residentialFinanceCost.details.content.link.text = Understanding residential financial costs
 residentialFinanceCost.details.content.link.content = Residential finance costs include:
 residentialFinanceCost.details.l1 = mortgage interest
 residentialFinanceCost.details.l2 = interest on loans to buy furnishings
 residentialFinanceCost.details.l3 = fees incurred when taking out or repaying mortgages or loans
 
-residentialFinanceCost.legend = How much were your residential finance costs?
+residentialFinanceCost.legend.individual = How much were your residential finance costs?
+residentialFinanceCost.legend.agent = How much were your client’s residential finance costs?
 residentialFinanceCost.checkYourAnswersLabel = ResidentialFinanceCost
 residentialFinanceCost.error.required.individual = Enter an amount for your residential finance costs
 residentialFinanceCost.error.required.agent = Enter an amount for your client’s residential finance costs

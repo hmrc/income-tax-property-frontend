@@ -333,13 +333,13 @@ renovationAllowanceBalancingCharge.checkYourAnswersLabel	=	Tâl mantoli ar gyfer
 
 residentialFinanceCost.title	=	Costau ariannol preswyl
 residentialFinanceCost.heading	=	Costau ariannol preswyl
-residentialFinanceCost.details.content.link.text	=	Deall costau ariannol preswyl
 residentialFinanceCost.details.content.link.content	=	Mae costau ariannol preswyl yn cynnwys:
 residentialFinanceCost.details.l1	=	llog ar y morgais
 residentialFinanceCost.details.l2	=	llog ar fenthyciadau er mwyn prynu eitemau dodrefnu
 residentialFinanceCost.details.l3	=	ffioedd a godwyd wrth drefnu neu ad-dalu morgeisi neu fenthyciadau
 
-residentialFinanceCost.legend	=	Faint oedd eich costau ariannol preswyl?
+residentialFinanceCost.legend.individual	=	Faint oedd eich costau ariannol preswyl?
+residentialFinanceCost.legend.agent = *Missing Welsh*
 residentialFinanceCost.checkYourAnswersLabel	=	ResidentialFinanceCost
 residentialFinanceCost.change.hidden	=	Costau ariannol preswyl
 
