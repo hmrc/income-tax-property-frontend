@@ -112,12 +112,22 @@ case object SummaryPage {
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
     val aboutItem = rentalsAndRaRAboutItem(userAnswers, taxYear)
     val incomeItem = rentalsAndRaRIncomeItem(userAnswers, taxYear)
+    val adjustmentsItem: TaskListItem = rentalsAndRaRAdjustmentsItem(userAnswers, taxYear)
 
     if (isRentARoomSelected && isPropertyRentalsSelected) {
       userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage)) match {
         case None => Seq(aboutItem)
         case Some(_) =>
-          val baseItems = Seq(aboutItem, incomeItem)
+          val baseItems = Seq(aboutItem, incomeItem) concat
+            (if (
+               userAnswers
+                 .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
+                 .getOrElse(false)
+             ) {
+               Seq.empty
+             } else {
+               Seq(adjustmentsItem)
+             })
           userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
             case Some(false) if accrualsOrCash =>
               baseItems concat Seq(
@@ -163,7 +173,8 @@ case object SummaryPage {
   private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
-      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController.onPageLoad(taxYear, NormalMode, Rentals),
+      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+        .onPageLoad(taxYear, NormalMode, Rentals),
       userAnswers
         .flatMap { answers =>
           answers.get(EsbaSectionFinishedPage).map { finishedYesOrNo =>
@@ -301,6 +312,38 @@ case object SummaryPage {
         }
       },
       "rentals_and_rent_a_room_about_link"
+    )
+
+  private val expensesOrRelief: Option[UserAnswers] => Boolean = userAnswers =>
+    userAnswers
+      .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
+      .getOrElse(false)
+
+  private val claimPIAOrClaimExpenses: Option[UserAnswers] => Boolean = userAnswers =>
+    userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))).getOrElse(false)
+
+  private def rentalsAndRaRAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int): TaskListItem =
+    TaskListItem(
+      "summary.adjustments",
+      controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+        .onPageLoad(
+          taxYear,
+          userAnswers
+            .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
+            .getOrElse(false)
+        ), {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+        sectionFinished
+          .map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress)
+          .getOrElse {
+            if (userAnswers.flatMap(_.get(IncomeSectionFinishedPage)).isDefined) {
+              TaskListTag.InProgress
+            } else {
+              TaskListTag.NotStarted
+            }
+          }
+      },
+      "rentals_and_rent_a_room_adjustments_link"
     )
 
   private def rentalsAndRaRIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =

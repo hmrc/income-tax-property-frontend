@@ -556,6 +556,16 @@ adjustmentsStart.details.content.l1 = private use adjustment
 adjustmentsStart.details.content.l2 = balancing charge
 adjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
 
+rentalsAndRentARoomAdjustmentsStart.title = Adjustments
+rentalsAndRentARoomAdjustmentsStart.heading = Adjustments
+rentalsAndRentARoomAdjustmentsStart.details.content = In this section we’re going to ask you about the following adjustments:
+rentalsAndRentARoomAdjustmentsStart.details.content.l1 = private use adjustment
+rentalsAndRentARoomAdjustmentsStart.details.content.l2 = balancing charge
+rentalsAndRentARoomAdjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
+rentalsAndRentARoomAdjustmentsStart.details.content.l4 = residential financial costs
+rentalsAndRentARoomAdjustmentsStart.details.content.l5 = unused residential costs brought forward
+rentalsAndRentARoomAdjustmentsStart.details.content.l6 = your property income allowance claim
+
 expensesStart.title = Expenses
 expensesStart.heading = Expenses
 propertyRentals.caption = Property rentals for 6 April {0} to 5 April {1}

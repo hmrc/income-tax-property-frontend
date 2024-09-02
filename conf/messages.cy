@@ -1226,6 +1226,16 @@ rentalsAndRentARoomIncomeStart.l4 = *Missing Welsh*
 rentalsAndRentARoomIncomeStart.p2.individual = *Missing Welsh*
 rentalsAndRentARoomIncomeStart.p2.agent = *Missing Welsh*
 
+rentalsAndRentARoomAdjustmentsStart.title = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.heading = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l1 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l2 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l3 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l4 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l5 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l6 = *Missing Welsh*
+
 ukrentaroom.income.totalIncomeAmount.title.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.heading.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.error.required.individual = Nodwch gyfanswm yr incwm a gafwyd drwy’r Cynllun Rhentu Ystafell

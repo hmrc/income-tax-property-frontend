@@ -709,6 +709,8 @@ POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowanc
 
 ############## Rentals  and Rent a room Adjustments  ##############
 
+GET         /:taxYear/rentals-rent-a-room/adjustments/start                                                          controllers.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsStartController.onPageLoad(taxYear: Int, expensesOrPIA: Boolean)
+
 GET         /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                                 controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                                 controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge                          controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
