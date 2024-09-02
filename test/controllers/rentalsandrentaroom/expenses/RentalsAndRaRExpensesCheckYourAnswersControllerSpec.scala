@@ -23,7 +23,7 @@ import models._
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{doNothing, when}
+import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
@@ -81,8 +81,6 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       val mockAuditService = mock[AuditService]
       val propertySubmissionService = mock[PropertySubmissionService]
 
-      doNothing().when(mockAuditService).sendAuditEvent(any())(any(), any())
-
       when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future
         .successful[Either[ApiError, Option[PropertyDetails]]](
           Right(
@@ -115,7 +113,11 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(rentalsExpense))(
+          .saveJourneyAnswers(
+            ArgumentMatchers.eq(context),
+            ArgumentMatchers.eq(rentalsExpense),
+            ArgumentMatchers.eq("incomeSourceId")
+          )(
             any(),
             any()
           )
