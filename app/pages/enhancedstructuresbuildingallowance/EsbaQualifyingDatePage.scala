@@ -24,7 +24,7 @@ import java.time.LocalDate
 
 case class EsbaQualifyingDatePage(index: Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbaFormGroup \ index \ toString
+  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbas \ index \ toString
 
   override def toString: String = "esbaQualifyingDate"
 }

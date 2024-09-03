@@ -36,7 +36,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance._
+import pages.enhancedstructuresbuildingallowance.{EsbaClaimsPage, _}
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals._
 import pages.propertyrentals.expenses._
@@ -254,11 +254,11 @@ class Navigator @Inject() () {
             SummaryController.show(taxYear)
 
         // Enhanced structured building allowance
-    case ClaimEsbaPage(Rentals) =>
-      taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers)
-    case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers)
+    case ClaimEsbaPage(propertyType) =>
+      taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
+    case EsbaClaimsPage => taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers, Rentals)
     case EsbaRemoveConfirmationPage =>
-      taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers)
+      taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, Rentals)
     case EsbaSectionFinishedPage => taxYear => _ => _ => SummaryController.show(taxYear)
     case AboutSectionCompletePage =>
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
@@ -553,8 +553,8 @@ class Navigator @Inject() () {
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
               .onPageLoad(taxYear, CheckMode, index)
-    case ClaimEsbaPage(Rentals) =>
-      taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers)
+    case ClaimEsbaPage(propertyType) =>
+      taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
     case ClaimStructureBuildingAllowancePage(propertyType) =>
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
 
@@ -865,13 +865,16 @@ class Navigator @Inject() () {
       case _           => SummaryController.show(taxYear)
     }
 
-  private def enhancedStructureBuildingAllowanceNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(ClaimEsbaPage(Rentals)) match {
-      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
+  private def enhancedStructureBuildingAllowanceNavigation(
+    taxYear: Int,
+    userAnswers: UserAnswers,
+    propertyType: PropertyType
+  ): Call =
+    userAnswers.get(ClaimEsbaPage(propertyType)) match {
+      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
       case Some(false) => ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear)
       case _           => SummaryController.show(taxYear)
     }
-
 
   private def sbaRemoveConfirmationNavigationNormalMode(
     taxYear: Int,
@@ -888,16 +891,20 @@ class Navigator @Inject() () {
       case (_, _)                                 => SummaryController.show(taxYear)
     }
 
-  private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+  private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(EsbaClaimsPage) match {
-      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
+      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
       case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear)
       case _           => SummaryController.show(taxYear)
     }
 
-  private def esbaRemoveConfirmationNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    (userAnswers.get(EsbaRemoveConfirmationPage), userAnswers.get(EnhancedStructureBuildingFormGroup)) match {
-      case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear)
+  private def esbaRemoveConfirmationNavigationNormalMode(
+    taxYear: Int,
+    userAnswers: UserAnswers,
+    propertyType: PropertyType
+  ): Call =
+    (userAnswers.get(EsbaRemoveConfirmationPage), userAnswers.get(EnhancedStructuresBuildingAllowance)) match {
+      case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
       case (_, Some(esbaForm)) if esbaForm.nonEmpty         => EsbaClaimsController.onPageLoad(taxYear)
     }
 

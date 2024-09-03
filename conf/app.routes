@@ -311,7 +311,7 @@ POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/claim-yes-
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/change-claim-yes-no                       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/change-claim-yes-no                       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/add-claim                                 controllers.enhancedstructuresbuildingallowance.EsbaAddClaimController.onPageLoad(taxYear: Int)
+GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/add-claim                                 controllers.enhancedstructuresbuildingallowance.EsbaAddClaimController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-date                    controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/enhanced-structures-buildings-allowance/:index/qualifying-date                    controllers.enhancedstructuresbuildingallowance.EsbaQualifyingDateController.onSubmit(taxYear: Int, index: Int,mode: Mode = NormalMode)
@@ -705,10 +705,12 @@ POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 
 ############## Rentals  and Rent a room Enhanced Structure Building Allowance  ##############
 
-GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/claim-yes-no                  controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/claim-yes-no                  controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/change-claim-yes-no           controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/change-claim-yes-no           controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/claim-yes-no                              controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/claim-yes-no                              controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/change-claim-yes-no                       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/change-claim-yes-no                       controllers.enhancedstructuresbuildingallowance.ClaimEsbaController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowance/add-claim                                 controllers.enhancedstructuresbuildingallowance.EsbaAddClaimController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
 
 ############## Rentals  and Rent a room Adjustments  ##############
 

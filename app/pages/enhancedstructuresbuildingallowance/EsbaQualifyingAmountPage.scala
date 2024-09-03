@@ -22,7 +22,7 @@ import play.api.libs.json.JsPath
 
 case class EsbaQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbaFormGroup \ index \ toString
+  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbas \ index \ toString
 
   override def toString: String = "esbaQualifyingAmount"
 }

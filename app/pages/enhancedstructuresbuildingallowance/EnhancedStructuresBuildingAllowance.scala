@@ -22,27 +22,27 @@ import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
-case class EnhancedStructureBuildingFormGroup(
+case class EnhancedStructuresBuildingAllowance(
   esbaQualifyingDate: LocalDate,
   esbaQualifyingAmount: BigDecimal,
   esbaClaim: BigDecimal
 )
 
-case object EnhancedStructureBuildingFormGroup extends Gettable[Array[EnhancedStructureBuildingFormGroup]] {
+case object EnhancedStructuresBuildingAllowance extends Gettable[Array[EnhancedStructuresBuildingAllowance]] {
 
-  implicit val format: Format[EnhancedStructureBuildingFormGroup] = Json.format
+  implicit val format: Format[EnhancedStructuresBuildingAllowance] = Json.format
 
   override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
 
-  override def toString: String = PageConstants.esbaFormGroup
+  override def toString: String = PageConstants.esbas
 }
 
-case class EnhancedStructureBuildingFormGroupWithIndex(index: Int)
-    extends Settable[Array[EnhancedStructureBuildingFormGroup]] {
+case class EnhancedStructuresBuildingAllowanceWithIndex(index: Int)
+    extends Settable[Array[EnhancedStructuresBuildingAllowance]] {
 
-  implicit val format: Format[EnhancedStructureBuildingFormGroup] = Json.format
+  implicit val format: Format[EnhancedStructuresBuildingAllowance] = Json.format
 
   override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString \ index
 
-  override def toString: String = PageConstants.esbaFormGroup
+  override def toString: String = PageConstants.esbas
 }

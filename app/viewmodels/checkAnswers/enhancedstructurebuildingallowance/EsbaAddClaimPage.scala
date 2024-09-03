@@ -16,4 +16,6 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-case class EsbaAddClaimPage(taxYear: Int, nextIndex: Int, individualOrAgent: String)
+import models.PropertyType
+
+case class EsbaAddClaimPage(taxYear: Int, nextIndex: Int, individualOrAgent: String, propertyType: PropertyType)

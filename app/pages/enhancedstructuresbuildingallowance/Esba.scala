@@ -36,12 +36,12 @@ object Esba {
 
 final case class EsbaOnIndex(index: Int) extends Gettable[Esba] {
   override def path: JsPath =
-    JsPath \ PageConstants.esbasWithSupportingQuestions \ PageConstants.esbaFormGroup \ index
+    JsPath \ PageConstants.esbasWithSupportingQuestions \ PageConstants.esbas \ index
 }
 
 object Esbas extends Gettable[List[Esba]] with Settable[List[Esba]] {
 
   override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
 
-  override def toString: String = PageConstants.esbaFormGroup
+  override def toString: String = PageConstants.esbas
 }
