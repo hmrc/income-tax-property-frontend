@@ -160,8 +160,8 @@ class Navigator @Inject() () {
     case PropertyIncomeAllowancePage =>
       taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case RenovationAllowanceBalancingChargePage(Rentals) =>
-      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
-    case ResidentialFinanceCostPage =>
+      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
+    case ResidentialFinanceCostPage(Rentals) =>
       taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case UnusedResidentialFinanceCostPage =>
       taxYear =>
@@ -486,7 +486,7 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear)
         // Adjustments
     case PrivateUseAdjustmentPage | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(Rentals) |
-        ResidentialFinanceCostPage | UnusedResidentialFinanceCostPage =>
+        ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
       taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage =>
       taxYear =>

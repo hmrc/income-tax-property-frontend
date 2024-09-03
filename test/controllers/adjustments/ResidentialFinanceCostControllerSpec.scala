@@ -18,7 +18,7 @@ package controllers.adjustments
 
 import base.SpecBase
 import forms.adjustments.ResidentialFinanceCostFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -43,7 +43,9 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
   val taxYear = 2023
   val validAnswer: BigDecimal = BigDecimal(100.65)
 
-  lazy val residentialFinanceCostRoute: String = routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentalsRoute: String = routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals).url
+
+  lazy val rentalsRaRRoute: String = routes.ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "ResidentialFinanceCost Controller" - {
 
@@ -52,32 +54,50 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, residentialFinanceCostRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ResidentialFinanceCostView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, "individual", Rentals)(request, messages(application)).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "On rentals only journey must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ResidentialFinanceCostPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ResidentialFinanceCostPage(Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, residentialFinanceCostRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val view = application.injector.instanceOf[ResidentialFinanceCostView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, taxYear, "individual", Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "On rentals RaR journey must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(ResidentialFinanceCostPage(RentalsRentARoom), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRaRRoute)
+
+        val view = application.injector.instanceOf[ResidentialFinanceCostView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, taxYear, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
 
@@ -97,7 +117,7 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, residentialFinanceCostRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("residentialFinanceCost", validAnswer.toString))
 
         val result = route(application, request).value
@@ -113,7 +133,7 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, residentialFinanceCostRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -123,7 +143,7 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, "individual", Rentals)(request, messages(application)).toString
       }
     }
 
@@ -132,7 +152,7 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, residentialFinanceCostRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
@@ -146,7 +166,7 @@ class ResidentialFinanceCostControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, residentialFinanceCostRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
