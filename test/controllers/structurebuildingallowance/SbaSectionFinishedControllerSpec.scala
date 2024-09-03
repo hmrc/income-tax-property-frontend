@@ -19,13 +19,14 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.structurebuildingallowance.SbaSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.structurebuildingallowance.SbaSectionFinishedPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -38,20 +39,20 @@ import scala.concurrent.Future
 
 class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/summary")
 
   val formProvider = new SbaSectionFinishedFormProvider()
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   val taxYear: Int = 2024
-  lazy val sbaSectionFinishedRoute =
-    controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear).url
+  lazy val sbaSectionFinishedRoute: String =
+    controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear, Rentals).url
 
   "SbaSectionFinished Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, sbaSectionFinishedRoute)
@@ -61,15 +62,18 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SbaSectionFinishedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SbaSectionFinishedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SbaSectionFinishedPage(Rentals), true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, sbaSectionFinishedRoute)
@@ -79,7 +83,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear)(
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear, Rentals)(
           request,
           messages(application)
         ).toString
@@ -110,7 +114,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       ) thenReturn Future.successful(Right(""))
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
@@ -132,7 +136,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
@@ -146,13 +150,16 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, sbaSectionFinishedRoute)
@@ -166,7 +173,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =

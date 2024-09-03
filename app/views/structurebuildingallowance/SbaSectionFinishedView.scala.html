@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.LegendSize
 @import controllers.structuresbuildingallowance.routes._
+@import viewmodels.LegendSize
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -24,11 +24,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = SbaSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = SbaSectionFinishedController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

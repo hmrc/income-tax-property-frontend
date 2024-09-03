@@ -247,11 +247,6 @@ class Navigator @Inject() () {
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case SbaRemoveConfirmationPage(propertyType) =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
-    case SbaSectionFinishedPage =>
-      taxYear =>
-        _ =>
-          _ =>
-            SummaryController.show(taxYear)
 
         // Enhanced structured building allowance
     case ClaimEsbaPage(propertyType) =>
