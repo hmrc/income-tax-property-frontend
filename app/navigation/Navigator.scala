@@ -245,8 +245,6 @@ class Navigator @Inject() () {
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
     case StructureBuildingAllowancePage =>
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-    case SbaClaimsPage(propertyType) =>
-      taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers, propertyType)
     case SbaRemoveConfirmationPage(propertyType) =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
     case SbaSectionFinishedPage =>
@@ -874,11 +872,6 @@ class Navigator @Inject() () {
       case _           => SummaryController.show(taxYear)
     }
 
-  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
-    userAnswers.get(SbaClaimsPage(propertyType)) match {
-      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
-      case _          => SbaSectionFinishedController.onPageLoad(taxYear)
-    }
 
   private def sbaRemoveConfirmationNavigationNormalMode(
     taxYear: Int,

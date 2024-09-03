@@ -18,18 +18,18 @@ package controllers.structuresbuildingallowance
 
 import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{JourneyContext, NormalMode, PropertyType, Rentals}
-import navigation.Navigator
+import models.{JourneyContext, PropertyType, Rentals, UserAnswers}
 import pages.structurebuildingallowance._
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import service.PropertySubmissionService
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowanceSummary
@@ -42,7 +42,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class SbaClaimsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -57,16 +56,15 @@ class SbaClaimsController @Inject() (
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request, propertyType: PropertyType)
+      val list: SummaryList = summaryList(taxYear, request.userAnswers, propertyType: PropertyType)
 
       Ok(view(form, list, taxYear, request.user.isAgentMessageKey, propertyType))
     }
 
   def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request, propertyType)
-
+      val form = formProvider(request.user.isAgentMessageKey)
+      val list = summaryList(taxYear, request.userAnswers, propertyType)
       form
         .bindFromRequest()
         .fold(
@@ -74,52 +72,71 @@ class SbaClaimsController @Inject() (
             Future.successful(
               BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, propertyType))
             ),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), value))
-              _              <- sessionRepository.set(updatedAnswers)
-              _              <- if (!value) saveSBAClaims(taxYear, request, propertyType) else Future.successful(())
-            } yield Redirect(
-              navigator.nextPage(SbaClaimsPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
-            )
+          value => handleValidForm(value, taxYear, request, propertyType)
         )
     }
 
-  private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
+  private def summaryList(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ) = {
-
-    val sbasWithSupportingQuestions =
-      request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType)).map(_.toArray).getOrElse(Array())
-
-    val rows: Array[SummaryListRow] = sbasWithSupportingQuestions.zipWithIndex.flatMap { sbaWithIndex =>
-      val (_, index) = sbaWithIndex
-      StructureBuildingAllowanceSummary.row(taxYear, index, request.userAnswers, propertyType)
+    val sbaEntries = userAnswers.get(StructureBuildingAllowanceGroup(propertyType)).toSeq.flatten
+    val rows = sbaEntries.zipWithIndex.flatMap { case (_, index) =>
+      StructureBuildingAllowanceSummary.row(taxYear, index, userAnswers, propertyType)
     }
-
     SummaryListViewModel(rows)
   }
 
+  private def handleValidForm(
+    addAnotherClaim: Boolean,
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyType: PropertyType
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Result] =
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), addAnotherClaim))
+      _              <- sessionRepository.set(updatedAnswers)
+      result <- if (addAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
+                else { saveSBAClaims(taxYear, request, propertyType) }
+    } yield result
+
+  private def redirectToAddClaim(taxYear: Int, propertyType: PropertyType) =
+    Future.successful(
+      Redirect(routes.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType))
+    )
+
   private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
     hc: HeaderCarrier
-  ) =
-    Future {
-      val sbaInfoOpt = for {
-        claimSummaryPage <- request.userAnswers.get(ClaimStructureBuildingAllowancePage(Rentals))
-        sbaGroup         <- request.userAnswers.get(StructureBuildingAllowanceGroup(propertyType))
-      } yield SbaInfo(claimSummaryPage, sbaGroup)
-
-      sbaInfoOpt.fold {
-        logger.error("Structure and Building Allowance not found in userAnswers")
-      } { sbaInfo =>
-        val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-sba")
-        propertySubmissionService.saveJourneyAnswers(context, sbaInfo).map {
+  ): Future[Result] = {
+    val sbaInfoOpt = getSBA(request.userAnswers, propertyType)
+    sbaInfoOpt
+      .map { sbaInfo =>
+        val journeyPath = if (propertyType == Rentals) "property-rental-sba" else "rentals-and-rent-a-room-sba"
+        val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyPath)
+        propertySubmissionService.saveJourneyAnswers(context, sbaInfo).flatMap {
           case Right(_) =>
             auditSBAClaims(taxYear, request, sbaInfo)
-          case Left(_) => InternalServerError
+            Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear)))
+          case Left(_) =>
+            logger.error("Error saving SBA Claims")
+            Future.failed(InternalErrorFailure("Error saving SBA claims"))
         }
       }
-    }
+      .getOrElse {
+        logger.error("Structure and Building Allowance not found in userAnswers")
+        Future.failed(InternalErrorFailure("Structure and Building Allowance not found in userAnswers"))
+      }
+
+  }
+
+  private def getSBA(userAnswers: UserAnswers, propertyType: PropertyType) = {
+    val sbaInfoOpt = for {
+      claimSummaryPage <- userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType))
+      sbaGroup         <- userAnswers.get(StructureBuildingAllowanceGroup(propertyType))
+    } yield SbaInfo(claimSummaryPage, sbaGroup)
+    sbaInfoOpt
+  }
 
   private def auditSBAClaims(
     taxYear: Int,

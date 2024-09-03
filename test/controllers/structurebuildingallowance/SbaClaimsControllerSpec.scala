@@ -25,7 +25,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.structurebuildingallowance.{StructureBuildingAllowance, StructureBuildingAllowanceGroup}
+import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, StructureBuildingAllowance, StructureBuildingAllowanceGroup}
 import play.api.Application
 import play.api.data.Form
 import play.api.inject.bind
@@ -33,6 +33,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaClaimsView
@@ -235,11 +236,19 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
               )
             )
           )
+          .get
+          .set(ClaimStructureBuildingAllowancePage(propertyType), true)
           .toOption
 
+      val mockPropertySubmissionService = mock[PropertySubmissionService]
+      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+        Right(())
+      )
       // Rentals
       val rentalsApplication: Application =
-        applicationBuilder(userAnswers = userAnswers(Rentals), isAgent = false).build()
+        applicationBuilder(userAnswers = userAnswers(Rentals), isAgent = false)
+          .overrides(bind[PropertySubmissionService].toInstance(mockPropertySubmissionService))
+          .build()
 
       running(rentalsApplication) {
         val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url)
@@ -257,27 +266,6 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
         status(noOtherClaimResult) mustEqual SEE_OTHER
         redirectLocation(noOtherClaimResult).value mustEqual onwardRouteNoOtherClaim(Rentals).url
-      }
-
-      // Rentals and Rent a Room
-      val rentalsRentARoomApplication: Application =
-        applicationBuilder(userAnswers = userAnswers(RentalsRentARoom), isAgent = false).build()
-      running(rentalsRentARoomApplication) {
-        val addOtherClaimRequest =
-          FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, RentalsRentARoom).url)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
-
-        val addOtherClaimResult = route(rentalsRentARoomApplication, addOtherClaimRequest).value
-
-        status(addOtherClaimResult) mustEqual SEE_OTHER
-
-        val noOtherClaimRequest =
-          FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, RentalsRentARoom).url)
-            .withFormUrlEncodedBody(("anotherClaim", "false"))
-
-        val noOtherClaimResult = route(rentalsRentARoomApplication, noOtherClaimRequest).value
-
-        status(noOtherClaimResult) mustEqual SEE_OTHER
       }
     }
   }

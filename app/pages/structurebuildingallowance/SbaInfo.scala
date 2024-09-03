@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class SbaInfo(
   claimStructureBuildingAllowance: Boolean,
-  structureBuildingFormGroup: Array[StructureBuildingAllowance]
+  allowances: Array[StructureBuildingAllowance]
 )
 object SbaInfo {
   implicit val format: OFormat[SbaInfo] = Json.format[SbaInfo]
