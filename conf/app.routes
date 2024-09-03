@@ -125,10 +125,10 @@ POST        /:taxYear/rentals/income/complete-yes-no                            
 
 GET         /:taxYear/rentals/adjustments/start                                                                 controllers.adjustments.AdjustmentsStartController.onPageLoad(taxYear: Int)
 
-GET         /:taxYear/rentals/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -718,3 +718,7 @@ GET         /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowanc
 POST        /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge                          controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
 
+GET         /:taxYear/rentals-rent-a-room/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom )
+POST        /:taxYear/rentals-rent-a-room/adjustments/private-use-adjustment                                                controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
