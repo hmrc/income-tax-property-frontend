@@ -335,13 +335,21 @@ class SummaryPageSpec extends SpecBase {
 
     }
 
-    "createRentalsAndRentARoomRows return two rows when user has selected Rentals And Rent a room and Completed about section" in {
+    "createRentalsAndRentARoomRows return three rows when user has selected Rentals And Rent a room and Completed about section" in {
 
       val summaryAboutItem = TaskListItem(
         "summary.about",
         controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
         TaskListTag.Completed,
         "rentals_and_rent_a_room_about_link"
+      )
+
+      val rentalsRaRSummaryAdjustmentsItem = TaskListItem(
+        "summary.adjustments",
+        controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+          .onPageLoad(taxYear, true),
+        TaskListTag.NotStarted,
+        "rentals_and_rent_a_room_adjustments_link"
       )
 
       val userAnswersWithRentalsAndRentARoom = emptyUserAnswers
@@ -357,26 +365,37 @@ class SummaryPageSpec extends SpecBase {
         .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), true)
         .success
         .value
+        .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(false, None))
+        .success
+        .value
 
       SummaryPage
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(2)
+        .length should be(3)
       SummaryPage.createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
       ) should be(
-        Seq(summaryAboutItem, summaryIncomeItem)
+        Seq(summaryAboutItem, summaryIncomeItem, rentalsRaRSummaryAdjustmentsItem)
       )
     }
 
-    "createRentalsAndRentARoomRows return four rows when user has selected claim expenses" in {
+    "createRentalsAndRentARoomRows return five rows when user has selected claim expenses" in {
 
       val summaryAboutItem = TaskListItem(
         "summary.about",
         controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
         TaskListTag.Completed,
         "rentals_and_rent_a_room_about_link"
+      )
+
+      val rentalsRaRSummaryAdjustmentsItem = TaskListItem(
+        "summary.adjustments",
+        controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+          .onPageLoad(taxYear, false),
+        TaskListTag.NotStarted,
+        "rentals_and_rent_a_room_adjustments_link"
       )
 
       val userAnswersWithRentalsAndRentARoom = emptyUserAnswers
@@ -390,28 +409,45 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
         .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), false)
+        .success
+        .value
+        .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(false, None))
         .success
         .value
 
       SummaryPage
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
-        .length should be(4)
+        .length should be(5)
       SummaryPage.createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = false
       ) should be(
-        Seq(summaryAboutItem, summaryIncomeItem, summaryExpenseItem, summaryAllowancesItem)
+        Seq(
+          summaryAboutItem,
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          rentalsRaRSummaryAdjustmentsItem
+        )
       )
     }
 
-    "createRentalsAndRentARoomRows return six rows when user has selected claim expenses for cash basis" in {
+    "createRentalsAndRentARoomRows return seven rows when user has selected claim expenses for cash basis" in {
 
       val summaryAboutItem = TaskListItem(
         "summary.about",
         controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
         TaskListTag.Completed,
         "rentals_and_rent_a_room_about_link"
+      )
+
+      val rentalsRaRSummaryAdjustmentsItem = TaskListItem(
+        "summary.adjustments",
+        controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+          .onPageLoad(taxYear, false),
+        TaskListTag.NotStarted,
+        "rentals_and_rent_a_room_adjustments_link"
       )
 
       val userAnswersWithRentalsAndRentARoom = emptyUserAnswers
@@ -427,10 +463,13 @@ class SummaryPageSpec extends SpecBase {
         .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), false)
         .success
         .value
+        .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(false, None))
+        .success
+        .value
 
       SummaryPage
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(6)
+        .length should be(7)
       SummaryPage.createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
@@ -442,7 +481,8 @@ class SummaryPageSpec extends SpecBase {
           summaryExpenseItem,
           summaryAllowancesItem,
           summarySBAItem,
-          summaryESBAItem
+          summaryESBAItem,
+          rentalsRaRSummaryAdjustmentsItem
         )
       )
     }
