@@ -315,14 +315,6 @@ case object SummaryPage {
       "rentals_and_rent_a_room_about_link"
     )
 
-  private val expensesOrRelief: Option[UserAnswers] => Boolean = userAnswers =>
-    userAnswers
-      .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
-      .getOrElse(false)
-
-  private val claimPIAOrClaimExpenses: Option[UserAnswers] => Boolean = userAnswers =>
-    userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))).getOrElse(false)
-
   private def rentalsAndRaRAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int): TaskListItem =
     TaskListItem(
       "summary.adjustments",
