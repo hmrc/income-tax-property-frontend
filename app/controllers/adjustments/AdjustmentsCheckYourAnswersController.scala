@@ -54,7 +54,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
           BalancingChargeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
           RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
-          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers),
+          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers)
         ).flatten
       )

@@ -219,7 +219,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         true,
         Some(23)
       )
-      updated.get(ResidentialFinanceCostPage).get mustBe 2
+      updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3
       updated.get(ClaimEsbaPage(Rentals)).get mustBe true
       updated.get(EsbaAddressPage(0)).get mustBe EsbaAddress(

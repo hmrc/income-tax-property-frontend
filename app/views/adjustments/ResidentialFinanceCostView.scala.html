@@ -27,38 +27,30 @@
 )
 
 
-@(form: Form[_], mode: Mode, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("residentialFinanceCost.title"))) {
 
     <h1 class="govuk-heading-l">@messages("residentialFinanceCost.heading")</h1>
 
-    @formHelper(action = routes.ResidentialFinanceCostController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ResidentialFinanceCostController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages("residentialFinanceCost.details.content.link.text")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
                 <p class="govuk-body">@messages("residentialFinanceCost.details.content.link.content")</p>
-                <ul>
+                <ul class="govuk-body">
                     <li>@messages(s"residentialFinanceCost.details.l1")</li>
                     <li>@messages(s"residentialFinanceCost.details.l2")</li>
                     <li>@messages(s"residentialFinanceCost.details.l3")</li>
                 </ul>
-            </div>
-        </details>
+
 
         @govukInput(
             InputViewModel(
                 field = form("residentialFinanceCost"),
-                label = LabelViewModel(messages("residentialFinanceCost.legend")).asPageHeading(LabelSize.Medium)
+                label = LabelViewModel(messages(s"residentialFinanceCost.legend.${individualOrAgent}")).asPageHeading(LabelSize.Medium)
             )
             .asNumeric()
             .withWidth(Fixed10)

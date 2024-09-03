@@ -161,8 +161,8 @@ class Navigator @Inject() () {
     case PropertyIncomeAllowancePage =>
       taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case RenovationAllowanceBalancingChargePage(Rentals) =>
-      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
-    case ResidentialFinanceCostPage =>
+      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
+    case ResidentialFinanceCostPage(Rentals) =>
       taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
     case UnusedResidentialFinanceCostPage =>
       taxYear =>
@@ -246,8 +246,6 @@ class Navigator @Inject() () {
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
     case StructureBuildingAllowancePage =>
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-    case SbaClaimsPage(propertyType) =>
-      taxYear => _ => userAnswers => sbaClaimsNavigationNormalMode(taxYear, userAnswers, propertyType)
     case SbaRemoveConfirmationPage(propertyType) =>
       taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
     case SbaSectionFinishedPage =>
@@ -490,7 +488,7 @@ class Navigator @Inject() () {
         // Adjustments
     case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(
           Rentals
-        ) | ResidentialFinanceCostPage | UnusedResidentialFinanceCostPage =>
+        ) | ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
       taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage =>
       taxYear =>
@@ -874,12 +872,6 @@ class Navigator @Inject() () {
       case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear)
       case Some(false) => ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear)
       case _           => SummaryController.show(taxYear)
-    }
-
-  private def sbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
-    userAnswers.get(SbaClaimsPage(propertyType)) match {
-      case Some(true) => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
-      case _          => SbaSectionFinishedController.onPageLoad(taxYear)
     }
 
   private def sbaRemoveConfirmationNavigationNormalMode(
