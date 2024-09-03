@@ -58,6 +58,14 @@ class PropertySubmissionService @Inject() (
   ): Future[Either[ServiceError, Unit]] =
     saveJourneyAnswers(ctx, propertyRentalsIncome)
 
+  def saveJourneyAnswers[A: Writes](ctx: JourneyContext, body: A, incomeSourceId: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ServiceError, Unit]] =
+    propertyConnector.saveJourneyAnswers(ctx, incomeSourceId, body).map {
+      case Left(error) => Left(HttpParserError(error.status))
+      case Right(_)    => Right()
+    }
+
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A
@@ -73,7 +81,6 @@ class PropertySubmissionService @Inject() (
             }
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
-
     }
 
 }
