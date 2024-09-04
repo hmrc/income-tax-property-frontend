@@ -34,24 +34,24 @@ import views.html.adjustments.AdjustmentsCheckYourAnswersView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AdjustmentsCheckYourAnswersController @Inject()(
-                                                       override val messagesApi: MessagesApi,
-                                                       identify: IdentifierAction,
-                                                       getData: DataRetrievalAction,
-                                                       requireData: DataRequiredAction,
-                                                       val controllerComponents: MessagesControllerComponents,
-                                                       propertySubmissionService: PropertySubmissionService,
-                                                       audit: AuditService,
-                                                       view: AdjustmentsCheckYourAnswersView
-                                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AdjustmentsCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
+  audit: AuditService,
+  view: AdjustmentsCheckYourAnswersView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val list = SummaryListViewModel(
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers),
-          BalancingChargeSummary.row(taxYear, request.userAnswers),
+          BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
           RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
@@ -64,38 +64,40 @@ class AdjustmentsCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
 
       request.userAnswers.get(RentalsAdjustment) match {
         case Some(adjustments) =>
-          propertySubmissionService.saveJourneyAnswers(context, adjustments).map({
+          propertySubmissionService.saveJourneyAnswers(context, adjustments).map {
 
-            case Right(_) => {
+            case Right(_) =>
               auditCYA(taxYear, request, adjustments)
               Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear))
-            }
             case Left(_) => InternalServerError
-          })
+          }
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
 
-          Future.successful(Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear)))
+          Future.successful(
+            Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear))
+          )
       }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit hc: HeaderCarrier): Unit = {
-        val auditModel = RentalsAuditModel(
-          request.user.nino,
-          request.user.affinityGroup,
-          request.user.mtditid,
-          request.user.agentRef,
-          taxYear,
-          isUpdate = false,
-          "PropertyRentalsAdjustments",
-          adjustments
-        )
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = RentalsAuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
+      isUpdate = false,
+      "PropertyRentalsAdjustments",
+      adjustments
+    )
 
-        audit.sendRentalsAuditEvent(auditModel)
-      }
+    audit.sendRentalsAuditEvent(auditModel)
   }
+}

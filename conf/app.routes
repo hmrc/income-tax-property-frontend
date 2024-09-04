@@ -130,10 +130,10 @@ POST        /:taxYear/rentals/adjustments/private-use-adjustment                
 GET         /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rentals/adjustments/change-private-use-adjustment                                         controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/rentals/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
+GET         /:taxYear/rentals/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/adjustments/property-income-allowance                                             controllers.adjustments.PropertyIncomeAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals/adjustments/property-income-allowance                                             controllers.adjustments.PropertyIncomeAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
@@ -729,3 +729,7 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/residential-finance-cost  
 GET         /:taxYear/rentals-rent-a-room/adjustments/change-residential-finance-cost                                       controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/adjustments/change-residential-finance-cost                                       controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
+GET         /:taxYear/rentals-rent-a-room/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/adjustments/balancing-charge                                                      controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/adjustments/change-balancing-charge                                               controllers.adjustments.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)

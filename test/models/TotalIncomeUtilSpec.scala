@@ -34,7 +34,9 @@ class TotalIncomeUtilSpec extends SpecBase {
     "return sum of all income section and balancing charge" in {
       val userAnswers = UserAnswers("test")
         .set(IncomeFromPropertyPage(Rentals), BigDecimal(80000))
-        .flatMap(_.set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000)))))
+        .flatMap(
+          _.set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000))))
+        )
         .get
 
       incomeAndBalancingChargeCombined(userAnswers, Rentals) shouldEqual 90000

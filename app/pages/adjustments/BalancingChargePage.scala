@@ -16,14 +16,14 @@
 
 package pages.adjustments
 
-import models.{BalancingCharge, Rentals}
+import models.{BalancingCharge, PropertyType, Rentals}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object BalancingChargePage extends QuestionPage[BalancingCharge] {
+case class BalancingChargePage(propertyType: PropertyType) extends QuestionPage[BalancingCharge] {
 
-  override def path: JsPath = JsPath \ adjustmentsPath(Rentals) \ toString
+  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
 
   override def toString: String = "balancingCharge"
 }
