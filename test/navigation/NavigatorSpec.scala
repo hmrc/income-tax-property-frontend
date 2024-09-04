@@ -594,12 +594,12 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage" in {
         navigator.nextPage(
-          PropertyIncomeAllowancePage,
+          PropertyIncomeAllowancePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1381,12 +1381,12 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           previousUserAnswers,
           userAnswers
-        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
+        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 
       "must go from PropertyIncomeAllowancePage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          PropertyIncomeAllowancePage,
+          PropertyIncomeAllowancePage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),

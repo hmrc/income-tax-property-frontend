@@ -391,16 +391,16 @@ unusedResidentialFinanceCost.input.legend	=	Faint o gostau preswyl sydd heb eu d
 unusedResidentialFinanceCost.checkYourAnswersLabel	=	Costau ariannol preswyl sydd heb eu defnyddio a ddygwyd ymlaen
 unusedResidentialFinanceCost.change.hidden	=	Costau ariannol preswyl sydd heb eu defnyddio a ddygwyd ymlaen
 
-propertyIncomeAllowance.title.individual	=	Faint o Lwfans Incwm o Eiddo (PIA) hoffech hawlio?
-propertyIncomeAllowance.title.agent	=	Faint o Lwfans Incwm o Eiddo (PIA) hoffai eich cleient hawlio?
-propertyIncomeAllowance.heading.individual	=	Faint o Lwfans Incwm o Eiddo (PIA) hoffech hawlio?
-propertyIncomeAllowance.heading.agent	=	Faint o Lwfans Incwm o Eiddo (PIA) hoffai eich cleient hawlio?
-propertyIncomeAllowance.input.heading.individual	=	Nodwch eich cyfran chi o’r PIA ar gyfer yr eiddo hwn
-propertyIncomeAllowance.input.heading.agent	=	Nodwch gyfran eich cleient o’r PIA ar gyfer yr eiddo hwn
-propertyIncomeAllowance.details.content1.individual	=	Gallwch hawlio hyd at o lwfans incwm o eiddo ar draws eich holl eiddo. Os ydych yn berchen ar eiddo ar y cyd â rhywun arall, gall y ddau ohonoch hawlio’r lwfans.
-propertyIncomeAllowance.details.content1.agent	=	Gall eich cleient hawlio’r holl lwfans incwm o eiddo hyd at (Income plus balancing charge) ar draws pob un o’i eiddo. Os yw’n berchen ar eiddo ar y cyd â rhywun arall, gall y ddau ohonynt hawlio’r lwfans o (Income plus balancing charge).
-propertyIncomeAllowance.details.content2.individual	=	Os bydd angen i chi dalu tâl mantoli, mae’n rhaid i chi ychwanegu’r ffigur hwn at y swm rydych yn ei hawlio ar gyfer lwfans incwm o eiddo. Ni all y ffigur at ei gilydd fynd y tu hwnt.
-propertyIncomeAllowance.details.content2.agent	=	Os oes angen iddo dalu tâl mantoli, mae’n rhaid i chi ychwanegu’r ffigur hwn at y swm rydych yn ei hawlio ar gyfer lwfans incwm o eiddo. Ni all y ffigur at ei gilydd fynd y tu hwnt i gyfanswm o (Income plus balancing charge).
+propertyIncomeAllowance.title.individual	=	*Missing Welsh*
+propertyIncomeAllowance.title.agent	=	*Missing Welsh*
+propertyIncomeAllowance.heading.individual	=	*Missing Welsh*
+propertyIncomeAllowance.heading.agent	=	*Missing Welsh*
+propertyIncomeAllowance.input.heading.individual	=	*Missing Welsh*
+propertyIncomeAllowance.input.heading.agent	=	*Missing Welsh*
+propertyIncomeAllowance.details.content1.individual	=	*Missing Welsh*
+propertyIncomeAllowance.details.content1.agent	=	*Missing Welsh*
+propertyIncomeAllowance.details.content2.individual	=	*Missing Welsh*
+propertyIncomeAllowance.details.content2.agent	=	*Missing Welsh*
 propertyIncomeAllowance.details.content3	=	Darllenwch ragor am
 propertyIncomeAllowance.details.content3.link.text	=	lwfans incwm o eiddo, ar GOV.UK (yn agor tab newydd)
 

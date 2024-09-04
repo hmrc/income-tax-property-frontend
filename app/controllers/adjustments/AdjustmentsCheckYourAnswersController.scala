@@ -52,7 +52,7 @@ class AdjustmentsCheckYourAnswersController @Inject()(
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers),
           BalancingChargeSummary.row(taxYear, request.userAnswers),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
+          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers)
