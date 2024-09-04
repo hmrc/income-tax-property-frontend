@@ -298,8 +298,8 @@ POST        /:taxYear/rentals/structures-buildings-allowance/claims             
 GET         /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                                controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim                                controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int)
-POST        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int)
+GET         /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int, propertyType: PropertyType = Rentals)
 
 GET         /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int)
@@ -700,8 +700,11 @@ POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/check-your-answers              controllers.structuresbuildingallowance.SbaCheckYourAnswersController.onPageLoad(taxYear: Int,  index: Int, propertyType: PropertyType = RentalsRentARoom)
 
-GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                                controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                                controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                    controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/remove-claim                    controllers.structuresbuildingallowance.SbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/complete-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/complete-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
 
 ############## Rentals  and Rent a room Enhanced Structure Building Allowance  ##############
 
@@ -716,10 +719,10 @@ GET         /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowanc
 
 GET         /:taxYear/rentals-rent-a-room/adjustments/start                                                          controllers.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsStartController.onPageLoad(taxYear: Int, expensesOrPIA: Boolean)
 
-GET         /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                                 controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                                 controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
-GET         /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge                          controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-POST        /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge                          controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                     controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                     controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
+GET         /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge              controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/adjustments/change-renovation-allowance-balancing-charge              controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 
 GET         /:taxYear/rentals-rent-a-room/adjustments/residential-finance-cost                                              controllers.adjustments.ResidentialFinanceCostController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/adjustments/residential-finance-cost                                              controllers.adjustments.ResidentialFinanceCostController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)

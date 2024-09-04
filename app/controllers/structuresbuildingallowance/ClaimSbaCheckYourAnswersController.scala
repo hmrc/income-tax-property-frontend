@@ -17,15 +17,15 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
+import models.RentalsRentARoom
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.structurebuildingallowance.ClaimStructureBuildingAllowanceSummary
+import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.ClaimSbaCheckYourAnswersView
 
 import javax.inject.Inject
-import viewmodels.govuk.summarylist._
-
 import scala.concurrent.Future
 
 class ClaimSbaCheckYourAnswersController @Inject() (
@@ -51,7 +51,8 @@ class ClaimSbaCheckYourAnswersController @Inject() (
     implicit request =>
       Future.successful(
         Redirect(
-          controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear)
+          controllers.structuresbuildingallowance.routes.SbaSectionFinishedController
+            .onPageLoad(taxYear, RentalsRentARoom)
         )
       )
   }

@@ -18,14 +18,17 @@ package controllers.structuresbuildingallowance
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.structurebuildingallowance.SbaSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
-import navigation.Navigator
+import models.requests.DataRequest
+import models.{JourneyContext, NormalMode, PropertyType, Rentals}
 import pages.structurebuildingallowance.SbaSectionFinishedPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.structurebuildingallowance.SbaSectionFinishedView
 
@@ -35,7 +38,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class SbaSectionFinishedController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -46,41 +48,46 @@ class SbaSectionFinishedController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(SbaSectionFinishedPage) match {
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val preparedForm = request.userAnswers.get(SbaSectionFinishedPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, NormalMode, taxYear))
-  }
+      Ok(view(preparedForm, NormalMode, taxYear, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear, propertyType))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaSectionFinishedPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaSectionFinishedPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear,
-                       request.user.mtditid,
-                       request.user.nino,
-                       "rental-sba"
-                     ),
-                     statusForPage(value),
-                     request.user
-                   )
-            } yield Redirect(
-              navigator.nextPage(SbaSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
-            )
+              result         <- saveStatus(taxYear, request, value, propertyType)
+            } yield result
         )
+    }
+
+  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], value: Boolean, propertyType: PropertyType)(
+    implicit hc: HeaderCarrier
+  ): Future[Result] = {
+    val sectionPath = if (propertyType == Rentals) "rental-sba" else "property-rentals-and-rent-a-room-sba"
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
+    journeyAnswersService
+      .setStatus(context, statusForPage(value), request.user)
+      .flatMap {
+        case Right(_) => Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
+        case Left(_) =>
+          Future.failed(
+            InternalErrorFailure(s"Failed to save the status for SBA section in tax year: $taxYear")
+          )
+      }
   }
 }

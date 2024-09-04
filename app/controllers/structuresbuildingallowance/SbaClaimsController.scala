@@ -117,7 +117,7 @@ class SbaClaimsController @Inject() (
         propertySubmissionService.saveJourneyAnswers(context, sbaInfo).flatMap {
           case Right(_) =>
             auditSBAClaims(taxYear, request, sbaInfo)
-            Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear)))
+            Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
           case Left(_) =>
             logger.error("Error saving SBA Claims")
             Future.failed(InternalErrorFailure("Error saving SBA claims"))

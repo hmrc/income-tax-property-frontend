@@ -27,7 +27,7 @@ import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
-import pages.structurebuildingallowance.SbaSectionFinishedPage
+import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage}
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
@@ -125,7 +125,7 @@ case object SummaryPage {
                 baseItems concat Seq(
                   rentalsAndRaRExpensesItem(taxYear, userAnswers),
                   rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-                  rentalsAndRaRSBAItem(taxYear),
+                  rentalsAndRaRSBAItem(taxYear, userAnswers),
                   rentalsAndRaRESBAItem(taxYear)
                 )
               case Some(false) if !accrualsOrCash =>
@@ -210,7 +210,7 @@ case object SummaryPage {
         .onPageLoad(taxYear, NormalMode, Rentals),
       userAnswers
         .flatMap { answers =>
-          answers.get(SbaSectionFinishedPage).map { finishedYesOrNo =>
+          answers.get(SbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
             if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
@@ -395,12 +395,20 @@ case object SummaryPage {
       "rentals_and_rent_a_room_allowances_link"
     )
 
-  private def rentalsAndRaRSBAItem(taxYear: Int) =
+  private def rentalsAndRaRSBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.structuresAndBuildingAllowance",
       controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
-        .onPageLoad(taxYear, NormalMode, RentalsRentARoom),
-      TaskListTag.NotStarted,
+        .onPageLoad(taxYear, NormalMode, RentalsRentARoom), {
+        val sectionFinished = userAnswers.flatMap(_.get(SbaSectionFinishedPage(RentalsRentARoom)))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(ClaimStructureBuildingAllowancePage(RentalsRentARoom))).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_structures_and_building_allowance_link"
     )
 
