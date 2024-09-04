@@ -48,7 +48,7 @@ class ClaimSbaCheckYourAnswersController @Inject() (
   }
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit _ =>
+    implicit request =>
       Future.successful(
         Redirect(
           controllers.structuresbuildingallowance.routes.SbaSectionFinishedController
