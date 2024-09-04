@@ -17,7 +17,8 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
-import pages.enhancedstructuresbuildingallowance.EnhancedStructureBuildingFormGroup
+import models.PropertyType
+import pages.enhancedstructuresbuildingallowance.EnhancedStructuresBuildingAllowance
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -27,17 +28,19 @@ import views.html.enhancedstructuresbuildingallowance.EsbaAddClaimView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class EsbaAddClaimController @Inject()(override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       requireData: DataRequiredAction,
-                                       getData: DataRetrievalAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: EsbaAddClaimView)
-                                      (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EsbaAddClaimController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  requireData: DataRequiredAction,
+  getData: DataRetrievalAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: EsbaAddClaimView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val nextIndex = request.userAnswers.get(EnhancedStructureBuildingFormGroup).map(_.length).getOrElse(0)
-      Ok(view(EsbaAddClaimPage(taxYear, nextIndex, request.user.isAgentMessageKey)))
-  }
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val nextIndex = request.userAnswers.get(EnhancedStructuresBuildingAllowance).map(_.length).getOrElse(0)
+      Ok(view(EsbaAddClaimPage(taxYear, nextIndex, request.user.isAgentMessageKey, propertyType)))
+    }
 }

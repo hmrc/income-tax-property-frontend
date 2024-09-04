@@ -21,7 +21,8 @@ import play.api.libs.json.JsPath
 
 case class EsbaClaimPage(index: Int) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ PageConstants.esbaFormGroup \ index \ toString
+  override def path: JsPath =
+    JsPath \ PageConstants.esbasWithSupportingQuestions \ PageConstants.esbas \ index \ toString
 
   override def toString: String = "esbaClaim"
 }

@@ -21,7 +21,7 @@ import forms.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationFormProvi
 import models.Mode
 import models.requests.DataRequest
 import navigation.Navigator
-import pages.enhancedstructuresbuildingallowance.{EsbaRemoveConfirmationPage, EsbaClaimPage, EnhancedStructureBuildingFormGroupWithIndex}
+import pages.enhancedstructuresbuildingallowance.{EnhancedStructuresBuildingAllowanceWithIndex, EsbaClaimPage, EsbaRemoveConfirmationPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,50 +34,53 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 
-class EsbaRemoveConfirmationController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: Navigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: EsbaRemoveConfirmationFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: EsbaRemoveConfirmationView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EsbaRemoveConfirmationController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: EsbaRemoveConfirmationFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: EsbaRemoveConfirmationView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       Ok(view(form, taxYear, index, mode, claimValue(index, request)))
-  }
+    }
 
   private def claimValue(index: Int, request: DataRequest[AnyContent]): String = {
     val value = request.userAnswers.get(EsbaClaimPage(index)).getOrElse(BigDecimal(0))
     bigDecimalCurrency(value)
   }
 
-  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, claimValue(index, request)))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaRemoveConfirmationPage, value))
-            updatedAnswers <- Future.fromTry {
-              if (value) {
-                updatedAnswers.remove(EnhancedStructureBuildingFormGroupWithIndex(index))
-              } else {
-                Success(updatedAnswers)
-              }
-            }
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EsbaRemoveConfirmationPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, claimValue(index, request)))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaRemoveConfirmationPage, value))
+              updatedAnswers <- Future.fromTry {
+                                  if (value) {
+                                    updatedAnswers.remove(EnhancedStructuresBuildingAllowanceWithIndex(index))
+                                  } else {
+                                    Success(updatedAnswers)
+                                  }
+                                }
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(EsbaRemoveConfirmationPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }
