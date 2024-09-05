@@ -155,7 +155,8 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear)
 
         //
-    case PrivateUseAdjustmentPage => taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+    case PrivateUseAdjustmentPage(Rentals) =>
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case BalancingChargePage(Rentals) =>
       taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case PropertyIncomeAllowancePage =>
@@ -484,8 +485,9 @@ class Navigator @Inject() () {
             controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
               .onPageLoad(taxYear)
         // Adjustments
-    case PrivateUseAdjustmentPage | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(Rentals) |
-        ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
+    case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(
+          Rentals
+        ) | ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
       taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage(Rentals) =>
       taxYear =>

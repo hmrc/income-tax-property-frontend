@@ -15,6 +15,7 @@
  *@
 
 @import controllers.adjustments.routes
+@import models.Rentals
 
 @this(
         layout: templates.Layout,
@@ -35,7 +36,7 @@
 
     @govukButton(
         ButtonViewModel(messages("propertyIncomeStart.button"))
-        .asLink(routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode).url)
+        .asLink(routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, Rentals).url)
         .withId("continue")
     )
 }

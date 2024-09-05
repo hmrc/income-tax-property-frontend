@@ -579,7 +579,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
         navigator.nextPage(
-          PrivateUseAdjustmentPage,
+          PrivateUseAdjustmentPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1348,7 +1348,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from PrivateUseAdjustmentPage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          PrivateUseAdjustmentPage,
+          PrivateUseAdjustmentPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
