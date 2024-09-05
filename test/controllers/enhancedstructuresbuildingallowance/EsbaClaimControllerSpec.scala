@@ -20,11 +20,12 @@ import base.SpecBase
 import controllers.routes
 import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, User, UserAnswers}
+import models.{NormalMode, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.enhancedstructuresbuildingallowance.EsbaClaimPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,18 +37,17 @@ import scala.concurrent.Future
 
 class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
 
+  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+    .onPageLoad(taxYear, NormalMode, index, Rentals)
+    .url
   val formProvider = new EsbaClaimAmountFormProvider()
-  private val isAgentMessageKey = "individual"
   val form = formProvider("individual")
 
-  def onwardRoute = Call("GET", "/foo")
+  val onwardRoute = Call("GET", "/foo")
 
   val validAnswer = BigDecimal(0)
   val taxYear = 2024
   val index = 0
-  lazy val esbaClaimAmountRoute = controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
-    .onPageLoad(taxYear, NormalMode, index)
-    .url
   val user = User(
     "",
     "",
@@ -55,6 +55,7 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
     isAgent = false,
     Some("agentReferenceNumber")
   )
+  private val isAgentMessageKey = "individual"
   "EsbaClaimAmount Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -69,7 +70,7 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaClaimView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
           request,
           messages(application)
         ).toString
@@ -78,7 +79,7 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaClaimPage(index), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaClaimPage(index, Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -91,7 +92,14 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(
+          form.fill(validAnswer),
+          taxYear,
+          isAgentMessageKey,
+          NormalMode,
+          index,
+          Rentals
+        )(
           request,
           messages(application)
         ).toString
@@ -142,7 +150,7 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode, index, Rentals)(
           request,
           messages(application)
         ).toString

@@ -51,7 +51,7 @@ class EsbaAddressController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, index))
+      Ok(view(preparedForm, taxYear, mode, index, propertyType))
     }
 
   def onSubmit(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
@@ -60,7 +60,7 @@ class EsbaAddressController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, index))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, index, propertyType))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaAddressPage(index, propertyType), value))

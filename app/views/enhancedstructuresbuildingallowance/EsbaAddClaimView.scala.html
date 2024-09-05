@@ -34,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("enhancedSBA.addclaim.button"))
-                .asLink(routes.EsbaQualifyingDateController.onPageLoad(page.taxYear, page.nextIndex, NormalMode).url)
+                .asLink(routes.EsbaQualifyingDateController.onPageLoad(page.taxYear, page.nextIndex, NormalMode, page.propertyType).url)
                 .withId("continue")
         )
     </p>

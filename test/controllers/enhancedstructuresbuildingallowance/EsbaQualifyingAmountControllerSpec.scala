@@ -18,7 +18,7 @@ package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import forms.enhancedstructuresbuildingallowance.EsbaQualifyingAmountFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -35,15 +35,15 @@ import scala.concurrent.Future
 
 class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
 
+  lazy val esbaQualifyingAmountRoute: String =
+    routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode, Rentals).url
   val formProvider = new EsbaQualifyingAmountFormProvider()
   val form = formProvider()
-
-  def onwardRoute: Call = Call("GET", "/foo")
-
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2024
   val index = 0
-  lazy val esbaQualifyingAmountRoute: String = routes.EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode).url
+
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "EsbaQualifyingAmount Controller" - {
 
@@ -59,13 +59,17 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaQualifyingAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaQualifyingAmountPage(index), validAnswer).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(EsbaQualifyingAmountPage(index, Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -77,7 +81,10 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, index, NormalMode, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -123,7 +130,10 @@ class EsbaQualifyingAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

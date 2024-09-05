@@ -18,8 +18,8 @@ package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaRemoveConfirmationFormProvider
-import models.{Mode, PropertyType}
 import models.requests.DataRequest
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.{EnhancedStructuresBuildingAllowanceWithIndex, EsbaClaimPage, EsbaRemoveConfirmationPage}
 import play.api.data.Form
@@ -50,13 +50,8 @@ class EsbaRemoveConfirmationController @Inject() (
   def onPageLoad(taxYear: Int, index: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      Ok(view(form, taxYear, index, mode, claimValue(index, request, propertyType)))
+      Ok(view(form, taxYear, index, mode, claimValue(index, request, propertyType), propertyType))
     }
-
-  private def claimValue(index: Int, request: DataRequest[AnyContent], propertyType: PropertyType): String = {
-    val value = request.userAnswers.get(EsbaClaimPage(index, propertyType)).getOrElse(BigDecimal(0))
-    bigDecimalCurrency(value)
-  }
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
@@ -67,7 +62,9 @@ class EsbaRemoveConfirmationController @Inject() (
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, index, mode, claimValue(index, request, propertyType)))
+              BadRequest(
+                view(formWithErrors, taxYear, index, mode, claimValue(index, request, propertyType), propertyType)
+              )
             ),
           value =>
             for {
@@ -85,4 +82,9 @@ class EsbaRemoveConfirmationController @Inject() (
             )
         )
     }
+
+  private def claimValue(index: Int, request: DataRequest[AnyContent], propertyType: PropertyType): String = {
+    val value = request.userAnswers.get(EsbaClaimPage(index, propertyType)).getOrElse(BigDecimal(0))
+    bigDecimalCurrency(value)
+  }
 }

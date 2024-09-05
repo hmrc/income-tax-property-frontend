@@ -37,7 +37,7 @@ object EsbaQualifyingAmountSummary {
           ActionItemViewModel(
             "site.change",
             controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
-              .onPageLoad(taxYear, index, CheckMode)
+              .onPageLoad(taxYear, index, CheckMode, propertyType)
               .url
           )
             .withVisuallyHiddenText(messages("esbaQualifyingAmount.change.hidden"))

@@ -36,22 +36,33 @@ object EsbaClaimAmountSummary {
         key = "esbaClaimAmount.checkYourAnswersLabel",
         value = ValueViewModel(bigDecimalCurrency(answer)),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.EsbaClaimController.onPageLoad(taxYear, CheckMode, index).url)
+          ActionItemViewModel(
+            "site.change",
+            routes.EsbaClaimController.onPageLoad(taxYear, CheckMode, index, propertyType).url
+          )
             .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
         )
       )
     }
 
-  def row(taxYear: Int, index: Int, claimValue: BigDecimal)(implicit messages: Messages): SummaryListRow = {
+  def row(taxYear: Int, index: Int, claimValue: BigDecimal, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): SummaryListRow = {
 
     val value = HtmlFormat.escape(bigDecimalCurrency(claimValue)).toString()
     SummaryListRowViewModel(
       key = KeyViewModel("esbaClaimAmount.checkYourAnswersLabel"),
       value = ValueViewModel(value),
       actions = Seq(
-        ActionItemViewModel("site.change", routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
+        ActionItemViewModel(
+          "site.change",
+          routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index, propertyType).url
+        )
           .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden")),
-        ActionItemViewModel("site.remove", routes.EsbaRemoveConfirmationController.onPageLoad(taxYear, index).url)
+        ActionItemViewModel(
+          "site.remove",
+          routes.EsbaRemoveConfirmationController.onPageLoad(taxYear, index, propertyType).url
+        )
           .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
       ),
       actionsCss = "w-25"

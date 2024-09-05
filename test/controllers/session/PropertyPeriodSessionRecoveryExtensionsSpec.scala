@@ -137,7 +137,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |                }
       |            }
       |        ]
-     |
+      |
       |        },
       |        "adjustments" : {
       |            "privateUseAdjustment" : 2,
@@ -215,26 +215,29 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(BalancingChargePage).get mustBe BalancingCharge(true, Some(3))
       updated.get(PropertyIncomeAllowancePage).get mustBe 4
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
-      updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(true, Some(23))
+      updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(
+        true,
+        Some(23)
+      )
       updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage).get mustBe 3
       updated.get(ClaimEsbaPage(Rentals)).get mustBe true
-      updated.get(EsbaAddressPage(0)).get mustBe EsbaAddress(
+      updated.get(EsbaAddressPage(0, Rentals)).get mustBe EsbaAddress(
         "12",
         "12",
         "EH1 AB1"
       )
-      updated.get(EsbaQualifyingDatePage(0)).get mustBe LocalDate.parse("2022-01-04")
-      updated.get(EsbaQualifyingAmountPage(0)).get mustBe 5
-      updated.get(EsbaClaimPage(0)).get mustBe 6
-      updated.get(EsbaAddressPage(1)).get mustBe EsbaAddress(
+      updated.get(EsbaQualifyingDatePage(0, Rentals)).get mustBe LocalDate.parse("2022-01-04")
+      updated.get(EsbaQualifyingAmountPage(0, Rentals)).get mustBe 5
+      updated.get(EsbaClaimPage(0, Rentals)).get mustBe 6
+      updated.get(EsbaAddressPage(1, Rentals)).get mustBe EsbaAddress(
         "2",
         "2",
         "EH1 AB1"
       )
-      updated.get(EsbaQualifyingDatePage(1)).get mustBe LocalDate.parse("2022-03-03")
-      updated.get(EsbaQualifyingAmountPage(1)).get mustBe 4
-      updated.get(EsbaClaimPage(1)).get mustBe 5
+      updated.get(EsbaQualifyingDatePage(1, Rentals)).get mustBe LocalDate.parse("2022-03-03")
+      updated.get(EsbaQualifyingAmountPage(1, Rentals)).get mustBe 4
+      updated.get(EsbaClaimPage(1, Rentals)).get mustBe 5
 
 // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
       updated.get(StructureBuildingQualifyingDatePage(0, Rentals)).get mustBe LocalDate.parse("2022-04-03")
