@@ -16,7 +16,8 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import models.{CheckMode, UserAnswers}
+import controllers.enhancedstructuresbuildingallowance.routes
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -25,21 +26,24 @@ import viewmodels.implicits._
 
 import java.time.format.DateTimeFormatter
 
-object EsbaQualifyingDateSummary  {
+object EsbaQualifyingDateSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaQualifyingDatePage(index)).map {
-      answer =>
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(EsbaQualifyingDatePage(index, propertyType)).map { answer =>
+      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-        val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
-        SummaryListRowViewModel(
-          key     = "esbaQualifyingDate.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.format(dateFormatter)),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingDateController.onPageLoad(taxYear, index, CheckMode).url)
-              .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
+      SummaryListRowViewModel(
+        key = "esbaQualifyingDate.checkYourAnswersLabel",
+        value = ValueViewModel(answer.format(dateFormatter)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.EsbaQualifyingDateController.onPageLoad(taxYear, index, CheckMode, propertyType).url
           )
+            .withVisuallyHiddenText(messages("esbaQualifyingDate.change.hidden"))
         )
+      )
     }
 }

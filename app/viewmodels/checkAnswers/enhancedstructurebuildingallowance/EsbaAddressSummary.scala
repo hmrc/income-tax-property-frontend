@@ -16,7 +16,8 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import models.{CheckMode, UserAnswers}
+import controllers.enhancedstructuresbuildingallowance.routes
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -25,21 +26,27 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object EsbaAddressSummary  {
+object EsbaAddressSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaAddressPage(index)).map {
-      answer =>
-        val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
-          HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(EsbaAddressPage(index, propertyType)).map { answer =>
+      val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" +
+        HtmlFormat.escape(answer.buildingNumber).toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 
-        SummaryListRowViewModel(
-          key     = "esbaAddress.checkYourAnswersLabel",
-          value   = ValueViewModel(HtmlContent(value)),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController.onPageLoad(taxYear, CheckMode, index).url)
-              .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))
+      SummaryListRowViewModel(
+        key = "esbaAddress.checkYourAnswersLabel",
+        value = ValueViewModel(HtmlContent(value)),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.EsbaAddressController
+              .onPageLoad(taxYear, CheckMode, index, propertyType)
+              .url
           )
+            .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))
         )
+      )
     }
 }

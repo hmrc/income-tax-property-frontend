@@ -36,14 +36,14 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaClaimsPage, _}
+import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.structurebuildingallowance._
 import pages.ukrentaroom._
-import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
+import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import play.api.mvc.Call
@@ -246,7 +246,10 @@ class Navigator @Inject() () {
     case StructureBuildingAllowancePage =>
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case SbaRemoveConfirmationPage(propertyType) =>
-      taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
 
         // Enhanced structured building allowance
     case ClaimEsbaPage(propertyType) =>
@@ -530,19 +533,19 @@ class Navigator @Inject() () {
             consolidatedExpensesNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, Rentals)
 
         // Enhanced structured building allowance
-    case EsbaQualifyingDatePage(index) =>
+    case EsbaQualifyingDatePage(index, Rentals) =>
       taxYear =>
         _ =>
           _ =>
             controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
               .onPageLoad(taxYear, index, CheckMode)
-    case EsbaQualifyingAmountPage(index) =>
+    case EsbaQualifyingAmountPage(index, propertyType) =>
       taxYear =>
         _ =>
           _ =>
-            controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController
+            controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
               .onPageLoad(taxYear, CheckMode, index)
-    case EsbaClaimAmountPage(index) =>
+    case EsbaClaimPage(index, propertyType) =>
       taxYear =>
         _ =>
           _ =>
@@ -609,7 +612,7 @@ class Navigator @Inject() () {
         checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
     }
 
-  def nextPage(
+  def sbaNextPage(
     page: Page,
     taxYear: Int,
     mode: Mode,
@@ -618,12 +621,12 @@ class Navigator @Inject() () {
     userAnswers: UserAnswers
   ): Call = mode match {
     case NormalMode =>
-      structureBuildingNormalRoutes(page, taxYear, index)
+      sbaNormalRoutes(page, taxYear, index)
     case CheckMode =>
-      structureBuildingCheckModeRoutes(page, taxYear, index)
+      sbaCheckModeRoutes(page, taxYear, index)
   }
 
-  private def structureBuildingNormalRoutes(
+  private def sbaNormalRoutes(
     page: Page,
     taxYear: Int,
     index: Int
@@ -639,7 +642,7 @@ class Navigator @Inject() () {
     case _ => IndexController.onPageLoad
   }
 
-  private def structureBuildingCheckModeRoutes(
+  private def sbaCheckModeRoutes(
     page: Page,
     taxYear: Int,
     index: Int
@@ -673,11 +676,13 @@ class Navigator @Inject() () {
     taxYear: Int,
     index: Int
   ): Call = page match {
-    case EsbaQualifyingDatePage(_)   => EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode)
-    case EsbaQualifyingAmountPage(_) => EsbaClaimAmountController.onPageLoad(taxYear, NormalMode, index)
-    case EsbaClaimAmountPage(_)      => EsbaAddressController.onPageLoad(taxYear, NormalMode, index)
-    case EsbaAddressPage(_)          => EsbaCheckYourAnswersController.onPageLoad(taxYear, index)
-    case _                           => IndexController.onPageLoad
+    case EsbaQualifyingDatePage(_, propertyType) =>
+      EsbaQualifyingAmountController.onPageLoad(taxYear, index, NormalMode, propertyType)
+    case EsbaQualifyingAmountPage(index, propertyType) =>
+      EsbaClaimController.onPageLoad(taxYear, NormalMode, index, propertyType)
+    case EsbaClaimPage(_, _)   => EsbaAddressController.onPageLoad(taxYear, NormalMode, index)
+    case EsbaAddressPage(_, _) => EsbaCheckYourAnswersController.onPageLoad(taxYear, index)
+    case _                     => IndexController.onPageLoad
   }
 
   private def esbaCheckModeRoutes(
@@ -685,7 +690,10 @@ class Navigator @Inject() () {
     taxYear: Int,
     index: Int
   ): Call = page match {
-    case EsbaQualifyingDatePage(_) | EsbaQualifyingAmountPage(_) | EsbaClaimAmountPage(_) | EsbaAddressPage(_) =>
+    case EsbaQualifyingDatePage(_, _) | EsbaQualifyingAmountPage(_, _) | EsbaClaimPage(_, _) | EsbaAddressPage(
+          _,
+          _
+        ) =>
       EsbaCheckYourAnswersController.onPageLoad(taxYear, index)
     case _ => IndexController.onPageLoad
   }

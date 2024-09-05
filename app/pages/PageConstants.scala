@@ -23,7 +23,7 @@ object PageConstants {
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
   val sbasWithSupportingQuestions = "sbasWithSupportingQuestions"
 
-  val esbas: String = "esbas"
+  val esbas: String = "enhancedStructuresBuildingsAllowance"
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
   val propertyAbout: String = "propertyAbout"
@@ -51,6 +51,7 @@ object PageConstants {
   val eSbaPath: PropertyType => String = labelForPropertyType(_, "ESBA")
 
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
+
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
 
 }

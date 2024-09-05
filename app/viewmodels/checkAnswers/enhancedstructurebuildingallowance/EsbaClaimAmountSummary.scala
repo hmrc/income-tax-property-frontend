@@ -17,8 +17,8 @@
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
 import controllers.enhancedstructuresbuildingallowance.routes
-import models.{CheckMode, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaClaimAmountPage
+import models.{CheckMode, PropertyType, UserAnswers}
+import pages.enhancedstructuresbuildingallowance.EsbaClaimPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,18 +28,18 @@ import viewmodels.implicits._
 
 object EsbaClaimAmountSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaClaimAmountPage(index)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key = "esbaClaimAmount.checkYourAnswersLabel",
-          value = ValueViewModel(bigDecimalCurrency(answer)),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.EsbaClaimAmountController.onPageLoad(taxYear, CheckMode, index).url)
-              .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
-          )
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(EsbaClaimPage(index, propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = "esbaClaimAmount.checkYourAnswersLabel",
+        value = ValueViewModel(bigDecimalCurrency(answer)),
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.EsbaClaimController.onPageLoad(taxYear, CheckMode, index).url)
+            .withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
         )
+      )
     }
 
   def row(taxYear: Int, index: Int, claimValue: BigDecimal)(implicit messages: Messages): SummaryListRow = {

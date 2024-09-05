@@ -68,7 +68,7 @@ class StructuredBuildingAllowanceAddressController @Inject() (
                   .fromTry(request.userAnswers.set(StructuredBuildingAllowanceAddressPage(index, propertyType), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(
+              navigator.sbaNextPage(
                 StructuredBuildingAllowanceAddressPage(index, propertyType),
                 taxYear,
                 mode,

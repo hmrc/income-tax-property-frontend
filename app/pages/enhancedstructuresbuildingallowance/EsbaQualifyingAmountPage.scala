@@ -16,13 +16,14 @@
 
 package pages.enhancedstructuresbuildingallowance
 
+import models.PropertyType
 import pages.PageConstants._
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class EsbaQualifyingAmountPage(index: Int) extends QuestionPage[BigDecimal] {
+case class EsbaQualifyingAmountPage(index: Int, propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbas \ index \ toString
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ esbas \ index \ toString
 
   override def toString: String = "esbaQualifyingAmount"
 }

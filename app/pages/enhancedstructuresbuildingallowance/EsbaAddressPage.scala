@@ -16,14 +16,15 @@
 
 package pages.enhancedstructuresbuildingallowance
 
-import models.EsbaAddress
+import models.{EsbaAddress, PropertyType}
 import pages.PageConstants._
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class EsbaAddressPage(index: Int) extends QuestionPage[EsbaAddress] {
+case class EsbaAddressPage(index: Int, propertyType: PropertyType) extends QuestionPage[EsbaAddress] {
 
-  override def path: JsPath = JsPath \ esbasWithSupportingQuestions \ esbas \ index \ toString
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ esbas \ index \ toString
+
   override def toString: String = "esbaAddress"
 
 }

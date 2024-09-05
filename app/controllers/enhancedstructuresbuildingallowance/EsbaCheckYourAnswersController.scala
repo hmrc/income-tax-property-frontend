@@ -19,7 +19,7 @@ package controllers.enhancedstructuresbuildingallowance
 import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, JourneyContext}
+import models.{EsbasWithSupportingQuestions, JourneyContext, PropertyType}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
@@ -44,26 +44,26 @@ class EsbaCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          EsbaQualifyingDateSummary.row(taxYear, index, request.userAnswers),
-          EsbaQualifyingAmountSummary.row(taxYear, index, request.userAnswers),
-          EsbaClaimAmountSummary.row(taxYear, index, request.userAnswers),
-          EsbaAddressSummary.row(taxYear, index, request.userAnswers)
+          EsbaQualifyingDateSummary.row(taxYear, index, request.userAnswers, propertyType),
+          EsbaQualifyingAmountSummary.row(taxYear, index, request.userAnswers, propertyType),
+          EsbaClaimAmountSummary.row(taxYear, index, request.userAnswers, propertyType),
+          EsbaAddressSummary.row(taxYear, index, request.userAnswers, propertyType)
         ).flatten
       )
       Ok(view(list, taxYear))
-  }
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions] =
         request.userAnswers.get(EsbasWithSupportingQuestions)
       saveEsba(taxYear, request, esbasWithSupportingQuestions)
 
-  }
+    }
 
   private def saveEsba(
     taxYear: Int,
