@@ -18,7 +18,7 @@ package controllers.adjustments
 
 import controllers.actions._
 import forms.adjustments.PrivateUseAdjustmentFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.adjustments.PrivateUseAdjustmentPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,41 +30,48 @@ import views.html.adjustments.PrivateUseAdjustmentView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PrivateUseAdjustmentController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: PrivateUseAdjustmentFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: PrivateUseAdjustmentView
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class PrivateUseAdjustmentController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: PrivateUseAdjustmentFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PrivateUseAdjustmentView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(PrivateUseAdjustmentPage) match {
-        case None => form
+      val preparedForm = request.userAnswers.get(PrivateUseAdjustmentPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
-  }
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PrivateUseAdjustmentPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PrivateUseAdjustmentPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PrivateUseAdjustmentPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(PrivateUseAdjustmentPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }
