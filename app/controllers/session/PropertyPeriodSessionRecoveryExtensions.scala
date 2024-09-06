@@ -107,7 +107,9 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(BalancingChargePage(Rentals), adjustments.balancingCharge)
             ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
-            ua3 <- ua2.set(PropertyIncomeAllowancePage, adjustments.propertyIncomeAllowance)
+            ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
+            ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
+            ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
             ua4 <- ua3.set(RenovationAllowanceBalancingChargePage(Rentals), adjustments.renovationAllowanceBalancingCharge)
             ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
             ua6 <- ua5.set(UnusedResidentialFinanceCostPage, adjustments.unusedResidentialFinanceCost)

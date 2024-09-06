@@ -19,7 +19,7 @@ package controllers.adjustments
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
 import models.TotalIncomeUtils.{incomeAndBalancingChargeCombined, maxAllowedPIA}
-import models.{Mode, Rentals}
+import models.{Mode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -44,20 +44,20 @@ class PropertyIncomeAllowanceController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val combinedAmount = incomeAndBalancingChargeCombined(request.userAnswers, Rentals)
+      val combinedAmount = incomeAndBalancingChargeCombined(request.userAnswers, propertyType)
       val form = formProvider(request.user.isAgentMessageKey, combinedAmount)
-      val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage) match {
+      val preparedForm = request.userAnswers.get(PropertyIncomeAllowancePage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAmount)))
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAmount), propertyType))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val combinedAllowance = incomeAndBalancingChargeCombined(request.userAnswers, Rentals)
+      val combinedAllowance = incomeAndBalancingChargeCombined(request.userAnswers, propertyType)
       val form = formProvider(request.user.isAgentMessageKey, combinedAllowance)
       form
         .bindFromRequest()
@@ -65,15 +65,15 @@ class PropertyIncomeAllowanceController @Inject() (
           formWithErrors =>
             Future.successful(
               BadRequest(
-                view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAllowance))
+                view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, maxAllowedPIA(combinedAllowance), propertyType)
               )
             ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyIncomeAllowancePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PropertyIncomeAllowancePage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(PropertyIncomeAllowancePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(PropertyIncomeAllowancePage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }
