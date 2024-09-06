@@ -25,6 +25,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
 import controllers.rentalsandrentaroom.routes
+import controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
 import controllers.ukrentaroom.adjustments.routes._
@@ -156,6 +157,12 @@ class Navigator @Inject() () {
 
         //
     case PrivateUseAdjustmentPage(Rentals) =>
+      taxYear =>
+        _ =>
+          _ =>
+            BalancingChargeController.onPageLoad(taxYear, NormalMode)
+        // TODO pass the correct propertyType here i.e. RentalsRentARoom
+    case PrivateUseAdjustmentPage(RentalsRentARoom) =>
       taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode)
     case BalancingChargePage => taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
     case PropertyIncomeAllowancePage =>
@@ -247,7 +254,10 @@ class Navigator @Inject() () {
     case StructureBuildingAllowancePage =>
       taxYear => _ => _ => ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case SbaRemoveConfirmationPage(propertyType) =>
-      taxYear => _ => userAnswers => sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
 
         // Enhanced structured building allowance
     case ClaimEsbaPage(propertyType) =>
@@ -484,7 +494,15 @@ class Navigator @Inject() () {
     case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(
           Rentals
         ) | ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
-      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          _ =>
+            AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        // TODO add the correct property type here i.e. RentalsRentARoom
+    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage |
+        RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
+        UnusedResidentialFinanceCostPage =>
+      taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage =>
       taxYear =>
         previousUserAnswers =>
@@ -599,7 +617,7 @@ class Navigator @Inject() () {
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ =>
-      taxYear => _ => userAnswers => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
   }
 
