@@ -50,8 +50,8 @@ class AdjustmentsCheckYourAnswersController @Inject() (
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
+          BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
-          BalancingChargeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers),
           RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
