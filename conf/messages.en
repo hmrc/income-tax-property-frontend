@@ -486,7 +486,6 @@ balancingCharge.checkYourAnswersLabel = Balancing charge
 balancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
 balancingCharge.error.required.individual = Select yes if you have to report a balancing charge
 balancingCharge.change.hidden = Balancing charge
-balancingCharge.details.heading = Understanding balancing charge
 balancingCharge.details.line1 = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
 balancingCharge.details.line2 = Any balancing charges are regarded as income if you’re claiming property income allowance.
 balancingCharge.details.line2.link.text = Not Required, will default to some value

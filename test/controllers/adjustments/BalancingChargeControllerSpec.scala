@@ -18,7 +18,8 @@ package controllers.adjustments
 
 import base.SpecBase
 import forms.adjustments.BalancingChargeFormProvider
-import models.{BalancingCharge, NormalMode, UserAnswers}
+import models.Rentals
+import models.{BalancingCharge, NormalMode, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -40,65 +41,130 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute: Call = Call("GET", "/balanceCharge")
 
   val taxYear: Int = LocalDate.now.getYear
-  lazy val totalIncomeRoute: String = routes.BalancingChargeController.onPageLoad(taxYear, NormalMode).url
+  lazy val rentalsBalancingChargeRoute: String =
+    routes.BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val rentalsRentARoomBalancingChargeRoute: String =
+    routes.BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   val formProvider = new BalancingChargeFormProvider()
   val form: Form[BalancingCharge] = formProvider("agent")
 
   "BalancingCharge Controller" - {
 
-    "must return OK and the correct view for a GET when an individual" in {
+    "must return OK and the correct view for a GET when an individual for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      val view = application.injector.instanceOf[BalancingChargeView]
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
+        // Rentals
+        val rentalsRequest = FakeRequest(GET, rentalsBalancingChargeRoute)
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val result = route(application, request).value
+        status(rentalsResult) mustEqual OK
+        contentAsString(rentalsResult) mustEqual view(form, taxYear, NormalMode, "individual", Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        val view = application.injector.instanceOf[BalancingChargeView]
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest = FakeRequest(GET, rentalsRentARoomBalancingChargeRoute)
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(request, messages(application)).toString
+        status(rentalsRentARoomResult) mustEqual OK
+        contentAsString(rentalsRentARoomResult) mustEqual view(
+          form,
+          taxYear,
+          NormalMode,
+          "individual",
+          RentalsRentARoom
+        )(
+          rentalsRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
 
-    "must return OK and the correct view for a GET when an agent" in {
+    "must return OK and the correct view for a GET when an agent for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val view = application.injector.instanceOf[BalancingChargeView]
 
       running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
 
-        val result = route(application, request).value
+        // Rentals
+        val rentalsRequest = FakeRequest(GET, rentalsBalancingChargeRoute)
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val view = application.injector.instanceOf[BalancingChargeView]
+        status(rentalsResult) mustEqual OK
+        contentAsString(rentalsResult) mustEqual view(form, taxYear, NormalMode, "agent", Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "agent")(request, messages(application)).toString
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest = FakeRequest(GET, rentalsRentARoomBalancingChargeRoute)
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual OK
+        contentAsString(rentalsRentARoomResult) mustEqual view(form, taxYear, NormalMode, "agent", RentalsRentARoom)(
+          rentalsRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "must populate the view correctly on a GET when the question has previously been answered for both Rentals and Rentals and Rent a Room journeys" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23))).success.value
+      // Rentals
+      val rentalsUserAnswers = UserAnswers(userAnswersId)
+        .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .success
+        .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
+      val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), isAgent = true).build()
 
-      running(application) {
-        val request = FakeRequest(GET, totalIncomeRoute)
-
-        val view = application.injector.instanceOf[BalancingChargeView]
-
-        val result = route(application, request).value
+      running(rentalsApplication) {
+        val request = FakeRequest(GET, rentalsBalancingChargeRoute)
+        val view = rentalsApplication.injector.instanceOf[BalancingChargeView]
+        val result = route(rentalsApplication, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
-          taxYear, NormalMode, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          taxYear,
+          NormalMode,
+          "agent",
+          Rentals
+        )(request, messages(rentalsApplication)).toString
+      }
+
+      // Rentals and Rent a Room
+      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
+        .set(BalancingChargePage(RentalsRentARoom), BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .success
+        .value
+
+      val rentalsRentARoomApplication =
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), isAgent = true).build()
+
+      running(rentalsRentARoomApplication) {
+        val request = FakeRequest(GET, rentalsRentARoomBalancingChargeRoute)
+        val view = rentalsRentARoomApplication.injector.instanceOf[BalancingChargeView]
+        val result = route(rentalsRentARoomApplication, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(
+          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          taxYear,
+          NormalMode,
+          "agent",
+          RentalsRentARoom
+        )(request, messages(rentalsApplication)).toString
       }
     }
 
-    "must redirect to the next page when valid data is submitted for yes" in {
+    "must redirect to the next page when valid data is submitted for yes for both Rentals and Rentals and Rent a Room journeys" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -113,34 +179,67 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, totalIncomeRoute)
+        // Rentals
+        val rentalsRequest =
+          FakeRequest(POST, rentalsBalancingChargeRoute)
             .withFormUrlEncodedBody("balancingChargeYesNo" -> "false")
 
-        val result = route(application, request).value
+        val result = route(application, rentalsRequest).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
+
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomBalancingChargeRoute)
+            .withFormUrlEncodedBody("balancingChargeYesNo" -> "false")
+
+        val rentalsResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsResult) mustEqual SEE_OTHER
+        redirectLocation(rentalsResult).value mustEqual onwardRoute.url
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "must return a Bad Request and errors when invalid data is submitted for both Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val boundForm = form.bind(Map("balancingChargeAmount" -> "87.858585"))
+      val view = application.injector.instanceOf[BalancingChargeView]
 
       running(application) {
-        val request =
-          FakeRequest(POST, totalIncomeRoute)
+
+        // Rentals
+        val rentalsRequest =
+          FakeRequest(POST, rentalsBalancingChargeRoute)
             .withFormUrlEncodedBody(("balancingChargeAmount", "87.858585"))
 
-        val boundForm = form.bind(Map("balancingChargeAmount" -> "87.858585"))
+        val rentalsResult = route(application, rentalsRequest).value
 
-        val view = application.injector.instanceOf[BalancingChargeView]
+        status(rentalsResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsResult) mustEqual view(boundForm, taxYear, NormalMode, "agent", Rentals)(
+          rentalsRequest,
+          messages(application)
+        ).toString
 
-        val result = route(application, request).value
+        // Rentals and Rent a Room
+        val rentalsRentARoomRequest =
+          FakeRequest(POST, rentalsRentARoomBalancingChargeRoute)
+            .withFormUrlEncodedBody(("balancingChargeAmount", "87.858585"))
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "agent")(request, messages(application)).toString
+        val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
+
+        status(rentalsRentARoomResult) mustEqual BAD_REQUEST
+        contentAsString(rentalsRentARoomResult) mustEqual view(
+          boundForm,
+          taxYear,
+          NormalMode,
+          "agent",
+          RentalsRentARoom
+        )(
+          rentalsRentARoomRequest,
+          messages(application)
+        ).toString
       }
     }
   }

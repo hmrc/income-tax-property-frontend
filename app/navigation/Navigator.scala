@@ -157,14 +157,13 @@ class Navigator @Inject() () {
 
         //
     case PrivateUseAdjustmentPage(Rentals) =>
-      taxYear =>
-        _ =>
-          _ =>
-            BalancingChargeController.onPageLoad(taxYear, NormalMode)
-        // TODO pass the correct propertyType here i.e. RentalsRentARoom
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case PrivateUseAdjustmentPage(RentalsRentARoom) =>
-      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode)
-    case BalancingChargePage => taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case BalancingChargePage(Rentals) =>
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+    case BalancingChargePage(RentalsRentARoom) =>
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case PropertyIncomeAllowancePage =>
       taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case RenovationAllowanceBalancingChargePage(Rentals) =>
@@ -503,11 +502,11 @@ class Navigator @Inject() () {
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
         UnusedResidentialFinanceCostPage =>
       taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-    case BalancingChargePage =>
+    case BalancingChargePage(Rentals) =>
       taxYear =>
         previousUserAnswers =>
           userAnswers =>
-            balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+            balancingChargeNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, Rentals)
           // expenses
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
@@ -834,9 +833,13 @@ class Navigator @Inject() () {
   private def balancingChargeNavigationCheckMode(
     taxYear: Int,
     previousUserAnswers: UserAnswers,
-    userAnswers: UserAnswers
+    userAnswers: UserAnswers,
+    propertyType: PropertyType
   ): Call =
-    (userAnswers.get(BalancingChargePage), previousUserAnswers.get(BalancingChargePage)) match {
+    (
+      userAnswers.get(BalancingChargePage(propertyType)),
+      previousUserAnswers.get(BalancingChargePage(propertyType))
+    ) match {
       case (Some(current), Some(previous))
           if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
             current.balancingChargeAmount == previous.balancingChargeAmount =>

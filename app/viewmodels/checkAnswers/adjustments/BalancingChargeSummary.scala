@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{BalancingCharge, CheckMode, UserAnswers}
+import models.{BalancingCharge, CheckMode, PropertyType, UserAnswers}
 import pages.adjustments.BalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,14 +27,14 @@ import viewmodels.implicits._
 
 object BalancingChargeSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(BalancingChargePage).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(BalancingChargePage(propertyType)).flatMap {
       case BalancingCharge(true, amount) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
       case BalancingCharge(false, _) =>
@@ -42,7 +42,7 @@ object BalancingChargeSummary {
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("balancingCharge.change.hidden"))
           )
         ))

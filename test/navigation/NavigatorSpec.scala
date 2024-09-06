@@ -584,12 +584,12 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode)
+        ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from BalancingChargePage to PropertyIncomeAllowancePage" in {
         navigator.nextPage(
-          BalancingChargePage,
+          BalancingChargePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1358,10 +1358,10 @@ class NavigatorSpec extends SpecBase {
 
       "must go from BalancingChargePage to AdjustmentsCheckYourAnswersPage if no change in user-answers" in {
         val userAnswers = UserAnswers("test")
-          .set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
+          .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
           .get
         navigator.nextPage(
-          BalancingChargePage,
+          BalancingChargePage(Rentals),
           taxYear,
           CheckMode,
           userAnswers,
@@ -1371,12 +1371,12 @@ class NavigatorSpec extends SpecBase {
 
       "must go from BalancingChargePage to PropertyIncomeAllowancePage if change in user-answers" in {
         val previousUserAnswers = UserAnswers("test")
-          .set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
+          .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
           .get
         val userAnswers =
-          UserAnswers("test").set(BalancingChargePage, BalancingCharge(balancingChargeYesNo = false, None)).get
+          UserAnswers("test").set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = false, None)).get
         navigator.nextPage(
-          BalancingChargePage,
+          BalancingChargePage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,

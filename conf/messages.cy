@@ -372,7 +372,6 @@ balancingCharge.checkYourAnswersAmountLabel	=	Ffigur hunangyfrifedig
 
 balancingCharge.checkYourAnswersLabel	=	Tâl mantoli
 balancingCharge.change.hidden	=	Tâl mantoli
-balancingCharge.details.heading	=	Deall tâl mantoli
 balancingCharge.details.line1	=	Os gwnaethoch werthu, rhoi am ddim neu roi’r gorau i ddefnyddio eitem yn eich busnes y buoch yn hawlio lwfansau cyfalaf ar ei chyfer, efallai y bydd yn rhaid i chi gynnwys tâl mantoli.
 balancingCharge.details.line2	=	Ystyrir unrhyw daliadau mantoli yn incwm os ydych yn hawlio lwfans incwm o eiddo.
 balancingCharge.details.line2.link.text	=	Bydd ‘Nid yw’n ofynnol’ yn newid i ryw werth yn ddiofyn.
