@@ -105,7 +105,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(adjustments) =>
           for {
-            ua1 <- userAnswers.set(BalancingChargePage, adjustments.balancingCharge)
+            ua1 <- userAnswers.set(BalancingChargePage(Rentals), adjustments.balancingCharge)
             ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
             ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
             ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
