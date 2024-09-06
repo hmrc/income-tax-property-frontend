@@ -164,7 +164,7 @@ class Navigator @Inject() () {
       taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case BalancingChargePage(RentalsRentARoom) =>
       taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-    case PropertyIncomeAllowancePage =>
+    case PropertyIncomeAllowancePage(Rentals) =>
       taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
     case RenovationAllowanceBalancingChargePage(Rentals) =>
       taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
@@ -490,7 +490,8 @@ class Navigator @Inject() () {
             controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
               .onPageLoad(taxYear)
         // Adjustments
-    case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage | RenovationAllowanceBalancingChargePage(
+    case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage(Rentals) |
+        RenovationAllowanceBalancingChargePage(
           Rentals
         ) | ResidentialFinanceCostPage(Rentals) | UnusedResidentialFinanceCostPage =>
       taxYear =>
@@ -844,7 +845,7 @@ class Navigator @Inject() () {
           if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
             current.balancingChargeAmount == previous.balancingChargeAmount =>
         AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode)
+      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, Rentals)
     }
 
   private def totalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =

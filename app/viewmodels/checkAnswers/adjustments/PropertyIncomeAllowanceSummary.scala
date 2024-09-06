@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,15 +27,15 @@ import viewmodels.implicits._
 
 object PropertyIncomeAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PropertyIncomeAllowancePage).map {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(PropertyIncomeAllowancePage(propertyType)).map {
       answer =>
 
         SummaryListRowViewModel(
           key = KeyViewModel("propertyIncomeAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("propertyIncomeAllowance.change.hidden"))
           )
         )
