@@ -254,7 +254,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimEsbaPage(Rentals),
                      esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance
                    )
-            ua2 <- ua1.set(EsbaClaimsPage, esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
+            ua2 <- ua1.set(EsbaClaimsPage(Rentals), esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
             ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas)
           } yield ua3
       }

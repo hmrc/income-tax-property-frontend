@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, NormalMode, PropertyType}
+import models.{NormalMode, PropertyType}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
@@ -29,7 +29,7 @@ import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaSummary
@@ -74,7 +74,7 @@ class EsbaClaimsController @Inject() (
               BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, propertyType))
             ),
           value => {
-            request.userAnswers.get(Esbas) match {
+            request.userAnswers.get(Esbas(propertyType)) match {
               case Some(esbas) if !value =>
                 auditCYA(taxYear, request, esbas)
               case None =>
@@ -83,10 +83,10 @@ class EsbaClaimsController @Inject() (
             }
 
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(EsbaClaimsPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
           }
         )
@@ -115,8 +115,7 @@ class EsbaClaimsController @Inject() (
     val esbasEntries =
       request.userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)).toSeq.flatten
 
-    val rows = esbasEntries.zipWithIndex.flatMap { esbaWithIndex =>
-      val (_, index) = esbaWithIndex
+    val rows = esbasEntries.zipWithIndex.flatMap { case (_, index) =>
       EsbaSummary.row(taxYear, index, request.userAnswers, propertyType)
     }
 

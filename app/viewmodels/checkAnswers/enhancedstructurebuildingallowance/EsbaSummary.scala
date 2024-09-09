@@ -30,7 +30,7 @@ object EsbaSummary {
   def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(EsbaOnIndex(index)).map { answer =>
+    answers.get(EsbaOnIndex(index, propertyType)).map { answer =>
       val value = HtmlFormat.escape(answer.esbaAddress.buildingName).toString + ", " +
         HtmlFormat.escape(answer.esbaAddress.buildingNumber).toString + ", " + HtmlFormat
           .escape(answer.esbaAddress.postCode)
