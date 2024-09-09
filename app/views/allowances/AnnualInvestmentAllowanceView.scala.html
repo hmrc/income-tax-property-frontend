@@ -39,6 +39,7 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+                <h3 class="govuk-heading-s">@messages("annualInvestmentAllowance.details.combinedJourneySpecific")</h3>
                 <p class="govuk-body">@messages(s"annualInvestmentAllowance.details.content1.$individualOrAgent")</p>
                 <p class="govuk-body">@messages("annualInvestmentAllowance.details.content2")</p>
                 <ul class="govuk-list govuk-list--bullet">
@@ -65,6 +66,7 @@
                 field = form("annualInvestmentAllowanceAmount"),
                 label = LabelViewModel(messages(s"annualInvestmentAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
             )
+            .withHint(HintViewModel(messages("amount.hint")))
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
         )

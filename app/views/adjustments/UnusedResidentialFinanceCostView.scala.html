@@ -27,33 +27,26 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType )(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("unusedResidentialFinanceCost.title"))) {
 
     <h1 class="govuk-heading-l">@messages("unusedResidentialFinanceCost.heading")</h1>
 
-    @formHelper(action = routes.UnusedResidentialFinanceCostController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.UnusedResidentialFinanceCostController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                @messages("unusedResidentialFinanceCost.details.content.text")
-                </span>
-            </summary>
-            <div class="govuk-details__text">
+
                 <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.content")</p>
                 <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.intro")
                     <a href="@messages("unusedResidentialFinanceCost.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                     @messages("unusedResidentialFinanceCost.details.content.link.text")
                     </a>
                 </p>
-            </div>
-        </details>
+
 
         @govukInput(
             InputViewModel(

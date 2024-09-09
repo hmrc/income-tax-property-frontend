@@ -112,7 +112,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
             ua4 <- ua3.set(RenovationAllowanceBalancingChargePage(Rentals), adjustments.renovationAllowanceBalancingCharge)
             ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
-            ua6 <- ua5.set(UnusedResidentialFinanceCostPage, adjustments.unusedResidentialFinanceCost)
+            ua6 <- ua5.set(UnusedResidentialFinanceCostPage(Rentals), adjustments.unusedResidentialFinanceCost)
           } yield ua6
       }
 
