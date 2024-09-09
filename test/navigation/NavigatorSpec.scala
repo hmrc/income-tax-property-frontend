@@ -624,12 +624,12 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+        ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from UnusedResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          UnusedResidentialFinanceCostPage,
+          UnusedResidentialFinanceCostPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
@@ -1416,7 +1416,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from UnusedResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
         navigator.nextPage(
-          UnusedResidentialFinanceCostPage,
+          UnusedResidentialFinanceCostPage(Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
