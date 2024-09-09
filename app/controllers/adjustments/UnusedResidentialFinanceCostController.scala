@@ -18,7 +18,7 @@ package controllers.adjustments
 
 import controllers.actions._
 import forms.adjustments.UnusedResidentialFinanceCostFormProvider
-import models.{Mode, UserAnswers}
+import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
 import pages.adjustments.UnusedResidentialFinanceCostPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,46 +31,48 @@ import views.html.adjustments.UnusedResidentialFinanceCostView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnusedResidentialFinanceCostController @Inject()(
-                                                        override val messagesApi: MessagesApi,
-                                                        sessionRepository: SessionRepository,
-                                                        navigator: Navigator,
-                                                        identify: IdentifierAction,
-                                                        getData: DataRetrievalAction,
-                                                        requireData: DataRequiredAction,
-                                                        formProvider: UnusedResidentialFinanceCostFormProvider,
-                                                        val controllerComponents: MessagesControllerComponents,
-                                                        view: UnusedResidentialFinanceCostView,
-                                                        sessionService: SessionService
-                                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UnusedResidentialFinanceCostController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UnusedResidentialFinanceCostFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UnusedResidentialFinanceCostView,
+  sessionService: SessionService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {
-        sessionService.createNewEmptySession(request.userId)
-      }
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UnusedResidentialFinanceCostPage) match {
-        case None => form
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    val form = formProvider(request.user.isAgentMessageKey)
+    if (request.userAnswers.isEmpty) {
+      sessionService.createNewEmptySession(request.userId)
+    }
+    val preparedForm =
+      request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UnusedResidentialFinanceCostPage(propertyType)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
+    Ok(view(preparedForm, taxYear, mode, propertyType))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnusedResidentialFinanceCostPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UnusedResidentialFinanceCostPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UnusedResidentialFinanceCostPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(UnusedResidentialFinanceCostPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

@@ -382,7 +382,6 @@ balancingCharge.label	=	Nodwch y ffigur
 
 unusedResidentialFinanceCost.title	=	Costau ariannol preswyl sydd heb eu defnyddio a ddygwyd ymlaen
 unusedResidentialFinanceCost.heading	=	Costau ariannol preswyl sydd heb eu defnyddio a ddygwyd ymlaen
-unusedResidentialFinanceCost.details.content.text	=	Deall costau ariannol preswyl sydd heb eu defnyddio a ddygwyd ymlaen
 unusedResidentialFinanceCost.details.content.link.content	=	Gallwch ddwyn unrhyw falans o gostau ariannol preswyl sydd heb eu defnyddio o hyd ymlaen i flynyddoedd yn y dyfodol ar gyfer yr un eiddo wedi’i rentu.
 unusedResidentialFinanceCost.details.content.link.intro	=	Darllenwch ragor am
 unusedResidentialFinanceCost.details.content.link.text	=	ryddhad treth i landlordiaid preswyl, ar GOV.UK (yn agor tab newydd)
