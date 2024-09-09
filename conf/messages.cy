@@ -712,10 +712,10 @@ zeroEmissionGoodsVehicleAllowance.change.hidden	=	Lwfans allyriadau sero ar gyfe
 
 otherCapitalAllowance.title	=	Lwfansau cyfalaf eraill
 otherCapitalAllowance.heading	=	Lwfansau cyfalaf eraill
-otherCapitalAllowance.heading.agent	=	Faint o Lwfansau cyfalaf eraill hoffai’ch cleient eu hawlio?
-otherCapitalAllowance.details.content.link.text	=	Deall lwfansau cyfalaf eraill
-otherCapitalAllowance.details.content1.individual	=	Gallwch hawlio lwfansau cyfalaf ar gyfer unrhyw gyfarpar neu gerbydau eraill ar gyfer eich eiddo wedi’u rhentu (ac eithrio lletyau preswyl eraill wedi’u dodrefnu).
-otherCapitalAllowance.details.content2	=	Ni allwch hawlio lwfansau cyfalaf os ydych yn hawlio’r lwfans incwm o eiddo neu’ch bod yn defnyddio’r sail arian parod. Yr unig eithriad i’r rhai hynny sy’n defnyddio’r sail arian parod (a ddim yn hawlio’r lwfans incwm masnachu) yw ceir.
+otherCapitalAllowance.details.content1.individual	=	*Missing Welsh*
+otherCapitalAllowance.details.content1.agent	=	*Missing Welsh*
+otherCapitalAllowance.details.content2.individual	=	*Missing Welsh*
+otherCapitalAllowance.details.content2.agent	=	*Missing Welsh*
 otherCapitalAllowance.details.content2.l1	=	Darllenwch ragor am
 otherCapitalAllowance.details.content2.l1.subtext	=	lwfans cyfalaf a thaliadau mantoli ar GOV.UK (yn agor tab newydd)
 otherCapitalAllowance.input.heading.individual	=	Faint yw’ch lwfansau cyfalaf eraill?
