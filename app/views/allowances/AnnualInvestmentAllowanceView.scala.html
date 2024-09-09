@@ -66,6 +66,7 @@
                 field = form("annualInvestmentAllowanceAmount"),
                 label = LabelViewModel(messages(s"annualInvestmentAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
             )
+            .withHint(HintViewModel(messages("amount.hint")))
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
         )

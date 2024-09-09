@@ -14,17 +14,17 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
-@import viewmodels.LabelSize
 @import controllers.allowances.routes._
 @import models.PropertyType
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukInput: GovukInput,
-govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
 
@@ -32,35 +32,37 @@ govukButton: GovukButton
 
 @layout(pageTitle = title(form, messages("zeroEmissionCarAllowance.title"))) {
 
-<h1 class="govuk-heading-l">@messages("zeroEmissionCarAllowance.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("zeroEmissionCarAllowance.heading")</h1>
 
-@formHelper(action = ZeroEmissionCarAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ZeroEmissionCarAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
-@if(form.errors.nonEmpty) {
-@govukErrorSummary(ErrorSummaryViewModel(form))
-}
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
 
-<div class="govuk-body">
-    <p>@messages(s"zeroEmissionCarAllowance.details.content.l1.$individualOrAgent")</p>
-    <p>@messages(s"zeroEmissionCarAllowance.details.content.l2.$individualOrAgent")</p>
+        <div class="govuk-body">
+            <p>@messages(s"zeroEmissionCarAllowance.details.content.l1.$individualOrAgent")</p>
+            <p>@messages(s"zeroEmissionCarAllowance.details.content.l2.$individualOrAgent")</p>
+            <p>@messages(s"zeroEmissionCarAllowance.details.content.l3.$individualOrAgent")</p>
 
-    <p class="govuk-body">@messages("zeroEmissionCarAllowance.details.content.link.intro")
-        <a href="@messages("zeroEmissionCarAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-        @messages("zeroEmissionCarAllowance.details.link.text")
-        </a>
-    </p>
-</div>
+            <p class="govuk-body">@messages("zeroEmissionCarAllowance.details.content.link.intro")
+                <a href="@messages("zeroEmissionCarAllowance.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("zeroEmissionCarAllowance.details.link.text")
+                </a>
+            </p>
+        </div>
 
-    @govukInput(
-        InputViewModel(
-            field = form("zeroEmissionCarAllowanceAmount"),
-            label = LabelViewModel(messages(s"zeroEmissionCarAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
+        @govukInput(
+            InputViewModel(
+                field = form("zeroEmissionCarAllowanceAmount"),
+                label = LabelViewModel(messages(s"zeroEmissionCarAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
+            )
+            .withHint(HintViewModel(messages("amount.hint")))
+            .asNumeric()
+            .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
         )
-        .asNumeric()
-        .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
-    )
 
-    @govukButton(ButtonViewModel(messages("site.continue")).withId("continue"))
+        @govukButton(ButtonViewModel(messages("site.continue")).withId("continue"))
 
     }
 }

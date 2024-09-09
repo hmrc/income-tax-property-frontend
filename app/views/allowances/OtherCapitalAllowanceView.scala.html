@@ -14,10 +14,10 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
-@import viewmodels.LabelSize
 @import controllers.allowances.routes._
 @import models.PropertyType
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
 
 @this(
     layout: templates.Layout,
@@ -41,7 +41,7 @@
 
         <div class="govuk-body">
                 <p class="govuk-body">@messages(s"otherCapitalAllowance.details.content1.$individualOrAgent")</p>
-                <p class="govuk-body">@messages("otherCapitalAllowance.details.content2")</p>
+                <p class="govuk-body">@messages(s"otherCapitalAllowance.details.content2.$individualOrAgent")</p>
                 <p class="govuk-body">@messages("otherCapitalAllowance.details.content2.l1")
                         <a href="@messages("otherCapitalAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                         @messages("otherCapitalAllowance.details.content2.l1.subtext")</a>
@@ -53,6 +53,7 @@
                 field = form("otherCapitalAllowanceAmount"),
                 label = LabelViewModel(messages(s"otherCapitalAllowance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
             )
+            .withHint(HintViewModel(messages("amount.hint")))
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
         )
