@@ -667,6 +667,7 @@ annualInvestmentAllowance.details.content3.l1	=	ceir busnes
 annualInvestmentAllowance.details.content3.l2.individual	=	eitemau roeddech yn berchen arnynt am reswm arall cyn i chi ddechrau eu defnyddio yn eich busnes
 annualInvestmentAllowance.details.content3.l2.agent	=	eitemau roedd yn berchen arnynt am reswm arall cyn iddo ddechrau eu defnyddio yn ei fusnes
 annualInvestmentAllowance.details.content3.l3	=	eitemau a roddir i chi neu i’ch busnes
+annualInvestmentAllowance.details.combinedJourneySpecific = *Missing Welsh*
 
 electricChargePointAllowance.title	=	Lwfans pwynt gwefru
 electricChargePointAllowance.heading	=	Lwfans pwynt gwefru
