@@ -71,7 +71,7 @@ class EsbaRemoveConfirmationController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaRemoveConfirmationPage, value))
               updatedAnswers <- Future.fromTry {
                                   if (value) {
-                                    updatedAnswers.remove(EnhancedStructuresBuildingAllowanceWithIndex(index))
+                                    updatedAnswers.remove(EnhancedStructuresBuildingAllowanceWithIndex(index, propertyType))
                                   } else {
                                     Success(updatedAnswers)
                                   }

@@ -909,7 +909,8 @@ class Navigator @Inject() () {
     userAnswers: UserAnswers,
     propertyType: PropertyType
   ): Call =
-    (userAnswers.get(EsbaRemoveConfirmationPage), userAnswers.get(EnhancedStructuresBuildingAllowance)) match {
+    (userAnswers.get(EsbaRemoveConfirmationPage),
+      userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType))) match {
       case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
       case (_, Some(esbaForm)) if esbaForm.nonEmpty         => EsbaClaimsController.onPageLoad(taxYear, propertyType)
     }

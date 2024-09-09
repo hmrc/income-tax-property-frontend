@@ -112,13 +112,13 @@ class EsbaClaimsController @Inject() (
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
     messages: Messages
   ) = {
-    val esbasWithSupportingQuestions =
-      request.userAnswers.get(EsbasWithSupportingQuestions).map(_.esbas.toArray).getOrElse(Array())
+    val esbasEntries =
+      request.userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)).toSeq.flatten
 
-    val rows: Array[SummaryListRow] = esbasWithSupportingQuestions.zipWithIndex.map { esbaWithIndex =>
+    val rows = esbasEntries.zipWithIndex.flatMap { esbaWithIndex =>
       val (_, index) = esbaWithIndex
       EsbaSummary.row(taxYear, index, request.userAnswers, propertyType)
-    }.flatten
+    }
 
     SummaryListViewModel(rows)
   }
