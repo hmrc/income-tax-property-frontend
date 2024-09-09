@@ -437,7 +437,7 @@ residentialFinanceCost.details.l3 = fees incurred when taking out or repaying mo
 
 residentialFinanceCost.legend.individual = How much were your residential finance costs?
 residentialFinanceCost.legend.agent = How much were your client’s residential finance costs?
-residentialFinanceCost.checkYourAnswersLabel = ResidentialFinanceCost
+residentialFinanceCost.checkYourAnswersLabel = Residential finance cost
 residentialFinanceCost.error.required.individual = Enter an amount for your residential finance costs
 residentialFinanceCost.error.required.agent = Enter an amount for your client’s residential finance costs
 residentialFinanceCost.error.nonNumeric.individual = Enter an amount for your residential finance costs

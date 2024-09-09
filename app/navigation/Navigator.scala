@@ -24,8 +24,8 @@ import controllers.premiumlease.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
 import controllers.propertyrentals.routes._
-import controllers.rentalsandrentaroom.routes
 import controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController
+import controllers.rentalsandrentaroom.routes
 import controllers.routes._
 import controllers.structuresbuildingallowance.routes._
 import controllers.ukrentaroom.adjustments.routes._
@@ -37,7 +37,7 @@ import models._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaClaimsPage, _}
+import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, LeasePremiumPaymentPage}
 import pages.propertyrentals._
 import pages.propertyrentals.expenses._
@@ -161,15 +161,26 @@ class Navigator @Inject() () {
     case PrivateUseAdjustmentPage(RentalsRentARoom) =>
       taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case BalancingChargePage(Rentals) =>
-      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+      taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case BalancingChargePage(RentalsRentARoom) =>
-      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
+              PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            } else {
+              BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case PropertyIncomeAllowancePage(Rentals) =>
       taxYear => _ => _ => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+    case PropertyIncomeAllowancePage(RentalsRentARoom) =>
+      taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case RenovationAllowanceBalancingChargePage(Rentals) =>
       taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
     case ResidentialFinanceCostPage(Rentals) =>
       taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+    case ResidentialFinanceCostPage(RentalsRentARoom) =>
+      taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case UnusedResidentialFinanceCostPage =>
       taxYear =>
         _ =>
@@ -209,6 +220,8 @@ class Navigator @Inject() () {
       taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, Rentals)
     case BusinessPremisesRenovationPage(Rentals) =>
       taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
+    case BusinessPremisesRenovationPage(RentalsRentARoom) =>
+      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case ReplacementOfDomesticGoodsPage(Rentals) =>
       taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case OtherCapitalAllowancePage(Rentals) =>
@@ -499,7 +512,8 @@ class Navigator @Inject() () {
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
-    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage |
+    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
+        BusinessPremisesRenovationPage(RentalsRentARoom) | BalancingChargePage(RentalsRentARoom) |
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
         UnusedResidentialFinanceCostPage =>
       taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
@@ -542,7 +556,7 @@ class Navigator @Inject() () {
         OtherProfessionalFeesPage(Rentals) | CostsOfServicesProvidedPage(Rentals) | PropertyBusinessTravelCostsPage(
           Rentals
         ) | OtherAllowablePropertyExpensesPage(Rentals) =>
-      taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
     case ConsolidatedExpensesPage(Rentals) =>
       taxYear =>
         previousUserAnswers =>

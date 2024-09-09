@@ -50,10 +50,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          // BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-          None,
-          // PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          None,
+          BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           // UnusedResidentialPropertyFinanceCostsBroughtFwdSummary.row(taxYear, request.userAnswers, RentalsRentARoom),

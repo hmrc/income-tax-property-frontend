@@ -16,10 +16,14 @@
 
 package pages.propertyrentals
 
-import models.PropertyType
+import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
+import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage, ResidentialFinanceCostPage}
+import pages.allowances.BusinessPremisesRenovationPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
