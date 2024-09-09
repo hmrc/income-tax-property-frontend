@@ -804,11 +804,10 @@ allowancesStart.details.content2.agent = You told us previously that your client
 allowancesStart.details.content3.individual = Based on this information you can claim the following:
 allowancesStart.details.content3.agent = Based on this information they can claim the following:
 allowancesStart.details.content.l1 = annual investment allowance
-allowancesStart.details.content.l2 = electric charge-point allowance
 allowancesStart.details.content.l3 = zero-emission car allowance
 allowancesStart.details.content.l4 = zero-emission goods vehicle allowance
 allowancesStart.details.content.l5 = business premises renovation allowance
-allowancesStart.details.content.l6 = replacing domestic goods
+allowancesStart.details.content.l6 = replacement of domestic goods
 allowancesStart.details.content.l7 = other capital allowances
 allowancesStart.details.content.l8 = Capital allowances for a car
 
