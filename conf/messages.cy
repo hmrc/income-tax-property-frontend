@@ -692,8 +692,10 @@ zeroEmissionCarAllowance.details.content.link.text	=	Deall lwfans car ag allyria
 zeroEmissionCarAllowance.details.content.link.intro	=	Darllenwch ragor am
 zeroEmissionCarAllowance.details.content.l1.individual	=	Os oes gennych incwm o eiddo, gallwch hawlio 100% o’r gost o brynu car trydan ag allyriadau sero newydd neu sydd heb ei ddefnyddio. Felly, os ydych yn defnyddio car y tu allan i’ch busnes, mae’n rhaid i chi ostwng yr hawliad yn gymesur â’r defnydd nad yw’n ymwneud â’r busnes.
 zeroEmissionCarAllowance.details.content.l1.agent	=	Os oes gan eich cleient incwm o eiddo, gall hawlio 100% o’r gost o brynu car trydan ag allyriadau sero newydd neu sydd heb ei ddefnyddio. Os yw’n defnyddio’r car y tu allan i’r gwaith o gynnal ei eiddo wedi’u rhentu, mae’n rhaid iddo ostwng yr hawliad yn gymesur â’r defnydd nad yw’n ymwneud â’r eiddo wedi’u rhentu.
-zeroEmissionCarAllowance.details.content.l2.individual	=	Felly, os ydych yn defnyddio’ch car y tu allan i’ch busnes am 20% o’r amser, yna mae’n rhaid i chi ostwng yr hawliad gan 20%.
-zeroEmissionCarAllowance.details.content.l2.agent	=	Felly, os yw’n defnyddio’i gar at ddiben nad yw’n ymwneud â’r eiddo wedi’u rhentu am 20% o’r amser, yna mae’n rhaid iddo ostwng yr hawliad gan 20%.
+zeroEmissionCarAllowance.details.content.l2.individual	=	*Missing Welsh*
+zeroEmissionCarAllowance.details.content.l2.agent	=	*Missing Welsh*
+zeroEmissionCarAllowance.details.content.l3.individual	=	*Missing Welsh*
+zeroEmissionCarAllowance.details.content.l3.agent	=	*Missing Welsh*
 zeroEmissionCarAllowance.details.link.text	=	Darllenwch ragor am lwfansau blwyddyn gyntaf ar GOV.UK (yn agor tab newydd)
 
 
