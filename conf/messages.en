@@ -544,8 +544,8 @@ propertyIncomeAllowance.error.maxCapped.individual = The amount of property inco
 propertyIncomeAllowance.error.maxCapped.agent = The amount of property income allowance your client claims must not be more than £1,000
 propertyIncomeAllowance.error.outOfRange.individual = Enter an amount between £{0} and £{1}
 propertyIncomeAllowance.error.outOfRange.agent = Enter an amount between £{0} and £{1}
-propertyIncomeAllowance.checkYourAnswersLabel = Your share of property income allowance
-propertyIncomeAllowance.change.hidden = Your share of property income allowance
+propertyIncomeAllowance.checkYourAnswersLabel = Your Property Income Allowance claim
+propertyIncomeAllowance.change.hidden = Your Property Income Allowance claim
 
 adjustmentsStart.title = Adjustments
 adjustmentsStart.heading = Adjustments
@@ -850,7 +850,7 @@ businessPremisesRenovation.error.required.individual = Enter the amount you want
 businessPremisesRenovation.error.nonNumeric.individual = Enter the amount you want to claim for your business premises renovation allowance
 businessPremisesRenovation.error.nonNumeric.agent = Enter the amount for your client’s business premises renovation allowance
 businessPremisesRenovation.error.outOfRange = Enter an amount between £{0} and £{1}
-businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance
+businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance balancing charge
 
 replacementOfDomesticGoods.title = Replacement of domestic goods
 replacementOfDomesticGoods.heading = Replacement of domestic goods

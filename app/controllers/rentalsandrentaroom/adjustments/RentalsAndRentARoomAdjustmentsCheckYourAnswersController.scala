@@ -66,15 +66,14 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-adjustments")
 
       request.userAnswers.get(RentalsAdjustment) match {
-        case Some(rentalsAndRentARoomAllowance) =>
+        case Some(rentalsAndRentARoomAdjustments) =>
           propertySubmissionService
-            .saveJourneyAnswers(context, rentalsAndRentARoomAllowance)
+            .saveJourneyAnswers(context, rentalsAndRentARoomAdjustments)
             .flatMap {
               case Right(_) =>
                 Future.successful(
                   Redirect(
-                    controllers.rentalsandrentaroom.allowances.routes.RentalsRaRAllowancesCompleteController
-                      .onPageLoad(taxYear)
+                    controllers.routes.SummaryController.show(taxYear)
                   )
                 )
               case Left(_) =>
@@ -82,8 +81,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
             }
 
         case None =>
-          logger.error("RentalsAndRentARoomIncome section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("RentalsAndRentARoomIncome section is not present in userAnswers"))
+          logger.error("RentalsAndRentARoomAdjustments section is not present in userAnswers")
+          Future.failed(InternalErrorFailure("RentalsAndRentARoomAdjustments section is not present in userAnswers"))
       }
 
   }
