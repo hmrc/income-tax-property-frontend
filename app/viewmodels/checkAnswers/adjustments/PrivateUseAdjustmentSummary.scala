@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{CheckMode, PrivateUseAdjustment, UserAnswers}
+import models.{CheckMode, PrivateUseAdjustment, PropertyType, UserAnswers}
 import pages.adjustments.PrivateUseAdjustmentPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,14 +27,14 @@ import viewmodels.implicits._
 
 object PrivateUseAdjustmentSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(PrivateUseAdjustmentPage).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(PrivateUseAdjustmentPage(propertyType)).flatMap {
       case PrivateUseAdjustment(amount) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("privateUseAdjustment.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
       case _ =>
@@ -42,7 +42,7 @@ object PrivateUseAdjustmentSummary {
           key = KeyViewModel("privateUseAdjustment.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.PrivateUseAdjustmentController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )
         ))

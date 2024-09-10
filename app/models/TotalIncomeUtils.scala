@@ -49,7 +49,7 @@ object TotalIncomeUtils {
   }
 
   def incomeAndBalancingChargeCombined(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
-    val balancingCharge = userAnswers.get(BalancingChargePage).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
+    val balancingCharge = userAnswers.get(BalancingChargePage(propertyType)).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
     totalIncome(userAnswers, propertyType) + balancingCharge
   }
 

@@ -193,7 +193,7 @@ case object SummaryPage {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage)).isDefined) {
+          if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage(Rentals))).isDefined) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted

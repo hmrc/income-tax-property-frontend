@@ -16,14 +16,14 @@
 
 package pages.adjustments
 
-import models.{PrivateUseAdjustment, Rentals}
+import models.{PrivateUseAdjustment, PropertyType, Rentals}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object PrivateUseAdjustmentPage extends QuestionPage[PrivateUseAdjustment] {
+case class PrivateUseAdjustmentPage(propertyType: PropertyType) extends QuestionPage[PrivateUseAdjustment] {
 
-  override def path: JsPath = JsPath \ adjustmentsPath(Rentals) \ toString
+  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
 
   override def toString: String = "privateUseAdjustment"
 }

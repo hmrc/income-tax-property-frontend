@@ -26,20 +26,20 @@
         govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, maxPIA: BigDecimal)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, individualOrAgent: String, maxPIA: BigDecimal, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages(s"propertyIncomeAllowance.title.$individualOrAgent"))) {
 
         <h1 class="govuk-heading-l">@messages(s"propertyIncomeAllowance.heading.$individualOrAgent")</h1>
 
-        @formHelper(action = routes.PropertyIncomeAllowanceController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.PropertyIncomeAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))
             }
 
             <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content1.$individualOrAgent", maxPIA)</p>
-            <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content2.$individualOrAgent")</p>
+            <p class="govuk-body">@messages(s"propertyIncomeAllowance.details.content2.$individualOrAgent", maxPIA)</p>
             <p class="govuk-body">@messages("propertyIncomeAllowance.details.content3")
                 <a href="@messages("propertyIncomeAllowance.details.content3.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
                 @messages("propertyIncomeAllowance.details.content3.link.text")
