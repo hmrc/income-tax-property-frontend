@@ -25,19 +25,22 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UnusedResidentialFinanceCostSummary  {
+object UnusedResidentialFinanceCostSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UnusedResidentialFinanceCostPage(propertyType)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel("unusedResidentialFinanceCost.checkYourAnswersLabel")withCssClass(keyCssClass),
-          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.UnusedResidentialFinanceCostController.onPageLoad(taxYear, CheckMode, propertyType).url)
-              .withVisuallyHiddenText(messages("unusedResidentialFinanceCost.change.hidden"))
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(UnusedResidentialFinanceCostPage(propertyType)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("unusedResidentialFinanceCost.checkYourAnswersLabel") withCssClass keyCssClass,
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.UnusedResidentialFinanceCostController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
+            .withVisuallyHiddenText(messages("unusedResidentialFinanceCost.change.hidden"))
         )
+      )
     }
 }

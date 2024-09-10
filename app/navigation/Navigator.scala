@@ -178,14 +178,23 @@ class Navigator @Inject() () {
     case RenovationAllowanceBalancingChargePage(Rentals) =>
       taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
     case ResidentialFinanceCostPage(Rentals) =>
-      taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode)
+      taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
     case ResidentialFinanceCostPage(RentalsRentARoom) =>
-      taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
+              RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            } else {
+              UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case UnusedResidentialFinanceCostPage(Rentals) =>
+      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+    case UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
           _ =>
-            AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // expenses
     case ConsolidatedExpensesPage(Rentals) =>
       taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers, Rentals)

@@ -19,15 +19,14 @@ package controllers.rentalsandrentaroom.adjustments
 import audit.RentalsAdjustment
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.{JourneyContext, PrivateUseAdjustment, RentalsRentARoom}
+import models.{JourneyContext, RentalsRentARoom}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.adjustments.{BalancingChargeSummary, PrivateUseAdjustmentSummary, PropertyIncomeAllowanceSummary, ResidentialFinanceCostSummary}
+import viewmodels.checkAnswers.adjustments._
 import viewmodels.checkAnswers.allowances._
-import viewmodels.checkAnswers.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsCheckYourAnswersView
 
@@ -54,8 +53,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          // UnusedResidentialPropertyFinanceCostsBroughtFwdSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          None
+          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
         ).flatten
       )
 
