@@ -230,7 +230,7 @@ class Navigator @Inject() () {
     case BusinessPremisesRenovationPage(Rentals) =>
       taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
     case BusinessPremisesRenovationPage(RentalsRentARoom) =>
-      taxYear => _ => _ => ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear => _ => _ => ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case ReplacementOfDomesticGoodsPage(Rentals) =>
       taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case OtherCapitalAllowancePage(Rentals) =>

@@ -1086,7 +1086,7 @@ class NavigatorSpec extends SpecBase {
               AllowancesCheckYourAnswersController
                 .onPageLoad(taxYear)
             case RentalsRentARoom =>
-              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+              controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController
                 .onPageLoad(taxYear)
           })
         }
