@@ -63,14 +63,16 @@ class StructureBuildingQualifyingDateController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, index, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(StructureBuildingQualifyingDatePage(index, propertyType), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(
+              navigator.sbaNextPage(
                 StructureBuildingQualifyingDatePage(index, propertyType),
                 taxYear,
                 mode,

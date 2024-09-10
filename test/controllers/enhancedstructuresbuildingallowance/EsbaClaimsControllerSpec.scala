@@ -18,7 +18,7 @@ package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.EsbasWithSupportingQuestions
+import models.{EsbasWithSupportingQuestions, Rentals}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -39,8 +39,7 @@ import scala.concurrent.Future
 
 class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
-
+  lazy val esbaClaimsRoute: String = routes.EsbaClaimsController.onPageLoad(taxYear, Rentals).url
   val formProvider = new EsbaClaimsFormProvider()
   val form: Form[Boolean] = formProvider("agent")
 
@@ -48,7 +47,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   val agent = "agent"
   val list: SummaryList = SummaryListViewModel(Seq.empty)
 
-  lazy val esbaClaimsRoute: String = routes.EsbaClaimsController.onPageLoad(taxYear).url
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "EsbaClaims Controller" - {
 
@@ -64,19 +63,26 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaClaimsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, list, taxYear, agent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, list, taxYear, agent, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
-      val userAnswers = emptyUserAnswers.set(EsbasWithSupportingQuestions, EsbasWithSupportingQuestions(true, Some(false), List[Esba]())).get
+      val userAnswers = emptyUserAnswers
+        .set(EsbasWithSupportingQuestions, EsbasWithSupportingQuestions(true, Some(false), List[Esba]()))
+        .get
 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val mockPropertySubmissionService = mock[PropertySubmissionService]
-      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn(Future.successful(Right(())))
+      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn (Future.successful(
+        Right(())
+      ))
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
@@ -115,7 +121,10 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

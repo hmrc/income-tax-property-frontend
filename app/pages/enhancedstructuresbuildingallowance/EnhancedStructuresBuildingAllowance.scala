@@ -16,7 +16,9 @@
 
 package pages.enhancedstructuresbuildingallowance
 
+import models.PropertyType
 import pages.PageConstants
+import pages.PageConstants.eSbaPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
@@ -28,21 +30,24 @@ case class EnhancedStructuresBuildingAllowance(
   esbaClaim: BigDecimal
 )
 
-case object EnhancedStructuresBuildingAllowance extends Gettable[Array[EnhancedStructuresBuildingAllowance]] {
-
+case object EnhancedStructuresBuildingAllowance {
   implicit val format: Format[EnhancedStructuresBuildingAllowance] = Json.format
-
-  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString
-
-  override def toString: String = PageConstants.esbas
 }
 
-case class EnhancedStructuresBuildingAllowanceWithIndex(index: Int)
+case class EnhancedStructureBuildingAllowanceGroup(propertyType: PropertyType)
+  extends Gettable[Array[EnhancedStructuresBuildingAllowance]] with Settable[Array[EnhancedStructuresBuildingAllowance]] {
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
+
+  override def toString: String = PageConstants.esbasFormGroup
+}
+
+
+case class EnhancedStructuresBuildingAllowanceWithIndex(index: Int, propertyType: PropertyType)
     extends Settable[Array[EnhancedStructuresBuildingAllowance]] {
 
   implicit val format: Format[EnhancedStructuresBuildingAllowance] = Json.format
 
-  override def path: JsPath = JsPath \ PageConstants.esbasWithSupportingQuestions \ toString \ index
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString \ index
 
-  override def toString: String = PageConstants.esbas
+  override def toString: String = PageConstants.esbasFormGroup
 }

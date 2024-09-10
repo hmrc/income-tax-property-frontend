@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
-import models.UserAnswers
+import models.{PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaOnIndex
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -27,8 +27,10 @@ import viewmodels.implicits._
 
 object EsbaSummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(EsbaOnIndex(index)).map { answer =>
+  def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(EsbaOnIndex(index, propertyType)).map { answer =>
       val value = HtmlFormat.escape(answer.esbaAddress.buildingName).toString + ", " +
         HtmlFormat.escape(answer.esbaAddress.buildingNumber).toString + ", " + HtmlFormat
           .escape(answer.esbaAddress.postCode)
@@ -41,7 +43,7 @@ object EsbaSummary {
           ActionItemViewModel(
             "site.change",
             controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController
-              .onPageLoad(taxYear, index)
+              .onPageLoad(taxYear, index, propertyType)
               .url
           )
             .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))

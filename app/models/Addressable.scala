@@ -76,7 +76,6 @@ object Addressable {
 
     override def getBuildingNumber(address: EsbaAddress): String = address.buildingNumber
 
-    override def get(index: Int): Gettable[EsbaAddress] =
-      EsbaAddressPage(index)
+    override def get(index: Int): Gettable[EsbaAddress] = EsbaAddressPage(index, Rentals)
   }
 }

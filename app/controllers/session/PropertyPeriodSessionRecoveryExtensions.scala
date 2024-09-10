@@ -39,11 +39,6 @@ object PropertyPeriodSessionRecoveryExtensions {
 
   implicit class UserAnswersExtension(userAnswersArg: UserAnswers) {
 
-    private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
-      writes: Writes[T]
-    ): Try[UserAnswers] =
-      value.fold[Try[UserAnswers]](Success(userAnswers))(v => userAnswers.set(page, v))
-
     def update(fetchedData: FetchedBackendData): UserAnswers = {
       for {
         ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage(Rentals), fetchedData.capitalAllowancesForACar)
@@ -81,6 +76,11 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
           } yield ua3
       }
+
+    private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
+      writes: Writes[T]
+    ): Try[UserAnswers] =
+      value.fold[Try[UserAnswers]](Success(userAnswers))(v => userAnswers.set(page, v))
 
     private def updatePropertyRentalsAboutPages(
       userAnswers: UserAnswers,
@@ -210,34 +210,6 @@ object PropertyPeriodSessionRecoveryExtensions {
           } yield ua8
       }
 
-    private def updateEnhancedStructureBuildingPages(
-      userAnswers: UserAnswers,
-      maybeEsbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
-    ): Try[UserAnswers] =
-      maybeEsbasWithSupportingQuestions match {
-        case None => Success(userAnswers)
-        case Some(esbasWithSupportingQuestions) =>
-          for {
-            ua1 <- userAnswers.set(ClaimEsbaPage(Rentals), esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance)
-            ua2 <- ua1.set(EsbaClaimsPage, esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
-            ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas)
-          } yield ua3
-      }
-
-    private def updateEsba(userAnswers: UserAnswers, index: Int, esba: Esba): Try[UserAnswers] =
-      for {
-        ua1 <- userAnswers.set(EsbaAddressPage(index), esba.esbaAddress)
-        ua2 <- ua1.set(EsbaQualifyingDatePage(index), esba.esbaQualifyingDate)
-        ua3 <- ua2.set(EsbaQualifyingAmountPage(index), esba.esbaQualifyingAmount)
-        ua4 <- ua3.set(EsbaClaimPage(index), esba.esbaClaim)
-      } yield ua4
-
-    def updateAllEsbas(userAnswers: UserAnswers, fetchedData: List[Esba]): Try[UserAnswers] =
-      fetchedData.zipWithIndex.foldLeft(Try(userAnswers)) { (acc, a) =>
-        val (esba, index) = a
-        acc.flatMap(ua => updateEsba(ua, index, esba))
-      }
-
     def updateStructureBuildingPages(
       userAnswers: UserAnswers,
       maybeSbasWithSupportingQuestions: Option[SbasWithSupportingQuestions]
@@ -262,10 +234,44 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     def updateSba(userAnswers: UserAnswers, index: Int, sba: Sba): Try[UserAnswers] =
       for {
-        ua1 <- userAnswers.set(StructuredBuildingAllowanceAddressPage(index, Rentals), sba.structuredBuildingAllowanceAddress)
+        ua1 <- userAnswers.set(
+                 StructuredBuildingAllowanceAddressPage(index, Rentals),
+                 sba.structuredBuildingAllowanceAddress
+               )
         ua2 <- ua1.set(StructureBuildingQualifyingDatePage(index, Rentals), sba.structureBuildingQualifyingDate)
         ua3 <- ua2.set(StructureBuildingQualifyingAmountPage(index, Rentals), sba.structureBuildingQualifyingAmount)
         ua4 <- ua3.set(StructureBuildingAllowanceClaimPage(index, Rentals), sba.structureBuildingAllowanceClaim)
+      } yield ua4
+
+    private def updateEnhancedStructureBuildingPages(
+      userAnswers: UserAnswers,
+      maybeEsbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions]
+    ): Try[UserAnswers] =
+      maybeEsbasWithSupportingQuestions match {
+        case None => Success(userAnswers)
+        case Some(esbasWithSupportingQuestions) =>
+          for {
+            ua1 <- userAnswers.set(
+                     ClaimEsbaPage(Rentals),
+                     esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance
+                   )
+            ua2 <- ua1.set(EsbaClaimsPage(Rentals), esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
+            ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas)
+          } yield ua3
+      }
+
+    def updateAllEsbas(userAnswers: UserAnswers, fetchedData: List[Esba]): Try[UserAnswers] =
+      fetchedData.zipWithIndex.foldLeft(Try(userAnswers)) { (acc, a) =>
+        val (esba, index) = a
+        acc.flatMap(ua => updateEsba(ua, index, esba))
+      }
+
+    private def updateEsba(userAnswers: UserAnswers, index: Int, esba: Esba): Try[UserAnswers] =
+      for {
+        ua1 <- userAnswers.set(EsbaAddressPage(index, Rentals), esba.esbaAddress)
+        ua2 <- ua1.set(EsbaQualifyingDatePage(index, Rentals), esba.esbaQualifyingDate)
+        ua3 <- ua2.set(EsbaQualifyingAmountPage(index, Rentals), esba.esbaQualifyingAmount)
+        ua4 <- ua3.set(EsbaClaimPage(index, Rentals), esba.esbaClaim)
       } yield ua4
 
     def updateRentARoomAbout(userAnswers: UserAnswers, maybeRentARoomAbout: Option[RaRAbout]): Try[UserAnswers] =

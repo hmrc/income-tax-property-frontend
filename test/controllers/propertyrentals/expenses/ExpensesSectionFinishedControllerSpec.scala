@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 import controllers.routes
 import forms.ExpensesSectionFinishedFormProvider
-import models.{JourneyContext, User, UserAnswers}
+import models.{JourneyContext, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -68,7 +68,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ExpensesSectionFinishedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ExpensesSectionFinishedPage(Rentals), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

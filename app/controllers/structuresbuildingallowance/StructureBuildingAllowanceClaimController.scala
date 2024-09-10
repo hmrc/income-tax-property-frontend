@@ -70,7 +70,7 @@ class StructureBuildingAllowanceClaimController @Inject() (
                 Future.fromTry(request.userAnswers.set(StructureBuildingAllowanceClaimPage(index, propertyType), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(
+              navigator.sbaNextPage(
                 StructureBuildingAllowanceClaimPage(index, propertyType),
                 taxYear,
                 mode,

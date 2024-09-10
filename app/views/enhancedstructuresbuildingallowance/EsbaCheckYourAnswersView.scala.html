@@ -21,13 +21,13 @@
         govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
         @govukSummaryList(list)
             @govukButton(

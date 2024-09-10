@@ -28,7 +28,8 @@ class EsbaQualifyingAmountFormProvider @Inject() extends Mappings {
       "esbaQualifyingAmount" -> currency(
         "esbaQualifyingAmount.error.required",
         "esbaQualifyingAmount.error.twoDecimalPlaces",
-        "esbaQualifyingAmount.error.nonNumeric")
+        "esbaQualifyingAmount.error.nonNumeric"
+      )
         .verifying(inRange[BigDecimal](0, 100000000, "esbaQualifyingAmount.error.outOfRange"))
     )
 }

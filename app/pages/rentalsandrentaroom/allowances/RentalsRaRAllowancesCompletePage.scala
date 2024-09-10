@@ -17,7 +17,7 @@
 package pages.rentalsandrentaroom.allowances
 
 import models.RentalsRentARoom
-import pages.PageConstants.{allowancesPath, expensesPath}
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
