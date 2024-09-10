@@ -178,7 +178,7 @@ case object SummaryPage {
         .onPageLoad(taxYear, NormalMode, Rentals),
       userAnswers
         .flatMap { answers =>
-          answers.get(EsbaSectionFinishedPage).map { finishedYesOrNo =>
+          answers.get(EsbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
             if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
@@ -238,7 +238,7 @@ case object SummaryPage {
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals),
       userAnswers
         .flatMap { answers =>
-          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
+          answers.get(ExpensesSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
             if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
           }
         }

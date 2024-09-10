@@ -18,14 +18,17 @@ package controllers.enhancedstructuresbuildingallowance
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
+import models.requests.DataRequest
+import models.{JourneyContext, NormalMode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.enhancedstructuresbuildingallowance.EsbaSectionFinishedView
 
@@ -48,39 +51,52 @@ class EsbaSectionFinishedController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(EsbaSectionFinishedPage) match {
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val preparedForm = request.userAnswers.get(EsbaSectionFinishedPage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, NormalMode, taxYear))
-  }
+      Ok(view(preparedForm, NormalMode, taxYear, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear, propertyType))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaSectionFinishedPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaSectionFinishedPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear,
-                       request.user.mtditid,
-                       request.user.nino,
-                       "rental-esba"
-                     ),
-                     statusForPage(value),
-                     request.user
-                   )
+              _              <- saveStatus(taxYear, request, value, propertyType)
             } yield Redirect(
-              navigator.nextPage(EsbaSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(EsbaSectionFinishedPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
+    }
+
+  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], value: Boolean, propertyType: PropertyType)(
+    implicit hc: HeaderCarrier
+  ): Future[Result] = {
+    val sectionPath = if (propertyType == Rentals) "rental-esba" else "property-rentals-and-rent-a-room-esba"
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
+
+    journeyAnswersService
+      .setStatus(
+        context,
+        statusForPage(value),
+        request.user
+      )
+      .flatMap {
+        case Right(_) => Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
+        case Left(_) =>
+          Future.failed(
+            InternalErrorFailure(s"Failed to save the status for the ESBA section in tax year: $taxYear")
+          )
+      }
   }
+
 }
