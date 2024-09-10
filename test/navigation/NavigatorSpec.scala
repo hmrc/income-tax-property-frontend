@@ -24,6 +24,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
+import org.scalatest.{FixtureContext, Succeeded}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages._
 import pages.adjustments._
@@ -547,7 +548,13 @@ class NavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             UserAnswers("test")
-          ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, propertyType)
+          ) mustBe (propertyType match {
+            case Rentals =>
+              ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, propertyType)
+            case RentalsRentARoom =>
+              ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, propertyType)
+          })
+
         }
         s"must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage for $propertyTypeDefinition" in {
           navigator.nextPage(
