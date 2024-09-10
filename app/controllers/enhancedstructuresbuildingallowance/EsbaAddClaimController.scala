@@ -18,7 +18,7 @@ package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
 import models.PropertyType
-import pages.enhancedstructuresbuildingallowance.EnhancedStructuresBuildingAllowance
+import pages.enhancedstructuresbuildingallowance.{EnhancedStructureBuildingAllowanceGroup, EnhancedStructuresBuildingAllowance}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -40,7 +40,7 @@ class EsbaAddClaimController @Inject() (
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val nextIndex = request.userAnswers.get(EnhancedStructuresBuildingAllowance).map(_.length).getOrElse(0)
+      val nextIndex = request.userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)).map(_.length).getOrElse(0)
       Ok(view(EsbaAddClaimPage(taxYear, nextIndex, request.user.isAgentMessageKey, propertyType)))
     }
 }

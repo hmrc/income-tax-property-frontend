@@ -24,11 +24,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, taxYear: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = EsbaSectionFinishedController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = EsbaSectionFinishedController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

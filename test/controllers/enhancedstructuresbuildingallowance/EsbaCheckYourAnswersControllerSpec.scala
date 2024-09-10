@@ -41,14 +41,14 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
       val list = SummaryListViewModel(Seq.empty)
       running(application) {
-        val request = FakeRequest(GET, routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
+        val request = FakeRequest(GET, routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index, Rentals).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[EsbaCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -57,7 +57,7 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(POST, routes.EsbaCheckYourAnswersController.onSubmit(taxYear).url)
+        val request = FakeRequest(POST, routes.EsbaCheckYourAnswersController.onSubmit(taxYear, Rentals).url)
 
         val result = route(application, request).value
 
@@ -71,7 +71,7 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index).url)
+        val request = FakeRequest(GET, routes.EsbaCheckYourAnswersController.onPageLoad(taxYear, index, Rentals).url)
 
         val result = route(application, request).value
 

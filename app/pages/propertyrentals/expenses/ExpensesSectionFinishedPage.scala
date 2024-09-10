@@ -16,12 +16,14 @@
 
 package pages.propertyrentals.expenses
 
-import pages.{PageConstants, QuestionPage}
+import models.PropertyType
+import pages.PageConstants.eSbaPath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ExpensesSectionFinishedPage extends QuestionPage[Boolean] {
+case class ExpensesSectionFinishedPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
   override def toString: String = "expensesSectionFinishedYesOrNo"
 }

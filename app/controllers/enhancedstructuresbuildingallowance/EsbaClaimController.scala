@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package controllers.structuresbuildingallowance
+package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
-import forms.structurebuildingallowance.StructureBuildingQualifyingAmountFormProvider
+import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
 import models.{Mode, PropertyType}
 import navigation.Navigator
-import pages.structurebuildingallowance.StructureBuildingQualifyingAmountPage
+import pages.enhancedstructuresbuildingallowance.EsbaClaimPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.structurebuildingallowance.StructureBuildingQualifyingAmountView
+import views.html.enhancedstructuresbuildingallowance.EsbaClaimView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class StructureBuildingQualifyingAmountController @Inject() (
+class EsbaClaimController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: StructureBuildingQualifyingAmountFormProvider,
+  formProvider: EsbaClaimAmountFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: StructureBuildingQualifyingAmountView
+  view: EsbaClaimView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(StructureBuildingQualifyingAmountPage(index, propertyType)) match {
+      val preparedForm = request.userAnswers.get(EsbaClaimPage(index, propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,19 +66,18 @@ class StructureBuildingQualifyingAmountController @Inject() (
             ),
           value =>
             for {
-              updatedAnswers <-
-                Future
-                  .fromTry(request.userAnswers.set(StructureBuildingQualifyingAmountPage(index, propertyType), value))
-              _ <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimPage(index, propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.sbaNextPage(
-                StructureBuildingQualifyingAmountPage(index, propertyType),
-                taxYear,
-                mode,
-                index,
-                request.userAnswers,
-                updatedAnswers
-              )
+              navigator
+                .esbaNextPage(
+                  EsbaClaimPage(index, propertyType),
+                  taxYear,
+                  mode,
+                  index,
+                  request.userAnswers,
+                  updatedAnswers
+                )
             )
         )
     }

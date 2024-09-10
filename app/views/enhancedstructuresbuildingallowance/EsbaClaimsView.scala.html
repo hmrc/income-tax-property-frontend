@@ -27,11 +27,11 @@
 )
 
 
-@(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"esbaClaims.title.$individualOrAgent"))) {
 
-    @formHelper(action = routes.EsbaClaimsController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.EsbaClaimsController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

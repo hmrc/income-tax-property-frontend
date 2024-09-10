@@ -28,7 +28,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages._
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{EsbaClaimAmountPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
+import pages.enhancedstructuresbuildingallowance.{EsbaClaimPage, EsbaQualifyingAmountPage, EsbaQualifyingDatePage}
 import pages.premiumlease._
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
@@ -638,7 +638,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
-        navigator.nextPage(
+        navigator.sbaNextPage(
           StructureBuildingQualifyingDatePage(index, Rentals),
           taxYear,
           NormalMode,
@@ -650,7 +650,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
-        navigator.nextPage(
+        navigator.sbaNextPage(
           StructureBuildingQualifyingAmountPage(index, Rentals),
           taxYear,
           NormalMode,
@@ -663,38 +663,38 @@ class NavigatorSpec extends SpecBase {
 
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
         navigator.esbaNextPage(
-          EsbaQualifyingDatePage(index),
+          EsbaQualifyingDatePage(index, Rentals),
           taxYear,
           NormalMode,
           index,
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
-          .onPageLoad(taxYear, index, NormalMode)
+          .onPageLoad(taxYear, index, NormalMode, Rentals)
       }
 
-      "must go from EsbaQualifyingAmountPage to EsbaClaimAmountPage" in {
+      "must go from EsbaQualifyingAmountPage to EsbaClaimPage" in {
         navigator.esbaNextPage(
-          EsbaQualifyingAmountPage(index),
+          EsbaQualifyingAmountPage(index, Rentals),
           taxYear,
           NormalMode,
           index,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController
-          .onPageLoad(taxYear, NormalMode, index)
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+          .onPageLoad(taxYear, NormalMode, index, Rentals)
       }
 
-      "must go from EsbaClaimAmountPage to EsbaAddressPage" in {
+      "must go from EsbaClaimPage to EsbaAddressPage" in {
         navigator.esbaNextPage(
-          EsbaQualifyingAmountPage(index),
+          EsbaQualifyingAmountPage(index, Rentals),
           taxYear,
           NormalMode,
           index,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController
-          .onPageLoad(taxYear, NormalMode, index)
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+          .onPageLoad(taxYear, NormalMode, index, Rentals)
       }
 
       "must go from RentsRatesAndInsuranceRRPage to RepairsAndMaintenanceCostsRRPage" in {
@@ -1425,7 +1425,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
-        navigator.nextPage(
+        navigator.sbaNextPage(
           StructureBuildingQualifyingDatePage(index, Rentals),
           taxYear,
           CheckMode,
@@ -1437,7 +1437,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
-        navigator.nextPage(
+        navigator.sbaNextPage(
           StructureBuildingQualifyingAmountPage(index, Rentals),
           taxYear,
           CheckMode,
@@ -1450,35 +1450,35 @@ class NavigatorSpec extends SpecBase {
 
       "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
         navigator.nextPage(
-          EsbaQualifyingDatePage(index),
+          EsbaQualifyingDatePage(index, Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
-          .onPageLoad(taxYear, index, CheckMode)
+          .onPageLoad(taxYear, index, CheckMode, Rentals)
       }
 
-      "must go from EsbaQualifyingAmountPage to EsbaClaimAmountPage" in {
+      "must go from EsbaQualifyingAmountPage to EsbaClaimPage" in {
         navigator.nextPage(
-          EsbaQualifyingAmountPage(index),
+          EsbaQualifyingAmountPage(index, Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimAmountController
-          .onPageLoad(taxYear, CheckMode, index)
+        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+          .onPageLoad(taxYear, CheckMode, index, Rentals)
       }
 
-      "must go from EsbaClaimAmountPage to EsbaAddressPage" in {
+      "must go from EsbaClaimPage to EsbaAddressPage" in {
         navigator.nextPage(
-          EsbaClaimAmountPage(index),
+          EsbaClaimPage(index, Rentals),
           taxYear,
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
-          .onPageLoad(taxYear, CheckMode, index)
+          .onPageLoad(taxYear, CheckMode, index, Rentals)
       }
 
     }

@@ -84,7 +84,5 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           logger.error("RentalsAndRentARoomAdjustments section is not present in userAnswers")
           Future.failed(InternalErrorFailure("RentalsAndRentARoomAdjustments section is not present in userAnswers"))
       }
-
   }
-
 }

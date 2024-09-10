@@ -19,7 +19,7 @@ package controllers.propertyrentals.expenses
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ExpensesSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -50,7 +50,7 @@ class ExpensesSectionFinishedController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ExpensesSectionFinishedPage) match {
+      val preparedForm = request.userAnswers.get(ExpensesSectionFinishedPage(Rentals)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,7 +66,7 @@ class ExpensesSectionFinishedController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage(Rentals), value))
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService.setStatus(
                      JourneyContext(
@@ -80,7 +80,7 @@ class ExpensesSectionFinishedController @Inject() (
                    )
             } yield Redirect(
               navigator
-                .nextPage(ExpensesSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+                .nextPage(ExpensesSectionFinishedPage(Rentals), taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
         )
   }

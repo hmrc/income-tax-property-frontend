@@ -19,7 +19,7 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -45,7 +45,9 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
   val taxYear: Int = 2024
   lazy val esbaSectionFinishedRoute =
-    controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear).url
+    controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController
+      .onPageLoad(taxYear, Rentals)
+      .url
 
   "EsbaSectionFinished Controller" - {
 
@@ -61,13 +63,16 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaSectionFinishedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaSectionFinishedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EsbaSectionFinishedPage(Rentals), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -79,7 +84,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear)(
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear, Rentals)(
           request,
           messages(application)
         ).toString
@@ -146,7 +151,10 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

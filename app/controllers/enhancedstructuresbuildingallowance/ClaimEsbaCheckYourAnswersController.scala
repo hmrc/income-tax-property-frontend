@@ -17,6 +17,7 @@
 package controllers.enhancedstructuresbuildingallowance
 
 import controllers.actions._
+import models.PropertyType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -36,21 +37,21 @@ class ClaimEsbaCheckYourAnswersController @Inject() (
   view: ClaimEsbaCheckYourAnswersView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
           ClaimEnhancedSBASummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
       )
-      Ok(view(list, taxYear))
+      Ok(view(list, taxYear, propertyType))
   }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       Future.successful(
         Redirect(
-          controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear)
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear, propertyType)
         )
       )
   }

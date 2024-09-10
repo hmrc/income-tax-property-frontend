@@ -26,13 +26,13 @@
         govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, index: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, index: Int, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("esbaAddress.title"))) {
         <h1 class="govuk-heading-l">@messages("esbaAddress.heading")</h1>
         <div class="govuk-hint"> @messages("esbaAddress.hint") </div>
 
-        @formHelper(action = routes.EsbaAddressController.onSubmit(taxYear, mode, index), Symbol("autoComplete") -> "off") {
+        @formHelper(action = routes.EsbaAddressController.onSubmit(taxYear, mode, index, propertyType), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

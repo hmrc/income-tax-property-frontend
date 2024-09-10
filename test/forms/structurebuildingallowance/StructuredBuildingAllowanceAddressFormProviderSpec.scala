@@ -33,15 +33,19 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
   val buildingNumberInEsba = "200"
   val postCodeInEsba = "SE13 5DL"
 
-  val uaDuplicateInSba: UserAnswers = emptyUserAnswers.set(
-    StructuredBuildingAllowanceAddressPage(0, Rentals),
-    StructuredBuildingAllowanceAddress(buildingNameInSba, buildingNumberInSba, postCodeInSba)
-  ).get
+  val uaDuplicateInSba: UserAnswers = emptyUserAnswers
+    .set(
+      StructuredBuildingAllowanceAddressPage(0, Rentals),
+      StructuredBuildingAllowanceAddress(buildingNameInSba, buildingNumberInSba, postCodeInSba)
+    )
+    .get
 
-  val uaDuplicateInEsba: UserAnswers = emptyUserAnswers.set(
-        EsbaAddressPage(0),
-        EsbaAddress(buildingNameInEsba, buildingNumberInEsba, postCodeInEsba)
-    ).get
+  val uaDuplicateInEsba: UserAnswers = emptyUserAnswers
+    .set(
+      EsbaAddressPage(0, Rentals),
+      EsbaAddress(buildingNameInEsba, buildingNumberInEsba, postCodeInEsba)
+    )
+    .get
 
   val sbaForm = new StructuredBuildingAllowanceAddressFormProvider()(emptyUserAnswers)
   ".buildingName" - {
@@ -113,14 +117,22 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
     "should give duplicate error for same address within Structured Building Allowance" in {
       val formDuplicateInSba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInSba)
       val requiredError = "structureBuildingAllowanceAddress.duplicateSba"
-      val result = formDuplicateInSba.bind(Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba))
+      val result = formDuplicateInSba.bind(
+        Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)
+      )
       result.errors.head.messages.head mustEqual requiredError
     }
 
     "should give duplicate error for same address within Enhanced Structured Building Allowance" in {
       val formDuplicateInEsba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInEsba)
       val requiredError = "structureBuildingAllowanceAddress.duplicateEsba"
-      val result = formDuplicateInEsba.bind(Map("postcode" -> postCodeInEsba, "buildingName" -> buildingNameInEsba, "buildingNumber" -> buildingNumberInEsba))
+      val result = formDuplicateInEsba.bind(
+        Map(
+          "postcode"       -> postCodeInEsba,
+          "buildingName"   -> buildingNameInEsba,
+          "buildingNumber" -> buildingNumberInEsba
+        )
+      )
       result.errors.head.messages.head mustEqual requiredError
     }
   }

@@ -18,7 +18,7 @@ package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import forms.enhancedstructuresbuildingallowance.EsbaAddressFormProvider
-import models.{EsbaAddress, NormalMode, UserAnswers}
+import models.{EsbaAddress, NormalMode, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import navigation.{FakeNavigator, Navigator}
@@ -35,7 +35,6 @@ import views.html.enhancedstructuresbuildingallowance.EsbaAddressView
 
 import scala.concurrent.Future
 
-
 class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new EsbaAddressFormProvider
@@ -48,7 +47,8 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute: Call = Call("GET", "/foo")
   private val isAgentMessageKey = "individual"
 
-  lazy val enhancedStructureBuildingAllowanceAddressDateRoute: String = routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index).url
+  lazy val enhancedStructureBuildingAllowanceAddressDateRoute: String =
+    routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index, Rentals).url
 
   override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
@@ -60,7 +60,7 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
       .withFormUrlEncodedBody(
         "buildingName"   -> "building-name",
         "buildingNumber" -> "building-number",
-        "postcode"  -> "postcode"
+        "postcode"       -> "postcode"
       )
 
   "EsbaAddress Controller" - {
@@ -75,13 +75,19 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[EsbaAddressView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, index, Rentals)(
+          getRequest,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EsbaAddressPage(index), EsbaAddress("building-name", "building-number", "post-code")).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(EsbaAddressPage(index, Rentals), EsbaAddress("building-name", "building-number", "post-code"))
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -91,7 +97,13 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, getRequest).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(EsbaAddress("building-name", "building-number", "post-code")), taxYear, NormalMode, index)(getRequest, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(EsbaAddress("building-name", "building-number", "post-code")),
+          taxYear,
+          NormalMode,
+          index,
+          Rentals
+        )(getRequest, messages(application)).toString
       }
     }
 
@@ -112,7 +124,11 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, enhancedStructureBuildingAllowanceAddressDateRoute)
-            .withFormUrlEncodedBody(("buildingName", validAnswer),("buildingNumber", validAnswer),("postcode", validPostCode))
+            .withFormUrlEncodedBody(
+              ("buildingName", validAnswer),
+              ("buildingNumber", validAnswer),
+              ("postcode", validPostCode)
+            )
 
         val result = route(application, request).value
 
@@ -137,7 +153,10 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, index, Rentals)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

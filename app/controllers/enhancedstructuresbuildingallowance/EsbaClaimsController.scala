@@ -20,7 +20,7 @@ import audit.{AuditService, RentalsAuditModel}
 import controllers.actions._
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
 import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, NormalMode}
+import models.{NormalMode, PropertyType}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
@@ -29,8 +29,7 @@ import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.PropertySubmissionService
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaSummary
@@ -49,32 +48,33 @@ class EsbaClaimsController @Inject() (
   requireData: DataRequiredAction,
   formProvider: EsbaClaimsFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  propertySubmissionService: PropertySubmissionService,
   audit: AuditService,
   view: EsbaClaimsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request)
+      val list: SummaryList = summaryList(taxYear, request, propertyType)
 
-      Ok(view(form, list, taxYear, request.user.isAgentMessageKey))
-  }
+      Ok(view(form, list, taxYear, request.user.isAgentMessageKey, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      val list: SummaryList = summaryList(taxYear, request)
+      val list: SummaryList = summaryList(taxYear, request, propertyType)
 
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey))),
+            Future.successful(
+              BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, propertyType))
+            ),
           value => {
-            request.userAnswers.get(Esbas) match {
+            request.userAnswers.get(Esbas(propertyType)) match {
               case Some(esbas) if !value =>
                 auditCYA(taxYear, request, esbas)
               case None =>
@@ -83,14 +83,14 @@ class EsbaClaimsController @Inject() (
             }
 
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(EsbaClaimsPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(EsbaClaimsPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
             )
           }
         )
-  }
+    }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbas: List[Esba])(implicit
     hc: HeaderCarrier
@@ -109,14 +109,15 @@ class EsbaClaimsController @Inject() (
     audit.sendRentalsAuditEvent(auditModel)
   }
 
-  private def summaryList(taxYear: Int, request: DataRequest[AnyContent])(implicit messages: Messages) = {
-    val esbasWithSupportingQuestions =
-      request.userAnswers.get(EsbasWithSupportingQuestions).map(_.esbas.toArray).getOrElse(Array())
+  private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
+    messages: Messages
+  ) = {
+    val esbasEntries =
+      request.userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)).toSeq.flatten
 
-    val rows: Array[SummaryListRow] = esbasWithSupportingQuestions.zipWithIndex.map { esbaWithIndex =>
-      val (_, index) = esbaWithIndex
-      EsbaSummary.row(taxYear, index, request.userAnswers)
-    }.flatten
+    val rows = esbasEntries.zipWithIndex.flatMap { case (_, index) =>
+      EsbaSummary.row(taxYear, index, request.userAnswers, propertyType)
+    }
 
     SummaryListViewModel(rows)
   }

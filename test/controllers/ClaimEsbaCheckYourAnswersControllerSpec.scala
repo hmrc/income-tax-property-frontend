@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import models.Rentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersView
@@ -33,7 +34,7 @@ class ClaimEsbaCheckYourAnswersControllerSpec extends SpecBase {
         val request = FakeRequest(
           GET,
           controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaCheckYourAnswersController
-            .onPageLoad(taxYear)
+            .onPageLoad(taxYear, Rentals)
             .url
         )
 
@@ -42,7 +43,7 @@ class ClaimEsbaCheckYourAnswersControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ClaimEsbaCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, Rentals)(request, messages(application)).toString
       }
     }
   }
