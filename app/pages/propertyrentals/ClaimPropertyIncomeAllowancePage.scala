@@ -19,11 +19,9 @@ package pages.propertyrentals
 import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
-import pages.adjustments.{BalancingChargePage, PrivateUseAdjustmentPage, PropertyIncomeAllowancePage, ResidentialFinanceCostPage, UnusedResidentialFinanceCostPage}
+import pages.adjustments._
 import pages.allowances.BusinessPremisesRenovationPage
-import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import play.api.libs.json.JsPath
-import viewmodels.checkAnswers.ukrentaroom.adjustments.UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
 
 import scala.util.Try
 
