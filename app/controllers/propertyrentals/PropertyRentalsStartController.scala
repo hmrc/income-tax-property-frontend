@@ -24,14 +24,14 @@ import views.html.propertyrentals.PropertyRentalsStartView
 
 import javax.inject.Inject
 
-class PropertyRentalsStartController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: PropertyRentalsStartView
-                                     ) extends FrontendBaseController with I18nSupport {
+class PropertyRentalsStartController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: PropertyRentalsStartView
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
