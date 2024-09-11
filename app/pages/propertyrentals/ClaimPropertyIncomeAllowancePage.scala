@@ -47,32 +47,4 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
         answerWithoutBusinessPremisesRenovation.remove(ResidentialFinanceCostPage(RentalsRentARoom))
       result <- answersWithoutResidentialFinancialCosts.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom))
     } yield result
-
-  /*
-    val previousValue: Option[Boolean] = userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))
-
-    (value, previousValue) match {
-      // If the option the user has selected has not changed i.e. it was previous true and is now true or it was false
-      // and now is false again, then don't do anything
-      case (Some(true), Some(true)) | (Some(false), Some(false)) => super.cleanup(value, userAnswers)
-      // If the user has now selected PIA when they have previously selected No, claim expenses then the previous answers
-      // need to be deleted
-      case (Some(true), Some(false)) => ???
-      // If the user has now selected No, claim expense when they have previously selected Yes, claim property income allowance
-      // then the previous answers need to be deleted
-      case (Some(false), Some(true)) =>
-        for {
-          answersWithoutPrivateUseAdjustment <-
-            userAnswers.remove(PrivateUseAdjustmentPage(RentalsRentARoom))
-          answersWithoutBalancingCharge <-
-            answersWithoutPrivateUseAdjustment.remove(BalancingChargePage(RentalsRentARoom))
-          answersWithoutPropertyIncomeAllowance <-
-            answersWithoutBalancingCharge.remove(PropertyIncomeAllowancePage(RentalsRentARoom))
-          answersWithoutResidentialFinanceCost <-
-            answersWithoutPropertyIncomeAllowance.remove(ResidentialFinanceCostPage(RentalsRentARoom))
-          result <-
-            answersWithoutResidentialFinanceCost.remove(BusinessPremisesRenovationPage(RentalsRentARoom))
-        } yield result
-    }
-   */
 }
