@@ -841,7 +841,7 @@ class Navigator @Inject() () {
           if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
             current.balancingChargeAmount == previous.balancingChargeAmount =>
         AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, Rentals)
+      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
     }
 
   private def totalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
@@ -909,7 +909,7 @@ class Navigator @Inject() () {
   private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(EsbaClaimsPage(propertyType)) match {
       case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
-      case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear, Rentals)
+      case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }
 
