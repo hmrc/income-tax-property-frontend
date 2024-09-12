@@ -850,7 +850,26 @@ businessPremisesRenovation.error.required.individual = Enter the amount you want
 businessPremisesRenovation.error.nonNumeric.individual = Enter the amount you want to claim for your business premises renovation allowance
 businessPremisesRenovation.error.nonNumeric.agent = Enter the amount for your client’s business premises renovation allowance
 businessPremisesRenovation.error.outOfRange = Enter an amount between £{0} and £{1}
-businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance balancing charge
+businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance
+
+businessPremisesRenovationBalancingCharge.title = Business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.heading = Business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.label.agent = Does your client have to pay a business premises renovation allowance balancing charge?
+businessPremisesRenovationBalancingCharge.label.individual = Do you have to pay a business premises renovation allowance balancing charge?
+businessPremisesRenovationBalancingCharge.details.content.line1 = There’s a balancing adjustment if there’s a balancing event withing 7 years of the first use of the building after conversion or renovation.
+businessPremisesRenovationBalancingCharge.details.content.line2 = The main balancing events are the sale of the relevant interest and the grant of a long lease for a premium out of the relevant interest.
+businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
+businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
+businessPremisesRenovationBalancingCharge.error.required.agent = Enter the amount for your client’s business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.error.required.individual = Enter the amount you want to claim for your business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.error.nonNumeric.individual = Enter the amount you want to claim for your business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.error.nonNumeric.agent = Enter the amount for your client’s business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.error.outOfRange = Enter an amount between £{0} and £{1}
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.individual = Do you have to pay a business premises renovation allowance balancing charge?
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.agent = Does you client have to pay a business premises renovation allowance balancing charge?
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.question.label = How much is the balancing charge?
+businessPremisesRenovationBalancingCharge.checkYourAnswersLabel = Business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.change.hidden = Business premises renovation allowance balancing charge
 
 replacementOfDomesticGoods.title = Replacement of domestic goods
 replacementOfDomesticGoods.heading = Replacement of domestic goods

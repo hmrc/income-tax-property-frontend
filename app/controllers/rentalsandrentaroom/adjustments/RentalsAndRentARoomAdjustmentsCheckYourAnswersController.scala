@@ -51,7 +51,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
         ).flatten
@@ -62,24 +62,10 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-adjustments")
-
       request.userAnswers.get(RentalsAdjustment) match {
-        case Some(rentalsAndRentARoomAdjustments) =>
-          propertySubmissionService
-            .saveJourneyAnswers(context, rentalsAndRentARoomAdjustments)
-            .flatMap {
-              case Right(_) =>
-                Future.successful(
-                  Redirect(
-                    controllers.routes.SummaryController.show(taxYear)
-                  )
-                )
-              case Left(_) =>
-                Future.failed(InternalErrorFailure("Property submission save error"))
-            }
-
+        case Some(_) =>
+          // TODO Add BE integration and audit event code here
+          Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
         case None =>
           logger.error("RentalsAndRentARoomAdjustments section is not present in userAnswers")
           Future.failed(InternalErrorFailure("RentalsAndRentARoomAdjustments section is not present in userAnswers"))

@@ -624,6 +624,25 @@ businessPremisesRenovation.details.content.line2.part1	=	Darllenwch ragor am
 businessPremisesRenovation.details.content.line2.part2	=	lwfans adnewyddu safleoedd busnes (BPRA) ar GOV.UK
 businessPremisesRenovation.checkYourAnswersLabel	=	Lwfans adnewyddu safleoedd busnes
 
+businessPremisesRenovationBalancingCharge.title = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.heading = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.label.agent = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.label.individual = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.details.content.line1 = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.details.content.line2 = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.agent = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.individual = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.required.agent = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.required.individual = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.nonNumeric.individual = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.nonNumeric.agent = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.outOfRange = *Missing Welsh*
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.individual = *Missing Welsh*
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.agent = *Missing Welsh*
+businessPremisesRenovationAllowanceBalancingChargeAmount.radio.question.label = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.change.hidden = *Missing Welsh*
+
 replacementOfDomesticGoods.title	=	Amnewid nwyddau domestig
 replacementOfDomesticGoods.heading	=	Amnewid nwyddau domestig
 replacementOfDomesticGoods.label.agent	=	*Missing Welsh*

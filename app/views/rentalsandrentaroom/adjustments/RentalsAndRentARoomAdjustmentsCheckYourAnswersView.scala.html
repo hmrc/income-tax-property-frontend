@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.rentalsandrentaroom.allowances.routes._
+@import controllers.rentalsandrentaroom.adjustments.routes._
 
 @this(
         layout: templates.Layout,
@@ -29,7 +29,7 @@
 
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-    @formHelper(action = RentalsAndRentARoomAllowancesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+    @formHelper(action = RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
     @govukSummaryList(list)
 
     @govukButton(

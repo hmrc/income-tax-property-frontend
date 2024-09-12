@@ -21,6 +21,7 @@ import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
 import pages.allowances.BusinessPremisesRenovationPage
+import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -39,10 +40,12 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
         answersWithoutPrivateUseAdjustment.remove(BalancingChargePage(RentalsRentARoom))
       answersWithoutPropertyIncomeAllowance <-
         answersWithoutBalancingCharge.remove(PropertyIncomeAllowancePage(RentalsRentARoom))
-      answerWithoutBusinessPremisesRenovation <-
-        answersWithoutPropertyIncomeAllowance.remove(BusinessPremisesRenovationPage(RentalsRentARoom))
+      answerWithoutBusinessPremisesRenovationAllowanceBalancingCharge <-
+        answersWithoutPropertyIncomeAllowance.remove(BusinessPremisesRenovationAllowanceBalancingChargePage)
       answersWithoutResidentialFinancialCosts <-
-        answerWithoutBusinessPremisesRenovation.remove(ResidentialFinanceCostPage(RentalsRentARoom))
+        answerWithoutBusinessPremisesRenovationAllowanceBalancingCharge.remove(
+          ResidentialFinanceCostPage(RentalsRentARoom)
+        )
       result <- answersWithoutResidentialFinancialCosts.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom))
     } yield result
 }

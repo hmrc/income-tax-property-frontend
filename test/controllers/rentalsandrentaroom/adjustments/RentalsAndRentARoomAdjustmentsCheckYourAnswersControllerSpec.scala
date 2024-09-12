@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.rentalsandrentaroom.allowances.adjustments
+package controllers.rentalsandrentaroom.adjustments
 
 import base.SpecBase
 import controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController
