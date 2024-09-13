@@ -20,15 +20,15 @@ import base.SpecBase
 import models.Rentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersView
 import viewmodels.govuk.summarylist._
+import views.html.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersView
 class ClaimEsbaCheckYourAnswersControllerSpec extends SpecBase {
   private val taxYear = 2024
   "ClaimEsbaCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
       val list = SummaryListViewModel(Seq.empty)
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(
