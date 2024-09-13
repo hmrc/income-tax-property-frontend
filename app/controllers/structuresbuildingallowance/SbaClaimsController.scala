@@ -16,19 +16,20 @@
 
 package controllers.structuresbuildingallowance
 
-import audit.{AuditService, RentalsAuditModel}
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.structurebuildingallowance.SbaClaimsFormProvider
+import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{JourneyContext, PropertyType, Rentals, UserAnswers}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, PropertyType, Rentals, SectionName, UserAnswers}
 import pages.structurebuildingallowance._
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -49,7 +50,8 @@ class SbaClaimsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: SbaClaimsView,
   propertySubmissionService: PropertySubmissionService,
-  auditService: AuditService
+  auditService: AuditService,
+  businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
@@ -98,7 +100,7 @@ class SbaClaimsController @Inject() (
       updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), addAnotherClaim))
       _              <- sessionRepository.set(updatedAnswers)
       result <- if (addAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
-                else { saveSBAClaims(taxYear, request, propertyType) }
+                else { saveJourneyAnswers(taxYear, request, propertyType) }
     } yield result
 
   private def redirectToAddClaim(taxYear: Int, propertyType: PropertyType) =
@@ -106,19 +108,55 @@ class SbaClaimsController @Inject() (
       Redirect(routes.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType))
     )
 
-  private def saveSBAClaims(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
+  private def saveJourneyAnswers(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyType: PropertyType
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Result] = {
+    val journeyPath = if (propertyType == Rentals) "property-rental-sba" else "rentals-and-rent-a-room-sba"
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyPath)
+    businessService
+      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+      .flatMap {
+        case Right(Some(propertyDetails)) => saveSBAClaims(taxYear, request, context, propertyType, propertyDetails)
+        case Left(_) =>
+          logger.error("CashOrAccruals information could not be retrieved from downstream.")
+          Future.failed(InternalErrorFailure("CashOrAccruals information could not be retrieved from downstream."))
+      }
+  }
+
+  private def saveSBAClaims(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    context: JourneyContext,
+    propertyType: PropertyType,
+    propertyDetails: PropertyDetails
+  )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
     val sbaInfoOpt = getSBA(request.userAnswers, propertyType)
     sbaInfoOpt
       .map { sbaInfo =>
-        val journeyPath = if (propertyType == Rentals) "property-rental-sba" else "rentals-and-rent-a-room-sba"
-        val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyPath)
-        propertySubmissionService.saveJourneyAnswers(context, sbaInfo).flatMap {
+        propertySubmissionService.saveJourneyAnswers(context, sbaInfo, propertyDetails.incomeSourceId).flatMap {
           case Right(_) =>
-            auditSBAClaims(taxYear, request, sbaInfo)
+            auditSBAClaims(
+              taxYear,
+              request,
+              sbaInfo,
+              isFailed = false,
+              accrualsOrCash = propertyDetails.accrualsOrCash.get
+            )
             Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
           case Left(_) =>
+            auditSBAClaims(
+              taxYear,
+              request,
+              sbaInfo,
+              isFailed = true,
+              accrualsOrCash = propertyDetails.accrualsOrCash.get
+            )
             logger.error("Error saving SBA Claims")
             Future.failed(InternalErrorFailure("Error saving SBA claims"))
         }
@@ -141,21 +179,27 @@ class SbaClaimsController @Inject() (
   private def auditSBAClaims(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    sbaInfo: SbaInfo
+    sbaInfo: SbaInfo,
+    isFailed: Boolean,
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel[SbaInfo](
+    val auditModel = AuditModel(
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
       agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
       isUpdate = false,
-      sectionName = "PropertyRentalsSBA",
-      userEnteredRentalDetails = sbaInfo
+      sectionName = SectionName.SBA,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.RentalsRentARoom,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      userEnteredDetails = sbaInfo,
+      isFailed = isFailed
     )
-    auditService.sendRentalsAuditEvent(auditModel)
+    auditService.sendAuditEvent(auditModel)
   }
 
 }
