@@ -17,7 +17,7 @@
 package controllers.structuresbuildingallowance
 
 import controllers.actions._
-import models.RentalsRentARoom
+import models.PropertyType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -37,23 +37,23 @@ class ClaimSbaCheckYourAnswersController @Inject() (
   view: ClaimSbaCheckYourAnswersView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          ClaimStructureBuildingAllowanceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          ClaimStructureBuildingAllowanceSummary
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
         ).flatten
       )
-      Ok(view(list, taxYear))
-  }
+      Ok(view(list, taxYear, propertyType))
+    }
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       Future.successful(
         Redirect(
-          controllers.structuresbuildingallowance.routes.SbaSectionFinishedController
-            .onPageLoad(taxYear, RentalsRentARoom)
+          controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)
         )
       )
-  }
+    }
 }
