@@ -24,7 +24,7 @@ import pages.allowances.BusinessPremisesRenovationPage
 import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import play.api.libs.json.JsPath
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
@@ -33,7 +33,7 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
   override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    for {
+    /*for {
       answersWithoutPrivateUseAdjustment <-
         userAnswers.remove(PrivateUseAdjustmentPage(RentalsRentARoom))
       answersWithoutBalancingCharge <-
@@ -47,5 +47,13 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
           ResidentialFinanceCostPage(RentalsRentARoom)
         )
       result <- answersWithoutResidentialFinancialCosts.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom))
-    } yield result
+    } yield result*/
+
+    userAnswers
+      .remove(PrivateUseAdjustmentPage(RentalsRentARoom))
+      .flatMap(_.remove(BalancingChargePage(RentalsRentARoom)))
+      .flatMap(_.remove(PropertyIncomeAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(BusinessPremisesRenovationAllowanceBalancingChargePage))
+      .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
+
 }
