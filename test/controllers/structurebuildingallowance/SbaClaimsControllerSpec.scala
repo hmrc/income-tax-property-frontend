@@ -17,9 +17,11 @@
 package controllers.structurebuildingallowance
 
 import base.SpecBase
+import connectors.error.ApiError
 import controllers.structuresbuildingallowance.routes
 import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.PropertyType.toPath
+import models.backend.PropertyDetails
 import models.{PropertyType, Rentals, RentalsRentARoom, StructuredBuildingAllowanceAddress, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -33,7 +35,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaClaimsView
@@ -241,13 +243,33 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           .toOption
 
       val mockPropertySubmissionService = mock[PropertySubmissionService]
-      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
-        Right(())
-      )
+      val mockBusinessService = mock[BusinessService]
+
+      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
+        .successful(
+          Right(())
+        )
+      when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future
+        .successful[Either[ApiError, Option[PropertyDetails]]](
+          Right(
+            Some(
+              PropertyDetails(
+                Some("incomeSourceType"),
+                Some(LocalDate.now()),
+                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                incomeSourceId = "incomeSourceId"
+              )
+            )
+          )
+        )
+
       // Rentals
       val rentalsApplication: Application =
         applicationBuilder(userAnswers = userAnswers(Rentals), isAgent = false)
-          .overrides(bind[PropertySubmissionService].toInstance(mockPropertySubmissionService))
+          .overrides(
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService),
+            bind[BusinessService].toInstance(mockBusinessService)
+          )
           .build()
 
       running(rentalsApplication) {
