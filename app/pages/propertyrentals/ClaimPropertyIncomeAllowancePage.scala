@@ -33,27 +33,12 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
   override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    /*for {
-      answersWithoutPrivateUseAdjustment <-
-        userAnswers.remove(PrivateUseAdjustmentPage(RentalsRentARoom))
-      answersWithoutBalancingCharge <-
-        answersWithoutPrivateUseAdjustment.remove(BalancingChargePage(RentalsRentARoom))
-      answersWithoutPropertyIncomeAllowance <-
-        answersWithoutBalancingCharge.remove(PropertyIncomeAllowancePage(RentalsRentARoom))
-      answerWithoutBusinessPremisesRenovationAllowanceBalancingCharge <-
-        answersWithoutPropertyIncomeAllowance.remove(BusinessPremisesRenovationAllowanceBalancingChargePage)
-      answersWithoutResidentialFinancialCosts <-
-        answerWithoutBusinessPremisesRenovationAllowanceBalancingCharge.remove(
-          ResidentialFinanceCostPage(RentalsRentARoom)
-        )
-      result <- answersWithoutResidentialFinancialCosts.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom))
-    } yield result*/
-
     userAnswers
       .remove(PrivateUseAdjustmentPage(RentalsRentARoom))
       .flatMap(_.remove(BalancingChargePage(RentalsRentARoom)))
       .flatMap(_.remove(PropertyIncomeAllowancePage(RentalsRentARoom)))
       .flatMap(_.remove(BusinessPremisesRenovationAllowanceBalancingChargePage))
       .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
+      .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
 
 }
