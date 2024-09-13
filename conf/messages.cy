@@ -642,6 +642,7 @@ businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.agent = *M
 businessPremisesRenovationAllowanceBalancingChargeAmount.radio.question.label = *Missing Welsh*
 businessPremisesRenovationBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
 businessPremisesRenovationBalancingCharge.change.hidden = *Missing Welsh*
+businessPremisesRenovationBalancingCharge.error.required.yesOrNo = *Missing Welsh*
 
 replacementOfDomesticGoods.title	=	Amnewid nwyddau domestig
 replacementOfDomesticGoods.heading	=	Amnewid nwyddau domestig

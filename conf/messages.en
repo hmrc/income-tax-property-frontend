@@ -870,6 +870,7 @@ businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.agent = Do
 businessPremisesRenovationAllowanceBalancingChargeAmount.radio.question.label = How much is the balancing charge?
 businessPremisesRenovationBalancingCharge.checkYourAnswersLabel = Business premises renovation allowance balancing charge
 businessPremisesRenovationBalancingCharge.change.hidden = Business premises renovation allowance balancing charge
+businessPremisesRenovationBalancingCharge.error.required.yesOrNo = Select yes if you want to claim Business premises renovation allowance balancing charge
 
 replacementOfDomesticGoods.title = Replacement of domestic goods
 replacementOfDomesticGoods.heading = Replacement of domestic goods

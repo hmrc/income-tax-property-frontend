@@ -33,7 +33,7 @@ class BusinessPremisesRenovationBalancingChargeFormProvider @Inject() extends Ma
     Form[BusinessPremisesRenovationAllowanceBalancingCharge](
       mapping(
         "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> boolean(
-          s"businessPremisesRenovationBalancingCharge.error.required.$individualOrAgent"
+          s"businessPremisesRenovationBalancingCharge.error.required.yesOrNo"
         ),
         "businessPremisesRenovationAllowanceBalancingChargeAmount" -> {
           mandatoryIfTrue(
