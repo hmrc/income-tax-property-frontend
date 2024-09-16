@@ -36,6 +36,7 @@ case object EnhancedStructuresBuildingAllowance {
 
 case class EnhancedStructureBuildingAllowanceGroup(propertyType: PropertyType)
   extends Gettable[Array[EnhancedStructuresBuildingAllowance]] with Settable[Array[EnhancedStructuresBuildingAllowance]] {
+
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
   override def toString: String = PageConstants.esbasFormGroup

@@ -16,6 +16,7 @@
 
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
+import controllers.enhancedstructuresbuildingallowance.routes.{EsbaCheckYourAnswersController, EsbaRemoveConfirmationController}
 import models.{PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaOnIndex
 import play.api.i18n.Messages
@@ -42,11 +43,14 @@ object EsbaSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController
+            EsbaCheckYourAnswersController
               .onPageLoad(taxYear, index, propertyType)
               .url
-          )
-            .withVisuallyHiddenText(messages("esbaAddress.change.hidden"))
+          ).withVisuallyHiddenText(messages("esbaAddress.change.hidden")),
+          ActionItemViewModel(
+            "site.remove",
+            EsbaRemoveConfirmationController.onPageLoad(taxYear, index, propertyType).url
+          ).withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
         )
       )
     }

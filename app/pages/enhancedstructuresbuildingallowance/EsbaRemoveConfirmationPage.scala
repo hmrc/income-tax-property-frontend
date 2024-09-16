@@ -16,12 +16,14 @@
 
 package pages.enhancedstructuresbuildingallowance
 
+import models.PropertyType
+import pages.PageConstants.{eSbaPath, sbaPath}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object EsbaRemoveConfirmationPage extends QuestionPage[Boolean] {
+case class EsbaRemoveConfirmationPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
   override def toString: String = "esbaRemoveConfirmation"
 }
