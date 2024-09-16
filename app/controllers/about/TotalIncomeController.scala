@@ -18,9 +18,10 @@ package controllers.about
 
 import controllers.actions._
 import forms.about.TotalIncomeFormProvider
-import models.{Mode, UserAnswers}
+import models.{Mode, TotalIncome, UserAnswers}
 import navigation.Navigator
 import pages.TotalIncomePage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.SessionService
@@ -42,7 +43,7 @@ class TotalIncomeController @Inject()(
                                        view: TotalIncomeView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[TotalIncome] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>

@@ -22,6 +22,7 @@ import forms.ExpensesSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +47,7 @@ class ExpensesSectionFinishedController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

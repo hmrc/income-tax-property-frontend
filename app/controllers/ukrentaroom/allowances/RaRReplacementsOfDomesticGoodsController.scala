@@ -21,6 +21,7 @@ import forms.ukrentaroom.allowances.ReplacementsOfDomesticGoodsFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.ukrentaroom.allowances.RaRReplacementsOfDomesticGoodsPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,7 +44,7 @@ class RaRReplacementsOfDomesticGoodsController @Inject()(
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[BigDecimal] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

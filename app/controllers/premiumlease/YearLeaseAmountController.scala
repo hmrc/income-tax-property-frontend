@@ -21,6 +21,7 @@ import forms.premiumlease.YearLeaseAmountFormProvider
 import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.premiumlease.YearLeaseAmountPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,7 +44,7 @@ class YearLeaseAmountController @Inject()(
                                         view: YearLeaseAmountView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Int] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

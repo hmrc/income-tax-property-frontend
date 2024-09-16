@@ -22,6 +22,7 @@ import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{JourneyContext, Mode}
 import navigation.Navigator
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +47,7 @@ class ExpensesRRSectionCompleteController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

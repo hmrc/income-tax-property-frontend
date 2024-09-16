@@ -24,6 +24,7 @@ import models.requests.DataRequest
 import models.{JourneyContext, NormalMode, PropertyType, Rentals}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
@@ -49,7 +50,7 @@ class EsbaSectionFinishedController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
