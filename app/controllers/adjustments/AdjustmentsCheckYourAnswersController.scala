@@ -19,9 +19,10 @@ package controllers.adjustments
 import audit.RentalsAdjustment._
 import audit.{AuditService, RentalsAdjustment, RentalsAuditModel}
 import controllers.actions._
-import models.{JourneyContext, Rentals}
+import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.requests.DataRequest
-import play.api.i18n.Lang.logger
+import models.{JourneyContext, Rentals}
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
@@ -44,7 +45,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
   audit: AuditService,
   view: AdjustmentsCheckYourAnswersView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -64,24 +65,27 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
-
       request.userAnswers.get(RentalsAdjustment) match {
-        case Some(adjustments) =>
-          propertySubmissionService.saveJourneyAnswers(context, adjustments).map {
-
-            case Right(_) =>
-              auditCYA(taxYear, request, adjustments)
-              Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear))
-            case Left(_) => InternalServerError
-          }
+        case Some(adjustments) => saveAdjustments(taxYear, request, adjustments)
         case None =>
           logger.error("Adjustments Section is not present in userAnswers")
-
-          Future.successful(
-            Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear))
-          )
+          Future.failed(InternalErrorFailure("Adjustments Section is not present in userAnswers"))
       }
+  }
+
+  private def saveAdjustments(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
+    hc: HeaderCarrier
+  ) = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
+    propertySubmissionService.saveJourneyAnswers(context, adjustments).flatMap {
+      case Right(_) =>
+        auditCYA(taxYear, request, adjustments)
+        Future
+          .successful(Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear)))
+      case Left(_) =>
+        logger.error("Failed to save adjustments section")
+        Future.failed(SaveJourneyAnswersFailed("Failed to save adjustments section"))
+    }
   }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
