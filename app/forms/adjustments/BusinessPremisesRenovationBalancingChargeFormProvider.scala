@@ -33,12 +33,12 @@ class BusinessPremisesRenovationBalancingChargeFormProvider @Inject() extends Ma
   def apply(individualOrAgent: String): Form[RenovationAllowanceBalancingCharge] =
     Form[RenovationAllowanceBalancingCharge](
       mapping(
-        "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> boolean(
+        "renovationAllowanceBalancingChargeYesNo" -> boolean(
           s"businessPremisesRenovationBalancingCharge.error.required.yesOrNo"
         ),
-        "businessPremisesRenovationAllowanceBalancingChargeAmount" -> {
+        "renovationAllowanceBalancingChargeAmount" -> {
           mandatoryIfTrue(
-            "businessPremisesRenovationAllowanceBalancingChargeYesOrNo",
+            "renovationAllowanceBalancingChargeYesNo",
             currency(
               s"businessPremisesRenovationBalancingCharge.error.required.$individualOrAgent",
               s"businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.$individualOrAgent",
