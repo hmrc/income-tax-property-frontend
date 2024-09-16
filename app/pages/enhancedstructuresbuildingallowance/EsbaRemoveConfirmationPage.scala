@@ -17,7 +17,7 @@
 package pages.enhancedstructuresbuildingallowance
 
 import models.PropertyType
-import pages.PageConstants.{eSbaPath, sbaPath}
+import pages.PageConstants.eSbaPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

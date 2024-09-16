@@ -208,7 +208,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .success
         .value
 
-      val rentalsRentARoomApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), true).build()
+      val rentalsRentARoomApplication = applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), true).build()
 
       running(rentalsRentARoomApplication) {
         val request = FakeRequest(GET, rentalsRentARoomPremiumsGrantLeaseRoute)

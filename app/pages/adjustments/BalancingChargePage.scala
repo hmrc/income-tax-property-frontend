@@ -16,7 +16,7 @@
 
 package pages.adjustments
 
-import models.{BalancingCharge, PropertyType, Rentals}
+import models.{BalancingCharge, PropertyType}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath

@@ -19,9 +19,9 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import forms.enhancedstructuresbuildingallowance.EsbaAddressFormProvider
 import models.{EsbaAddress, NormalMode, Rentals, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import navigation.{FakeNavigator, Navigator}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.enhancedstructuresbuildingallowance.EsbaAddressPage
 import play.api.data.Form
@@ -45,7 +45,7 @@ class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer = "Building"
   val validPostCode = "GV92 8VB"
   def onwardRoute: Call = Call("GET", "/foo")
-  private val isAgentMessageKey = "individual"
+
 
   lazy val enhancedStructureBuildingAllowanceAddressDateRoute: String =
     routes.EsbaAddressController.onPageLoad(taxYear, NormalMode, index, Rentals).url

@@ -19,7 +19,7 @@ package controllers.adjustments
 import controllers.actions._
 import forms.adjustments.PropertyIncomeAllowanceFormProvider
 import models.TotalIncomeUtils.{incomeAndBalancingChargeCombined, maxAllowedPIA}
-import models.{Mode, PropertyType, Rentals}
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.adjustments.PropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}

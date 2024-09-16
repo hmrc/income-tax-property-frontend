@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.income.ReversePremiumsReceivedPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,22 +37,22 @@ import scala.concurrent.Future
 
 class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/rentals/deducting-tax")
+  def onwardRoute: Call = Call("GET", "/rentals/deducting-tax")
   private val taxYear = LocalDate.now.getYear
 
   val formProvider = new ReversePremiumsReceivedFormProvider()
-  val form = formProvider("individual")
+  val form: Form[ReversePremiumsReceived] = formProvider("individual")
 
-  lazy val rentalsReversePremiumsReceivedRoute =
+  lazy val rentalsReversePremiumsReceivedRoute: String =
     routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, Rentals).url
-  lazy val rentalsRentARoomReversePremiumsReceivedRoute =
+  lazy val rentalsRentARoomReversePremiumsReceivedRoute: String =
     routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "ReversePremiumsReceived Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val view = application.injector.instanceOf[ReversePremiumsReceivedView]
@@ -82,18 +83,18 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val rentalsUserAnswers = UserAnswers(userAnswersId)
-        .set(ReversePremiumsReceivedPage(Rentals), ReversePremiumsReceived(true, Some(12.34)))
+        .set(ReversePremiumsReceivedPage(Rentals), ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34)))
         .success
         .value
 
       val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
-        .set(ReversePremiumsReceivedPage(RentalsRentARoom), ReversePremiumsReceived(true, Some(12.34)))
+        .set(ReversePremiumsReceivedPage(RentalsRentARoom), ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34)))
         .success
         .value
 
-      val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), false).build()
+      val rentalsApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), isAgent = false).build()
       val rentalsRentARoomApplication =
-        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), false).build()
+        applicationBuilder(userAnswers = Some(rentalsRentARoomUserAnswers), isAgent = false).build()
 
       running(rentalsApplication) {
         val request = FakeRequest(GET, rentalsReversePremiumsReceivedRoute)
@@ -104,7 +105,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ReversePremiumsReceived(true, Some(12.34))),
+          form.fill(ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34))),
           NormalMode,
           taxYear,
           "individual",
@@ -121,7 +122,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ReversePremiumsReceived(true, Some(12.34))),
+          form.fill(ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34))),
           NormalMode,
           taxYear,
           "individual",
@@ -137,7 +138,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -166,7 +167,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val rentalsRequest =
@@ -206,7 +207,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val rentalsRequest = FakeRequest(GET, rentalsReversePremiumsReceivedRoute)
@@ -227,18 +228,14 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val rentalsRequest =
-          FakeRequest(POST, rentalsReversePremiumsReceivedRoute)
-            .withFormUrlEncodedBody(("value", "true"))
 
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomReversePremiumsReceivedRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
-        val rentalsResult = route(application, rentalsRequest).value
         val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
 
         status(rentalsRentARoomResult) mustEqual SEE_OTHER

@@ -47,7 +47,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
     (true, "agent")
   )
   forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    val user = User(
+    User(
       "",
       "",
       "",
