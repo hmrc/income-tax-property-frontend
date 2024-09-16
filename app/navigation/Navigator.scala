@@ -157,10 +157,8 @@ class Navigator @Inject() () {
               .onPageLoad(taxYear)
 
         //
-    case PrivateUseAdjustmentPage(Rentals) =>
-      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
-    case PrivateUseAdjustmentPage(RentalsRentARoom) =>
-      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case PrivateUseAdjustmentPage(propertyType) =>
+      taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, propertyType)
     case BalancingChargePage(Rentals) =>
       taxYear => _ => _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
     case BalancingChargePage(RentalsRentARoom) =>
