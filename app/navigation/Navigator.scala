@@ -874,7 +874,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
       case Some(true)  => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
-      case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }
 

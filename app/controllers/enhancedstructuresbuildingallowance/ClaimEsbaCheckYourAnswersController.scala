@@ -37,22 +37,23 @@ class ClaimEsbaCheckYourAnswersController @Inject() (
   view: ClaimEsbaCheckYourAnswersView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          ClaimEnhancedSBASummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          ClaimEnhancedSBASummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, propertyType)
         ).flatten
       )
       Ok(view(list, taxYear, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       Future.successful(
         Redirect(
-          controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear, propertyType)
+          controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController
+            .onPageLoad(taxYear, propertyType)
         )
       )
-  }
+    }
 }
