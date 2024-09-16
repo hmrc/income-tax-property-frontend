@@ -18,8 +18,9 @@ package controllers.rentalsandrentaroom.adjustments
 
 import controllers.actions._
 import forms.adjustments.BusinessPremisesRenovationBalancingChargeFormProvider
-import models.Mode
+import models.{Mode, RentalsRentARoom}
 import navigation.Navigator
+import pages.adjustments.RenovationAllowanceBalancingChargePage
 import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -46,7 +47,7 @@ class BusinessPremisesRenovationBalancingChargeController @Inject() (
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(BusinessPremisesRenovationAllowanceBalancingChargePage) match {
+      val preparedForm = request.userAnswers.get(RenovationAllowanceBalancingChargePage(RentalsRentARoom)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -67,7 +68,7 @@ class BusinessPremisesRenovationBalancingChargeController @Inject() (
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(BusinessPremisesRenovationAllowanceBalancingChargePage, value))
+                Future.fromTry(request.userAnswers.set(RenovationAllowanceBalancingChargePage(RentalsRentARoom), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(

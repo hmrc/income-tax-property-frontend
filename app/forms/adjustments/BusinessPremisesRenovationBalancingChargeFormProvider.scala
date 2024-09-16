@@ -17,7 +17,8 @@
 package forms.adjustments
 
 import forms.mappings.Mappings
-import models.BusinessPremisesRenovationAllowanceBalancingCharge
+import models.{BusinessPremisesRenovationAllowanceBalancingCharge, RenovationAllowanceBalancingCharge}
+import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
@@ -29,8 +30,8 @@ class BusinessPremisesRenovationBalancingChargeFormProvider @Inject() extends Ma
   val minimum = BigDecimal(0)
   val maximum = BigDecimal(100000000)
 
-  def apply(individualOrAgent: String): Form[BusinessPremisesRenovationAllowanceBalancingCharge] =
-    Form[BusinessPremisesRenovationAllowanceBalancingCharge](
+  def apply(individualOrAgent: String): Form[RenovationAllowanceBalancingCharge] =
+    Form[RenovationAllowanceBalancingCharge](
       mapping(
         "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> boolean(
           s"businessPremisesRenovationBalancingCharge.error.required.yesOrNo"
@@ -45,8 +46,8 @@ class BusinessPremisesRenovationBalancingChargeFormProvider @Inject() extends Ma
             ).verifying(inRange(minimum, maximum, "businessPremisesRenovationBalancingCharge.error.outOfRange"))
           )
         }
-      )(BusinessPremisesRenovationAllowanceBalancingCharge.apply)(
-        BusinessPremisesRenovationAllowanceBalancingCharge.unapply
+      )(RenovationAllowanceBalancingCharge.apply)(
+        RenovationAllowanceBalancingCharge.unapply
       )
     )
 }
