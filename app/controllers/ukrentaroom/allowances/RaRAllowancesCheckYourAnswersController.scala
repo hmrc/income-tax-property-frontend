@@ -18,6 +18,7 @@ package controllers.ukrentaroom.allowances
 
 import audit.{AuditService, RentARoomAllowance, RentARoomAuditModel}
 import controllers.actions._
+import controllers.exceptions.SaveJourneyAnswersFailed
 import models.JourneyContext
 import models.backend.ServiceError
 import models.requests.DataRequest
@@ -64,18 +65,26 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(RentARoomAllowance) match {
-        case Some(allowance) =>
-          saveAllowanceForRentARoom(taxYear, request, allowance).map {
-            case Left(_) => InternalServerError
-            case Right(_: Unit) =>
-              auditAllowanceCYA(taxYear, request, allowance)
-              Redirect(controllers.ukrentaroom.allowances.routes.RaRAllowancesCompleteController.onPageLoad(taxYear))
-          }
+        case Some(allowance) => saveAllowances(taxYear, request, allowance)
         case None =>
           logger.error("Allowance in rent a room is not present in userAnswers")
           Future.failed(NotFoundException)
       }
   }
+
+  private def saveAllowances(taxYear: Int, request: DataRequest[AnyContent], allowance: RentARoomAllowance)(implicit
+    hc: HeaderCarrier
+  ) =
+    saveAllowanceForRentARoom(taxYear, request, allowance).flatMap {
+      case Right(_: Unit) =>
+        auditAllowanceCYA(taxYear, request, allowance)
+        Future.successful(
+          Redirect(controllers.ukrentaroom.allowances.routes.RaRAllowancesCompleteController.onPageLoad(taxYear))
+        )
+      case Left(_) =>
+        logger.error("Failed to save rent a room allowances section")
+        Future.failed(SaveJourneyAnswersFailed("Failed to save rent a room allowances section"))
+    }
 
   private def saveAllowanceForRentARoom(
     taxYear: Int,

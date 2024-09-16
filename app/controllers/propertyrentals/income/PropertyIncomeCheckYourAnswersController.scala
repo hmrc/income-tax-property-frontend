@@ -19,6 +19,7 @@ package controllers.propertyrentals.income
 import audit.{AuditService, RentalsAuditModel, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.requests.DataRequest
 import models.{JourneyContext, Rentals}
 import pages.PageConstants.incomePath
@@ -69,25 +70,28 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
-
       request.userAnswers.get(RentalsIncome) match {
-        case Some(propertyRentalsIncome) =>
-          propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).map {
-            case Right(_) =>
-              auditCYA(taxYear, request, propertyRentalsIncome)
-              Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
-            case Left(_) =>
-              InternalServerError
-          }
-
+        case Some(propertyRentalsIncome) => saveIncomeSection(taxYear, request, propertyRentalsIncome)
         case None =>
           logger.error(s"${incomePath(Rentals)} section is not present in userAnswers")
+          Future.failed(InternalErrorFailure(s"${incomePath(Rentals)} section is not present in userAnswers"))
       }
+  }
 
-      Future.successful(
-        Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
-      )
+  private def saveIncomeSection(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(
+    implicit hc: HeaderCarrier
+  ) = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
+    propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).flatMap {
+      case Right(_) =>
+        auditCYA(context.taxYear, request, propertyRentalsIncome)
+        Future.successful(
+          Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
+        )
+      case Left(_) =>
+        logger.error("Failed to save income section")
+        Future.failed(SaveJourneyAnswersFailed("Failed to save income section"))
+    }
   }
 
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(implicit

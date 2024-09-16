@@ -20,8 +20,9 @@ import audit.AuditModel._
 import audit.{AuditModel, AuditService}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.requests.DataRequest
+import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models._
+import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -83,19 +84,20 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
   ): Future[Result] =
     aboutMaybe.fold[Future[Result]] {
       logger.error("Rentals and Rent A Room Section is not present in userAnswers")
-      Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+      Future.failed(InternalErrorFailure("Rentals and Rent A Room Section is not present in userAnswers"))
     } { about =>
       propertySubmissionService
         .saveJourneyAnswers[RentalsAndRaRAbout](context, about)
-        .map {
+        .flatMap {
+          case Right(_) =>
+            auditCYA(taxYear, request, about, isFailed = false)
+            Future.successful(
+              Redirect(controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear))
+            )
           case Left(error) =>
             logger.error(error.toString)
-            auditCYA(taxYear, request, about, true)
-            Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
-          case Right(_) =>
-            auditCYA(taxYear, request, about, false)
-
-            Redirect(controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear))
+            auditCYA(taxYear, request, about, isFailed = true)
+            Future.failed(SaveJourneyAnswersFailed("Failed to save rentals and rent a room about section"))
         }
     }
 

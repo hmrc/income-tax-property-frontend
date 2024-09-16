@@ -19,6 +19,7 @@ package controllers.ukrentaroom
 import audit.{AuditService, RentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.exceptions.SaveJourneyAnswersFailed
 import models.requests.DataRequest
 import models.{JourneyContext, RaRAbout, RentARoom}
 import play.api.Logging
@@ -27,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, TotalIncomeAmountSummary, JointlyLetSummary}
+import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, JointlyLetSummary, TotalIncomeAmountSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.CheckYourAnswersView
 
@@ -73,12 +74,15 @@ class CheckYourAnswersController @Inject() (
       } { rarAbout =>
         propertySubmissionService
           .saveJourneyAnswers[RaRAbout](context, rarAbout)
-          .map {
-            case Left(_) =>
-              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
+          .flatMap {
             case Right(_) =>
               auditCYA(taxYear, request, rarAbout)
-              Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+              Future.successful(
+                Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+              )
+            case Left(_) =>
+              logger.error("Failed to save rent a room about section")
+              Future.failed(SaveJourneyAnswersFailed("Failed to save rent a room about section"))
           }
       }
   }
