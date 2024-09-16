@@ -18,6 +18,7 @@ package controllers.rentalsandrentaroom
 
 import audit.AuditService
 import base.SpecBase
+import controllers.exceptions.InternalErrorFailure
 import models.{ClaimExpensesOrRelief, RentalsAndRaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers._
@@ -45,7 +46,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
@@ -66,7 +67,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear).url)
@@ -83,14 +84,11 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(
-          POST,
-          controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url
-        )
-
-        val result = route(application, request).value
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        val failure = intercept[InternalErrorFailure] {
+          val request = FakeRequest(POST, routes.RentalsAndRaRCheckYourAnswersController.onSubmit(taxYear).url)
+          status(route(application, request).value)
+        }
+        failure.getMessage mustBe "Rentals and Rent A Room Section is not present in userAnswers"
 
       }
     }
@@ -102,7 +100,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         RentalsAndRaRAbout(
           jointlyLetYesOrNo = true,
           22.23,
-          true,
+          claimPropertyIncomeAllowanceYesOrNo = true,
           ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11))
         )
       val userAnswersWithRaRAbout =
@@ -131,7 +129,9 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
         verify(audit, times(1)).sendAuditEvent(any())(any(), any())
-        redirectLocation(result).value mustEqual controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController
+        redirectLocation(
+          result
+        ).value mustEqual controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController
           .onPageLoad(taxYear)
           .url
 

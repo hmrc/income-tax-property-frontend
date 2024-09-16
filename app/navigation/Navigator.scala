@@ -284,7 +284,7 @@ class Navigator @Inject() () {
       taxYear => _ => userAnswers => enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
     case EsbaClaimsPage(propertyType) =>
       taxYear => _ => userAnswers => esbaClaimsNavigationNormalMode(taxYear, userAnswers, propertyType)
-    case EsbaRemoveConfirmationPage =>
+    case EsbaRemoveConfirmationPage(propertyType) =>
       taxYear => _ => userAnswers => esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, Rentals)
     case EsbaSectionFinishedPage(propertyType) => taxYear => _ => _ => SummaryController.show(taxYear)
     case AboutSectionCompletePage =>
@@ -521,9 +521,9 @@ class Navigator @Inject() () {
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
     case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
-         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
-         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
-         UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
+        BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
+        RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
+        UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage(Rentals) =>
       taxYear =>
@@ -875,7 +875,7 @@ class Navigator @Inject() () {
           if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
             current.balancingChargeAmount == previous.balancingChargeAmount =>
         AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, Rentals)
+      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
     }
 
   private def totalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
@@ -910,7 +910,7 @@ class Navigator @Inject() () {
   ): Call =
     userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
       case Some(true)  => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
-      case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }
 
@@ -943,7 +943,7 @@ class Navigator @Inject() () {
   private def esbaClaimsNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(EsbaClaimsPage(propertyType)) match {
       case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
-      case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear, Rentals)
+      case Some(false) => EsbaSectionFinishedController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }
 
@@ -953,7 +953,7 @@ class Navigator @Inject() () {
     propertyType: PropertyType
   ): Call =
     (
-      userAnswers.get(EsbaRemoveConfirmationPage),
+      userAnswers.get(EsbaRemoveConfirmationPage(propertyType)),
       userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType))
     ) match {
       case (Some(true), Some(esbaForm)) if esbaForm.isEmpty => EsbaAddClaimController.onPageLoad(taxYear, propertyType)

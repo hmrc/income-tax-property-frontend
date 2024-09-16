@@ -17,22 +17,27 @@
 package controllers
 
 import base.SpecBase
+import models.Rentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.structurebuildingallowance.ClaimSbaCheckYourAnswersView
 import viewmodels.govuk.summarylist._
+import views.html.structurebuildingallowance.ClaimSbaCheckYourAnswersView
 class ClaimSbaCheckYourAnswersControllerSpec extends SpecBase {
+
+  val taxYear = 2024
 
   "ClaimSbaCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
       val list = SummaryListViewModel(Seq.empty)
       running(application) {
         val request = FakeRequest(
           GET,
-          controllers.structuresbuildingallowance.routes.ClaimSbaCheckYourAnswersController.onPageLoad(2024).url
+          controllers.structuresbuildingallowance.routes.ClaimSbaCheckYourAnswersController
+            .onPageLoad(taxYear, Rentals)
+            .url
         )
 
         val result = route(application, request).value
@@ -40,7 +45,7 @@ class ClaimSbaCheckYourAnswersControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ClaimSbaCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, 2024)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, Rentals)(request, messages(application)).toString
       }
     }
   }

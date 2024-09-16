@@ -16,29 +16,30 @@
 
 package viewmodels.checkAnswers.structurebuildingallowance
 
-import controllers.structuresbuildingallowance.routes._
-import models.{CheckMode, Rentals, UserAnswers}
+import controllers.structuresbuildingallowance.routes
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.ClaimStructureBuildingAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ClaimStructureBuildingAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ClaimStructureBuildingAllowancePage(Rentals)).map { answer =>
+    answers.get(ClaimStructureBuildingAllowancePage(propertyType)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = s"claimStructureBuildingAllowance.legend.$individualOrAgent",
-        value = ValueViewModel(value),
+        key = KeyViewModel(s"claimStructureBuildingAllowance.legend.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode, Rentals).url
+            routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
             .withVisuallyHiddenText(messages("claimStructureBuildingAllowance.change.hidden"))
         )

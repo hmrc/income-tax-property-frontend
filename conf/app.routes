@@ -301,8 +301,8 @@ POST        /:taxYear/rentals/structures-buildings-allowance/:index/remove-claim
 GET         /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/structures-buildings-allowance/complete-yes-no                                    controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int, propertyType: PropertyType = Rentals)
 
-GET         /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int)
-POST        /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int)
+GET         /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int, propertyType: PropertyType = Rentals)
+POST        /:taxYear/rentals/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int, propertyType: PropertyType = Rentals)
 
 ############## Rentals  Enhanced Structure Building Allowance  ##############
 
@@ -703,6 +703,9 @@ POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/:index/
 
 GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/complete-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/complete-yes-no                        controllers.structuresbuildingallowance.SbaSectionFinishedController.onSubmit(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
+
+GET         /:taxYear/rentals-rent-a-room/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
+POST        /:taxYear/rentals-rent-a-room/structures-buildings-allowance/claim-yes-no-check-your-answers                    controllers.structuresbuildingallowance.ClaimSbaCheckYourAnswersController.onSubmit(taxYear: Int, propertyType: PropertyType = RentalsRentARoom)
 
 ############## Rentals  and Rent a room Enhanced Structure Building Allowance  ##############
 

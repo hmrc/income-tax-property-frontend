@@ -18,6 +18,7 @@ package controllers.allowances
 
 import audit.{AuditService, RentalsAllowance, RentalsAuditModel}
 import controllers.actions._
+import controllers.exceptions.SaveJourneyAnswersFailed
 import models.backend.ServiceError
 import models.requests.DataRequest
 import models.{JourneyContext, Rentals}
@@ -67,18 +68,26 @@ class AllowancesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(RentalsAllowance) match {
-        case Some(allowance) =>
-          saveAllowanceForPropertyRentals(taxYear, request, allowance).map {
-            case Left(_) => InternalServerError
-            case Right(_: Unit) =>
-              auditAllowanceCYA(taxYear, request, allowance)
-              Redirect(controllers.allowances.routes.AllowancesSectionFinishedController.onPageLoad(taxYear))
-          }
+        case Some(allowance) => saveAllowances(taxYear, request, allowance)
         case None =>
           logger.error("Allowance in property rentals is not present in userAnswers")
           Future.failed(NotFoundException)
       }
   }
+
+  private def saveAllowances(taxYear: Int, request: DataRequest[AnyContent], allowance: RentalsAllowance)(implicit
+    hc: HeaderCarrier
+  ) =
+    saveAllowanceForPropertyRentals(taxYear, request, allowance).flatMap {
+      case Right(_: Unit) =>
+        auditAllowanceCYA(taxYear, request, allowance)
+        Future.successful(
+          Redirect(controllers.allowances.routes.AllowancesSectionFinishedController.onPageLoad(taxYear))
+        )
+      case Left(_) =>
+        logger.error("Failed to save rental allowances")
+        Future.failed(SaveJourneyAnswersFailed("Failed to save rental allowances"))
+    }
 
   private def saveAllowanceForPropertyRentals(
     taxYear: Int,

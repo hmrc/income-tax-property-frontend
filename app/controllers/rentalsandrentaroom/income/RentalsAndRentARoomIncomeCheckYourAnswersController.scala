@@ -71,31 +71,38 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-income")
-
       request.userAnswers.get(RentalsAndRentARoomIncome) match {
         case Some(propertyRentalsIncome) =>
-          propertySubmissionService
-            .saveJourneyAnswers(context, propertyRentalsIncome)
-            .flatMap {
-              case Right(_) =>
-                auditIncomeCYA(taxYear, request, propertyRentalsIncome, false)
-                Future.successful(
-                  Redirect(
-                    controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
-                  )
-                )
-              case Left(_) =>
-                auditIncomeCYA(taxYear, request, propertyRentalsIncome, true)
-                Future.failed(InternalErrorFailure("Property submission save error"))
-            }
-
+          saveIncome(taxYear, request, propertyRentalsIncome)
         case None =>
           logger.error("RentalsAndRentARoomIncome section is not present in userAnswers")
           Future.failed(InternalErrorFailure("RentalsAndRentARoomIncome section is not present in userAnswers"))
       }
+  }
 
+  private def saveIncome(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyRentalsIncome: RentalsAndRentARoomIncome
+  )(implicit
+    hc: HeaderCarrier
+  ) = {
+    val context =
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-income")
+    propertySubmissionService
+      .saveJourneyAnswers(context, propertyRentalsIncome)
+      .flatMap {
+        case Right(_) =>
+          auditIncomeCYA(taxYear, request, propertyRentalsIncome, isFailed = false)
+          Future.successful(
+            Redirect(
+              controllers.rentalsandrentaroom.income.routes.RentalsRaRIncomeCompleteController.onPageLoad(taxYear)
+            )
+          )
+        case Left(_) =>
+          auditIncomeCYA(taxYear, request, propertyRentalsIncome, isFailed = true)
+          Future.failed(InternalErrorFailure("Property submission save error"))
+      }
   }
 
   private def auditIncomeCYA(

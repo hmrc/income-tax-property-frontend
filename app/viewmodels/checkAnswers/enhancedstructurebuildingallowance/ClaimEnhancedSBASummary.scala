@@ -17,28 +17,29 @@
 package viewmodels.checkAnswers.enhancedstructurebuildingallowance
 
 import controllers.enhancedstructuresbuildingallowance.routes
-import models.{CheckMode, Rentals, UserAnswers}
+import models.{CheckMode, PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ClaimEnhancedSBASummary {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ClaimEsbaPage(Rentals)).map { answer =>
+    answers.get(ClaimEsbaPage(propertyType)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = s"claimEnhancedSBA.legend.$individualOrAgent",
-        value = ValueViewModel(value),
+        key = KeyViewModel(s"claimEnhancedSBA.legend.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode, Rentals).url
+            routes.ClaimEsbaController.onPageLoad(taxYear: Int, CheckMode, propertyType).url
           )
             .withVisuallyHiddenText(messages("claimEnhancedSBA.change.hidden"))
         )

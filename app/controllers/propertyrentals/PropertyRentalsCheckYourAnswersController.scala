@@ -19,6 +19,7 @@ package controllers.propertyrentals
 import audit.{AuditService, RentalsAbout, RentalsAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.exceptions.SaveJourneyAnswersFailed
 import models.requests.DataRequest
 import models.{JourneyContext, PropertyType}
 import play.api.Logging
@@ -76,12 +77,13 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-about")
-
-    propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).map {
+    propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyRentalsAbout)
-        Redirect(controllers.propertyrentals.routes.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear))
-      case Left(_) => InternalServerError
+        Future.successful(
+          Redirect(controllers.propertyrentals.routes.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear))
+        )
+      case Left(_) => Future.failed(SaveJourneyAnswersFailed("Failed to save rentals about section"))
     }
   }
 
