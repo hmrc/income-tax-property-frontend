@@ -16,19 +16,22 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.{AuditService, RentalsAuditModel}
+import audit.{AuditModel, AuditService, RentalsAuditModel}
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
+import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{NormalMode, PropertyType}
+import models.{AccountingMethod, AuditPropertyType, EsbasWithSupportingQuestions, EsbasWithSupportingQuestionsPage, JourneyContext, JourneyName, NormalMode, PropertyType, Rentals, RentalsRentARoom, SectionName}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,7 +51,9 @@ class EsbaClaimsController @Inject() (
   requireData: DataRequiredAction,
   formProvider: EsbaClaimsFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  audit: AuditService,
+  propertySubmissionService: PropertySubmissionService,
+  businessService: BusinessService,
+  auditService: AuditService,
   view: EsbaClaimsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
@@ -73,40 +78,120 @@ class EsbaClaimsController @Inject() (
             Future.successful(
               BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, propertyType))
             ),
-          value => {
-            request.userAnswers.get(Esbas(propertyType)) match {
-              case Some(esbas) if !value =>
-                auditCYA(taxYear, request, esbas)
-              case None =>
-                logger.error("Enhanced Structured Building Allowance Section is not present in userAnswers")
-              case _ => ()
-            }
-
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              navigator.nextPage(EsbaClaimsPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
-            )
-          }
+          value => submitCurrentClaimOrStartAddingANewClaim(taxYear, propertyType, request, value)
         )
     }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], esbas: List[Esba])(implicit
+  private def submitCurrentClaimOrStartAddingANewClaim(
+    taxYear: Int,
+    propertyType: PropertyType,
+    request: DataRequest[AnyContent],
+    addAnotherClaim: Boolean
+  )(implicit
     hc: HeaderCarrier
-  ): Unit = {
-    val auditModel = RentalsAuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      "PropertyRentalsESBA",
-      esbas
+  ): Future[Result] =
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), addAnotherClaim))
+      _              <- sessionRepository.set(updatedAnswers)
+      result <- if (!addAnotherClaim)
+                  getBusinessDetailsAndSaveEsba(taxYear, request, propertyType)
+                else
+                  redirectToAddClaim(taxYear, propertyType)
+
+    } yield result
+
+  private def redirectToAddClaim(taxYear: Int, propertyType: PropertyType): Future[Result] =
+    Future.successful(
+      Redirect(routes.EsbaAddClaimController.onPageLoad(taxYear, propertyType))
     )
 
-    audit.sendRentalsAuditEvent(auditModel)
+  private def getBusinessDetailsAndSaveEsba(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyType: PropertyType
+  )(implicit
+    hc: HeaderCarrier
+  ): Future[Result] =
+    businessService
+      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+      .flatMap {
+        case Right(Some(propertyDetails)) =>
+          saveEsba(taxYear, request, propertyType, propertyDetails)
+        case Left(_) =>
+          logger.error("CashOrAccruals information could not be retrieved from downstream.")
+          Future.failed(InternalErrorFailure("CashOrAccruals information could not be retrieved from downstream."))
+      }
+
+  private def saveEsba(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyType: PropertyType,
+    propertyDetails: PropertyDetails
+  )(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Result] = {
+    val journeyName = propertyType match {
+      case Rentals          => "rentals-esba"
+      case RentalsRentARoom => "rentals-and-rent-a-room-esba"
+    }
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyName)
+    val accrualsOrCash = propertyDetails.accrualsOrCash match {
+      case Some(value) => value
+      case None =>
+        logger.error("No accrualsOrCash exists, hence setting accounting method to Traditional on audit")
+        true
+    }
+
+    request.userAnswers.get(EsbasWithSupportingQuestionsPage(propertyType)) match {
+      case Some(e) =>
+        propertySubmissionService
+          .saveJourneyAnswers(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false))))
+          .map {
+            case Right(_) =>
+              auditESBAClaims(taxYear, request, e, propertyType, false, accrualsOrCash)
+              Redirect(
+                controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController
+                  .onPageLoad(taxYear, propertyType)
+              )
+            case Left(_) =>
+              auditESBAClaims(taxYear, request, e, propertyType, true, accrualsOrCash)
+              InternalServerError
+          }
+      case None =>
+        logger.error("Enhanced Structure and Building Allowance not found in userAnswers")
+        Future.failed(InternalErrorFailure("Enhanced Structure and Building Allowance not found in userAnswers"))
+    }
+  }
+
+  private def auditESBAClaims(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    esbasWithSupportingQuestions: EsbasWithSupportingQuestions,
+    propertyType: PropertyType,
+    isFailed: Boolean,
+    accrualsOrCash: Boolean
+  )(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = AuditModel(
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = SectionName.ESBA,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = propertyType match {
+        case Rentals          => JourneyName.Rentals
+        case RentalsRentARoom => JourneyName.RentalsRentARoom
+      },
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      userEnteredDetails = esbasWithSupportingQuestions,
+      isFailed = isFailed
+    )
+    auditService.sendAuditEvent(auditModel)
   }
 
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit

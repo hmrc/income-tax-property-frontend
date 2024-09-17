@@ -57,49 +57,6 @@ class EsbaCheckYourAnswersController @Inject() (
       Ok(view(list, taxYear, propertyType))
     }
 
-  def onSubmit(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
-      val esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions] =
-        request.userAnswers.get(EsbasWithSupportingQuestions)
-      saveEsba(taxYear, request, esbasWithSupportingQuestions, propertyType)
-
-    }
-
-  private def saveEsba(
-    taxYear: Int,
-    request: DataRequest[AnyContent],
-    esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-    propertyType: PropertyType
-  )(implicit
-    hc: HeaderCarrier,
-    ec: ExecutionContext
-  ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "esba")
-
-    esbasWithSupportingQuestions match {
-      case Some(e) =>
-        propertySubmissionService
-          .saveJourneyAnswers(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false))))
-          .map {
-            case Right(_) =>
-              auditCYA(taxYear, request, e)
-              Redirect(
-                controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimsController
-                  .onPageLoad(taxYear, propertyType)
-              )
-            case Left(_) => InternalServerError
-          }
-      case None =>
-        Future.successful(
-          Redirect(
-            controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimsController
-              .onPageLoad(taxYear, propertyType)
-          )
-        )
-    }
-
-  }
-
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],

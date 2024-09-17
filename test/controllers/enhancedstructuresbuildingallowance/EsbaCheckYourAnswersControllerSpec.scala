@@ -52,20 +52,6 @@ class EsbaCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-    "must return OK and the correct view for a POST (onSubmit)" in {
-      val userAnswers = UserAnswers("test").set(ClaimEsbaPage(Rentals), true).get
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
-
-      running(application) {
-        val request = FakeRequest(POST, routes.EsbaCheckYourAnswersController.onSubmit(taxYear, Rentals).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
-
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()

@@ -126,7 +126,7 @@ case object SummaryPage {
                   rentalsAndRaRExpensesItem(taxYear, userAnswers),
                   rentalsAndRaRAllowancesItem(taxYear, userAnswers),
                   rentalsAndRaRSBAItem(taxYear, userAnswers),
-                  rentalsAndRaRESBAItem(taxYear)
+                  rentalsAndRaRESBAItem(taxYear, userAnswers)
                 )
               case Some(false) if !accrualsOrCash =>
                 baseItems concat Seq(
@@ -412,12 +412,20 @@ case object SummaryPage {
       "rentals_and_rent_a_room_structures_and_building_allowance_link"
     )
 
-  private def rentalsAndRaRESBAItem(taxYear: Int) =
+  private def rentalsAndRaRESBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
       controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
-        .onPageLoad(taxYear, NormalMode, RentalsRentARoom),
-      TaskListTag.NotStarted,
+        .onPageLoad(taxYear, NormalMode, RentalsRentARoom), {
+        val sectionFinished = userAnswers.flatMap(_.get(EsbaSectionFinishedPage(RentalsRentARoom)))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(ClaimStructureBuildingAllowancePage(RentalsRentARoom))).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
       "rentals_and_rent_a_room_enhanced_structures_and_building_allowance_link"
     )
 

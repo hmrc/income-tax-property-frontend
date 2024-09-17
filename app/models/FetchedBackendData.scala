@@ -18,7 +18,7 @@ package models
 
 import audit._
 import pages.PageConstants
-import pages.PageConstants.{esbasWithSupportingQuestions, sbaPath}
+import pages.PageConstants.{eSbaPath, esbas, esbasWithSupportingQuestions, sbaPath}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
@@ -109,13 +109,17 @@ final case class EsbasWithSupportingQuestions(
   esbas: List[Esba]
 )
 
-object EsbasWithSupportingQuestions
-    extends Gettable[EsbasWithSupportingQuestions] with Settable[EsbasWithSupportingQuestions] {
+object EsbasWithSupportingQuestions {
   implicit val format: OFormat[EsbasWithSupportingQuestions] = Json.format[EsbasWithSupportingQuestions]
 
-  override def path: JsPath = JsPath \ toString
+}
 
-  override def toString: String = esbasWithSupportingQuestions
+final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
+    extends Gettable[EsbasWithSupportingQuestions] with Settable[EsbasWithSupportingQuestions] {
+
+  override def path: JsPath = JsPath \ eSbaPath(propertyType)
+
+  override def toString: String = esbas
 }
 
 final case class FetchedBackendData(
