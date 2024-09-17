@@ -56,25 +56,4 @@ class EsbaCheckYourAnswersController @Inject() (
       )
       Ok(view(list, taxYear, propertyType))
     }
-
-  private def auditCYA(
-    taxYear: Int,
-    request: DataRequest[AnyContent],
-    esbasWithSupportingQuestions: EsbasWithSupportingQuestions
-  )(implicit
-    hc: HeaderCarrier
-  ): Unit = {
-    val auditModel = RentalsAuditModel(
-      request.user.nino,
-      request.user.affinityGroup,
-      request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
-      taxYear,
-      isUpdate = false,
-      "Esba",
-      esbasWithSupportingQuestions
-    )
-
-    audit.sendRentalsAuditEvent(auditModel)
-  }
 }
