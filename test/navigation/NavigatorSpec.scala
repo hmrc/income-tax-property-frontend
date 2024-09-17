@@ -24,6 +24,7 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
+import org.scalatest.{FixtureContext, Succeeded}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages._
 import pages.adjustments._
@@ -33,6 +34,7 @@ import pages.premiumlease._
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import pages.structurebuildingallowance.{StructureBuildingQualifyingAmountPage, StructureBuildingQualifyingDatePage}
 import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
@@ -159,6 +161,17 @@ class NavigatorSpec extends SpecBase {
       }
 
 =======*/
+
+      s"must go from BusinessPremisesRenovationAllowancesBalancingChargePage to RentalsAndRentARoomAdjustmentsCheckYourAnswersPage for " in {
+        navigator.nextPage(
+          BusinessPremisesRenovationAllowanceBalancingChargePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      }
+
       val scenarios = Table[PropertyType, String](
         ("property type", "type definition"),
         (RentalsRentARoom, "rentalsAndRaR"),
@@ -540,15 +553,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
           ) mustBe BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, propertyType)
         }
-        s"must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage for $propertyTypeDefinition" in {
-          navigator.nextPage(
-            BusinessPremisesRenovationPage(propertyType),
-            taxYear,
-            NormalMode,
-            UserAnswers("test"),
-            UserAnswers("test")
-          ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, propertyType)
-        }
+
         s"must go from ReplacementOfDomesticGoodsPage to OtherCapitalAllowancePage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ReplacementOfDomesticGoodsPage(propertyType),
@@ -575,6 +580,15 @@ class NavigatorSpec extends SpecBase {
           })
         }
 
+      }
+      s"must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage for Rentals" in {
+        navigator.nextPage(
+          BusinessPremisesRenovationPage(Rentals),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
@@ -1074,22 +1088,6 @@ class NavigatorSpec extends SpecBase {
                 .onPageLoad(taxYear)
           })
         }
-        s"must go from BusinessPremisesRenovationPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
-          navigator.nextPage(
-            BusinessPremisesRenovationPage(propertyType),
-            taxYear,
-            CheckMode,
-            UserAnswers("test"),
-            UserAnswers("test")
-          ) mustBe (propertyType match {
-            case Rentals =>
-              AllowancesCheckYourAnswersController
-                .onPageLoad(taxYear)
-            case RentalsRentARoom =>
-              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
-                .onPageLoad(taxYear)
-          })
-        }
         s"must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ReplacementOfDomesticGoodsPage(propertyType),
@@ -1124,6 +1122,7 @@ class NavigatorSpec extends SpecBase {
         }
 
       }
+
       "must go from ClaimExpensesOrReliefPage to CheckYourAnswersController" in {
         navigator.nextPage(
           ClaimExpensesOrReliefPage(RentARoom),

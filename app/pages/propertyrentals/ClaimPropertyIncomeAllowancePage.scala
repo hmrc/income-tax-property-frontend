@@ -16,14 +16,29 @@
 
 package pages.propertyrentals
 
-import models.PropertyType
+import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
+import pages.adjustments._
+import pages.allowances.BusinessPremisesRenovationPage
+import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import play.api.libs.json.JsPath
+
+import scala.util.{Failure, Success, Try}
 
 case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
   override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    userAnswers
+      .remove(PrivateUseAdjustmentPage(RentalsRentARoom))
+      .flatMap(_.remove(BalancingChargePage(RentalsRentARoom)))
+      .flatMap(_.remove(PropertyIncomeAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(BusinessPremisesRenovationAllowanceBalancingChargePage))
+      .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
+      .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
+
 }

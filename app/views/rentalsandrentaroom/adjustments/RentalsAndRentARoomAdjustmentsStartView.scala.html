@@ -14,7 +14,9 @@
  * limitations under the License.
  *@
 
-@import controllers.routes.SummaryController
+@import controllers.adjustments.routes.PrivateUseAdjustmentController
+@import models.RentalsRentARoom
+@import models.NormalMode
 
 @this(
     layout: templates.Layout,
@@ -44,7 +46,7 @@
 
 @govukButton(
     ButtonViewModel(messages("site.continue"))
-    .asLink(SummaryController.show(taxYear).url)
+    .asLink(PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url)
     .withId("continue")
     )
 }
