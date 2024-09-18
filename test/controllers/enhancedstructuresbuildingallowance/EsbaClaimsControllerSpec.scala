@@ -16,12 +16,16 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
+import audit.AuditService
 import base.SpecBase
+import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
-import models.{EsbasWithSupportingQuestions, Rentals}
+import models.PropertyType.toPath
+import models.backend.PropertyDetails
+import models.{EsbasWithSupportingQuestions, EsbasWithSupportingQuestionsPage, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{doNothing, times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.data.Form
@@ -30,16 +34,18 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
 
 import scala.concurrent.Future
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
+
+import scala.util.Success
 
 class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val esbaClaimsRoute: String = routes.EsbaClaimsController.onPageLoad(taxYear, Rentals).url
   val formProvider = new EsbaClaimsFormProvider()
   val form: Form[Boolean] = formProvider("agent")
 
@@ -49,113 +55,238 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  "EsbaClaims Controller" - {
+  def rentalsOnwardRouteAddClaim(propertyType: PropertyType): Call =
+    Call(
+      "GET",
+      s"/update-and-submit-income-tax-return/property/$taxYear/${toPath(propertyType)}/enhanced-structures-buildings-allowance/add-claim"
+    )
 
-    "must return OK and the correct view for a GET" in {
+  def onwardRouteNoOtherClaim(propertyType: PropertyType): Call =
+    Call(
+      "GET",
+      s"/update-and-submit-income-tax-return/property/$taxYear/${toPath(propertyType)}/enhanced-structures-buildings-allowance/complete-yes-no"
+    )
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+  def userAnswersWithEsba(propertyType: PropertyType) = emptyUserAnswers
+    .set(
+      EsbasWithSupportingQuestionsPage(propertyType),
+      EsbasWithSupportingQuestions(true, Some(false), List[Esba]())
+    )
+    .get
 
-      running(application) {
-        val request = FakeRequest(GET, esbaClaimsRoute)
+  val scenarios = Table[UserAnswers, String, PropertyType, String, Boolean, Option[String]](
+    ("useranswers", "useranswers definition", "property type", "type definition", "add new claim", "onward route"),
+    (
+      userAnswersWithEsba(RentalsRentARoom),
+      "userAnswersWithEsba",
+      RentalsRentARoom,
+      "rentalsAndRaR",
+      false,
+      Some(onwardRouteNoOtherClaim(RentalsRentARoom).url)
+    ),
+    (
+      userAnswersWithEsba(RentalsRentARoom),
+      "userAnswersWithEsba",
+      RentalsRentARoom,
+      "rentalsAndRaR",
+      true,
+      Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
+    ),
+    (
+      userAnswersWithEsba(Rentals),
+      "userAnswersWithEsba",
+      Rentals,
+      "rentals",
+      false,
+      Some(onwardRouteNoOtherClaim(Rentals).url)
+    ),
+    (
+      userAnswersWithEsba(Rentals),
+      "userAnswersWithEsba",
+      Rentals,
+      "rentals",
+      true,
+      Some(rentalsOnwardRouteAddClaim(Rentals).url)
+    ),
+    (
+      emptyUserAnswers,
+      "userAnswersWithoutEsba",
+      RentalsRentARoom,
+      "rentalsAndRaR",
+      false,
+      None
+    ),
+    (
+      emptyUserAnswers,
+      "userAnswersWithoutEsba",
+      RentalsRentARoom,
+      "rentalsAndRaR",
+      true,
+      Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
+    ),
+    (
+      emptyUserAnswers,
+      "userAnswersWithoutEsba",
+      Rentals,
+      "rentals",
+      false,
+      None
+    ),
+    (
+      emptyUserAnswers,
+      "userAnswersWithoutEsba",
+      Rentals,
+      "rentals",
+      true,
+      Some(rentalsOnwardRouteAddClaim(Rentals).url)
+    )
+  )
+  forAll(scenarios) {
+    (
+      userAnswers: UserAnswers,
+      userAnswersDefinition: String,
+      propertyType: PropertyType,
+      propertyTypeDefinition: String,
+      addNewClaim: Boolean,
+      redirectionUrl: Option[String]
+    ) =>
+      lazy val esbaClaimsRoute: String = routes.EsbaClaimsController.onPageLoad(taxYear, propertyType).url
 
-        val result = route(application, request).value
+      s"EsbaClaims Controller with $userAnswersDefinition for $propertyTypeDefinition if add new claim is selected as $addNewClaim" - {
 
-        val view = application.injector.instanceOf[EsbaClaimsView]
+        "must return OK and the correct view for a GET" in {
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, list, taxYear, agent, Rentals)(
-          request,
-          messages(application)
-        ).toString
-      }
-    }
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
-    "must redirect to the next page when valid data is submitted" in {
-      val userAnswers = emptyUserAnswers
-        .set(EsbasWithSupportingQuestions, EsbasWithSupportingQuestions(true, Some(false), List[Esba]()))
-        .get
+          running(application) {
+            val request = FakeRequest(GET, esbaClaimsRoute)
 
-      val mockSessionRepository = mock[SessionRepository]
+            val result = route(application, request).value
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+            val view = application.injector.instanceOf[EsbaClaimsView]
 
-      val mockPropertySubmissionService = mock[PropertySubmissionService]
-      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn (Future.successful(
-        Right(())
-      ))
+            status(result) mustEqual OK
+            contentAsString(result) mustEqual view(form, list, taxYear, agent, propertyType)(
+              request,
+              messages(application)
+            ).toString
+          }
+        }
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository),
-            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+        "must redirect to the next page when valid data is submitted" in {
+
+          val mockSessionRepository = mock[SessionRepository]
+          val mockBusinessService = mock[BusinessService]
+          val mockAuditService = mock[AuditService]
+          when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+          val cash = false
+          when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+            Right(
+              Some(
+                PropertyDetails(None, None, Some(cash), "incomeSourceId")
+              )
+            )
           )
-          .build()
+          val mockPropertySubmissionService = mock[PropertySubmissionService]
+          when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn (Future
+            .successful(
+              Right(())
+            ))
 
-      running(application) {
-        val request =
-          FakeRequest(POST, esbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "false"))
+          val application =
+            applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+              .overrides(
+                bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+                bind[SessionRepository].toInstance(mockSessionRepository),
+                bind[BusinessService].toInstance(mockBusinessService),
+                bind[AuditService].toInstance(mockAuditService),
+                bind[PropertySubmissionService].toInstance(mockPropertySubmissionService)
+              )
+              .build()
 
-        val result = route(application, request).value
+          running(application) {
+            val request =
+              FakeRequest(POST, esbaClaimsRoute)
+                .withFormUrlEncodedBody(("anotherClaim", addNewClaim.toString))
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+            val result = route(application, request).value
+            redirectionUrl match {
+              case Some(url) =>
+                redirectLocation(result).value mustEqual url
+
+                whenReady(result) { _ =>
+                  val timesForSubmission = if (addNewClaim) 0 else 1
+                  verify(mockPropertySubmissionService, times(timesForSubmission))
+                    .saveJourneyAnswers(any(), any())(any(), any())
+                  verify(mockBusinessService, times(timesForSubmission)).getUkPropertyDetails(any(), any())(any())
+                  verify(mockAuditService, times(timesForSubmission)).sendAuditEvent(any())(any(), any())
+                }
+
+              case None =>
+                await(result.failed) mustEqual
+                  InternalErrorFailure(
+                    "Enhanced Structure and Building Allowance not found in userAnswers"
+                  )
+
+            }
+
+          }
+
+        }
+
+        "must return a Bad Request and errors when invalid data is submitted" in {
+
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+
+          running(application) {
+            val request =
+              FakeRequest(POST, esbaClaimsRoute)
+                .withFormUrlEncodedBody(("anotherClaim", ""))
+
+            val boundForm = form.bind(Map("anotherClaim" -> ""))
+
+            val view = application.injector.instanceOf[EsbaClaimsView]
+
+            val result = route(application, request).value
+
+            status(result) mustEqual BAD_REQUEST
+            contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, propertyType)(
+              request,
+              messages(application)
+            ).toString
+          }
+        }
+
+        "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+          val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+          running(application) {
+            val request = FakeRequest(GET, esbaClaimsRoute)
+
+            val result = route(application, request).value
+
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+          }
+        }
+
+        "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+          val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+          running(application) {
+            val request =
+              FakeRequest(POST, esbaClaimsRoute)
+                .withFormUrlEncodedBody(("anotherClaim", "true"))
+
+            val result = route(application, request).value
+
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+          }
+        }
       }
-    }
-
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, esbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", ""))
-
-        val boundForm = form.bind(Map("anotherClaim" -> ""))
-
-        val view = application.injector.instanceOf[EsbaClaimsView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, Rentals)(
-          request,
-          messages(application)
-        ).toString
-      }
-    }
-
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-      running(application) {
-        val request = FakeRequest(GET, esbaClaimsRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
-      }
-    }
-
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, esbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
-      }
-    }
   }
 }

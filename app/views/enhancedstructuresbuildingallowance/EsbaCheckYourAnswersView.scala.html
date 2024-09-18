@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import controllers.enhancedstructuresbuildingallowance.routes
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -27,11 +28,12 @@
 
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-    @formHelper(action = controllers.enhancedstructuresbuildingallowance.routes.EsbaCheckYourAnswersController.onSubmit(taxYear, propertyType), Symbol("autoComplete") -> "off") {
 
-        @govukSummaryList(list)
-            @govukButton(
-                ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
-            )
-        }
-    }
+
+    @govukSummaryList(list)
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(routes.EsbaClaimsController.onPageLoad(taxYear, propertyType).url).withId("continue")
+        )
+}
+

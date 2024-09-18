@@ -35,13 +35,12 @@ case object EnhancedStructuresBuildingAllowance {
 }
 
 case class EnhancedStructureBuildingAllowanceGroup(propertyType: PropertyType)
-  extends Gettable[Array[EnhancedStructuresBuildingAllowance]] with Settable[Array[EnhancedStructuresBuildingAllowance]] {
-
+    extends Gettable[Array[EnhancedStructuresBuildingAllowance]]
+    with Settable[Array[EnhancedStructuresBuildingAllowance]] {
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
-  override def toString: String = PageConstants.esbasFormGroup
+  override def toString: String = PageConstants.esbas
 }
-
 
 case class EnhancedStructuresBuildingAllowanceWithIndex(index: Int, propertyType: PropertyType)
     extends Settable[Array[EnhancedStructuresBuildingAllowance]] {
@@ -50,5 +49,5 @@ case class EnhancedStructuresBuildingAllowanceWithIndex(index: Int, propertyType
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString \ index
 
-  override def toString: String = PageConstants.esbasFormGroup
+  override def toString: String = PageConstants.esbas
 }

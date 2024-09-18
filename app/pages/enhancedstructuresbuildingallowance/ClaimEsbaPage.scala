@@ -23,7 +23,7 @@ import play.api.libs.json.JsPath
 
 case class ClaimEsbaPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ PageConstants.esbasWithSupportingQuestions \ toString
+  override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
   override def toString: String = "claimEnhancedStructureBuildingAllowance"
 }

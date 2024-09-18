@@ -16,6 +16,7 @@
 
 package models.backend
 
+import models.AccountingMethod
 import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
@@ -32,7 +33,15 @@ case class PropertyDetails(
   tradingStartDate: Option[LocalDate],
   accrualsOrCash: Option[Boolean],
   incomeSourceId: String
-)
+) {
+  def getAccountingMethod(): Option[AccountingMethod] =
+    accrualsOrCash match {
+      case Some(true)  => Some(AccountingMethod.Traditional)
+      case Some(false) => Some(AccountingMethod.Cash)
+      case None        => None
+    }
+
+}
 
 object PropertyDetails {
   implicit val format: OFormat[PropertyDetails] = Json.format[PropertyDetails]
