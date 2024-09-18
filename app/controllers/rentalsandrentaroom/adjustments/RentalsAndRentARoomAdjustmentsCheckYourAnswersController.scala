@@ -18,6 +18,7 @@ package controllers.rentalsandrentaroom.adjustments
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models.RentalsRentARoom
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{JourneyContext, RentalsAndRentARoomAdjustment, RentalsRentARoom}

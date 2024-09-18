@@ -17,17 +17,20 @@
 package pages.propertyrentals.income
 
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{PropertyType, UserAnswers}
-import pages.PageConstants.incomePath
+import models.{PropertyType, RentalsRentARoom, UserAnswers}
+import pages.PageConstants.{aboutPath, incomePath}
 import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case class IncomeFromPropertyPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
+case class PropertyRentalIncomePage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
+  override def path: JsPath = propertyType match {
+    case RentalsRentARoom => JsPath \ aboutPath(propertyType) \ toString
+    case _                => JsPath \ incomePath(propertyType) \ toString
+  }
 
   override def toString: String = "incomeFromPropertyRentals"
 

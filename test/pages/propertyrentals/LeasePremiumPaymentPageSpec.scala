@@ -21,7 +21,7 @@ import models.{CalculatedFigureYourself, PremiumsGrantLease, PropertyType, Renta
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.premiumlease._
 
-class LeasePremiumPaymentPageSpec extends SpecBase {
+class PremiumForLeasePageSpec extends SpecBase {
   val scenarios = Table[PropertyType, String](
     ("property type", "type definition"),
     (RentalsRentARoom, "rentalsAndRaR"),
@@ -43,9 +43,9 @@ class LeasePremiumPaymentPageSpec extends SpecBase {
         .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
         .get
 
-      val result = userData.set(LeasePremiumPaymentPage(propertyType), false).success.value
+      val result = userData.set(PremiumForLeasePage(propertyType), false).success.value
 
-      result.get(LeasePremiumPaymentPage(propertyType)) must be(defined)
+      result.get(PremiumForLeasePage(propertyType)) must be(defined)
       result.get(CalculatedFigureYourselfPage(propertyType)) must not be defined
       result.get(ReceivedGrantLeaseAmountPage(propertyType)) must not be defined
       result.get(YearLeaseAmountPage(propertyType)) must not be defined
@@ -68,9 +68,9 @@ class LeasePremiumPaymentPageSpec extends SpecBase {
         .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
         .get
 
-      val result = userData.set(LeasePremiumPaymentPage(propertyType), true).success.value
+      val result = userData.set(PremiumForLeasePage(propertyType), true).success.value
 
-      result.get(LeasePremiumPaymentPage(propertyType)) must be(defined)
+      result.get(PremiumForLeasePage(propertyType)) must be(defined)
       result.get(CalculatedFigureYourselfPage(propertyType)) must be(defined)
       result.get(ReceivedGrantLeaseAmountPage(propertyType)) must be(defined)
       result.get(YearLeaseAmountPage(propertyType)) must be(defined)

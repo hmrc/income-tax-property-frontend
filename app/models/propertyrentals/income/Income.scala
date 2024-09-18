@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 final case class Income(
   isNonUKLandlord: Boolean,
   incomeFromPropertyRentals: BigDecimal,
-  leasePremiumPayment: Boolean,
+  premiumForLease: Boolean,
   reversePremiumsReceived: ReversePremiumsReceived,
   taxDeductedYesNo: Option[DeductingTax],
   calculatedFigureYourself: Option[CalculatedFigureYourself],

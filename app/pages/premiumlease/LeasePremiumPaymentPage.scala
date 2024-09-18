@@ -23,11 +23,11 @@ import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case class LeasePremiumPaymentPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
+case class PremiumForLeasePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
-  override def toString: String = "leasePremiumPaymentYesOrNo"
+  override def toString: String = "premiumForLeaseYesOrNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value

@@ -22,7 +22,6 @@ import queries.{Gettable, Settable}
 
 final case class RentalsAndRentARoomIncome(
   isNonUKLandlord: Boolean,
-  incomeFromPropertyRentals: BigDecimal,
   otherIncomeFromProperty: BigDecimal,
   deductingTax: Option[DeductingTax],
   calculatedFigureYourself: Option[CalculatedFigureYourself],

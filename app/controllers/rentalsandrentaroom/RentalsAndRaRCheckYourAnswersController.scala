@@ -30,6 +30,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.propertyrentals.ClaimPropertyIncomeAllowanceSummary
+import viewmodels.checkAnswers.propertyrentals.income.IncomeFromPropertySummary
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, JointlyLetSummary, TotalIncomeAmountSummary}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.rentalsandrentaroom.RentalsAndRaRCheckYourAnswersView
@@ -71,7 +72,8 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       JointlyLetSummary.row(taxYear, userAnswers, isAgent, RentalsRentARoom),
       TotalIncomeAmountSummary.row(taxYear, userAnswers, isAgent, RentalsRentARoom),
       ClaimExpensesOrReliefSummary.rows(taxYear, isAgent, userAnswers, RentalsRentARoom).getOrElse(Seq.empty),
-      ClaimPropertyIncomeAllowanceSummary.rows(taxYear, userAnswers, isAgent, RentalsRentARoom)
+      ClaimPropertyIncomeAllowanceSummary.rows(taxYear, userAnswers, isAgent, RentalsRentARoom),
+      IncomeFromPropertySummary.row(taxYear, userAnswers, RentalsRentARoom)
     )
 
   private def sendRentalsAndRaRAbout(

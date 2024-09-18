@@ -19,16 +19,16 @@ package forms.premiumlease
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class LeasePremiumPaymentFormProviderSpec extends BooleanFieldBehaviours {
+class PremiumForLeaseFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "leasePremiumPayment.error.required.individual"
+  val requiredKey = "premiumForLease.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new LeasePremiumPaymentFormProvider()("individual")
+  val form = new PremiumForLeaseFormProvider()("individual")
 
-  ".leasePremiumPaymentYesOrNo" - {
+  ".premiumForLeaseYesOrNo" - {
 
-    val fieldName = "leasePremiumPaymentYesOrNo"
+    val fieldName = "premiumForLeaseYesOrNo"
 
     behave like booleanField(
       form,

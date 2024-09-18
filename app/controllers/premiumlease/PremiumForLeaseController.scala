@@ -17,29 +17,29 @@
 package controllers.premiumlease
 
 import controllers.actions._
-import forms.premiumlease.LeasePremiumPaymentFormProvider
+import forms.premiumlease.PremiumForLeaseFormProvider
 import models.{Mode, PropertyType}
 import navigation.Navigator
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.premiumlease.PremiumForLeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.premiumlease.LeasePremiumPaymentView
+import views.html.premiumlease.PremiumForLeaseView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class LeasePremiumPaymentController @Inject() (
+class PremiumForLeaseController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: LeasePremiumPaymentFormProvider,
+  formProvider: PremiumForLeaseFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: LeasePremiumPaymentView
+  view: PremiumForLeaseView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -47,7 +47,7 @@ class LeasePremiumPaymentController @Inject() (
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val preparedForm = request.userAnswers.get(LeasePremiumPaymentPage(propertyType)) match {
+      val preparedForm = request.userAnswers.get(PremiumForLeasePage(propertyType)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -68,11 +68,11 @@ class LeasePremiumPaymentController @Inject() (
             ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(LeasePremiumPaymentPage(propertyType), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumForLeasePage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(LeasePremiumPaymentPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(PremiumForLeasePage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
     }

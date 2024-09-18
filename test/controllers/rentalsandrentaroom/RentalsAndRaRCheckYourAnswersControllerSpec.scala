@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ import scala.concurrent.Future
 
 class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
-  val taxYear: Int = 2023
+  val taxYear: Int = 2024
 
   def onwardRoute: Call =
-    Call("GET", "/update-and-submit-income-tax-return/property/2023/rent-a-room/complete-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/rent-a-room/complete-yes-no")
 
   "Rentals and Rent a Room Check Your Answers Controller" - {
 
@@ -101,7 +101,8 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
           jointlyLetYesOrNo = true,
           22.23,
           claimPropertyIncomeAllowanceYesOrNo = true,
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11))
+          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11)),
+          45.65
         )
       val userAnswersWithRaRAbout =
         userAnswers.set(RentalsAndRaRAbout, rentalsAndRaRAbout).get

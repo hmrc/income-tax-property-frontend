@@ -24,10 +24,12 @@ final case class RentalsAndRaRAbout(
   jointlyLetYesOrNo: Boolean,
   totalIncomeAmount: BigDecimal,
   claimPropertyIncomeAllowanceYesOrNo: Boolean,
-  claimExpensesOrRelief: ClaimExpensesOrRelief
+  claimExpensesOrRelief: ClaimExpensesOrRelief,
+  incomeFromPropertyRentals: BigDecimal
 )
 
 object RentalsAndRaRAbout extends Settable[RentalsAndRaRAbout] with Gettable[RentalsAndRaRAbout] {
+
   implicit val format = Json.format[RentalsAndRaRAbout]
 
   override def path: JsPath = JsPath \ aboutPath(RentalsRentARoom)

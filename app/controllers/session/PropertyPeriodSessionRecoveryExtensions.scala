@@ -140,7 +140,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyRentalsIncome) =>
           for {
             ua1 <-
-              userAnswers.set(IncomeFromPropertyPage(Rentals), propertyRentalsIncome.incomeFromPropertyRentals)
+              userAnswers.set(PropertyRentalIncomePage(Rentals), propertyRentalsIncome.incomeFromPropertyRentals)
 
             ua2 <-
               ua1.set(IsNonUKLandlordPage(Rentals), propertyRentalsIncome.isNonUKLandlord)

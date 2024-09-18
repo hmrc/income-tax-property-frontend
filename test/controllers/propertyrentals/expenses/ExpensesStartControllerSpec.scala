@@ -18,7 +18,7 @@ package controllers.propertyrentals.expenses
 
 import base.SpecBase
 import models.{Rentals, UserAnswers}
-import pages.propertyrentals.income.IncomeFromPropertyPage
+import pages.propertyrentals.income.PropertyRentalIncomePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.propertyrentals.expenses.ExpensesStartView
@@ -29,7 +29,7 @@ class ExpensesStartControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET if Total Income below is 85K" in {
       val taxYear = 2024
-      val userAnswers = UserAnswers("test").set(IncomeFromPropertyPage(Rentals), BigDecimal(80000)).get
+      val userAnswers = UserAnswers("test").set(PropertyRentalIncomePage(Rentals), BigDecimal(80000)).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
@@ -54,7 +54,7 @@ class ExpensesStartControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET if Total Income is over 85K" in {
       val taxYear = 2024
-      val userAnswers = UserAnswers("test").set(IncomeFromPropertyPage(Rentals), BigDecimal(90000)).get
+      val userAnswers = UserAnswers("test").set(PropertyRentalIncomePage(Rentals), BigDecimal(90000)).get
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 

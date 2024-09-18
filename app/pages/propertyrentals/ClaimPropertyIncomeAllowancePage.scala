@@ -20,11 +20,10 @@ import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
-import pages.allowances.BusinessPremisesRenovationPage
 import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import play.api.libs.json.JsPath
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
 

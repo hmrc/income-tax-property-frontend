@@ -16,7 +16,7 @@
 
 package pages.adjustments
 
-import models.{PrivateUseAdjustment, PropertyType, Rentals}
+import models.{PrivateUseAdjustment, PropertyType}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath

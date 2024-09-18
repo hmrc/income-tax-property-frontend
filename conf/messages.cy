@@ -174,18 +174,18 @@ calculatedFigureYourself.checkYourAnswersQuestionLabel	=	A wnaethoch chi gyfrifo
 calculatedFigureYourself.change.hidden	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
 calculatedFigureYourselfAmount.label	=	Nodwch y ffigur
 
-leasePremiumPayment.title	=	Premiymau am ganiatáu prydles
-leasePremiumPayment.heading	=	Premiymau am ganiatáu prydles
-leasePremiumPayment.checkYourAnswersLabel	=	Premiymau am ganiatáu prydles
-leasePremiumPayment.details	=	Deall premiymau am ganiatáu prydles
-leasePremiumPayment.details.p1	=	Mae rhydd-ddeiliad weithiau yn caniatáu prydles i denant sy’n gofyn am dalu’r ddau beth canlynol:
-leasePremiumPayment.details.l1	=	premiwm neu gyfandaliad
-leasePremiumPayment.details.l2	=	taliadau rhent rheolaidd
-leasePremiumPayment.details.p2	=	Os yw’r brydles hyd at 50 mlynedd, caiff y premiwm ei drin yn rhannol gyfalaf ac yn rhannol incwm. Dim ond y rhan sy’n ymwneud ag incwm y dylech roi gwybod i ni amdani. Dim ond prydlesi sydd rhwng dau a 50 mlynedd o hyd y mae angen i ni gael gwybod amdanynt.
-leasePremiumPayment.details.p3	=	Ystyrir unrhyw bremiymau ar gyfer caniatáu prydles yn incwm os ydych yn hawlio lwfans incwm o eiddo.
-leasePremiumPayment.question.agent	=	A gafodd eich cleient daliad am ddechrau prydles?
-leasePremiumPayment.question.individual	=	A gawsoch daliad am ddechrau prydles?
-leasePremiumPayment.change.hidden	=	A gawsoch daliad am ddechrau prydles?
+premiumForLease.title	=	Premiymau am ganiatáu prydles
+premiumForLease.heading	=	Premiymau am ganiatáu prydles
+premiumForLease.checkYourAnswersLabel	=	Premiymau am ganiatáu prydles
+premiumForLease.details	=	Deall premiymau am ganiatáu prydles
+premiumForLease.details.p1	=	Mae rhydd-ddeiliad weithiau yn caniatáu prydles i denant sy’n gofyn am dalu’r ddau beth canlynol:
+premiumForLease.details.l1	=	premiwm neu gyfandaliad
+premiumForLease.details.l2	=	taliadau rhent rheolaidd
+premiumForLease.details.p2	=	Os yw’r brydles hyd at 50 mlynedd, caiff y premiwm ei drin yn rhannol gyfalaf ac yn rhannol incwm. Dim ond y rhan sy’n ymwneud ag incwm y dylech roi gwybod i ni amdani. Dim ond prydlesi sydd rhwng dau a 50 mlynedd o hyd y mae angen i ni gael gwybod amdanynt.
+premiumForLease.details.p3	=	Ystyrir unrhyw bremiymau ar gyfer caniatáu prydles yn incwm os ydych yn hawlio lwfans incwm o eiddo.
+premiumForLease.question.agent	=	A gafodd eich cleient daliad am ddechrau prydles?
+premiumForLease.question.individual	=	A gawsoch daliad am ddechrau prydles?
+premiumForLease.change.hidden	=	A gawsoch daliad am ddechrau prydles?
 
 premiumsGrantLease.title	=	Premiymau am ganiatáu prydles
 premiumsGrantLease.heading	=	Premiymau am ganiatáu prydles
@@ -760,8 +760,8 @@ calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.individual = Gall y
 calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.agent = Gall y swm gynnwys punnoedd a cheiniogau yn unig – er enghraifft, £600 neu £600.20
 calculatedFigureYourselfAmount.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
 
-leasePremiumPayment.error.required.agent = Dewiswch ‘Iawn’ os cafodd eich cleient daliad am ddechrau prydles
-leasePremiumPayment.error.required.individual = Dewiswch ‘Iawn’ os cawsoch daliad am ddechrau prydles
+premiumForLease.error.required.agent = Dewiswch ‘Iawn’ os cafodd eich cleient daliad am ddechrau prydles
+premiumForLease.error.required.individual = Dewiswch ‘Iawn’ os cawsoch daliad am ddechrau prydles
 
 premiumsGrantLease.error.required.agent = Dewiswch ‘Iawn’ os yw’ch cleient yn cytuno â’r swm trethadwy hwn
 premiumsGrantLease.error.required.individual = Dewiswch ‘Iawn’ os ydych chi’n cytuno â’r swm trethadwy hwn

@@ -36,7 +36,7 @@ import views.html.propertyrentals.income.OtherIncomeFromPropertyView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class OtherPropertyRentalIncomeControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -46,10 +46,10 @@ class OtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar w
   val otherIncomeFromProperty: BigDecimal = BigDecimal(12345)
 
   lazy val RentalsRoute: String =
-    routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode, Rentals).url
+    routes.OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals).url
 
   lazy val RentalsAndRaRRoute: String =
-    routes.OtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+    routes.OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "incomeFromPropertyRentals Controller" - {
 

@@ -31,7 +31,7 @@ import views.html.propertyrentals.income.OtherIncomeFromPropertyView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class OtherIncomeFromPropertyController @Inject() (
+class OtherPropertyRentalIncomeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
