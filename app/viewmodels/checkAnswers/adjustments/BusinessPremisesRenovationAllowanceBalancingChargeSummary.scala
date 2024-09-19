@@ -17,8 +17,8 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.rentalsandrentaroom.adjustments.routes.BusinessPremisesRenovationBalancingChargeController
-import models.{BusinessPremisesRenovationAllowanceBalancingCharge, CheckMode, UserAnswers}
-import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
+import models.{BusinessPremisesRenovationAllowanceBalancingCharge, CheckMode, RenovationAllowanceBalancingCharge, RentalsRentARoom, UserAnswers}
+import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -28,8 +28,8 @@ import viewmodels.implicits._
 object BusinessPremisesRenovationAllowanceBalancingChargeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(BusinessPremisesRenovationAllowanceBalancingChargePage).flatMap {
-      case BusinessPremisesRenovationAllowanceBalancingCharge(true, amount) =>
+    answers.get(RenovationAllowanceBalancingChargePage(RentalsRentARoom)).flatMap {
+      case RenovationAllowanceBalancingCharge(true, amount) =>
         Some(
           SummaryListRowViewModel(
             key =
@@ -44,7 +44,7 @@ object BusinessPremisesRenovationAllowanceBalancingChargeSummary {
             )
           )
         )
-      case BusinessPremisesRenovationAllowanceBalancingCharge(false, _) =>
+      case RenovationAllowanceBalancingCharge(false, _) =>
         Some(
           SummaryListRowViewModel(
             key =

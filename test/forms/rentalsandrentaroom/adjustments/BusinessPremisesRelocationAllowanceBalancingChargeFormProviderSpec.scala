@@ -18,7 +18,7 @@ package forms.rentalsandrentaroom.adjustments
 
 import forms.adjustments.BusinessPremisesRenovationBalancingChargeFormProvider
 import forms.behaviours.BooleanFieldBehaviours
-import models.{BusinessPremisesRenovationAllowanceBalancingCharge, PrivateUseAdjustment}
+import models.{BusinessPremisesRenovationAllowanceBalancingCharge, PrivateUseAdjustment, RenovationAllowanceBalancingCharge}
 import org.scalatest.OptionValues
 import play.api.data.FormError
 
@@ -34,19 +34,19 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(
           Map(
-            "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> "true",
-            "businessPremisesRenovationAllowanceBalancingChargeAmount"  -> "4534.65"
+            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "renovationAllowanceBalancingChargeAmount"  -> "4534.65"
           )
         )
-        boundForm.value.value mustBe BusinessPremisesRenovationAllowanceBalancingCharge(true, Some(BigDecimal(4534.65)))
+        boundForm.value.value mustBe RenovationAllowanceBalancingCharge(true, Some(BigDecimal(4534.65)))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> "true"))
+        val boundForm = form.bind(Map("renovationAllowanceBalancingChargeYesNo" -> "true"))
         boundForm.errors must contain(
           FormError(
-            "businessPremisesRenovationAllowanceBalancingChargeAmount",
+            "renovationAllowanceBalancingChargeAmount",
             "businessPremisesRenovationBalancingCharge.error.required.individual"
           )
         )
@@ -56,13 +56,13 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
         val boundForm =
           form.bind(
             Map(
-              "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> "true",
-              "businessPremisesRenovationAllowanceBalancingChargeAmount"  -> "non-numeric-value"
+              "renovationAllowanceBalancingChargeYesNo" -> "true",
+              "renovationAllowanceBalancingChargeAmount"  -> "non-numeric-value"
             )
           )
         boundForm.errors must contain(
           FormError(
-            "businessPremisesRenovationAllowanceBalancingChargeAmount",
+            "renovationAllowanceBalancingChargeAmount",
             "businessPremisesRenovationBalancingCharge.error.nonNumeric.individual"
           )
         )
@@ -71,13 +71,13 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(
           Map(
-            "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> "true",
-            "businessPremisesRenovationAllowanceBalancingChargeAmount"  -> "4534.6545"
+            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "renovationAllowanceBalancingChargeAmount"  -> "4534.6545"
           )
         )
         boundForm.errors must contain(
           FormError(
-            "businessPremisesRenovationAllowanceBalancingChargeAmount",
+            "renovationAllowanceBalancingChargeAmount",
             "businessPremisesRenovationBalancingCharge.error.twoDecimalPlaces.individual"
           )
         )
@@ -86,13 +86,13 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       "and an amount is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(
           Map(
-            "businessPremisesRenovationAllowanceBalancingChargeYesOrNo" -> "true",
-            "businessPremisesRenovationAllowanceBalancingChargeAmount"  -> "45334553534535345435345345434.65"
+            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "renovationAllowanceBalancingChargeAmount"  -> "45334553534535345435345345434.65"
           )
         )
         boundForm.errors must contain(
           FormError(
-            "businessPremisesRenovationAllowanceBalancingChargeAmount",
+            "renovationAllowanceBalancingChargeAmount",
             "businessPremisesRenovationBalancingCharge.error.outOfRange",
             ArraySeq(0, 100000000)
           )

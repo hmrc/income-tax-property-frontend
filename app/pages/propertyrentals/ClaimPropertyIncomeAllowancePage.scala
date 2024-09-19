@@ -37,7 +37,7 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
       .remove(PrivateUseAdjustmentPage(RentalsRentARoom))
       .flatMap(_.remove(BalancingChargePage(RentalsRentARoom)))
       .flatMap(_.remove(PropertyIncomeAllowancePage(RentalsRentARoom)))
-      .flatMap(_.remove(BusinessPremisesRenovationAllowanceBalancingChargePage))
+      .flatMap(_.remove(RenovationAllowanceBalancingChargePage(RentalsRentARoom)))
       .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
       .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
 
