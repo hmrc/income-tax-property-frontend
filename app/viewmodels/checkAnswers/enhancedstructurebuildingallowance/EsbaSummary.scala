@@ -51,7 +51,8 @@ object EsbaSummary {
             "site.remove",
             EsbaRemoveConfirmationController.onPageLoad(taxYear, index, propertyType).url
           ).withVisuallyHiddenText(messages("esbaClaimAmount.change.hidden"))
-        )
+        ),
+        actionsCss = "w-25"
       )
     }
 }

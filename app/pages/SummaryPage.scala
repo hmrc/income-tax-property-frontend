@@ -19,7 +19,7 @@ package pages
 import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
-import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSectionFinishedPage, RentsRatesAndInsurancePage}
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
@@ -419,7 +419,7 @@ case object SummaryPage {
         .onPageLoad(taxYear, NormalMode, RentalsRentARoom), {
         val sectionFinished = userAnswers.flatMap(_.get(EsbaSectionFinishedPage(RentalsRentARoom)))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(ClaimStructureBuildingAllowancePage(RentalsRentARoom))).isDefined) {
+          if (userAnswers.flatMap(_.get(ClaimEsbaPage(RentalsRentARoom))).isDefined) {
             TaskListTag.InProgress
           } else {
             TaskListTag.NotStarted

@@ -73,7 +73,13 @@ class EsbaSectionFinishedController @Inject() (
               _              <- sessionRepository.set(updatedAnswers)
               _              <- saveStatus(taxYear, request, value, propertyType)
             } yield Redirect(
-              navigator.nextPage(EsbaSectionFinishedPage(propertyType), taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(
+                EsbaSectionFinishedPage(propertyType),
+                taxYear,
+                NormalMode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
         )
     }
