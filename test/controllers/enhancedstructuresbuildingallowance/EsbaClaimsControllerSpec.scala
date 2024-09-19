@@ -25,8 +25,10 @@ import models.backend.PropertyDetails
 import models.{EsbasWithSupportingQuestions, EsbasWithSupportingQuestionsPage, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{doNothing, times, verify, when}
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatest.prop.TableFor6
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.data.Form
 import play.api.inject.bind
@@ -40,9 +42,6 @@ import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimsView
 
 import scala.concurrent.Future
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-
-import scala.util.Success
 
 class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
@@ -67,80 +66,81 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       s"/update-and-submit-income-tax-return/property/$taxYear/${toPath(propertyType)}/enhanced-structures-buildings-allowance/complete-yes-no"
     )
 
-  def userAnswersWithEsba(propertyType: PropertyType) = emptyUserAnswers
+  def userAnswersWithEsba(propertyType: PropertyType): UserAnswers = emptyUserAnswers
     .set(
       EsbasWithSupportingQuestionsPage(propertyType),
-      EsbasWithSupportingQuestions(true, Some(false), List[Esba]())
+      EsbasWithSupportingQuestions(claimEnhancedStructureBuildingAllowance = true, Some(false), List[Esba]())
     )
     .get
 
-  val scenarios = Table[UserAnswers, String, PropertyType, String, Boolean, Option[String]](
-    ("useranswers", "useranswers definition", "property type", "type definition", "add new claim", "onward route"),
-    (
-      userAnswersWithEsba(RentalsRentARoom),
-      "userAnswersWithEsba",
-      RentalsRentARoom,
-      "rentalsAndRaR",
-      false,
-      Some(onwardRouteNoOtherClaim(RentalsRentARoom).url)
-    ),
-    (
-      userAnswersWithEsba(RentalsRentARoom),
-      "userAnswersWithEsba",
-      RentalsRentARoom,
-      "rentalsAndRaR",
-      true,
-      Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
-    ),
-    (
-      userAnswersWithEsba(Rentals),
-      "userAnswersWithEsba",
-      Rentals,
-      "rentals",
-      false,
-      Some(onwardRouteNoOtherClaim(Rentals).url)
-    ),
-    (
-      userAnswersWithEsba(Rentals),
-      "userAnswersWithEsba",
-      Rentals,
-      "rentals",
-      true,
-      Some(rentalsOnwardRouteAddClaim(Rentals).url)
-    ),
-    (
-      emptyUserAnswers,
-      "userAnswersWithoutEsba",
-      RentalsRentARoom,
-      "rentalsAndRaR",
-      false,
-      None
-    ),
-    (
-      emptyUserAnswers,
-      "userAnswersWithoutEsba",
-      RentalsRentARoom,
-      "rentalsAndRaR",
-      true,
-      Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
-    ),
-    (
-      emptyUserAnswers,
-      "userAnswersWithoutEsba",
-      Rentals,
-      "rentals",
-      false,
-      None
-    ),
-    (
-      emptyUserAnswers,
-      "userAnswersWithoutEsba",
-      Rentals,
-      "rentals",
-      true,
-      Some(rentalsOnwardRouteAddClaim(Rentals).url)
+  val scenarios: TableFor6[UserAnswers, String, PropertyType, String, Boolean, Option[String]] =
+    Table[UserAnswers, String, PropertyType, String, Boolean, Option[String]](
+      ("useranswers", "useranswers definition", "property type", "type definition", "add new claim", "onward route"),
+      (
+        userAnswersWithEsba(RentalsRentARoom),
+        "userAnswersWithEsba",
+        RentalsRentARoom,
+        "rentalsAndRaR",
+        false,
+        Some(onwardRouteNoOtherClaim(RentalsRentARoom).url)
+      ),
+      (
+        userAnswersWithEsba(RentalsRentARoom),
+        "userAnswersWithEsba",
+        RentalsRentARoom,
+        "rentalsAndRaR",
+        true,
+        Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
+      ),
+      (
+        userAnswersWithEsba(Rentals),
+        "userAnswersWithEsba",
+        Rentals,
+        "rentals",
+        false,
+        Some(onwardRouteNoOtherClaim(Rentals).url)
+      ),
+      (
+        userAnswersWithEsba(Rentals),
+        "userAnswersWithEsba",
+        Rentals,
+        "rentals",
+        true,
+        Some(rentalsOnwardRouteAddClaim(Rentals).url)
+      ),
+      (
+        emptyUserAnswers,
+        "userAnswersWithoutEsba",
+        RentalsRentARoom,
+        "rentalsAndRaR",
+        false,
+        None
+      ),
+      (
+        emptyUserAnswers,
+        "userAnswersWithoutEsba",
+        RentalsRentARoom,
+        "rentalsAndRaR",
+        true,
+        Some(rentalsOnwardRouteAddClaim(RentalsRentARoom).url)
+      ),
+      (
+        emptyUserAnswers,
+        "userAnswersWithoutEsba",
+        Rentals,
+        "rentals",
+        false,
+        None
+      ),
+      (
+        emptyUserAnswers,
+        "userAnswersWithoutEsba",
+        Rentals,
+        "rentals",
+        true,
+        Some(rentalsOnwardRouteAddClaim(Rentals).url)
+      )
     )
-  )
   forAll(scenarios) {
     (
       userAnswers: UserAnswers,
@@ -189,10 +189,10 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
             )
           )
           val mockPropertySubmissionService = mock[PropertySubmissionService]
-          when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn (Future
+          when(mockPropertySubmissionService.saveJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
             .successful(
               Right(())
-            ))
+            )
 
           val application =
             applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
@@ -218,7 +218,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
                 whenReady(result) { _ =>
                   val timesForSubmission = if (addNewClaim) 0 else 1
                   verify(mockPropertySubmissionService, times(timesForSubmission))
-                    .saveJourneyAnswers(any(), any())(any(), any())
+                    .saveJourneyAnswers(any(), any(), any())(any(), any())
                   verify(mockBusinessService, times(timesForSubmission)).getUkPropertyDetails(any(), any())(any())
                   verify(mockAuditService, times(timesForSubmission)).sendAuditEvent(any())(any(), any())
                 }
