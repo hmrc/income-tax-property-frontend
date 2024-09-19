@@ -16,11 +16,12 @@
 
 package controllers.rentalsandrentaroom.adjustments
 
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{JourneyContext, RentalsAndRentARoomAdjustment, RentalsRentARoom}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAdjustment, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,6 +34,7 @@ import views.html.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustments
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+
 class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
@@ -41,7 +43,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
   propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
   view: RentalsAndRentARoomAdjustmentsCheckYourAnswersView,
-  businessService: BusinessService
+  businessService: BusinessService,
+  auditService: AuditService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with SummaryListFluency with Logging {
 
@@ -63,44 +66,92 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-adjustments")
-
       businessService
         .getUkPropertyDetails(request.user.nino, request.user.mtditid)
         .flatMap {
+          case Right(Some(details)) => saveAdjustments(request, taxYear, details)
           case Left(_) =>
-            logger.error(
+            val errormessage =
               s"Failed to retrieve property details for user with nino ${request.user.nino} and mrditid ${request.user.mtditid}"
-            )
-            Future.failed(
-              InternalErrorFailure(
-                s"Failed to retrieve property details for user with nino ${request.user.nino} and mrditid ${request.user.mtditid}"
-              )
-            )
-          case Right(Some(details)) => saveAdjustments(request, context, details)
+            logger.error(errormessage)
+            Future.failed(InternalErrorFailure(errormessage))
         }
   }
 
   private def saveAdjustments(
     request: DataRequest[AnyContent],
-    context: JourneyContext,
+    taxYear: Int,
     details: PropertyDetails
   )(implicit
     hc: HeaderCarrier
   ) =
     request.userAnswers.get(RentalsAndRentARoomAdjustment) match {
       case Some(rentalsRentARoomAdjustments) =>
-        propertySubmissionService
-          .saveJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)
-          .flatMap {
-            case Right(_) =>
-              Future.successful(Redirect(controllers.routes.SummaryController.show(context.taxYear)))
-            case Left(_) =>
-              Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Adjustments section."))
-          }
+        saveAnswersAndAudit(taxYear, request, details, rentalsRentARoomAdjustments)
       case None =>
         logger.error("RentalsAndRentARoomAdjustments section is not present in userAnswers")
         Future.failed(InternalErrorFailure("RentalsAndRentARoomAdjustments section is not present in userAnswers"))
     }
+
+  private def saveAnswersAndAudit(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    details: PropertyDetails,
+    rentalsRentARoomAdjustments: RentalsAndRentARoomAdjustment
+  )(implicit
+    hc: HeaderCarrier
+  ) = {
+    val context =
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-adjustments")
+    details.accountingMethod.flatMap { accountingMethod =>
+      propertySubmissionService
+        .saveJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)
+        .flatMap {
+          case Right(_) =>
+            auditAdjustments(
+              context.taxYear,
+              request,
+              rentalsRentARoomAdjustments,
+              isFailed = false,
+              accountingMethod
+            )
+            Future.successful(Redirect(controllers.routes.SummaryController.show(context.taxYear)))
+          case Left(_) =>
+            auditAdjustments(
+              context.taxYear,
+              request,
+              rentalsRentARoomAdjustments,
+              isFailed = true,
+              accountingMethod
+            )
+            Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Adjustments section."))
+        }
+    }
+  }
+
+  private def auditAdjustments(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    adjustments: RentalsAndRentARoomAdjustment,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = AuditModel(
+      nino = request.user.nino,
+      userType = request.user.affinityGroup,
+      mtdItId = request.user.mtditid,
+      agentReferenceNumber = request.user.agentRef,
+      taxYear = taxYear,
+      isUpdate = false,
+      sectionName = SectionName.Adjustments,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.RentalsRentARoom,
+      accountingMethod = accountingMethod,
+      userEnteredDetails = adjustments,
+      isFailed = isFailed
+    )
+    auditService.sendAuditEvent(auditModel)
+  }
 }

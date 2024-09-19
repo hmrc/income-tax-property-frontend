@@ -179,7 +179,7 @@ class EsbaClaimsController @Inject() (
     } yield result
 
   private def checkAccountingMethod(propertyDetails: PropertyDetails): Future[AccountingMethod] =
-    propertyDetails.getAccountingMethod() match {
+    propertyDetails.getAccountingMethod match {
       case Some(value) => Future.successful(value)
       case None =>
         logger.error(
