@@ -116,7 +116,7 @@ class EsbaClaimsController @Inject() (
       .flatMap {
         case Right(Some(propertyDetails)) =>
           val journeyName = propertyType match {
-            case Rentals => "rentals-esba"
+            case Rentals => "esba"
             case _       => "rentals-and-rent-a-room-esba"
           }
           val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyName)
