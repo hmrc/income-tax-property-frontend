@@ -16,14 +16,13 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.{AuditModel, AuditService, RentalsAuditModel}
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
+import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, EsbasWithSupportingQuestions, EsbasWithSupportingQuestionsPage, JourneyContext, JourneyName, PropertyType, Rentals, RentalsRentARoom, SectionName}
-import pages.enhancedstructuresbuildingallowance.Esba._
 import pages.enhancedstructuresbuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger
@@ -140,15 +139,15 @@ class EsbaClaimsController @Inject() (
     for {
       accountingMethod <- checkAccountingMethod(propertyDetails)
       result <- request.userAnswers.get(EsbasWithSupportingQuestionsPage(propertyType)) match {
-                  case Some(e) =>
+                  case Some(esbaAnswers) =>
                     propertySubmissionService
-                      .saveJourneyAnswers(context, e.copy(esbaClaims = Some(e.esbaClaims.getOrElse(false))))
+                      .saveJourneyAnswers(context, esbaAnswers, propertyDetails.incomeSourceId)
                       .flatMap {
                         case Right(_) =>
                           auditESBAClaims(
                             taxYear = taxYear,
                             request = request,
-                            esbasWithSupportingQuestions = e,
+                            esbasWithSupportingQuestions = esbaAnswers,
                             propertyType = propertyType,
                             isFailed = false,
                             accountingMethod = accountingMethod
@@ -163,7 +162,7 @@ class EsbaClaimsController @Inject() (
                           auditESBAClaims(
                             taxYear = taxYear,
                             request = request,
-                            esbasWithSupportingQuestions = e,
+                            esbasWithSupportingQuestions = esbaAnswers,
                             propertyType = propertyType,
                             isFailed = true,
                             accountingMethod = accountingMethod
@@ -222,10 +221,10 @@ class EsbaClaimsController @Inject() (
   private def summaryList(taxYear: Int, request: DataRequest[AnyContent], propertyType: PropertyType)(implicit
     messages: Messages
   ) = {
-    val esbasEntries =
+    val esbaEntries =
       request.userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)).toSeq.flatten
 
-    val rows = esbasEntries.zipWithIndex.flatMap { case (_, index) =>
+    val rows = esbaEntries.zipWithIndex.flatMap { case (_, index) =>
       EsbaSummary.row(taxYear, index, request.userAnswers, propertyType)
     }
 

@@ -66,6 +66,7 @@ class PropertySubmissionService @Inject() (
       case Right(_)    => Right()
     }
 
+  @Deprecated
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A
