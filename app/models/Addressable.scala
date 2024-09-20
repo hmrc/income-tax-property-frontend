@@ -28,7 +28,7 @@ trait Addressable[T] {
 
   def getBuildingNumber(a: T): String
 
-  def get(index: Int): Gettable[T]
+  def get(index: Int, propertyType: PropertyType): Gettable[T]
 
 }
 
@@ -46,14 +46,15 @@ object Addressable {
       standardise(addressableFirst.getBuildingNumber(first))
         .equals(standardise(addressableSecond.getBuildingNumber(other)))
 
-  def get[A](index: Int)(implicit a: Addressable[A]): Gettable[A] = a.get(index)
+  def get[A](index: Int, propertyType: PropertyType)(implicit a: Addressable[A]): Gettable[A] =
+    a.get(index, propertyType)
 
-  def getAddresses[T](index: Int, userAnswers: UserAnswers, addresses: List[T])(implicit
+  def getAddresses[T](index: Int, userAnswers: UserAnswers, addresses: List[T], propertyType: PropertyType)(implicit
     a: Addressable[T],
     r: Reads[T]
   ): List[T] =
-    userAnswers.get(get[T](index)) match {
-      case Some(ea) => getAddresses[T](index + 1, userAnswers, ea :: addresses)
+    userAnswers.get(get[T](index, propertyType)) match {
+      case Some(ea) => getAddresses[T](index + 1, userAnswers, ea :: addresses, propertyType)
       case None     => addresses
     }
 
@@ -65,8 +66,8 @@ object Addressable {
 
       override def getBuildingNumber(address: StructuredBuildingAllowanceAddress): String = address.buildingNumber
 
-      override def get(index: Int): Gettable[StructuredBuildingAllowanceAddress] =
-        StructuredBuildingAllowanceAddressPage(index, Rentals)
+      override def get(index: Int, propertyType: PropertyType): Gettable[StructuredBuildingAllowanceAddress] =
+        StructuredBuildingAllowanceAddressPage(index, propertyType)
     }
 
   implicit val esbaAddressable: Addressable[EsbaAddress] = new Addressable[EsbaAddress] {
@@ -76,6 +77,7 @@ object Addressable {
 
     override def getBuildingNumber(address: EsbaAddress): String = address.buildingNumber
 
-    override def get(index: Int): Gettable[EsbaAddress] = EsbaAddressPage(index, Rentals)
+    override def get(index: Int, propertyType: PropertyType): Gettable[EsbaAddress] =
+      EsbaAddressPage(index, propertyType)
   }
 }
