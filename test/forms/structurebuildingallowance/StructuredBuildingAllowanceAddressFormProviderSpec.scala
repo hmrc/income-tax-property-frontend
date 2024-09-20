@@ -47,7 +47,7 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
     )
     .get
 
-  val sbaForm = new StructuredBuildingAllowanceAddressFormProvider()(emptyUserAnswers)
+  val sbaForm = new StructuredBuildingAllowanceAddressFormProvider()(emptyUserAnswers, Rentals)
   ".buildingName" - {
 
     val fieldName = "buildingName"
@@ -115,7 +115,7 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
 
   "existing address" - {
     "should give duplicate error for same address within Structured Building Allowance" in {
-      val formDuplicateInSba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInSba)
+      val formDuplicateInSba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInSba, Rentals)
       val requiredError = "structureBuildingAllowanceAddress.duplicateSba"
       val result = formDuplicateInSba.bind(
         Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)
@@ -124,7 +124,7 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
     }
 
     "should give duplicate error for same address within Enhanced Structured Building Allowance" in {
-      val formDuplicateInEsba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInEsba)
+      val formDuplicateInEsba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInEsba, Rentals)
       val requiredError = "structureBuildingAllowanceAddress.duplicateEsba"
       val result = formDuplicateInEsba.bind(
         Map(

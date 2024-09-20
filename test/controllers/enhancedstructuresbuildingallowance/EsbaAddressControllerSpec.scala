@@ -38,7 +38,7 @@ import scala.concurrent.Future
 class EsbaAddressControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new EsbaAddressFormProvider
-  private def form: Form[EsbaAddress] = formProvider(emptyUserAnswers)
+  private def form: Form[EsbaAddress] = formProvider(emptyUserAnswers, Rentals)
 
   val taxYear = 2024
   val index = 0

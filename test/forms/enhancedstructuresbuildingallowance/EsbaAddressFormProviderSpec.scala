@@ -47,7 +47,7 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
     )
     .get
 
-  val form = new EsbaAddressFormProvider()(emptyUserAnswers)
+  val form = new EsbaAddressFormProvider()(emptyUserAnswers, Rentals)
   ".buildingName" - {
 
     val fieldName = "buildingName"
@@ -115,7 +115,7 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
   "existing address" - {
     "should give duplicate error for same address within ESBA" in {
-      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba)
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals)
       val requiredError = "esbaAddress.duplicateEsba"
       val result = formDuplicateInEsba.bind(
         Map(
@@ -128,7 +128,7 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
     }
 
     "should give duplicate error for same address within SBA" in {
-      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba)
+      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals)
       val requiredError = "esbaAddress.duplicateSba"
       val result = formDuplicateInSba.bind(
         Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)
