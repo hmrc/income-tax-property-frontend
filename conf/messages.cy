@@ -92,6 +92,7 @@ propertyRentalsStart.details.p2.agent	=	Elw yw’r swm sy’n weddill ar ôl i c
 propertyRentalsStart.details.p3	=	Mae’n rhaid cadw elw a cholledion o eiddo tramor ar wahân i elw a cholledion o eiddo yn y DU.
 propertyRentalsStart.details.p4	=	Darllenwch ragor am
 propertyRentalsStart.details.p4.link.text	=	sut i gyfrifo’ch incwm rhent pan fyddwch yn rhoi eiddo ar osod (yn agor tab newydd)
+propertyRentalsStart.details.p4.link.href   = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
 propertyRentalsStart.button	=	Yn eich blaen
 
 uKPropertyDetails.title.individual	=	Manylion o eiddo yn y DU
