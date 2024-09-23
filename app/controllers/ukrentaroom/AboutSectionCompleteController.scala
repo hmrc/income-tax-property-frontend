@@ -19,7 +19,7 @@ package controllers.ukrentaroom
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.UKPropertySelectPage
 import pages.ukrentaroom.AboutSectionCompletePage
@@ -69,19 +69,26 @@ class AboutSectionCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rent-a-room-about"
-                       ),
-                       status = statusForPage(value),
-                       request.user
-                     )
-            } yield Redirect(
-              navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rent-a-room-about"
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the about section, for the $RentARoom journey for the tax " +
+                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(
+                  navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

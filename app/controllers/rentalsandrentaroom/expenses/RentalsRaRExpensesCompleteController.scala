@@ -19,7 +19,7 @@ package controllers.rentalsandrentaroom.expenses
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.rentalsandrentaroom.expenses.RentalsRaRExpensesCompleteFormProvider
-import models.JourneyContext
+import models.{JourneyContext, RentalsRentARoom}
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -66,18 +66,24 @@ class RentalsRaRExpensesCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsRaRExpensesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "property-rentals-and-rent-a-room-expenses"
-                       ),
-                       status = statusForPage(value),
-                       request.user
-                     )
-            } yield Redirect(controllers.routes.SummaryController.show(taxYear))
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "property-rentals-and-rent-a-room-expenses"
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the expenses section, for the $RentalsRentARoom journey for the tax " +
+                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ => Redirect(controllers.routes.SummaryController.show(taxYear))
+            )
         )
   }
 }

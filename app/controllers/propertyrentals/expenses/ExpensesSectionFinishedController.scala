@@ -68,19 +68,33 @@ class ExpensesSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage(Rentals), value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear = taxYear,
-                       mtditid = request.user.mtditid,
-                       nino = request.user.nino,
-                       journeyName = "rental-expenses"
-                     ),
-                     status = statusForPage(value),
-                     user = request.user
-                   )
-            } yield Redirect(
-              navigator
-                .nextPage(ExpensesSectionFinishedPage(Rentals), taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rental-expenses"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the expenses section, for the $Rentals journey for the tax " +
+                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(
+                  navigator
+                    .nextPage(
+                      ExpensesSectionFinishedPage(Rentals),
+                      taxYear,
+                      NormalMode,
+                      request.userAnswers,
+                      updatedAnswers
+                    )
+                )
             )
         )
   }

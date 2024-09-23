@@ -19,7 +19,7 @@ package controllers.ukrentaroom.expenses
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,19 +68,26 @@ class ExpensesRRSectionCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesRRSectionCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       ctx = JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rent-a-room-expenses"
-                       ),
-                       status = statusForPage(value),
-                       user = request.user
-                     )
-            } yield Redirect(
-              navigator.nextPage(ExpensesRRSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          ctx = JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rent-a-room-expenses"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the expenses section, for the $RentARoom journey for the tax " +
+                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(
+                  navigator.nextPage(ExpensesRRSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

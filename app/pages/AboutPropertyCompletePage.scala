@@ -17,7 +17,6 @@
 package pages
 
 
-import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object AboutPropertyCompletePage extends QuestionPage[Boolean] {

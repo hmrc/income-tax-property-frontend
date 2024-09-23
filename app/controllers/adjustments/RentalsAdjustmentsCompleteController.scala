@@ -19,7 +19,7 @@ package controllers.adjustments
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.{JourneyContext, Mode, Rentals}
 import navigation.Navigator
 import pages.adjustments.RentalsAdjustmentsCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,19 +68,26 @@ class RentalsAdjustmentsCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsAdjustmentsCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       ctx = JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rental-adjustments"
-                       ),
-                       status = statusForPage(value),
-                       user = request.user
-                     )
-            } yield Redirect(
-              navigator.nextPage(RentalsAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          ctx = JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rental-adjustments"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the adjustments section, for the $Rentals journey for tax year: $taxYear,  for user with " +
+                    s"nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(
+                  navigator.nextPage(RentalsAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

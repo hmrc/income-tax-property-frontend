@@ -19,7 +19,7 @@ package controllers.rentalsandrentaroom
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.{JourneyContext, Mode, RentalsRentARoom}
 import navigation.Navigator
 import pages.UKPropertySelectPage
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
@@ -33,7 +33,7 @@ import views.html.rentalsandrentaroom.RentalsRaRAboutCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RentalsRaRAboutCompleteController @Inject()(
+class RentalsRaRAboutCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
@@ -69,19 +69,24 @@ class RentalsRaRAboutCompleteController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsRaRAboutCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "property-rentals-and-rent-a-room-about"
-                       ),
-                       status = statusForPage(value),
-                       request.user
-                     )
-            } yield Redirect(
-              navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "property-rentals-and-rent-a-room-about"
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the about section, for the $RentalsRentARoom journey for the tax " +
+                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers))
             )
         )
   }

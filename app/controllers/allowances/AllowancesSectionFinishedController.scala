@@ -19,7 +19,7 @@ package controllers.allowances
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.allowances.AllowancesSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.allowances.AllowancesSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,19 +68,27 @@ class AllowancesSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AllowancesSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear = taxYear,
-                       mtditid = request.user.mtditid,
-                       nino = request.user.nino,
-                       journeyName = "rental-allowances"
-                     ),
-                     status = statusForPage(value),
-                     user = request.user
-                   )
-            } yield Redirect(
-              navigator
-                .nextPage(AllowancesSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rental-allowances"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                InternalServerError(
+                  s"Failed to save status for the allowance section, for the $Rentals journey for tax year: $taxYear, for user with " +
+                    s"nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                ),
+              _ =>
+                Redirect(
+                  navigator
+                    .nextPage(AllowancesSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

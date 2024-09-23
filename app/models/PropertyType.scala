@@ -20,16 +20,20 @@ import play.api.mvc.JavascriptLiteral
 
 sealed trait PropertyType
 
-case object Rentals extends PropertyType
-case object RentARoom extends PropertyType
-case object RentalsRentARoom extends PropertyType
-
-
+case object Rentals extends PropertyType {
+  override def toString: String = "rentals"
+}
+case object RentARoom extends PropertyType {
+  override def toString: String = "rent a room"
+}
+case object RentalsRentARoom extends PropertyType {
+  override def toString: String = "rentals and rent a room"
+}
 
 object PropertyType {
   def toPath(propertyType: PropertyType): String = propertyType match {
-    case Rentals => "rentals"
-    case RentARoom => "rent-a-room"
+    case Rentals          => "rentals"
+    case RentARoom        => "rent-a-room"
     case RentalsRentARoom => "rentals-rent-a-room"
   }
 
