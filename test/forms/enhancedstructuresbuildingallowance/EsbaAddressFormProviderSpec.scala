@@ -115,20 +115,8 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
   "existing address" - {
     "should give duplicate error for same address within ESBA" in {
-      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, 0)
-      val requiredError = "esbaAddress.duplicateEsba"
-      val result = formDuplicateInEsba.bind(
-        Map(
-          "postcode"       -> postCodeInEsba,
-          "buildingName"   -> buildingNameInEsba,
-          "buildingNumber" -> buildingNumberInEsba
-        )
-      )
-      result.errors.head.messages.head mustEqual requiredError
-    }
-
-    "should give duplicate error for same address within ESBA" in {
-      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, 0)
+      val anotherIndexInEsbaSection = 1 // Apart from the index that is being changed (which should be ignored).
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, anotherIndexInEsbaSection)
       val requiredError = "esbaAddress.duplicateEsba"
       val result = formDuplicateInEsba.bind(
         Map(
@@ -141,7 +129,8 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
     }
 
     "should give duplicate error for same address within SBA" in {
-      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals, 0)
+      val theChangedIndexInEsbaSection = 0
+      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals, theChangedIndexInEsbaSection)
       val requiredError = "esbaAddress.duplicateSba"
       val result = formDuplicateInSba.bind(
         Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)

@@ -115,7 +115,7 @@ class StructuredBuildingAllowanceAddressFormProviderSpec extends StringFieldBeha
 
   "existing address" - {
     "should give duplicate error for same address within Structured Building Allowance" in {
-      val formDuplicateInSba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInSba, Rentals, 0)
+      val formDuplicateInSba = new StructuredBuildingAllowanceAddressFormProvider()(uaDuplicateInSba, Rentals, 1)
       val requiredError = "structureBuildingAllowanceAddress.duplicateSba"
       val result = formDuplicateInSba.bind(
         Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)
