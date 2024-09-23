@@ -29,7 +29,13 @@ class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings 
   val postcodeRegex: Regex =
     "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
 
-  def apply(userAnswers: UserAnswers, propertyType: PropertyType): Form[StructuredBuildingAllowanceAddress] =
+  def apply(
+    userAnswers: UserAnswers,
+    propertyType: PropertyType,
+    indexToExclude: Int
+  ): Form[StructuredBuildingAllowanceAddress] = {
+    val currentIndexNotToCheckAgainstInSbaSection = Some(indexToExclude)
+    val indexToCheckAgainstInOtherSection = None
     Form(
       mapping(
         "buildingName" -> text("structureBuildingAllowanceAddress.buildingName.error.required")
@@ -41,15 +47,24 @@ class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings 
       )(StructuredBuildingAllowanceAddress.apply)(StructuredBuildingAllowanceAddress.unapply)
         .verifying(
           checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, StructuredBuildingAllowanceAddress](
-            Addressable.getAddresses(0, userAnswers, List[StructuredBuildingAllowanceAddress](), propertyType),
+            Addressable
+              .getAddresses(
+                0,
+                userAnswers,
+                List[StructuredBuildingAllowanceAddress](),
+                propertyType,
+                currentIndexNotToCheckAgainstInSbaSection
+              ),
             "structureBuildingAllowanceAddress.duplicateSba"
           )
         )
         .verifying(
           checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, EsbaAddress](
-            Addressable.getAddresses(0, userAnswers, List[EsbaAddress](), propertyType),
+            Addressable
+              .getAddresses(0, userAnswers, List[EsbaAddress](), propertyType, indexToCheckAgainstInOtherSection),
             "structureBuildingAllowanceAddress.duplicateEsba"
           )
         )
     )
+  }
 }

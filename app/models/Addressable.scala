@@ -49,13 +49,20 @@ object Addressable {
   def get[A](index: Int, propertyType: PropertyType)(implicit a: Addressable[A]): Gettable[A] =
     a.get(index, propertyType)
 
-  def getAddresses[T](index: Int, userAnswers: UserAnswers, addresses: List[T], propertyType: PropertyType)(implicit
+  def getAddresses[T](
+    index: Int,
+    userAnswers: UserAnswers,
+    addresses: List[T],
+    propertyType: PropertyType,
+    indexToExclude: Option[Int]
+  )(implicit
     a: Addressable[T],
     r: Reads[T]
   ): List[T] =
     userAnswers.get(get[T](index, propertyType)) match {
-      case Some(ea) => getAddresses[T](index + 1, userAnswers, ea :: addresses, propertyType)
-      case None     => addresses
+      case Some(ea) if indexToExclude.map(_ != index).getOrElse(true) =>
+        getAddresses[T](index + 1, userAnswers, ea :: addresses, propertyType, indexToExclude)
+      case _ => addresses
     }
 
   implicit val sbaAddressable: Addressable[StructuredBuildingAllowanceAddress] =

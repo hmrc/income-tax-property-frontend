@@ -57,7 +57,7 @@ class StructuredBuildingAllowanceAddressControllerSpec extends SpecBase with Moc
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider(emptyUserAnswers, Rentals)
+  private def form: Form[StructuredBuildingAllowanceAddress] = formProvider(emptyUserAnswers, Rentals, 0)
 
   forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
     lazy val structureBuildingAllowanceAddressDateRoute: String =

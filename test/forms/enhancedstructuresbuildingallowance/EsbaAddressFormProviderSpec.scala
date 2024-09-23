@@ -47,7 +47,7 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
     )
     .get
 
-  val form = new EsbaAddressFormProvider()(emptyUserAnswers, Rentals)
+  val form = new EsbaAddressFormProvider()(emptyUserAnswers, Rentals, 0)
   ".buildingName" - {
 
     val fieldName = "buildingName"
@@ -115,7 +115,20 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
   "existing address" - {
     "should give duplicate error for same address within ESBA" in {
-      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals)
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, 0)
+      val requiredError = "esbaAddress.duplicateEsba"
+      val result = formDuplicateInEsba.bind(
+        Map(
+          "postcode"       -> postCodeInEsba,
+          "buildingName"   -> buildingNameInEsba,
+          "buildingNumber" -> buildingNumberInEsba
+        )
+      )
+      result.errors.head.messages.head mustEqual requiredError
+    }
+
+    "should give duplicate error for same address within ESBA" in {
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, 0)
       val requiredError = "esbaAddress.duplicateEsba"
       val result = formDuplicateInEsba.bind(
         Map(
@@ -128,7 +141,30 @@ class EsbaAddressFormProviderSpec extends StringFieldBehaviours with SpecBase {
     }
 
     "should give duplicate error for same address within SBA" in {
-      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals)
+      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals, 0)
+      val requiredError = "esbaAddress.duplicateSba"
+      val result = formDuplicateInSba.bind(
+        Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)
+      )
+      result.errors.head.messages.head mustEqual requiredError
+    }
+
+    "should ignore duplicate error for same address within ESBA when in change mode for the changed entity" in {
+      val theChangedIndexInEsbaSection = 0
+      val formDuplicateInEsba = new EsbaAddressFormProvider()(uaDuplicateInEsba, Rentals, theChangedIndexInEsbaSection)
+      val result = formDuplicateInEsba.bind(
+        Map(
+          "postcode"       -> postCodeInEsba,
+          "buildingName"   -> buildingNameInEsba,
+          "buildingNumber" -> buildingNumberInEsba
+        )
+      )
+      result.errors mustEqual List.empty
+    }
+
+    "should NOT ignore duplicate error for same address within ESBA when in change mode for the changed entity" in {
+      val theChangedIndexInESBASection = 0
+      val formDuplicateInSba = new EsbaAddressFormProvider()(uaDuplicateInSba, Rentals, theChangedIndexInESBASection)
       val requiredError = "esbaAddress.duplicateSba"
       val result = formDuplicateInSba.bind(
         Map("postcode" -> postCodeInSba, "buildingName" -> buildingNameInSba, "buildingNumber" -> buildingNumberInSba)

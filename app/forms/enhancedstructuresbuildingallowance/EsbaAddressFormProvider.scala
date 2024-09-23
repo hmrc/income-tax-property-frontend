@@ -30,7 +30,9 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
   val postcodeRegex: Regex =
     "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
 
-  def apply(userAnswers: UserAnswers, propertyType: PropertyType): Form[EsbaAddress] =
+  def apply(userAnswers: UserAnswers, propertyType: PropertyType, indexToIgnore: Int): Form[EsbaAddress] = {
+    val currentIndexNotToCheckAgainstInEsbaSection = Some(indexToIgnore)
+    val indexToCheckAgainstInOtherSection = None
     Form(
       mapping(
         "buildingName" -> text("esbaAddress.buildingName.error.required")
@@ -42,7 +44,13 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
       )(EsbaAddress.apply)(EsbaAddress.unapply)
         .verifying(
           checkIfAddressAlreadyEntered[EsbaAddress, EsbaAddress](
-            getAddresses[EsbaAddress](0, userAnswers, List[EsbaAddress](), propertyType),
+            getAddresses[EsbaAddress](
+              0,
+              userAnswers,
+              List[EsbaAddress](),
+              propertyType,
+              currentIndexNotToCheckAgainstInEsbaSection
+            ),
             "esbaAddress.duplicateEsba"
           )
         )
@@ -52,10 +60,12 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
               0,
               userAnswers,
               List[StructuredBuildingAllowanceAddress](),
-              propertyType
+              propertyType,
+              indexToCheckAgainstInOtherSection
             ),
             "esbaAddress.duplicateSba"
           )
         )
     )
+  }
 }
