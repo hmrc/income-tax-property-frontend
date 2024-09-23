@@ -22,18 +22,18 @@ import models.TotalIncomeUtils.{incomeAndBalancingChargeCombined, isTotalIncomeU
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.TotalIncomePage
 import pages.adjustments.BalancingChargePage
-import pages.propertyrentals.income.IncomeFromPropertyPage
+import pages.propertyrentals.income.PropertyRentalIncomePage
 
 class TotalIncomeUtilSpec extends SpecBase {
   "Total Income util" - {
     "return sum of all income section" in {
-      val userAnswers = UserAnswers("test").set(IncomeFromPropertyPage(Rentals), BigDecimal(80000)).get
+      val userAnswers = UserAnswers("test").set(PropertyRentalIncomePage(Rentals), BigDecimal(80000)).get
       totalIncome(userAnswers, Rentals) shouldEqual 80000
     }
 
     "return sum of all income section and balancing charge" in {
       val userAnswers = UserAnswers("test")
-        .set(IncomeFromPropertyPage(Rentals), BigDecimal(80000))
+        .set(PropertyRentalIncomePage(Rentals), BigDecimal(80000))
         .flatMap(
           _.set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000))))
         )
@@ -53,7 +53,7 @@ class TotalIncomeUtilSpec extends SpecBase {
     "under 85k if sum of all income section" in {
       val userAnswers = UserAnswers("test")
         .set(TotalIncomePage, Over)
-        .flatMap(_.set(IncomeFromPropertyPage(Rentals), BigDecimal(80000)))
+        .flatMap(_.set(PropertyRentalIncomePage(Rentals), BigDecimal(80000)))
         .get
       isTotalIncomeUnder85K(userAnswers, Rentals) shouldBe true
     }

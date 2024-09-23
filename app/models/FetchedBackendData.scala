@@ -62,7 +62,7 @@ object PropertyRentals {
 
 final case class PremiumLease(
   calculatedFigureYourself: CalculatedFigureYourself,
-  leasePremiumPayment: Boolean,
+  premiumForLease: Boolean,
   premiumsGrantLease: PremiumsGrantLease,
   receivedGrantLeaseAmount: BigDecimal,
   yearLeaseAmount: Int

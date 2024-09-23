@@ -21,10 +21,10 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class LeasePremiumPaymentFormProvider @Inject() extends Mappings {
+class PremiumForLeaseFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "leasePremiumPaymentYesOrNo" -> boolean(s"leasePremiumPayment.error.required.$individualOrAgent")
+      "premiumForLeaseYesOrNo" -> boolean(s"premiumForLease.error.required.$individualOrAgent")
     )
 }

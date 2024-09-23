@@ -87,7 +87,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
         val userAnswers =
           (for {
             ua1 <- UserAnswers(userAnswersId).set(IsNonUKLandlordPage(RentalsRentARoom), true)
-            ua2 <- ua1.set(IncomeFromPropertyPage(RentalsRentARoom), BigDecimal(1.01))
+            ua2 <- ua1.set(PropertyRentalIncomePage(RentalsRentARoom), BigDecimal(1.01))
             ua3 <- ua2.set(OtherIncomeFromPropertyPage(RentalsRentARoom), BigDecimal(1.01))
             ua4 <- ua3.set(DeductingTaxPage(RentalsRentARoom), DeductingTax(true, Some(BigDecimal(1.01))))
             ua5 <- ua4.set(

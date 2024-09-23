@@ -25,7 +25,7 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{IncomeFromPropertyPage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income.{PropertyRentalIncomePage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
@@ -77,7 +77,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        "propertyRentalsIncome" : {
       |            "isNonUKLandlord" : false,
       |            "incomeFromPropertyRentals" : 45,
-      |            "leasePremiumPaymentYesOrNo" : true,
+      |            "premiumForLeaseYesOrNo" : true,
       |            "calculatedFigureYourself" : {
       |                "calculatedFigureYourself" : true,
       |                "amount" : 45
@@ -194,12 +194,12 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
       updated.get(ClaimPropertyIncomeAllowancePage(Rentals)).get mustBe false
       updated.get(IsNonUKLandlordPage(Rentals)).get mustBe false
-      updated.get(IncomeFromPropertyPage(Rentals)).get mustBe 45
+      updated.get(PropertyRentalIncomePage(Rentals)).get mustBe 45
       updated.get(ReceivedGrantLeaseAmountPage(Rentals)) mustBe None // Lease clean up test
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
-      // Todo: do we need this? updated.get(LeasePremiumPaymentPage).get mustBe true
+      // Todo: do we need this? updated.get(PremiumForLeasePage).get mustBe true
       updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(true, Some(45))
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
       updated.get(JointlyLetPage(RentARoom)).get mustBe false

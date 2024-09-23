@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
 import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
-import pages.propertyrentals.income.IncomeFromPropertyPage
+import pages.propertyrentals.income.PropertyRentalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,7 +31,7 @@ import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IncomeFromPropertyController @Inject() (
+class PropertyRentalIncomeController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
@@ -55,7 +55,7 @@ class IncomeFromPropertyController @Inject() (
       val preparedForm =
         request.userAnswers
           .getOrElse(UserAnswers(request.userId))
-          .get(IncomeFromPropertyPage(propertyType)) match {
+          .get(PropertyRentalIncomePage(propertyType)) match {
           case None        => form
           case Some(value) => form.fill(value)
         }
@@ -75,11 +75,11 @@ class IncomeFromPropertyController @Inject() (
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(IncomeFromPropertyPage(propertyType), value))
+                Future.fromTry(request.userAnswers.set(PropertyRentalIncomePage(propertyType), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(
-                IncomeFromPropertyPage(propertyType),
+                PropertyRentalIncomePage(propertyType),
                 taxYear,
                 mode,
                 request.userAnswers,

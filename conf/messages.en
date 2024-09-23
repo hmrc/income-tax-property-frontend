@@ -204,20 +204,20 @@ calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.agent = Amount can 
 calculatedFigureYourselfAmount.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 
 
-leasePremiumPayment.title = Premiums for the grant of a lease
-leasePremiumPayment.heading = Premiums for the grant of a lease
-leasePremiumPayment.checkYourAnswersLabel = Premiums for the grant of a lease
-leasePremiumPayment.details = Understanding premiums for the grant of a lease
-leasePremiumPayment.details.p1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
-leasePremiumPayment.details.l1 = a premium or lump sum
-leasePremiumPayment.details.l2 = regular rent payments
-leasePremiumPayment.details.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
-leasePremiumPayment.details.p3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
-leasePremiumPayment.question.agent = Did your client receive a payment to take on a lease?
-leasePremiumPayment.question.individual = Did you receive a premium for granting a lease?
-leasePremiumPayment.error.required.agent = Select yes if your client received a payment to take on a lease
-leasePremiumPayment.error.required.individual = Select yes if you received a payment to take on a lease
-leasePremiumPayment.change.hidden = Did you receive a premium for granting a lease?
+premiumForLease.title = Premiums for the grant of a lease
+premiumForLease.heading = Premiums for the grant of a lease
+premiumForLease.checkYourAnswersLabel = Premiums for the grant of a lease
+premiumForLease.details = Understanding premiums for the grant of a lease
+premiumForLease.details.p1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
+premiumForLease.details.l1 = a premium or lump sum
+premiumForLease.details.l2 = regular rent payments
+premiumForLease.details.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
+premiumForLease.details.p3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
+premiumForLease.question.agent = Did your client receive a payment to take on a lease?
+premiumForLease.question.individual = Did you receive a premium for granting a lease?
+premiumForLease.error.required.agent = Select yes if your client received a payment to take on a lease
+premiumForLease.error.required.individual = Select yes if you received a payment to take on a lease
+premiumForLease.change.hidden = Did you receive a premium for granting a lease?
 
 premiumsGrantLease.title = Premiums for a grant of a lease
 premiumsGrantLease.heading = Premiums for the grant of a lease

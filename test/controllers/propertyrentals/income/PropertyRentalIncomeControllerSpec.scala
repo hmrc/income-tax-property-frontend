@@ -24,7 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.propertyrentals.income.IncomeFromPropertyPage
+import pages.propertyrentals.income.PropertyRentalIncomePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,7 +35,7 @@ import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
+class PropertyRentalIncomeControllerSpec extends SpecBase with MockitoSugar with ScalaFutures {
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -44,9 +44,9 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
   val taxYear = LocalDate.now.getYear
   private val incomeFromPropertyRentals = BigDecimal(12345)
   lazy val incomeFromPropertyRentalsRoute =
-    routes.IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, Rentals).url
+    routes.PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals).url
   lazy val incomeFromPropertyRentalsRentARoomRoute =
-    routes.IncomeFromPropertyController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+    routes.PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
   "incomeFromProperty Controller" - {
 
@@ -68,11 +68,11 @@ class IncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar with S
     "must populate the view correctly on a GET when the question has previously been answered for both Rentals and RentalsRentARoom journeys" in {
 
       val rentalsUserAnswers =
-        UserAnswers(userAnswersId).set(IncomeFromPropertyPage(Rentals), incomeFromPropertyRentals).success.value
+        UserAnswers(userAnswersId).set(PropertyRentalIncomePage(Rentals), incomeFromPropertyRentals).success.value
 
       val rentalsRentARoomUserAnswers =
         UserAnswers(userAnswersId)
-          .set(IncomeFromPropertyPage(RentalsRentARoom), incomeFromPropertyRentals)
+          .set(PropertyRentalIncomePage(RentalsRentARoom), incomeFromPropertyRentals)
           .success
           .value
 

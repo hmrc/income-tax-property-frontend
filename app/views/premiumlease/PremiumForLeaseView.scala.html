@@ -27,27 +27,27 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("leasePremiumPayment.title"))) {
+@layout(pageTitle = title(form, messages("premiumForLease.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("leasePremiumPayment.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("premiumForLease.heading")</h1>
 
     <details class="govuk-details" data-module="govuk-details">
         <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text">
-          @messages("leasePremiumPayment.details")
+          @messages("premiumForLease.details")
         </span>
         </summary>
         <div class="govuk-details__text">
-            <p class="govuk-body">@messages("leasePremiumPayment.details.p1")</p>
+            <p class="govuk-body">@messages("premiumForLease.details.p1")</p>
             <ul>
-                <li>@messages("leasePremiumPayment.details.l1")</li>
-                <li>@messages("leasePremiumPayment.details.l2")</li>
+                <li>@messages("premiumForLease.details.l1")</li>
+                <li>@messages("premiumForLease.details.l2")</li>
             </ul>
-            <p class="govuk-body">@messages("leasePremiumPayment.details.p2")</p>
-            <p class="govuk-body">@messages("leasePremiumPayment.details.p3")</p>
+            <p class="govuk-body">@messages("premiumForLease.details.p2")</p>
+            <p class="govuk-body">@messages("premiumForLease.details.p3")</p>
         </div>
     </details>
-    @formHelper(action = LeasePremiumPaymentController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+    @formHelper(action = PremiumForLeaseController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -55,8 +55,8 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("leasePremiumPaymentYesOrNo"),
-                legend = LegendViewModel(messages(s"leasePremiumPayment.question.$individualOrAgent")).withSize(LegendSize.Medium)
+                field = form("premiumForLeaseYesOrNo"),
+                legend = LegendViewModel(messages(s"premiumForLease.question.$individualOrAgent")).withSize(LegendSize.Medium)
             )
         )
 

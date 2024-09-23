@@ -18,30 +18,30 @@ package viewmodels.checkAnswers.premiumlease
 
 import controllers.premiumlease.routes
 import models.{CheckMode, PropertyType, UserAnswers}
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.premiumlease.PremiumForLeasePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object LeasePremiumPaymentSummary {
+object PremiumForLeaseSummary {
 
   def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(LeasePremiumPaymentPage(propertyType)).map { answer =>
+    answers.get(PremiumForLeasePage(propertyType)).map { answer =>
       val value = if (answer) "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = KeyViewModel("leasePremiumPayment.checkYourAnswersLabel").withCssClass(keyCssClass),
+        key = KeyViewModel("premiumForLease.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.LeasePremiumPaymentController.onPageLoad(taxYear, CheckMode, propertyType).url
+            routes.PremiumForLeaseController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
-            .withVisuallyHiddenText(messages("leasePremiumPayment.change.hidden"))
+            .withVisuallyHiddenText(messages("premiumForLease.change.hidden"))
         )
       )
     }

@@ -19,29 +19,29 @@ package controllers.premiumlease
 import base.SpecBase
 import controllers.premiumlease.routes._
 import controllers.routes
-import forms.premiumlease.LeasePremiumPaymentFormProvider
+import forms.premiumlease.PremiumForLeaseFormProvider
 import models.{NormalMode, PropertyType, Rentals, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
-import pages.premiumlease.LeasePremiumPaymentPage
+import pages.premiumlease.PremiumForLeasePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.premiumlease.LeasePremiumPaymentView
+import views.html.premiumlease.PremiumForLeaseView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
+class PremiumForLeaseControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRouteYes: Call = Call("GET", "/calculated-figure-yourself")
   def onwardRouteNo: Call = Call("GET", "/reverse-premiums-received")
-  private val formProvider = new LeasePremiumPaymentFormProvider()
+  private val formProvider = new PremiumForLeaseFormProvider()
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
   val scenarios = Table[PropertyType, String](
@@ -51,20 +51,20 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
   )
 
   forAll(scenarios) { (propertyType: PropertyType, propertyTypeDefinition: String) =>
-    lazy val leasePremiumPaymentRoute = LeasePremiumPaymentController.onPageLoad(taxYear, NormalMode, propertyType).url
+    lazy val premiumForLeaseRoute = PremiumForLeaseController.onPageLoad(taxYear, NormalMode, propertyType).url
 
-    s"LeasePremiumPayment Controller $propertyTypeDefinition" - {
+    s"PremiumForLease Controller $propertyTypeDefinition" - {
 
       "must return OK and the correct view for a GET" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
         running(application) {
-          val request = FakeRequest(GET, leasePremiumPaymentRoute)
+          val request = FakeRequest(GET, premiumForLeaseRoute)
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[PremiumForLeaseView]
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual", propertyType)(
@@ -76,14 +76,14 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(LeasePremiumPaymentPage(propertyType), true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(PremiumForLeasePage(propertyType), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
         running(application) {
-          val request = FakeRequest(GET, leasePremiumPaymentRoute)
+          val request = FakeRequest(GET, premiumForLeaseRoute)
 
-          val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[PremiumForLeaseView]
 
           val result = route(application, request).value
 
@@ -112,8 +112,8 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, leasePremiumPaymentRoute)
-              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+            FakeRequest(POST, premiumForLeaseRoute)
+              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
 
           val result = route(application, request).value
 
@@ -139,8 +139,8 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, leasePremiumPaymentRoute)
-              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+            FakeRequest(POST, premiumForLeaseRoute)
+              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
 
           val result = route(application, request).value
 
@@ -155,12 +155,12 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, leasePremiumPaymentRoute)
-              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", ""))
+            FakeRequest(POST, premiumForLeaseRoute)
+              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", ""))
 
-          val boundForm = form.bind(Map("leasePremiumPaymentYesOrNo" -> ""))
+          val boundForm = form.bind(Map("premiumForLeaseYesOrNo" -> ""))
 
-          val view = application.injector.instanceOf[LeasePremiumPaymentView]
+          val view = application.injector.instanceOf[PremiumForLeaseView]
 
           val result = route(application, request).value
 
@@ -177,7 +177,7 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
         running(application) {
-          val request = FakeRequest(GET, leasePremiumPaymentRoute)
+          val request = FakeRequest(GET, premiumForLeaseRoute)
 
           val result = route(application, request).value
 
@@ -192,8 +192,8 @@ class LeasePremiumPaymentControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, leasePremiumPaymentRoute)
-              .withFormUrlEncodedBody(("leasePremiumPaymentYesOrNo", "true"))
+            FakeRequest(POST, premiumForLeaseRoute)
+              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
 
           val result = route(application, request).value
 
