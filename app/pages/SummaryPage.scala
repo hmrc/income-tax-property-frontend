@@ -24,6 +24,7 @@ import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSection
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
+import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
@@ -325,11 +326,11 @@ case object SummaryPage {
             .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
             .getOrElse(false)
         ), {
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
         sectionFinished
           .map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress)
           .getOrElse {
-            if (userAnswers.flatMap(_.get(IncomeSectionFinishedPage)).isDefined) {
+            if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage(RentalsRentARoom))).isDefined) {
               TaskListTag.InProgress
             } else {
               TaskListTag.NotStarted

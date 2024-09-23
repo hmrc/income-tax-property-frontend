@@ -79,14 +79,15 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
                 s"Failed to retrieve property details for user with nino ${request.user.nino} and mrditid ${request.user.mtditid}"
               )
             )
-          case Right(Some(details)) => saveAdjustments(request, context, details)
+          case Right(Some(details)) => saveAdjustments(request, context, details, taxYear)
         }
   }
 
   private def saveAdjustments(
     request: DataRequest[AnyContent],
     context: JourneyContext,
-    details: PropertyDetails
+    details: PropertyDetails,
+    taxYear: Int
   )(implicit
     hc: HeaderCarrier
   ) =
@@ -96,7 +97,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           .saveJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)
           .flatMap {
             case Right(_) =>
-              Future.successful(Redirect(controllers.routes.SummaryController.show(context.taxYear)))
+              Future.successful(Redirect(controllers.rentalsandrentaroom.adjustments.routes.RentalsRaRAdjustmentsCompleteController
+                .onPageLoad(taxYear)))
             case Left(_) =>
               Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Adjustments section."))
           }
