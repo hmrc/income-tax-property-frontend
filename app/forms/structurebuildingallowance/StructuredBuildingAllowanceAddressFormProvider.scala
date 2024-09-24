@@ -17,7 +17,7 @@
 package forms.structurebuildingallowance
 
 import forms.mappings.Mappings
-import models.{Addressable, EsbaAddress, StructuredBuildingAllowanceAddress, UserAnswers}
+import models.{Addressable, EsbaAddress, PropertyType, StructuredBuildingAllowanceAddress, UserAnswers}
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.Constraints.pattern
@@ -26,24 +26,45 @@ import javax.inject.Inject
 import scala.util.matching.Regex
 
 class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings {
-  val postcodeRegex: Regex = "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
+  val postcodeRegex: Regex =
+    "^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})$".r
 
-  def apply(userAnswers: UserAnswers): Form[StructuredBuildingAllowanceAddress] =
-    Form(mapping(
-      "buildingName" -> text("structureBuildingAllowanceAddress.buildingName.error.required")
-        .verifying(maxLength(90, "structureBuildingAllowanceAddress.buildingName.error.max")),
-      "buildingNumber" -> text("structureBuildingAllowanceAddress.buildingNumber.error.required"),
-      "postcode" -> text("structureBuildingAllowanceAddress.postcode.error.required").verifying(
-        pattern(postcodeRegex, "PostCode", "structureBuildingAllowanceAddress.postcode.error.invalid")))
-      (StructuredBuildingAllowanceAddress.apply)
-      (StructuredBuildingAllowanceAddress.unapply)
-      .verifying(
-        checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, StructuredBuildingAllowanceAddress]
-          (Addressable.getAddresses(0, userAnswers, List[StructuredBuildingAllowanceAddress]()), "structureBuildingAllowanceAddress.duplicateSba")
-      )
-      .verifying(
-        checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, EsbaAddress]
-          (Addressable.getAddresses(0, userAnswers, List[EsbaAddress]()), "structureBuildingAllowanceAddress.duplicateEsba")
-      )
+  def apply(
+    userAnswers: UserAnswers,
+    propertyType: PropertyType,
+    indexToExclude: Int
+  ): Form[StructuredBuildingAllowanceAddress] = {
+    val currentIndexNotToCheckAgainstInSbaSection = Some(indexToExclude)
+    val indexToCheckAgainstInOtherSection = None
+    Form(
+      mapping(
+        "buildingName" -> text("structureBuildingAllowanceAddress.buildingName.error.required")
+          .verifying(maxLength(90, "structureBuildingAllowanceAddress.buildingName.error.max")),
+        "buildingNumber" -> text("structureBuildingAllowanceAddress.buildingNumber.error.required"),
+        "postcode" -> text("structureBuildingAllowanceAddress.postcode.error.required").verifying(
+          pattern(postcodeRegex, "PostCode", "structureBuildingAllowanceAddress.postcode.error.invalid")
+        )
+      )(StructuredBuildingAllowanceAddress.apply)(StructuredBuildingAllowanceAddress.unapply)
+        .verifying(
+          checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, StructuredBuildingAllowanceAddress](
+            Addressable
+              .getAddresses(
+                0,
+                userAnswers,
+                List[StructuredBuildingAllowanceAddress](),
+                propertyType,
+                currentIndexNotToCheckAgainstInSbaSection
+              ),
+            "structureBuildingAllowanceAddress.duplicateSba"
+          )
+        )
+        .verifying(
+          checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, EsbaAddress](
+            Addressable
+              .getAddresses(0, userAnswers, List[EsbaAddress](), propertyType, indexToCheckAgainstInOtherSection),
+            "structureBuildingAllowanceAddress.duplicateEsba"
+          )
+        )
     )
+  }
 }
