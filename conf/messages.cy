@@ -1,16 +1,16 @@
 service.name	=	Diweddaru a chyflwyno Ffurflen Treth Incwm
 
-common.notStarted	=	*Missing Welsh*
+common.notStarted	=	Heb ddechrau hyd yn hyn
 common.inProgress	=	Ar y gweill
 common.completed	=	Wedi cwblhau
 
 summary.page.heading	=	Eiddo
-summary.heading	=	*Missing Welsh*
-summary.title	=	*Missing Welsh*
-summary.aboutUKProperties.heading	=	*Missing Welsh*
+summary.heading	=	Eiddo yn y DU
+summary.title	=	Eiddo yn y DU
+summary.aboutUKProperties.heading	=	Eiddo yn y DU
 summary.aboutUKProperties	=	Ynglŷn â
 
-summary.rentals.heading	=	*Missing Welsh*
+summary.rentals.heading	=	Eiddo rhent yn y DU
 summary.about	=	Ynglŷn â
 summary.income	=	Incwm
 summary.expenses	=	Treuliau
@@ -164,6 +164,10 @@ claimPropertyIncomeAllowance.no	=	Na – mynd ati i hawlio treuliau
 claimPropertyIncomeAllowance.checkYourAnswersLabel.agent	=	A hoffai’ch cleient hawlio lwfans incwm o eiddo?
 claimPropertyIncomeAllowance.checkYourAnswersLabel.individual	=	A hoffech chi hawlio lwfans incwm o eiddo?
 claimPropertyIncomeAllowance.change.hidden	=	Newid eich ateb ar gyfer ‘A hoffech chi hawlio lwfans incwm o eiddo?’
+claimPropertyIncomeAllowance.error.required.agent = Dewiswch ‘Iawn’ os yw’ch cleient eisiau hawlio lwfans incwm o eiddo
+claimPropertyIncomeAllowance.error.required.individual = Dewiswch ‘Iawn’ os ydych chi eisiau hawlio lwfans incwm o eiddo
+claimPropertyIncomeAllowance.summary.yes = Hawlio lwfans incwm o eiddo
+claimPropertyIncomeAllowance.summary.no	= Hawlio treuliau
 
 calculatedFigureYourself.title.agent	=	A wnaeth eich cleient gyfrifo’r ffigur ei hun?
 calculatedFigureYourself.title.individual	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
@@ -451,17 +455,17 @@ consolidatedExpenses.details.line2	=	Peidiwch â chynnwys y gost o brynu, gwerth
 consolidatedExpenses.details.line3.individual	=	Os yw’ch eiddo, sydd wedi’i rentu, wedi’i osod ar y cyd, y cyfan y mae angen i chi roi gwybod i ni amdano yw eich cyfran chi o’r treuliau ar gyfer yr eiddo.
 consolidatedExpenses.details.line3.agent	=	Os yw eiddo wedi’i rentu eich cleient wedi’i osod ar y cyd, y cyfan y mae angen i chi roi gwybod i ni amdano yw ei gyfran o’r treuliau ar gyfer yr eiddo.
 consolidatedExpenses.checkYourAnswersLabel.individual	=	Faint oedd eich treuliau cyfunol?
-consolidatedExpenses.checkYourAnswersLabel.agent	=	*Missing Welsh*
-consolidatedExpenses.yes.text = *Missing Welsh*
-consolidatedExpenses.no.text = *Missing Welsh*
+consolidatedExpenses.checkYourAnswersLabel.agent	= Faint oedd treuliau cyfunol eich cleient?
+consolidatedExpenses.yes.text = Hawlio treuliau cyfunol
+consolidatedExpenses.no.text = Hawlio treuliau unigol
 consolidatedExpenses.radio.legend.individual	=	A ydych am hawlio treuliau cyfunol?
-consolidatedExpenses.radio.legend.agent	=	*Missing Welsh*
+consolidatedExpenses.radio.legend.agent	=	Beth hoffai’ch cleient ei wneud?
 consolidatedExpenses.change.hidden	=	Treuliau cyfunol
 consolidatedExpenses.checkYourAnswersLabel.type = *Missing Welsh*
-consolidatedExpenses.checkYourAnswersLabel.amount.individual = *Missing Welsh*
-consolidatedExpenses.checkYourAnswersLabel.amount.agent = *Missing Welsh*
-consolidatedExpenses.yes = *Missing Welsh*
-consolidatedExpenses.no = *Missing Welsh*
+consolidatedExpenses.checkYourAnswersLabel.amount.individual = Faint oedd eich treuliau cyfunol?
+consolidatedExpenses.checkYourAnswersLabel.amount.agent = Faint oedd treuliau cyfunol eich cleient?
+consolidatedExpenses.yes = Cyfunol
+consolidatedExpenses.no = Unigolyn
 
 loanInterest.title	=	Llog ar fenthyciadau a chostau ariannol eraill
 loanInterest.heading	=	Llog ar fenthyciadau a chostau ariannol eraill
@@ -1236,16 +1240,16 @@ sbaRemoveConfirmation.heading =	A ydych am ddileu’r hawliad {0} hwn am lwfans 
 sbaRemoveConfirmation.error.required.individual =	Dewiswch ‘Iawn’ os ydych am ddileu’r hawliad
 sbaRemoveConfirmation.error.required.agent =	Dewiswch ‘Iawn’ os yw’ch cleient am ddileu’r hawliad
 
-rentalsAndRentARoomIncomeStart.title = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.heading = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.p1.individual = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.p1.agent = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.l1 = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.l2 = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.l3 = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.l4 = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.p2.individual = *Missing Welsh*
-rentalsAndRentARoomIncomeStart.p2.agent = *Missing Welsh*
+rentalsAndRentARoomIncomeStart.title = Incwm
+rentalsAndRentARoomIncomeStart.heading = Incwm
+rentalsAndRentARoomIncomeStart.p1.individual = Yn yr adran hon, bydd angen i chi fod â’r ffigurau canlynol wrth law ar gyfer pob un o’ch eiddo:
+rentalsAndRentARoomIncomeStart.p1.agent = Yn yr adran hon, bydd angen i chi fod â’r ffigurau canlynol wrth law ar gyfer pob un o eiddo eich cleient:
+rentalsAndRentARoomIncomeStart.l1 = incwm rhent
+rentalsAndRentARoomIncomeStart.l2 = premiymau am ganiatáu prydles
+rentalsAndRentARoomIncomeStart.l3 = premiymau gwrthdro a gafwyd
+rentalsAndRentARoomIncomeStart.l4 = incwm arall o eiddo
+rentalsAndRentARoomIncomeStart.p2.individual = Os perchenogir eich eiddo ar y cyd, rhowch wybod i ni am eich cyfran chi o’r ffigurau hyn yn unig.
+rentalsAndRentARoomIncomeStart.p2.agent = Os perchenogir ei eiddo ar y cyd, rhowch wybod i ni am gyfran eich cleient o’r ffigurau hyn yn unig.
 
 rentalsAndRentARoomAdjustmentsStart.title = *Missing Welsh*
 rentalsAndRentARoomAdjustmentsStart.heading = *Missing Welsh*
@@ -1722,3 +1726,7 @@ raRbalancingCharge.amount.error.nonNumeric.agent = Gall y swm ar gyfer tâl mant
 raRbalancingCharge.amount.error.twoDecimalPlaces.individual = Gall y swm ar gyfer eich tâl mantoli gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
 raRbalancingCharge.amount.error.twoDecimalPlaces.agent = Gall y swm ar gyfer tâl mantoli eich cleient gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
 raRbalancingCharge.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
+
+claimExpensesOrRRR.amount.error.maxAllowedClaim	= Ni all swm y rhyddhad rhentu ystafell a hawlir fod yn fwy na’ch incwm o rentu ystafell
+
+

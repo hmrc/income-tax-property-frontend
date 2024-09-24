@@ -16,10 +16,12 @@
 
 package models.backend
 
+import controllers.exceptions.NotFoundException
 import models.AccountingMethod
 import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
+import scala.concurrent.Future
 
 case class BusinessDetails(propertyData: Seq[PropertyDetails])
 
@@ -34,13 +36,17 @@ case class PropertyDetails(
   accrualsOrCash: Option[Boolean],
   incomeSourceId: String
 ) {
-  def getAccountingMethod(): Option[AccountingMethod] =
-    accrualsOrCash match {
-      case Some(true)  => Some(AccountingMethod.Traditional)
-      case Some(false) => Some(AccountingMethod.Cash)
-      case None        => None
+
+  def getAccountingMethod: Option[AccountingMethod] =
+    accrualsOrCash.map {
+      case true  => AccountingMethod.Traditional
+      case false => AccountingMethod.Cash
     }
 
+  def accountingMethod: Future[AccountingMethod] =
+    getAccountingMethod.fold[Future[AccountingMethod]](
+      Future.failed(NotFoundException("Accounting method not found"))
+    )(Future.successful)
 }
 
 object PropertyDetails {
