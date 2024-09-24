@@ -18,6 +18,7 @@ package controllers.propertyrentals
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
@@ -81,11 +82,7 @@ class AboutPropertyRentalsSectionFinishedController @Inject() (
                           request.user
                         )
             } yield status.fold(
-              _ =>
-                InternalServerError(
-                  s"Failed to save status for the about section, for the $Rentals journey for tax year: $taxYear, for user with " +
-                    s"nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+              _ => statusError(journeyName = "about", propertyType = Rentals, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator.nextPage(

@@ -18,6 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ExpensesSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
@@ -80,10 +81,7 @@ class ExpensesSectionFinishedController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the expenses section, for the $Rentals journey for the tax " +
-                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "expenses", propertyType = Rentals, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator

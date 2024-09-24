@@ -18,6 +18,7 @@ package controllers.ukrentaroom.allowances
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
 import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
@@ -80,10 +81,7 @@ class RaRAllowancesCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the allowances section, for the $RentARoom journey for the tax " +
-                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "allowances", propertyType = RentARoom, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator.nextPage(RaRAllowancesCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)

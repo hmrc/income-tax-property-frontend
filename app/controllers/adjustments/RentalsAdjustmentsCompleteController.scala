@@ -18,6 +18,7 @@ package controllers.adjustments
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
 import models.{JourneyContext, Mode, Rentals}
 import navigation.Navigator
@@ -80,9 +81,11 @@ class RentalsAdjustmentsCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the adjustments section, for the $Rentals journey for tax year: $taxYear,  for user with " +
-                    s"nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
+                statusError(
+                  journeyName = "adjustments",
+                  propertyType = Rentals,
+                  user = request.user,
+                  taxYear = taxYear
                 ),
               _ =>
                 Redirect(

@@ -18,6 +18,7 @@ package controllers.allowances
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.allowances.AllowancesSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
@@ -80,10 +81,7 @@ class AllowancesSectionFinishedController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the allowance section, for the $Rentals journey for tax year: $taxYear, for user with " +
-                    s"nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "allowances", propertyType = Rentals, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator

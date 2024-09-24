@@ -18,6 +18,7 @@ package controllers.rentalsandrentaroom.income
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.rentalsandrentaroom.income.RentalsAndRaRIncomeCompleteFormProvider
 import models.{JourneyContext, Mode, RentalsRentARoom}
 import navigation.Navigator
@@ -81,10 +82,7 @@ class RentalsRaRIncomeCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the income section, for the $RentalsRentARoom journey for the tax " +
-                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "income", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)

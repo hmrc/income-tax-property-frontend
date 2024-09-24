@@ -18,6 +18,7 @@ package controllers.rentalsandrentaroom
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
 import models.{JourneyContext, Mode, RentalsRentARoom}
 import navigation.Navigator
@@ -81,10 +82,7 @@ class RentalsRaRAboutCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the about section, for the $RentalsRentARoom journey for the tax " +
-                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "about", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers))
             )

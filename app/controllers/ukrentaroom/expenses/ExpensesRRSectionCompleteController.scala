@@ -18,6 +18,7 @@ package controllers.ukrentaroom.expenses
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
 import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
@@ -80,10 +81,7 @@ class ExpensesRRSectionCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                InternalServerError(
-                  s"Failed to save status for the expenses section, for the $RentARoom journey for the tax " +
-                    s"year: $taxYear, for user with nino: ${request.user.nino} and mtditid: ${request.user.mtditid}"
-                ),
+                statusError(journeyName = "expenses", propertyType = RentARoom, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator.nextPage(ExpensesRRSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
