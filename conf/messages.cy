@@ -188,8 +188,8 @@ premiumForLease.details.l1	=	premiwm neu gyfandaliad
 premiumForLease.details.l2	=	taliadau rhent rheolaidd
 premiumForLease.details.p2	=	Os yw’r brydles hyd at 50 mlynedd, caiff y premiwm ei drin yn rhannol gyfalaf ac yn rhannol incwm. Dim ond y rhan sy’n ymwneud ag incwm y dylech roi gwybod i ni amdani. Dim ond prydlesi sydd rhwng dau a 50 mlynedd o hyd y mae angen i ni gael gwybod amdanynt.
 premiumForLease.details.p3	=	Ystyrir unrhyw bremiymau ar gyfer caniatáu prydles yn incwm os ydych yn hawlio lwfans incwm o eiddo.
-premiumForLease.question.agent	=	A gafodd eich cleient daliad am ddechrau prydles?
-premiumForLease.question.individual	=	A gawsoch daliad am ddechrau prydles?
+premiumForLease.question.agent	=	A gafodd eich cleient bremiwm am ganiatáu prydles?
+premiumForLease.question.individual	=	A gawsoch bremiwm am ganiatáu prydles?
 premiumForLease.change.hidden	=	A gawsoch daliad am ddechrau prydles?
 
 premiumsGrantLease.title	=	Premiymau am ganiatáu prydles
