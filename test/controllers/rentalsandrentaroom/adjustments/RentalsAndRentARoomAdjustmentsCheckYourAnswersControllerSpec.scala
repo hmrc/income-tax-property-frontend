@@ -126,7 +126,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersControllerSpec extends SpecB
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER
         verify(auditService, times(1)).sendAuditEvent(any())(any(), any())
-        redirectLocation(result).value mustEqual "/update-and-submit-income-tax-return/property/2024/summary"
+        redirectLocation(result).value mustEqual "/update-and-submit-income-tax-return/property/2024/rentals-rent-a-room/adjustments/complete-yes-no"
       }
     }
   }

@@ -792,5 +792,8 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/change-unused-residential-
 
 GET         /:taxYear/rentals-rent-a-room/adjustments/business-premises-renovation-balancing-charge                                           controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rentals-rent-a-room/adjustments/business-premises-renovation-balancing-charge                                           controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/rentals-rent-a-room/adjustmentschange-business-premises-renovation-balancing-charge                                    controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/rentals-rent-a-room/adjustments/change-business-premises-renovation-balancing-charge                                    controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rentals-rent-a-room/adjustments/change-business-premises-renovation-balancing-charge                                    controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                            controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                            controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onSubmit(taxYear: Int)

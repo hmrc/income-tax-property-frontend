@@ -116,7 +116,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
               isFailed = false,
               accountingMethod
             )
-            Future.successful(Redirect(controllers.routes.SummaryController.show(context.taxYear)))
+            Future.successful(Redirect(controllers.rentalsandrentaroom.adjustments.routes.RentalsRaRAdjustmentsCompleteController
+              .onPageLoad(taxYear)))
           case Left(_) =>
             auditAdjustments(
               context.taxYear,
