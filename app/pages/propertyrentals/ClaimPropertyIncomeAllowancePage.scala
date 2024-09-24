@@ -20,7 +20,7 @@ import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
-import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
+import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -39,5 +39,6 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
       .flatMap(_.remove(RenovationAllowanceBalancingChargePage(RentalsRentARoom)))
       .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
       .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
+      .flatMap(_.remove(RentalsRaRAdjustmentsCompletePage))
 
 }
