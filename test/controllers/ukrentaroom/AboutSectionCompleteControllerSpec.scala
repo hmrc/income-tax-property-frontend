@@ -104,7 +104,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       doReturn(
         Future.successful(
-          Right(FetchedBackendData(None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+          Right("completed")
         )
       )
         .when(mockJourneyAnswersService)

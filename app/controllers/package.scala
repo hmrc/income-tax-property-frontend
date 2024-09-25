@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+import models.{PropertyType, User}
+import play.api.mvc.Result
+import play.api.mvc.Results.InternalServerError
 
+package object controllers {
 
-import play.api.libs.json.JsPath
-
-case object AboutPropertyCompletePage extends QuestionPage[Boolean] {
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "aboutPropertyComplete"
+  def statusError(journeyName: String, propertyType: PropertyType, user: User, taxYear: Int): Result =
+    InternalServerError(
+      s"Failed to save status for the $journeyName section, for the $propertyType journey for tax year: $taxYear, " +
+        s"user with nino: ${user.nino} and mtditid: ${user.mtditid}"
+    )
 }

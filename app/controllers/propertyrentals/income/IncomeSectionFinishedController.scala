@@ -18,8 +18,9 @@ package controllers.propertyrentals.income
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.propertyrentals.income.IncomeSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,18 +69,23 @@ class IncomeSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(IncomeSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear = taxYear,
-                       mtditid = request.user.mtditid,
-                       nino = request.user.nino,
-                       journeyName = "rental-income"
-                     ),
-                     status = statusForPage(value),
-                     user = request.user
-                   )
-            } yield Redirect(
-              navigator.nextPage(IncomeSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rental-income"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ => statusError(journeyName = "income", propertyType = Rentals, user = request.user, taxYear = taxYear),
+              _ =>
+                Redirect(
+                  navigator
+                    .nextPage(IncomeSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

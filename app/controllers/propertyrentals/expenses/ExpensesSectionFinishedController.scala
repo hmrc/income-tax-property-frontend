@@ -18,6 +18,7 @@ package controllers.propertyrentals.expenses
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ExpensesSectionFinishedFormProvider
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
@@ -68,19 +69,30 @@ class ExpensesSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage(Rentals), value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear = taxYear,
-                       mtditid = request.user.mtditid,
-                       nino = request.user.nino,
-                       journeyName = "rental-expenses"
-                     ),
-                     status = statusForPage(value),
-                     user = request.user
-                   )
-            } yield Redirect(
-              navigator
-                .nextPage(ExpensesSectionFinishedPage(Rentals), taxYear, NormalMode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rental-expenses"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                statusError(journeyName = "expenses", propertyType = Rentals, user = request.user, taxYear = taxYear),
+              _ =>
+                Redirect(
+                  navigator
+                    .nextPage(
+                      ExpensesSectionFinishedPage(Rentals),
+                      taxYear,
+                      NormalMode,
+                      request.userAnswers,
+                      updatedAnswers
+                    )
+                )
             )
         )
   }

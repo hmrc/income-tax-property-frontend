@@ -18,9 +18,11 @@ package controllers.propertyrentals
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
-import models.{JourneyContext, NormalMode}
+import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
+import pages.allowances.AllowancesSectionFinishedPage
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -69,24 +71,28 @@ class AboutPropertyRentalsSectionFinishedController @Inject() (
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(AboutPropertyRentalsSectionFinishedPage, value))
               _ <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService.setStatus(
-                     JourneyContext(
-                       taxYear,
-                       request.user.mtditid,
-                       request.user.nino,
-                       "property-rental-about"
-                     ),
-                     statusForPage(value),
-                     request.user
-                   )
-            } yield Redirect(
-              navigator.nextPage(
-                AboutPropertyRentalsSectionFinishedPage,
-                taxYear,
-                NormalMode,
-                request.userAnswers,
-                updatedAnswers
-              )
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear,
+                            request.user.mtditid,
+                            request.user.nino,
+                            "property-rental-about"
+                          ),
+                          statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ => statusError(journeyName = "about", propertyType = Rentals, user = request.user, taxYear = taxYear),
+              _ =>
+                Redirect(
+                  navigator.nextPage(
+                    AboutPropertyRentalsSectionFinishedPage,
+                    taxYear,
+                    NormalMode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
+                )
             )
         )
   }

@@ -18,8 +18,9 @@ package controllers.ukrentaroom.adjustments
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -68,19 +69,23 @@ class RaRAdjustmentsCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAdjustmentsCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       ctx = JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "rent-a-room-adjustments"
-                       ),
-                       status = statusForPage(value),
-                       user = request.user
-                     )
-            } yield Redirect(
-              navigator.nextPage(RaRAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          ctx = JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "rent-a-room-adjustments"
+                          ),
+                          status = statusForPage(value),
+                          user = request.user
+                        )
+            } yield status.fold(
+              _ =>
+                statusError(journeyName = "adjustments", propertyType = RentARoom, user = request.user, taxYear = taxYear),
+              _ =>
+                Redirect(
+                  navigator.nextPage(RaRAdjustmentsCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
             )
         )
   }

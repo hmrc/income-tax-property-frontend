@@ -18,8 +18,9 @@ package controllers.rentalsandrentaroom.allowances
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompleteFormProvider
-import models.JourneyContext
+import models.{JourneyContext, RentalsRentARoom}
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -32,7 +33,7 @@ import views.html.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompleteVie
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RentalsRaRAllowancesCompleteController @Inject()(
+class RentalsRaRAllowancesCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   identify: IdentifierAction,
@@ -66,18 +67,21 @@ class RentalsRaRAllowancesCompleteController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsRaRAllowancesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              _ <- journeyAnswersService
-                     .setStatus(
-                       JourneyContext(
-                         taxYear = taxYear,
-                         mtditid = request.user.mtditid,
-                         nino = request.user.nino,
-                         journeyName = "property-rentals-and-rent-a-room-allowances"
-                       ),
-                       status = statusForPage(value),
-                       request.user
-                     )
-            } yield Redirect(controllers.routes.SummaryController.show(taxYear))
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyName = "property-rentals-and-rent-a-room-allowances"
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ =>
+                statusError(journeyName = "allowances", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
+              _ => Redirect(controllers.routes.SummaryController.show(taxYear))
+            )
         )
   }
 }
