@@ -44,8 +44,8 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage(Rentals), fetchedData.capitalAllowancesForACar)
         ua2 <- updatePropertyAboutPages(ua1, fetchedData.propertyAbout)
         ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.propertyRentalsAbout)
-        ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments, Rentals)
-        ua5 <- updateAdjustmentsPages(ua4, fetchedData.adjustments, RentalsRentARoom)
+        ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
+        ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.rentalsAndRaRAdjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.allowances, Rentals)
         ua7 <- updateAllowancesPages(ua6, fetchedData.allowances, RentalsRentARoom)
         ua8 <-
@@ -112,24 +112,48 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     private def updateAdjustmentsPages(
       userAnswers: UserAnswers,
-      maybeAdjustments: Option[Adjustments],
-      propertyType: PropertyType
+      maybeAdjustments: Option[Adjustments]
     ): Try[UserAnswers] =
       maybeAdjustments match {
-        case None                           => Success(userAnswers)
-        case _ if propertyType == RentARoom => Success(userAnswers)
+        case None => Success(userAnswers)
         case Some(adjustments) =>
           for {
-            ua1 <- userAnswers.set(BalancingChargePage(propertyType), adjustments.balancingCharge)
-            ua2 <- ua1.set(PrivateUseAdjustmentPage(propertyType), adjustments.privateUseAdjustment)
-            ua3 <- ua2.set(PropertyIncomeAllowancePage(propertyType), adjustments.propertyIncomeAllowance)
+            ua1 <- userAnswers.set(BalancingChargePage(Rentals), adjustments.balancingCharge)
+            ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
+            ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
             ua4 <-
               ua3.set(
-                RenovationAllowanceBalancingChargePage(propertyType),
+                RenovationAllowanceBalancingChargePage(Rentals),
                 adjustments.renovationAllowanceBalancingCharge
               )
-            ua5 <- ua4.set(ResidentialFinanceCostPage(propertyType), adjustments.residentialFinanceCost)
-            ua6 <- ua5.set(UnusedResidentialFinanceCostPage(propertyType), adjustments.unusedResidentialFinanceCost)
+            ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
+            ua6 <- ua5.set(UnusedResidentialFinanceCostPage(Rentals), adjustments.unusedResidentialFinanceCost)
+          } yield ua6
+      }
+
+    private def updateRentalsAndRaRAdjustmentsPages(
+      userAnswers: UserAnswers,
+      maybeRentalsAndRaRAdjustments: Option[RentalsAndRentARoomAdjustment]
+    ): Try[UserAnswers] =
+      maybeRentalsAndRaRAdjustments match {
+        case None => Success(userAnswers)
+        case Some(adjustments) =>
+          for {
+            ua1 <- userAnswers.set(BalancingChargePage(RentalsRentARoom), adjustments.balancingCharge)
+            ua2 <- ua1.set(
+                     PrivateUseAdjustmentPage(RentalsRentARoom),
+                     PrivateUseAdjustment(adjustments.privateUseAdjustment)
+                   )
+            ua3 <- adjustments.propertyIncomeAllowance
+                     .map(ua2.set(PropertyIncomeAllowancePage(RentalsRentARoom), _))
+                     .getOrElse(Success(ua2))
+            ua4 <-
+              ua3.set(
+                RenovationAllowanceBalancingChargePage(RentalsRentARoom),
+                adjustments.renovationAllowanceBalancingCharge
+              )
+            ua5 <- ua4.set(ResidentialFinanceCostPage(RentalsRentARoom), adjustments.residentialFinanceCost)
+            ua6 <- adjustments.unusedResidentialFinanceCost.map(ua5.set(UnusedResidentialFinanceCostPage(RentalsRentARoom), _)).getOrElse(Success(ua5))
           } yield ua6
       }
 

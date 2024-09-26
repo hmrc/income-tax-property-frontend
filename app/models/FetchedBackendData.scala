@@ -128,6 +128,7 @@ final case class FetchedBackendData(
   propertyRentalsAbout: Option[RentalsAbout],
   rentalsAndRaRAbout: Option[RentalsAndRaRAbout],
   adjustments: Option[Adjustments],
+  rentalsAndRaRAdjustments: Option[RentalsAndRentARoomAdjustment],
   allowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
   rentalsSBA: Option[SbasWithSupportingQuestions],
