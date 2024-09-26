@@ -61,7 +61,7 @@ class PropertySubmissionService @Inject() (
   def saveJourneyAnswers[A: Writes](ctx: JourneyContext, body: A, incomeSourceId: String)(implicit
     hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] =
-    propertyConnector.saveJourneyAnswers(ctx, incomeSourceId, body).map {
+    propertyConnector.saveJourneyAnswers(ctx, body, incomeSourceId).map {
       case Left(error) => Left(HttpParserError(error.status))
       case Right(_)    => Right()
     }
@@ -76,7 +76,7 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { ukProperty =>
-            propertyConnector.saveJourneyAnswers(ctx, ukProperty.incomeSourceId, body).map {
+            propertyConnector.saveJourneyAnswers(ctx, body, ukProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }
