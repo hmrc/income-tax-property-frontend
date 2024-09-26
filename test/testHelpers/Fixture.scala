@@ -35,6 +35,7 @@ trait Fixture {
     None,
     None,
     None,
+    None,
     None
   )
 }
