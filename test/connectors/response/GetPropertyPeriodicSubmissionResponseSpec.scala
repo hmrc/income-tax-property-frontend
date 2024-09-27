@@ -70,7 +70,8 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           None,
           None,
           None,
-          None
+          None,
+          List()
         )
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 

@@ -23,17 +23,23 @@ import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease._
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
+import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
+import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
+import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
+import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance._
-import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
+import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.libs.json.Writes
 import queries.Settable
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 object PropertyPeriodSessionRecoveryExtensions {
 
@@ -73,8 +79,67 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua17 <- updateRentARoomAllowance(ua16, fetchedData.rentARoomAllowances)
         ua18 <- updateRentARoomAdjustments(ua17, fetchedData.raRAdjustments)
         ua19 <- updateRentalsAndRaRAbout(ua18, fetchedData.rentalsAndRaRAbout)
-      } yield ua19
+        ua20 <- updateJourneyStatuses(ua19, fetchedData.journeyStatuses)
+      } yield ua20
     }.getOrElse(userAnswersArg)
+
+    private def updateJourneyStatuses(
+      userAnswers: UserAnswers,
+      journeyStatuses: List[JourneyWithStatus]
+    ): Try[UserAnswers] = {
+      val r: UserAnswers = journeyStatuses.foldLeft(userAnswers)((acc, a) =>
+        acc.set(updateSingleJourneyStatus(a), isCompleted(a.journeyStatus)) match {
+          case Success(s) => s
+          case Failure(_) => acc
+        }
+      )
+      Success(r)
+    }
+
+    private def isCompleted(status: String) =
+      status.trim.toLowerCase().equals("completed")
+
+    private def updateSingleJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
+      journeyWithStatus.journeyName match {
+        case "property-about"                               => AboutPropertyCompletePage
+        case "property-rental-about"                        => AboutPropertyRentalsSectionFinishedPage
+        case "rental-income"                                => IncomeSectionFinishedPage
+        case "rental-allowances"                            => AllowancesSectionFinishedPage
+        case "rental-expenses"                              => ExpensesSectionFinishedPage(Rentals)
+        case "rental-adjustments"                           => RentalsAdjustmentsCompletePage
+        case "rental-sba"                                   => SbaSectionFinishedPage(Rentals)
+        case "rental-esba"                                  => EsbaSectionFinishedPage(Rentals)
+        case "rent-a-room-about"                            => AboutSectionCompletePage
+        case "rent-a-room-allowances"                       => RaRAllowancesCompletePage
+        case "rent-a-room-expenses"                         => ExpensesRRSectionCompletePage
+        case "rent-a-room-adjustments"                      => RaRAdjustmentsCompletePage
+        case "property-rentals-and-rent-a-room-about"       => RentalsRaRAboutCompletePage
+        case "property-rentals-and-rent-a-room-income"      => RentalsRaRIncomeCompletePage
+        case "property-rentals-and-rent-a-room-allowances"  => RentalsRaRAllowancesCompletePage
+        case "property-rentals-and-rent-a-room-expenses"    => RentalsRaRExpensesCompletePage
+        case "property-rentals-and-rent-a-room-adjustments" => RentalsRaRAdjustmentsCompletePage
+        case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentARoom)
+        case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentARoom)
+      }
+//      case object About extends JourneyName("property-about")
+//      case object RentalAbout extends JourneyName("property-rental-about")
+//      case object RentalIncome extends JourneyName("rental-income")
+//      case object RentalAllowances extends JourneyName("rental-allowances")
+//      case object RentalExpenses extends JourneyName("rental-expenses")
+//      case object RentalAdjustments extends JourneyName("rental-adjustments")
+//      case object RentalSBA extends JourneyName("rental-sba")
+//      case object RentalESBA extends JourneyName("rental-esba")
+//      case object RentARoomAbout extends JourneyName("rent-a-room-about")
+//      case object RentARoomAllowances extends JourneyName("rent-a-room-allowances")
+//      case object RentARoomExpenses extends JourneyName("rent-a-room-expenses")
+//      case object RentARoomAdjustments extends JourneyName("rent-a-room-adjustments")
+//      case object RentalsAndRaRAbout extends JourneyName("property-rentals-and-rent-a-room-about")
+//      case object RentalsAndRaRIncome extends JourneyName("property-rentals-and-rent-a-room-income")
+//      case object RentalsAndRaRAllowances extends JourneyName("property-rentals-and-rent-a-room-allowances")
+//      case object RentalsAndRaRExpenses extends JourneyName("property-rentals-and-rent-a-room-expenses")
+//      case object RentalsAndRaRAdjustments extends JourneyName("property-rentals-and-rent-a-room-adjustments")
+//      case object RentalsAndRaRSBA extends JourneyName("property-rentals-and-rent-a-room-sba")
+//      case object RentalsAndRaRESBA extends JourneyName("property-rentals-and-rent-a-room-esba")
 
     private def updatePropertyAboutPages(
       userAnswers: UserAnswers,
@@ -153,7 +218,9 @@ object PropertyPeriodSessionRecoveryExtensions {
                 adjustments.renovationAllowanceBalancingCharge
               )
             ua5 <- ua4.set(ResidentialFinanceCostPage(RentalsRentARoom), adjustments.residentialFinanceCost)
-            ua6 <- adjustments.unusedResidentialFinanceCost.map(ua5.set(UnusedResidentialFinanceCostPage(RentalsRentARoom), _)).getOrElse(Success(ua5))
+            ua6 <- adjustments.unusedResidentialFinanceCost
+                     .map(ua5.set(UnusedResidentialFinanceCostPage(RentalsRentARoom), _))
+                     .getOrElse(Success(ua5))
           } yield ua6
       }
 

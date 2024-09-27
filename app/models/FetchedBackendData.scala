@@ -122,6 +122,12 @@ final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
   override def toString: String = esbas
 }
 
+final case class JourneyWithStatus(journeyName: String, journeyStatus: String)
+
+object JourneyWithStatus {
+  implicit val format = Json.format[JourneyWithStatus]
+}
+
 final case class FetchedBackendData(
   capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   propertyAbout: Option[PropertyAbout],
@@ -139,7 +145,8 @@ final case class FetchedBackendData(
   raRAbout: Option[RaRAbout],
   rarExpenses: Option[RentARoomExpenses],
   raRAdjustments: Option[RentARoomAdjustments],
-  rentARoomAllowances: Option[RentARoomAllowance]
+  rentARoomAllowances: Option[RentARoomAllowance],
+  journeyStatuses: List[JourneyWithStatus]
 )
 
 object FetchedBackendData {
