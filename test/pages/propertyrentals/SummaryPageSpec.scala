@@ -18,7 +18,7 @@ package pages.propertyrentals
 
 import base.SpecBase
 import models.TotalIncome.writes
-import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect}
+import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.ukrentaroom.ClaimExpensesOrReliefPage
@@ -291,6 +291,14 @@ class SummaryPageSpec extends SpecBase {
       "rentals_and_rent_a_room_allowances_link"
     )
 
+    val summaryAdjustmentsItem = TaskListItem(
+      "summary.adjustments",
+      controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+        .onPageLoad(taxYear, true),
+      TaskListTag.NotStarted,
+      "rentals_and_rent_a_room_adjustments_link"
+    )
+
     val summarySBAItem = TaskListItem(
       "summary.structuresAndBuildingAllowance",
       controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
@@ -337,21 +345,6 @@ class SummaryPageSpec extends SpecBase {
 
     "createRentalsAndRentARoomRows return three rows when user has selected Rentals And Rent a room and Completed about section" in {
 
-      val summaryAboutItem = TaskListItem(
-        "summary.about",
-        controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear),
-        TaskListTag.Completed,
-        "rentals_and_rent_a_room_about_link"
-      )
-
-      val rentalsRaRSummaryAdjustmentsItem = TaskListItem(
-        "summary.adjustments",
-        controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
-          .onPageLoad(taxYear, true),
-        TaskListTag.NotStarted,
-        "rentals_and_rent_a_room_adjustments_link"
-      )
-
       val userAnswersWithRentalsAndRentARoom = emptyUserAnswers
         .set(
           UKPropertyPage,
@@ -371,13 +364,131 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .length should be(5)
+      SummaryPage.createRentalsAndRentARoomRows(
+        Some(userAnswersWithRentalsAndRentARoom),
+        taxYear,
+        accrualsOrCash = true
+      ) should be(
+        Seq(
+          summaryAboutItem.copy(taskListTag = TaskListTag.Completed),
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          summaryAdjustmentsItem
+        )
+      )
+
+    }
+
+    def createTestUserAnswersForRentalsRaRAbout(
+      relief: ClaimExpensesOrRelief,
+      pia: Boolean
+    ): UserAnswers = emptyUserAnswers
+      .set(
+        UKPropertyPage,
+        Set[UKPropertySelect](UKPropertySelect.PropertyRentals, UKPropertySelect.RentARoom)
+      )
+      .success
+      .value
+      .set(RentalsRaRAboutCompletePage, true)
+      .success
+      .value
+      .set(ClaimExpensesOrReliefPage(RentalsRentARoom), relief)
+      .success
+      .value
+      .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), pia)
+      .success
+      .value
+
+    "rentARoomRelief == true and pia == true and accrual == true" in {
+
+      val userAnswersWithRentalsAndRentARoom =
+        createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(true, Some(100)), true)
+
+      SummaryPage
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
         .length should be(3)
       SummaryPage.createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
       ) should be(
-        Seq(summaryAboutItem, summaryIncomeItem, rentalsRaRSummaryAdjustmentsItem)
+        Seq(summaryAboutItem.copy(taskListTag = TaskListTag.Completed), summaryIncomeItem, summaryAdjustmentsItem)
+      )
+    }
+
+    "rentARoomRelief == false and pia == true and accrual == true" in {
+
+      val userAnswersWithRentalsAndRentARoom =
+        createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), true)
+
+      SummaryPage
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .length should be(5)
+      SummaryPage.createRentalsAndRentARoomRows(
+        Some(userAnswersWithRentalsAndRentARoom),
+        taxYear,
+        accrualsOrCash = true
+      ) should be(
+        Seq(
+          summaryAboutItem.copy(taskListTag = TaskListTag.Completed),
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          summaryAdjustmentsItem
+        )
+      )
+    }
+
+    "rentARoomRelief == false and pia == false and accrual == true" in {
+
+      val userAnswersWithRentalsAndRentARoom =
+        createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), false)
+
+      SummaryPage
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .length should be(7)
+      SummaryPage.createRentalsAndRentARoomRows(
+        Some(userAnswersWithRentalsAndRentARoom),
+        taxYear,
+        accrualsOrCash = true
+      ) should be(
+        Seq(
+          summaryAboutItem.copy(taskListTag = TaskListTag.Completed),
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          summarySBAItem,
+          summaryESBAItem,
+          summaryAdjustmentsItem.copy(call =
+            controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+              .onPageLoad(taxYear, false)
+          )
+        )
+      )
+    }
+
+    "rentARoomRelief == false and pia == true and accrual == false" in {
+
+      val userAnswersWithRentalsAndRentARoom =
+        createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), true)
+
+      SummaryPage
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
+        .length should be(5)
+      SummaryPage.createRentalsAndRentARoomRows(
+        Some(userAnswersWithRentalsAndRentARoom),
+        taxYear,
+        accrualsOrCash = true
+      ) should be(
+        Seq(
+          summaryAboutItem.copy(taskListTag = TaskListTag.Completed),
+          summaryIncomeItem,
+          summaryExpenseItem,
+          summaryAllowancesItem,
+          summaryAdjustmentsItem
+        )
       )
     }
 
