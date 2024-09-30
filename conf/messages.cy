@@ -15,7 +15,7 @@ summary.about	=	Ynglŷn â
 summary.income	=	Incwm
 summary.expenses	=	Treuliau
 summary.allowances	=	Lwfansau
-summary.structuresAndBuildingAllowance	=	Lwfans Strwythurau ac Adeiladau
+summary.structuresAndBuildingAllowance	=	Lwfans strwythurau ac adeiladau
 summary.adjustments	=	Addasiadau
 
 site.back	=	Yn ôl

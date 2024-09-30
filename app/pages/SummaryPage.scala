@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
+import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
@@ -111,45 +111,109 @@ case object SummaryPage {
   ): Seq[TaskListItem] = {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
-    val aboutItem = rentalsAndRaRAboutItem(userAnswers, taxYear)
-    val incomeItem = rentalsAndRaRIncomeItem(userAnswers, taxYear)
-    val adjustmentsItem: TaskListItem = rentalsAndRaRAdjustmentsItem(userAnswers, taxYear)
 
     if (isRentARoomSelected && isPropertyRentalsSelected) {
-      userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage)) match {
-        case None => Seq(aboutItem)
-        case Some(_) =>
-          val baseItems = Seq(aboutItem, incomeItem)
-          val taskListWithoutAdjustments =
-            userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))) match {
-              case Some(false) if accrualsOrCash =>
-                baseItems concat Seq(
-                  rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                  rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-                  rentalsAndRaRSBAItem(taxYear, userAnswers),
-                  rentalsAndRaRESBAItem(taxYear, userAnswers)
-                )
-              case Some(false) if !accrualsOrCash =>
-                baseItems concat Seq(
-                  rentalsAndRaRExpensesItem(taxYear, userAnswers),
-                  rentalsAndRaRAllowancesItem(taxYear, userAnswers)
-                )
-              case _ => baseItems
-            }
-          // If the user selects to claim expenses and NOT a rent a room relief then add in the task list adjustments
-          if (
-            !userAnswers
-              .flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom)).map(_.claimExpensesOrReliefYesNo))
-              .getOrElse(false)
-          )
-            taskListWithoutAdjustments :+ adjustmentsItem
-          else
-            taskListWithoutAdjustments
-      }
+      createTaskListForCombinedJourney(
+        userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentalsRentARoom))),
+        userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))),
+        userAnswers,
+        taxYear,
+        accrualsOrCash
+      )
     } else {
       Seq.empty[TaskListItem]
     }
   }
+
+  private def createTaskListForCombinedJourney(
+    claimExpensesOrRelief: Option[ClaimExpensesOrRelief],
+    claimPropertyIncomeAllowance: Option[Boolean],
+    userAnswers: Option[UserAnswers],
+    taxYear: Int,
+    accrualsOrCash: Boolean
+  ): Seq[TaskListItem] =
+    (claimExpensesOrRelief, claimPropertyIncomeAllowance, accrualsOrCash) match {
+      case (None, None, _) | (None, Some(_), _) | (Some(_), None, _) =>
+        Seq(rentalsAndRaRAboutItem(taxYear, userAnswers))
+      // Accounting method == accruals
+      case (Some(relief), Some(pia), true) =>
+        createTaskListForAccruals(userAnswers, taxYear, relief, pia)
+      // Accounting method == cash
+      case (Some(relief), Some(pia), false) =>
+        createTaskListForCash(userAnswers, taxYear, relief, pia)
+    }
+
+  private def createTaskListForCash(
+    userAnswers: Option[UserAnswers],
+    taxYear: Int,
+    relief: ClaimExpensesOrRelief,
+    pia: Boolean
+  ) =
+    (relief.claimExpensesOrReliefYesNo, pia) match {
+      // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
+      case (true, true) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+      // RR02 - Rent a Room Relief (false) i.e. Expenses and Yes, claim property income allowance (true)
+      case (false, true) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+      // RR03 - Rent a Room Relief (false) i.e. Expenses and No, claim expenses (false)
+      // RR04 - Rent a Room Relief (true) i.e. Expenses and Yes, claim property income allowance (true)
+      case (false, false) | (true, false) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+    }
+
+  private def createTaskListForAccruals(
+    userAnswers: Option[UserAnswers],
+    taxYear: Int,
+    relief: ClaimExpensesOrRelief,
+    pia: Boolean
+  ) =
+    (relief.claimExpensesOrReliefYesNo, pia) match {
+      // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
+      case (true, true) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+      // RR02 - Rent a Room Relief (false) i.e. Expenses and Yes, claim property income allowance (true)
+      case (false, true) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+      // RR03 - Rent a Room Relief (false) i.e. Expenses and No, claim expenses (false)
+      // RR04 - Rent a Room Relief (true) i.e. Expenses and Yes, claim property income allowance (true)
+      case (false, false) | (true, false) =>
+        Seq(
+          rentalsAndRaRAboutItem(taxYear, userAnswers),
+          rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          rentalsAndRaRSBAItem(taxYear, userAnswers),
+          rentalsAndRaRESBAItem(taxYear, userAnswers),
+          rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+    }
 
   def propertyAboutItems(userAnswers: Option[UserAnswers], taxYear: Int): Seq[TaskListItem] =
     Seq(
@@ -295,7 +359,7 @@ case object SummaryPage {
       "rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  private def rentalsAndRaRAboutItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.about",
       controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear), {
@@ -316,7 +380,7 @@ case object SummaryPage {
       "rentals_and_rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int): TaskListItem =
+  private def rentalsAndRaRAdjustmentsItem(taxYear: Int, userAnswers: Option[UserAnswers]): TaskListItem =
     TaskListItem(
       "summary.adjustments",
       controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
@@ -340,7 +404,23 @@ case object SummaryPage {
       "rentals_and_rent_a_room_adjustments_link"
     )
 
-  private def rentalsAndRaRIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  /*private def rentalsAndRaRExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+    TaskListItem(
+      "summary.expenses",
+      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom), {
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRExpensesCompletePage))
+        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
+          if (userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage)).isDefined) {
+            TaskListTag.InProgress
+          } else {
+            TaskListTag.NotStarted
+          }
+        }
+      },
+      "rentals_and_rent_a_room_expenses_link"
+    )*/
+
+  private def rentalsAndRaRIncomeItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.income",
       controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear), {
