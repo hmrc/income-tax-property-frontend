@@ -46,7 +46,10 @@ object GetPropertyPeriodicSubmissionResponse {
         response.json
           .validate[FetchedBackendData]
           .fold[Either[ApiError, FetchedBackendData]](
-            _ => badSuccessJsonResponse,
+            e => {
+              //Todo: Proper specific error to be logged.
+              badSuccessJsonResponse
+            },
             parsedModel => Right(parsedModel)
           )
     }

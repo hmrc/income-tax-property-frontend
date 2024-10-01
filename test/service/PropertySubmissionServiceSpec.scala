@@ -58,7 +58,11 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         None,
         None,
         None,
-        None
+        None,
+        None,
+        None,
+        None,
+        List()
       )
       val incomeSourceId = "incomeSourceId"
       val details =

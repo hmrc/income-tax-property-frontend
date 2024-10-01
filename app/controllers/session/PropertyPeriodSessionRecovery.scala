@@ -45,19 +45,21 @@ class PropertyPeriodSessionRecovery @Inject() (
       currentUserAnswersMaybe <- sessionRepository
                                    .get(request.userId)
 
-      updatedUserAnswers <- fetchedData match {
-                              case Right(fetchedUserAnswersData) =>
-                                currentUserAnswersMaybe.fold {
-                                  val updated = basicUserAnswers.update(fetchedUserAnswersData)
-                                  sessionRepository
-                                    .set(
-                                      updated
-                                    )
-                                    .map(_ => updated)
-                                }(ua => Future.successful(ua))
-                              case Left(_) =>
-                                Future.successful(basicUserAnswers)
-                            }
+      updatedUserAnswers <- {
+        fetchedData match {
+          case Right(fetchedUserAnswersData) =>
+            currentUserAnswersMaybe.fold {
+              val updated = basicUserAnswers.update(fetchedUserAnswersData)
+              sessionRepository
+                .set(
+                  updated
+                )
+                .map(_ => updated)
+            }(ua => Future.successful(ua))
+          case Left(_) =>
+            Future.successful(basicUserAnswers)
+        }
+      }
       blockResult <-
         block(OptionalDataRequest(request.request, request.userId, request.user, Some(updatedUserAnswers)))
     } yield blockResult

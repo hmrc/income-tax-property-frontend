@@ -25,7 +25,7 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{PropertyRentalIncomePage, IsNonUKLandlordPage, ReversePremiumsReceivedPage}
+import pages.propertyrentals.income.{IsNonUKLandlordPage, PropertyRentalIncomePage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
@@ -180,7 +180,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "balancingChargeAmount" : 10
       |        },
       |        "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
-      |    }
+      |    },
+      |    "journeyStatuses": []
       |}""".stripMargin
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
