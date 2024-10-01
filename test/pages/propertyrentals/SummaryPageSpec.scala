@@ -65,7 +65,7 @@ class SummaryPageSpec extends SpecBase {
     )
     val adjustmentsListItem = TaskListItem(
       "summary.adjustments",
-      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear),
+      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear,false),
       TaskListTag.NotStarted,
       "rentals_adjustments_link"
     )
@@ -105,6 +105,14 @@ class SummaryPageSpec extends SpecBase {
 
     }
     "should return all rows except expenses when ClaimPropertyIncomeAllowancePage exist in the user data" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.NotStarted,
+        "rentals_adjustments_link"
+      )
+
       val userAnswersWithPropertyRentals = emptyUserAnswers
         .set(
           UKPropertyPage,

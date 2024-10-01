@@ -551,6 +551,9 @@ adjustmentsStart.details.content = In this section we’re going to ask you abou
 adjustmentsStart.details.content.l1 = private use adjustment
 adjustmentsStart.details.content.l2 = balancing charge
 adjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
+adjustmentsStart.details.content.l4 = residential financial costs
+adjustmentsStart.details.content.l5 = unused residential costs brought forward
+adjustmentsStart.details.content.l6 = your property income allowance claim
 
 rentalsAndRentARoomAdjustmentsStart.title = Adjustments
 rentalsAndRentARoomAdjustmentsStart.heading = Adjustments

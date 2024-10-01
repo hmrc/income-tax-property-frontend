@@ -22,16 +22,26 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, expensesOrPIA: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("adjustmentsStart.title"))) {
 
     <h1 class="govuk-heading-l">@messages("adjustmentsStart.heading")</h1>
     <p class="govuk-body">@messages("adjustmentsStart.details.content")</p>
     <ul id="list" class="govuk-list govuk-list--bullet" >
-        <li>@messages("adjustmentsStart.details.content.l1")</li>
-        <li>@messages("adjustmentsStart.details.content.l2")</li>
-        <li>@messages("adjustmentsStart.details.content.l3")</li>
+        @if(expensesOrPIA){
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l1")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l2")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l6")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l3")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l4")</li>
+        } else {
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l1")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l2")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l3")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l4")</li>
+        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l5")</li>
+        }
     </ul>
 
     @govukButton(
