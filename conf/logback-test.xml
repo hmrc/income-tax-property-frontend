@@ -1,0 +1,5 @@
+<configuration>
+    <root level="OFF">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
