@@ -21,29 +21,29 @@ import models.{CheckMode, UserAnswers}
 import pages.ReportPropertyIncomePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ReportPropertyIncomeSummary {
 
-  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReportPropertyIncomePage).map {
-      answer =>
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ReportPropertyIncomePage).map { answer =>
+      val value = if (answer) {
+        s"reportPropertyIncome.details.input.yesText.$individualOrAgent"
+      } else {
+        s"reportPropertyIncome.details.input.noText.$individualOrAgent"
+      }
 
-        val value = if (answer) {
-          s"reportPropertyIncome.details.input.yesText.$individualOrAgent"
-        }
-        else {
-          s"reportPropertyIncome.details.input.noText.$individualOrAgent"
-        }
-
-        SummaryListRowViewModel(
-          key = s"reportPropertyIncome.checkYourAnswersLabel.$individualOrAgent",
-          value = ValueViewModel(value),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ReportPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("reportPropertyIncome.change.hidden"))
-          )
+      SummaryListRowViewModel(
+        key = KeyViewModel(s"reportPropertyIncome.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.ReportPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages("reportPropertyIncome.change.hidden"))
         )
+      )
     }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.propertyrentals.expenses.routes._
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
-@import controllers.propertyrentals.expenses.routes._
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -47,10 +47,11 @@
                 <li>@messages("otherAllowablePropertyExpenses.details.content.l6")</li>
                 <li>@messages(s"otherAllowablePropertyExpenses.details.content.l7.$individualOrAgent")</li>
             </ul>
+           <p class="govuk-body">
             <a href="@messages("otherAllowablePropertyExpenses.details.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
             @messages("otherAllowablePropertyExpenses.details.link.text")
             </a>
-        <p></p>
+          </p>
 
 
 

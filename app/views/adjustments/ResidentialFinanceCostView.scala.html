@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.adjustments.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
-@import controllers.adjustments.routes
 
 @this(
     layout: templates.Layout,
@@ -40,7 +40,7 @@
         }
 
                 <p class="govuk-body">@messages("residentialFinanceCost.details.content.link.content")</p>
-                <ul class="govuk-body">
+                <ul class="govuk-list govuk-list--bullet">
                     <li>@messages(s"residentialFinanceCost.details.l1")</li>
                     <li>@messages(s"residentialFinanceCost.details.l2")</li>
                     <li>@messages(s"residentialFinanceCost.details.l3")</li>
