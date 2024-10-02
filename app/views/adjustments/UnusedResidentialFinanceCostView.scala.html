@@ -14,20 +14,20 @@
  * limitations under the License.
  *@
 
+@import controllers.adjustments.routes
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
-@import controllers.adjustments.routes
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
-    govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType )(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("unusedResidentialFinanceCost.title"))) {
 
@@ -40,12 +40,12 @@
         }
 
 
-                <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.content")</p>
-                <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.intro")
-                    <a href="@messages("unusedResidentialFinanceCost.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                    @messages("unusedResidentialFinanceCost.details.content.link.text")
-                    </a>
-                </p>
+        <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.content")</p>
+        <p class="govuk-body">@messages("unusedResidentialFinanceCost.details.content.link.intro")
+            <a href="@messages("unusedResidentialFinanceCost.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+            @messages("unusedResidentialFinanceCost.details.content.link.text")
+            </a>
+        </p>
 
 
         @govukInput(
@@ -62,4 +62,7 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
+}
+@{
+    // $COVERAGE-OFF$
 }
