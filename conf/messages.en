@@ -285,10 +285,10 @@ deductingTax.details.content.link.text = tax on your UK income if you live abroa
 deductingTax.details.content.link.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
 
 
-incomeFromPropertyRentals.title = Income from Property Rentals
-incomeFromPropertyRentals.heading = Income from Property Rentals
-incomeFromPropertyRentals.checkYourAnswersLabel = Income from property rentals
-incomeFromPropertyRentals.change.hidden = Income from property rentals
+incomeFromPropertyRentals.title = Property rental income
+incomeFromPropertyRentals.heading = Property rental income
+incomeFromPropertyRentals.checkYourAnswersLabel = Property rental income
+incomeFromPropertyRentals.change.hidden = Property rental income
 incomeFromPropertyRentals.para1.individual = Rental income is the rent you get from your tenants. This includes any payments for:
 incomeFromPropertyRentals.para1.agent = Rental income is the rent your client gets from their tenants. This includes any payments for:
 incomeFromPropertyRentals.bullet1.individual = the use of furniture
