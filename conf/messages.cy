@@ -411,9 +411,12 @@ propertyIncomeAllowance.change.hidden	=	Eich cyfran chi o lwfans incwm o eiddo
 adjustmentsStart.title	=	Addasiadau
 adjustmentsStart.heading	=	Addasiadau
 adjustmentsStart.details.content	=	Yn yr adran hon, byddwn yn gofyn i chi am yr addasiadau canlynol:
-adjustmentsStart.details.content.l1	=	addasiad ar gyfer defnydd preifat
-adjustmentsStart.details.content.l2	=	tâl mantoli
-adjustmentsStart.details.content.l3	=	tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
+adjustmentsStart.details.content.l1 = *Missing Welsh*
+adjustmentsStart.details.content.l2 = *Missing Welsh*
+adjustmentsStart.details.content.l3 = *Missing Welsh*
+adjustmentsStart.details.content.l4 = *Missing Welsh*
+adjustmentsStart.details.content.l5 = *Missing Welsh*
+adjustmentsStart.details.content.l6 = *Missing Welsh*
 
 expensesStart.title	=	Treuliau
 expensesStart.heading	=	Treuliau

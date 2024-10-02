@@ -32,14 +32,14 @@ class AdjustmentsStartControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[AdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, true)(request, messages(application)).toString
       }
     }
   }

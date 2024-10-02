@@ -254,7 +254,9 @@ case object SummaryPage {
   private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
-      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear), {
+      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, userAnswers
+        .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
+        .getOrElse(false)), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
