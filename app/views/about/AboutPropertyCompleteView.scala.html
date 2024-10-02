@@ -18,36 +18,35 @@
 @import viewmodels.LegendSize
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukRadios: GovukRadios,
-govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
 )
 
 
 @(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
-@formHelper(action = AboutPropertyCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
-@if(form.errors.nonEmpty) {
-@govukErrorSummary(ErrorSummaryViewModel(form))
-}
+    @formHelper(action = AboutPropertyCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
 
-@govukRadios(
-RadiosViewModel.yesNo(
-field = form("aboutPropertyCompleteYesOrNo"),
-legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
-).withHint(HintViewModel(messages("haveYouFinishedThisSection.hint")))
-)
+        @govukRadios(
+            RadiosViewModel.yesNo(
+                field = form("aboutPropertyCompleteYesOrNo"),
+                legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
+            ).withHint(HintViewModel(messages("haveYouFinishedThisSection.hint")))
+        )
 
-
-@govukButton(
-ButtonViewModel(messages("site.continue")).withId("continue")
-)
-}
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
 }
 
 @{
-// $COVERAGE-OFF$
+    // $COVERAGE-OFF$
 }

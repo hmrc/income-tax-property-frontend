@@ -16,8 +16,8 @@
 
 package viewmodels.checkAnswers.allowances
 
-import controllers.allowances.routes.ElectricChargePointAllowanceController
-import models.{ElectricChargePointAllowance, CheckMode, UserAnswers}
+import controllers.allowances.routes
+import models.{CheckMode, ElectricChargePointAllowance, UserAnswers}
 import pages.allowances.ElectricChargePointAllowancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -25,30 +25,39 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-
 object ElectricChargePointAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ElectricChargePointAllowancePage).flatMap {
       case ElectricChargePointAllowance(true, Some(amount)) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("electricChargePointAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", ElectricChargePointAllowanceController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("electricChargePointAllowance.change.hidden"))
-          )))
-      case ElectricChargePointAllowance(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("electricChargePointAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", ElectricChargePointAllowanceController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("electricChargePointAllowance.change.hidden"))
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("electricChargePointAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("electricChargePointAllowance.change.hidden"))
+            )
           )
-        ))
+        )
+      case ElectricChargePointAllowance(false, _) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel("electricChargePointAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+            value = ValueViewModel("site.no").withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel(
+                "site.change",
+                routes.ElectricChargePointAllowanceController.onPageLoad(taxYear, CheckMode).url
+              )
+                .withVisuallyHiddenText(messages("electricChargePointAllowance.change.hidden"))
+            )
+          )
+        )
       case _ => Option.empty[SummaryListRow]
     }
-  }
 
 }

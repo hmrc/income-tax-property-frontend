@@ -23,28 +23,28 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object TotalIncomeSummary {
 
-  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(TotalIncomePage).map {
-      answer =>
-
-        val value = ValueViewModel(
-          HtmlContent(
-            HtmlFormat.escape(messages(s"totalIncome.$answer"))
-          )
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(TotalIncomePage).map { answer =>
+      val value =
+        HtmlContent(
+          HtmlFormat.escape(messages(s"totalIncome.$answer"))
         )
 
-        SummaryListRowViewModel(
-          key = s"totalIncome.checkYourAnswersLabel.$individualOrAgent",
-          value = value,
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages(s"totalIncome.change.hidden.$individualOrAgent"))
-          )
+      SummaryListRowViewModel(
+        key = KeyViewModel(s"totalIncome.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages(s"totalIncome.change.hidden.$individualOrAgent"))
         )
+      )
     }
 }

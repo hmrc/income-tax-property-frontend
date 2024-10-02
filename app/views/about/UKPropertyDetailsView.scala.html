@@ -32,19 +32,23 @@
     <p class="govuk-body">@messages("uKPropertyDetails.para1")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-     <li>@messages(s"uKPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
-     <li>@messages(s"uKPropertyDetails.bullet2.${page.individualOrAgent}") @messages(s"${page.cashOrAccrualsMessageKey}")</li>
+        <li>@messages(s"uKPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
+        <li>@messages(s"uKPropertyDetails.bullet2.${page.individualOrAgent}") @messages(s"${page.cashOrAccrualsMessageKey}")</li>
     </ul>
 
     <p class="govuk-body">@messages("uKPropertyDetails.para2.part1")
-    <a href="#" class="govuk-link">@messages("uKPropertyDetails.para2.part2")</a>
-    @messages("uKPropertyDetails.para2.part3")</p>
+        <a href="#" class="govuk-link">@messages("uKPropertyDetails.para2.part2")</a>
+        @messages("uKPropertyDetails.para2.part3")</p>
 
     <p class="govuk-body">
-        @govukButton(
-            ButtonViewModel(messages("uKPropertyDetails.button"))
-                .asLink(routes.TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
-                .withId("continue")
-        )
+    @govukButton(
+        ButtonViewModel(messages("uKPropertyDetails.button"))
+        .asLink(routes.TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
+        .withId("continue")
+    )
     </p>
+}
+
+@{
+    // $COVERAGE-OFF$
 }

@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,7 +33,7 @@ object UKPropertySelectSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(UKPropertyPage).map { answers =>
-      val value = ValueViewModel(
+      val value =
         HtmlContent(
           answers
             .map { answer =>
@@ -40,11 +41,10 @@ object UKPropertySelectSummary {
             }
             .mkString(",<br>")
         )
-      )
 
       SummaryListRowViewModel(
-        key = s"ukPropertySelect.checkYourAnswersLabel.$individualOrAgent",
-        value = value,
+        key = KeyViewModel(s"ukPropertySelect.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel("site.change", routes.UKPropertySelectController.onPageLoad(taxYear, CheckMode).url)
             .withVisuallyHiddenText(messages(s"ukPropertySelect.change.hidden.$individualOrAgent"))
