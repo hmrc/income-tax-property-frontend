@@ -17,7 +17,7 @@
 package controllers.propertyrentals.income
 
 import controllers.actions._
-import forms.propertyrentals.income.IncomeFromPropertyRentalsFormProvider
+import forms.propertyrentals.income.PropertyRentalIncomeFormProvider
 import models.{Mode, PropertyType, UserAnswers}
 import navigation.Navigator
 import pages.propertyrentals.income.PropertyRentalIncomePage
@@ -26,22 +26,22 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.propertyrentals.income.IncomeFromPropertyRentalsView
+import views.html.propertyrentals.income.PropertyRentalIncomeView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PropertyRentalIncomeController @Inject()(
-  override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
-  navigator: Navigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  formProvider: IncomeFromPropertyRentalsFormProvider,
-  sessionService: SessionService,
-  val controllerComponents: MessagesControllerComponents,
-  view: IncomeFromPropertyRentalsView
+                                                override val messagesApi: MessagesApi,
+                                                sessionRepository: SessionRepository,
+                                                navigator: Navigator,
+                                                identify: IdentifierAction,
+                                                getData: DataRetrievalAction,
+                                                requireData: DataRequiredAction,
+                                                formProvider: PropertyRentalIncomeFormProvider,
+                                                sessionService: SessionService,
+                                                val controllerComponents: MessagesControllerComponents,
+                                                view: PropertyRentalIncomeView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 

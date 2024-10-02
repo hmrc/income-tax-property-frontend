@@ -155,7 +155,7 @@ class Navigator @Inject() () {
             controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
               .onPageLoad(taxYear)
 
-        //Rentals Rent A Room-Adjustments
+        // Rentals Rent A Room-Adjustments
     case PrivateUseAdjustmentPage(propertyType) =>
       taxYear => _ => _ => BalancingChargeController.onPageLoad(taxYear, NormalMode, propertyType)
     case BalancingChargePage(Rentals) =>
@@ -452,8 +452,7 @@ class Navigator @Inject() () {
     case premiumlease.PremiumForLeasePage(RentalsRentARoom) =>
       taxYear =>
         previousUserAnswers =>
-          userAnswers =>
-            premiumForLeaseNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, RentalsRentARoom)
+          userAnswers => premiumForLeaseNavigationCheckMode(taxYear, previousUserAnswers, userAnswers, RentalsRentARoom)
     case CalculatedFigureYourselfPage(RentalsRentARoom) =>
       taxYear =>
         previousUserAnswers =>
@@ -618,7 +617,7 @@ class Navigator @Inject() () {
           _ =>
             RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
-    // Rentals and Rent a Room
+        // Rentals and Rent a Room
     case JointlyLetPage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case TotalIncomeAmountPage(RentalsRentARoom) =>
@@ -733,8 +732,10 @@ class Navigator @Inject() () {
 
   private def isNonUKLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =
     userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
-      case Some(true) => DeductingTaxController.onPageLoad(taxYear, NormalMode, propertyType)
-      case _          => PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, propertyType)
+      case Some(true)                   => DeductingTaxController.onPageLoad(taxYear, NormalMode, propertyType)
+      case _ if propertyType == Rentals => PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, propertyType)
+      case _ if propertyType == RentalsRentARoom =>
+        PremiumForLeaseController.onPageLoad(taxYear, NormalMode, propertyType)
     }
 
   private def isNonUKLandlordNavigationCheckMode(
@@ -746,7 +747,9 @@ class Navigator @Inject() () {
     userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
       case Some(true) if !previousUserAnswers.get(IsNonUKLandlordPage(propertyType)).getOrElse(false) =>
         DeductingTaxController.onPageLoad(taxYear, CheckMode, propertyType)
-      case _ => toIncomeCYA(propertyType, taxYear)
+      case _ if propertyType == Rentals => toIncomeCYA(propertyType, taxYear)
+      case _ if propertyType == RentalsRentARoom =>
+        PremiumForLeaseController.onPageLoad(taxYear, CheckMode, propertyType)
     }
 
   private def premiumForLeaseNavigation(taxYear: Int, userAnswers: UserAnswers, propertyType: PropertyType): Call =

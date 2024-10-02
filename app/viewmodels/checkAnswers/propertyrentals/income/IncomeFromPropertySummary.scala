@@ -32,14 +32,14 @@ object IncomeFromPropertySummary {
   ): Option[SummaryListRow] =
     answers.get(PropertyRentalIncomePage(propertyType)).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel("incomeFromPropertyRentals.checkYourAnswersLabel").withCssClass(keyCssClass),
+        key = KeyViewModel("propertyRentalIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
             routes.PropertyRentalIncomeController.onPageLoad(taxYear, CheckMode, propertyType).url
           )
-            .withVisuallyHiddenText(messages("incomeFromPropertyRentals.change.hidden"))
+            .withVisuallyHiddenText(messages("propertyRentalIncome.hidden"))
         )
       )
     }

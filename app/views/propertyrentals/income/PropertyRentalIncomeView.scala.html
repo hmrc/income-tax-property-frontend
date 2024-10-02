@@ -30,7 +30,7 @@
 
 @(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("incomeFromPropertyRentals.title"))) {
+@layout(pageTitle = title(form, messages("propertyRentalIncome.title"))) {
 
     @formHelper(action = routes.PropertyRentalIncomeController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
@@ -38,28 +38,28 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-        <h1 class="govuk-heading-l">@messages("incomeFromPropertyRentals.heading")</h1>
+        <h1 class="govuk-heading-l">@messages("propertyRentalIncome.heading")</h1>
 
-        <p class="  govuk-body">@messages(s"incomeFromPropertyRentals.para1.${individualOrAgent}")</p>
+        <p class="  govuk-body">@messages(s"propertyRentalIncome.para1.${individualOrAgent}")</p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>@messages(s"incomeFromPropertyRentals.bullet1.${individualOrAgent}")</li>
-            <li>@messages(s"incomeFromPropertyRentals.bullet2.${individualOrAgent}")</li>
+            <li>@messages(s"propertyRentalIncome.bullet1.${individualOrAgent}")</li>
+            <li>@messages(s"propertyRentalIncome.bullet2.${individualOrAgent}")</li>
         </ul>
 
         <p class="govuk-body">
-            Read more about how to <a href="#" class="govuk-link">@messages("incomeFromPropertyRentals.link")</a>
+            Read more about how to <a href="#" class="govuk-link">@messages("propertyRentalIncome.link")</a>
         </p>
 
         @govukInput(
             InputViewModel(
                 field = form("incomeFromPropertyRentals"),
-                label = LabelViewModel(messages(s"incomeFromPropertyRentals.para2.${individualOrAgent}")).asPageHeading(Medium)
+                label = LabelViewModel(messages(s"propertyRentalIncome.para2.${individualOrAgent}")).asPageHeading(Medium)
             )
             .asNumeric()
             .withWidth(Fixed10)
             .withPrefix(PrefixOrSuffix(content = Text("£")))
-            .withHint(HintViewModel(messages("incomeFromPropertyRentals.deductions.hint")))
+            .withHint(HintViewModel(messages("propertyRentalIncome.deductions.hint")))
         )
 
         @govukButton(
