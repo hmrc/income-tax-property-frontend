@@ -16,12 +16,10 @@
 
 package controllers.allowances
 
+import controllers.BusinessServiceLike
 import controllers.actions._
-import controllers.exceptions.InternalErrorFailure
-import models.{NormalMode, PropertyType}
-import models.{NormalMode, PropertyType}
 import models.PropertyType
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
@@ -43,29 +41,27 @@ class AllowancesStartController @Inject() (
   view: AllowancesStartView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with BusinessServiceLike {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-          val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-          businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
-            case Right(Some(propertyData)) =>
-              Future.successful(
-                Ok(
-                  view(
-                    AllowancesStartPage(
-                      taxYear,
-                      request.user.isAgentMessageKey,
-                      propertyData.accrualsOrCash.get,
-                      request.userAnswers,
-                      propertyType
-                    )
-                  )
+      val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
+        propertyDetails: PropertyDetails =>
+          Future(
+            Ok(
+              view(
+                AllowancesStartPage(
+                  taxYear,
+                  request.user.isAgentMessageKey,
+                  propertyDetails.accrualsOrCash.get,
+                  request.userAnswers,
+                  propertyType
                 )
               )
-            case _ =>
-              Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
-          }
+            )
+          )
+      }(hc, ec)
     }
 
 }
