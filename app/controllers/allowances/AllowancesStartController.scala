@@ -16,6 +16,7 @@
 
 package controllers.allowances
 
+import controllers.BusinessServiceLike
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.PropertyType
@@ -37,12 +38,12 @@ class AllowancesStartController @Inject() (
   view: AllowancesStartView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with BusinessServiceLike {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = identify.async { implicit request =>
     val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
-      case Right(Some(propertyData)) =>
+    withUkPropertyDetails(businessService, request.user.nino, request.user.mtditid)(hc, ec).flatMap {
+      case Right(propertyData) =>
         Future.successful(
           Ok(
             view(
