@@ -58,8 +58,8 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
 
   def saveJourneyAnswers[A: Writes](
     ctx: JourneyContext,
-    incomeSourceId: String,
-    body: A
+    body: A,
+    incomeSourceId: String
   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
     val propertyUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/${ctx.journeyName}/${ctx.nino}/answers"

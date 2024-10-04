@@ -129,7 +129,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
       when(
-        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, "incomeSourceId", propertyAbout)
+        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
       ) thenReturn Future(Right())
 
       await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Right()
@@ -142,7 +142,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
       when(
-        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, "incomeSourceId", propertyAbout)
+        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
       ) thenReturn Future(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
 
       await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Left(
