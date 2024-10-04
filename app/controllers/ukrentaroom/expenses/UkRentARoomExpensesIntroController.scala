@@ -22,7 +22,8 @@ import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{NormalMode, RentARoom, TotalIncome}
 import pages.TotalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.UkRentARoomExpensesIntroView
 
@@ -33,21 +34,30 @@ class UkRentARoomExpensesIntroController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: UkRentARoomExpensesIntroView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val under85KUrl =
-        if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
-          controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController.onPageLoad(taxYear, NormalMode).url
-        } else {
-          controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode).url
-        }
-      request.userAnswers.get(TotalIncomePage) match {
-        case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
-        case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
-      }
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "expenses", RentARoom, NormalMode) {
+
+          val under85KUrl =
+            if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
+              controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
+                .onPageLoad(taxYear, NormalMode)
+                .url
+            } else {
+              controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController
+                .onPageLoad(taxYear, NormalMode)
+                .url
+            }
+          request.userAnswers.get(TotalIncomePage) match {
+            case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
+            case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
+          }
+        }(Redirect(_))
   }
 }

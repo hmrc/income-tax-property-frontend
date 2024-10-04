@@ -17,8 +17,10 @@
 package controllers.ukrentaroom.adjustments
 
 import controllers.actions._
+import models.{NormalMode, RentARoom}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsIntroView
 
@@ -29,12 +31,17 @@ class RaRAdjustmentsIntroController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: RaRAdjustmentsIntroView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(taxYear))
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "adjustments", RentARoom, NormalMode) {
+
+          Ok(view(taxYear))
+        }(Redirect(_))
   }
 }

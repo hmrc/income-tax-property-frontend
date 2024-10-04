@@ -22,8 +22,9 @@ import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.structurebuildingallowance.ClaimStructureBuildingAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.structurebuildingallowance.ClaimStructureBuildingAllowanceView
 
@@ -38,6 +39,7 @@ class ClaimStructureBuildingAllowanceController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: ClaimStructureBuildingAllowanceFormProvider,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: ClaimStructureBuildingAllowanceView
 )(implicit ec: ExecutionContext)
@@ -45,12 +47,16 @@ class ClaimStructureBuildingAllowanceController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "esba", propertyType, mode) {
+
+          val form = formProvider(request.user.isAgentMessageKey)
+          val preparedForm = request.userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
+            case None        => form
+            case Some(value) => form.fill(value)
+          }
+          Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+        }(Redirect(_))
     }
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =

@@ -51,7 +51,7 @@ class ExpensesSectionFinishedController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ExpensesSectionFinishedPage(Rentals)) match {
+      val preparedForm = request.userAnswers.get(ExpensesSectionFinishedPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -67,7 +67,7 @@ class ExpensesSectionFinishedController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage(Rentals), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService.setStatus(
                           JourneyContext(
@@ -86,7 +86,7 @@ class ExpensesSectionFinishedController @Inject() (
                 Redirect(
                   navigator
                     .nextPage(
-                      ExpensesSectionFinishedPage(Rentals),
+                      ExpensesSectionFinishedPage,
                       taxYear,
                       NormalMode,
                       request.userAnswers,

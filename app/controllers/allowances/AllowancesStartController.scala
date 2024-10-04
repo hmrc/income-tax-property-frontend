@@ -18,10 +18,10 @@ package controllers.allowances
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.PropertyType
+import models.{NormalMode, PropertyType}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.BusinessService
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import viewmodels.AllowancesStartPage
@@ -33,31 +33,39 @@ import scala.concurrent.{ExecutionContext, Future}
 class AllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: AllowancesStartView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] = identify.async { implicit request =>
-    val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
-      case Right(Some(propertyData)) =>
-        Future.successful(
-          Ok(
-            view(
-              AllowancesStartPage(
-                taxYear,
-                request.user.isAgentMessageKey,
-                propertyData.accrualsOrCash.get,
-                propertyType
+  def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      diversionService
+        .redirectToCYAIfFinished[Future[Result]](taxYear, request.userAnswers, "allowances", propertyType, NormalMode) {
+
+          val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+          businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
+            case Right(Some(propertyData)) =>
+              Future.successful(
+                Ok(
+                  view(
+                    AllowancesStartPage(
+                      taxYear,
+                      request.user.isAgentMessageKey,
+                      propertyData.accrualsOrCash.get,
+                      propertyType
+                    )
+                  )
+                )
               )
-            )
-          )
-        )
-      case _ =>
-        Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
+            case _ =>
+              Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
+          }
+        }(x => Future.successful(Redirect(x)))
     }
-  }
 
 }
