@@ -24,4 +24,9 @@ case class ApiError(status: Int, body: ApiErrorBody) {
     case error: SingleErrorBody => Json.toJson(error)
     case errors: MultiErrorsBody => Json.toJson(errors)
   }
+
+  def toMessage : String  = body match {
+    case error: SingleErrorBody => error.reason
+    case errors: MultiErrorsBody => errors.failures.map(_.reason).mkString(", ")
+  }
 }
