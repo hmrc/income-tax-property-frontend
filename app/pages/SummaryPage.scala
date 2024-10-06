@@ -330,7 +330,7 @@ case object SummaryPage {
   private def propertyRentalsAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear), {
+      sectionLink(userAnswers, taxYear), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyRentalsSectionFinishedPage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
@@ -343,6 +343,11 @@ case object SummaryPage {
       },
       "rentals_about_link"
     )
+
+  private def sectionLink(userAnswers: Option[UserAnswers], taxYear: Int) =
+    if (userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals))).isDefined) {
+      controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
+    } else { controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear) }
 
   private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
