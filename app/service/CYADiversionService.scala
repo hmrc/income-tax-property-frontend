@@ -30,7 +30,7 @@ import models._
 import pages.QuestionPage
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
 import pages.propertyrentals.expenses._
 import controllers.propertyrentals.routes._
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
@@ -40,7 +40,7 @@ import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
-import pages.structurebuildingallowance.SbaSectionFinishedPage
+import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage, StructureBuildingAllowanceClaimPage}
 import pages.ukrentaroom.AboutSectionCompletePage
 import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances.RaRAllowancesCompletePage
@@ -173,11 +173,27 @@ class CYADiversionService @Inject() () {
   )(transform: Call => T): PartialFunction[(Mode, String, PropertyType), T] = {
     case (NormalMode, SBA, propertyType) =>
       divert(taxYear, SbaSectionFinishedPage(propertyType), userAnswers, block)(
-        cyaDiversion = SbaClaimsController.onPageLoad(taxYear, propertyType)
+        cyaDiversion =
+          if (
+            !userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)).getOrElse(false) ||
+            userAnswers.get(StructureBuildingAllowanceClaimPage(0, propertyType)).isEmpty
+          ) {
+            ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+          } else {
+            SbaClaimsController.onPageLoad(taxYear, propertyType)
+          }
       )(transform)
     case (NormalMode, ESBA, propertyType) =>
       divert(taxYear, EsbaSectionFinishedPage(propertyType), userAnswers, block)(
-        cyaDiversion = EsbaClaimsController.onPageLoad(taxYear, propertyType)
+        cyaDiversion =
+          if (
+            !userAnswers.get(ClaimEsbaPage(propertyType)).getOrElse(false) ||
+            userAnswers.get(EsbaClaimPage(0, propertyType)).isEmpty
+          ) {
+            ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+          } else {
+            EsbaClaimsController.onPageLoad(taxYear, propertyType)
+          }
       )(transform)
   }
 
