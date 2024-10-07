@@ -394,9 +394,17 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
               ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
             }
+    case BusinessPremisesRenovationPage(RentalsRentARoom) =>
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
+
     case BusinessPremisesRenovationAllowanceBalancingChargePage =>
       taxYear =>
         _ =>

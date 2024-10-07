@@ -173,11 +173,11 @@ class CYADiversionService @Inject() () {
   )(transform: Call => T): PartialFunction[(Mode, String, PropertyType), T] = {
     case (NormalMode, SBA, propertyType) =>
       divert(taxYear, SbaSectionFinishedPage(propertyType), userAnswers, block)(
-        cyaDiversion = ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+        cyaDiversion = SbaClaimsController.onPageLoad(taxYear, propertyType)
       )(transform)
     case (NormalMode, ESBA, propertyType) =>
       divert(taxYear, EsbaSectionFinishedPage(propertyType), userAnswers, block)(
-        cyaDiversion = ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+        cyaDiversion = EsbaClaimsController.onPageLoad(taxYear, propertyType)
       )(transform)
   }
 
