@@ -48,7 +48,7 @@ class ClaimStructureBuildingAllowanceController @Inject() (
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "esba", propertyType, mode) {
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "sba", propertyType, mode) {
 
           val form = formProvider(request.user.isAgentMessageKey)
           val preparedForm = request.userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {

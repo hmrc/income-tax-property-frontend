@@ -253,7 +253,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
               PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case BalancingChargePage(RentalsRentARoom) =>
@@ -269,7 +269,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
               RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case PropertyIncomeAllowancePage(RentalsRentARoom) =>
@@ -278,7 +278,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
               ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case ResidentialFinanceCostPage(Rentals) =>
