@@ -321,11 +321,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "expenses", Rentals) {
-              if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
-                OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-              } else {
-                LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-              }
+              LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
             }
     case LoanInterestPage(Rentals) =>
       taxYear =>
@@ -639,7 +635,11 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "expenses", RentalsRentARoom) {
-              LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
+                OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              } else {
+                LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              }
             }
     case LoanInterestPage(RentalsRentARoom) =>
       taxYear =>
