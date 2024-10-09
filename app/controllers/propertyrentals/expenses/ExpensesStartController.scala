@@ -20,7 +20,8 @@ import controllers.actions._
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{NormalMode, PropertyType}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.propertyrentals.expenses.ExpensesStartView
 
@@ -31,24 +32,29 @@ class ExpensesStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: ExpensesStartView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
-        routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
-      } else {
-        routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType).url
-      }
-      Ok(
-        view(
-          taxYear,
-          request.user.isAgentMessageKey,
-          isTotalIncomeUnder85K(request.userAnswers, propertyType),
-          under85KUrl
-        )
-      )
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "expenses", propertyType, NormalMode) {
+
+          val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
+            routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
+          } else {
+            routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType).url
+          }
+          Ok(
+            view(
+              taxYear,
+              request.user.isAgentMessageKey,
+              isTotalIncomeUnder85K(request.userAnswers, propertyType),
+              under85KUrl
+            )
+          )
+        }(Redirect(_))
     }
 }

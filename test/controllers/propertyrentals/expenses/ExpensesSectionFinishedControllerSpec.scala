@@ -32,7 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import service.JourneyAnswersService
+import service.{CYADiversionService, JourneyAnswersService}
 import views.html.propertyrentals.expenses.ExpensesSectionFinishedView
 
 import scala.concurrent.Future
@@ -68,7 +68,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ExpensesSectionFinishedPage(Rentals), true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ExpensesSectionFinishedPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -112,7 +112,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute, new CYADiversionService())),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )

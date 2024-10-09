@@ -22,50 +22,62 @@ import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.propertyrentals.income.IsNonUKLandlordPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.propertyrentals.income.IsNonUKLandlordView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IsNonUKLandlordController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: IsNonUKLandlordFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IsNonUKLandlordView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IsNonUKLandlordController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
+  formProvider: IsNonUKLandlordFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: IsNonUKLandlordView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "income", propertyType, mode) {
+
+          val form = formProvider(request.user.isAgentMessageKey)
+
+          val preparedForm = request.userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
+            case None        => form
+            case Some(value) => form.fill(value)
+          }
+
+          Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+        }(Redirect(_))
+    }
+
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-
-      val preparedForm = request.userAnswers.get(IsNonUKLandlordPage(propertyType)) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
-  }
-
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsNonUKLandlordPage(propertyType), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsNonUKLandlordPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(IsNonUKLandlordPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(IsNonUKLandlordPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }

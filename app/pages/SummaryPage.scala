@@ -305,7 +305,7 @@ case object SummaryPage {
       controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals),
       userAnswers
         .flatMap { answers =>
-          answers.get(ExpensesSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
+          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
             if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
           }
         }

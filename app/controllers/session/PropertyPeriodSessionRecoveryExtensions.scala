@@ -105,7 +105,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "property-rental-about"                        => AboutPropertyRentalsSectionFinishedPage
         case "rental-income"                                => IncomeSectionFinishedPage
         case "rental-allowances"                            => AllowancesSectionFinishedPage
-        case "rental-expenses"                              => ExpensesSectionFinishedPage(Rentals)
+        case "rental-expenses"                              => ExpensesSectionFinishedPage
         case "rental-adjustments"                           => RentalsAdjustmentsCompletePage
         case "rental-sba"                                   => SbaSectionFinishedPage(Rentals)
         case "rental-esba"                                  => EsbaSectionFinishedPage(Rentals)

@@ -22,8 +22,9 @@ import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.enhancedstructuresbuildingallowance.ClaimEsbaPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.enhancedstructuresbuildingallowance.ClaimEnhancedSBAView
 
@@ -37,6 +38,7 @@ class ClaimEsbaController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   formProvider: ClaimEnhancedSBAFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: ClaimEnhancedSBAView
@@ -45,13 +47,17 @@ class ClaimEsbaController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimEsbaPage(propertyType)) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "esba", propertyType, mode) {
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+          val form = formProvider(request.user.isAgentMessageKey)
+          val preparedForm = request.userAnswers.get(ClaimEsbaPage(propertyType)) match {
+            case None        => form
+            case Some(value) => form.fill(value)
+          }
+
+          Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+        }(x => Redirect(x))
     }
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
