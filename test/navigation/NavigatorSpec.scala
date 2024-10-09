@@ -38,7 +38,7 @@ import pages.structurebuildingallowance._
 import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage}
+import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import service.CYADiversionService
 
 import java.time.LocalDate
@@ -134,7 +134,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe controllers.about.routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
 
-      /*<<<<<<< HEAD
       "must go from PremiumForLeasePage to CalculateFigureYourselfPage when user selects yes" in {
         val testUserAnswer = UserAnswers("test").set(PremiumForLeasePage(Rentals), true).get
 
@@ -144,7 +143,8 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           testUserAnswer
-        ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController.onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.premiumlease.routes.CalculatedFigureYourselfController
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from PremiumForLeasePage to reversePremiumReceivedPage when user selects no" in {
@@ -157,10 +157,8 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           testUserAnswer
         ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController
-          .onPageLoad(taxYear, NormalMode)
+          .onPageLoad(taxYear, NormalMode, Rentals)
       }
-
-=======*/
 
       s"must go from BusinessPremisesRenovationAllowancesBalancingChargePage to RentalsAndRentARoomAdjustmentsCheckYourAnswersPage for " in {
         navigator.nextPage(
@@ -1546,6 +1544,79 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddressController
           .onPageLoad(taxYear, CheckMode, index, Rentals)
+      }
+
+      "must go from JointlyLetIncomePage to TotalIncomePage if user answers were changed" in {
+        val previousUserAnswers = UserAnswers("test")
+          .set(JointlyLetPage(RentARoom), true)
+          .get
+        val userAnswers =
+          UserAnswers("test")
+            .set(JointlyLetPage(RentARoom), false)
+            .get
+
+        navigator.nextPage(
+          JointlyLetPage(RentARoom),
+          taxYear,
+          CheckMode,
+          previousUserAnswers,
+          userAnswers
+        ) mustBe controllers.ukrentaroom.routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
+      }
+
+      "must go from JointlyLetIncomePage to CYA Page if user answers were not changed" in {
+        val previousUserAnswers = UserAnswers("test")
+          .set(JointlyLetPage(RentARoom), true)
+          .get
+        val userAnswers =
+          UserAnswers("test")
+            .set(JointlyLetPage(RentARoom), true)
+            .get
+
+        navigator.nextPage(
+          JointlyLetPage(RentARoom),
+          taxYear,
+          CheckMode,
+          previousUserAnswers,
+          userAnswers
+        ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from TotalIncomeAmountPage to ClaimExpensesOrRelief if user answers were changed" in {
+        val previousUserAnswers = UserAnswers("test")
+          .set(TotalIncomeAmountPage(RentARoom), BigDecimal(100))
+          .get
+        val userAnswers =
+          UserAnswers("test")
+            .set(TotalIncomeAmountPage(RentARoom), BigDecimal(200))
+            .get
+
+        navigator.nextPage(
+          TotalIncomeAmountPage(RentARoom),
+          taxYear,
+          CheckMode,
+          previousUserAnswers,
+          userAnswers
+        ) mustBe controllers.ukrentaroom.routes.ClaimExpensesOrReliefController
+          .onPageLoad(taxYear, NormalMode, RentARoom)
+      }
+
+      "must go from TotalIncomeAmountPage to CYA Page if user answers were not changed" in {
+        val previousUserAnswers = UserAnswers("test")
+          .set(TotalIncomeAmountPage(RentARoom), BigDecimal(100))
+          .get
+        val userAnswers =
+          UserAnswers("test")
+            .set(TotalIncomeAmountPage(RentARoom), BigDecimal(100))
+            .get
+
+        navigator.nextPage(
+          TotalIncomeAmountPage(RentARoom),
+          taxYear,
+          CheckMode,
+          previousUserAnswers,
+          userAnswers
+        ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
       }
 
     }

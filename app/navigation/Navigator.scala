@@ -883,9 +883,12 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => userAnswers => structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
 
     case TotalIncomeAmountPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        previousUserAnswers =>
+          userAnswers => totalIncomeForRaRNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case JointlyLetPage(RentARoom) =>
-      taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      taxYear =>
+        previousUserAnswers => userAnswers => jointlyLetCheckModeNavigation(taxYear, previousUserAnswers, userAnswers)
 
     case ClaimExpensesOrReliefPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
@@ -1248,4 +1251,28 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case (_, Some(esbaForm)) if esbaForm.nonEmpty         => EsbaClaimsController.onPageLoad(taxYear, propertyType)
     }
 
+  private def jointlyLetCheckModeNavigation(
+    taxYear: Int,
+    previousUserAnswers: UserAnswers,
+    userAnswers: UserAnswers
+  ): Call =
+    (previousUserAnswers.get(JointlyLetPage(RentARoom)), userAnswers.get(JointlyLetPage(RentARoom))) match {
+      case (Some(true), Some(false)) | (Some(false), Some(true)) =>
+        TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
+      case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def totalIncomeForRaRNavigationCheckMode(
+    taxYear: Int,
+    previousUserAnswers: UserAnswers,
+    userAnswers: UserAnswers
+  ): Call =
+    (
+      previousUserAnswers.get(TotalIncomeAmountPage(RentARoom)),
+      userAnswers.get(TotalIncomeAmountPage(RentARoom))
+    ) match {
+      case (Some(pre), Some(cur)) if pre != cur =>
+        ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
+      case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    }
 }
