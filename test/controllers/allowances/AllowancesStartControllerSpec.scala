@@ -19,11 +19,15 @@ package controllers.allowances
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
-import models.Rentals
 import models.backend.PropertyDetails
+import models.{ClaimExpensesOrRelief, NormalMode, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
+import pages.UKPropertyPage
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -62,12 +66,158 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, Rentals))(
+        contentAsString(result) mustEqual view(
+          AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, emptyUserAnswers, Rentals)
+        )(
           request,
           messages(application)
         ).toString
       }
     }
+
+    "must return a link to the Annual Investment Allowance when Rent a Room Relief = true, Property Income Allowance = No, claim expenses " +
+      "and cashOrAccruals = true" in {
+
+        val propertyDetails =
+          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+
+        val businessService = mock[BusinessService]
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(
+            UKPropertyPage,
+            UKPropertySelect.values.toSet
+          )
+          .success
+          .value
+          .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(true, Some(100)))
+          .success
+          .value
+          .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), false)
+          .success
+          .value
+
+        when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+          Right(Some(propertyDetails))
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+          .overrides(bind[BusinessService].toInstance(businessService))
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom).url)
+          val result = route(application, request).value
+
+          status(result) mustEqual OK
+
+          AllowancesStartPage(
+            taxYear,
+            "agent",
+            cashOrAccruals = true,
+            userAnswers = userAnswers,
+            propertyType = RentalsRentARoom
+          ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
+            .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            .url
+        }
+      }
+
+    "must return a link to the Annual Investment Allowance when Rent a Room Relief = false, Property Income Allowance = No, claim expenses " +
+      "and cashOrAccruals = true" in {
+
+        val propertyDetails =
+          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+
+        val businessService = mock[BusinessService]
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(
+            UKPropertyPage,
+            UKPropertySelect.values.toSet
+          )
+          .success
+          .value
+          .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(false, None))
+          .success
+          .value
+          .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), false)
+          .success
+          .value
+
+        when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+          Right(Some(propertyDetails))
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+          .overrides(bind[BusinessService].toInstance(businessService))
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom).url)
+          val result = route(application, request).value
+
+          status(result) mustEqual OK
+
+          AllowancesStartPage(
+            taxYear,
+            "agent",
+            cashOrAccruals = true,
+            userAnswers = userAnswers,
+            propertyType = RentalsRentARoom
+          ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
+            .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            .url
+        }
+      }
+
+    "must return a link to the Annual Investment Allowance when Rent a Room Relief = false, Property Income Allowance = Yes, claim property income allowance " +
+      "and cashOrAccruals = false" in {
+
+        val propertyDetails =
+          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+
+        val businessService = mock[BusinessService]
+
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(
+            UKPropertyPage,
+            UKPropertySelect.values.toSet
+          )
+          .success
+          .value
+          .set(ClaimExpensesOrReliefPage(RentalsRentARoom), ClaimExpensesOrRelief(false, None))
+          .success
+          .value
+          .set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), true)
+          .success
+          .value
+
+        when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+          Right(Some(propertyDetails))
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+          .overrides(bind[BusinessService].toInstance(businessService))
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom).url)
+          val result = route(application, request).value
+
+          status(result) mustEqual OK
+
+          AllowancesStartPage(
+            taxYear,
+            "agent",
+            cashOrAccruals = false,
+            userAnswers = userAnswers,
+            propertyType = RentalsRentARoom
+          ).nextPageUrl shouldBe controllers.allowances.routes.CapitalAllowancesForACarController
+            .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            .url
+        }
+      }
 
     "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
 
@@ -92,7 +242,9 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, Rentals))(
+        contentAsString(result) mustEqual view(
+          AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, emptyUserAnswers, Rentals)
+        )(
           request,
           messages(application)
         ).toString
