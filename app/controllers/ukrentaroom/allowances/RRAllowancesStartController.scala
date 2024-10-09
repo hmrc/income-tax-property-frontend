@@ -18,35 +18,44 @@ package controllers.ukrentaroom.allowances
 
 import controllers.actions._
 import controllers.routes
+import models.{NormalMode, RentARoom}
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.BusinessService
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import viewmodels.RRAllowancesStartPage
 import views.html.ukrentaroom.allowances.RRAllowancesStartView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class RRAllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: RRAllowancesStartView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async { implicit request =>
-    val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    businessService.getBusinessDetails(request.user)(hc).map {
-      case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-        val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-        Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.accrualsOrCash.get)))
-      case _ => Redirect(routes.SummaryController.show(taxYear))
-    }
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) async {
+    implicit request =>
+      diversionService
+        .redirectToCYAIfFinished[Future[Result]](taxYear, request.userAnswers, "allowances", RentARoom, NormalMode) {
+
+          val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+          businessService.getBusinessDetails(request.user)(hc).map {
+            case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+              val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+              Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.accrualsOrCash.get)))
+            case _ => Redirect(routes.SummaryController.show(taxYear))
+          }
+        }(r => Future.successful(Redirect(r)))
   }
 
   private def existsUkProperty(property: PropertyDetails): Boolean =

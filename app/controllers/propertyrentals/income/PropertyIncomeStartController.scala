@@ -17,24 +17,33 @@
 package controllers.propertyrentals.income
 
 import controllers.actions._
+import models.{NormalMode, Rentals}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.propertyrentals.income.PropertyIncomeStartView
 
 import javax.inject.Inject
 
-class PropertyIncomeStartController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: PropertyIncomeStartView
-                                     ) extends FrontendBaseController with I18nSupport {
+class PropertyIncomeStartController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  diversionService: CYADiversionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: PropertyIncomeStartView
+) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    request.userAnswers.fold(
       Ok(view(taxYear, request.user.isAgentMessageKey))
+    )(ua =>
+      diversionService
+        .redirectToCYAIfFinished[Result](taxYear, ua, "income", Rentals, NormalMode) {
+          Ok(view(taxYear, request.user.isAgentMessageKey))
+        }(Redirect(_))
+    )
   }
 }

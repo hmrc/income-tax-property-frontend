@@ -39,12 +39,13 @@ import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage}
+import service.CYADiversionService
 
 import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
 
-  val navigator = new Navigator
+  val navigator = new Navigator(new CYADiversionService())
   private val taxYear = LocalDate.now.getYear
   private val index = 0
 

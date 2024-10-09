@@ -19,8 +19,10 @@ package navigation
 import play.api.mvc.Call
 import pages._
 import models.{Mode, UserAnswers}
+import service.CYADiversionService
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+class FakeNavigator(desiredRoute: Call, diversionService: CYADiversionService = new CYADiversionService)
+    extends Navigator(diversionService) {
 
   override def nextPage(
     page: Page,
