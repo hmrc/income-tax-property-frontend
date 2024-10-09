@@ -321,7 +321,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "expenses", Rentals) {
-              LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              LoanInterestController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case LoanInterestPage(Rentals) =>
       taxYear =>
