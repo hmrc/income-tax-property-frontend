@@ -22,7 +22,7 @@ import models.requests.OptionalDataRequest
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.BusinessService
+import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -36,6 +36,7 @@ class SummaryController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRecovery: SessionRecovery,
+  cyaDiversionService: CYADiversionService,
   view: SummaryView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
@@ -47,10 +48,13 @@ class SummaryController @Inject() (
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
-            SummaryPage.createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
-          val ukRentARoomRows = SummaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          val startItems = SummaryPage.propertyAboutItems(request.userAnswers, taxYear)
-          val combinedItems = SummaryPage.createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+            SummaryPage(cyaDiversionService)
+              .createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+          val ukRentARoomRows = SummaryPage(cyaDiversionService).createUkRentARoomRows(request.userAnswers, taxYear)
+          val startItems = SummaryPage(cyaDiversionService).propertyAboutItems(request.userAnswers, taxYear)
+          val combinedItems =
+            SummaryPage(cyaDiversionService)
+              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
           Future.successful(
             Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems))
           )

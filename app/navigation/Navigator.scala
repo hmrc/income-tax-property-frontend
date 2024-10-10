@@ -219,21 +219,61 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             )
         // Rentals Rent a Room-Income
     case IsNonUKLandlordPage(RentalsRentARoom) =>
-      taxYear => _ => userAnswers => isNonUKLandlordNavigation(taxYear, userAnswers, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              isNonUKLandlordNavigation(taxYear, userAnswers, RentalsRentARoom)
+            }
     case DeductingTaxPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PremiumForLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              PremiumForLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case premiumlease.PremiumForLeasePage(RentalsRentARoom) =>
-      taxYear => _ => userAnswers => premiumForLeaseNavigation(taxYear, userAnswers, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              premiumForLeaseNavigation(taxYear, userAnswers, RentalsRentARoom)
+            }
     case CalculatedFigureYourselfPage(RentalsRentARoom) =>
-      taxYear => _ => userAnswers => calculatedFigureYourselfNavigation(taxYear, userAnswers, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              calculatedFigureYourselfNavigation(taxYear, userAnswers, RentalsRentARoom)
+            }
     case premiumlease.ReceivedGrantLeaseAmountPage(RentalsRentARoom) =>
-      taxYear => _ => _ => YearLeaseAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              YearLeaseAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case premiumlease.YearLeaseAmountPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              PremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case premiumlease.PremiumsGrantLeasePage(RentalsRentARoom) =>
-      taxYear => _ => _ => ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ReversePremiumsReceivedPage(RentalsRentARoom) =>
-      taxYear => _ => _ => OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "income", RentalsRentARoom) {
+              OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case OtherIncomeFromPropertyPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
@@ -273,7 +313,12 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case PropertyIncomeAllowancePage(RentalsRentARoom) =>
-      taxYear => _ => _ => BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear, NormalMode)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
+              BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear, NormalMode)
+            }
     case RenovationAllowanceBalancingChargePage(Rentals) =>
       taxYear =>
         _ =>
@@ -282,7 +327,12 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case ResidentialFinanceCostPage(Rentals) =>
-      taxYear => _ => _ => UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
+              UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
+            }
     case ResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
@@ -394,7 +444,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
               ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case BusinessPremisesRenovationPage(RentalsRentARoom) =>
@@ -438,32 +488,48 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case CapitalAllowancesForACarPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
-          _ =>
-            controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
-              .onPageLoad(taxYear)
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
+                .onPageLoad(taxYear)
+            }
     case AnnualInvestmentAllowancePage(RentalsRentARoom) =>
       taxYear =>
         _ =>
-          _ =>
-            controllers.allowances.routes.ZeroEmissionCarAllowanceController
-              .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              controllers.allowances.routes.ZeroEmissionCarAllowanceController
+                .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ZeroEmissionCarAllowancePage(RentalsRentARoom) =>
       taxYear =>
         _ =>
           userAnswers =>
-            (
-              userAnswers.get(ClaimExpensesOrReliefPage(RentalsRentARoom)),
-              userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))
-            ) match {
-              case (Some(ClaimExpensesOrRelief(false, None)), Some(true)) =>
-                ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-              case _ =>
-                ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              (
+                userAnswers.get(ClaimExpensesOrReliefPage(RentalsRentARoom)),
+                userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))
+              ) match {
+                case (Some(ClaimExpensesOrRelief(false, None)), Some(true)) =>
+                  ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+                case _ =>
+                  ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              }
             }
     case ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom) =>
-      taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ReplacementOfDomesticGoodsPage(RentalsRentARoom) =>
-      taxYear => _ => _ => OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+              OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case OtherCapitalAllowancePage(RentalsRentARoom) =>
       taxYear =>
         _ =>
@@ -573,7 +639,12 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
             }
     case JointlyLetPage(RentARoom) =>
-      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+              TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
+            }
     case ClaimExpensesOrReliefPage(RentARoom) =>
       taxYear =>
         _ =>
@@ -602,13 +673,33 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
 
         // Rentals and Rent a Room-About
     case JointlyLetPage(RentalsRentARoom) =>
-      taxYear => _ => _ => TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+              TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case TotalIncomeAmountPage(RentalsRentARoom) =>
-      taxYear => _ => _ => ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+              ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ClaimExpensesOrReliefPage(RentalsRentARoom) =>
-      taxYear => _ => _ => PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+              PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case PropertyRentalIncomePage(RentalsRentARoom) =>
-      taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        userAnswers =>
+          _ =>
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+              ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
       taxYear =>
         _ =>

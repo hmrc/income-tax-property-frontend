@@ -38,10 +38,6 @@ class RentalsAndRentARoomIncomeStartController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "income", RentalsRentARoom, NormalMode) {
-
-          Ok(view(taxYear, request.user.isAgentMessageKey))
-        }(Redirect(_))
+      Ok(view(taxYear, request.user.isAgentMessageKey))
   }
 }

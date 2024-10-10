@@ -38,9 +38,6 @@ class RentalsAndRentARoomAdjustmentsStartController @Inject() (
 
   def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "adjustments", RentalsRentARoom, NormalMode) {
-          Ok(view(taxYear, expensesOrPIA))
-        }(Redirect(_))
+      Ok(view(taxYear, expensesOrPIA))
     }
 }

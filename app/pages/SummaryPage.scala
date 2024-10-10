@@ -33,9 +33,11 @@ import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingCh
 import pages.ukrentaroom.allowances.{RaRAllowancesCompletePage, RaRCapitalAllowancesForACarPage, RaRElectricChargePointAllowanceForAnEVPage}
 import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage, RentsRatesAndInsuranceRRPage}
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage}
+import play.api.mvc.Call
+import service.CYADiversionService
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
-case object SummaryPage {
+case class SummaryPage(cyaDiversionService: CYADiversionService) {
   def createUkPropertyRows(
     userAnswers: Option[UserAnswers],
     taxYear: Int,
@@ -219,7 +221,10 @@ case object SummaryPage {
     Seq(
       TaskListItem(
         "summary.about",
-        controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear), {
+        cyaDiversionService
+          .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", Rentals, NormalMode) {
+            controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear)
+          }(identity), {
           val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyCompletePage))
 
           sectionFinished
@@ -239,8 +244,11 @@ case object SummaryPage {
   private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
-      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
-        .onPageLoad(taxYear, NormalMode, Rentals),
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", Rentals, NormalMode) {
+          controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+            .onPageLoad(taxYear, NormalMode, Rentals)
+        }(identity),
       userAnswers
         .flatMap { answers =>
           answers.get(EsbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
@@ -254,9 +262,16 @@ case object SummaryPage {
   private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
-      controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, userAnswers
-        .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
-        .getOrElse(false)), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", Rentals, NormalMode) {
+
+          controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
+            taxYear,
+            userAnswers
+              .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
+              .getOrElse(false)
+          )
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
@@ -273,8 +288,12 @@ case object SummaryPage {
   private def structuresAndBuildingAllowanceItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.structuresAndBuildingAllowance",
-      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
-        .onPageLoad(taxYear, NormalMode, Rentals),
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "sba", Rentals, NormalMode) {
+
+          controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
+            .onPageLoad(taxYear, NormalMode, Rentals)
+        }(identity),
       userAnswers
         .flatMap { answers =>
           answers.get(SbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
@@ -288,7 +307,10 @@ case object SummaryPage {
   private def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
-      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, Rentals),
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "allowances", Rentals, NormalMode) {
+          controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, Rentals)
+        }(identity),
       userAnswers
         .flatMap { answers =>
           answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
@@ -302,7 +324,10 @@ case object SummaryPage {
   private def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals),
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "expenses", Rentals, NormalMode) {
+          controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, Rentals)
+        }(identity),
       userAnswers
         .flatMap { answers =>
           answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
@@ -316,7 +341,11 @@ case object SummaryPage {
   private def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
-      controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear),
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "indome", Rentals, NormalMode) {
+
+          controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear)
+        }(identity),
       userAnswers
         .flatMap { answers =>
           answers.get(IncomeSectionFinishedPage).map { finishedYesOrNo =>
@@ -330,7 +359,10 @@ case object SummaryPage {
   private def propertyRentalsAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "about", Rentals, NormalMode) {
+          controllers.propertyrentals.routes.PropertyRentalsStartController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyRentalsSectionFinishedPage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
@@ -347,7 +379,10 @@ case object SummaryPage {
   private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
-      controllers.ukrentaroom.routes.RentARoomStartController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "about", RentARoom, NormalMode) {
+          controllers.ukrentaroom.routes.RentARoomStartController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(AboutSectionCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
@@ -364,8 +399,11 @@ case object SummaryPage {
   private def rentalsAndRaRAboutItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.about",
-      controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "about", RentalsRentARoom, NormalMode) {
 
+          controllers.rentalsandrentaroom.routes.RentalsRentARoomStartController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAboutCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (
@@ -385,13 +423,16 @@ case object SummaryPage {
   private def rentalsAndRaRAdjustmentsItem(taxYear: Int, userAnswers: Option[UserAnswers]): TaskListItem =
     TaskListItem(
       "summary.adjustments",
-      controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
-        .onPageLoad(
-          taxYear,
-          userAnswers
-            .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
-            .getOrElse(false)
-        ), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", RentalsRentARoom, NormalMode) {
+          controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+            .onPageLoad(
+              taxYear,
+              userAnswers
+                .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
+                .getOrElse(false)
+            )
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
         sectionFinished
           .map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress)
@@ -425,7 +466,11 @@ case object SummaryPage {
   private def rentalsAndRaRIncomeItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.income",
-      controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "income", RentalsRentARoom, NormalMode) {
+
+          controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeStartController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (userAnswers.flatMap(_.get(IncomeSectionFinishedPage)).isDefined) {
@@ -441,7 +486,11 @@ case object SummaryPage {
   private def rentalsAndRaRExpensesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.expenses",
-      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "expenses", RentalsRentARoom, NormalMode) {
+
+          controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRExpensesCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (
@@ -461,7 +510,10 @@ case object SummaryPage {
   private def rentalsAndRaRAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
-      controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "allowances", RentalsRentARoom, NormalMode) {
+          controllers.allowances.routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAllowancesCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (
@@ -481,8 +533,11 @@ case object SummaryPage {
   private def rentalsAndRaRSBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.structuresAndBuildingAllowance",
-      controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
-        .onPageLoad(taxYear, NormalMode, RentalsRentARoom), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "sba", RentalsRentARoom, NormalMode) {
+          controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController
+            .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(SbaSectionFinishedPage(RentalsRentARoom)))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (userAnswers.flatMap(_.get(ClaimStructureBuildingAllowancePage(RentalsRentARoom))).isDefined) {
@@ -498,8 +553,11 @@ case object SummaryPage {
   private def rentalsAndRaRESBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
-      controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
-        .onPageLoad(taxYear, NormalMode, RentalsRentARoom), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", RentalsRentARoom, NormalMode) {
+          controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaController
+            .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(EsbaSectionFinishedPage(RentalsRentARoom)))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (userAnswers.flatMap(_.get(ClaimEsbaPage(RentalsRentARoom))).isDefined) {
@@ -515,7 +573,10 @@ case object SummaryPage {
   private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
-      controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "expenses", RentARoom, NormalMode) {
+          controllers.ukrentaroom.expenses.routes.UkRentARoomExpensesIntroController.onPageLoad(taxYear)
+        }(identity), {
 
         val sectionFinished = userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
@@ -536,7 +597,11 @@ case object SummaryPage {
   private def ukRentARoomAllowancesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.allowances",
-      controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "allowances", RentARoom, NormalMode) {
+
+          controllers.ukrentaroom.allowances.routes.RRAllowancesStartController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RaRAllowancesCompletePage))
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
           if (
@@ -556,7 +621,10 @@ case object SummaryPage {
   private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
-      controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear), {
+      cyaDiversionService
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", RentARoom, NormalMode) {
+          controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsIntroController.onPageLoad(taxYear)
+        }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RaRAdjustmentsCompletePage))
 
         sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
