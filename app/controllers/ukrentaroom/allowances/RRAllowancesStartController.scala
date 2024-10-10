@@ -45,17 +45,13 @@ class RRAllowancesStartController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) async {
     implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Future[Result]](taxYear, request.userAnswers, "allowances", RentARoom, NormalMode) {
-
-          val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-          businessService.getBusinessDetails(request.user)(hc).map {
-            case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
-              val propertyData = businessDetails.propertyData.find(existsUkProperty).get
-              Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.accrualsOrCash.get)))
-            case _ => Redirect(routes.SummaryController.show(taxYear))
-          }
-        }(r => Future.successful(Redirect(r)))
+      val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      businessService.getBusinessDetails(request.user)(hc).map {
+        case Right(businessDetails) if businessDetails.propertyData.exists(existsUkProperty) =>
+          val propertyData = businessDetails.propertyData.find(existsUkProperty).get
+          Ok(view(RRAllowancesStartPage(taxYear, request.user.isAgentMessageKey, propertyData.accrualsOrCash.get)))
+        case _ => Redirect(routes.SummaryController.show(taxYear))
+      }
   }
 
   private def existsUkProperty(property: PropertyDetails): Boolean =

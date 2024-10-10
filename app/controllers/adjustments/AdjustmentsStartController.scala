@@ -37,12 +37,9 @@ class AdjustmentsStartController @Inject() (
   view: AdjustmentsStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      Ok(view(taxYear, expensesOrPIA))
 
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "adjustments", Rentals, NormalMode) {
-          Ok(view(taxYear, expensesOrPIA))
-        }(x => Redirect(x))
-  }
+    }
 }

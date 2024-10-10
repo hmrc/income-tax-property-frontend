@@ -39,22 +39,18 @@ class ExpensesStartController @Inject() (
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "expenses", propertyType, NormalMode) {
-
-          val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
-            routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
-          } else {
-            routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType).url
-          }
-          Ok(
-            view(
-              taxYear,
-              request.user.isAgentMessageKey,
-              isTotalIncomeUnder85K(request.userAnswers, propertyType),
-              under85KUrl
-            )
-          )
-        }(Redirect(_))
+      val under85KUrl = if (isTotalIncomeUnder85K(request.userAnswers, propertyType)) {
+        routes.ConsolidatedExpensesController.onPageLoad(taxYear, NormalMode, propertyType).url
+      } else {
+        routes.RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType).url
+      }
+      Ok(
+        view(
+          taxYear,
+          request.user.isAgentMessageKey,
+          isTotalIncomeUnder85K(request.userAnswers, propertyType),
+          under85KUrl
+        )
+      )
     }
 }

@@ -31,6 +31,8 @@ import pages.QuestionPage
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
+import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
 import pages.propertyrentals.expenses._
 import controllers.propertyrentals.routes._
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
@@ -40,6 +42,8 @@ import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
+import pages.structurebuildingallowance.SbaSectionFinishedPage
+import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage, StructureBuildingAllowanceClaimPage}
 import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage, StructureBuildingAllowanceClaimPage}
 import pages.ukrentaroom.AboutSectionCompletePage
 import pages.ukrentaroom.adjustments._
@@ -217,6 +221,19 @@ class CYADiversionService @Inject() () {
   def forOther[T](block: => T): PartialFunction[(Mode, String, PropertyType), T] = { case _ =>
     block
   }
+
+  def redirectToCYAIfFinished[T](
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    journeyName: String,
+    propertyType: PropertyType,
+    mode: Mode
+  )(
+    block: => T
+  )(transform: Call => T): T =
+    userAnswers.fold(
+      forOther(block)(mode, journeyName, propertyType)
+    )(ua => redirectToCYAIfFinished(taxYear, ua, journeyName, propertyType, mode)(block)(transform))
 
   def redirectToCYAIfFinished[T](
     taxYear: Int,

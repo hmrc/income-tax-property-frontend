@@ -19,6 +19,7 @@ package controllers.allowances
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.{NormalMode, PropertyType}
+import models.{NormalMode, PropertyType}
 import models.PropertyType
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -46,9 +47,6 @@ class AllowancesStartController @Inject() (
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Future[Result]](taxYear, request.userAnswers, "allowances", propertyType, NormalMode) {
-
           val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
           businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
             case Right(Some(propertyData)) =>
@@ -68,7 +66,6 @@ class AllowancesStartController @Inject() (
             case _ =>
               Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
           }
-        }(x => Future.successful(Redirect(x)))
     }
 
 }

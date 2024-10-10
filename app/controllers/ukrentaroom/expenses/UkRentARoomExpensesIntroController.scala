@@ -41,23 +41,19 @@ class UkRentARoomExpensesIntroController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "expenses", RentARoom, NormalMode) {
-
-          val under85KUrl =
-            if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
-              controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
-                .onPageLoad(taxYear, NormalMode)
-                .url
-            } else {
-              controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController
-                .onPageLoad(taxYear, NormalMode)
-                .url
-            }
-          request.userAnswers.get(TotalIncomePage) match {
-            case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
-            case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
-          }
-        }(Redirect(_))
+      val under85KUrl =
+        if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
+          controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
+            .onPageLoad(taxYear, NormalMode)
+            .url
+        } else {
+          controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController
+            .onPageLoad(taxYear, NormalMode)
+            .url
+        }
+      request.userAnswers.get(TotalIncomePage) match {
+        case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
+        case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
+      }
   }
 }

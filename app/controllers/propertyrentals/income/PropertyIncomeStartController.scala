@@ -37,13 +37,6 @@ class PropertyIncomeStartController @Inject() (
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    request.userAnswers.fold(
-      Ok(view(taxYear, request.user.isAgentMessageKey))
-    )(ua =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, ua, "income", Rentals, NormalMode) {
-          Ok(view(taxYear, request.user.isAgentMessageKey))
-        }(Redirect(_))
-    )
+    Ok(view(taxYear, request.user.isAgentMessageKey))
   }
 }
