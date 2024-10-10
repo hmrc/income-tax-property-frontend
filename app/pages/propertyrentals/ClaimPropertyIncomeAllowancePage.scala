@@ -20,6 +20,7 @@ import models.{PropertyType, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
+import pages.allowances.{AnnualInvestmentAllowancePage, BusinessPremisesRenovationPage, OtherCapitalAllowancePage, ReplacementOfDomesticGoodsPage, ZeroEmissionCarAllowancePage, ZeroEmissionGoodsVehicleAllowancePage}
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import play.api.libs.json.JsPath
 
@@ -40,5 +41,11 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
       .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
       .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
       .flatMap(_.remove(RentalsRaRAdjustmentsCompletePage))
+      .flatMap(_.remove(ZeroEmissionCarAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(ReplacementOfDomesticGoodsPage(RentalsRentARoom)))
+      .flatMap(_.remove(OtherCapitalAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(AnnualInvestmentAllowancePage(RentalsRentARoom)))
+      .flatMap(_.remove(BusinessPremisesRenovationPage(RentalsRentARoom)))
 
 }

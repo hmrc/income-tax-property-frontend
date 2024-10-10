@@ -16,19 +16,59 @@
 
 package viewmodels
 
-import models.{NormalMode, PropertyType}
+import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, UKPropertySelect, UserAnswers}
+import pages.isSelected
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.ukrentaroom.ClaimExpensesOrReliefPage
 
 case class AllowancesStartPage(
   taxYear: Int,
   individualOrAgent: String,
   cashOrAccruals: Boolean,
+  userAnswers: UserAnswers,
   propertyType: PropertyType
 ) {
   def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
-  def nextPageUrl: String = if (cashOrAccruals) {
-    controllers.allowances.routes.AnnualInvestmentAllowanceController.onPageLoad(taxYear, NormalMode, propertyType).url
-  } else {
-    controllers.allowances.routes.CapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode, propertyType).url
+  def nextPageUrl: String = {
+
+    val isRentARoomSelected = isSelected(Some(userAnswers), UKPropertySelect.RentARoom)
+    val isPropertyRentalsSelected = isSelected(Some(userAnswers), UKPropertySelect.PropertyRentals)
+
+    // If it's the combined journey
+    if (isPropertyRentalsSelected && isRentARoomSelected) {
+      val rentARoomRelief =
+        userAnswers.get(ClaimExpensesOrReliefPage(propertyType)).getOrElse(ClaimExpensesOrRelief(false, None))
+      val propertyIncomeAllowance =
+        userAnswers.get(ClaimPropertyIncomeAllowancePage(propertyType)).getOrElse(false)
+      if (cashOrAccruals) {
+        (rentARoomRelief, propertyIncomeAllowance) match {
+          case (ClaimExpensesOrRelief(false, None), true) =>
+            controllers.allowances.routes.ZeroEmissionCarAllowanceController
+              .onPageLoad(taxYear, NormalMode, propertyType)
+              .url
+          case (ClaimExpensesOrRelief(false, None), false) | (ClaimExpensesOrRelief(true, _), false) =>
+            controllers.allowances.routes.AnnualInvestmentAllowanceController
+              .onPageLoad(taxYear, NormalMode, propertyType)
+              .url
+        }
+      } else {
+        controllers.allowances.routes.CapitalAllowancesForACarController
+          .onPageLoad(taxYear, NormalMode, propertyType)
+          .url
+      }
+    }
+    // If it's NOT the combined journey i.e. property rentals or rent a room
+    else {
+      if (cashOrAccruals) {
+        controllers.allowances.routes.AnnualInvestmentAllowanceController
+          .onPageLoad(taxYear, NormalMode, propertyType)
+          .url
+      } else {
+        controllers.allowances.routes.CapitalAllowancesForACarController
+          .onPageLoad(taxYear, NormalMode, propertyType)
+          .url
+      }
+    }
   }
 }

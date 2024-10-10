@@ -570,7 +570,4 @@ case object SummaryPage {
       "rent_a_room_adjustments_link"
     )
 
-  private def isSelected(userAnswers: Option[UserAnswers], select: UKPropertySelect): Boolean =
-    userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(select)))
-
 }

@@ -394,7 +394,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentalsRentARoom) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
               ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case BusinessPremisesRenovationPage(RentalsRentARoom) =>
@@ -448,7 +448,18 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             controllers.allowances.routes.ZeroEmissionCarAllowanceController
               .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case ZeroEmissionCarAllowancePage(RentalsRentARoom) =>
-      taxYear => _ => _ => ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      taxYear =>
+        _ =>
+          userAnswers =>
+            (
+              userAnswers.get(ClaimExpensesOrReliefPage(RentalsRentARoom)),
+              userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))
+            ) match {
+              case (Some(ClaimExpensesOrRelief(false, None)), Some(true)) =>
+                ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              case _ =>
+                ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+            }
     case ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom) =>
       taxYear => _ => _ => BusinessPremisesRenovationController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     case ReplacementOfDomesticGoodsPage(RentalsRentARoom) =>
@@ -624,7 +635,11 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "expenses", RentalsRentARoom) {
-              LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
+                OtherProfessionalFeesController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              } else {
+                LoanInterestController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              }
             }
     case LoanInterestPage(RentalsRentARoom) =>
       taxYear =>
@@ -645,7 +660,11 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "expenses", RentalsRentARoom) {
-              PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
+                OtherAllowablePropertyExpensesController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              } else {
+                PropertyBusinessTravelCostsController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+              }
             }
     case PropertyBusinessTravelCostsPage(RentalsRentARoom) =>
       taxYear =>

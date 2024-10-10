@@ -19,6 +19,8 @@ package controllers.allowances
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.{NormalMode, PropertyType}
+import models.PropertyType
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
@@ -57,6 +59,7 @@ class AllowancesStartController @Inject() (
                       taxYear,
                       request.user.isAgentMessageKey,
                       propertyData.accrualsOrCash.get,
+                      request.userAnswers,
                       propertyType
                     )
                   )
