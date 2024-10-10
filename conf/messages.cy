@@ -1094,9 +1094,8 @@ claimEnhancedSBA.error.required.agent             = Dewiswch ‘Iawn’ os yw’
 claimEnhancedSBA.error.required.individual        = Dewiswch ‘Iawn’ os ydych chi eisiau hawlio lwfans strwythurau ac adeiladau uwch
 claimEnhancedSBA.change.hidden                    = Lwfans Strwythurau ac Adeiladau Uwch
 
-esbaAddress.title                                 = Ble mae’r strwythur neu’r adeilad uwch newydd wedi’i leoli?
-esbaAddress.heading                               = Ble mae’r strwythur neu’r adeilad uwch newydd wedi’i leoli?
-esbaAddress.caption                               = Lwfans strwythurau ac adeiladau uwch
+esbaAddress.title                                 = *Missing Welsh*
+esbaAddress.heading                               = *Missing Welsh*
 esbaAddress.buildingName.legend                   = Enw’r adeilad
 esbaAddress.buildingName.error.required           = Nodwch enw adeilad ar gyfer y strwythur neu adeilad uwch
 esbaAddress.buildingName.error.max                = Mae’n rhaid i enw’r adeilad ar gyfer y strwythur neu adeilad uwch cymhwysol beidio â bod yn fwy na 90 o gymeriadau
@@ -1110,7 +1109,6 @@ esbaAddress.checkYourAnswersLabel                 = Cyfeiriad
 esbaAddress.change.hidden                         = Lwfans strwythurau ac adeiladau uwch
 esbaAddress.duplicateEsba                         = Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod.
 esbaAddress.duplicateSba                          = Mae’r cyfeiriad ar gyfer yr hawliad hwn wedi cael ei ychwanegu yn barod ar gyfer y lwfans strwythurau ac adeiladau
-esbaAddress.hint                                  = Gallwch ychwanegu un cyfeiriad yn unig ar gyfer pob hawliad
 
 esbaRemoveConfirmation.title                      = A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau uwch?
 esbaRemoveConfirmation.heading                    = A ydych am ddileu’r hawliad {0} hwn am lwfans strwythurau ac adeiladau uwch?
