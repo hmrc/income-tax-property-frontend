@@ -37,6 +37,14 @@ import play.api.mvc.Call
 import service.CYADiversionService
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
+case class UKPropertySummaryPage(
+  taxYear: Int,
+  startItems: Seq[TaskListItem],
+  rentalsRows: Seq[TaskListItem],
+  rentARoomRows: Seq[TaskListItem],
+  combinedItems: Seq[TaskListItem]
+)
+
 case class SummaryPage(cyaDiversionService: CYADiversionService) {
   def createUkPropertyRows(
     userAnswers: Option[UserAnswers],
@@ -263,14 +271,12 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     TaskListItem(
       "summary.adjustments",
       cyaDiversionService
-        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", Rentals, NormalMode) {
-
-          controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
-            taxYear,
-            userAnswers
-              .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
-              .getOrElse(false)
-          )
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", Rentals, NormalMode) {controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
+        taxYear,
+        userAnswers
+          .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
+          .getOrElse(false)
+      )
         }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 

@@ -14,25 +14,32 @@
  * limitations under the License.
  *@
 
+@import pages.UKPropertySummaryPage
 @import viewmodels.summary.TaskListItem
-
 
 @this(
         layout: templates.Layout,
         govukTag: GovukTag
 )
 
-@(taxYear: Int, startItems: Seq[TaskListItem], ukPropertyRentalsRows: Seq[TaskListItem], ukRentARoomRows: Seq[TaskListItem], combinedItems: Seq[TaskListItem])(implicit request: Request[_], messages: Messages)
+
+@(ukproperty: UKPropertySummaryPage)(implicit request: Request[_], messages: Messages)
 
     @taskListSection(items: Seq[TaskListItem]) = {
         <ol class="govuk-task-list">
         @for(item <- items) {
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a class="govuk-link govuk-task-list__link" aria-describedby="@{item.id}"  href="@{item.call}">@messages(s"${item.content}")</a>
+                    <a class="govuk-link govuk-task-list__link" aria-describedby="@{
+                        item.id
+                    }" href="@{
+                        item.call
+                    }">@messages(s"${item.content}")</a>
                 </div>
-                <div class="govuk-task-list__status" id="@{item.id}">
-                @if(!item.taskListTag.cssClass.isBlank){
+                <div class="govuk-task-list__status" id="@{
+                    item.id
+                }">
+                @if(!item.taskListTag.cssClass.isBlank) {
                     @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
                 } else {
                     @messages(s"common.${item.taskListTag.message}")
@@ -50,24 +57,24 @@
 
         <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
 
-        @if(startItems.nonEmpty) {
+        @if(ukproperty.startItems.nonEmpty) {
             <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
-            @taskListSection(startItems)
+            @taskListSection(ukproperty.startItems)
         }
 
-        @if(ukPropertyRentalsRows.nonEmpty) {
+        @if(ukproperty.rentalsRows.nonEmpty) {
             <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
-            @taskListSection(ukPropertyRentalsRows)
+            @taskListSection(ukproperty.rentalsRows)
         }
 
-        @if(ukRentARoomRows.nonEmpty) {
+        @if(ukproperty.rentARoomRows.nonEmpty) {
             <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
-            @taskListSection(ukRentARoomRows)
+            @taskListSection(ukproperty.rentARoomRows)
         }
 
-        @if(combinedItems.nonEmpty) {
+        @if(ukproperty.combinedItems.nonEmpty) {
             <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
-            @taskListSection(combinedItems)
+            @taskListSection(ukproperty.combinedItems)
         }
     }
 
