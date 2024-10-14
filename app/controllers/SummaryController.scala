@@ -54,7 +54,15 @@ class SummaryController @Inject() (
             SummaryPage(cyaDiversionService)
               .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
           Future.successful(
-            Ok(view(UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems)))
+            Ok(
+              view(
+                UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems),
+                ForeignPropertySummaryPage(
+                  taxYear = taxYear,
+                  startItems = ForeignPropertySummaryPage.propertyAboutItems(taxYear)
+                )
+              )
+            )
           )
         case _ =>
           Future.failed(PropertyDataError)

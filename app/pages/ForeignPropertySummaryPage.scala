@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-package viewmodels.summary
+package pages
 
-import play.api.mvc.Call
-import viewmodels.summary.TaskListTag.TaskListTag
+import viewmodels.summary.{TaskListItem, TaskListTag}
 
-// Refactor: to uk.gov.hmrc.govukfrontend.views.viewmodels.tasklist.TaskListItem
-case class TaskListItem(content: String, call: Call, taskListTag: TaskListTag, id: String)
+case class ForeignPropertySummaryPage(taxYear: Int, startItems: Seq[TaskListItem])
+
+object ForeignPropertySummaryPage {
+
+  def propertyAboutItems(taxYear: Int): Seq[TaskListItem] =
+    Seq(
+      TaskListItem(
+        "foreign.selectCountry",
+        controllers.routes.SummaryController.show(taxYear),
+        TaskListTag.NotStarted,
+        "foreign_property_select_country"
+      )
+    )
+
+}

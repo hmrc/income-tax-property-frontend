@@ -1731,3 +1731,7 @@ raRbalancingCharge.amount.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
 claimExpensesOrRRR.amount.error.maxAllowedClaim	= Ni all swm y rhyddhad rhentu ystafell a hawlir fod yn fwy na’ch incwm o rentu ystafell
 
 
+###################### Foreign Property ######################
+
+foreign.summary.title = *Missing Welsh*
+foreign.selectCountry = *Missing Welsh*

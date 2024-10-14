@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import pages.UKPropertySummaryPage
+@import pages.{ForeignPropertySummaryPage, UKPropertySummaryPage}
 @import viewmodels.summary.TaskListItem
 
 @this(
@@ -23,61 +23,66 @@
 )
 
 
-@(ukproperty: UKPropertySummaryPage)(implicit request: Request[_], messages: Messages)
+@(ukproperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
 
-    @taskListSection(items: Seq[TaskListItem]) = {
-        <ol class="govuk-task-list">
-        @for(item <- items) {
-            <li class="govuk-task-list__item govuk-task-list__item--with-link">
-                <div class="govuk-task-list__name-and-hint">
-                    <a class="govuk-link govuk-task-list__link" aria-describedby="@{
-                        item.id
-                    }" href="@{
-                        item.call
-                    }">@messages(s"${item.content}")</a>
-                </div>
-                <div class="govuk-task-list__status" id="@{
+@taskListSection(items: Seq[TaskListItem]) = {
+    <ol class="govuk-task-list">
+    @for(item <- items) {
+        <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+                <a class="govuk-link govuk-task-list__link" aria-describedby="@{
                     item.id
-                }">
-                @if(!item.taskListTag.cssClass.isBlank) {
-                    @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
-                } else {
-                    @messages(s"common.${item.taskListTag.message}")
-                }
-                </div>
-            </li>
-        }
-        </ol>
+                }" href="@{
+                    item.call
+                }">@messages(s"${item.content}")</a>
+            </div>
+            <div class="govuk-task-list__status" id="@{
+                item.id
+            }">
+            @if(!item.taskListTag.cssClass.isBlank) {
+                @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
+            } else {
+                @messages(s"common.${item.taskListTag.message}")
+            }
+            </div>
+        </li>
+    }
+    </ol>
+}
+
+@layout(
+    pageTitle = titleNoForm(messages("summary.title")),
+    showBackLink = true
+) {
+
+    <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
+
+    @if(ukproperty.startItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
+        @taskListSection(ukproperty.startItems)
     }
 
-    @layout(
-        pageTitle = titleNoForm(messages("summary.title")),
-        showBackLink = true
-    ) {
-
-        <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
-
-        @if(ukproperty.startItems.nonEmpty) {
-            <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
-            @taskListSection(ukproperty.startItems)
-        }
-
-        @if(ukproperty.rentalsRows.nonEmpty) {
-            <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
-            @taskListSection(ukproperty.rentalsRows)
-        }
-
-        @if(ukproperty.rentARoomRows.nonEmpty) {
-            <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
-            @taskListSection(ukproperty.rentARoomRows)
-        }
-
-        @if(ukproperty.combinedItems.nonEmpty) {
-            <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
-            @taskListSection(ukproperty.combinedItems)
-        }
+    @if(ukproperty.rentalsRows.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
+        @taskListSection(ukproperty.rentalsRows)
     }
 
-    @{
-        // $COVERAGE-OFF$
+    @if(ukproperty.rentARoomRows.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
+        @taskListSection(ukproperty.rentARoomRows)
     }
+
+    @if(ukproperty.combinedItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
+        @taskListSection(ukproperty.combinedItems)
+    }
+
+    @if(ukproperty.startItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
+        @taskListSection(foreignProperty.startItems)
+    }
+}
+
+@{
+    // $COVERAGE-OFF$
+}
