@@ -800,4 +800,4 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 
 ############################  Foreign Property ###################################
 
-GET         /:taxYear/foreign-property/about/start                                                                       controllers.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+GET         /:taxYear/foreign-property/about/start                                                                       controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)

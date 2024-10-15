@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.foreign
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure

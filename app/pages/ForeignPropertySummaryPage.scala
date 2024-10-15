@@ -26,7 +26,7 @@ object ForeignPropertySummaryPage {
     Seq(
       TaskListItem(
         "foreign.selectCountry",
-        controllers.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
+        controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
         TaskListTag.NotStarted,
         "foreign_property_select_country"
       )
