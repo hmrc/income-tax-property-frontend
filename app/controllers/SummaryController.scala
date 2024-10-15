@@ -25,7 +25,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.SummaryView
 
 import javax.inject.Inject
@@ -44,7 +43,6 @@ class SummaryController @Inject() (
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit requestBeforeUpdate =>
     withUpdatedData(taxYear) { request =>
-      val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
@@ -56,7 +54,15 @@ class SummaryController @Inject() (
             SummaryPage(cyaDiversionService)
               .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
           Future.successful(
-            Ok(view(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems))
+            Ok(
+              view(
+                UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems),
+                ForeignPropertySummaryPage(
+                  taxYear = taxYear,
+                  startItems = ForeignPropertySummaryPage.propertyAboutItems(taxYear)
+                )
+              )
+            )
           )
         case _ =>
           Future.failed(PropertyDataError)

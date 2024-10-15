@@ -24,7 +24,7 @@ import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.UKPropertyPage
+import pages.{ForeignPropertySummaryPage, UKPropertyPage, UKPropertySummaryPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.FakeRequest
@@ -64,6 +64,15 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       )
     )
 
+  def foreignPropertyItems: Seq[TaskListItem] = Seq(
+    TaskListItem(
+      "foreign.selectCountry",
+      routes.SummaryController.show(taxYear),
+      TaskListTag.NotStarted,
+      "foreign_property_select_country"
+    )
+  )
+
   "Summary Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -92,11 +101,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual view(
-          taxYear,
-          propertyAboutItems,
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem]
+          UKPropertySummaryPage(
+            taxYear,
+            propertyAboutItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem]
+          ),
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems)
         )(request, messages(application)).toString
       }
     }
@@ -141,11 +153,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         status(result) mustEqual OK
         contentAsString(result) must include("UK property rentals")
         contentAsString(result) mustEqual view(
-          taxYear,
-          propertyAboutItems,
-          propertyRentalsItems,
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem]
+          UKPropertySummaryPage(
+            taxYear,
+            propertyAboutItems,
+            propertyRentalsItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem]
+          ),
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems)
         )(request, messages(application)).toString
       }
     }
@@ -181,11 +196,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         status(result) mustEqual OK
         contentAsString(result) mustNot include("UK property rentals")
         contentAsString(result) mustEqual view(
-          taxYear,
-          propertyAboutItems,
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem]
+          UKPropertySummaryPage(
+            taxYear,
+            propertyAboutItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem]
+          ),
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems)
         )(request, messages(application)).toString
       }
     }
@@ -233,11 +251,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         status(result) mustEqual OK
         contentAsString(result) must include("UK rent a room")
         contentAsString(result) mustEqual view(
-          taxYear,
-          propertyAboutItems,
-          Seq.empty[TaskListItem],
-          ukRentARoomItems,
-          Seq.empty[TaskListItem]
+          UKPropertySummaryPage(
+            taxYear,
+            propertyAboutItems,
+            Seq.empty[TaskListItem],
+            ukRentARoomItems,
+            Seq.empty[TaskListItem]
+          ),
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems)
         )(request, messages(application)).toString
       }
     }
@@ -285,11 +306,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         status(result) mustEqual OK
         contentAsString(result) must include("UK property rentals and rent a room")
         contentAsString(result) mustEqual view(
-          taxYear,
-          propertyAboutItems,
-          Seq.empty[TaskListItem],
-          Seq.empty[TaskListItem],
-          combinedItems
+          UKPropertySummaryPage(
+            taxYear,
+            propertyAboutItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            combinedItems
+          ),
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems)
         )(request, messages(application)).toString
       }
     }
