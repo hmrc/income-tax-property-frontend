@@ -1252,15 +1252,15 @@ rentalsAndRentARoomIncomeStart.l4 = incwm arall o eiddo
 rentalsAndRentARoomIncomeStart.p2.individual = Os perchenogir eich eiddo ar y cyd, rhowch wybod i ni am eich cyfran chi o’r ffigurau hyn yn unig.
 rentalsAndRentARoomIncomeStart.p2.agent = Os perchenogir ei eiddo ar y cyd, rhowch wybod i ni am gyfran eich cleient o’r ffigurau hyn yn unig.
 
-rentalsAndRentARoomAdjustmentsStart.title = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.heading = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l1 = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l2 = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l3 = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l4 = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l5 = *Missing Welsh*
-rentalsAndRentARoomAdjustmentsStart.details.content.l6 = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.title = Addasiadau
+rentalsAndRentARoomAdjustmentsStart.heading = Addasiadau
+rentalsAndRentARoomAdjustmentsStart.details.content = Yn yr adran hon, byddwn yn gofyn i chi am yr addasiadau canlynol:
+rentalsAndRentARoomAdjustmentsStart.details.content.l1 = addasiad ar gyfer defnydd preifat
+rentalsAndRentARoomAdjustmentsStart.details.content.l2 = tâl mantoli
+rentalsAndRentARoomAdjustmentsStart.details.content.l3 = tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
+rentalsAndRentARoomAdjustmentsStart.details.content.l4 = costau ariannol preswyl
+rentalsAndRentARoomAdjustmentsStart.details.content.l5 = costau preswyl sydd heb eu defnyddio a ddygwyd ymlaen
+rentalsAndRentARoomAdjustmentsStart.details.content.l6 = eich lwfans incwm o eiddo a wnaed cais amdano
 
 ukrentaroom.income.totalIncomeAmount.title.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.heading.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
@@ -1692,6 +1692,15 @@ haveYouFinishedThisSection.heading = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.title = A ydych wedi gorffen yr adran hon?
 haveYouFinishedThisSection.hint = Byddwch yn dal i allu mynd yn ôl ac adolygu’r wybodaeth rydych wedi’i rhoi i ni ar ôl i chi ei gorffen.
 haveYouFinishedThisSection.error.required = Dewiswch ‘Iawn’ os ydych wedi llenwi’r adran hon
+
+rentalsAndRentARoom.start.title.individual = Ynglŷn â’ch eiddo sydd wedi’i rentu a’ch cynllun rhentu ystafell
+rentalsAndRentARoom.start.title.agent = Ynglŷn ag eiddo eich cleient sydd wedi’i rentu a’i gynllun rhentu ystafell
+
+rentalsAndRentARoom.start.heading.individual = Ynglŷn â’ch eiddo sydd wedi’i rentu a’ch cynllun rhentu ystafell
+rentalsAndRentARoom.start.heading.agent = Ynglŷn ag eiddo eich cleient sydd wedi’i rentu a’i gynllun rhentu ystafell
+
+rentalsAndRentARoom.start.p.individual = Yn yr adran hon, byddwn yn gofyn i chi am eich incwm o’r cynllun rhentu ystafell.
+rentalsAndRentARoom.start.p.agent = Yn yr adran hon, byddwn yn gofyn i chi am incwm eich cleient o’r cynllun rhentu ystafell.
 
 raRAdjustmentsIntro.title = Addasiadau
 raRAdjustmentsIntro.heading = Addasiadau
