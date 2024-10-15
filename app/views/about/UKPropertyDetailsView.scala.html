@@ -16,14 +16,14 @@
 
 @import controllers.about.routes
 @import models.NormalMode
-@import viewmodels.UKPropertyDetailsPage
+@import viewmodels.PropertyDetailsPage
 
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(page: UKPropertyDetailsPage)(implicit request: Request[_], messages: Messages)
+@(page: PropertyDetailsPage)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"uKPropertyDetails.title.${page.individualOrAgent}"))) {
 

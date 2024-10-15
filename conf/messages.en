@@ -1794,3 +1794,15 @@ ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-r
 
 foreign.summary.title = Foreign property
 foreign.selectCountry = Select country
+
+
+foreignPropertyDetails.title = Foreign property details
+foreignPropertyDetails.para1 = You previously told us:
+foreignPropertyDetails.bullet1.individual = You started renting your properties on {0}
+foreignPropertyDetails.bullet1.agent = That your client started renting their properties on {0}
+foreignPropertyDetails.bullet2.individual = Your accounting method is:
+foreignPropertyDetails.bullet2.agent = Their accounting method is:
+foreignPropertyDetails.para2.part1 = If these details are wrong you can
+foreignPropertyDetails.para2.part2 = go back to your online account
+foreignPropertyDetails.para2.part3 = to change them.
+foreignPropertyDetails.button = Continue

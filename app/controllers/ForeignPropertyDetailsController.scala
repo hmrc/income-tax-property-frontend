@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.about
+package controllers
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
@@ -23,22 +23,22 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.PropertyDetailsPage
-import views.html.about.UKPropertyDetailsView
+import views.html.ForeignPropertyDetailsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UKPropertyDetailsController @Inject() (
+class ForeignPropertyDetailsController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   val controllerComponents: MessagesControllerComponents,
-  view: UKPropertyDetailsView,
+  view: ForeignPropertyDetailsView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = identify.async { implicit request =>
-    businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid).flatMap {
+    businessService.getForeignPropertyDetails(request.user.nino, request.user.mtditid).flatMap {
       case Right(Some(propertyData)) =>
         Future.successful(
           Ok(
@@ -52,7 +52,7 @@ class UKPropertyDetailsController @Inject() (
             )
           )
         )
-      case _ => Future.failed(InternalErrorFailure("UK property details not found from 1171 API"))
+      case _ => Future.failed(InternalErrorFailure("Foreign property details not found from 1171 API"))
     }
   }
 }

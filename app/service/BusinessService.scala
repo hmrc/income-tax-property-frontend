@@ -38,13 +38,30 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
   def getUkPropertyDetails(nino: String, mtditid: String)(implicit
     hc: HeaderCarrier
   ): Future[Either[ApiError, Option[PropertyDetails]]] =
+    getPropertyDetails(nino, mtditid, isUkProperty)
+
+  def getForeignPropertyDetails(nino: String, mtditid: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ApiError, Option[PropertyDetails]]] =
+    getPropertyDetails(nino, mtditid, isForeignProperty)
+
+  private def getPropertyDetails(
+    nino: String,
+    mtditid: String,
+    isPropertyType: PropertyDetails => Boolean
+  )(implicit hc: HeaderCarrier): Future[Either[ApiError, Option[PropertyDetails]]] =
     businessConnector.getBusinessDetails(nino, mtditid).map {
       case Left(error: ApiError)  => Left(error)
-      case Right(businessDetails) => Right(businessDetails.propertyData.find(isUkProperty))
+      case Right(businessDetails) => Right(businessDetails.propertyData.find(isPropertyType))
     }
 
   private def isUkProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
       "uk-property"
+    ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
+
+  private def isForeignProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.contains(
+      "foreign-property"
     ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
 }
