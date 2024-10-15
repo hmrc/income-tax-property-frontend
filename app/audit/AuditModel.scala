@@ -36,7 +36,7 @@ final case class AuditModel[T](
 
 object AuditModel {
   implicit def format[T](implicit
-    rentalsAndRentARoomAuditModelFormat: Format[T]
+    auditModelFormat: Format[T]
   ): OFormat[AuditModel[T]] =
     Json.format[AuditModel[T]]
 }

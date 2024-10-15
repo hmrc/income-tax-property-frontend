@@ -17,11 +17,11 @@
 package controllers.adjustments
 
 import audit.RentalsAdjustment._
-import audit.{AuditService, RentalsAdjustment, RentalsAuditModel}
+import audit.{AuditService, RentalsAdjustment, AuditModel}
 import controllers.actions._
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
+import models._
 import models.requests.DataRequest
-import models.{JourneyContext, Rentals}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -79,26 +79,37 @@ class AdjustmentsCheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
     propertySubmissionService.saveJourneyAnswers(context, adjustments).flatMap {
       case Right(_) =>
-        auditCYA(taxYear, request, adjustments)
+        auditCYA(taxYear, request, adjustments, isFailed = false, AccountingMethod.Traditional)
         Future
           .successful(Redirect(controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear)))
-      case Left(_) =>
-        logger.error("Failed to save adjustments section")
-        Future.failed(SaveJourneyAnswersFailed("Failed to save adjustments section"))
+      case Left(error) =>
+        logger.error(s"Failed to save Rentals Adjustments section: ${error.toString}")
+        auditCYA(taxYear, request, adjustments, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(SaveJourneyAnswersFailed("Failed to save Rentals Adjustments section"))
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    adjustments: RentalsAdjustment,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentalsAdjustments",
+      sectionName = SectionName.Adjustments,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
       adjustments
     )
 

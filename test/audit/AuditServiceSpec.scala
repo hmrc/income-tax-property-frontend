@@ -16,7 +16,8 @@
 
 package audit
 
-import models.{TotalIncome, UKPropertySelect}
+import models.AccountingMethod.Traditional
+import models.{AuditPropertyType, JourneyName, SectionName, TotalIncome, UKPropertySelect}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify}
@@ -36,18 +37,22 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
   "trigger audit event" in {
     val hc = HeaderCarrier()
     val propertyAbout = PropertyAbout(TotalIncome.Under, UKPropertySelect.values, Some(true))
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       "NINO",
       "Agent",
       "mtdItId",
       agentReferenceNumber = Some("agentReferenceNumber"),
       2024,
       isUpdate = false,
-      "PropertyAbout",
+      sectionName = SectionName.About,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = Traditional,
+      isFailed = false,
       propertyAbout
     )
 
-    service.sendRentalsAuditEvent(auditModel)(hc, implicitly[Writes[RentalsAuditModel[PropertyAbout]]])
+    service.sendRentalsAuditEvent(auditModel)(hc, implicitly[Writes[AuditModel[PropertyAbout]]])
 
     verify(mockAuditConnector, times(1))
       .sendExplicitAudit(eqTo("CreateOrAmendRentalsUpdate"), eqTo(auditModel))(eqTo(hc), any(), any())

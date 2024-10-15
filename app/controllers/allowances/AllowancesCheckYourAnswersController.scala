@@ -16,12 +16,12 @@
 
 package controllers.allowances
 
-import audit.{AuditService, RentalsAllowance, RentalsAuditModel}
+import audit.{AuditService, RentalsAllowance, AuditModel}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
 import models.backend.ServiceError
 import models.requests.DataRequest
-import models.{JourneyContext, Rentals}
+import models._
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -80,13 +80,14 @@ class AllowancesCheckYourAnswersController @Inject() (
   ) =
     saveAllowanceForPropertyRentals(taxYear, request, allowance).flatMap {
       case Right(_: Unit) =>
-        auditAllowanceCYA(taxYear, request, allowance)
+        auditAllowanceCYA(taxYear, request, allowance, isFailed = false, AccountingMethod.Traditional)
         Future.successful(
           Redirect(controllers.allowances.routes.AllowancesSectionFinishedController.onPageLoad(taxYear))
         )
-      case Left(_) =>
-        logger.error("Failed to save rental allowances")
-        Future.failed(SaveJourneyAnswersFailed("Failed to save rental allowances"))
+      case Left(error) =>
+        logger.error(s"Failed to save Rentals Allowances section: ${error.toString}")
+        auditAllowanceCYA(taxYear, request, allowance, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(SaveJourneyAnswersFailed("Failed to save Rentals Allowances section"))
     }
 
   private def saveAllowanceForPropertyRentals(
@@ -105,20 +106,30 @@ class AllowancesCheckYourAnswersController @Inject() (
     propertySubmissionService.saveJourneyAnswers[RentalsAllowance](context, allowance)
   }
 
-  private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentalsAllowance)(implicit
-    hc: HeaderCarrier
-  ): Unit = {
-    val event = RentalsAuditModel[RentalsAllowance](
-      nino = request.user.nino,
-      userType = request.user.affinityGroup,
-      mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
-      taxYear = taxYear,
+  private def auditAllowanceCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    allowances: RentalsAllowance,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit hc: HeaderCarrier): Unit = {
+
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
       isUpdate = false,
-      sectionName = "PropertyRentalsAllowance",
-      userEnteredRentalDetails = allowance
+      sectionName = SectionName.Allowances,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
+      allowances
     )
-    auditService.sendRentalsAuditEvent(event)
+
+    auditService.sendRentalsAuditEvent(auditModel)
   }
 }
 

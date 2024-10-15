@@ -18,10 +18,9 @@ package controllers.ukrentaroom.allowances
 
 import controllers.actions._
 import controllers.routes
-import models.{NormalMode, RentARoom}
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -29,7 +28,7 @@ import viewmodels.RRAllowancesStartPage
 import views.html.ukrentaroom.allowances.RRAllowancesStartView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class RRAllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,

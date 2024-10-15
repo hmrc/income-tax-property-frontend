@@ -16,12 +16,12 @@
 
 package controllers.propertyrentals
 
-import audit.{AuditService, RentalsAbout, RentalsAuditModel}
+import audit.{AuditService, RentalsAbout, AuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.SaveJourneyAnswersFailed
 import models.requests.DataRequest
-import models.{JourneyContext, PropertyType}
+import models._
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -64,7 +64,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
         .get(RentalsAbout)
         .map(propertyRentalsAbout => savePropertyAbout(taxYear, request, propertyRentalsAbout))
         .getOrElse {
-          logger.error("PropertyRentalsAbout Section is not present in userAnswers")
+          logger.error("Rentals About Section is not present in userAnswers")
           Future.failed(NotFoundException)
         }
   }
@@ -79,25 +79,38 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-about")
     propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).flatMap {
       case Right(_) =>
-        auditCYA(taxYear, request, propertyRentalsAbout)
+        auditCYA(taxYear, request, propertyRentalsAbout, isFailed = false, AccountingMethod.Traditional)
         Future.successful(
           Redirect(controllers.propertyrentals.routes.AboutPropertyRentalsSectionFinishedController.onPageLoad(taxYear))
         )
-      case Left(_) => Future.failed(SaveJourneyAnswersFailed("Failed to save rentals about section"))
+      case Left(error) =>
+        logger.error(s"Failed to save Rentals About section: ${error.toString}")
+        auditCYA(taxYear, request, propertyRentalsAbout, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(SaveJourneyAnswersFailed("Failed to save Rentals About section"))
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsAbout: RentalsAbout)(implicit
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyRentalsAbout: RentalsAbout,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
+      request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentalsAbout",
+      sectionName = SectionName.About,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
       propertyRentalsAbout
     )
 
@@ -105,4 +118,4 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
   }
 }
 
-case object NotFoundException extends Exception("PropertyRentalsAbout Section is not present in userAnswers")
+case object NotFoundException extends Exception("Rentals About Section is not present in userAnswers")

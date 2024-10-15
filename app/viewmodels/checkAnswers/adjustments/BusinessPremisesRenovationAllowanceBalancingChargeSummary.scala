@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.rentalsandrentaroom.adjustments.routes.BusinessPremisesRenovationBalancingChargeController
-import models.{BusinessPremisesRenovationAllowanceBalancingCharge, CheckMode, RenovationAllowanceBalancingCharge, RentalsRentARoom, UserAnswers}
+import models._
 import pages.adjustments.RenovationAllowanceBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow

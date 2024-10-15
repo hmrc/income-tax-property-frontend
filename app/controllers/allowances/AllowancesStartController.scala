@@ -18,12 +18,9 @@ package controllers.allowances
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.{NormalMode, PropertyType}
-import models.{NormalMode, PropertyType}
 import models.PropertyType
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, CYADiversionService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
