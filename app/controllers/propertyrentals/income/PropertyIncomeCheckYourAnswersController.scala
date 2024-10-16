@@ -16,12 +16,12 @@
 
 package controllers.propertyrentals.income
 
-import audit.{AuditService, RentalsAuditModel, RentalsIncome}
+import audit.{AuditService, AuditModel, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.requests.DataRequest
-import models.{JourneyContext, Rentals}
+import models._
 import pages.PageConstants.incomePath
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -84,27 +84,38 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
     propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).flatMap {
       case Right(_) =>
-        auditCYA(context.taxYear, request, propertyRentalsIncome)
+        auditCYA(context.taxYear, request, propertyRentalsIncome, isFailed = false, AccountingMethod.Traditional)
         Future.successful(
           Redirect(controllers.propertyrentals.income.routes.IncomeSectionFinishedController.onPageLoad(taxYear))
         )
-      case Left(_) =>
-        logger.error("Failed to save income section")
-        Future.failed(SaveJourneyAnswersFailed("Failed to save income section"))
+      case Left(error) =>
+        logger.error(s"Failed to to save Rentals Income: ${error.toString}")
+        auditCYA(context.taxYear, request, propertyRentalsIncome, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(SaveJourneyAnswersFailed("Failed to to save Rentals Income"))
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(implicit
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyRentalsIncome: RentalsIncome,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentalsIncome",
+      sectionName = SectionName.Expenses,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
       propertyRentalsIncome
     )
 

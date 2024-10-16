@@ -17,9 +17,8 @@
 package controllers.ukrentaroom
 
 import controllers.actions._
-import models.{NormalMode, RentARoom}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.RentARoomStartView

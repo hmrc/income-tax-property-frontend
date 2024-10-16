@@ -17,8 +17,7 @@
 package forms.adjustments
 
 import forms.mappings.Mappings
-import models.{BusinessPremisesRenovationAllowanceBalancingCharge, RenovationAllowanceBalancingCharge}
-import pages.adjustments.RenovationAllowanceBalancingChargePage
+import models.RenovationAllowanceBalancingCharge
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue

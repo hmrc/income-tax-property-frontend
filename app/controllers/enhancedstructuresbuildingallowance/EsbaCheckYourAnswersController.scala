@@ -16,21 +16,19 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.{AuditService, RentalsAuditModel}
+import audit.AuditService
 import controllers.actions._
-import models.requests.DataRequest
-import models.{EsbasWithSupportingQuestions, JourneyContext, PropertyType}
+import models.PropertyType
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance._
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class EsbaCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,

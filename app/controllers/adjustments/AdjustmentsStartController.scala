@@ -17,15 +17,13 @@
 package controllers.adjustments
 
 import controllers.actions._
-import models.{NormalMode, Rentals}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.adjustments.AdjustmentsStartView
 
 import javax.inject.Inject
-import scala.concurrent.Future
 
 class AdjustmentsStartController @Inject() (
   override val messagesApi: MessagesApi,

@@ -16,10 +16,10 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.{AuditService, RentalsAuditModel, RentalsExpense}
+import audit.{AuditService, AuditModel, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{JourneyContext, Rentals, RentalsRentARoom}
 import models.requests.DataRequest
+import models._
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -96,29 +96,43 @@ class ExpensesCheckYourAnswersController @Inject() (
 
     propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
       case Right(_) =>
-        auditCYA(taxYear, request, expenses)
+        auditCYA(taxYear, request, expenses, isFailed = false, AccountingMethod.Traditional)
         Future.successful(Redirect(routes.ExpensesSectionFinishedController.onPageLoad(taxYear)))
-      case Left(_) => Future.failed(ExpensesSaveFailed)
+      case Left(error) =>
+        logger.error(s"Failed to to save Rentals Expenses: ${error.toString}")
+        auditCYA(taxYear, request, expenses, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(ExpensesSaveFailed)
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsExpense: RentalsExpense)(implicit
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    propertyRentalsExpense: RentalsExpense,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
     hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       agentReferenceNumber = request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyRentalsExpense",
+      sectionName = SectionName.Expenses,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
       propertyRentalsExpense
     )
+
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
 
-case object NotFoundException extends Exception("PropertyAbout Section is not present in userAnswers")
+case object NotFoundException extends Exception("Rentals Expenses Section is not present in userAnswers")
 
-case object ExpensesSaveFailed extends Exception("Unable to save Expenses")
+case object ExpensesSaveFailed extends Exception("Failed to to save Rentals Expenses")

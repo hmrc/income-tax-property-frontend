@@ -16,11 +16,11 @@
 
 package controllers.about
 
-import audit.{AuditService, PropertyAbout, RentalsAuditModel}
+import audit.{AuditService, PropertyAbout, AuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
-import models.JourneyContext
+import models._
 import models.requests.DataRequest
 import pages.ReportPropertyIncomePage
 import play.api.Logging
@@ -82,23 +82,30 @@ class CheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
     propertySubmissionService.saveJourneyAnswers(context, propertyAbout).flatMap {
       case Right(_) =>
-        auditCYA(taxYear, request, propertyAbout)
+        auditCYA(taxYear, request, propertyAbout, isFailed = false)
         Future.successful(Redirect(controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear)))
-      case Left(_) => Future.failed(SaveJourneyAnswersFailed("Unable to save property about section"))
+      case Left(error) =>
+        logger.error(s"Failed to save About section: ${error.toString}")
+        auditCYA(taxYear, request, propertyAbout, isFailed = true)
+        Future.failed(SaveJourneyAnswersFailed("Failed to save About section"))
     }
   }
 
-  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
-    hc: HeaderCarrier
+  private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout, isFailed: Boolean)(
+    implicit hc: HeaderCarrier
   ): Unit = {
-    val auditModel = RentalsAuditModel(
+    val auditModel = AuditModel(
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,
       request.user.agentRef,
       taxYear,
       isUpdate = false,
-      "PropertyAbout",
+      sectionName = SectionName.About,
+      propertyType = AuditPropertyType.UKProperty,
+      journeyName = JourneyName.Rentals,
+      accountingMethod = AccountingMethod.Cash,
+      isFailed = isFailed,
       propertyAbout
     )
 

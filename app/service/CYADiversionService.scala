@@ -18,39 +18,33 @@ package service
 
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
+import controllers.enhancedstructuresbuildingallowance.routes._
 import controllers.propertyrentals.expenses.routes._
 import controllers.propertyrentals.income.routes._
+import controllers.propertyrentals.routes._
 import controllers.structuresbuildingallowance.routes._
-import controllers.enhancedstructuresbuildingallowance.routes._
 import controllers.ukrentaroom.adjustments.routes._
 import controllers.ukrentaroom.allowances.routes._
 import controllers.ukrentaroom.expenses.routes._
-import controllers.ukrentaroom.routes._
 import models._
 import pages.QuestionPage
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
-import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
-import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
-import pages.propertyrentals.expenses._
-import controllers.propertyrentals.routes._
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
+import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
-import pages.structurebuildingallowance.SbaSectionFinishedPage
-import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage, StructureBuildingAllowanceClaimPage}
-import pages.structurebuildingallowance.{ClaimStructureBuildingAllowancePage, SbaSectionFinishedPage, StructureBuildingAllowanceClaimPage}
+import pages.structurebuildingallowance._
 import pages.ukrentaroom.AboutSectionCompletePage
 import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances.RaRAllowancesCompletePage
 import pages.ukrentaroom.expenses._
-import play.api.mvc.Results.Redirect
-import play.api.mvc.{Call, Result}
+import play.api.mvc.Call
 import queries.Gettable
 
 import javax.inject.Inject

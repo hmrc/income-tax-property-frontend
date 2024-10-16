@@ -22,7 +22,7 @@ import controllers.exceptions.InternalErrorFailure
 import models.RentalsRentARoom
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAdjustment, RentalsRentARoom, SectionName}
+import models._
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -73,7 +73,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           case Right(Some(details)) => saveAdjustments(request, taxYear, details)
           case Left(_) =>
             val errormessage =
-              s"Failed to retrieve property details for user with nino ${request.user.nino} and mrditid ${request.user.mtditid}"
+              s"Failed to retrieve property details for user with nino ${request.user.nino} and mtditid ${request.user.mtditid}"
             logger.error(errormessage)
             Future.failed(InternalErrorFailure(errormessage))
         }
