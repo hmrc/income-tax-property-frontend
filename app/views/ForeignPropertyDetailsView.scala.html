@@ -1,0 +1,54 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.routes
+@import viewmodels.PropertyDetailsPage
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+
+@(page: PropertyDetailsPage)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("foreignPropertyDetails.title"))) {
+
+    <h1 class="govuk-heading-l">@messages("foreignPropertyDetails.title")</h1>
+
+    <p class="govuk-body">@messages("foreignPropertyDetails.para1")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages(s"foreignPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
+        <li>@messages(s"foreignPropertyDetails.bullet2.${page.individualOrAgent}") @messages(s"${page.cashOrAccrualsMessageKey}")</li>
+    </ul>
+
+    <p class="govuk-body">@messages("foreignPropertyDetails.para2.part1")
+        <a href="#" class="govuk-link">@messages("foreignPropertyDetails.para2.part2")</a>
+        @messages("foreignPropertyDetails.para2.part3")</p>
+
+    <p class="govuk-body">
+    @govukButton(
+        ButtonViewModel(messages("foreignPropertyDetails.button"))
+        .asLink(routes.SummaryController.show(page.taxYear).url)
+        .withId("continue")
+    )
+    </p>
+}
+
+@{
+    // $COVERAGE-OFF$
+}

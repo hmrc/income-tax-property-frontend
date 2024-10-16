@@ -21,17 +21,17 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import java.time.LocalDate
 
-class UKPropertyDetailsPageSpec extends AnyWordSpec with Matchers {
+class PropertyDetailsPageSpec extends AnyWordSpec with Matchers {
 
   "cashOrAccrualsMessageKey" should {
     val taxYear = LocalDate.now().getYear
 
     "output the cash message key when it is false" in {
-      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = true).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
+      PropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = true).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
     }
 
     "output the cash message key when it is true" in {
-      UKPropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = false).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
+      PropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = false).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
     }
   }
 }

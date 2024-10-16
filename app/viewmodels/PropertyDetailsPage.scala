@@ -19,7 +19,7 @@ package viewmodels
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.ofPattern
 
-case class UKPropertyDetailsPage(
+case class PropertyDetailsPage(
   taxYear: Int,
   individualOrAgent: String,
   tradingStartDate: LocalDate,
