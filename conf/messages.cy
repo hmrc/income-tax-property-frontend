@@ -1755,3 +1755,13 @@ foreignPropertyDetails.para2.part1 = *Missing Welsh*
 foreignPropertyDetails.para2.part2 = *Missing Welsh*
 foreignPropertyDetails.para2.part3 = *Missing Welsh*
 foreignPropertyDetails.button = *Missing Welsh*
+
+propertyIncomeReport.title = *Missing Welsh*
+propertyIncomeReport.heading = *Missing Welsh*
+propertyIncomeReport.reportPropertyIncome.individual = *Missing Welsh*
+propertyIncomeReport.reportPropertyIncome.agent = *Missing Welsh*
+propertyIncomeReport.doNotReportPropertyIncome.individual = *Missing Welsh*
+propertyIncomeReport.doNotReportPropertyIncome.agent = *Missing Welsh*
+propertyIncomeReport.checkYourAnswersLabel = *Missing Welsh*
+propertyIncomeReport.error.required = *Missing Welsh*
+propertyIncomeReport.change.hidden = *Missing Welsh*

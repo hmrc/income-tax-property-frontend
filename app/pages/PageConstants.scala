@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{PropertyType, RentARoom, Rentals, RentalsRentARoom}
+import models.{ForeignProperty, PropertyType, RentARoom, Rentals, RentalsRentARoom}
 
 object PageConstants {
 
@@ -30,9 +30,10 @@ object PageConstants {
 
   val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
     propertyType match {
-      case Rentals          => s"rentals$suffix"
-      case RentARoom        => s"rentARoom$suffix"
+      case Rentals => s"rentals$suffix"
+      case RentARoom => s"rentARoom$suffix"
       case RentalsRentARoom => s"rentalsRentARoom$suffix"
+      case ForeignProperty => s"foreignProperty$suffix"
     }
 
   // About

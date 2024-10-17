@@ -1806,3 +1806,13 @@ foreignPropertyDetails.para2.part1 = If these details are wrong you can
 foreignPropertyDetails.para2.part2 = go back to your online account
 foreignPropertyDetails.para2.part3 = to change them.
 foreignPropertyDetails.button = Continue
+
+propertyIncomeReport.title = Do you want to report your property income?
+propertyIncomeReport.heading = Do you want to report your property income?
+propertyIncomeReport.reportPropertyIncome.individual = I want to report my property income
+propertyIncomeReport.reportPropertyIncome.agent = My client wants to report their property income
+propertyIncomeReport.doNotReportPropertyIncome.individual = I don't want to report my property income
+propertyIncomeReport.doNotReportPropertyIncome.agent = My client doesn't want to report their property income
+propertyIncomeReport.checkYourAnswersLabel = Do you want to report your property income?
+propertyIncomeReport.error.required = Select ‘I want to report my property income’, or ‘I do not want to report my property income’
+propertyIncomeReport.change.hidden = PropertyIncomeReport
