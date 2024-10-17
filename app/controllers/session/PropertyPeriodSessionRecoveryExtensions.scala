@@ -476,7 +476,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimPropertyIncomeAllowancePage(RentalsRentARoom),
                      rentalsRaRAbout.claimPropertyIncomeAllowanceYesOrNo
                    )
-            ua5 <- ua4.set(PropertyRentalIncomePage(RentalsRentARoom), rentalsRaRAbout.incomeFromPropertyRentals)
+            ua5 <- ua4.set(PropertyRentalIncomePage(RentalsRentARoom), rentalsRaRAbout.propertyRentalIncome)
 
           } yield ua5
       }
