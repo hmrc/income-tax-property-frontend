@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 
 case class RentalsIncome(
                           isNonUKLandlord: Boolean,
-                          incomeFromPropertyRentals: BigDecimal,
+                          propertyRentalIncome: BigDecimal,
                           otherIncomeFromProperty: BigDecimal,
                           deductingTax: Option[DeductingTax],
                           calculatedFigureYourself: Option[CalculatedFigureYourself],

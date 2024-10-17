@@ -25,7 +25,7 @@ import pages.propertyrentals.income.{PropertyRentalIncomePage, OtherIncomeFromPr
 object TotalIncomeUtils {
 
   def totalIncome(userAnswers: UserAnswers, propertyType: PropertyType): BigDecimal = {
-    val incomeFromPropertyRentals = userAnswers.get(PropertyRentalIncomePage(propertyType)).getOrElse(BigDecimal(0))
+    val propertyRentalIncome = userAnswers.get(PropertyRentalIncomePage(propertyType)).getOrElse(BigDecimal(0))
     val leasePremiumCalculated =
       userAnswers.get(CalculatedFigureYourselfPage(propertyType)).flatMap(_.amount).getOrElse(BigDecimal(0))
     val reversePremiumsReceived =
@@ -34,7 +34,7 @@ object TotalIncomeUtils {
       userAnswers.get(PremiumsGrantLeasePage(propertyType)).flatMap(_.premiumsGrantLease).getOrElse(BigDecimal(0))
     val otherIncome = userAnswers.get(OtherIncomeFromPropertyPage(propertyType)).getOrElse(BigDecimal(0))
 
-    incomeFromPropertyRentals + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
+    propertyRentalIncome + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
   }
 
   def isTotalIncomeUnder85K(userAnswers: UserAnswers, propertyType: PropertyType): Boolean = {

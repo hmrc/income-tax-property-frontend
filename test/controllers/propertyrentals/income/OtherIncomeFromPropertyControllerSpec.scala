@@ -51,7 +51,7 @@ class OtherPropertyRentalIncomeControllerSpec extends SpecBase with MockitoSugar
   lazy val RentalsAndRaRRoute: String =
     routes.OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
 
-  "incomeFromPropertyRentals Controller" - {
+  "propertyRentalIncome Controller" - {
 
     "must return OK if the route is valid" in {
 

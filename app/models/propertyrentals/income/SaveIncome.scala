@@ -80,7 +80,7 @@ object SaveIncome {
 
     val incomeToSave = Income(
       propertyRentalsIncome.isNonUKLandlord,
-      propertyRentalsIncome.incomeFromPropertyRentals,
+      propertyRentalsIncome.propertyRentalIncome,
       propertyRentalsIncome.premiumsGrantLease.map(_.premiumsGrantLeaseYesOrNo).getOrElse(false), // ToDo: Recheck
       ReversePremiumsReceived(
         propertyRentalsIncome.reversePremiumsReceived.map(_.reversePremiumsReceived).getOrElse(false)

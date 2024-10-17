@@ -886,7 +886,7 @@ class NavigatorSpec extends SpecBase {
           ) mustBe checkCYARouteForPropertyType(propertyType, taxYear)
         }
 
-        s"must go from IncomeFromPropertyRentals to CheckYourAnswers for $propertyTypeDefinition" in {
+        s"must go from PropertyRentalIncome to CheckYourAnswers for $propertyTypeDefinition" in {
           navigator.nextPage(
             PropertyRentalIncomePage(propertyType),
             taxYear,

@@ -28,7 +28,7 @@ class PropertyRentalIncomeFormProvider @Inject() extends Mappings {
 
   def apply(agentOrIndividual: String): Form[BigDecimal] =
     Form(
-      "incomeFromPropertyRentals" -> currency(
+      "propertyRentalIncome" -> currency(
         s"propertyRentalIncome.error.required.$agentOrIndividual",
         "propertyRentalIncome.error.twoDecimalPlaces",
         s"propertyRentalIncome.error.nonNumeric.$agentOrIndividual")
