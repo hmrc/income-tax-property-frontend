@@ -32,7 +32,7 @@ case class PropertyRentalIncomePage(propertyType: PropertyType) extends Question
     case _                => JsPath \ incomePath(propertyType) \ toString
   }
 
-  override def toString: String = "incomeFromPropertyRentals"
+  override def toString: String = "propertyRentalIncome"
 
   override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
     if (isTotalIncomeUnder85K(userAnswers, propertyType)) {
