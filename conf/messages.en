@@ -299,10 +299,10 @@ propertyRentalIncome.link = work out your rental income when you let property at
 propertyRentalIncome.para2.individual = How much total income did you get from your property rental?
 propertyRentalIncome.para2.agent = How much total income did your client get from their property rental?
 propertyRentalIncome.deductions.hint = This is the amount before any deductions have been made.
-propertyRentalIncome.error.nonNumeric.individual = Enter the amount for your total income from property rentals
-propertyRentalIncome.error.nonNumeric.agent = Enter your client’s total income from all their property rentals
-propertyRentalIncome.error.required.agent = Enter your client’s total income from all their property rentals
-propertyRentalIncome.error.required.individual = Enter the amount for your total income from property rentals
+propertyRentalIncome.error.nonNumeric.individual = Enter the amount for your property rental income
+propertyRentalIncome.error.nonNumeric.agent = Enter the amount for your client's property rental income
+propertyRentalIncome.error.required.agent = Enter your client’s property rental income
+propertyRentalIncome.error.required.individual = Enter your property rental income
 propertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 propertyRentalIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 

@@ -25,7 +25,7 @@ final case class RentalsAndRaRAbout(
   totalIncomeAmount: BigDecimal,
   claimPropertyIncomeAllowanceYesOrNo: Boolean,
   claimExpensesOrRelief: ClaimExpensesOrRelief,
-  incomeFromPropertyRentals: BigDecimal
+  propertyRentalIncome: BigDecimal
 )
 
 object RentalsAndRaRAbout extends Settable[RentalsAndRaRAbout] with Gettable[RentalsAndRaRAbout] {
