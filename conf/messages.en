@@ -1806,3 +1806,11 @@ foreignPropertyDetails.para2.part1 = If these details are wrong you can
 foreignPropertyDetails.para2.part2 = go back to your online account
 foreignPropertyDetails.para2.part3 = to change them.
 foreignPropertyDetails.button = Continue
+
+totalIncome.title = totalIncome
+totalIncome.heading = totalIncome
+totalIncome.option1 = Option 1
+totalIncome.option2 = Option 2
+totalIncome.checkYourAnswersLabel = totalIncome
+totalIncome.error.required = Select totalIncome
+totalIncome.change.hidden = TotalIncome

@@ -801,3 +801,8 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 ############################  Foreign Property ###################################
 
 GET         /:taxYear/foreign-property/about/start                                                                       controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+
+GET        /totalIncome                        controllers.TotalIncomeController.onPageLoad(mode: Mode = NormalMode)
+POST       /totalIncome                        controllers.TotalIncomeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTotalIncome                  controllers.TotalIncomeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTotalIncome                  controllers.TotalIncomeController.onSubmit(mode: Mode = CheckMode)
