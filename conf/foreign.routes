@@ -1,0 +1,8 @@
+############################  Foreign Property ###################################
+
+GET         /:taxYear/foreign-property/about/start                                  controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+
+GET        /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
