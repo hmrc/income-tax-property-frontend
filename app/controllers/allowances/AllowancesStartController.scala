@@ -16,7 +16,7 @@
 
 package controllers.allowances
 
-import controllers.BusinessServiceLike
+import controllers.PropertyDetailsHandler
 import controllers.actions._
 import models.PropertyType
 import models.backend.PropertyDetails
@@ -41,13 +41,13 @@ class AllowancesStartController @Inject() (
   view: AllowancesStartView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with BusinessServiceLike {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
-        propertyDetails: PropertyDetails =>
+        (propertyDetails: PropertyDetails) =>
           Future(
             Ok(
               view(

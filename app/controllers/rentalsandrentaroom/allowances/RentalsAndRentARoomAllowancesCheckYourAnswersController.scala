@@ -17,7 +17,7 @@
 package controllers.rentalsandrentaroom.allowances
 
 import audit.{AuditModel, AuditService}
-import controllers.BusinessServiceLike
+import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models._
@@ -47,7 +47,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
   businessService: BusinessService,
   auditService: AuditService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with SummaryListFluency with BusinessServiceLike with Logging {
+    extends FrontendBaseController with I18nSupport with SummaryListFluency with PropertyDetailsHandler with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

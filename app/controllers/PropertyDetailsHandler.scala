@@ -25,7 +25,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait BusinessServiceLike extends Logging {
+trait PropertyDetailsHandler extends Logging {
 
   def withUkPropertyDetails[T](
     businessService: BusinessService,
