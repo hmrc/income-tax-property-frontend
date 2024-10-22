@@ -17,11 +17,12 @@
 package controllers.rentalsandrentaroom.allowances
 
 import audit.{AuditModel, AuditService}
+import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAllowance, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -46,7 +47,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
   businessService: BusinessService,
   auditService: AuditService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with SummaryListFluency with Logging {
+    extends FrontendBaseController with I18nSupport with SummaryListFluency with PropertyDetailsHandler with Logging {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -103,26 +104,28 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Unit] =
-    businessService
-      .getUkPropertyDetails(request.user.nino, request.user.mtditid)
-      .map {
-        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
-          val auditModel = AuditModel(
-            nino = request.user.nino,
-            userType = request.user.affinityGroup,
-            mtdItId = request.user.mtditid,
-            agentReferenceNumber = request.user.agentRef,
-            taxYear = taxYear,
-            isUpdate = false,
-            sectionName = SectionName.Allowances,
-            propertyType = AuditPropertyType.UKProperty,
-            journeyName = JourneyName.RentalsRentARoom,
-            accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-            userEnteredDetails = allowances,
-            isFailed = isFailed
-          )
-          auditService.sendAuditEvent(auditModel)
-        case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")
-      }
-
+    withUkPropertyDetails[Unit](businessService, request.user.nino, request.user.mtditid) {
+      propertyDetails: PropertyDetails =>
+        Future(
+          propertyDetails match {
+            case PropertyDetails(_, _, Some(accrualsOrCash), _) =>
+              val auditModel = AuditModel(
+                nino = request.user.nino,
+                userType = request.user.affinityGroup,
+                mtdItId = request.user.mtditid,
+                agentReferenceNumber = request.user.agentRef,
+                taxYear = taxYear,
+                isUpdate = false,
+                sectionName = SectionName.Allowances,
+                propertyType = AuditPropertyType.UKProperty,
+                journeyName = JourneyName.RentalsRentARoom,
+                accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+                userEnteredDetails = allowances,
+                isFailed = isFailed
+              )
+              auditService.sendAuditEvent(auditModel)
+            case _ => logger.error("CashOrAccruals information could not be retrieved from downstream.")
+          }
+        )
+    }
 }
