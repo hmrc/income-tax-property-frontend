@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.allowances.AllowancesSectionFinishedFormProvider
+import models.JourneyPath.RentalAllowances
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.allowances.AllowancesSectionFinishedPage
@@ -74,7 +75,7 @@ class AllowancesSectionFinishedController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "rental-allowances"
+                            journeyPath = RentalAllowances
                           ),
                           status = statusForPage(value),
                           user = request.user

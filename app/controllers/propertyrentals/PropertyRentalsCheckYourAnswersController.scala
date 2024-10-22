@@ -16,10 +16,11 @@
 
 package controllers.propertyrentals
 
-import audit.{AuditService, RentalsAbout, AuditModel}
+import audit.{AuditModel, AuditService, RentalsAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.SaveJourneyAnswersFailed
+import models.JourneyPath.PropertyRentalAbout
 import models.requests.DataRequest
 import models._
 import play.api.Logging
@@ -76,7 +77,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-about")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalAbout)
     propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyRentalsAbout, isFailed = false, AccountingMethod.Traditional)

@@ -16,9 +16,10 @@
 
 package controllers.allowances
 
-import audit.{AuditService, RentalsAllowance, AuditModel}
+import audit.{AuditModel, AuditService, RentalsAllowance}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
+import models.JourneyPath.PropertyRentalAllowances
 import models.backend.ServiceError
 import models.requests.DataRequest
 import models._
@@ -101,7 +102,7 @@ class AllowancesCheckYourAnswersController @Inject() (
       taxYear = taxYear,
       mtditid = request.user.mtditid,
       nino = request.user.nino,
-      journeyName = "property-rental-allowances"
+      journeyPath = PropertyRentalAllowances
     )
     propertySubmissionService.saveJourneyAnswers[RentalsAllowance](context, allowance)
   }

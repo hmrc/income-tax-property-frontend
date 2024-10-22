@@ -18,6 +18,7 @@ package controllers.propertyrentals.expenses
 
 import audit.RentalsExpense
 import base.SpecBase
+import models.JourneyPath.PropertyRentalExpenses
 import models.{ConsolidatedExpenses, JourneyContext, Rentals, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -86,7 +87,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
       val userAnswers = UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), consolidatedExpenses).toOption
 
       val context =
-        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-expenses")
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = PropertyRentalExpenses)
       val rentalsExpense = RentalsExpense(Some(consolidatedExpenses), None, None, None, None, None, None, None)
 
       when(

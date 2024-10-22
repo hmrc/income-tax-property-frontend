@@ -19,6 +19,7 @@ package controllers.allowances
 import base.SpecBase
 import controllers.routes
 import forms.allowances.AllowancesSectionFinishedFormProvider
+import models.JourneyPath.RentalAllowances
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -103,7 +104,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-allowances")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalAllowances)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

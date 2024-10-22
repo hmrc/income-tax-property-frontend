@@ -22,6 +22,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import controllers.propertyrentals.expenses.{ExpensesSaveFailed, NotFoundException}
 import models.JourneyContext
 import models.requests.DataRequest
+import models.JourneyPath
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -101,7 +102,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-expenses")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentARoomExpenses)
     propertySubmissionService.saveJourneyAnswers(context, rentARoomExpenses).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, rentARoomExpenses)

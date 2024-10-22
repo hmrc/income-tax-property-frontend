@@ -22,7 +22,7 @@ import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.Under
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedBackendData, JourneyContext, UKPropertySelect, User}
+import models.{FetchedBackendData, JourneyContext, UKPropertySelect, User,JourneyPath}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -109,7 +109,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
     val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
     val taxYear = 2024
     val context =
-      JourneyContext(taxYear = taxYear, mtditid = user.mtditid, nino = user.nino, journeyName = "property-about")
+      JourneyContext(taxYear = taxYear, mtditid = user.mtditid, nino = user.nino, journeyPath = JourneyPath.PropertyAbout)
     val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
 
     "return error when fails to get property data" in {

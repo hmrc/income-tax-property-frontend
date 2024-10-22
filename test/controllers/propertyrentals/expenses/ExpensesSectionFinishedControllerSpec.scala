@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedController
 import controllers.routes
 import forms.ExpensesSectionFinishedFormProvider
+import models.JourneyPath.RentalExpenses
 import models.{JourneyContext, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -100,7 +101,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-expenses")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalExpenses)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

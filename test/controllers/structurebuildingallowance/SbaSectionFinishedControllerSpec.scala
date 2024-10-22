@@ -19,6 +19,7 @@ package controllers.structurebuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.structurebuildingallowance.SbaSectionFinishedFormProvider
+import models.JourneyPath.RentalSBA
 import models.{JourneyContext, NormalMode, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -106,7 +107,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-sba")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalSBA)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

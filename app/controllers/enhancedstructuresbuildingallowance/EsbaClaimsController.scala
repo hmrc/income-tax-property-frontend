@@ -20,6 +20,7 @@ import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaClaimsFormProvider
+import models.JourneyPath.{ESBA, RentalsAndRentARoomESBA}
 import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
@@ -114,11 +115,11 @@ class EsbaClaimsController @Inject() (
       .getUkPropertyDetails(request.user.nino, request.user.mtditid)
       .flatMap {
         case Right(Some(propertyDetails)) =>
-          val journeyName = propertyType match {
-            case Rentals => "esba"
-            case _       => "rentals-and-rent-a-room-esba"
+          val journeyPath = propertyType match {
+            case Rentals => ESBA
+            case _       => RentalsAndRentARoomESBA
           }
-          val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyName)
+          val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyPath)
 
           saveEsba(taxYear, request, propertyType, context, propertyDetails)
         case Left(_) =>
