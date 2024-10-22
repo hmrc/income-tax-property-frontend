@@ -48,10 +48,8 @@ class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings 
         .verifying(
           checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, StructuredBuildingAllowanceAddress](
             Addressable
-              .getAddresses(
-                0,
+              .getAddresses[StructuredBuildingAllowanceAddress](
                 userAnswers,
-                List[StructuredBuildingAllowanceAddress](),
                 propertyType,
                 currentIndexNotToCheckAgainstInSbaSection
               ),
@@ -61,7 +59,7 @@ class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings 
         .verifying(
           checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, EsbaAddress](
             Addressable
-              .getAddresses(0, userAnswers, List[EsbaAddress](), propertyType, indexToCheckAgainstInOtherSection),
+              .getAddresses[EsbaAddress](userAnswers, propertyType, indexToCheckAgainstInOtherSection),
             "structureBuildingAllowanceAddress.duplicateEsba"
           )
         )

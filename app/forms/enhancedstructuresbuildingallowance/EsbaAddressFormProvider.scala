@@ -45,9 +45,7 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
         .verifying(
           checkIfAddressAlreadyEntered[EsbaAddress, EsbaAddress](
             getAddresses[EsbaAddress](
-              0,
               userAnswers,
-              List[EsbaAddress](),
               propertyType,
               currentIndexNotToCheckAgainstInEsbaSection
             ),
@@ -57,9 +55,7 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
         .verifying(
           checkIfAddressAlreadyEntered[EsbaAddress, StructuredBuildingAllowanceAddress](
             getAddresses[StructuredBuildingAllowanceAddress](
-              0,
               userAnswers,
-              List[StructuredBuildingAllowanceAddress](),
               propertyType,
               indexToCheckAgainstInOtherSection
             ),
