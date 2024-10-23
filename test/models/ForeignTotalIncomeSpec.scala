@@ -24,40 +24,40 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.libs.json.{JsError, JsString, Json}
 
-class TotalIncomeSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class ForeignTotalIncomeSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "totalIncome" - {
+  "foreignTotalIncome" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(TotalIncome.values.toSeq)
+      val gen = Gen.oneOf(ForeignTotalIncome.values)
 
       forAll(gen) {
-        totalIncome =>
+        foreignTotalIncome =>
 
-          JsString(totalIncome.toString).validate[TotalIncome].asOpt.value mustEqual totalIncome
+          JsString(foreignTotalIncome.toString).validate[ForeignTotalIncome].asOpt.value mustEqual foreignTotalIncome
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!TotalIncome.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ForeignTotalIncome.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[TotalIncome] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[ForeignTotalIncome] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(TotalIncome.values.toSeq)
+      val gen = Gen.oneOf(ForeignTotalIncome.values)
 
       forAll(gen) {
-        totalIncome =>
+        foreignTotalIncome =>
 
-          Json.toJson(totalIncome) mustEqual JsString(totalIncome.toString)
+          Json.toJson(foreignTotalIncome) mustEqual JsString(foreignTotalIncome.toString)
       }
     }
   }

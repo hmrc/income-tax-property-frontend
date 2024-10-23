@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package generators
+package pages.foreign
 
-import models._
-import org.scalacheck.{Arbitrary, Gen}
+import models.ForeignTotalIncome
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-trait ModelGenerators {
+case object TotalIncomePage extends QuestionPage[ForeignTotalIncome] {
 
-  implicit lazy val arbitraryForeignTotalIncome: Arbitrary[ForeignTotalIncome] =
-    Arbitrary {
-      Gen.oneOf(ForeignTotalIncome.values)
-    }
+  override def path: JsPath = JsPath \ "foreign" \ toString
 
-  implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
-    Arbitrary {
-      Gen.oneOf(UKPropertySelect.values)
-    }
+  override def toString: String = "totalIncome"
 
-  implicit lazy val arbitrarytotalIncome: Arbitrary[TotalIncome] =
-    Arbitrary {
-      Gen.oneOf(TotalIncome.values.toSeq)
-    }
 }

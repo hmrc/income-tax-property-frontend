@@ -1,5 +1,6 @@
 # microservice specific routes
 
+
 ->          /hmrc-frontend                                                                                               hmrcfrontend.Routes
 
 GET         /                                                                                                            controllers.IndexController.onPageLoad
@@ -798,6 +799,4 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/change-business-premises-r
 GET         /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onSubmit(taxYear: Int)
 
-############################  Foreign Property ###################################
 
-GET         /:taxYear/foreign-property/about/start                                                                       controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
