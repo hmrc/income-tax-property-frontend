@@ -1807,6 +1807,7 @@ foreignPropertyDetails.para2.part2 = go back to your online account
 foreignPropertyDetails.para2.part3 = to change them.
 foreignPropertyDetails.button = Continue
 
+<<<<<<< HEAD
 foreignTotalIncome.title.individual = How much total income did you get from all of your foreign properties?
 foreignTotalIncome.title.agent = How much total income did your client get from all of their foreign properties?
 foreignTotalIncome.heading.individual = How much total income did you get from all of your foreign properties?
@@ -1821,3 +1822,14 @@ foreignTotalIncome.error.required.individual = Select either 'Less than £1,000 
 foreignTotalIncome.error.required.agent = Select either 'Less than £1,000 or £1,000 or more
 foreignTotalIncome.change.hidden.individual = how much total income did you get from all of your foreign properties?
 foreignTotalIncome.change.hidden.agent = how much total income did your client get from all of their foreign properties?
+
+propertyIncomeReport.title = Do you want to report your property income?
+propertyIncomeReport.heading = Do you want to report your property income?
+propertyIncomeReport.reportPropertyIncome.individual = I want to report my property income
+propertyIncomeReport.reportPropertyIncome.agent = My client wants to report their property income
+propertyIncomeReport.doNotReportPropertyIncome.individual = I don't want to report my property income
+propertyIncomeReport.doNotReportPropertyIncome.agent = My client doesn't want to report their property income
+propertyIncomeReport.checkYourAnswersLabel = Do you want to report your property income?
+propertyIncomeReport.error.required.individual = Select ‘I want to report my property income’, or ‘I do not want to report my property income’
+propertyIncomeReport.error.required.agent = Select ‘I want to report my client's property income’, or ‘I do not want to report my client's property income’
+propertyIncomeReport.change.hidden = PropertyIncomeReport
