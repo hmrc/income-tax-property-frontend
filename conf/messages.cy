@@ -1756,7 +1756,6 @@ foreignPropertyDetails.para2.part2 = *Missing Welsh*
 foreignPropertyDetails.para2.part3 = *Missing Welsh*
 foreignPropertyDetails.button = *Missing Welsh*
 
-<<<<<<< HEAD
 foreignTotalIncome.title.individual = *Missing Welsh*
 foreignTotalIncome.title.agent = *Missing Welsh*
 foreignTotalIncome.heading.individual = *Missing Welsh*
