@@ -53,7 +53,6 @@ class AllowancesCheckYourAnswersController @Inject() (
         rows = Seq(
           CapitalAllowancesForACarSummary.row(taxYear, request.userAnswers, Rentals),
           AnnualInvestmentAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
-          ElectricChargePointAllowanceSummary.row(taxYear, request.userAnswers),
           ZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           ZeroEmissionGoodsVehicleAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
           BusinessPremisesRenovationSummary.row(taxYear, request.userAnswers, Rentals),

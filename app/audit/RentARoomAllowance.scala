@@ -24,7 +24,6 @@ import queries.Gettable
 case class RentARoomAllowance(
   capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   annualInvestmentAllowance: Option[BigDecimal],
-  electricChargePointAllowance: Option[BigDecimal],
   zeroEmissionCarAllowance: Option[BigDecimal],
   zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
   businessPremisesRenovationAllowance: Option[BigDecimal],

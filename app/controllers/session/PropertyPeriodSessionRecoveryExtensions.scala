@@ -236,13 +236,12 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(AnnualInvestmentAllowancePage(propertyType), allowances.annualInvestmentAllowance)
             ua2 <- ua1.set(BusinessPremisesRenovationPage(propertyType), allowances.businessPremisesRenovationAllowance)
-            ua3 <- ua2.set(ElectricChargePointAllowancePage, allowances.electricChargePointAllowance)
-            ua4 <- ua3.set(OtherCapitalAllowancePage(propertyType), allowances.otherCapitalAllowance)
-            ua5 <- ua4.set(ReplacementOfDomesticGoodsPage(propertyType), allowances.replacementOfDomesticGoodsAllowance)
-            ua6 <- ua5.set(ZeroEmissionCarAllowancePage(propertyType), allowances.zeroEmissionCarAllowance)
-            ua7 <-
-              ua6.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), allowances.zeroEmissionGoodsVehicleAllowance)
-          } yield ua7
+            ua3 <- ua2.set(OtherCapitalAllowancePage(propertyType), allowances.otherCapitalAllowance)
+            ua4 <- ua3.set(ReplacementOfDomesticGoodsPage(propertyType), allowances.replacementOfDomesticGoodsAllowance)
+            ua5 <- ua4.set(ZeroEmissionCarAllowancePage(propertyType), allowances.zeroEmissionCarAllowance)
+            ua6 <-
+              ua5.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), allowances.zeroEmissionGoodsVehicleAllowance)
+          } yield ua6
       }
 
     private def updatePropertyRentalsIncomePages(
@@ -495,22 +494,19 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua2 <- rentARoomAllowance.annualInvestmentAllowance.fold[Try[UserAnswers]](Success(ua1))(aia =>
                      ua1.set(RaRAnnualInvestmentAllowancePage, aia)
                    )
-            ua3 <- rentARoomAllowance.electricChargePointAllowance.fold[Try[UserAnswers]](Success(ua2))(ecpa =>
-                     ua2.set(RaRElectricChargePointAllowanceForAnEVPage, ecpa)
+            ua3 <- rentARoomAllowance.zeroEmissionCarAllowance.fold[Try[UserAnswers]](Success(ua2))(zeca =>
+                     ua2.set(RaRZeroEmissionCarAllowancePage, zeca)
                    )
-            ua4 <- rentARoomAllowance.zeroEmissionCarAllowance.fold[Try[UserAnswers]](Success(ua3))(zeca =>
-                     ua3.set(RaRZeroEmissionCarAllowancePage, zeca)
+            ua4 <- rentARoomAllowance.zeroEmissionGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua3))(zegva =>
+                     ua3.set(RaRZeroEmissionGoodsVehicleAllowancePage, zegva)
                    )
-            ua5 <- rentARoomAllowance.zeroEmissionGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua4))(zegva =>
-                     ua4.set(RaRZeroEmissionGoodsVehicleAllowancePage, zegva)
+            ua5 <- rentARoomAllowance.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua4))(rodga =>
+                     ua4.set(RaRReplacementsOfDomesticGoodsPage, rodga)
                    )
-            ua6 <- rentARoomAllowance.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua5))(rodga =>
-                     ua5.set(RaRReplacementsOfDomesticGoodsPage, rodga)
+            ua6 <- rentARoomAllowance.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua5))(oca =>
+                     ua5.set(RaROtherCapitalAllowancesPage, oca)
                    )
-            ua7 <- rentARoomAllowance.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua6))(oca =>
-                     ua6.set(RaROtherCapitalAllowancesPage, oca)
-                   )
-          } yield ua7
+          } yield ua6
       }
 
     def updateRentARoomAdjustments(

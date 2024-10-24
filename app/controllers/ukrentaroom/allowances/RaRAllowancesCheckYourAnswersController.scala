@@ -51,7 +51,6 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          RaRElectricChargedPointForAnEVAllowanceSummary.row(taxYear, request.userAnswers),
           RaRZeroEmissionCarAllowanceSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           RaRReplacementsOfDomesticGoodsSummary.row(taxYear, request.userAnswers),
           RaRCapitalAllowancesForACarSummary.row(taxYear, request.userAnswers),

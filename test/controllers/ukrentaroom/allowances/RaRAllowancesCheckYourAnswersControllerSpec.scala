@@ -59,8 +59,6 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
   val zeroEmissionGoodsVehicleAllowanceValue = 800
   val zeroEmissionGoodsVehicleAllowance: BigDecimal = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
 
-  val electricChargePointAllowanceValue = 200
-
   "RaRAllowancesCheckYourAnswer Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -103,7 +101,6 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
             RentARoomAllowance(
               capitalAllowancesForACar = None,
               annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-              electricChargePointAllowance = Some(electricChargePointAllowanceValue),
               zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
               replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
               otherCapitalAllowance = Some(otherCapitalAllowance),

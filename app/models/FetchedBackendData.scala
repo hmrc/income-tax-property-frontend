@@ -41,7 +41,6 @@ object Adjustments {
 final case class Allowances(
   annualInvestmentAllowance: BigDecimal,
   businessPremisesRenovationAllowance: BigDecimal,
-  electricChargePointAllowance: ElectricChargePointAllowance,
   otherCapitalAllowance: BigDecimal,
   replacementOfDomesticGoodsAllowance: BigDecimal,
   zeroEmissionCarAllowance: BigDecimal,
