@@ -271,12 +271,13 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     TaskListItem(
       "summary.adjustments",
       cyaDiversionService
-        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "esba", Rentals, NormalMode) {controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
-        taxYear,
-        userAnswers
-          .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
-          .getOrElse(false)
-      )
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", Rentals, NormalMode) {
+          controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
+            taxYear,
+            userAnswers
+              .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
+              .getOrElse(false)
+          )
         }(identity), {
         val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 
