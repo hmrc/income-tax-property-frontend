@@ -60,7 +60,7 @@ class ExpensesCheckYourAnswersController @Inject() (
     val consolidatedExpensesRows = request.userAnswers.get(ConsolidatedExpensesPage(Rentals)) match {
       case Some(_) =>
         ConsolidatedExpensesSummary
-          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentalsRentARoom)
+          .rows(taxYear, request.userAnswers, request.user.isAgentMessageKey, Rentals)
           .getOrElse(Seq.empty)
       case None => Seq.empty
     }
