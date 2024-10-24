@@ -6,3 +6,8 @@ GET        /:taxYear/foreign-property/totalIncome                        control
 POST       /:taxYear/foreign-property/totalIncome                        controllers.foreign.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/changeTotalIncome                  controllers.foreign.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/changeTotalIncome                  controllers.foreign.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income-report                                 controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

@@ -1770,3 +1770,14 @@ foreignTotalIncome.error.required.individual = *Missing Welsh*
 foreignTotalIncome.error.required.agent = *Missing Welsh*
 foreignTotalIncome.change.hidden.individual = *Missing Welsh*
 foreignTotalIncome.change.hidden.agent = *Missing Welsh*
+
+propertyIncomeReport.title = *Missing Welsh*
+propertyIncomeReport.heading = *Missing Welsh*
+propertyIncomeReport.reportPropertyIncome.individual = *Missing Welsh*
+propertyIncomeReport.reportPropertyIncome.agent = *Missing Welsh*
+propertyIncomeReport.doNotReportPropertyIncome.individual = *Missing Welsh*
+propertyIncomeReport.doNotReportPropertyIncome.agent = *Missing Welsh*
+propertyIncomeReport.checkYourAnswersLabel = *Missing Welsh*
+propertyIncomeReport.error.required.individual = *Missing Welsh*
+propertyIncomeReport.error.required.agent = *Missing Welsh*
+propertyIncomeReport.change.hidden = *Missing Welsh*

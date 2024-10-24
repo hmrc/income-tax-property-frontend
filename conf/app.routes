@@ -797,6 +797,5 @@ GET         /:taxYear/rentals-rent-a-room/adjustments/change-business-premises-r
 POST        /:taxYear/rentals-rent-a-room/adjustments/change-business-premises-renovation-balancing-charge               controllers.rentalsandrentaroom.adjustments.BusinessPremisesRenovationBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET         /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onPageLoad(taxYear: Int)
+
 POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onSubmit(taxYear: Int)
-
-
