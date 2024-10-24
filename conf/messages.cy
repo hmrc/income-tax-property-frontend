@@ -1780,4 +1780,6 @@ propertyIncomeReport.doNotReportPropertyIncome.agent = *Missing Welsh*
 propertyIncomeReport.checkYourAnswersLabel = *Missing Welsh*
 propertyIncomeReport.error.required.individual = *Missing Welsh*
 propertyIncomeReport.error.required.agent = *Missing Welsh*
+propertyIncomeReport.details.hint.individual = *Missing Welsh*
+propertyIncomeReport.details.hint.agent = *Missing Welsh*
 propertyIncomeReport.change.hidden = *Missing Welsh*
