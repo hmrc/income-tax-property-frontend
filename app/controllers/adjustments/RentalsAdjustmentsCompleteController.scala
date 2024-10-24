@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
+import models.JourneyPath.RentalAdjustments
 import models.{JourneyContext, Mode, Rentals}
 import navigation.Navigator
 import pages.adjustments.RentalsAdjustmentsCompletePage
@@ -74,7 +75,7 @@ class RentalsAdjustmentsCompleteController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "rental-adjustments"
+                            journeyPath = RentalAdjustments
                           ),
                           status = statusForPage(value),
                           user = request.user

@@ -19,7 +19,8 @@ package controllers.about
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.about.AboutPropertyCompleteFormProvider
-import models.{JourneyContext, Mode}
+import models.JourneyPath.PropertyAbout
+import models.{JourneyContext, JourneyPath, Mode}
 import navigation.Navigator
 import pages.AboutPropertyCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -73,7 +74,7 @@ class AboutPropertyCompleteController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "property-about"
+                            journeyPath = PropertyAbout
                           ),
                           status = statusForPage(value),
                           user = request.user

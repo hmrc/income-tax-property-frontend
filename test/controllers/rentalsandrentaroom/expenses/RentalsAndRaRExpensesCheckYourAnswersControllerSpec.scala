@@ -106,7 +106,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
           taxYear = taxYear,
           mtditid = "mtditid",
           nino = "nino",
-          journeyName = "rentals-and-rent-a-room-expenses"
+          journeyPath = JourneyPath.RentalsAndRentARoomExpenses
         )
       val rentalsExpense =
         RentalsAndRentARoomExpenses(Some(consolidatedExpenses), None, None, None, None, None, None, None)

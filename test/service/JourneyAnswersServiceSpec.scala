@@ -18,6 +18,7 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.{ApiError, SingleErrorBody}
+import models.JourneyPath.RentARoomExpenses
 import models.backend.{HttpParserError, PropertyDetails}
 import models.{JourneyContext, User}
 import org.mockito.ArgumentMatchers.any
@@ -69,7 +70,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
             taxYear = taxYear,
             mtditid = user.mtditid,
             nino = user.nino,
-            journeyName = "rent-a-room-expenses"
+            journeyPath = RentARoomExpenses
           ),
           "completed",
           user
@@ -101,7 +102,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
             taxYear = taxYear,
             mtditid = user.mtditid,
             nino = user.nino,
-            journeyName = "rent-a-room-expenses"
+            journeyPath = RentARoomExpenses
           ),
           "inProgress",
           user

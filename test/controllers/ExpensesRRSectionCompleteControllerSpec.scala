@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ukrentaroom.expenses.ExpensesRRSectionCompleteFormProvider
+import models.JourneyPath.RentARoomExpenses
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -113,7 +114,7 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "rent-a-room-expenses"
+              journeyPath = RentARoomExpenses
             )
           ),
           ArgumentMatchers.eq("completed"),

@@ -21,6 +21,7 @@ import audit.{AuditModel, AuditService}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
+import models.JourneyPath.RentalsAndRentARoomAbout
 import models._
 import models.requests.DataRequest
 import play.api.Logging
@@ -61,7 +62,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-about")
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAbout)
 
       val rentalsAndRaRAboutMaybe = request.userAnswers.get(RentalsAndRaRAbout)
       sendRentalsAndRaRAbout(taxYear, request, context, rentalsAndRaRAboutMaybe)

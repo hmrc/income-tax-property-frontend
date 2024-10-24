@@ -17,9 +17,10 @@
 package controllers.adjustments
 
 import audit.RentalsAdjustment._
-import audit.{AuditService, RentalsAdjustment, AuditModel}
+import audit.{AuditModel, AuditService, RentalsAdjustment}
 import controllers.actions._
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
+import models.JourneyPath.PropertyRentalAdjustments
 import models._
 import models.requests.DataRequest
 import play.api.Logging
@@ -76,7 +77,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
   private def saveAdjustments(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
     hc: HeaderCarrier
   ) = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-adjustments")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalAdjustments)
     propertySubmissionService.saveJourneyAnswers(context, adjustments).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, adjustments, isFailed = false, AccountingMethod.Traditional)

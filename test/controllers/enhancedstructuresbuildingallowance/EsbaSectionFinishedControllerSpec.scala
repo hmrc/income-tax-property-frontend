@@ -19,6 +19,7 @@ package controllers.enhancedstructuresbuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
+import models.JourneyPath.RentalESBA
 import models.{JourneyContext, NormalMode, Rentals, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -107,7 +108,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rental-esba")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalESBA)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

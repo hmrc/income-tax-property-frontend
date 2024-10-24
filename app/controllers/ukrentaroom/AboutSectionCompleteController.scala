@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
+import models.JourneyPath.RentARoomAbout
 import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.UKPropertySelectPage
@@ -75,7 +76,7 @@ class AboutSectionCompleteController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "rent-a-room-about"
+                            journeyPath = RentARoomAbout
                           ),
                           status = statusForPage(value),
                           request.user

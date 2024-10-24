@@ -18,6 +18,7 @@ package controllers.propertyrentals
 
 import base.SpecBase
 import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
+import models.JourneyPath.PropertyRentalAbout
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -102,7 +103,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-rental-about")
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = PropertyRentalAbout)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

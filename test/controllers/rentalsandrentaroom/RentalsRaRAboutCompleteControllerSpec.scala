@@ -19,6 +19,7 @@ package controllers.rentalsandrentaroom
 import base.SpecBase
 import connectors.JourneyAnswersConnector
 import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
+import models.JourneyPath.PropertyRentalsAndRentARoomAbout
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -113,7 +114,7 @@ class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "property-rentals-and-rent-a-room-about"
+              journeyPath = PropertyRentalsAndRentARoomAbout
             )
           ),
           ArgumentMatchers.eq("completed"),

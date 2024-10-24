@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteFormProvider
 import models.JourneyContext
+import models.JourneyPath.PropertyRentalsAndRentARoomAdjustments
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -72,7 +73,7 @@ class RentalsRaRAdjustmentsCompleteController @Inject()(
                          taxYear = taxYear,
                          mtditid = request.user.mtditid,
                          nino = request.user.nino,
-                         journeyName = "property-rentals-and-rent-a-room-adjustments"
+                         journeyPath = PropertyRentalsAndRentARoomAdjustments
                        ),
                        status = statusForPage(value),
                        request.user

@@ -42,7 +42,7 @@ class JourneyAnswersService @Inject() (
         propertyDetails
           .map { ukProperty =>
             journeyAnswersConnector
-              .setStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyName, status, user)
+              .setStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyPath, status, user)
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")

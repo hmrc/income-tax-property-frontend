@@ -87,7 +87,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-expenses")
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentalsAndRentARoomExpenses)
       businessService
         .getUkPropertyDetails(request.user.nino, request.user.mtditid)
         .flatMap {

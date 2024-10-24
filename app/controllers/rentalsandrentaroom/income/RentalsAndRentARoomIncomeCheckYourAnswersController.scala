@@ -21,7 +21,7 @@ import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName,JourneyPath}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -87,7 +87,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ) = {
     val context =
-      JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-income")
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentalsAndRentARoomIncome)
     propertySubmissionService
       .saveJourneyAnswers(context, propertyRentalsIncome)
       .flatMap {

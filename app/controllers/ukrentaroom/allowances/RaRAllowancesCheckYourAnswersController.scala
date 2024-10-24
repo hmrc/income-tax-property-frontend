@@ -20,6 +20,7 @@ import audit.{AuditService, RentARoomAllowance, RentARoomAuditModel}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
 import models.JourneyContext
+import models.JourneyPath.RentARoomAllowances
 import models.backend.ServiceError
 import models.requests.DataRequest
 import play.api.Logging
@@ -97,7 +98,7 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
       taxYear = taxYear,
       mtditid = request.user.mtditid,
       nino = request.user.nino,
-      journeyName = "rent-a-room-allowances"
+      journeyPath = RentARoomAllowances
     )
     propertySubmissionService.saveJourneyAnswers[RentARoomAllowance](context, allowance)
   }

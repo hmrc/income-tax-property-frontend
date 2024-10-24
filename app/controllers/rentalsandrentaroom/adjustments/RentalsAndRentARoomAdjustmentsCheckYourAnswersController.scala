@@ -19,6 +19,7 @@ package controllers.rentalsandrentaroom.adjustments
 import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models.JourneyPath.RentalsAndRentARoomAdjustments
 import models.RentalsRentARoom
 import models.backend.PropertyDetails
 import models.requests.DataRequest
@@ -103,7 +104,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ) = {
     val context =
-      JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-adjustments")
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAdjustments)
     details.accountingMethod.flatMap { accountingMethod =>
       propertySubmissionService
         .saveJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)

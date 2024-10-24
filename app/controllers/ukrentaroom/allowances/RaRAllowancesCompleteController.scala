@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
+import models.JourneyPath.RentARoomAllowances
 import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.ukrentaroom.allowances.RaRAllowancesCompletePage
@@ -74,7 +75,7 @@ class RaRAllowancesCompleteController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "rent-a-room-allowances"
+                            journeyPath = RentARoomAllowances
                           ),
                           status = statusForPage(value),
                           user = request.user

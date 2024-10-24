@@ -20,6 +20,7 @@ import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.JourneyContext
+import models.JourneyPath
 import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -77,7 +78,7 @@ class RaRAdjustmentsCYAController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rent-a-room-adjustments")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentARoomAdjustments)
     propertySubmissionService.saveJourneyAnswers(context, rentARoomAdjustments).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, rentARoomAdjustments)

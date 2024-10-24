@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
+import models.JourneyPath.PropertyRentalAbout
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
 import pages.allowances.AllowancesSectionFinishedPage
@@ -76,7 +77,7 @@ class AboutPropertyRentalsSectionFinishedController @Inject() (
                             taxYear,
                             request.user.mtditid,
                             request.user.nino,
-                            "property-rental-about"
+                            PropertyRentalAbout
                           ),
                           statusForPage(value),
                           request.user

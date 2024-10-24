@@ -19,7 +19,7 @@ package controllers.ukrentaroom.expenses
 import audit.{AuditService, RentARoomExpenses}
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes._
-import models.{JourneyContext, RentARoom, UserAnswers}
+import models.{JourneyContext, RentARoom, UserAnswers,JourneyPath}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -43,7 +43,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
   private val propertySubmissionService = mock[PropertySubmissionService]
   private val audit = mock[AuditService]
   val context: JourneyContext =
-    JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "rent-a-room-expenses")
+    JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.RentARoomExpenses)
 
   def onwardRoute: Call =
     Call("GET", "/update-and-submit-income-tax-return/property/2024/rent-a-room/expenses/complete-yes-no")

@@ -16,10 +16,11 @@
 
 package controllers.propertyrentals.income
 
-import audit.{AuditService, AuditModel, RentalsIncome}
+import audit.{AuditModel, AuditService, RentalsIncome}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
+import models.JourneyPath.RentalIncome
 import models.requests.DataRequest
 import models._
 import pages.PageConstants.incomePath
@@ -81,7 +82,7 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
   private def saveIncomeSection(taxYear: Int, request: DataRequest[AnyContent], propertyRentalsIncome: RentalsIncome)(
     implicit hc: HeaderCarrier
   ) = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rental-income")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalIncome)
     propertySubmissionService.savePropertyRentalsIncome(context, propertyRentalsIncome).flatMap {
       case Right(_) =>
         auditCYA(context.taxYear, request, propertyRentalsIncome, isFailed = false, AccountingMethod.Traditional)

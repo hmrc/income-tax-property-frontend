@@ -18,6 +18,7 @@ package controllers.adjustments
 
 import base.SpecBase
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
+import models.JourneyPath.RentalAdjustments
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -113,7 +114,7 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "rental-adjustments"
+              journeyPath = RentalAdjustments
             )
           ),
           ArgumentMatchers.eq("completed"),
