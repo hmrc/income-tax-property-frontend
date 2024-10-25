@@ -15,19 +15,26 @@
  *@
 
 @import controllers.foreign.routes
-@import viewmodels.InputWidth._
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
 
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
         govukErrorSummary: GovukErrorSummary,
-        govukInput: GovukInput,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        govukSelect: GovukSelect
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@(form: Form[_], taxYear: Int, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("selectIncomeCountry.title"))) {
+
+    <h1 class="govuk-heading-l">@messages("selectIncomeCountry.title")</h1>
+
+    <div class="govuk-inset-text">
+        <p class="govuk-body">You can add income from other countries later.</p>
+    </div>
 
     @formHelper(action = routes.SelectIncomeCountryController.onSubmit(taxYear, mode)) {
 
@@ -35,16 +42,19 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages("selectIncomeCountry.heading")).asPageHeading()
-            )
-            .withWidth(Full)
-        )
+        <h1 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h1>
+        <div class="govuk-hint"> @messages("selectIncomeCountry.hint") </div>
+
+        <div class="govuk-!-width-one-half">
+        @govukSelect(Select(
+            id = "country-autocomplete",
+            items = countries
+        ).asAccessibleAutocomplete().withFormField(form("incomeCountry")))
+
+        </div>
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }

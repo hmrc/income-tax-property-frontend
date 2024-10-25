@@ -18,14 +18,25 @@ package forms
 
 import forms.mappings.Mappings
 import play.api.data.Form
+import play.api.data.validation.{Constraint, Invalid, Valid}
+import service.CountryNamesDataSource
 
 import javax.inject.Inject
 
-class SelectIncomeCountryFormProvider @Inject() extends Mappings {
+class SelectIncomeCountryFormProvider @Inject() (source: CountryNamesDataSource) extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("selectIncomeCountry.error.required")
-        .verifying(maxLength(100, "selectIncomeCountry.error.length"))
+      "incomeCountry" -> text("selectIncomeCountry.error.required")
+        .verifying(validCountry)
     )
+
+  private def validCountry: Constraint[String] =
+    Constraint {
+      case countryCode if source.countrySelectItems.flatMap(_.value).contains(countryCode) =>
+        Valid
+      case _ =>
+        Invalid("selectIncomeCountry.error.validCountry")
+    }
+
 }

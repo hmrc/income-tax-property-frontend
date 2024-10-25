@@ -16,6 +16,7 @@
 
 package pages
 
+import models.NormalMode
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(taxYear: Int, startItems: Seq[TaskListItem])
@@ -26,7 +27,7 @@ object ForeignPropertySummaryPage {
     Seq(
       TaskListItem(
         "foreign.selectCountry",
-        controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
+        controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, NormalMode),
         TaskListTag.NotStarted,
         "foreign_property_select_country"
       )

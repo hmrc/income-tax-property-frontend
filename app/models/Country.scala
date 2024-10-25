@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import play.api.libs.json.JsPath
+case class Country(code: String, name: String) {
 
-case object SelectIncomeCountryPage extends QuestionPage[String] {
+  def toMap: Map[String, String] = Map(
+    "Country" -> code,
+    "Name"    -> name
+  )
+}
 
-  override def path: JsPath = JsPath \ toString
+object Country {
 
-  override def toString: String = "incomeCountry"
+  def apply(codeCountryMap: (String, Map[String, String])): Country = codeCountryMap match {
+    case (code, countryMap) => new Country(countryMap("Country"), countryMap("Name"))
+  }
+
+  def toMap(country: Country): (String, Map[String, String]) =
+    country.code -> country.toMap
 }

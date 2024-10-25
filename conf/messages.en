@@ -1837,9 +1837,10 @@ propertyIncomeReport.change.hidden = PropertyIncomeReport
 
 
 
-selectIncomeCountry.title = selectIncomeCountry
-selectIncomeCountry.heading = selectIncomeCountry
-selectIncomeCountry.checkYourAnswersLabel = selectIncomeCountry
-selectIncomeCountry.error.required = Enter selectIncomeCountry
-selectIncomeCountry.error.length = SelectIncomeCountry must be 100 characters or less
-selectIncomeCountry.change.hidden = SelectIncomeCountry
+selectIncomeCountry.title = Which country did you receive this income from?
+selectIncomeCountry.legend = Country
+selectIncomeCountry.hint = Start typing in the box to find the country name
+selectIncomeCountry.error.required = Select which country you received this income from
+selectIncomeCountry.error.validCountry = Select country from the list
+selectIncomeCountry.checkYourAnswersLabel = Which country did you receive this income from?
+selectIncomeCountry.change.hidden = Income country
