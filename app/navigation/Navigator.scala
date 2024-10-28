@@ -789,9 +789,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
 
     case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case ConsolidatedExpensesRRPage =>
-      taxYear =>
-        previousUserAnswers =>
-          userAnswers => consolidatedExpensesRRNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+      taxYear => _=>
+          userAnswers => consolidatedExpensesRRNavigationCheckMode(taxYear, userAnswers)
     case LegalManagementOtherFeeRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case CostOfServicesProvidedRRPage  => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
 
@@ -1229,12 +1228,10 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
 
   private def consolidatedExpensesRRNavigationCheckMode(
     taxYear: Int,
-    previousUserAnswers: UserAnswers,
     userAnswers: UserAnswers
   ): Call =
     userAnswers.get(ConsolidatedExpensesRRPage) match {
-      case Some(ConsolidatedRRExpenses(false, _))
-          if previousUserAnswers.get(ConsolidatedExpensesRRPage).map(_.consolidatedExpensesYesOrNo).getOrElse(true) =>
+      case Some(ConsolidatedRRExpenses(false, _)) =>
         RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
       case _ =>
         ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
