@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package pages.foreign
 
-case class Country(code: String, name: String) {
+import models.ForeignProperty
+import pages.PageConstants.aboutPath
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-  def toMap: Map[String, String] = Map(
-    "Country" -> code,
-    "Name"    -> name
-  )
-}
+case object SelectIncomeCountryPage extends QuestionPage[String] {
 
-object Country {
+  override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
 
-  def apply(codeCountryMap: (String, Map[String, String])): Country = codeCountryMap match {
-    case (code, countryMap) => new Country(countryMap("Country"), countryMap("Name"))
-  }
-
-  def toMap(country: Country): (String, Map[String, String]) =
-    country.code -> country.toMap
+  override def toString: String = "incomeCountry"
 }

@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import controllers.foreign.routes
 import models.{CheckMode, UserAnswers}
-import pages.SelectIncomeCountryPage
+import pages.foreign.SelectIncomeCountryPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
