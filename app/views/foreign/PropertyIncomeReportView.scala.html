@@ -41,7 +41,7 @@
                 legend = LegendViewModel(messages("propertyIncomeReport.heading")).asPageHeading(LegendSize.Large),
                 yesText = messages(s"propertyIncomeReport.reportPropertyIncome.$individualOrAgent"),
                 noText = messages(s"propertyIncomeReport.doNotReportPropertyIncome.$individualOrAgent")
-            )
+            ).withHint(Hint(content = messages(s"propertyIncomeReport.details.hint.$individualOrAgent")))
         )
 
         @govukButton(
