@@ -16,7 +16,7 @@
 
 package controllers.about
 
-import audit.{AuditService, PropertyAbout, AuditModel}
+import audit.{AuditModel, AuditService,PropertyAbout}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
@@ -79,7 +79,7 @@ class CheckYourAnswersController @Inject() (
   private def savePropertyAbout(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout)(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-about")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.PropertyAbout)
     propertySubmissionService.saveJourneyAnswers(context, propertyAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyAbout, isFailed = false)

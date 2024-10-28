@@ -18,7 +18,7 @@ package connectors
 
 import config.FrontendAppConfig
 import connectors.error.ApiError
-import models.User
+import models.{JourneyPath, User}
 import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.{JsString, Json}
@@ -50,7 +50,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
   ec: ExecutionContext
 ) extends Logging {
 
-  def setStatus(taxYear: Int, incomeSourceId: String, journeyName: String, status: String, user: User)(implicit
+  def setStatus(taxYear: Int, incomeSourceId: String, journeyName: JourneyPath, status: String, user: User)(implicit
     hc: HeaderCarrier
   ): Future[Either[ApiError, String]] = {
     val updateStatusUrl =

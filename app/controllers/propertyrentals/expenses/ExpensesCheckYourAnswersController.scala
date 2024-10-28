@@ -16,8 +16,9 @@
 
 package controllers.propertyrentals.expenses
 
-import audit.{AuditService, AuditModel, RentalsExpense}
+import audit.{AuditModel, AuditService, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.JourneyPath.PropertyRentalExpenses
 import models.requests.DataRequest
 import models._
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -92,7 +93,7 @@ class ExpensesCheckYourAnswersController @Inject() (
   private def saveExpenses(taxYear: Int, request: DataRequest[AnyContent], expenses: RentalsExpense)(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, "property-rental-expenses")
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalExpenses)
 
     propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
       case Right(_) =>

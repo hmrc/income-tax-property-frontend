@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.enhancedstructuresbuildingallowance.EsbaSectionFinishedFormProvider
+import models.JourneyPath.{PropertyRentalsAndRentARoomESBA, RentalESBA}
 import models.requests.DataRequest
 import models.{JourneyContext, NormalMode, PropertyType, Rentals}
 import navigation.Navigator
@@ -87,7 +88,7 @@ class EsbaSectionFinishedController @Inject() (
   private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], value: Boolean, propertyType: PropertyType)(
     implicit hc: HeaderCarrier
   ): Future[Result] = {
-    val sectionPath = if (propertyType == Rentals) "rental-esba" else "property-rentals-and-rent-a-room-esba"
+    val sectionPath = if (propertyType == Rentals) RentalESBA else PropertyRentalsAndRentARoomESBA
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
 
     journeyAnswersService

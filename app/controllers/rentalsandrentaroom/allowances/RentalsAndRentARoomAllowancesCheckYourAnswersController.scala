@@ -20,9 +20,10 @@ import audit.{AuditModel, AuditService}
 import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models._
+import models.JourneyPath.RentalsAndRentARoomAllowances
 import models.backend.PropertyDetails
 import models.requests.DataRequest
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAllowance, RentalsRentARoom, SectionName}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -69,7 +70,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, "rentals-and-rent-a-room-allowances")
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAllowances)
 
       request.userAnswers.get(RentalsAndRentARoomAllowance) match {
         case Some(rentalsAndRentARoomAllowance) =>

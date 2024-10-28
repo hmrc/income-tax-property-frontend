@@ -20,6 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
+import models.JourneyPath.RentARoomAdjustments
 import models.{JourneyContext, Mode, RentARoom}
 import navigation.Navigator
 import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
@@ -74,7 +75,7 @@ class RaRAdjustmentsCompleteController @Inject() (
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
                             nino = request.user.nino,
-                            journeyName = "rent-a-room-adjustments"
+                            journeyPath = RentARoomAdjustments
                           ),
                           status = statusForPage(value),
                           user = request.user

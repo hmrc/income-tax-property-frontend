@@ -19,7 +19,7 @@ package controllers.about
 import audit.PropertyAbout
 import base.SpecBase
 import models.TotalIncome.Under
-import models.{JourneyContext, UKPropertySelect, UserAnswers}
+import models.{JourneyContext, JourneyPath, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -84,7 +84,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
       val ans = updated.set(UKPropertyPage, UKPropertySelect.values.toSet).get
 
       val context =
-        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyName = "property-about")
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.PropertyAbout)
       val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
 
       when(

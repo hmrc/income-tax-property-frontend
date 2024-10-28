@@ -20,6 +20,7 @@ import base.SpecBase
 import connectors.JourneyAnswersConnector
 import controllers.ukrentaroom.routes.AboutSectionCompleteController
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
+import models.JourneyPath.RentARoomAbout
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -114,7 +115,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "rent-a-room-about"
+              journeyPath = RentARoomAbout
             )
           ),
           ArgumentMatchers.eq("completed"),

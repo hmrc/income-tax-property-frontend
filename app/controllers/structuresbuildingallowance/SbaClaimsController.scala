@@ -20,6 +20,7 @@ import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.structurebuildingallowance.SbaClaimsFormProvider
+import models.JourneyPath.{PropertyRentalSBA, RentalsAndRentARoomSBA}
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, PropertyType, Rentals, SectionName, UserAnswers}
@@ -115,7 +116,7 @@ class SbaClaimsController @Inject() (
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
-    val journeyPath = if (propertyType == Rentals) "property-rental-sba" else "rentals-and-rent-a-room-sba"
+    val journeyPath = if (propertyType == Rentals) PropertyRentalSBA else RentalsAndRentARoomSBA
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, journeyPath)
     businessService
       .getUkPropertyDetails(request.user.nino, request.user.mtditid)

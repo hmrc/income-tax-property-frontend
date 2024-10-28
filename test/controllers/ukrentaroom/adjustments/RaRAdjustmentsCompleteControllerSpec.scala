@@ -18,6 +18,7 @@ package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
 import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
+import models.JourneyPath.RentARoomAdjustments
 import models.{FetchedBackendData, JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -113,7 +114,7 @@ class RaRAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSugar {
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "rent-a-room-adjustments"
+              journeyPath = RentARoomAdjustments
             )
           ),
           ArgumentMatchers.eq("completed"),

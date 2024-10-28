@@ -18,6 +18,7 @@ package controllers.about
 
 import base.SpecBase
 import forms.about.AboutPropertyCompleteFormProvider
+import models.JourneyPath.PropertyAbout
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -113,7 +114,7 @@ class AboutPropertyCompleteControllerSpec extends SpecBase with MockitoSugar {
               taxYear = taxYear,
               mtditid = user.mtditid,
               nino = user.nino,
-              journeyName = "property-about"
+              journeyPath = PropertyAbout
             )
           ),
           ArgumentMatchers.eq("completed"),
