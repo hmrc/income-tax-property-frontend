@@ -33,7 +33,7 @@
     <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
 
     <div class="govuk-inset-text">
-        <p class="govuk-body">You can add income from other countries later.</p>
+        <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
     </div>
 
     @formHelper(action = routes.SelectIncomeCountryController.onSubmit(taxYear, mode)) {

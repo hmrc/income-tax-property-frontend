@@ -17,7 +17,7 @@
 package controllers.foreign
 
 import controllers.actions._
-import forms.SelectIncomeCountryFormProvider
+import forms.foreign.SelectIncomeCountryFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.SelectIncomeCountryPage
@@ -25,7 +25,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CountryNamesDataSource
+import service.CountryNamesDataSource.countrySelectItems
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SelectIncomeCountryView
 
@@ -41,7 +41,6 @@ class SelectIncomeCountryController @Inject() (
   requireData: DataRequiredAction,
   formProvider: SelectIncomeCountryFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  source: CountryNamesDataSource,
   view: SelectIncomeCountryView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
@@ -53,7 +52,7 @@ class SelectIncomeCountryController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, source.countrySelectItems))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +63,7 @@ class SelectIncomeCountryController @Inject() (
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, source.countrySelectItems))
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
             ),
           value =>
             for {

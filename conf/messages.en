@@ -1839,6 +1839,7 @@ propertyIncomeReport.change.hidden = PropertyIncomeReport
 
 selectIncomeCountry.title.individual = Which country did you receive this income from?
 selectIncomeCountry.title.agent = Which country did your client receive this income from?
+selectIncomeCountry.info = You can add income from other countries later.
 selectIncomeCountry.legend = Country
 selectIncomeCountry.hint = Start typing in the box to find the country name
 selectIncomeCountry.error.required.individual = Select which country you received this income from

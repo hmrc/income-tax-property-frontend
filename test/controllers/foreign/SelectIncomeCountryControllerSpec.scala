@@ -1,7 +1,23 @@
-package controllers
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.foreign
 
 import base.SpecBase
-import forms.SelectIncomeCountryFormProvider
+import forms.foreign.SelectIncomeCountryFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -13,6 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.CountryNamesDataSource.countrySelectItems
 import views.html.SelectIncomeCountryView
 
 import scala.concurrent.Future
@@ -20,17 +37,18 @@ import scala.concurrent.Future
 class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
-
+  val userType = "agent"
   val formProvider = new SelectIncomeCountryFormProvider()
-  val form = formProvider()
+  val form = formProvider(userType)
+  val taxYear = 2024
 
-  lazy val selectIncomeCountryRoute = routes.SelectIncomeCountryController.onPageLoad(NormalMode).url
+  lazy val selectIncomeCountryRoute: String = routes.SelectIncomeCountryController.onPageLoad(taxYear, NormalMode).url
 
   "SelectIncomeCountry Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, selectIncomeCountryRoute)
@@ -40,7 +58,10 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SelectIncomeCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, userType, NormalMode, countrySelectItems)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -48,7 +69,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage, "answer").success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, selectIncomeCountryRoute)
@@ -58,7 +79,10 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), taxYear, userType, NormalMode, countrySelectItems)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -69,7 +93,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -79,7 +103,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, selectIncomeCountryRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("incomeCountry", "USA"))
 
         val result = route(application, request).value
 
@@ -90,27 +114,30 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
           FakeRequest(POST, selectIncomeCountryRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("incomeCountry", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("incomeCountry" -> ""))
 
         val view = application.injector.instanceOf[SelectIncomeCountryView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, userType, NormalMode, countrySelectItems)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, selectIncomeCountryRoute)
@@ -118,23 +145,23 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
           FakeRequest(POST, selectIncomeCountryRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("incomeCountry", "answer"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

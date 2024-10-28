@@ -19,11 +19,9 @@ package service
 import com.github.tototoshi.csv.CSVReader
 import uk.gov.hmrc.govukfrontend.views.viewmodels.select.SelectItem
 
-import javax.inject.Singleton
 import scala.io.Source
 
-@Singleton
-class CountryNamesDataSource {
+object CountryNamesDataSource {
 
   // Adding an empty option as a workaround for the Select component
   lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: loadCountries

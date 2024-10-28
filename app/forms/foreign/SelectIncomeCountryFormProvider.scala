@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package forms.foreign
 
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import service.CountryNamesDataSource
+import service.CountryNamesDataSource.countrySelectItems
 
 import javax.inject.Inject
 
-class SelectIncomeCountryFormProvider @Inject() (source: CountryNamesDataSource) extends Mappings {
+class SelectIncomeCountryFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[String] =
     Form(
@@ -33,7 +33,7 @@ class SelectIncomeCountryFormProvider @Inject() (source: CountryNamesDataSource)
 
   private def validCountry: Constraint[String] =
     Constraint {
-      case countryCode if source.countrySelectItems.flatMap(_.value).contains(countryCode) =>
+      case countryCode if countrySelectItems.flatMap(_.value).contains(countryCode) =>
         Valid
       case _ =>
         Invalid("selectIncomeCountry.error.validCountry")
