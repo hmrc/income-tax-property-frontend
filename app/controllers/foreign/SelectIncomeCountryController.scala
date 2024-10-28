@@ -45,24 +45,27 @@ class SelectIncomeCountryController @Inject() (
   view: SelectIncomeCountryView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
-  val form: Form[String] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(SelectIncomeCountryPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, taxYear, mode, source.countrySelectItems))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, source.countrySelectItems))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, source.countrySelectItems))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, source.countrySelectItems))
+            ),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SelectIncomeCountryPage, value))

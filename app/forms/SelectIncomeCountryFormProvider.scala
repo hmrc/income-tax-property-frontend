@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 class SelectIncomeCountryFormProvider @Inject() (source: CountryNamesDataSource) extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(individualOrAgent: String): Form[String] =
     Form(
-      "incomeCountry" -> text("selectIncomeCountry.error.required")
+      "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
         .verifying(validCountry)
     )
 

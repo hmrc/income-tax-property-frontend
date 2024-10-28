@@ -1837,10 +1837,12 @@ propertyIncomeReport.change.hidden = PropertyIncomeReport
 
 
 
-selectIncomeCountry.title = Which country did you receive this income from?
+selectIncomeCountry.title.individual = Which country did you receive this income from?
+selectIncomeCountry.title.agent = Which country did your client receive this income from?
 selectIncomeCountry.legend = Country
 selectIncomeCountry.hint = Start typing in the box to find the country name
-selectIncomeCountry.error.required = Select which country you received this income from
+selectIncomeCountry.error.required.individual = Select which country you received this income from
+selectIncomeCountry.error.required.agent = Select which country your client received this income from
 selectIncomeCountry.error.validCountry = Select country from the list
 selectIncomeCountry.checkYourAnswersLabel = Which country did you receive this income from?
 selectIncomeCountry.change.hidden = Income country

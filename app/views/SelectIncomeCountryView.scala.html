@@ -26,11 +26,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, userType: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("selectIncomeCountry.title"))) {
+@layout(pageTitle = title(form, messages(s"selectIncomeCountry.title.$userType"))) {
 
-    <h1 class="govuk-heading-l">@messages("selectIncomeCountry.title")</h1>
+    <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
 
     <div class="govuk-inset-text">
         <p class="govuk-body">You can add income from other countries later.</p>
