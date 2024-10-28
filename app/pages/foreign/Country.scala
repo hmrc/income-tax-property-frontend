@@ -17,13 +17,22 @@
 package pages.foreign
 
 import models.ForeignProperty
+import pages.PageConstants
 import pages.PageConstants.selectCountry
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json, JsPath}
+import queries.{Gettable, Settable}
 
-case object PropertyIncomeReportPage extends QuestionPage[Boolean] {
+case class Country(
+                                  name: String
+                                  )
 
+object Country {
+  implicit val format: Format[Country] = Json.format[Country]
+}
+
+case class CountryGroup()
+    extends Gettable[Array[Country]] with Settable[Array[Country]] {
   override def path: JsPath = JsPath \ selectCountry(ForeignProperty) \ toString
 
-  override def toString: String = "propertyIncomeReportYesOrNo"
+  override def toString: String = PageConstants.countriesRentedPropertyGroup
 }
