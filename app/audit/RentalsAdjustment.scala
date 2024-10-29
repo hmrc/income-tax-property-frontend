@@ -19,18 +19,18 @@ package audit
 import models.{BalancingCharge, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, Rentals}
 import pages.PageConstants.adjustmentsPath
 import play.api.libs.json.{Format, JsPath, Json}
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 final case class RentalsAdjustment(
   privateUseAdjustment: PrivateUseAdjustment,
   balancingCharge: BalancingCharge,
-  propertyIncomeAllowance: BigDecimal,
+  propertyIncomeAllowance: Option[BigDecimal],
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
   residentialFinanceCost: BigDecimal,
   unusedResidentialFinanceCost: BigDecimal
 )
 
-object RentalsAdjustment extends Gettable[RentalsAdjustment] {
+object RentalsAdjustment extends Gettable[RentalsAdjustment] with Settable[RentalsAdjustment]{
   implicit val format: Format[RentalsAdjustment] = Json.format[RentalsAdjustment]
 
   override def path: JsPath = JsPath \ toString
