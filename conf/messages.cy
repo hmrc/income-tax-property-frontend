@@ -1759,3 +1759,15 @@ propertyIncomeReport.error.required.agent = *Missing Welsh*
 propertyIncomeReport.details.hint.individual = *Missing Welsh*
 propertyIncomeReport.details.hint.agent = *Missing Welsh*
 propertyIncomeReport.change.hidden = *Missing Welsh*
+
+
+selectIncomeCountry.title.individual = *Missing Welsh*
+selectIncomeCountry.title.agent = *Missing Welsh*
+selectIncomeCountry.info = *Missing Welsh*
+selectIncomeCountry.legend = *Missing Welsh*
+selectIncomeCountry.hint = *Missing Welsh*
+selectIncomeCountry.error.required.individual = *Missing Welsh*
+selectIncomeCountry.error.required.agent = *Missing Welsh*
+selectIncomeCountry.error.validCountry = *Missing Welsh*
+selectIncomeCountry.checkYourAnswersLabel = *Missing Welsh*
+selectIncomeCountry.change.hidden = *Missing Welsh*

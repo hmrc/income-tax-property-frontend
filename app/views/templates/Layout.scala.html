@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,83 +15,66 @@
  *@
 
 @import config.FrontendAppConfig
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
+@import uk.gov.hmrc.hmrcfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 
 @this(
-    appConfig: FrontendAppConfig,
-    govukLayout: GovukLayout,
-    govukBackLink: GovukBackLink,
-    hmrcHead: HmrcHead,
-    hmrcStandardHeader: HmrcStandardHeader,
-    hmrcStandardFooter: HmrcStandardFooter,
-    hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
-    hmrcLanguageSelect: HmrcLanguageSelect,
-    hmrcTimeoutDialog: HmrcTimeoutDialog,
-    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-    hmrcScripts: HmrcScripts,
-    alphaBanner: StandardAlphaBanner
+        appConfig: FrontendAppConfig,
+        hmrcHead: HmrcHead,
+        hmrcTimeoutDialog: HmrcTimeoutDialog,
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        hmrcScripts: HmrcScripts,
+        alphaBanner: StandardAlphaBanner,
+        hmrcStandardPage: HmrcStandardPage,
+        autocompleteCss: HmrcAccessibleAutocompleteCss,
+        autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
 )
 
-@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true)(contentBlock: Html)(implicit rh: RequestHeader, messages: Messages)
+@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true, showHmrcBanner: Boolean = false)(contentBlock: Html)(implicit rh: RequestHeader, messages: Messages)
 
 @head = {
 
-    @hmrcHead(
-        headBlock = if(timeout) { Some(
+@hmrcHead(
+    headBlock = if(timeout) {
+        Some(
             hmrcTimeoutDialog(TimeoutDialog(
-                timeout             = Some(appConfig.timeout),
-                countdown           = Some(appConfig.countdown),
-                keepAliveUrl        = Some(routes.KeepAliveController.keepAlive.url),
+                timeout = Some(appConfig.timeout),
+                countdown = Some(appConfig.countdown),
+                keepAliveUrl = Some(routes.KeepAliveController.keepAlive.url),
                 keepAliveButtonText = Some(messages("timeout.keepAlive")),
-                signOutUrl          = Some(controllers.auth.routes.AuthController.signOut.url),
-                signOutButtonText   = Some(messages("timeout.signOut")),
-                title               = Some(messages("timeout.title")),
-                message             = Some(messages("timeout.message"))
+                signOutUrl = Some(controllers.auth.routes.AuthController.signOut.url),
+                signOutButtonText = Some(messages("timeout.signOut")),
+                title = Some(messages("timeout.title")),
+                message = Some(messages("timeout.message")),
+                language = Some(messages.lang.code)
             )))
-        } else None
-    )
-
-    <link href="@routes.Assets.versioned("stylesheets/application.css")" media="all" rel="stylesheet" type="text/css" />
-}
-
-@additionalScripts = {
-    <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-}
-
-@beforeContent = {
-
-    @if(appConfig.languageTranslationEnabled) {
-        @hmrcLanguageSelect(LanguageSelect(
-            if (messages.lang.code == "cy") Cy else En,
-            (En, routes.LanguageSwitchController.switchToLanguage("en").url),
-            (Cy, routes.LanguageSwitchController.switchToLanguage("cy").url)
-        ))
-    }
-
-    @if(showBackLink) {
-        @govukBackLink(BackLinkViewModel(href = "#").withCssClass("js-visible"))
-    }
+    } else None
+)
+@autocompleteCss()
 }
 
 @content = {
-    @contentBlock
-
-    <div class="govuk-!-margin-top-8">
-        @hmrcReportTechnicalIssueHelper()
-    </div>
+@contentBlock
+@hmrcReportTechnicalIssueHelper()
 }
 
-@govukLayout(
-    pageTitle   = Some(pageTitle),
-    headBlock   = Some(head),
-    headerBlock = Some(hmrcStandardHeader(
-        serviceUrl  = Some(routes.IndexController.onPageLoad.url),
-        signOutUrl  = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None,
+@hmrcStandardPage(HmrcStandardPageParams(
+    pageTitle = Some(pageTitle),
+    templateOverrides = TemplateOverrides(
+        additionalHeadBlock = Some(head),
+        additionalScriptsBlock = Some(autocompleteJavascript())
+    ),
+    serviceURLs = ServiceURLs(
+        serviceUrl = Some(routes.IndexController.onPageLoad.url),
+        signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None
+    ),
+    banners = Banners(
+        displayHmrcBanner = showHmrcBanner,
         phaseBanner = Some(alphaBanner(appConfig.feedbackUrl))
-    )),
-    beforeContentBlock = Some(beforeContent),
-    footerBlock        = Some(hmrcStandardFooter()),
-    scriptsBlock       = Some(hmrcScripts(
-        scriptsBlock = Some(additionalScripts)
-    ))
-)(content)
+    ),
+    isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
+    backLink = if(showBackLink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else None
+))(content)
