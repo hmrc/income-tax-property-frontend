@@ -852,6 +852,7 @@ businessPremisesRenovation.error.nonNumeric.individual = Enter the amount you wa
 businessPremisesRenovation.error.nonNumeric.agent = Enter the amount for your client’s business premises renovation allowance
 businessPremisesRenovation.error.outOfRange = Enter an amount between £{0} and £{1}
 businessPremisesRenovation.checkYourAnswersLabel = Business premises renovation allowance
+businessPremisesRenovation.details.combinedJourneySpecific = This allowance category only applies to property rental income
 
 businessPremisesRenovationBalancingCharge.title = Business premises renovation allowance balancing charge
 businessPremisesRenovationBalancingCharge.heading = Business premises renovation allowance balancing charge
