@@ -21,7 +21,7 @@ import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object SelectIncomeCountryPage extends QuestionPage[String] {
+case object SelectIncomeCountryPage extends QuestionPage[Country] {
 
   override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
 

@@ -22,7 +22,7 @@ import forms.foreign.CountriesRentedPropertyFormProvider
 import javax.inject.Inject
 import models.{UserAnswers, Mode}
 import navigation.Navigator
-import pages.foreign.{CountriesRentedPropertyPage, CountriesRentedPropertyGroup}
+import pages.foreign.{CountriesRentedPropertyPage, CountryGroup}
 import play.api.i18n.{MessagesApi, Messages, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -75,7 +75,7 @@ class CountriesRentedPropertyController @Inject()(
 
   private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages)
   = {
-    val countries = userAnswers.get(CountriesRentedPropertyGroup()).toSeq.flatten
+    val countries = userAnswers.get(CountryGroup()).toSeq.flatten
     val rows = countries.zipWithIndex.flatMap { case (_, index) =>
     CountriesRentedPropertySummary.row(taxYear, index, userAnswers)
     }

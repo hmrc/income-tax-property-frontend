@@ -20,11 +20,12 @@ import controllers.actions._
 import forms.foreign.SelectIncomeCountryFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.foreign.SelectIncomeCountryPage
+import pages.foreign.{Country, SelectIncomeCountryPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.CountryNamesDataSource
 import service.CountryNamesDataSource.countrySelectItems
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.SelectIncomeCountryView
@@ -50,7 +51,7 @@ class SelectIncomeCountryController @Inject() (
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(SelectIncomeCountryPage) match {
         case None        => form
-        case Some(value) => form.fill(value)
+        case Some(value) => form.fill(value.code)
       }
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
   }
@@ -65,10 +66,14 @@ class SelectIncomeCountryController @Inject() (
             Future.successful(
               BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
             ),
-          value =>
+          countryCode =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SelectIncomeCountryPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future
+                  .fromTry(
+                    request.userAnswers.set(SelectIncomeCountryPage, CountryNamesDataSource.getCountry(countryCode))
+                  )
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(SelectIncomeCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )

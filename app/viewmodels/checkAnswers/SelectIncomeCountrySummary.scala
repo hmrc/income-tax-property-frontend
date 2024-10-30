@@ -31,7 +31,7 @@ object SelectIncomeCountrySummary {
     answers.get(SelectIncomeCountryPage).map { answer =>
       SummaryListRowViewModel(
         key = "selectIncomeCountry.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(answer).toString),
+        value = ValueViewModel(HtmlFormat.escape(answer.name).toString),
         actions = Seq(
           ActionItemViewModel("site.change", routes.SelectIncomeCountryController.onPageLoad(taxYear, CheckMode).url)
             .withVisuallyHiddenText(messages("selectIncomeCountry.change.hidden"))

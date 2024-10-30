@@ -23,7 +23,8 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.SelectIncomeCountryPage
+import pages.foreign.{Country, SelectIncomeCountryPage}
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,11 +37,12 @@ import scala.concurrent.Future
 
 class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
   val userType = "agent"
   val formProvider = new SelectIncomeCountryFormProvider()
-  val form = formProvider(userType)
+  val form: Form[String] = formProvider(userType)
   val taxYear = 2024
+  val country: Country = Country(name = "India", code = "IND")
 
   lazy val selectIncomeCountryRoute: String = routes.SelectIncomeCountryController.onPageLoad(taxYear, NormalMode).url
 
@@ -67,7 +69,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage, country).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -79,7 +81,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), taxYear, userType, NormalMode, countrySelectItems)(
+        contentAsString(result) mustEqual view(form.fill("IND"), taxYear, userType, NormalMode, countrySelectItems)(
           request,
           messages(application)
         ).toString
