@@ -19,7 +19,7 @@ package controllers.allowances
 import audit.{AuditService, RentalsAllowance}
 import base.SpecBase
 import models.backend.PropertyDetails
-import models.{ElectricChargePointAllowance, UserAnswers}
+import models.UserAnswers
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.doNothing
 import org.mockito.MockitoSugar.when
@@ -61,11 +61,6 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
 
-  val electricChargePointAllowanceValue = 200
-  val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesOrNo = true,
-    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
-  )
 
   "Check Your Answers Controller" - {
 
@@ -108,7 +103,6 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
           RentalsAllowance(
             capitalAllowancesForACar = None,
             annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-            electricChargePointAllowance = Some(electricChargePointAllowance),
             zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
             zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
             businessPremisesRenovationAllowance = Some(businessPremisesRenovation),

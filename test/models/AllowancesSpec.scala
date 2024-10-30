@@ -29,10 +29,6 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
     """
       {
       |	"annualInvestmentAllowance" : 100,
-      |	"electricChargePointAllowance" : {
-      |		"electricChargePointAllowanceYesOrNo": true,
-      |		"electricChargePointAllowanceAmount": 200
-      |	},
       |	"zeroEmissionCarAllowance" :300,
       |	"zeroEmissionGoodsVehicleAllowance" : 400,
       |	"businessPremisesRenovationAllowance" :500,
@@ -43,11 +39,6 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
   val annualInvestmentAllowanceSummaryValue = 100
   val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
 
-  val electricChargePointAllowanceValue = 200
-  val electricChargePointAllowance = ElectricChargePointAllowance(
-    electricChargePointAllowanceYesOrNo = true,
-    electricChargePointAllowanceAmount = Some(electricChargePointAllowanceValue)
-  )
   val zeroEmissionCarAllowanceValue = 300
   val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
 
@@ -69,7 +60,6 @@ class AllowancesSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
         RentalsAllowance(
           capitalAllowancesForACar = None,
           annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-          electricChargePointAllowance = Some(electricChargePointAllowance),
           zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
           zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
           businessPremisesRenovationAllowance = Some(businessPremisesRenovation),

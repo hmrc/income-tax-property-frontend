@@ -419,13 +419,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
               ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
             }
-    case ElectricChargePointAllowancePage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
-              controllers.allowances.routes.ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
-            }
     case ZeroEmissionCarAllowancePage(Rentals) =>
       taxYear =>
         _ =>
@@ -929,9 +922,9 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
           // expenses
           //    case ConsolidatedExpensesPage => taxYear => _ => userAnswers => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
         // Allowances
-    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) |
-        ElectricChargePointAllowancePage | ZeroEmissionCarAllowancePage(Rentals) |
-        ZeroEmissionGoodsVehicleAllowancePage(
+    case CapitalAllowancesForACarPage(Rentals) | AnnualInvestmentAllowancePage(Rentals) | ZeroEmissionCarAllowancePage(
+          Rentals
+        ) | ZeroEmissionGoodsVehicleAllowancePage(
           Rentals
         ) | BusinessPremisesRenovationPage(Rentals) | ReplacementOfDomesticGoodsPage(Rentals) |
         OtherCapitalAllowancePage(

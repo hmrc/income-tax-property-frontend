@@ -261,7 +261,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(true, Some(20))
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
-      updated.get(RaRElectricChargePointAllowanceForAnEVPage).get mustBe 30
       updated.get(RaRZeroEmissionCarAllowancePage).get mustBe 35
       updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
       updated.get(RaRReplacementsOfDomesticGoodsPage).get mustBe 25

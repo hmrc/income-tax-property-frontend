@@ -563,15 +563,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
           ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
         }
-        s"must go from ElectricChargePointAllowancePage to ZeroEmissionCarAllowancePage for $propertyTypeDefinition" ignore {
-          navigator.nextPage(
-            ElectricChargePointAllowancePage,
-            taxYear,
-            NormalMode,
-            UserAnswers("test"),
-            UserAnswers("test")
-          ) mustBe ZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
-        }
+
         s"must go from ZeroEmissionCarAllowancePage to ZeroEmissionGoodsVehicleAllowancePage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ZeroEmissionCarAllowancePage(propertyType),
@@ -1107,22 +1099,6 @@ class NavigatorSpec extends SpecBase {
                 controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
                   .onPageLoad(taxYear)
             })
-        }
-        s"must go from ElectricChargePointAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" ignore {
-          navigator.nextPage(
-            ElectricChargePointAllowancePage,
-            taxYear,
-            CheckMode,
-            UserAnswers("test"),
-            UserAnswers("test")
-          ) mustBe (propertyType match {
-            case Rentals =>
-              AllowancesCheckYourAnswersController
-                .onPageLoad(taxYear)
-            case RentalsRentARoom =>
-              controllers.rentalsandrentaroom.allowances.routes.RentalsAndRentARoomAllowancesCheckYourAnswersController
-                .onPageLoad(taxYear)
-          })
         }
         s"must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
