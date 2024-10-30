@@ -27,7 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource.countrySelectItems
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.SelectIncomeCountryView
+import views.html.foreign.SelectIncomeCountryView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

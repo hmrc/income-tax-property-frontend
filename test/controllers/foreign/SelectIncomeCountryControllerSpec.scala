@@ -30,7 +30,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.CountryNamesDataSource.countrySelectItems
-import views.html.SelectIncomeCountryView
+import views.html.foreign.SelectIncomeCountryView
 
 import scala.concurrent.Future
 
