@@ -27,29 +27,37 @@ import viewmodels.checkAnswers.FormatUtils.keyCssClass
 
 object CountriesRentedPropertySummary  {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CrpOnIndex(index)).map {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(CountriesRentedPropertyPage).map {
       answer =>
-
         val value = s"$answer"
-
-        //val value = if (answer) "site.yes" else "site.no"
-
         SummaryListRowViewModel(
           key     = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
-          value   = ValueViewModel(value),
+          value   = ValueViewModel("PLACEHOLDER FOR CATEGORY"),
+          //ACTIONS NEED SETTING ONCE PAGES HAVE BEEN IMPLEMENTED
           actions = Seq(
             ActionItemViewModel("site.change", controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
+              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
+            ActionItemViewModel("site.remove", controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
           )
+        )
+    }
 
+  //TO BE USED ONCE PAGE TO ADD COUNTRIES IS IMPLEMENTED
+//  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+//    answers.get(CrpOnIndex(index)).map {
+//      answer =>
+//
+//        val value = s"$answer"
+//
 //        SummaryListRowViewModel(
-//          key     = "countriesRentedProperty.checkYourAnswersLabel",
+//          key     = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
 //          value   = ValueViewModel(value),
 //          actions = Seq(
 //            ActionItemViewModel("site.change", controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url)
 //              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
 //          )
-        )
-    }
+//        )
+//    }
 }

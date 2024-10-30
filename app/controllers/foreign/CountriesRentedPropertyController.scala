@@ -22,7 +22,7 @@ import forms.foreign.CountriesRentedPropertyFormProvider
 import javax.inject.Inject
 import models.{UserAnswers, Mode}
 import navigation.Navigator
-import pages.foreign.{CountriesRentedPropertyPage, CountryGroup}
+import pages.foreign.{CountriesRentedPropertyPage, CountryGroup, SelectIncomeCountryPage}
 import play.api.i18n.{MessagesApi, Messages, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -75,10 +75,15 @@ class CountriesRentedPropertyController @Inject()(
 
   private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages)
   = {
-    val countries = userAnswers.get(CountryGroup()).toSeq.flatten
-    val rows = countries.zipWithIndex.flatMap { case (_, index) =>
-    CountriesRentedPropertySummary.row(taxYear, index, userAnswers)
-    }
+    val countries = userAnswers.get(SelectIncomeCountryPage).toSeq
+    val rows = countries.zipWithIndex.flatMap { case (_, _) =>
+      CountriesRentedPropertySummary.row(taxYear, userAnswers) }
+
+// TO BE USED ONCE PAGE TO ADD COUNTRIES IS IMPLEMENTED
+//    val countries = userAnswers.get(CountryGroup()).toSeq.flatten
+//    val rows = countries.zipWithIndex.flatMap { case (_, index) =>
+//    CountriesRentedPropertySummary.row(taxYear, index, userAnswers)
+    //}
     SummaryListViewModel(rows)
   }
 }
