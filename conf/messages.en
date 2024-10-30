@@ -842,7 +842,7 @@ businessPremisesRenovation.details.content.line2.bullet1 = convert a building in
 businessPremisesRenovation.details.content.line2.bullet2 = renovate a building that is, or will be, a business premises
 businessPremisesRenovation.details.content.line2.bullet3 = repair business premises
 businessPremisesRenovation.details.content.line2.part1 = Read more about
-businessPremisesRenovation.details.content.line2.part2 = business premises renovation allowance (BPRA) at GOV.UK
+businessPremisesRenovation.details.content.line2.part2 = business premises renovation allowance (BPRA) at GOV.UK (opens in new tab)
 businessPremisesRenovation.details.content.line2.href = https://www.gov.uk/guidance/business-premises-renovation-allowance-bpra
 businessPremisesRenovation.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
 businessPremisesRenovation.error.required.agent = Enter the amount for your client’s business premises renovation allowance
@@ -972,6 +972,8 @@ zeroEmissionGoodsVehicleAllowance.error.required.agent = Enter an amount for how
 zeroEmissionGoodsVehicleAllowance.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 zeroEmissionGoodsVehicleAllowance.error.outOfRange = Enter an amount between £{0} and £{1}
 zeroEmissionGoodsVehicleAllowance.change.hidden = Zero-emission goods vehicle allowance
+zeroEmissionGoodsVehicleAllowance.details.combinedJourneySpecific = This allowance category only applies to property rental income
+
 
 otherCapitalAllowance.title = Other capital allowances
 otherCapitalAllowance.heading = Other capital allowances

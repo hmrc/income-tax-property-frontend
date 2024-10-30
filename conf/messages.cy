@@ -627,7 +627,7 @@ businessPremisesRenovation.details.content.line2.bullet1	=	trawsnewid adeilad i 
 businessPremisesRenovation.details.content.line2.bullet2	=	adnewyddu adeilad sydd, neu bydd, yn safleoedd busnes
 businessPremisesRenovation.details.content.line2.bullet3	=	atgyweirio safleoedd busnes
 businessPremisesRenovation.details.content.line2.part1	=	Darllenwch ragor am
-businessPremisesRenovation.details.content.line2.part2	=	lwfans adnewyddu safleoedd busnes (BPRA) ar GOV.UK
+businessPremisesRenovation.details.content.line2.part2	=	*Missing Welsh*
 businessPremisesRenovation.checkYourAnswersLabel	=	Lwfans adnewyddu safleoedd busnes
 
 businessPremisesRenovationBalancingCharge.title = *Missing Welsh*
