@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.foreign
 
 import models.{UserAnswers, CheckMode, CrpOnIndex}
-import pages.foreign.CountriesRentedPropertyPage
+import pages.foreign.SelectIncomeCountryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
@@ -28,7 +28,7 @@ import viewmodels.checkAnswers.FormatUtils.keyCssClass
 object CountriesRentedPropertySummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CountriesRentedPropertyPage).map {
+    answers.get(SelectIncomeCountryPage).map {
       answer =>
         val value = s"$answer"
         SummaryListRowViewModel(

@@ -30,9 +30,3 @@ case class Country(
 object Country {
   implicit val format: Format[Country] = Json.format[Country]
 }
-
-case class CountryGroup() extends Gettable[Array[Country]] with Settable[Array[Country]] {
-  override def path: JsPath = JsPath \ selectCountry(ForeignProperty) \ toString
-
-  override def toString: String = PageConstants.countriesRentedPropertyGroup
-}

@@ -22,7 +22,8 @@ import forms.foreign.CountriesRentedPropertyFormProvider
 import javax.inject.Inject
 import models.{UserAnswers, Mode}
 import navigation.Navigator
-import pages.foreign.{CountriesRentedPropertyPage, CountryGroup, SelectIncomeCountryPage}
+import pages.foreign.{SelectIncomeCountryPage, AddCountriesRentedPage}
+import play.api.data.Form
 import play.api.i18n.{MessagesApi, Messages, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +47,7 @@ class CountriesRentedPropertyController @Inject()(
                                          view: CountriesRentedPropertyView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -67,9 +68,10 @@ class CountriesRentedPropertyController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CountriesRentedPropertyPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddCountriesRentedPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CountriesRentedPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers))
+            result <- Future.successful(Redirect(controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, mode)))
+          } yield result
       )
   }
 
