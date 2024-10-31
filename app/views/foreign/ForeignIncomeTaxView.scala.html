@@ -1,0 +1,72 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth.Fixed10
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, individualOrAgent: String, country: (String, String), mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"foreignIncomeTax.title.$individualOrAgent", country._1))) {
+
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("foreignIncomeTaxYesNo" -> "foreignIncomeTaxForm")))
+    }
+
+    <h1 class="govuk-heading-l">@messages(s"foreignIncomeTax.heading.$individualOrAgent", country._1)</h1>
+    <p class="govuk-body">@messages(s"foreignIncomeTax.p.1.$individualOrAgent")</p>
+    <p class="govuk-body">
+    @messages(s"foreignIncomeTax.href.text.1")
+        <a class="govuk-link"  rel="noreferrer noopener" target="_blank" href="@messages("foreignIncomeTax.href.link")">
+        @messages(s"foreignIncomeTax.href.text.2")
+        </a>
+    </p>
+
+    @formHelper(action = controllers.foreign.routes.ForeignIncomeTaxController.onSubmit(taxYear, country._2, mode), Symbol("autoComplete") -> "off") {
+
+        @govukRadios(
+            RadiosViewModel.yesNoWithConditionalHtml(
+                field = form("foreignIncomeTaxYesNo"),
+                legend = Legend(),
+                items = RadiosViewModel.yesNoItemsWithConditionalHtml(
+                    field = form("foreignIncomeTaxForm"),
+                    conditionalYesHtml = Some(
+                        govukInput(
+                            InputViewModel(
+                                field = form("foreignIncomeTaxAmount"),
+                                label = LabelViewModel(messages(s"foreignIncomeTax.yes.text.$individualOrAgent"))
+                            )
+                            .asNumeric()
+                            .withWidth(Fixed10)
+                            .withPrefix(PrefixOrSuffix(content = Text("£")))
+                        )
+                    )
+                )
+            )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+        )
+    }
+}
