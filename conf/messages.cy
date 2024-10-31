@@ -1794,3 +1794,12 @@ claimForeignTaxCreditRelief.error.required.individual = *Missing Welsh*
 claimForeignTaxCreditRelief.error.required.agent = *Missing Welsh*
 claimForeignTaxCreditRelief.change.hidden.individual = *Missing Welsh*
 claimForeignTaxCreditRelief.change.hidden.agent = *Missing Welsh*
+
+countriesRentedProperty.title.individual = *Missing Welsh*
+countriesRentedProperty.title.agent = *Missing Welsh*
+countriesRentedProperty.heading.individual = *Missing Welsh*
+countriesRentedProperty.heading.agent = *Missing Welsh*
+countriesRentedProperty.legend = *Missing Welsh*
+countriesRentedProperty.checkYourAnswersLabel = *Missing Welsh*
+countriesRentedProperty.error.required = *Missing Welsh*
+countriesRentedProperty.change.hidden = *Missing Welsh*

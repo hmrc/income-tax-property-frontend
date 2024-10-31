@@ -1,7 +1,22 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers.foreign
 
 import base.SpecBase
-import controllers.routes
 import forms.foreign.CountriesRentedPropertyFormProvider
 import models.{UserAnswers, NormalMode}
 import navigation.{Navigator, FakeNavigator}
@@ -14,6 +29,10 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import controllers.foreign.routes
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import viewmodels.govuk.summarylist._
+import views.html.foreign.CountriesRentedPropertyView
 
 import scala.concurrent.Future
 
@@ -24,13 +43,16 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new CountriesRentedPropertyFormProvider()
   val form = formProvider()
 
-  lazy val countriesRentedPropertyRoute = routes.CountriesRentedPropertyController.onPageLoad(NormalMode).url
+  val taxYear = 2024
+  lazy val countriesRentedPropertyRoute = routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode).url
+  val list: SummaryList = SummaryListViewModel(Seq.empty)
+  val agent = "agent"
 
   "CountriesRentedProperty Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, countriesRentedPropertyRoute)
@@ -40,25 +62,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[CountriesRentedPropertyView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(CountriesRentedPropertyPage, true).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, countriesRentedPropertyRoute)
-
-        val view = application.injector.instanceOf[CountriesRentedPropertyView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, list, taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -69,7 +73,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -90,7 +94,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
@@ -104,7 +108,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -118,7 +122,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -134,7 +138,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
