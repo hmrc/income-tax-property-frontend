@@ -51,6 +51,10 @@ object PageConstants {
 
   val eSbaPath: PropertyType => String = labelForPropertyType(_, "ESBA")
 
+  val foreignTaxPath: PropertyType => String = labelForPropertyType(_, "FT")
+
+  val selectCountryPath: PropertyType => String = labelForPropertyType(_, "SC")
+
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
 
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package forms.foreign
 
-import models.{ForeignProperty, ForeignTotalIncome}
-import pages.PageConstants.selectCountryPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object TotalIncomePage extends QuestionPage[ForeignTotalIncome] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
+class ClaimForeignTaxCreditReliefFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "totalIncome"
-
+  def apply(individualOrAgent: String): Form[Boolean] =
+    Form(
+      "claimForeignTaxCreditRelief" -> boolean(s"claimForeignTaxCreditRelief.error.required.$individualOrAgent")
+    )
 }

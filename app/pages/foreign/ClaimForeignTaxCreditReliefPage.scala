@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@
 
 package pages.foreign
 
-import models.{ForeignProperty, ForeignTotalIncome}
-import pages.PageConstants.selectCountryPath
+import models.ForeignProperty
+import pages.PageConstants.foreignTaxPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object TotalIncomePage extends QuestionPage[ForeignTotalIncome] {
+case object ClaimForeignTaxCreditReliefPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ toString
 
-  override def toString: String = "totalIncome"
-
+  override def toString: String = "claimForeignTaxCreditRelief"
 }
