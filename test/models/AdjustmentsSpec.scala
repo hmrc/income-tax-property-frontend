@@ -43,7 +43,7 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
   "Adjustments" - {
     "must deserialise from json" in {
       import audit.RentalsAdjustment._
-      Json.parse(adjustmentsJson).validate[RentalsAdjustment] mustBe JsSuccess(RentalsAdjustment(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), 2, RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2))
+      Json.parse(adjustmentsJson).validate[RentalsAdjustment] mustBe JsSuccess(RentalsAdjustment(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), Some(2), RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2))
     }
   }
 }

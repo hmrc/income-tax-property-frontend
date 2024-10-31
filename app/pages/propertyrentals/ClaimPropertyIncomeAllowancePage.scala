@@ -16,7 +16,8 @@
 
 package pages.propertyrentals
 
-import models.{PropertyType, RentalsRentARoom, UserAnswers}
+import audit.RentalsAdjustment
+import models.{PropertyType, RentalsAndRentARoomAdjustment, RentalsRentARoom, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
@@ -35,11 +36,7 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     userAnswers
       .remove(PrivateUseAdjustmentPage(RentalsRentARoom))
-      .flatMap(_.remove(BalancingChargePage(RentalsRentARoom)))
-      .flatMap(_.remove(PropertyIncomeAllowancePage(RentalsRentARoom)))
       .flatMap(_.remove(RenovationAllowanceBalancingChargePage(RentalsRentARoom)))
-      .flatMap(_.remove(ResidentialFinanceCostPage(RentalsRentARoom)))
-      .flatMap(_.remove(UnusedResidentialFinanceCostPage(RentalsRentARoom)))
       .flatMap(_.remove(RentalsRaRAdjustmentsCompletePage))
       .flatMap(_.remove(ZeroEmissionCarAllowancePage(RentalsRentARoom)))
       .flatMap(_.remove(ZeroEmissionGoodsVehicleAllowancePage(RentalsRentARoom)))
@@ -47,5 +44,8 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
       .flatMap(_.remove(OtherCapitalAllowancePage(RentalsRentARoom)))
       .flatMap(_.remove(AnnualInvestmentAllowancePage(RentalsRentARoom)))
       .flatMap(_.remove(BusinessPremisesRenovationPage(RentalsRentARoom)))
+      .flatMap(_.remove(RentalsAndRentARoomAdjustment))
+      .flatMap(_.remove(RentalsAdjustment))
+      .flatMap(_.remove(RentalsAdjustmentsCompletePage))
 
 }

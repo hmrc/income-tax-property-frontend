@@ -630,14 +630,25 @@ class NavigatorSpec extends SpecBase {
         ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
-      "must go from BalancingChargePage to PropertyIncomeAllowancePage" in {
+      "must go from BalancingChargePage to PropertyIncomeAllowancePage if the user has selected Yes, claim property income allowance " +
+        "on the Claiming Property Income Allowance' page" in {
+          navigator.nextPage(
+            BalancingChargePage(Rentals),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
+          ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+        }
+
+      "must go from BalancingChargePage to RenovationAllowanceBalancingCharge" in {
         navigator.nextPage(
           BalancingChargePage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+          UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), false).get
+        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
       "must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage" in {
@@ -1417,13 +1428,17 @@ class NavigatorSpec extends SpecBase {
           .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
           .get
         val userAnswers =
-          UserAnswers("test").set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = false, None)).get
+          UserAnswers("test")
+            .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+            .get
+        val updateUserAnswers =
+          userAnswers.set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = false, None)).get
         navigator.nextPage(
           BalancingChargePage(Rentals),
           taxYear,
           CheckMode,
           previousUserAnswers,
-          userAnswers
+          updateUserAnswers
         ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, Rentals)
       }
 

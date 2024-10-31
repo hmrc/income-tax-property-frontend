@@ -294,7 +294,12 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
-              PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+              if (userAnswers.get(ClaimPropertyIncomeAllowancePage(Rentals)).getOrElse(false)) {
+                PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+              } else {
+                RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+              }
+
             }
     case BalancingChargePage(RentalsRentARoom) =>
       taxYear =>
@@ -1260,13 +1265,15 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
   ): Call =
     (
       userAnswers.get(BalancingChargePage(propertyType)),
-      previousUserAnswers.get(BalancingChargePage(propertyType))
+      previousUserAnswers.get(BalancingChargePage(propertyType)),
+      userAnswers.get(ClaimPropertyIncomeAllowancePage(Rentals))
     ) match {
-      case (Some(current), Some(previous))
-          if current.balancingChargeYesNo == previous.balancingChargeYesNo &&
-            current.balancingChargeAmount == previous.balancingChargeAmount =>
-        AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      case _ => PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
+      case (Some(current), Some(previous),Some(true))
+        if current.balancingChargeYesNo != previous.balancingChargeYesNo &&
+          current.balancingChargeAmount != previous.balancingChargeAmount =>
+        PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
+
+      case _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     }
 
   private def totalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
