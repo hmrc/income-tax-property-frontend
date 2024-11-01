@@ -32,3 +32,8 @@ GET        /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-ta
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                            controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
