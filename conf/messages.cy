@@ -627,8 +627,10 @@ businessPremisesRenovation.details.content.line2.bullet1	=	trawsnewid adeilad i 
 businessPremisesRenovation.details.content.line2.bullet2	=	adnewyddu adeilad sydd, neu bydd, yn safleoedd busnes
 businessPremisesRenovation.details.content.line2.bullet3	=	atgyweirio safleoedd busnes
 businessPremisesRenovation.details.content.line2.part1	=	Darllenwch ragor am
-businessPremisesRenovation.details.content.line2.part2	=	lwfans adnewyddu safleoedd busnes (BPRA) ar GOV.UK
+businessPremisesRenovation.details.content.line2.part2	=	*Missing Welsh*
 businessPremisesRenovation.checkYourAnswersLabel	=	Lwfans adnewyddu safleoedd busnes
+businessPremisesRenovation.details.combinedJourneySpecific = *Missing Welsh*
+
 
 businessPremisesRenovationBalancingCharge.title = *Missing Welsh*
 businessPremisesRenovationBalancingCharge.heading = *Missing Welsh*
@@ -734,6 +736,7 @@ zeroEmissionCarAllowance.content.l1.agent	=	Os oes gan eich cleient incwm o eidd
 zeroEmissionGoodsVehicleAllowance.input.heading.individual	=	Faint hoffech ei hawlio ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau?
 zeroEmissionGoodsVehicleAllowance.input.heading.agent	=	Faint hoffai’ch cleient ei hawlio ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau?
 zeroEmissionGoodsVehicleAllowance.change.hidden	=	Lwfans allyriadau sero ar gyfer cerbyd cario nwyddau
+zeroEmissionGoodsVehicleAllowance.details.combinedJourneySpecific = *Missing Welsh*
 
 otherCapitalAllowance.title	=	Lwfansau cyfalaf eraill
 otherCapitalAllowance.heading	=	Lwfansau cyfalaf eraill

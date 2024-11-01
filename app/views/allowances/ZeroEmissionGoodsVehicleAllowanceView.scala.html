@@ -37,7 +37,9 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-
+@if(propertyType == RentalsRentARoom){
+    <h3 class="govuk-heading-s">@messages("zeroEmissionGoodsVehicleAllowance.details.combinedJourneySpecific")</h3>
+}
         <p class="govuk-body">@messages(s"zeroEmissionCarAllowance.content.l1.$individualOrAgent")</p>
 
 
@@ -48,6 +50,7 @@
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+            .withHint(HintViewModel(messages("amount.hint")))
         )
 
         @govukButton(

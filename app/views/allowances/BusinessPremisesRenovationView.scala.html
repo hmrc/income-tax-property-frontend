@@ -41,6 +41,10 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+@if(propertyType == RentalsRentARoom){
+        <h3 class="govuk-heading-s">@messages("businessPremisesRenovation.details.combinedJourneySpecific")</h3>
+}
+
 
         <div>
             <p class="govuk-body">@messages("businessPremisesRenovation.details.content.line1")</p>
@@ -56,28 +60,6 @@
                 </a>
             </p>
         </div>
-        <!--<details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text">
-                            @messages("businessPremisesRenovation.details.summary")
-                            </span>
-            </summary>
-            <div class="govuk-details__text">
-                <p class="govuk-body">@messages("businessPremisesRenovation.details.content.line1")</p>
-                <p class="govuk-body">@messages("businessPremisesRenovation.details.content.line2")</p>
-                <ul id="list" class="govuk-list govuk-list&#45;&#45;bullet" >
-                    <li>@messages("businessPremisesRenovation.details.content.line2.bullet1")</li>
-                    <li>@messages("businessPremisesRenovation.details.content.line2.bullet2")</li>
-                    <li>@messages("businessPremisesRenovation.details.content.line2.bullet3")</li>
-                </ul>
-                <p class="govuk-body">@messages("businessPremisesRenovation.details.content.line2.part1")
-                    <a href="@messages("businessPremisesRenovation.details.content.line2.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                    @messages("businessPremisesRenovation.details.content.line2.part2")
-                    </a>
-                </p>
-            </div>
-        </details>-->
-
         @govukInput(
             InputViewModel(
                 field = form("businessPremisesRenovationAmount"),
@@ -85,6 +67,7 @@
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+            .withHint(HintViewModel(messages("amount.hint")))
         )
 
         @govukButton(
