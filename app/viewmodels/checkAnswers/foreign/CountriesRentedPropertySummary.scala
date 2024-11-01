@@ -19,32 +19,38 @@ package viewmodels.checkAnswers.foreign
 import models.{UserAnswers, CheckMode, CrpOnIndex}
 import pages.foreign.SelectIncomeCountryPage
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import viewmodels.checkAnswers.FormatUtils.keyCssClass
 
-object CountriesRentedPropertySummary  {
+object CountriesRentedPropertySummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(SelectIncomeCountryPage).map {
-      answer =>
-        val value = s"$answer"
-        SummaryListRowViewModel(
-          key     = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
-          value   = ValueViewModel("PLACEHOLDER FOR CATEGORY"),
-          //ACTIONS NEED SETTING ONCE PAGES HAVE BEEN IMPLEMENTED
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
-            ActionItemViewModel("site.remove", controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
+    answers.get(SelectIncomeCountryPage).map { answer =>
+      val value = s"${answer.name}"
+      SummaryListRowViewModel(
+        key = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
+        value = ValueViewModel(HtmlContent("All Properties")).withCssClass(valueCssClass),
+        // ACTIONS NEED SETTING ONCE PAGES HAVE BEEN IMPLEMENTED
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
           )
-        )
+            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
+          ActionItemViewModel(
+            "site.remove",
+            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
+          )
+            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
+        ),
+        actionsCss = "w-25"
+      )
     }
 
-  //TO BE USED ONCE PAGE TO ADD COUNTRIES IS IMPLEMENTED
+  // TO BE USED ONCE PAGE TO ADD COUNTRIES IS IMPLEMENTED
 //  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
 //    answers.get(CrpOnIndex(index)).map {
 //      answer =>
