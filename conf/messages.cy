@@ -1803,3 +1803,4 @@ countriesRentedProperty.legend = *Missing Welsh*
 countriesRentedProperty.checkYourAnswersLabel = *Missing Welsh*
 countriesRentedProperty.error.required = *Missing Welsh*
 countriesRentedProperty.change.hidden = *Missing Welsh*
+countriesRentedProperty.staticContent = *Missing Welsh*

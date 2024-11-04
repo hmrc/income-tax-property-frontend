@@ -17,22 +17,19 @@
 package controllers.foreign
 
 import base.SpecBase
-import controllers.routes
-import pages.foreign.{Country, SelectIncomeCountryPage}
 import forms.foreign.CountriesRentedPropertyFormProvider
-import models.{UserAnswers, NormalMode}
-import navigation.{Navigator, FakeNavigator}
+import models.{NormalMode, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.CountriesRentedPropertyPage
+import pages.foreign.{Country, SelectIncomeCountryPage}
+import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import controllers.foreign.routes
-import play.api.Application
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.summarylist._
@@ -46,7 +43,8 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
 
   val taxYear = 2024
-  lazy val countriesRentedPropertyRoute = controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode).url
+  lazy val countriesRentedPropertyRoute =
+    controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode).url
   val list: SummaryList = SummaryListViewModel(Seq.empty)
   val agent = "agent"
 
@@ -66,7 +64,10 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[CountriesRentedPropertyView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, list, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, list, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -112,7 +113,10 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, list, taxYear, agent, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -152,20 +156,25 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
         UserAnswers("countries-rented-property-user-answers")
           .set(
             page = SelectIncomeCountryPage,
-            value = Country ("Greece", "GRC"
-            )
-              )
+            value = Country("Greece", "GRC")
+          )
           .get
 
       val application: Application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
-      running(application){
+      running(application) {
 
-        val result = CountriesRentedPropertySummary.row(taxYear, userAnswers)(messages(application))
-          .get.key.content.toString.trim.substring(12).dropRight(1)
+        val result = CountriesRentedPropertySummary
+          .row(taxYear, userAnswers)(messages(application))
+          .get
+          .key
+          .content
+          .toString
+          .trim
+          .substring(12)
+          .dropRight(1)
 
         result mustEqual "Greece"
       }
-
 
     }
   }
