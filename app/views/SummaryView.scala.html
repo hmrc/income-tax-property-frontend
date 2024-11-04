@@ -37,7 +37,7 @@
                     @messages(s"${item.content}")
                 </div>
             </div>
-            <div class="govuk-task-list__status govuk-task-list__status--cannot-start-yet" > @messages(s"common.${item.taskListTag.message}") </div>
+            <div class="govuk-task-list__status govuk-task-list__status--cannot-start-yet" id="@{item.id}" > @messages(s"common.${item.taskListTag.message}") </div>
         </li>
         } else {
         <li class="govuk-task-list__item govuk-task-list__item--with-link">
