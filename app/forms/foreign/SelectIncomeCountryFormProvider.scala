@@ -19,7 +19,7 @@ package forms.foreign
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import service.CountryNamesDataSource.countrySelectItems
+import service.CountryNamesDataSource.loadCountries
 
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class SelectIncomeCountryFormProvider @Inject() extends Mappings {
 
   private def validCountry: Constraint[String] =
     Constraint {
-      case countryCode if countrySelectItems.flatMap(_.value).contains(countryCode) =>
+      case countryCode if loadCountries.map(_.code).contains(countryCode) =>
         Valid
       case _ =>
         Invalid("selectIncomeCountry.error.validCountry")

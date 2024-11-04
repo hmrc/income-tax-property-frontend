@@ -35,7 +35,7 @@ object CountryNamesDataSource {
   private def selectItems: Seq[SelectItem] =
     loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
 
-  private def loadCountries: Seq[Country] =
+  def loadCountries: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries.csv"), "UTF-8"))
       .allWithOrderedHeaders
