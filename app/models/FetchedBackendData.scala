@@ -121,19 +121,6 @@ final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
   override def toString: String = esbas
 }
 
-final case class Crp(
-                      country: String
-                    )
-
-object Crp {
-  implicit val format: OFormat[Crp] = Json.format[Crp]
-}
-
-final case class CrpOnIndex(index: Int) extends Gettable[Crp] {
-  override def path: JsPath =
-    JsPath \ selectCountry(ForeignProperty) \ PageConstants.countriesRentedPropertyGroup \ index
-}
-
 final case class JourneyWithStatus(journeyName: String, journeyStatus: String)
 
 object JourneyWithStatus {

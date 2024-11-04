@@ -19,7 +19,7 @@ package pages.foreign
 import models.ForeignProperty
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.JsPath
 import queries.Gettable
 
 case class SelectIncomeCountryPage(index: Int) extends QuestionPage[Country] {
@@ -29,8 +29,8 @@ case class SelectIncomeCountryPage(index: Int) extends QuestionPage[Country] {
   override def toString: String = "incomeCountries"
 }
 
-case object SelectIncomeCountries extends Gettable[Array[Country]] {
-  implicit val arrayReads: Reads[Array[Country]] = JsPath.read
+case object IncomeSourceCountries extends Gettable[Array[Country]] {
+
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "incomeCountries"

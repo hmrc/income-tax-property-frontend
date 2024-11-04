@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.CountriesRentedPropertyFormProvider
 import models.{Mode, UserAnswers}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{AddCountriesRentedPage, SelectIncomeCountries}
+import pages.foreign.{AddCountriesRentedPage, IncomeSourceCountries}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -75,7 +75,7 @@ class CountriesRentedPropertyController @Inject() (
   }
 
   private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages) = {
-    val countries = userAnswers.get(SelectIncomeCountries).toSeq.flatten
+    val countries = userAnswers.get(IncomeSourceCountries).toSeq.flatten
     val rows = countries.zipWithIndex.flatMap { case (_, idx) =>
       CountriesRentedPropertySummary.row(taxYear, idx, userAnswers)
     }

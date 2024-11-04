@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
-import pages.foreign.{AddCountriesRentedPage, SelectIncomeCountries, SelectIncomeCountryPage}
+import pages.foreign.{AddCountriesRentedPage, IncomeSourceCountries, SelectIncomeCountryPage}
 import play.api.mvc.Call
 
 @Singleton
@@ -50,7 +50,7 @@ class ForeignPropertyNavigator {
   private def addAnotherCountryNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(AddCountriesRentedPage) match {
       case Some(true) =>
-        val nextIndex = userAnswers.get(SelectIncomeCountries).map(_.length).getOrElse(0)
+        val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
         controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, nextIndex, NormalMode)
 
       case _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
