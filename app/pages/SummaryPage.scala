@@ -279,14 +279,20 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
               .getOrElse(false)
           )
         }(identity), {
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
 
-        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage(Rentals))).isDefined) {
-            TaskListTag.InProgress
-          } else {
-            TaskListTag.NotStarted
-          }
+        val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
+        val incomeSectionComplete = userAnswers.flatMap(_.get(IncomeSectionFinishedPage))
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+        (claimPIA, incomeSectionComplete, sectionFinished) match {
+          case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
+          case (Some(true), None, None)              => TaskListTag.CanNotStart
+          case (Some(true), Some(true), None)        => TaskListTag.NotStarted
+          case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
+          case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
+          case (Some(false), _, None)                => TaskListTag.NotStarted
+          case (Some(false), _, Some(true))          => TaskListTag.Completed
+          case (Some(false), _, Some(false))         => TaskListTag.InProgress
+          case (_, _, _)                             => TaskListTag.NotStarted
         }
       },
       "rentals_adjustments_link"
@@ -440,35 +446,24 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
                 .getOrElse(false)
             )
         }(identity), {
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
-        sectionFinished
-          .map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress)
-          .getOrElse {
-            if (userAnswers.flatMap(_.get(PrivateUseAdjustmentPage(RentalsRentARoom))).isDefined) {
-              TaskListTag.InProgress
-            } else {
-              TaskListTag.NotStarted
-            }
-          }
+
+        val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
+        val RentalsRarIncomeSectionComplete = userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
+        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+        (claimPIA, RentalsRarIncomeSectionComplete, sectionFinished) match {
+          case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
+          case (Some(true), None, None)              => TaskListTag.CanNotStart
+          case (Some(true), Some(true), None)        => TaskListTag.NotStarted
+          case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
+          case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
+          case (Some(false), _, None)                => TaskListTag.NotStarted
+          case (Some(false), _, Some(true))          => TaskListTag.Completed
+          case (Some(false), _, Some(false))         => TaskListTag.InProgress
+          case (_, _, _)                             => TaskListTag.NotStarted
+        }
       },
       "rentals_and_rent_a_room_adjustments_link"
     )
-
-  /*private def rentalsAndRaRExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
-    TaskListItem(
-      "summary.expenses",
-      controllers.propertyrentals.expenses.routes.ExpensesStartController.onPageLoad(taxYear, RentalsRentARoom), {
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsRaRExpensesCompletePage))
-        sectionFinished.map(userChoice => if (userChoice) TaskListTag.Completed else TaskListTag.InProgress).getOrElse {
-          if (userAnswers.flatMap(_.get(ExpensesRRSectionCompletePage)).isDefined) {
-            TaskListTag.InProgress
-          } else {
-            TaskListTag.NotStarted
-          }
-        }
-      },
-      "rentals_and_rent_a_room_expenses_link"
-    )*/
 
   private def rentalsAndRaRIncomeItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(

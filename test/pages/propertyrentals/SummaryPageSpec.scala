@@ -116,7 +116,7 @@ class SummaryPageSpec extends SpecBase {
       val adjustmentsListItem = TaskListItem(
         "summary.adjustments",
         controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
-        TaskListTag.NotStarted,
+        TaskListTag.CanNotStart,
         "rentals_adjustments_link"
       )
 
@@ -325,7 +325,7 @@ class SummaryPageSpec extends SpecBase {
       "summary.adjustments",
       controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
         .onPageLoad(taxYear, true),
-      TaskListTag.NotStarted,
+      TaskListTag.CanNotStart,
       "rentals_and_rent_a_room_adjustments_link"
     )
 
@@ -509,7 +509,7 @@ class SummaryPageSpec extends SpecBase {
           summaryESBAItem,
           summaryAdjustmentsItem.copy(call =
             controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
-              .onPageLoad(taxYear, false)
+              .onPageLoad(taxYear, false), taskListTag = TaskListTag.NotStarted
           )
         )
       )

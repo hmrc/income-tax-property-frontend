@@ -16,6 +16,7 @@
 
 @import pages.{ForeignPropertySummaryPage, UKPropertySummaryPage}
 @import viewmodels.summary.TaskListItem
+@import viewmodels.summary.TaskListTag.CanNotStart
 
 @this(
         layout: templates.Layout,
@@ -28,6 +29,17 @@
 @taskListSection(items: Seq[TaskListItem]) = {
     <ol class="govuk-task-list">
     @for(item <- items) {
+
+        @if(item.taskListTag == CanNotStart){
+        <li class="govuk-task-list__item">
+            <div class="govuk-task-list__name-and-hint">
+                <div>
+                    @messages(s"${item.content}")
+                </div>
+            </div>
+            <div class="govuk-task-list__status govuk-task-list__status--cannot-start-yet" > @messages(s"common.${item.taskListTag.message}") </div>
+        </li>
+        } else {
         <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
                 <a class="govuk-link govuk-task-list__link" aria-describedby="@{
@@ -39,13 +51,15 @@
             <div class="govuk-task-list__status" id="@{
                 item.id
             }">
-            @if(!item.taskListTag.cssClass.isBlank) {
+                @if(!item.taskListTag.cssClass.isBlank) {
                 @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
-            } else {
+                } else {
                 @messages(s"common.${item.taskListTag.message}")
-            }
+                }
             </div>
         </li>
+        }
+
     }
     </ol>
 }

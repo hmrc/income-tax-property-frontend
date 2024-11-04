@@ -23,4 +23,5 @@ object TaskListTag {
   case object InProgress extends TaskListTag(message = "inProgress", cssClass = "govuk-tag--light-blue")
   case object NotStarted extends TaskListTag(message = "notStarted", cssClass = "govuk-tag--blue")
   case object Completed extends TaskListTag(message = "completed", cssClass = "")
+  case object CanNotStart extends TaskListTag(message = "canNotStart", cssClass = "")
 }

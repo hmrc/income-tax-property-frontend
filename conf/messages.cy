@@ -3,6 +3,7 @@ service.name	=	Diweddaru a chyflwyno Ffurflen Treth Incwm
 common.notStarted	=	Heb ddechrau hyd yn hyn
 common.inProgress	=	Ar y gweill
 common.completed	=	Wedi cwblhau
+common.canNotStart = *Missing Welsh*
 
 summary.page.heading	=	Eiddo
 summary.heading	=	Eiddo yn y DU
