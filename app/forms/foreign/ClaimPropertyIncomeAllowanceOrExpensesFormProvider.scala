@@ -25,6 +25,6 @@ class ClaimPropertyIncomeAllowanceOrExpensesFormProvider @Inject() extends Mappi
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
+      "claimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
     )
 }

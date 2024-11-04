@@ -17,27 +17,27 @@
 package forms.foreign
 
 import forms.behaviours.BooleanFieldBehaviours
+import org.scalatest.prop.TableFor1
 import play.api.data.FormError
 
 class ClaimPropertyIncomeAllowanceOrExpensesFormProviderSpec extends BooleanFieldBehaviours {
 
+  val fieldName = "claimPropertyIncomeAllowanceOrExpenses"
+  val formProvider = new ClaimPropertyIncomeAllowanceOrExpensesFormProvider()()
   val requiredKey = "claimPropertyIncomeAllowanceOrExpenses.error.required"
-  val invalidKey = "error.boolean"
 
-  val form = new ClaimPropertyIncomeAllowanceOrExpensesFormProvider()()
+  ".claimPropertyIncomeAllowanceOrExpenses" - {
 
-  ".value" - {
-
-    val fieldName = "value"
+    val fieldName = "claimPropertyIncomeAllowanceOrExpenses"
 
     behave like booleanField(
-      form,
+      formProvider,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      invalidError = FormError(fieldName, "error.boolean")
     )
 
     behave like mandatoryField(
-      form,
+      formProvider,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
