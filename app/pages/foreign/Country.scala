@@ -16,11 +16,7 @@
 
 package pages.foreign
 
-import models.ForeignProperty
-import pages.PageConstants
-import pages.PageConstants.selectCountry
-import play.api.libs.json.{Format, JsPath, Json}
-import queries.{Gettable, Settable}
+import play.api.libs.json.{Format, Json}
 
 case class Country(
   name: String,

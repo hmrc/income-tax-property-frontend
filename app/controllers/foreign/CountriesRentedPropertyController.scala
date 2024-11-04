@@ -18,27 +18,26 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.foreign.CountriesRentedPropertyFormProvider
-
-import javax.inject.Inject
 import models.{Mode, UserAnswers}
-import navigation.Navigator
-import pages.foreign.{AddCountriesRentedPage, SelectIncomeCountryPage}
+import navigation.ForeignPropertyNavigator
+import pages.foreign.{AddCountriesRentedPage, SelectIncomeCountries}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.foreign.CountriesRentedPropertyView
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.govuk.summarylist._
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
+import viewmodels.govuk.summarylist._
+import views.html.foreign.CountriesRentedPropertyView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CountriesRentedPropertyController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -60,35 +59,26 @@ class CountriesRentedPropertyController @Inject() (
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val list: SummaryList = summaryList(taxYear, request.userAnswers)
-
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
             Future.successful(BadRequest(view(formWithErrors, list, taxYear, request.user.isAgentMessageKey, mode))),
-          value =>
+          addAnotherCountry =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AddCountriesRentedPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AddCountriesRentedPage, addAnotherCountry))
               _              <- sessionRepository.set(updatedAnswers)
-              result <-
-                Future.successful(
-                  Redirect(controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, mode))
-                )
-            } yield result
+            } yield Redirect(
+              navigator.nextPage(AddCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
         )
   }
 
   private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages) = {
-    val countries = userAnswers.get(SelectIncomeCountryPage).toSeq
-    val rows = countries.zipWithIndex.flatMap { case (_, _) =>
-      CountriesRentedPropertySummary.row(taxYear, userAnswers)
+    val countries = userAnswers.get(SelectIncomeCountries).toSeq.flatten
+    val rows = countries.zipWithIndex.flatMap { case (_, idx) =>
+      CountriesRentedPropertySummary.row(taxYear, idx, userAnswers)
     }
-
-// TO BE USED ONCE PAGE TO ADD COUNTRIES IS IMPLEMENTED
-//    val countries = userAnswers.get(CountryGroup()).toSeq.flatten
-//    val rows = countries.zipWithIndex.flatMap { case (_, index) =>
-//    CountriesRentedPropertySummary.row(taxYear, index, userAnswers)
-    // }
     SummaryListViewModel(rows)
   }
 }

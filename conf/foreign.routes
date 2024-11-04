@@ -1,37 +1,38 @@
 ############################  Foreign Property ###################################
 
-GET         /:taxYear/foreign-property/about/start                               controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+GET         /:taxYear/foreign-property/about/start                                               controllers.foreign.ForeignPropertyDetailsController.onPageLoad(taxYear: Int)
 
 GET         /:taxYear/foreign-property/select-country/total-income                               controllers.foreign.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/foreign-property/select-country/total-income                               controllers.foreign.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/foreign-property/select-country/change-total-income                         controllers.foreign.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/foreign-property/select-country/change-total-income                         controllers.foreign.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/foreign-property/select-country/change-total-income                        controllers.foreign.TotalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-property/select-country/change-total-income                        controllers.foreign.TotalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/foreign-property/income-report                             controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/foreign-property/income-report                             controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/foreign-property/change-income-report                      controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/foreign-property/change-income-report                      controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/foreign-property/income-report                                             controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/foreign-property/income-report                                             controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/foreign-property/change-income-report                                      controllers.foreign.PropertyIncomeReportController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-property/change-income-report                                      controllers.foreign.PropertyIncomeReportController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET         /:taxYear/foreign-property/about/select-income-country               controllers.foreign.SelectIncomeCountryController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/foreign-property/about/select-income-country               controllers.foreign.SelectIncomeCountryController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/foreign-property/about/change-select-income-country        controllers.foreign.SelectIncomeCountryController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/foreign-property/about/change-select-income-country        controllers.foreign.SelectIncomeCountryController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/foreign-property/about/:index/select-income-country                        controllers.foreign.SelectIncomeCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST        /:taxYear/foreign-property/about/:index/select-income-country                        controllers.foreign.SelectIncomeCountryController.onSubmit(taxYear: Int,index: Int, mode: Mode = NormalMode)
+GET         /:taxYear/foreign-property/about/:index/change-select-income-country                 controllers.foreign.SelectIncomeCountryController.onPageLoad(taxYear: Int,index: Int, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-property/about/:index/change-select-income-country                 controllers.foreign.SelectIncomeCountryController.onSubmit(taxYear: Int,index: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/countries-rented-property                        controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/countries-rented-property                        controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/change-countries-rented-property                  controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/change-countries-rented-property                  controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/foreign-property/countries-rented-property                                 controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/foreign-property/countries-rented-property                                 controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/foreign-property/change-countries-rented-property                          controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-property/change-countries-rented-property                          controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                            controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                            controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
 
 GET        /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

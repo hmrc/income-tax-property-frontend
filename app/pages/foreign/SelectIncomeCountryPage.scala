@@ -17,13 +17,21 @@
 package pages.foreign
 
 import models.ForeignProperty
-import pages.PageConstants.aboutPath
+import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, Reads}
+import queries.Gettable
 
-case object SelectIncomeCountryPage extends QuestionPage[Country] {
+case class SelectIncomeCountryPage(index: Int) extends QuestionPage[Country] {
 
-  override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
+  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString \ index
 
-  override def toString: String = "incomeCountry"
+  override def toString: String = "incomeCountries"
+}
+
+case object SelectIncomeCountries extends Gettable[Array[Country]] {
+  implicit val arrayReads: Reads[Array[Country]] = JsPath.read
+  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
+
+  override def toString: String = "incomeCountries"
 }

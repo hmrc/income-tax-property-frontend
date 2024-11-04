@@ -37,14 +37,17 @@ import scala.concurrent.Future
 
 class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute: Call =
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/foreign-property/countries-rented-property")
   val userType = "agent"
   val formProvider = new SelectIncomeCountryFormProvider()
   val form: Form[String] = formProvider(userType)
   val taxYear = 2024
   val country: Country = Country(name = "India", code = "IND")
+  val index = 0
 
-  lazy val selectIncomeCountryRoute: String = routes.SelectIncomeCountryController.onPageLoad(taxYear, NormalMode).url
+  lazy val selectIncomeCountryRoute: String =
+    routes.SelectIncomeCountryController.onPageLoad(taxYear, index, NormalMode).url
 
   "SelectIncomeCountry Controller" - {
 
@@ -60,7 +63,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SelectIncomeCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, userType, NormalMode, countrySelectItems)(
+        contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItems)(
           request,
           messages(application)
         ).toString
@@ -69,7 +72,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage, country).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage(index), country).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
@@ -81,7 +84,14 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("IND"), taxYear, userType, NormalMode, countrySelectItems)(
+        contentAsString(result) mustEqual view(
+          form.fill("IND"),
+          taxYear,
+          index,
+          userType,
+          NormalMode,
+          countrySelectItems
+        )(
           request,
           messages(application)
         ).toString
@@ -130,7 +140,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, userType, NormalMode, countrySelectItems)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, userType, NormalMode, countrySelectItems)(
           request,
           messages(application)
         ).toString

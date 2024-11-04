@@ -27,13 +27,16 @@ import viewmodels.implicits._
 
 object SelectIncomeCountrySummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(SelectIncomeCountryPage).map { answer =>
+  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(SelectIncomeCountryPage(index)).map { answer =>
       SummaryListRowViewModel(
         key = "selectIncomeCountry.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(answer.name).toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.SelectIncomeCountryController.onPageLoad(taxYear, CheckMode).url)
+          ActionItemViewModel(
+            "site.change",
+            routes.SelectIncomeCountryController.onPageLoad(taxYear, index, CheckMode).url
+          )
             .withVisuallyHiddenText(messages("selectIncomeCountry.change.hidden"))
         )
       )
