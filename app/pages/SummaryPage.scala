@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
+import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
@@ -279,21 +279,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
               .getOrElse(false)
           )
         }(identity), {
-
-        val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
-        val incomeSectionComplete = userAnswers.flatMap(_.get(IncomeSectionFinishedPage))
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
-        (claimPIA, incomeSectionComplete, sectionFinished) match {
-          case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
-          case (Some(true), None, None)              => TaskListTag.CanNotStart
-          case (Some(true), Some(true), None)        => TaskListTag.NotStarted
-          case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
-          case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
-          case (Some(false), _, None)                => TaskListTag.NotStarted
-          case (Some(false), _, Some(true))          => TaskListTag.Completed
-          case (Some(false), _, Some(false))         => TaskListTag.InProgress
-          case (_, _, _)                             => TaskListTag.NotStarted
-        }
+        getTaskListTagStatus(userAnswers,Rentals)
       },
       "rentals_adjustments_link"
     )
@@ -446,21 +432,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
                 .getOrElse(false)
             )
         }(identity), {
-
-        val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
-        val RentalsRarIncomeSectionComplete = userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
-        val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
-        (claimPIA, RentalsRarIncomeSectionComplete, sectionFinished) match {
-          case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
-          case (Some(true), None, None)              => TaskListTag.CanNotStart
-          case (Some(true), Some(true), None)        => TaskListTag.NotStarted
-          case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
-          case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
-          case (Some(false), _, None)                => TaskListTag.NotStarted
-          case (Some(false), _, Some(true))          => TaskListTag.Completed
-          case (Some(false), _, Some(false))         => TaskListTag.InProgress
-          case (_, _, _)                             => TaskListTag.NotStarted
-        }
+      getTaskListTagStatus(userAnswers,RentalsRentARoom)
       },
       "rentals_and_rent_a_room_adjustments_link"
     )
@@ -639,5 +611,25 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       },
       "rent_a_room_adjustments_link"
     )
+
+  def getTaskListTagStatus(userAnswers: Option[UserAnswers], propertyType: PropertyType): TaskListTag.TaskListTag = {
+    val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(propertyType)))
+    val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+    val incomeSectionFinishedPage = propertyType match {
+      case Rentals          => userAnswers.flatMap(_.get(IncomeSectionFinishedPage))
+      case RentalsRentARoom => userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
+    }
+    (claimPIA, incomeSectionFinishedPage, sectionFinished) match {
+      case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
+      case (Some(true), None, None)              => TaskListTag.CanNotStart
+      case (Some(true), Some(true), None)        => TaskListTag.NotStarted
+      case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
+      case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
+      case (Some(false), _, None)                => TaskListTag.NotStarted
+      case (Some(false), _, Some(true))          => TaskListTag.Completed
+      case (Some(false), _, Some(false))         => TaskListTag.InProgress
+      case (_, _, _)                             => TaskListTag.NotStarted
+    }
+  }
 
 }
