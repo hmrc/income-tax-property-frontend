@@ -36,6 +36,8 @@ object PageConstants {
       case ForeignProperty => s"foreignProperty$suffix"
     }
 
+  val countriesRentedPropertyGroup: String = "countriesRentedPropertyGroup"
+
   // About
   val aboutPath: PropertyType => String = labelForPropertyType(_, "About")
   // Allowance
@@ -58,5 +60,7 @@ object PageConstants {
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
 
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
+
+  val selectCountry: PropertyType => String = labelForPropertyType(_, "SelectCountry")
 
 }

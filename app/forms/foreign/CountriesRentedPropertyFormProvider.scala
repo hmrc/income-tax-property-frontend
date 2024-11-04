@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package forms.foreign
 
-import models.ForeignProperty
-import pages.PageConstants.selectCountry
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import javax.inject.Inject
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object PropertyIncomeReportPage extends QuestionPage[Boolean] {
+class CountriesRentedPropertyFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = JsPath \ selectCountry(ForeignProperty) \ toString
-
-  override def toString: String = "propertyIncomeReportYesOrNo"
+  def apply(): Form[Boolean] =
+    Form(
+      "countriesRentedPropertyYesOrNo" -> boolean("countriesRentedProperty.error.required")
+    )
 }

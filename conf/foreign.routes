@@ -21,3 +21,8 @@ GET        /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relie
 POST       /:taxYear/foreign-property/foreign-tax/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/countries-rented-property                        controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/countries-rented-property                        controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/change-countries-rented-property                  controllers.foreign.CountriesRentedPropertyController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/change-countries-rented-property                  controllers.foreign.CountriesRentedPropertyController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

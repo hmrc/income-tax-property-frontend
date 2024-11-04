@@ -1792,6 +1792,8 @@ propertyIncomeReport.change.hidden = PropertyIncomeReport
 
 
 
+
+
 selectIncomeCountry.title.individual = Which country did you receive this income from?
 selectIncomeCountry.title.agent = Which country did your client receive this income from?
 selectIncomeCountry.info = You can add income from other countries later.
@@ -1822,3 +1824,13 @@ claimForeignTaxCreditRelief.error.required.individual = Select yes if you want t
 claimForeignTaxCreditRelief.error.required.agent = Select yes if your client wants to claim foreign tax credit relief
 claimForeignTaxCreditRelief.change.hidden.individual = do you want to claim foreign tax credit relief?
 claimForeignTaxCreditRelief.change.hidden.agent = does your client want to claim foreign tax credit relief?
+
+countriesRentedProperty.title.individual = Countries where you rented out property
+countriesRentedProperty.title.agent = Countries where your client rented out property
+countriesRentedProperty.heading.individual = Countries where you rented out property
+countriesRentedProperty.heading.agent = Countries where your client rented out property
+countriesRentedProperty.legend = Do you want to add another country?
+countriesRentedProperty.checkYourAnswersLabel = Countries where you rented out property
+countriesRentedProperty.error.required = Select yes if you want to add another country
+countriesRentedProperty.change.hidden = Countries where you rented out property
+countriesRentedProperty.staticContent = All Properties

@@ -17,6 +17,7 @@
 package service
 
 import com.github.tototoshi.csv.CSVReader
+import pages.foreign.Country
 import uk.gov.hmrc.govukfrontend.views.viewmodels.select.SelectItem
 
 import scala.io.Source
@@ -24,16 +25,22 @@ import scala.io.Source
 object CountryNamesDataSource {
 
   // Adding an empty option as a workaround for the Select component
-  lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: loadCountries
+  lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems
 
   private def emptyOption: SelectItem = SelectItem(text = "", value = Some(""))
 
-  private def loadCountries: Seq[SelectItem] =
+  def getCountry(code: String): Country =
+    loadCountries.find(item => item.code == code).getOrElse(Country(code = code, name = ""))
+
+  private def selectItems: Seq[SelectItem] =
+    loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
+
+  private def loadCountries: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries.csv"), "UTF-8"))
       .allWithOrderedHeaders
       ._2
       .sortBy(x => x("short_name"))
-      .map(y => SelectItem(text = y("short_name"), value = Some(y("alpha_3_code"))))
+      .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))
 
 }

@@ -18,9 +18,9 @@ package models
 
 import audit._
 import pages.PageConstants
-import pages.PageConstants.{eSbaPath, esbas, esbasWithSupportingQuestions, sbaPath}
+import pages.PageConstants.{eSbaPath, esbas, sbaPath, selectCountry, esbasWithSupportingQuestions}
 import pages.enhancedstructuresbuildingallowance.Esba
-import play.api.libs.json.{JsPath, Json, OFormat}
+import play.api.libs.json.{OFormat, Json, JsPath}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
@@ -119,6 +119,19 @@ final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
   override def path: JsPath = JsPath \ eSbaPath(propertyType)
 
   override def toString: String = esbas
+}
+
+final case class Crp(
+                      country: String
+                    )
+
+object Crp {
+  implicit val format: OFormat[Crp] = Json.format[Crp]
+}
+
+final case class CrpOnIndex(index: Int) extends Gettable[Crp] {
+  override def path: JsPath =
+    JsPath \ selectCountry(ForeignProperty) \ PageConstants.countriesRentedPropertyGroup \ index
 }
 
 final case class JourneyWithStatus(journeyName: String, journeyStatus: String)

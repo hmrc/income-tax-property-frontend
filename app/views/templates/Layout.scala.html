@@ -53,7 +53,8 @@
             )))
     } else None
 )
-@autocompleteCss()
+    <link href="@routes.Assets.versioned("stylesheets/application.css")" media="all" rel="stylesheet" type="text/css" />
+    @autocompleteCss()
 }
 
 @content = {
