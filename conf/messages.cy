@@ -1805,7 +1805,6 @@ countriesRentedProperty.error.required = *Missing Welsh*
 countriesRentedProperty.change.hidden = *Missing Welsh*
 countriesRentedProperty.staticContent = *Missing Welsh*
 
-
 foreignIncomeTax.title.individual = *Missing Welsh*
 foreignIncomeTax.title.agent = *Missing Welsh*
 foreignIncomeTax.heading.individual = *Missing Welsh*
@@ -1827,3 +1826,27 @@ foreignIncomeTax.error.amount.nonNumeric = *Missing Welsh*
 foreignIncomeTax.error.amount.outOfRange = *Missing Welsh*
 foreignIncomeTax.change.hidden.individual = *Missing Welsh*
 foreignIncomeTax.change.hidden.agent = *Missing Welsh*
+
+claimPropertyIncomeAllowanceOrExpenses.title = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.heading = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.legend.individual = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.legend.agent = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.checkYourAnswersLabel = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.error.required = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.change.hidden = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.details.input.yesText = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.details.input.noText = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para1.individual = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para1.agent = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para2.individual = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para2.agent = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para3.individual = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para3.agent = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.para4 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.href.text1 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.href.text2 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.href.link = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+claimPropertyIncomeAllowanceOrExpenses.content.l1 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.l2 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.l3 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.content.l4 = *Missing Welsh*
