@@ -21,9 +21,9 @@ import pages.PageConstants.foreignTaxPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ClaimForeignTaxCreditReliefPage extends QuestionPage[Boolean] {
+case class ClaimForeignTaxCreditReliefPage(countryCode: String) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ toString
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "claimForeignTaxCreditRelief"
 }

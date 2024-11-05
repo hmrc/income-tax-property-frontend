@@ -43,29 +43,29 @@ class ClaimForeignTaxCreditReliefController @Inject()(
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ClaimForeignTaxCreditReliefPage) match {
+      val preparedForm = request.userAnswers.get(ClaimForeignTaxCreditReliefPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, countryCode, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, countryCode, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimForeignTaxCreditReliefPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimForeignTaxCreditReliefPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimForeignTaxCreditReliefPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ClaimForeignTaxCreditReliefPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

@@ -43,7 +43,8 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
 
   val formProvider = new ClaimForeignTaxCreditReliefFormProvider()
   val taxYear = 2024
-  lazy val claimForeignTaxCreditReliefRoute: String = controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, NormalMode).url
+  val countryCode = "USA"
+  lazy val claimForeignTaxCreditReliefRoute: String = controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, NormalMode).url
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
 
   forAll(scenarios) { (individualOrAgent: String) =>
@@ -65,13 +66,13 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
           val view = application.injector.instanceOf[ClaimForeignTaxCreditReliefView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimForeignTaxCreditReliefPage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimForeignTaxCreditReliefPage( countryCode), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -83,7 +84,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(true), taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(true), taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -127,7 +128,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 

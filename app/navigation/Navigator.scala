@@ -38,10 +38,11 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumForLeasePage}
 import pages.propertyrentals._
 import pages.propertyrentals.expenses._
-import pages.propertyrentals.income.{IncomeSectionFinishedPage, _}
+import pages.propertyrentals.income._
 import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import pages.structurebuildingallowance._
 import pages.ukrentaroom._
@@ -49,7 +50,6 @@ import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import play.api.mvc.Call
-import queries.Gettable
 import service.CYADiversionService
 
 import javax.inject.{Inject, Singleton}
@@ -770,6 +770,13 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
                 .onPageLoad(taxYear)
             }
+
+    // Foreign Tax
+    case ForeignIncomeTaxPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers)
+    case ClaimForeignTaxCreditReliefPage(countryCode) =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -1032,6 +1039,13 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+
+    // Foreign Tax
+    case ForeignIncomeTaxPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers, CheckMode)
+    case ClaimForeignTaxCreditReliefPage(countryCode) =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+
     case _ =>
       taxYear => _ => _ => controllers.about.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
@@ -1382,4 +1396,18 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
       case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     }
+
+  private def foreignIncomeTaxNavigation(
+                                             taxYear: Int,
+                                             countryCode: String,
+                                             userAnswers: UserAnswers,
+                                             mode: Mode = NormalMode
+                                           ): Call =
+    userAnswers.get(ForeignIncomeTaxPage(countryCode)) match {
+      case Some(ForeignIncomeTax(true, _)) =>
+        controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, mode)
+      case _ =>
+        controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onSubmit(taxYear, countryCode)
+    }
+
 }

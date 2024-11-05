@@ -22,7 +22,7 @@ import pages.foreign.ForeignIncomeTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,8 +32,8 @@ object ForeignIncomeTaxSummary {
     answers.get(ForeignIncomeTaxPage(countryCode)).flatMap { answer =>
       val row: Content => Option[SummaryListRow] = content => Some(
         SummaryListRowViewModel(
-          key = s"foreignIncomeTax.checkYourAnswersLabel.$individualOrAgent",
-          value = ValueViewModel(content),
+          key = KeyViewModel(s"foreignIncomeTax.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+          value = ValueViewModel(content).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages(s"foreignIncomeTax.change.hidden.$individualOrAgent"))

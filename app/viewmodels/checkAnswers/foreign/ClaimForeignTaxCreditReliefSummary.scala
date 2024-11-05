@@ -20,22 +20,23 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.ClaimForeignTaxCreditReliefPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ClaimForeignTaxCreditReliefSummary  {
 
-  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ClaimForeignTaxCreditReliefPage).map {
+  def row(taxYear: Int, individualOrAgent: String, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ClaimForeignTaxCreditReliefPage(countryCode)).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = s"claimForeignTaxCreditRelief.checkYourAnswersLabel.$individualOrAgent",
-          value   = ValueViewModel(value),
+          key     = KeyViewModel(s"claimForeignTaxCreditRelief.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+          value   = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages(s"claimForeignTaxCreditRelief.change.hidden.$individualOrAgent"))
           )
         )
