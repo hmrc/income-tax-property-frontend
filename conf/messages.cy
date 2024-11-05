@@ -1851,3 +1851,12 @@ claimPropertyIncomeAllowanceOrExpenses.content.l1 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l2 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l3 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l4 = *Missing Welsh*
+
+doYouWantToRemoveCountry.title = *Missing Welsh*
+doYouWantToRemoveCountry.heading = *Missing Welsh*
+doYouWantToRemoveCountry.heading2 = *Missing Welsh*
+doYouWantToRemoveCountry.p.1 = *Missing Welsh*
+doYouWantToRemoveCountry.legend = *Missing Welsh*
+doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
+doYouWantToRemoveCountry.error.required = *Missing Welsh*
+doYouWantToRemoveCountry.change.hidden = *Missing Welsh*
