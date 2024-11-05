@@ -278,9 +278,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
               .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
               .getOrElse(false)
           )
-        }(identity), {
-        getTaskListTagStatus(userAnswers,Rentals)
-      },
+        }(identity),
+      getTaskListTagStatus(userAnswers, Rentals),
       "rentals_adjustments_link"
     )
 
@@ -431,9 +430,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
                 .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
                 .getOrElse(false)
             )
-        }(identity), {
-      getTaskListTagStatus(userAnswers,RentalsRentARoom)
-      },
+        }(identity),
+      getTaskListTagStatus(userAnswers, RentalsRentARoom),
       "rentals_and_rent_a_room_adjustments_link"
     )
 
@@ -614,7 +612,10 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
 
   def getTaskListTagStatus(userAnswers: Option[UserAnswers], propertyType: PropertyType): TaskListTag.TaskListTag = {
     val claimPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(propertyType)))
-    val sectionFinished = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+    val sectionFinished = propertyType match {
+      case Rentals          => userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+      case RentalsRentARoom => userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
+    }
     val incomeSectionFinishedPage = propertyType match {
       case Rentals          => userAnswers.flatMap(_.get(IncomeSectionFinishedPage))
       case RentalsRentARoom => userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
