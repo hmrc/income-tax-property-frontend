@@ -23,9 +23,9 @@ import forms.DoYouWantToRemoveCountryFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.foreign.{SelectIncomeCountryPage, DoYouWantToRemoveCountryPage}
+import pages.foreign.{DoYouWantToRemoveCountryPage, SelectIncomeCountryPage}
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -34,48 +34,61 @@ import views.html.foreign.DoYouWantToRemoveCountryView
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 
-class DoYouWantToRemoveCountryController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: DoYouWantToRemoveCountryFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: DoYouWantToRemoveCountryView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class DoYouWantToRemoveCountryController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: DoYouWantToRemoveCountryFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: DoYouWantToRemoveCountryView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-       request.userAnswers.get(SelectIncomeCountryPage).map {
-        country => country.name
-      }.fold(Future.successful(InternalServerError("Country not found")))(name => Future.successful(Ok(view(form, taxYear, mode, name))))
+      request.userAnswers
+        .get(SelectIncomeCountryPage)
+        .map { country =>
+          country.name
+        }
+        .fold(Future.successful(InternalServerError("Country not found")))(name =>
+          request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
+            case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, mode, name)))
+            case _           => Future.successful(Ok(view(form, taxYear, mode, name)))
+          }
+        )
 
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      request.userAnswers.get(SelectIncomeCountryPage).map {
-        country => country.name
-      }.fold(Future.successful(InternalServerError("Country not found")))(name =>
-
-        form.bindFromRequest().fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, name))),
-
-          value =>
-            for {
-              updatedAnswers <- if(value) {
-                Future.fromTry(request.userAnswers.remove(SelectIncomeCountryPage))} else {
-                Future.fromTry(Success(request.userAnswers))
-              }
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(DoYouWantToRemoveCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)))
-      )
+      request.userAnswers
+        .get(SelectIncomeCountryPage)
+        .map { country =>
+          country.name
+        }
+        .fold(Future.successful(InternalServerError("Country not found")))(name =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, name))),
+              value =>
+                for {
+                  updatedAnswers <- if (value) {
+                                      Future.fromTry(request.userAnswers.remove(SelectIncomeCountryPage))
+                                    } else {
+                                      Future.fromTry(Success(request.userAnswers))
+                                    }
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator.nextPage(DoYouWantToRemoveCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                )
+            )
+        )
   }
 }

@@ -26,9 +26,9 @@ class DoYouWantToRemoveCountryFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new DoYouWantToRemoveCountryFormProvider()()
 
-  ".value" - {
+  ".doYouWantToRemoveCountryYesOrNo" - {
 
-    val fieldName = "value"
+    val fieldName = "doYouWantToRemoveCountryYesOrNo"
 
     behave like booleanField(
       form,

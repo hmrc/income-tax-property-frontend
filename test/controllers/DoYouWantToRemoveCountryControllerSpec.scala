@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.DoYouWantToRemoveCountryPage
+import pages.foreign.{Country, DoYouWantToRemoveCountryPage, SelectIncomeCountryPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -37,18 +37,22 @@ import scala.concurrent.Future
 class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar {
   val taxYear = 2024
   def onwardRoute = Call("GET", "/foo")
-  val countryName = "ESP"
+  val country = Country("Spain", "ESP")
   val formProvider = new DoYouWantToRemoveCountryFormProvider()
   val form = formProvider()
 
   lazy val doYouWantToRemoveCountryRoute =
     controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, NormalMode).url
+  val isAgent = false
 
   "DoYouWantToRemoveCountry Controller" - {
-    val isAgent = false
+
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
+      val application = applicationBuilder(
+        userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption,
+        isAgent
+      ).build()
 
       running(application) {
         val request = FakeRequest(GET, doYouWantToRemoveCountryRoute)
@@ -58,7 +62,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[DoYouWantToRemoveCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, countryName)(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, country.name)(
           request,
           messages(application)
         ).toString
@@ -67,9 +71,14 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DoYouWantToRemoveCountryPage, true).success.value
+      val userAnswersUpdated = for {
+        withYesNo          <- UserAnswers(userAnswersId).set(DoYouWantToRemoveCountryPage, true)
+        updatedUserAnswers <- withYesNo.set(SelectIncomeCountryPage, country)
+      } yield updatedUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
+      val application =
+        applicationBuilder(userAnswers = userAnswersUpdated.toOption, isAgent)
+          .build()
 
       running(application) {
         val request = FakeRequest(GET, doYouWantToRemoveCountryRoute)
@@ -79,7 +88,8 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, countryName)(
+
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, country.name)(
           request,
           messages(application)
         ).toString
@@ -93,7 +103,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
+        applicationBuilder(userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption, isAgent)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -103,7 +113,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", "true"))
 
         val result = route(application, request).value
 
@@ -114,21 +124,23 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
+      val application =
+        applicationBuilder(userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption, isAgent)
+          .build()
 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("doYouWantToRemoveCountryYesOrNo" -> ""))
 
         val view = application.injector.instanceOf[DoYouWantToRemoveCountryView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, countryName)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, country.name)(
           request,
           messages(application)
         ).toString
@@ -156,7 +168,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", "true"))
 
         val result = route(application, request).value
 
