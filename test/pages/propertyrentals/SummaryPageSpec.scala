@@ -20,6 +20,8 @@ import base.SpecBase
 import models.TotalIncome.writes
 import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import pages.adjustments.RentalsAdjustmentsCompletePage
+import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import pages.{SummaryPage, UKPropertyPage}
@@ -137,6 +139,302 @@ class SummaryPageSpec extends SpecBase {
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
         .length should be(
         3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+
+    "Pia == true incomeSectionFinishedPage == false adjustmentSectionFinished = None adjustment taskListTag should be CanNotStart" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.CanNotStart,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+        .success
+        .value
+        .set(IncomeSectionFinishedPage, false)
+        .success
+        .value
+
+      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.InProgress), adjustmentsListItem)
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == true incomeSectionFinishedPage == None adjustmentSectionFinished = None adjustment taskListTag should be CanNotStart" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.CanNotStart,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+        .success
+        .value
+
+      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.NotStarted), adjustmentsListItem)
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = None adjustment taskListTag should be NotStarted" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.NotStarted,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+        .success
+        .value
+        .set(IncomeSectionFinishedPage, true)
+        .success
+        .value
+
+      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.Completed), adjustmentsListItem)
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = false adjustment taskListTag should be InProgress" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.InProgress,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+        .success
+        .value
+        .set(IncomeSectionFinishedPage, true)
+        .success
+        .value
+        .set(RentalsAdjustmentsCompletePage, false)
+        .success
+        .value
+
+      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.Completed), adjustmentsListItem)
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = true adjustment taskListTag should be Completed" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true),
+        TaskListTag.Completed,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
+        .success
+        .value
+        .set(IncomeSectionFinishedPage, true)
+        .success
+        .value
+        .set(RentalsAdjustmentsCompletePage, true)
+        .success
+        .value
+
+      val res = Seq(
+        summaryItem,
+        incomeListItem.copy(taskListTag = TaskListTag.Completed),
+        adjustmentsListItem.copy(call =
+          controllers.adjustments.routes.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        )
+      )
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        3
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == false  adjustmentSectionFinished = None adjustment taskListTag should be NotStarted" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, false),
+        TaskListTag.NotStarted,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), false)
+        .success
+        .value
+
+      val res = Seq(
+        summaryItem,
+        incomeListItem,
+        expenseListItem,
+        propertyAllowances,
+        structuresAndBuildingAllowance,
+        enhancedStructuresAndBuildingAllowance,
+        adjustmentsListItem
+      )
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        7
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+
+    "Pia == false  adjustmentSectionFinished = true adjustment taskListTag should be Completed" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear),
+        TaskListTag.Completed,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), false)
+        .success
+        .value
+        .set(RentalsAdjustmentsCompletePage, true)
+        .success
+        .value
+
+      val res = Seq(
+        summaryItem,
+        incomeListItem,
+        expenseListItem,
+        propertyAllowances,
+        structuresAndBuildingAllowance,
+        enhancedStructuresAndBuildingAllowance,
+        adjustmentsListItem
+      )
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        7
+      )
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+    }
+    "Pia == false  adjustmentSectionFinished = false adjustment taskListTag should be InProgress" in {
+
+      val adjustmentsListItem = TaskListItem(
+        "summary.adjustments",
+        controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, false),
+        TaskListTag.InProgress,
+        "rentals_adjustments_link"
+      )
+
+      val userAnswersWithPropertyRentals = emptyUserAnswers
+        .set(
+          UKPropertyPage,
+          Set[UKPropertySelect](UKPropertySelect.PropertyRentals)
+        )
+        .success
+        .value
+        .set(ClaimPropertyIncomeAllowancePage(Rentals), false)
+        .success
+        .value
+        .set(RentalsAdjustmentsCompletePage, false)
+        .success
+        .value
+
+      val res = Seq(
+        summaryItem,
+        incomeListItem,
+        expenseListItem,
+        propertyAllowances,
+        structuresAndBuildingAllowance,
+        enhancedStructuresAndBuildingAllowance,
+        adjustmentsListItem
+      )
+
+      SummaryPage(cyaDiversionService)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
+        .length should be(
+        7
       )
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
@@ -507,9 +805,10 @@ class SummaryPageSpec extends SpecBase {
           summaryAllowancesItem,
           summarySBAItem,
           summaryESBAItem,
-          summaryAdjustmentsItem.copy(call =
-            controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
-              .onPageLoad(taxYear, false), taskListTag = TaskListTag.NotStarted
+          summaryAdjustmentsItem.copy(
+            call = controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
+              .onPageLoad(taxYear, false),
+            taskListTag = TaskListTag.NotStarted
           )
         )
       )
