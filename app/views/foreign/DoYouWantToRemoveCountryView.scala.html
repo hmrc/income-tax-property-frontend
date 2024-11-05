@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("doYouWantToRemoveCountry.title"))) {
 
-  <h1 class="govuk-heading-l">@messages("doYouWantToRemoveCountry.heading")@messages(" countryName ")@messages("doYouWantToRemoveCountry.heading2")</h1>
+  <h1 class="govuk-heading-l">@messages("doYouWantToRemoveCountry.heading")@messages(s" $countryName ")@messages("doYouWantToRemoveCountry.heading2")</h1>
 
   <p class="govuk-body">@messages("doYouWantToRemoveCountry.p.1")</p>
 
