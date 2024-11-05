@@ -1792,8 +1792,6 @@ propertyIncomeReport.change.hidden = PropertyIncomeReport
 
 
 
-
-
 selectIncomeCountry.title.individual = Which country did you receive this income from?
 selectIncomeCountry.title.agent = Which country did your client receive this income from?
 selectIncomeCountry.info = You can add income from other countries later.
@@ -1834,3 +1832,25 @@ countriesRentedProperty.checkYourAnswersLabel = Countries where you rented out p
 countriesRentedProperty.error.required = Select yes if you want to add another country
 countriesRentedProperty.change.hidden = Countries where you rented out property
 countriesRentedProperty.staticContent = All Properties
+
+foreignIncomeTax.title.individual = Did you pay foreign tax on the income from your property in {0}?
+foreignIncomeTax.title.agent = Did your client pay foreign tax on the income from their property in {0}?
+foreignIncomeTax.heading.individual = Did you pay foreign tax on the income from your property in {0}?
+foreignIncomeTax.heading.agent = Did your client pay foreign tax on the income from their property in {0}?
+foreignIncomeTax.p.1.individual = Tell us about the tax that you’ve paid on your foreign property income. You may also need to tell us about other taxes that you’ve paid on your property, but this will depend on the tax agreements with the country where your property is located.
+foreignIncomeTax.p.1.agent = Tell us about the tax that your client paid on their foreign property income. You may also need to tell us about other taxes that your client paid on their property, but this will depend on the tax agreements with the country where their property is located.
+foreignIncomeTax.href.text.1 = Read more about
+foreignIncomeTax.href.text.2 = foreign tax treaties at GOV.UK (opens in new tab)
+foreignIncomeTax.href.link = https://www.gov.uk/government/collections/tax-treaties
+foreignIncomeTax.yes.text.individual = How much did you pay?
+foreignIncomeTax.yes.text.agent = How much did your client pay?
+foreignIncomeTax.checkYourAnswersLabel.individual = Did you pay foreign tax?
+foreignIncomeTax.checkYourAnswersLabel.agent = Did your client pay foreign tax?
+foreignIncomeTax.error.required.individual = Select yes if you had tax deducted
+foreignIncomeTax.error.required.agent = Select yes if your client had tax deducted
+foreignIncomeTax.error.amount.required.individual = Enter the amount of tax you had deducted
+foreignIncomeTax.error.amount.required.agent = Enter the amount of tax your client had deducted
+foreignIncomeTax.error.amount.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+foreignIncomeTax.error.amount.outOfRange = Enter an amount between £0 and £100,000,000
+foreignIncomeTax.change.hidden.individual = did you pay foreign tax?
+foreignIncomeTax.change.hidden.agent = did your client pay foreign tax?

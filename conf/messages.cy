@@ -1804,3 +1804,26 @@ countriesRentedProperty.checkYourAnswersLabel = *Missing Welsh*
 countriesRentedProperty.error.required = *Missing Welsh*
 countriesRentedProperty.change.hidden = *Missing Welsh*
 countriesRentedProperty.staticContent = *Missing Welsh*
+
+
+foreignIncomeTax.title.individual = *Missing Welsh*
+foreignIncomeTax.title.agent = *Missing Welsh*
+foreignIncomeTax.heading.individual = *Missing Welsh*
+foreignIncomeTax.heading.agent = *Missing Welsh*
+foreignIncomeTax.p.1.individual = *Missing Welsh*
+foreignIncomeTax.p.1.agent = *Missing Welsh*
+foreignIncomeTax.href.text.1 = *Missing Welsh*
+foreignIncomeTax.href.text.2 = *Missing Welsh*
+foreignIncomeTax.href.link = *Missing Welsh*
+foreignIncomeTax.yes.text.individual = *Missing Welsh*
+foreignIncomeTax.yes.text.agent = *Missing Welsh*
+foreignIncomeTax.checkYourAnswersLabel.individual = *Missing Welsh*
+foreignIncomeTax.checkYourAnswersLabel.agent = *Missing Welsh*
+foreignIncomeTax.error.required.individual = *Missing Welsh*
+foreignIncomeTax.error.required.agent = *Missing Welsh*
+foreignIncomeTax.error.amount.required.individual = *Missing Welsh*
+foreignIncomeTax.error.amount.required.agent = *Missing Welsh*
+foreignIncomeTax.error.amount.nonNumeric = *Missing Welsh*
+foreignIncomeTax.error.amount.outOfRange = *Missing Welsh*
+foreignIncomeTax.change.hidden.individual = *Missing Welsh*
+foreignIncomeTax.change.hidden.agent = *Missing Welsh*
