@@ -790,3 +790,8 @@ GET         /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 
 POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onSubmit(taxYear: Int)
 
+
+GET        /foreignTaxSectionComplete                        controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(mode: Mode = NormalMode)
+POST       /foreignTaxSectionComplete                        controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(mode: Mode = NormalMode)
+GET        /changeForeignTaxSectionComplete                  controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeForeignTaxSectionComplete                  controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(mode: Mode = CheckMode)
