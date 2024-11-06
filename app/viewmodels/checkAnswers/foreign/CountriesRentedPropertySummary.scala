@@ -21,23 +21,21 @@ import pages.foreign.SelectIncomeCountryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object CountriesRentedPropertySummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(SelectIncomeCountryPage).map { country =>
+  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(SelectIncomeCountryPage(index)).map { country =>
       val value = s"${country.name}"
       SummaryListRowViewModel(
-        key = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
-        value =
-          ValueViewModel(HtmlContent(messages("countriesRentedProperty.staticContent"))).withCssClass(valueCssClass),
+        key = KeyViewModel(HtmlContent(value)),
+        value = ValueViewModel(HtmlContent(messages("countriesRentedProperty.staticContent"))),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
+            controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, index, CheckMode).url
           )
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
           ActionItemViewModel(

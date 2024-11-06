@@ -19,8 +19,8 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.SelectIncomeCountryFormProvider
 import models.Mode
-import navigation.Navigator
-import pages.foreign.{Country, SelectIncomeCountryPage}
+import navigation.ForeignPropertyNavigator
+import pages.foreign.SelectIncomeCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SelectIncomeCountryController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -46,37 +46,40 @@ class SelectIncomeCountryController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(SelectIncomeCountryPage) match {
+      val preparedForm = request.userAnswers.get(SelectIncomeCountryPage(index)) match {
         case None        => form
         case Some(value) => form.fill(value.code)
       }
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
-  }
+      Ok(view(preparedForm, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItems))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, countrySelectItems))
+              BadRequest(
+                view(formWithErrors, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItems)
+              )
             ),
           countryCode =>
             for {
               updatedAnswers <-
                 Future
                   .fromTry(
-                    request.userAnswers.set(SelectIncomeCountryPage, CountryNamesDataSource.getCountry(countryCode))
+                    request.userAnswers
+                      .set(SelectIncomeCountryPage(index), CountryNamesDataSource.getCountry(countryCode))
                   )
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(SelectIncomeCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(SelectIncomeCountryPage(index), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

@@ -25,6 +25,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, SelectIncomeCountryPage}
 import play.api.Application
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -40,15 +41,18 @@ import scala.concurrent.Future
 class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new CountriesRentedPropertyFormProvider()
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   val taxYear = 2024
-  lazy val countriesRentedPropertyRoute =
+  lazy val countriesRentedPropertyRoute: String =
     controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode).url
+
   val list: SummaryList = SummaryListViewModel(Seq.empty)
   val agent = "agent"
+  val index = 0
 
-  def onwardRoute = Call("GET", s"$countriesRentedPropertyRoute")
+  def onwardRoute: Call =
+    Call("GET", controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, index, NormalMode).url)
 
   "CountriesRentedProperty Controller" - {
 
@@ -122,7 +126,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, countriesRentedPropertyRoute)
@@ -155,7 +159,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers: UserAnswers =
         UserAnswers("countries-rented-property-user-answers")
           .set(
-            page = SelectIncomeCountryPage,
+            page = SelectIncomeCountryPage(index),
             value = Country("Greece", "GRC")
           )
           .get
@@ -164,7 +168,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
 
         val result = CountriesRentedPropertySummary
-          .row(taxYear, userAnswers)(messages(application))
+          .row(taxYear, index, userAnswers)(messages(application))
           .get
           .key
           .content
