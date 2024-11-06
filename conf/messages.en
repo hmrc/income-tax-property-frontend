@@ -3,6 +3,7 @@ service.name = Update and submit an Income Tax Return
 common.notStarted = Not yet started
 common.inProgress = In progress
 common.completed = Completed
+common.canNotStart = Cannot start yet
 
 summary.page.heading = Property
 summary.heading = UK property
