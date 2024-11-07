@@ -41,7 +41,7 @@ class SelectIncomeCountryFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      Gen.oneOf(CountryNamesDataSource.countrySelectItems.flatMap(_.value))
+      Gen.oneOf(CountryNamesDataSource.loadCountries.map(_.code))
     )
   }
 }
