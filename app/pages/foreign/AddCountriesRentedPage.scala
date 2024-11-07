@@ -17,9 +17,9 @@
 package pages.foreign
 
 import models.ForeignProperty
-import play.api.libs.json.{Format, Json, JsPath}
 import pages.PageConstants.selectCountry
 import pages.QuestionPage
+import play.api.libs.json.JsPath
 
 case object AddCountriesRentedPage extends QuestionPage[Boolean] {
 

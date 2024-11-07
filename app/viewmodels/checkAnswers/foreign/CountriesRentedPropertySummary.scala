@@ -17,10 +17,11 @@
 package viewmodels.checkAnswers.foreign
 
 import models.{CheckMode, UserAnswers}
-import pages.foreign.SelectIncomeCountryPage
+import pages.foreign.{Country, IncomeSourceCountries, SelectIncomeCountryPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -47,4 +48,29 @@ object CountriesRentedPropertySummary {
         actionsCss = "w-25"
       )
     }
+
+
+   def rowList(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(IncomeSourceCountries).map { country: Array[Country] =>
+
+      val value: Seq[String] = country.toList.map { c: Country =>
+       s"${c.name}"
+      }
+
+      val countryList: String = value.mkString("\n")
+
+      SummaryListRowViewModel(
+        key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value =ValueViewModel(countryList).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
+          )
+            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
+        ),
+        actionsCss = "w-25"
+      )
+    }
+
 }

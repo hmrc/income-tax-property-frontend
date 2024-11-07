@@ -40,8 +40,6 @@ import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import service.CYADiversionService
-import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage}
-import service.CYADiversionService
 
 import java.time.LocalDate
 

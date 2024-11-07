@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.TotalIncomeFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.{ForeignPropertyNavigator, Navigator}
 import pages.foreign.TotalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TotalIncomeController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       navigator: Navigator,
+                                       foreignPropertyNavigator: ForeignPropertyNavigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
@@ -50,7 +50,6 @@ class TotalIncomeController @Inject()(
         case None => form
         case Some(value) => form.fill(value)
       }
-
       Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
@@ -66,7 +65,7 @@ class TotalIncomeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TotalIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(foreignPropertyNavigator.nextPage(TotalIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

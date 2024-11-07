@@ -17,9 +17,10 @@
 package navigation
 
 import com.google.inject.Singleton
+import controllers.routes.IndexController
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.Page
-import pages.foreign.{AddCountriesRentedPage, IncomeSourceCountries, SelectIncomeCountryPage}
+import pages.foreign._
 import play.api.mvc.Call
 
 @Singleton
@@ -27,15 +28,53 @@ class ForeignPropertyNavigator {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
-    case AddCountriesRentedPage =>
-      taxYear => _ => userAnswers => addAnotherCountryNavigation(taxYear, userAnswers)
+    case pages.foreign.TotalIncomePage =>
+      taxYear => _ => _ => controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+    case SelectIncomeCountryPage(_) =>
+      taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
 
+    case AddCountriesRentedPage =>
+      taxYear =>
+        _ =>
+          userAnswers =>
+            userAnswers.get(AddCountriesRentedPage) match {
+              case Some(true) =>
+                val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
+                controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, nextIndex, NormalMode)
+              case Some(false) =>
+                controllers.foreign.routes.ClaimPropertyIncomeAllowanceOrExpensesController
+                  .onPageLoad(taxYear, NormalMode)
+              case _ => IndexController.onPageLoad
+            }
+    case ClaimPropertyIncomeAllowanceOrExpensesPage =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
+    case pages.foreign.TotalIncomePage =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
+
+    case SelectIncomeCountryPage(_) =>
+      taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
+
+    case AddCountriesRentedPage =>
+      taxYear =>
+        _ =>
+          userAnswers =>
+            userAnswers.get(AddCountriesRentedPage) match {
+              case Some(true) =>
+                val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
+                controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, nextIndex, CheckMode)
+              case Some(false) =>
+                controllers.foreign.routes.ClaimPropertyIncomeAllowanceOrExpensesController
+                  .onPageLoad(taxYear, CheckMode)
+              case _ => IndexController.onPageLoad
+            }
+    case ClaimPropertyIncomeAllowanceOrExpensesPage =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 

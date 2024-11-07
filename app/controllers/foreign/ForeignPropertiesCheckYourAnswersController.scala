@@ -23,9 +23,10 @@ import models.requests.DataRequest
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
+import viewmodels.checkAnswers.foreign._
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.ForeignPropertiesCheckYourAnswersView
 
@@ -45,7 +46,9 @@ class ForeignPropertiesCheckYourAnswersController @Inject() (
     implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
-          CountriesRentedPropertySummary.row(taxYear, request.userAnswers)
+          TotalIncomeSummary.row(taxYear, request.userAnswers),
+          CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers),
+          ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten
       )
       Ok(view(list, taxYear))
