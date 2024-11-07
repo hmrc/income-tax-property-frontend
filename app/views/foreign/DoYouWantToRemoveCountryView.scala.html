@@ -24,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, countryName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, index: Int, mode: Mode, countryName: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("doYouWantToRemoveCountry.title"))) {
 
@@ -32,7 +32,7 @@
 
   <p class="govuk-body">@messages("doYouWantToRemoveCountry.p.1")</p>
 
-    @formHelper(action = DoYouWantToRemoveCountryController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = DoYouWantToRemoveCountryController.onSubmit(taxYear, index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

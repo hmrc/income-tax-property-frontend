@@ -40,9 +40,9 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
   val country = Country("Spain", "ESP")
   val formProvider = new DoYouWantToRemoveCountryFormProvider()
   val form = formProvider()
-
+  val index = 0
   lazy val doYouWantToRemoveCountryRoute =
-    controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, NormalMode).url
+    controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index, NormalMode).url
   val isAgent = false
 
   "DoYouWantToRemoveCountry Controller" - {
@@ -50,7 +50,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(
-        userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption,
+        userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage(index), country).toOption,
         isAgent
       ).build()
 
@@ -62,7 +62,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[DoYouWantToRemoveCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, country.name)(
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, country.name)(
           request,
           messages(application)
         ).toString
@@ -73,7 +73,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
       val userAnswersUpdated = for {
         withYesNo          <- UserAnswers(userAnswersId).set(DoYouWantToRemoveCountryPage, true)
-        updatedUserAnswers <- withYesNo.set(SelectIncomeCountryPage, country)
+        updatedUserAnswers <- withYesNo.set(SelectIncomeCountryPage(index), country)
       } yield updatedUserAnswers
 
       val application =
@@ -89,7 +89,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode, country.name)(
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, index, NormalMode, country.name)(
           request,
           messages(application)
         ).toString
@@ -103,7 +103,10 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption, isAgent)
+        applicationBuilder(
+          userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage(index), country).toOption,
+          isAgent
+        )
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -125,7 +128,10 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage, country).toOption, isAgent)
+        applicationBuilder(
+          userAnswers = emptyUserAnswers.set(SelectIncomeCountryPage(index), country).toOption,
+          isAgent
+        )
           .build()
 
       running(application) {
@@ -140,7 +146,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, country.name)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, country.name)(
           request,
           messages(application)
         ).toString

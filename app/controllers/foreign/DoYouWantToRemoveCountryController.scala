@@ -49,26 +49,26 @@ class DoYouWantToRemoveCountryController @Inject() (
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
-        .get(SelectIncomeCountryPage)
+        .get(SelectIncomeCountryPage(index))
         .map { country =>
           country.name
         }
         .fold(Future.successful(InternalServerError("Country not found")))(name =>
           request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
-            case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, mode, name)))
-            case _           => Future.successful(Ok(view(form, taxYear, mode, name)))
+            case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, index, mode, name)))
+            case _           => Future.successful(Ok(view(form, taxYear, index, mode, name)))
           }
         )
 
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
-        .get(SelectIncomeCountryPage)
+        .get(SelectIncomeCountryPage(index))
         .map { country =>
           country.name
         }
@@ -76,11 +76,11 @@ class DoYouWantToRemoveCountryController @Inject() (
           form
             .bindFromRequest()
             .fold(
-              formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, name))),
+              formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, name))),
               value =>
                 for {
                   updatedAnswers <- if (value) {
-                                      Future.fromTry(request.userAnswers.remove(SelectIncomeCountryPage))
+                                      Future.fromTry(request.userAnswers.remove(SelectIncomeCountryPage(index)))
                                     } else {
                                       Future.fromTry(Success(request.userAnswers))
                                     }
@@ -90,5 +90,5 @@ class DoYouWantToRemoveCountryController @Inject() (
                 )
             )
         )
-  }
+    }
 }
