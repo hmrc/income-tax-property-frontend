@@ -1879,3 +1879,12 @@ claimPropertyIncomeAllowanceOrExpenses.content.l1 = deduct any expenses
 claimPropertyIncomeAllowanceOrExpenses.content.l2 = claim any other allowances
 claimPropertyIncomeAllowanceOrExpenses.content.l3 = rents, rates and insurance
 claimPropertyIncomeAllowanceOrExpenses.content.l4 = property repairs and maintenance
+
+doYouWantToRemoveCountry.title = Do you want to remove country?
+doYouWantToRemoveCountry.heading = Do you want to remove
+doYouWantToRemoveCountry.heading2 = country?
+doYouWantToRemoveCountry.p.1 = You're about to change the information you previously entered. This information will now be deleted. You will also have to answer some different questions.
+doYouWantToRemoveCountry.legend = Do you want to remove this country?
+doYouWantToRemoveCountry.checkYourAnswersLabel = Do you want to remove country?
+doYouWantToRemoveCountry.error.required = Select yes if you want to remove this country
+doYouWantToRemoveCountry.change.hidden = Do you want to remove this country?

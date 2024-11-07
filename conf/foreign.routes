@@ -38,3 +38,9 @@ GET        /:taxYear/foreign-property/foreign-tax/claim-property-income-allowanc
 POST       /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+
+GET        /:taxYear/foreign-property/:index/remove-country                       controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/:index/remove-country                        controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
