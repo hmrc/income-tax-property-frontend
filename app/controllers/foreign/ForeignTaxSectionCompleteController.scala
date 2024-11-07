@@ -44,7 +44,7 @@ class ForeignTaxSectionCompleteController @Inject()(
                                          formProvider: ForeignTaxSectionCompleteFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: ForeignTaxSectionCompleteView,
-                                         journeyAnswersService: JourneyAnswersService,
+                                         journeyAnswersService: JourneyAnswersService
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
