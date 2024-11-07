@@ -16,14 +16,23 @@
 
 package pages.foreign
 
-import models.{ForeignIncomeTax, ForeignProperty}
+import models.{ForeignIncomeTax, ForeignProperty, UserAnswers}
 import pages.PageConstants.foreignTaxPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
+import scala.util.Try
+
 case class ForeignIncomeTaxPage(countryCode: String) extends QuestionPage[ForeignIncomeTax] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode \ toString
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "foreignIncomeTax"
+
+  override def cleanup(value: Option[ForeignIncomeTax], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(foreignIncomeTax) if !foreignIncomeTax.foreignIncomeTaxYesNo =>
+        userAnswers.remove(ClaimForeignTaxCreditReliefPage(countryCode))
+      case _ => super.cleanup(value, userAnswers)
+    }
 }
