@@ -20,12 +20,12 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import controllers.statusError
 import forms.ForeignTaxSectionCompleteFormProvider
-import models.JourneyPath.RentARoomAbout
+import models.JourneyPath.ForeignPropertyTax
 
 import javax.inject.Inject
-import models.{Mode, JourneyContext, RentARoom}
+import models.{Mode, ForeignProperty, JourneyContext}
 import navigation.Navigator
-import pages.{ForeignTaxSectionCompletePage, UKPropertySelectPage}
+import pages.{UKPropertySelectPage, ForeignTaxSectionCompletePage}
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,7 +44,8 @@ class ForeignTaxSectionCompleteController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: ForeignTaxSectionCompleteFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignTaxSectionCompleteView
+                                         view: ForeignTaxSectionCompleteView,
+                                         journeyAnswersService: JourneyAnswersService,
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -76,18 +77,13 @@ class ForeignTaxSectionCompleteController @Inject()(
                 taxYear = taxYear,
                 mtditid = request.user.mtditid,
                 nino = request.user.nino,
-                journeyPath =
+                journeyPath = ForeignPropertyTax
               ),
               status = statusForPage(value),
               request.user
             )
-          } yield status.fold(
-            _ =>
-              statusError(journeyName = "about", propertyType = , user = request.user, taxYear = taxYear),
-            _ =>
-              Redirect(
-                navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)
-              )
+          } yield Redirect(
+                navigator.nextPage(ForeignTaxSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
           )
       )
   }
