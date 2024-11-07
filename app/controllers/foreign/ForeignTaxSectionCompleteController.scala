@@ -18,14 +18,13 @@ package controllers.foreign
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
-import controllers.statusError
 import forms.ForeignTaxSectionCompleteFormProvider
 import models.JourneyPath.ForeignPropertyTax
 
 import javax.inject.Inject
-import models.{Mode, ForeignProperty, JourneyContext}
+import models.{Mode, JourneyContext}
 import navigation.Navigator
-import pages.{UKPropertySelectPage, ForeignTaxSectionCompletePage}
+import pages.ForeignTaxSectionCompletePage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
