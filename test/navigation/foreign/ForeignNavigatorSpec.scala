@@ -21,7 +21,7 @@ import controllers.foreign.routes
 import models.{CheckMode, NormalMode, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
-import pages.foreign.{AddCountriesRentedPage, Country,SelectIncomeCountryPage}
+import pages.foreign.{AddCountriesRentedPage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, SelectIncomeCountryPage, TotalIncomePage}
 
 import java.time.LocalDate
 
@@ -44,6 +44,16 @@ class ForeignNavigatorSpec extends SpecBase {
           UserAnswers("id"),
           UserAnswers("id")
         ) mustBe controllers.routes.IndexController.onPageLoad
+      }
+
+      "must go from TotalIncomePage to SelectIncomeCountryController" in {
+        navigator.nextPage(
+          TotalIncomePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe routes.SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       }
 
       "must go from SelectIncomeCountryPage to CountriesRentedPropertyController" in {
@@ -69,7 +79,7 @@ class ForeignNavigatorSpec extends SpecBase {
         ) mustBe routes.SelectIncomeCountryController.onPageLoad(taxYear, 1, NormalMode)
       }
 
-      "must go from AddCountriesRentedPage to CountriesRentedPropertyController if AddCountriesRentedPage is false" in {
+      "must go from AddCountriesRentedPage to ClaimPropertyIncomeAllowanceOrExpensesController if AddCountriesRentedPage is false" in {
         val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
 
         navigator.nextPage(
@@ -78,20 +88,55 @@ class ForeignNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswersWithoutAddCountry
-        ) mustBe routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+        ) mustBe routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
       }
+
+      "must go from ClaimPropertyIncomeAllowanceOrExpensesPage to ForeignCountriesCheckYourAnswersController" in {
+        navigator.nextPage(
+          ClaimPropertyIncomeAllowanceOrExpensesPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
     }
 
     "in Check mode" - {
 
-      "must go from SelectIncomeCountryPage to CountriesRentedPropertyController in CheckMode" in {
+      "must go from SelectIncomeCountryPage to ForeignCountriesCheckYourAnswersController in CheckMode" in {
         navigator.nextPage(
           SelectIncomeCountryPage(0),
           taxYear,
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
+        ) mustBe routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from AddCountriesRentedPage to ForeignCountriesCheckYourAnswersController if AddCountriesRentedPage is false" in {
+        val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
+
+        navigator.nextPage(
+          AddCountriesRentedPage,
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswersWithoutAddCountry
+        ) mustBe routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      }
+
+      "must go from ClaimPropertyIncomeAllowanceOrExpensesPage to ForeignCountriesCheckYourAnswersController" in {
+        val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
+
+        navigator.nextPage(
+          ClaimPropertyIncomeAllowanceOrExpensesPage,
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswersWithoutAddCountry
+        ) mustBe routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from a page that doesn't exist in the route map to Index in CheckMode" in {

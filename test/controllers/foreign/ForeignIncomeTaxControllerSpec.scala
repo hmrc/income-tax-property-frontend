@@ -38,7 +38,7 @@ import scala.concurrent.Future
 
 class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear = 2024

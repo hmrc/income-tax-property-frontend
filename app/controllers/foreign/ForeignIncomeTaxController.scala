@@ -20,7 +20,7 @@ import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.foreign.ForeignIncomeTaxFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignIncomeTaxPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignIncomeTaxController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         foreignPropertyNavigator: ForeignPropertyNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
@@ -74,7 +74,7 @@ class ForeignIncomeTaxController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignIncomeTaxPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 

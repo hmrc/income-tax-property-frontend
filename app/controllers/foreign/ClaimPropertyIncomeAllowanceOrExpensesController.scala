@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ClaimPropertyIncomeAllowanceOrExpensesController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -60,14 +60,15 @@ class ClaimPropertyIncomeAllowanceOrExpensesController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(taxYear, formWithErrors, mode, request.user.isAgentMessageKey))),
+          formWithErrors =>
+            Future.successful(BadRequest(view(taxYear, formWithErrors, mode, request.user.isAgentMessageKey))),
           value =>
             for {
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowanceOrExpensesPage, value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(
+              foreignPropertyNavigator.nextPage(
                 ClaimPropertyIncomeAllowanceOrExpensesPage,
                 taxYear,
                 mode,
