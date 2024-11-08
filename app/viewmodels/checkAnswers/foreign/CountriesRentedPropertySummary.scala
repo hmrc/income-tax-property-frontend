@@ -49,25 +49,21 @@ object CountriesRentedPropertySummary {
       )
     }
 
-
-   def rowList(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def rowList(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(IncomeSourceCountries).map { country: Array[Country] =>
-
       val value: Seq[String] = country.toList.map { c: Country =>
-       s"${c.name}"
+        s"${c.name}"
       }
-
-      val countryList: String = value.mkString("\n")
-
+      val countryList: String = value.mkString(" ")
       SummaryListRowViewModel(
         key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value =ValueViewModel(countryList).withCssClass(valueCssClass),
+        value = ValueViewModel(HtmlContent(countryList)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
             controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
           )
-            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
+            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
         ),
         actionsCss = "w-25"
       )
