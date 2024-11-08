@@ -1886,3 +1886,10 @@ doYouWantToRemoveCountry.legend = Do you want to remove this country?
 doYouWantToRemoveCountry.checkYourAnswersLabel = Do you want to remove country?
 doYouWantToRemoveCountry.error.required = Select yes if you want to remove this country
 doYouWantToRemoveCountry.change.hidden = Do you want to remove this country?
+
+foreignYearLeaseAmount.title = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.heading = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.checkYourAnswersLabel = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.error.required = Enter the number of complete 12 month periods in the term of the lease
+foreignYearLeaseAmount.error.nonNumeric = Enter a number between 2 and 50 for the number of complete 12 month periods in the term of the lease
+foreignYearLeaseAmount.change.hidden = How many complete 12 month periods were in the term of the lease?

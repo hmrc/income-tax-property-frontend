@@ -35,6 +35,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.foreign.ClaimForeignTaxCreditReliefView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSugar {
@@ -42,7 +43,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
   def onwardRoute: Call = Call("GET", "/foo")
 
   val formProvider = new ClaimForeignTaxCreditReliefFormProvider()
-  val taxYear = 2024
+  val taxYear: Int = LocalDate.now().getYear
   val countryCode = "USA"
   lazy val claimForeignTaxCreditReliefRoute: String = controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, NormalMode).url
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")

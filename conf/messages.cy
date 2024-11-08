@@ -1858,3 +1858,10 @@ doYouWantToRemoveCountry.legend = *Missing Welsh*
 doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
 doYouWantToRemoveCountry.error.required = *Missing Welsh*
 doYouWantToRemoveCountry.change.hidden = *Missing Welsh*
+
+foreignYearLeaseAmount.title = *Missing Welsh*
+foreignYearLeaseAmount.heading = *Missing Welsh*
+foreignYearLeaseAmount.checkYourAnswersLabel = *Missing Welsh*
+foreignYearLeaseAmount.error.required = *Missing Welsh*
+foreignYearLeaseAmount.error.nonNumeric = *Missing Welsh*
+foreignYearLeaseAmount.change.hidden = *Missing Welsh*
