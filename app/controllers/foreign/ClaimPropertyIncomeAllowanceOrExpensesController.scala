@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
 import models.Mode
-import navigation.{ForeignPropertyNavigator, Navigator}
+import navigation.ForeignPropertyNavigator
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

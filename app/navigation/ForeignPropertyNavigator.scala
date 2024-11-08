@@ -26,13 +26,10 @@ import play.api.mvc.Call
 @Singleton
 class ForeignPropertyNavigator {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
-    case SelectIncomeCountryPage(_) =>
-      taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
     case pages.foreign.TotalIncomePage =>
       taxYear => _ => _ => controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
-
     case AddCountriesRentedPage =>
       taxYear =>
         _ =>
@@ -47,19 +44,15 @@ class ForeignPropertyNavigator {
               case _ => IndexController.onPageLoad
             }
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
-      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
-    case SelectIncomeCountryPage(_) =>
-      taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
     case pages.foreign.TotalIncomePage =>
-      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
-
+      taxYear => _ => _ => controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case SelectIncomeCountryPage(_) =>
-      taxYear => _ => _ => controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
-
+      taxYear => _ => _ => controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case AddCountriesRentedPage =>
       taxYear =>
         _ =>
@@ -69,12 +62,11 @@ class ForeignPropertyNavigator {
                 val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
                 controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(taxYear, nextIndex, CheckMode)
               case Some(false) =>
-                controllers.foreign.routes.ClaimPropertyIncomeAllowanceOrExpensesController
-                  .onPageLoad(taxYear, CheckMode)
+                controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
               case _ => IndexController.onPageLoad
             }
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
-      taxYear => _ => _ => controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 

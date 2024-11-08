@@ -40,7 +40,7 @@ import scala.concurrent.Future
 
 class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/foreign-property/about/0/select-income-country")
   private val taxYear = 2024
 
   lazy val totalIncomeRoute: String = controllers.foreign.routes.TotalIncomeController.onPageLoad(taxYear, NormalMode).url

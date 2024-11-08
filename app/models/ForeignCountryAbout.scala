@@ -21,11 +21,11 @@ import pages.foreign.Country
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
-case class ForeignPropertyAbout(incomeCountry: Country)
+case class ForeignCountryAbout(incomeCountry: Country)
 
-object ForeignPropertyAbout extends Gettable[ForeignPropertyAbout] with Settable[ForeignPropertyAbout] {
+object ForeignCountryAbout extends Gettable[ForeignCountryAbout] with Settable[ForeignCountryAbout] {
 
-  implicit val format: Format[ForeignPropertyAbout] = Json.format[ForeignPropertyAbout]
+  implicit val format: Format[ForeignCountryAbout] = Json.format[ForeignCountryAbout]
 
   override def path: JsPath = JsPath \ toString
 

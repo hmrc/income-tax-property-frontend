@@ -17,13 +17,13 @@
 package controllers.foreign
 
 import base.SpecBase
-import controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController
+import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.all.SummaryListViewModel
-import views.html.foreign.ForeignPropertiesCheckYourAnswersView
+import views.html.foreign.ForeignCountriesCheckYourAnswersView
 
-class ForeignPropertiesCheckYourAnswersControllerSpec extends SpecBase {
+class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
 
   "ForeignPropertiesCheckYourAnswers Controller" - {
 
@@ -35,11 +35,11 @@ class ForeignPropertiesCheckYourAnswersControllerSpec extends SpecBase {
       val list = SummaryListViewModel(Seq.empty)
 
       running(application) {
-        val request = FakeRequest(GET, ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ForeignPropertiesCheckYourAnswersView]
+        val view = application.injector.instanceOf[ForeignCountriesCheckYourAnswersView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
@@ -51,7 +51,7 @@ class ForeignPropertiesCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
 

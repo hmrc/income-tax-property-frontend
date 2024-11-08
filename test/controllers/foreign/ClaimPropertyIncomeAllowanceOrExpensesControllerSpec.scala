@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class ClaimPropertyIncomeAllowanceOrExpensesControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute = Call("GET", "/update-and-submit-income-tax-return/property/2024/foreign-property/select-country/check-your-answers")
 
   val formProvider = new ClaimPropertyIncomeAllowanceOrExpensesFormProvider()
   val form = formProvider()

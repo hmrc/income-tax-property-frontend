@@ -27,7 +27,7 @@
 
        <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
        <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
-        @formHelper(action = controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @formHelper(action = controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
               @govukSummaryList(list)
 

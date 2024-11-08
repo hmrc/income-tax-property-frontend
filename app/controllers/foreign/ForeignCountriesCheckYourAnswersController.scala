@@ -18,28 +18,27 @@ package controllers.foreign
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.ForeignPropertyAbout
+import models.ForeignCountryAbout
 import models.requests.DataRequest
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign._
 import viewmodels.govuk.all.SummaryListViewModel
-import views.html.foreign.ForeignPropertiesCheckYourAnswersView
+import views.html.foreign.ForeignCountriesCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class ForeignPropertiesCheckYourAnswersController @Inject() (
+class ForeignCountriesCheckYourAnswersController @Inject()(
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ForeignPropertiesCheckYourAnswersView
+  view: ForeignCountriesCheckYourAnswersView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -56,21 +55,21 @@ class ForeignPropertiesCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(ForeignPropertyAbout) match {
-        case Some(foreignPropertiesAbout) =>
-          saveForeignPropertiesInformation(taxYear, request, foreignPropertiesAbout)
+      request.userAnswers.get(ForeignCountryAbout) match {
+        case Some(foreignCountryAbout) =>
+          saveForeignCountriesInformation(taxYear, request, foreignCountryAbout)
         case None =>
-          logger.error("Foreign Properties Section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("Foreign Properties Section is not present in userAnswers"))
+          logger.error("Foreign Countries Section is not present in userAnswers")
+          Future.failed(InternalErrorFailure("Foreign Countries Section is not present in userAnswers"))
       }
   }
 
-  private def saveForeignPropertiesInformation(
+  private def saveForeignCountriesInformation(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    foreignPropertyAbout: ForeignPropertyAbout
+    foreignCountryAbout: ForeignCountryAbout
   )(implicit hc: HeaderCarrier): Future[Result] =
     Future.successful(
-      Redirect(controllers.foreign.routes.ForeignPropertiesCheckYourAnswersController.onPageLoad(taxYear))
+      Redirect(controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear))
     )
 }

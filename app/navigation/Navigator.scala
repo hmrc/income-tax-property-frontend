@@ -776,6 +776,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers)
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
       taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
