@@ -20,7 +20,7 @@ import models.ForeignProperty
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import queries.Gettable
+import queries.{Gettable, Settable}
 
 case class SelectIncomeCountryPage(index: Int) extends QuestionPage[Country] {
 
@@ -29,7 +29,7 @@ case class SelectIncomeCountryPage(index: Int) extends QuestionPage[Country] {
   override def toString: String = "incomeCountries"
 }
 
-case object IncomeSourceCountries extends Gettable[Array[Country]] {
+case object IncomeSourceCountries extends Gettable[Array[Country]] with Settable[Array[Country]] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 

@@ -16,18 +16,14 @@
 
 package models
 
-import pages.PageConstants.aboutPath
-import pages.foreign.Country
-import play.api.libs.json.{Format, JsPath, Json}
-import queries.{Gettable, Settable}
+import play.api.libs.json.{Format, Json}
 
-case class ForeignCountryAbout(incomeCountry: Country)
-
-object ForeignCountryAbout extends Gettable[ForeignCountryAbout] with Settable[ForeignCountryAbout] {
-
-  implicit val format: Format[ForeignCountryAbout] = Json.format[ForeignCountryAbout]
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = aboutPath(ForeignProperty)
+final case class ForeignPropertiesSelectCountry(
+  countryCodes: List[String],
+  foreignTotalIncome: String,
+  claimPropertyIncomeAllowanceOrExpenses: String
+)
+object ForeignPropertiesSelectCountry {
+  implicit val format: Format[ForeignPropertiesSelectCountry] = Json.format[ForeignPropertiesSelectCountry]
 }
+

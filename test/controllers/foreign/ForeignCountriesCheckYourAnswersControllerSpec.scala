@@ -18,6 +18,9 @@ package controllers.foreign
 
 import base.SpecBase
 import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
+import models.{ForeignTotalIncome, UserAnswers}
+import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country, IncomeSourceCountries}
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.all.SummaryListViewModel
@@ -28,6 +31,11 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
   "ForeignPropertiesCheckYourAnswers Controller" - {
 
     val taxYear = 2024
+
+    def submitOnwardRoute: Call = Call(
+      "POST",
+      "/update-and-submit-income-tax-return/property/2024/foreign-property/select-country/check-your-answers"
+    )
 
     "must return OK and the correct view for a GET" in {
 
@@ -57,6 +65,32 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+
+      val userAnswers = UserAnswers("foreign-property-select-country")
+        .set(pages.foreign.TotalIncomePage, ForeignTotalIncome.LessThanOneThousand)
+        .flatMap { ua: UserAnswers =>
+          ua.set(IncomeSourceCountries, Array(Country("USA", "US")))
+        }
+        .flatMap { ua =>
+          ua.set(ClaimPropertyIncomeAllowanceOrExpensesPage, true)
+        }
+        .toOption
+
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, routes.ForeignCountriesCheckYourAnswersController.onSubmit(taxYear).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual submitOnwardRoute.url
       }
     }
   }
