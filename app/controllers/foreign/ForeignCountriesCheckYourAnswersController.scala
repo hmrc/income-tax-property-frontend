@@ -18,11 +18,14 @@ package controllers.foreign
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import models.ForeignCountryAbout
+import models.JourneyPath.ForeignSelectCountry
 import models.requests.DataRequest
+import models.{ForeignPropertiesSelectCountry, ForeignTotalIncome, JourneyContext}
+import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign._
@@ -32,12 +35,13 @@ import views.html.foreign.ForeignCountriesCheckYourAnswersView
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class ForeignCountriesCheckYourAnswersController @Inject()(
+class ForeignCountriesCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
   view: ForeignCountriesCheckYourAnswersView
 ) extends FrontendBaseController with I18nSupport {
 
@@ -55,21 +59,39 @@ class ForeignCountriesCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(ForeignCountryAbout) match {
-        case Some(foreignCountryAbout) =>
-          saveForeignCountriesInformation(taxYear, request, foreignCountryAbout)
+      val foreignPropertiesSelectCountryOpt: Option[ForeignPropertiesSelectCountry] =
+        for {
+          countryCodes: Array[Country]           <- request.userAnswers.get(IncomeSourceCountries)
+          foreignTotalIncome: ForeignTotalIncome <- request.userAnswers.get(pages.foreign.TotalIncomePage)
+          claimPropertyIncomeAllowanceOrExpenses: Boolean <-
+            request.userAnswers.get(pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage)
+        } yield ForeignPropertiesSelectCountry(
+          countryCodes.toList.map(_.code),
+          foreignTotalIncome.toString,
+          claimPropertyIncomeAllowanceOrExpenses.toString
+        )
+
+      foreignPropertiesSelectCountryOpt match {
+        case Some(foreignPropertiesSelectCountry) =>
+          saveForeignCountriesInformation(taxYear, request, foreignPropertiesSelectCountry)
         case None =>
-          logger.error("Foreign Countries Section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("Foreign Countries Section is not present in userAnswers"))
+          logger.error("Foreign select country section is not present in userAnswers")
+          Future.failed(
+            InternalErrorFailure("Foreign select country section is not present in userAnswers")
+          )
       }
   }
 
   private def saveForeignCountriesInformation(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    foreignCountryAbout: ForeignCountryAbout
-  )(implicit hc: HeaderCarrier): Future[Result] =
+    foreignCountryAbout: ForeignPropertiesSelectCountry
+  )(implicit hc: HeaderCarrier): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignSelectCountry)
+    propertySubmissionService.saveJourneyAnswers(context, foreignCountryAbout)
     Future.successful(
       Redirect(controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear))
     )
+
+  }
 }

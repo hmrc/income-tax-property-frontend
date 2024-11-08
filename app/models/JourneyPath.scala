@@ -87,4 +87,7 @@ object JourneyPath {
 
   case object RentalsAndRentARoomESBA extends WithName("rentals-and-rent-a-room-esba") with JourneyPath
 
+  // ####################### Foreign Property #######################
+  case object ForeignSelectCountry extends WithName("select-country") with JourneyPath
+
 }

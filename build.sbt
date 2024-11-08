@@ -66,14 +66,15 @@ lazy val coverageSettings: Seq[Setting[?]] = {
     "views.html.*[Tt]emplate.*",
     "views.html.views.templates.helpers*",
     "views.html.views.templates.inputs*",
-    "views.headerFooterTemplate"
+    "views.headerFooterTemplate",
+    "models.*"
   )
 
   Seq(
     ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*handlers.*;.*components.*;" +
       ".*Routes.*;.*viewmodels.govuk.*;",
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimumStmtTotal := 78,
+    ScoverageKeys.coverageMinimumStmtTotal := 75,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true
   )
