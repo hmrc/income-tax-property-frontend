@@ -1865,3 +1865,15 @@ foreignYearLeaseAmount.checkYourAnswersLabel = *Missing Welsh*
 foreignYearLeaseAmount.error.required = *Missing Welsh*
 foreignYearLeaseAmount.error.nonNumeric = *Missing Welsh*
 foreignYearLeaseAmount.change.hidden = *Missing Welsh*
+
+foreignReceivedGrantLeaseAmount.title.individual = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.title.agent = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.heading.individual = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.heading.agent = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.checkYourAnswersLabel = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.error.nonNumeric.individual = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.error.nonNumeric.agent = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.error.required.individual = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.error.required.agent = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.error.outOfRange = *Missing Welsh*
+foreignReceivedGrantLeaseAmount.change.hidden = *Missing Welsh*
