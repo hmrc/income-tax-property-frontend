@@ -95,6 +95,12 @@
         <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
         @taskListSection(foreignProperty.startItems)
     }
+
+    @*if(foreignProperty.startItems.nonEmpty) { *@
+
+        <h2 class="govuk-heading-m">@messages("foreign.allProperties")</h2>
+        @taskListSection(foreignProperty.countries)
+    @*}*@
 }
 
 @{
