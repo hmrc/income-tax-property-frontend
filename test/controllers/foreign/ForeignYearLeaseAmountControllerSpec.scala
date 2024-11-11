@@ -17,75 +17,77 @@
 package controllers.foreign
 
 import base.SpecBase
-import controllers.routes
-import forms.foreign.TotalIncomeFormProvider
-import models.{ForeignTotalIncome, NormalMode, TotalIncome, UserAnswers}
+import forms.foreign.ForeignYearLeaseAmountFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
+import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import pages.foreign.TotalIncomePage
+import pages.foreign.ForeignYearLeaseAmountPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.foreign.TotalIncomeView
-import org.scalatest.prop.Tables.Table
+import views.html.foreign.ForeignYearLeaseAmountView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
+class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/foreign-property/about/0/select-income-country")
-  private val taxYear = LocalDate.now().getYear
+  val formProvider = new ForeignYearLeaseAmountFormProvider()
+  val form: Form[Int] = formProvider()
+  val taxYear: Int = LocalDate.now().getYear
+  val countryCode = "USA"
 
-  lazy val totalIncomeRoute: String = controllers.foreign.routes.TotalIncomeController.onPageLoad(taxYear, NormalMode).url
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new TotalIncomeFormProvider()
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
+  val validAnswer = 2
 
   forAll(scenarios) { (individualOrAgent: String) =>
-    val form: Form[ForeignTotalIncome] = formProvider(individualOrAgent)
-    val isAgent = individualOrAgent == "agent"
-    s"TotalIncome Controller for an $individualOrAgent" - {
+    val isAgent: Boolean = individualOrAgent == "agent"
+
+    lazy val foreignYearLeaseAmountRoute: String = routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode).url
+
+    s"ForeignYearLeaseAmount Controller for an $individualOrAgent" - {
 
       "must return OK and the correct view for a GET" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, totalIncomeRoute)
+          val request = FakeRequest(GET, foreignYearLeaseAmountRoute)
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[TotalIncomeView]
+          val view = application.injector.instanceOf[ForeignYearLeaseAmountView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(TotalIncomePage, ForeignTotalIncome.values.head).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ForeignYearLeaseAmountPage(countryCode), validAnswer).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, totalIncomeRoute)
+          val request = FakeRequest(GET, foreignYearLeaseAmountRoute)
 
-          val view = application.injector.instanceOf[TotalIncomeView]
+          val view = application.injector.instanceOf[ForeignYearLeaseAmountView]
 
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(ForeignTotalIncome.values.head),
-            taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -105,8 +107,8 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, totalIncomeRoute)
-              .withFormUrlEncodedBody(("foreignTotalIncome", ForeignTotalIncome.values.head.toString))
+            FakeRequest(POST, foreignYearLeaseAmountRoute)
+              .withFormUrlEncodedBody(("foreignYearLeaseAmount", validAnswer.toString))
 
           val result = route(application, request).value
 
@@ -121,17 +123,17 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, totalIncomeRoute)
-              .withFormUrlEncodedBody(("foreignTotalIncome", "invalid value"))
+            FakeRequest(POST, foreignYearLeaseAmountRoute)
+              .withFormUrlEncodedBody(("foreignYearLeaseAmount", "invalid value"))
 
-          val boundForm = form.bind(Map("foreignTotalIncome" -> "invalid value"))
+          val boundForm = form.bind(Map("foreignYearLeaseAmount" -> "invalid value"))
 
-          val view = application.injector.instanceOf[TotalIncomeView]
+          val view = application.injector.instanceOf[ForeignYearLeaseAmountView]
 
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -140,34 +142,31 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val application = applicationBuilder(userAnswers = None, isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, totalIncomeRoute)
+          val request = FakeRequest(GET, foreignYearLeaseAmountRoute)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
         }
       }
 
-      "redirect to Journey Recovery for a POST if no existing data is found" in {
+      "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
         val application = applicationBuilder(userAnswers = None, isAgent = isAgent).build()
 
         running(application) {
           val request =
-            FakeRequest(POST, totalIncomeRoute)
-              .withFormUrlEncodedBody(("foreignTotalIncome", ForeignTotalIncome.values.head.toString))
+            FakeRequest(POST, foreignYearLeaseAmountRoute)
+              .withFormUrlEncodedBody(("foreignYearLeaseAmount", validAnswer.toString))
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
         }
       }
     }
-
   }
-
-
 }

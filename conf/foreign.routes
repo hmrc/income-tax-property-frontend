@@ -50,3 +50,10 @@ POST       /:taxYear/foreign-property/:index/change-remove-country              
 
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/income/:countryCode/year-lease-amount                                   controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/year-lease-amount                                   controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/check-year-lease-amount                             controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/check-year-lease-amount                             controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+
