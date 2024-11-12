@@ -34,7 +34,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
 
     def submitOnwardRoute: Call = Call(
       "POST",
-      "/update-and-submit-income-tax-return/property/2024/foreign-property/select-country/check-your-answers"
+      "/update-and-submit-income-tax-return/property/2024/foreign-property/select-country/complete-yes-no"
     )
 
     "must return OK and the correct view for a GET" in {
@@ -68,7 +68,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+    "must return OK and the POST for onSubmit() should redirect to the Have you finished this section page" in {
 
       val userAnswers = UserAnswers("foreign-property-select-country")
         .set(pages.foreign.TotalIncomePage, ForeignTotalIncome.LessThanOneThousand)

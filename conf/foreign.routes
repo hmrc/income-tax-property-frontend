@@ -27,13 +27,16 @@ POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-ta
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                     controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                        controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses                  controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-tax/claim-property-income-allowance-or-expenses                controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses         controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/foreign-tax/change-claim-property-income-allowance-or-expenses         controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/select-country/check-your-answers                                       controllers.foreign.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear: Int)
-POST       /:taxYear/foreign-property/select-country/check-your-answers                                       controllers.foreign.ForeignCountriesCheckYourAnswersController.onSubmit(taxYear: Int)
+GET        /:taxYear/foreign-property/select-country/check-your-answers                                      controllers.foreign.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST       /:taxYear/foreign-property/select-country/check-your-answers                                      controllers.foreign.ForeignCountriesCheckYourAnswersController.onSubmit(taxYear: Int)
+
+GET        /:taxYear/foreign-property/select-country/complete-yes-no                                         controllers.foreign.ForeignSelectCountriesCompleteController.onPageLoad(taxYear: Int)
+POST       /:taxYear/foreign-property/select-country/complete-yes-no                                         controllers.foreign.ForeignSelectCountriesCompleteController.onSubmit(taxYear: Int)
 
 GET         /:taxYear/foreign-property/foreign-tax/:countryCode/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST        /:taxYear/foreign-property/foreign-tax/:countryCode/claim-foreign-tax-credit-relief               controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
@@ -45,13 +48,13 @@ POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-ta
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                      controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                      controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/:index/remove-country                       controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/:index/remove-country                        controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/:index/remove-country                                                   controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/:index/remove-country                                                   controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/:index/change-remove-country                                            controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/:index/change-remove-country                                            controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                        controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                        controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                                controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                                controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
