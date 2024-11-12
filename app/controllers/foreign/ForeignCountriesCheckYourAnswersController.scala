@@ -90,7 +90,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignSelectCountry)
     propertySubmissionService.saveJourneyAnswers(context, foreignCountryAbout)
     Future.successful(
-      Redirect(controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear))
+      Redirect(controllers.foreign.routes.ForeignSelectCountriesCompleteController.onPageLoad(taxYear))
     )
 
   }
