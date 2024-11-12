@@ -120,6 +120,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "property-rentals-and-rent-a-room-adjustments" => RentalsRaRAdjustmentsCompletePage
         case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentARoom)
         case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentARoom)
+        case "foreign-property-tax"                         => ForeignTaxSectionCompletePage
       }
 //      case object About extends JourneyName("property-about")
 //      case object RentalAbout extends JourneyName("property-rental-about")

@@ -90,4 +90,6 @@ object JourneyPath {
   // ####################### Foreign Property #######################
   case object ForeignSelectCountry extends WithName("select-country") with JourneyPath
 
+  case object ForeignPropertyTax extends WithName("foreign-property-tax") with JourneyPath
+
 }
