@@ -98,7 +98,7 @@
 
     @if(foreignProperty.foreignIncomeCountries.nonEmpty) {
     @for(country <- foreignProperty.foreignIncomeCountries){
-        <h2 class="govuk-heading-m">@country.code @messages("foreign.heading") </h2>
+        <h2 class="govuk-heading-m">@messages(s"foreign.heading", country.name) </h2>
             @taskListSection(ForeignPropertySummaryPage.foreignIncomeTax(foreignProperty.taxYear,country.code))
         }
 

@@ -1750,7 +1750,7 @@ ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-r
 
 foreign.summary.title = Foreign property
 foreign.selectCountry = Select country
-foreign.heading = all properties
+foreign.heading = {0} all properties
 foreign.tax = Foreign tax
 
 
