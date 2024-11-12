@@ -19,9 +19,10 @@ package navigation
 import com.google.inject.Singleton
 import controllers.foreign.routes._
 import controllers.routes.{IndexController, SummaryController}
-import models.{CheckMode, Mode, NormalMode, UserAnswers}
+import models.{CheckMode, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.foreign._
 import pages.{ForeignSelectCountriesCompletePage, Page}
+import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.mvc.Call
 
 @Singleton
@@ -31,6 +32,8 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+    case ForeignReversePremiumsReceivedPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignReversePremiumReceivedNavigation(taxYear, countryCode, userAnswers)
     case AddCountriesRentedPage =>
       taxYear =>
         _ =>
@@ -85,5 +88,22 @@ class ForeignPropertyNavigator {
         SelectIncomeCountryController.onPageLoad(taxYear, nextIndex, NormalMode)
 
       case _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def foreignReversePremiumReceivedNavigation(
+    taxYear: Int,
+    countryCode: String,
+    userAnswers: UserAnswers
+  ): Call =
+    userAnswers.get(ForeignReversePremiumsReceivedPage(countryCode)) match {
+      // TODO should go to the other income from property page
+      case Some(ReversePremiumsReceived(true, _)) =>
+        controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+          .onPageLoad(taxYear, NormalMode, countryCode)
+      // TODO should go to the other income from property page
+      case _ =>
+        controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+          .onPageLoad(taxYear, NormalMode, countryCode)
+
     }
 }
