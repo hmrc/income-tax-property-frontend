@@ -1905,3 +1905,35 @@ foreignReceivedGrantLeaseAmount.error.required.individual = Enter the amount you
 foreignReceivedGrantLeaseAmount.error.required.agent = Enter the amount your client received for the grant of a lease
 foreignReceivedGrantLeaseAmount.error.outOfRange = Enter an amount between £0 and £100,000,000
 foreignReceivedGrantLeaseAmount.change.hidden = How much did you receive for the grant of a lease?
+
+foreignPremiumsGrantLease.title = Premiums for the grant of a lease
+foreignPremiumsGrantLease.heading = Premiums for the grant of a lease
+foreignPremiumsGrantLease.calculation.subHeading = Your calculation:
+foreignPremiumsGrantLease.calculation.premium = Premium: £{0}
+foreignPremiumsGrantLease.calculation.years = Years: {0} - {1} = {2}
+foreignPremiumsGrantLease.calculation.formula = £{0} x ((50 - {1}) / 50)
+foreignPremiumsGrantLease.calculation.taxableAmount = Taxable amount:
+foreignPremiumsGrantLease.line1.individual = You can work out your taxable amount as follows:
+foreignPremiumsGrantLease.line1.agent = You can work out your client’s taxable amount as follows:
+foreignPremiumsGrantLease.line2.part1 = Taxable amount =
+foreignPremiumsGrantLease.line2.part2 = P
+foreignPremiumsGrantLease.line2.part3 = x ((50 -
+foreignPremiumsGrantLease.line2.part4 = Y
+foreignPremiumsGrantLease.line2.part5 = ) / 50)
+foreignPremiumsGrantLease.line3.part1 = P
+foreignPremiumsGrantLease.line3.part2 = is the amount of the premium.
+foreignPremiumsGrantLease.line4.part1 = Y
+foreignPremiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
+foreignPremiumsGrantLease.line5.part1 = 50
+foreignPremiumsGrantLease.line5.part2 = is for short leases with 50 years or less to go on them
+foreignPremiumsGrantLease.input.label = Enter the amount calculated
+foreignPremiumsGrantLease.checkYourAnswersLabel = Do you agree with this taxable amount?
+foreignPremiumsGrantLease.error.required.individual = Select yes if you’ve calculated the amount yourself
+foreignPremiumsGrantLease.error.required.agent = Select yes if your client agrees with this taxable amount
+foreignPremiumsGrantLease.error.amount.required.individual = Enter the amount you’ve calculated yourself
+foreignPremiumsGrantLease.error.amount.required.agent = Enter the amount that your client calculated
+foreignPremiumsGrantLease.error.amount.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+foreignPremiumsGrantLease.error.amount.nonNumeric.individual = The amount you’ve calculated yourself can only include pounds and pence, for example £600 or £600.20
+foreignPremiumsGrantLease.error.amount.nonNumeric.agent = The amount your client calculated can only include pounds and pence, for example £600 or £600.20
+foreignPremiumsGrantLease.error.outOfRange = Enter an amount between £{0} and £{1}
+foreignPremiumsGrantLease.change.hidden = Premiums for the grant of a lease

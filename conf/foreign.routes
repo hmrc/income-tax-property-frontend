@@ -43,18 +43,13 @@ POST        /:taxYear/foreign-property/foreign-tax/:countryCode/claim-foreign-ta
 GET         /:taxYear/foreign-property/foreign-tax/:countryCode/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST        /:taxYear/foreign-property/foreign-tax/:countryCode/change-claim-foreign-tax-credit-relief        controllers.foreign.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                             controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                             controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                      controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/foreign-tax/:countryCode/change-foreign-income-tax                      controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/:index/remove-country                       controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/:index/remove-country                        controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/:index/change-remove-country                  controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/:index/remove-country                                                   controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/:index/remove-country                                                   controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/:index/change-remove-country                                            controllers.foreign.DoYouWantToRemoveCountryController.onPageLoad(taxYear: Int, index: Int, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/:index/change-remove-country                                            controllers.foreign.DoYouWantToRemoveCountryController.onSubmit(taxYear: Int, index: Int, mode: Mode = CheckMode)
-
-GET        /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                                controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                                controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                        controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-tax/foreign-tax-section-complete                        controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
@@ -68,3 +63,8 @@ GET        /:taxYear/foreign-property/income/:countryCode/received-grant-lease-a
 POST       /:taxYear/foreign-property/income/:countryCode/received-grant-lease-amount                         controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
