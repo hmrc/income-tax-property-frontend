@@ -56,7 +56,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
     agentRef = Some("agentReferenceNumber")
   )
 
-  lazy val foreignTaxSectionCompleteRoute = ForeignTaxSectionCompleteController.onPageLoad(taxYear, NormalMode).url
+  lazy val foreignTaxSectionCompleteRoute = ForeignTaxSectionCompleteController.onPageLoad(taxYear).url
 
   "ForeignTaxSectionComplete Controller" - {
 
@@ -135,7 +135,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear, NormalMode).url)
+          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear).url)
             .withFormUrlEncodedBody(("foreignTaxIsSectionCompleteYesOrNo", "true"))
 
         val result = route(application, request).value
@@ -163,7 +163,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear, NormalMode).url)
+          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear).url)
             .withFormUrlEncodedBody(("foreignTaxIsSectionCompleteYesOrNo", ""))
 
         val boundForm = form.bind(Map("foreignTaxIsSectionCompleteYesOrNo" -> ""))

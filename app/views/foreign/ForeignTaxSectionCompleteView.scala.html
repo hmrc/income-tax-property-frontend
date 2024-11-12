@@ -29,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = ForeignTaxSectionCompleteController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ForeignTaxSectionCompleteController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
