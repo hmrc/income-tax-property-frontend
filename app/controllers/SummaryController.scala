@@ -20,6 +20,7 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
 import models.requests.OptionalDataRequest
 import pages._
+import pages.foreign.IncomeSourceCountries
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
@@ -53,6 +54,9 @@ class SummaryController @Inject() (
           val combinedItems =
             SummaryPage(cyaDiversionService)
               .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+
+          val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
+          val maybeCountries = foreignCountries.getOrElse(List.empty)
           Future.successful(
             Ok(
               view(
@@ -60,7 +64,7 @@ class SummaryController @Inject() (
                 ForeignPropertySummaryPage(
                   taxYear = taxYear,
                   startItems = ForeignPropertySummaryPage.propertyAboutItems(taxYear),
-                  countries = ForeignPropertySummaryPage.propertyCountries(taxYear)
+                  foreignIncomeCountries = maybeCountries
                 )
               )
             )

@@ -1750,8 +1750,8 @@ ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-r
 
 foreign.summary.title = Foreign property
 foreign.selectCountry = Select country
-foreign.allProperties = all properties
-foreign.foreignTax = Foreign tax
+foreign.heading = all properties
+foreign.tax = Foreign tax
 
 
 foreignPropertyDetails.title = Foreign property details
@@ -1888,3 +1888,22 @@ doYouWantToRemoveCountry.legend = Do you want to remove this country?
 doYouWantToRemoveCountry.checkYourAnswersLabel = Do you want to remove country?
 doYouWantToRemoveCountry.error.required = Select yes if you want to remove this country
 doYouWantToRemoveCountry.change.hidden = Do you want to remove this country?
+
+foreignYearLeaseAmount.title = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.heading = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.checkYourAnswersLabel = How many complete 12 month periods were in the term of the lease?
+foreignYearLeaseAmount.error.required = Enter the number of complete 12 month periods in the term of the lease
+foreignYearLeaseAmount.error.nonNumeric = Enter a number between 2 and 50 for the number of complete 12 month periods in the term of the lease
+foreignYearLeaseAmount.change.hidden = How many complete 12 month periods were in the term of the lease?
+
+foreignReceivedGrantLeaseAmount.title.individual = How much did you receive for the grant of a lease?
+foreignReceivedGrantLeaseAmount.title.agent = How much did your client receive for the grant of a lease?
+foreignReceivedGrantLeaseAmount.heading.individual = How much did you receive for the grant of a lease?
+foreignReceivedGrantLeaseAmount.heading.agent = How much did your client receive for the grant of a lease?
+foreignReceivedGrantLeaseAmount.checkYourAnswersLabel = How much did you receive for the grant of a lease?
+foreignReceivedGrantLeaseAmount.error.nonNumeric.individual = The amount you received can only include pounds and pence, for example £600 or £600.20
+foreignReceivedGrantLeaseAmount.error.nonNumeric.agent = The amount your client received can only include pounds and pence, for example £600 or £600.20
+foreignReceivedGrantLeaseAmount.error.required.individual = Enter the amount you received for the grant of a lease
+foreignReceivedGrantLeaseAmount.error.required.agent = Enter the amount your client received for the grant of a lease
+foreignReceivedGrantLeaseAmount.error.outOfRange = Enter an amount between £0 and £100,000,000
+foreignReceivedGrantLeaseAmount.change.hidden = How much did you receive for the grant of a lease?
