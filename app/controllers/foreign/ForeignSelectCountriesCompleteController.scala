@@ -23,7 +23,7 @@ import forms.foreign.ForeignSelectCountriesCompleteFormProvider
 import models.JourneyPath.ForeignSelectCountry
 import models.{ForeignProperty, JourneyContext, NormalMode, Rentals}
 import navigation.ForeignPropertyNavigator
-import pages.ForeignSelectCountriesCompletePage
+import pages.foreign.ForeignSelectCountriesCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

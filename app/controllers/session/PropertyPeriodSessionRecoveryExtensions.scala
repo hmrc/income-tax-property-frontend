@@ -22,6 +22,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.{ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage}
 import pages.premiumlease._
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.propertyrentals.expenses._

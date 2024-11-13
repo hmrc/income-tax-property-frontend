@@ -17,13 +17,13 @@
 package pages.foreign
 
 import models.ForeignProperty
-import play.api.libs.json.{Format, Json, JsPath}
-import pages.PageConstants.selectCountry
+import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
+import play.api.libs.json.JsPath
 
 case object AddCountriesRentedPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ selectCountry(ForeignProperty) \ toString
+  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "countriesRentedPropertyYesOrNo"
 }

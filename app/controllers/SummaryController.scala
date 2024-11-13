@@ -20,7 +20,7 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
 import models.requests.OptionalDataRequest
 import pages._
-import pages.foreign.IncomeSourceCountries
+import pages.foreign.{ForeignPropertySummaryPage, IncomeSourceCountries}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}

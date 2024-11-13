@@ -24,7 +24,7 @@ import models.JourneyPath.ForeignPropertyTax
 import javax.inject.Inject
 import models.{Mode, JourneyContext}
 import navigation.Navigator
-import pages.ForeignTaxSectionCompletePage
+import pages.foreign.ForeignTaxSectionCompletePage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
