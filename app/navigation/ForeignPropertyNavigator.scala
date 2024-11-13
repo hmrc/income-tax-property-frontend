@@ -18,6 +18,7 @@ package navigation
 
 import com.google.inject.Singleton
 import controllers.foreign.routes._
+import controllers.foreign.income.routes._
 import controllers.routes.{IndexController, SummaryController}
 import models.{CheckMode, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.foreign._
@@ -98,11 +99,11 @@ class ForeignPropertyNavigator {
     userAnswers.get(ForeignReversePremiumsReceivedPage(countryCode)) match {
       // TODO should go to the other income from property page
       case Some(ReversePremiumsReceived(true, _)) =>
-        controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+        ForeignReversePremiumsReceivedController
           .onPageLoad(taxYear, NormalMode, countryCode)
       // TODO should go to the other income from property page
       case _ =>
-        controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+       ForeignReversePremiumsReceivedController
           .onPageLoad(taxYear, NormalMode, countryCode)
 
     }
