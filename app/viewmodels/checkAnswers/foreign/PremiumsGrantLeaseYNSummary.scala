@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.foreign
 
-import controllers.routes
-import models.{CheckMode, UserAnswers}
+import controllers.foreign.routes
+import models.{UserAnswers, CheckMode}
 import pages.PremiumsGrantLeaseYNPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,8 +26,8 @@ import viewmodels.implicits._
 
 object PremiumsGrantLeaseYNSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PremiumsGrantLeaseYNPage).map {
+  def row(answers: UserAnswers, taxYear: Int, countryCode: String)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(PremiumsGrantLeaseYNPage(countryCode)).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
@@ -36,7 +36,7 @@ object PremiumsGrantLeaseYNSummary  {
           key     = "premiumsGrantLeaseYN.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseYNController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("premiumsGrantLeaseYN.change.hidden"))
           )
         )

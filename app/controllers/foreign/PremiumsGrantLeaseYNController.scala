@@ -27,7 +27,7 @@ import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.PremiumsGrantLeaseYNView
+import views.html.foreign.PremiumsGrantLeaseYNView
 
 import scala.concurrent.{ExecutionContext, Future}
 
