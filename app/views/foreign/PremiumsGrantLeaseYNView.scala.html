@@ -25,7 +25,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, countryCodeSnippet: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("premiumsGrantLeaseYN.title"))) {
 
@@ -42,7 +42,7 @@
 
     <p class="govuk-body">@messages("premiumsGrantLeaseYN.p.3")</p>
 
-    @formHelper(action = PremiumsGrantLeaseYNController.onSubmit(taxYear, countryCodeSnippet, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = PremiumsGrantLeaseYNController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

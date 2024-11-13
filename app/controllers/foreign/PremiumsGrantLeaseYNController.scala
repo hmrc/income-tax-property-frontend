@@ -45,29 +45,29 @@ class PremiumsGrantLeaseYNController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PremiumsGrantLeaseYNPage) match {
+      val preparedForm = request.userAnswers.get(PremiumsGrantLeaseYNPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, taxYear, countryCode, mode, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumsGrantLeaseYNPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumsGrantLeaseYNPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PremiumsGrantLeaseYNPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(PremiumsGrantLeaseYNPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

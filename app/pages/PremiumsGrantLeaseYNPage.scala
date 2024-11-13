@@ -16,11 +16,13 @@
 
 package pages
 
+import pages.PageConstants.incomePath
 import play.api.libs.json.JsPath
+import models.ForeignProperty
 
-case object PremiumsGrantLeaseYNPage extends QuestionPage[Boolean] {
+case class PremiumsGrantLeaseYNPage(countryCode: String) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "premiumsGrantLeaseYN"
+  override def toString: String = "premiumsGrantLeaseYesOrNo"
 }
