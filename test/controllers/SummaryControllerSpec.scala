@@ -24,8 +24,8 @@ import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.Country
-import pages.{ForeignPropertySummaryPage, UKPropertyPage, UKPropertySummaryPage}
+import pages.foreign.{Country, ForeignPropertySummaryPage}
+import pages.{UKPropertyPage, UKPropertySummaryPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.FakeRequest

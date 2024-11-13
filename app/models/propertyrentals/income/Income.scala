@@ -19,15 +19,15 @@ package models.propertyrentals.income
 import play.api.libs.json.{Json, OFormat}
 
 final case class Income(
-                         isNonUKLandlord: Boolean,
-                         propertyRentalIncome: BigDecimal,
-                         premiumForLease: Boolean,
-                         reversePremiumsReceived: ReversePremiumsReceived,
-                         taxDeductedYesNo: Option[DeductingTax],
-                         calculatedFigureYourself: Option[CalculatedFigureYourself],
-                         yearLeaseAmount: Option[BigDecimal],
-                         premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
-                         receivedGrantLeaseAmount: Option[BigDecimal]
+  isNonUKLandlord: Boolean,
+  propertyRentalIncome: BigDecimal,
+  premiumForLease: Boolean,
+  reversePremiumsReceived: ReversePremiumsReceived,
+  taxDeductedYesNo: Option[DeductingTax],
+  calculatedFigureYourself: Option[CalculatedFigureYourself],
+  yearLeaseAmount: Option[BigDecimal],
+  premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
+  receivedGrantLeaseAmount: Option[BigDecimal]
 )
 
 object Income {

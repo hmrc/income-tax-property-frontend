@@ -18,8 +18,7 @@ package forms.rentalsandrentaroom.adjustments
 
 import forms.adjustments.BusinessPremisesRenovationBalancingChargeFormProvider
 import forms.behaviours.BooleanFieldBehaviours
-import models.{BusinessPremisesRenovationAllowanceBalancingCharge, PrivateUseAdjustment, RenovationAllowanceBalancingCharge}
-import models.BusinessPremisesRenovationAllowanceBalancingCharge
+import models._
 import org.scalatest.OptionValues
 import play.api.data.FormError
 

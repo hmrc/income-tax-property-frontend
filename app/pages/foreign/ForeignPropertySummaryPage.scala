@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign
 
 import models.NormalMode
-import pages.foreign.Country
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(taxYear: Int, startItems: Seq[TaskListItem], foreignIncomeCountries: List[Country])

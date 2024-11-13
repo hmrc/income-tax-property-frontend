@@ -16,8 +16,6 @@
 
 package pages.propertyrentals.expenses
 
-import models.PropertyType
-import pages.PageConstants.eSbaPath
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 

@@ -22,7 +22,7 @@ import controllers.foreign.income.routes._
 import controllers.routes.{IndexController, SummaryController}
 import models.{CheckMode, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.foreign._
-import pages.{ForeignSelectCountriesCompletePage, Page}
+import pages.Page
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.mvc.Call
 

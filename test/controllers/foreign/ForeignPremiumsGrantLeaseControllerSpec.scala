@@ -36,7 +36,6 @@ import views.html.foreign.ForeignPremiumsGrantLeaseView
 
 import java.time.LocalDate
 import scala.concurrent.Future
-import scala.util.Try
 
 class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
@@ -53,15 +52,15 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new ForeignPremiumsGrantLeaseFormProvider()
-  val foreignPremiumsGrantLeaseAnswers: ForeignPremiumsGrantLease = ForeignPremiumsGrantLease(
-    foreignPremiumsGrantLeaseYesOrNo = true, Some(123.45))
+  val foreignPremiumsGrantLeaseAnswers: ForeignPremiumsGrantLease =
+    ForeignPremiumsGrantLease(foreignPremiumsGrantLeaseYesOrNo = true, Some(123.45))
 
-  lazy val foreignPremiumsGrantLeaseRoute: String = routes.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignPremiumsGrantLeaseRoute: String =
+    routes.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
     val isAgent: Boolean = individualOrAgent == "agent"
-
 
     s"ForeignPremiumsGrantLease Controller for an $individualOrAgent" - {
 
@@ -77,13 +76,24 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
           val view = application.injector.instanceOf[ForeignPremiumsGrantLeaseView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, periods, premiumAmount, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(
+            form,
+            taxYear,
+            periods,
+            premiumAmount,
+            individualOrAgent,
+            countryCode,
+            NormalMode
+          )(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = emptyUserAnswers.set(ForeignPremiumsGrantLeasePage(countryCode), foreignPremiumsGrantLeaseAnswers).success.value
+        val userAnswers = emptyUserAnswers
+          .set(ForeignPremiumsGrantLeasePage(countryCode), foreignPremiumsGrantLeaseAnswers)
+          .success
+          .value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -95,7 +105,15 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(foreignPremiumsGrantLeaseAnswers), taxYear, periods, premiumAmount, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(
+            form.fill(foreignPremiumsGrantLeaseAnswers),
+            taxYear,
+            periods,
+            premiumAmount,
+            individualOrAgent,
+            countryCode,
+            NormalMode
+          )(request, messages(application)).toString
         }
       }
 
@@ -144,7 +162,15 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, periods, premiumAmount, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(
+            boundForm,
+            taxYear,
+            periods,
+            premiumAmount,
+            individualOrAgent,
+            countryCode,
+            NormalMode
+          )(request, messages(application)).toString
         }
       }
 

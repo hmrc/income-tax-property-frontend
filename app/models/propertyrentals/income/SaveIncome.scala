@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class RentARoomIncome(rentsReceived: BigDecimal)
 object RentARoomIncome {
-  implicit val format = Json.format[RentARoomIncome]
+  implicit val format: OFormat[RentARoomIncome] = Json.format[RentARoomIncome]
 }
 final case class UkOtherPropertyIncome(
   premiumsOfLeaseGrant: Option[BigDecimal],
@@ -33,7 +33,7 @@ final case class UkOtherPropertyIncome(
 )
 
 object UkOtherPropertyIncome {
-  implicit val format = Json.format[UkOtherPropertyIncome]
+  implicit val format: OFormat[UkOtherPropertyIncome] = Json.format[UkOtherPropertyIncome]
 }
 final case class UkRentARoomExpense(amountClaimed: BigDecimal)
 
@@ -66,7 +66,7 @@ final case class SaveIncome(
 )
 
 object SaveIncome {
-  implicit val format = Json.format[SaveIncome]
+  implicit val format: OFormat[SaveIncome] = Json.format[SaveIncome]
 
   def fromPropertyRentalsIncome(propertyRentalsIncome: RentalsIncome): SaveIncome = {
     val ukOtherPropertyIncome = UkOtherPropertyIncome(
