@@ -1877,3 +1877,16 @@ foreignReceivedGrantLeaseAmount.error.required.individual = *Missing Welsh*
 foreignReceivedGrantLeaseAmount.error.required.agent = *Missing Welsh*
 foreignReceivedGrantLeaseAmount.error.outOfRange = *Missing Welsh*
 foreignReceivedGrantLeaseAmount.change.hidden = *Missing Welsh*
+
+premiumsGrantLeaseYN.title = *Missing Welsh*
+premiumsGrantLeaseYN.heading = *Missing Welsh*
+premiumsGrantLeaseYN.p.1 = *Missing Welsh*
+premiumsGrantLeaseYN.bullet1 = *Missing Welsh*
+premiumsGrantLeaseYN.bullet2 = *Missing Welsh*
+premiumsGrantLeaseYN.p.2 = *Missing Welsh*
+premiumsGrantLeaseYN.p.3 = *Missing Welsh*
+premiumsGrantLeaseYN.checkYourAnswersLabel.individual = *Missing Welsh*
+premiumsGrantLeaseYN.checkYourAnswersLabel.agent = *Missing Welsh*
+premiumsGrantLeaseYN.error.required = *Missing Welsh*
+premiumsGrantLeaseYN.change.hidden.individual = *Missing Welsh*
+premiumsGrantLeaseYN.change.hidden.agent = *Missing Welsh*
