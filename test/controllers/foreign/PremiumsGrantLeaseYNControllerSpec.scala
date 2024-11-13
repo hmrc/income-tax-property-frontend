@@ -1,9 +1,27 @@
-package controllers
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.foreign
 
 import base.SpecBase
+import controllers.foreign.routes.PremiumsGrantLeaseYNController
+import controllers.routes
 import forms.PremiumsGrantLeaseYNFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{UserAnswers, NormalMode}
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -13,7 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.PremiumsGrantLeaseYNView
+import views.html.foreign.PremiumsGrantLeaseYNView
 
 import scala.concurrent.Future
 
@@ -23,14 +41,17 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new PremiumsGrantLeaseYNFormProvider()
   val form = formProvider()
+  val countryCode = "gre"
+  val taxYear = 2024
+  val isAgent = "agent"
 
-  lazy val premiumsGrantLeaseYNRoute = routes.PremiumsGrantLeaseYNController.onPageLoad(NormalMode).url
+  lazy val premiumsGrantLeaseYNRoute = PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "PremiumsGrantLeaseYN Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseYNRoute)
@@ -40,15 +61,15 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PremiumsGrantLeaseYNView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PremiumsGrantLeaseYNPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(PremiumsGrantLeaseYNPage(countryCode), true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), true).build()
 
       running(application) {
         val request = FakeRequest(GET, premiumsGrantLeaseYNRoute)
@@ -58,7 +79,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
       }
     }
 
@@ -69,7 +90,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -79,7 +100,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, premiumsGrantLeaseYNRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("premiumsGrantLeaseYesOrNo", "true"))
 
         val result = route(application, request).value
 
@@ -90,7 +111,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
 
       running(application) {
         val request =
@@ -104,7 +125,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
       }
     }
 
