@@ -67,7 +67,14 @@ class PremiumsGrantLeaseYNController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumsGrantLeaseYNPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PremiumsGrantLeaseYNPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          }
+          yield {
+            if (value) {
+              Redirect(navigator.nextPage(PremiumsGrantLeaseYNPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+            } else {
+              Redirect(navigator.nextPage(PremiumsGrantLeaseYNPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+            }
+          }
       )
   }
 }
