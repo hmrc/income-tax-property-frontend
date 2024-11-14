@@ -60,7 +60,7 @@ class ForeignPropertyNavigator {
               case Some(PremiumCalculated(false, _)) =>
                 controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "AUS", NormalMode)
             }
-    case _                                  => _ => _ => _ => controllers.routes.IndexController.onPageLoad
+    case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {

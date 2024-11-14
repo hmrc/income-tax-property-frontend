@@ -1943,7 +1943,15 @@ foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
 
 calculatedPremiumLeaseTaxable.title = *Missing Welsh*
-calculatedPremiumLeaseTaxable.heading = *Missing Welsh*
+calculatedPremiumLeaseTaxable.heading.individual = *Missing Welsh*
+calculatedPremiumLeaseTaxable.heading.agent = *Missing Welsh*
 calculatedPremiumLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
+premiumCalculatedAmount.radio.question.label = *Missing Welsh*
 calculatedPremiumLeaseTaxable.error.required = *Missing Welsh*
+premiumCalculated.amount.error.required = *Missing Welsh*
+premiumCalculated.amount.error.twoDecimalPlaces = *Missing Welsh*
+premiumCalculated.amount.error.nonNumeric = *Missing Welsh*
+premiumCalculated.amount.error.outOfRange = *Missing Welsh*
 calculatedPremiumLeaseTaxable.change.hidden = *Missing Welsh*
+calculatedPremiumLeaseTaxable.input.yesText = *Missing Welsh*
+calculatedPremiumLeaseTaxable.input.noText = *Missing Welsh*
