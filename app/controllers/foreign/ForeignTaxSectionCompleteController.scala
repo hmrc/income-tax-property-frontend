@@ -22,10 +22,10 @@ import forms.ForeignTaxSectionCompleteFormProvider
 import models.JourneyPath.ForeignPropertyTax
 
 import javax.inject.Inject
-import models.{Mode, JourneyContext}
-import navigation.Navigator
+import models.{JourneyContext, Mode}
+import navigation.{ForeignPropertyNavigator, Navigator}
 import pages.foreign.ForeignTaxSectionCompletePage
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignTaxSectionCompleteController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         navigator: ForeignPropertyNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,

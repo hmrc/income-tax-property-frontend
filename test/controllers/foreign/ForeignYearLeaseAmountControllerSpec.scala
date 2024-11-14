@@ -19,7 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import forms.foreign.ForeignYearLeaseAmountFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
@@ -100,7 +100,7 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

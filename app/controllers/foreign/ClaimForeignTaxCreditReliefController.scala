@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.ClaimForeignTaxCreditReliefFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.ClaimForeignTaxCreditReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -31,15 +31,15 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimForeignTaxCreditReliefController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ClaimForeignTaxCreditReliefFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ClaimForeignTaxCreditReliefView
+                                                       override val messagesApi: MessagesApi,
+                                                       sessionRepository: SessionRepository,
+                                                       navigator: ForeignPropertyNavigator,
+                                                       identify: IdentifierAction,
+                                                       getData: DataRetrievalAction,
+                                                       requireData: DataRequiredAction,
+                                                       formProvider: ClaimForeignTaxCreditReliefFormProvider,
+                                                       val controllerComponents: MessagesControllerComponents,
+                                                       view: ClaimForeignTaxCreditReliefView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 

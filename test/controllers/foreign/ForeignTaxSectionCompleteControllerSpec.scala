@@ -21,8 +21,8 @@ import connectors.JourneyAnswersConnector
 import forms.ForeignTaxSectionCompleteFormProvider
 import controllers.foreign.routes.ForeignTaxSectionCompleteController
 import models.JourneyPath.ForeignPropertyTax
-import models.{User, UserAnswers, NormalMode, JourneyContext}
-import navigation.{Navigator, FakeNavigator}
+import models.{JourneyContext, NormalMode, User, UserAnswers}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{doReturn, when}
@@ -42,7 +42,7 @@ import scala.concurrent.Future
 
 class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  def postOnwardRoute = Call("POST", "/income-tax-property/2024/foreign-property/foreign-tax/foreign-tax-section-complete")
+  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ForeignTaxSectionCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
@@ -127,7 +127,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(postOnwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
@@ -141,7 +141,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual postOnwardRoute.url
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 

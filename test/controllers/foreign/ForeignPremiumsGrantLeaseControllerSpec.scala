@@ -19,7 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import forms.foreign.ForeignPremiumsGrantLeaseFormProvider
 import models.{ForeignPremiumsGrantLease, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
@@ -39,7 +39,7 @@ import scala.concurrent.Future
 
 class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
+  def onwardRoute: Call = Call("GET", "/foo")
   val countryCode: String = "USA"
   val periods: Int = 3
   val premiumAmount: BigDecimal = 2345
@@ -126,7 +126,7 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

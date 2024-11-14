@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreign.ClaimForeignTaxCreditReliefFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
@@ -73,7 +73,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimForeignTaxCreditReliefPage( countryCode), true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimForeignTaxCreditReliefPage(countryCode), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -98,7 +98,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()
@@ -164,7 +164,6 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
       }
     }
   }
-
 
 
 }

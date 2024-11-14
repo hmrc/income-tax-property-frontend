@@ -1726,6 +1726,7 @@ foreign.summary.title = *Missing Welsh*
 foreign.selectCountry = *Missing Welsh*
 foreign.heading = *Missing Welsh*
 foreign.tax = *Missing Welsh*
+foreign.income = *Missing Welsh*
 
 foreignPropertyDetails.title = *Missing Welsh*
 foreignPropertyDetails.para1 = *Missing Welsh*
@@ -1911,3 +1912,16 @@ foreignPremiumsGrantLease.error.amount.nonNumeric.individual = *Missing Welsh*
 foreignPremiumsGrantLease.error.amount.nonNumeric.agent = *Missing Welsh*
 foreignPremiumsGrantLease.error.outOfRange = *Missing Welsh*
 foreignPremiumsGrantLease.change.hidden = *Missing Welsh*
+
+foreignPropertyIncomeStart.title.individual = *Missing Welsh*
+foreignPropertyIncomeStart.title.agent = *Missing Welsh*
+foreignPropertyIncomeStart.heading.individual = *Missing Welsh*
+foreignPropertyIncomeStart.heading.agent = *Missing Welsh*
+foreignPropertyIncomeStart.p1.individual = *Missing Welsh*
+foreignPropertyIncomeStart.p1.agent = *Missing Welsh*
+foreignPropertyIncomeStart.l1 = *Missing Welsh*
+foreignPropertyIncomeStart.l2 = *Missing Welsh*
+foreignPropertyIncomeStart.l3 = *Missing Welsh*
+foreignPropertyIncomeStart.l4 = *Missing Welsh*
+foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
+foreignPropertyIncomeStart.p2.agent = *Missing Welsh*

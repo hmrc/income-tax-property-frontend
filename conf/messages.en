@@ -1752,7 +1752,7 @@ foreign.summary.title = Foreign property
 foreign.selectCountry = Select country
 foreign.heading = {0} all properties
 foreign.tax = Foreign tax
-
+foreign.income = Income
 
 foreignPropertyDetails.title = Foreign property details
 foreignPropertyDetails.para1 = You previously told us:
@@ -1939,3 +1939,17 @@ foreignPremiumsGrantLease.error.amount.nonNumeric.individual = The amount you’
 foreignPremiumsGrantLease.error.amount.nonNumeric.agent = The amount your client calculated can only include pounds and pence, for example £600 or £600.20
 foreignPremiumsGrantLease.error.outOfRange = Enter an amount between £{0} and £{1}
 foreignPremiumsGrantLease.change.hidden = Premiums for the grant of a lease
+
+foreignPropertyIncomeStart.title.individual = Income from your property in {0}
+foreignPropertyIncomeStart.title.agent = Income from your client’s property in {0}
+foreignPropertyIncomeStart.heading.individual = Income from your property in {0}
+foreignPropertyIncomeStart.heading.agent = Income from your client’s property in {0}
+foreignPropertyIncomeStart.p1.individual = In this section you’ll need to have these figures for all of your properties:
+foreignPropertyIncomeStart.p1.agent = In this section you’ll need to have these figures for all of your client’s properties:
+foreignPropertyIncomeStart.l1 = rental income
+foreignPropertyIncomeStart.l2 = premiums for the grant of a lease
+foreignPropertyIncomeStart.l3 = reverse premiums
+foreignPropertyIncomeStart.l4 = other income from property
+foreignPropertyIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your share of the income.
+foreignPropertyIncomeStart.p2.agent = If your client’s properties are jointly owned, only tell us about their share of the income.
+
