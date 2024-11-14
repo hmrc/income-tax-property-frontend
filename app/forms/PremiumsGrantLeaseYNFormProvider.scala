@@ -23,8 +23,8 @@ import play.api.data.Form
 
 class PremiumsGrantLeaseYNFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "premiumsGrantLeaseYesOrNo" -> boolean("premiumsGrantLeaseYN.error.required")
+      "premiumsGrantLeaseYesOrNo" -> boolean(s"premiumsGrantLeaseYN.error.required.$individualOrAgent")
     )
 }

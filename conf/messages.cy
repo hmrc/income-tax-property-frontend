@@ -1889,7 +1889,8 @@ premiumsGrantLeaseYN.p.2 = *Missing Welsh*
 premiumsGrantLeaseYN.p.3 = *Missing Welsh*
 premiumsGrantLeaseYN.checkYourAnswersLabel.individual = *Missing Welsh*
 premiumsGrantLeaseYN.checkYourAnswersLabel.agent = *Missing Welsh*
-premiumsGrantLeaseYN.error.required = *Missing Welsh*
+premiumsGrantLeaseYN.error.required.individual = *Missing Welsh*
+premiumsGrantLeaseYN.error.required.agent = *Missing Welsh*
 premiumsGrantLeaseYN.change.hidden.individual = *Missing Welsh*
 premiumsGrantLeaseYN.change.hidden.agent = *Missing Welsh*
 

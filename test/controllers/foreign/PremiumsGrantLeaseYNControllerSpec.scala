@@ -40,7 +40,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PremiumsGrantLeaseYNFormProvider()
-  val form = formProvider()
+  val form = formProvider("agent")
   val countryCode = "gre"
   val taxYear = 2024
   val isAgent = "agent"

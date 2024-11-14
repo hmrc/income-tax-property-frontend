@@ -1917,7 +1917,8 @@ premiumsGrantLeaseYN.p.2 = If the lease is up to 50 years, the premium is treate
 premiumsGrantLeaseYN.p.3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
 premiumsGrantLeaseYN.checkYourAnswersLabel.individual = Did you receive a premium for granting a lease?
 premiumsGrantLeaseYN.checkYourAnswersLabel.agent = Did your client receive a premium for granting a lease?
-premiumsGrantLeaseYN.error.required = Select yes if you received a premium for granting a lease
+premiumsGrantLeaseYN.error.required.individual = Select yes if you received a premium for granting a lease
+premiumsGrantLeaseYN.error.required.agent = Select yes if your client received a premium for granting a lease
 premiumsGrantLeaseYN.change.hidden.individual = Did you receive a premium for granting a lease?
 premiumsGrantLeaseYN.change.hidden.agent = Did your client receive a premium for granting a lease?
 

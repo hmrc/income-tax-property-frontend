@@ -22,10 +22,10 @@ import play.api.data.FormError
 
 class PremiumsGrantLeaseYNFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "premiumsGrantLeaseYN.error.required"
+  val requiredKey = "premiumsGrantLeaseYN.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new PremiumsGrantLeaseYNFormProvider()()
+  val form = new PremiumsGrantLeaseYNFormProvider()("individual")
 
   ".premiumsGrantLeaseYesOrNo" - {
 
