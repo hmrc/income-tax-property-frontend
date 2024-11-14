@@ -18,13 +18,15 @@ package navigation
 
 import com.google.inject.Singleton
 import controllers.foreign.income.routes._
+import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
 import controllers.foreign.routes._
 import controllers.routes.{IndexController, SummaryController}
 import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
-import models.{CheckMode, ForeignIncomeTax, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
+import models.{CheckMode, ForeignIncomeTax, PremiumCalculated, Rentals, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.Page
 import pages.foreign._
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
+import pages.premiumlease.PremiumForLeasePage
 import play.api.mvc.Call
 
 @Singleton
@@ -48,7 +50,17 @@ class ForeignPropertyNavigator {
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
       taxYear => _ => _ => ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignTaxSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case _                             => _ => _ => _ => controllers.routes.IndexController.onPageLoad
+    case CalculatedPremiumLeaseTaxablePage =>
+      taxYear =>
+        _ =>
+          userAnswers =>
+            userAnswers.get(CalculatedPremiumLeaseTaxablePage) match {
+              case Some(PremiumCalculated(true, _)) =>
+                OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
+              case Some(PremiumCalculated(false, _)) =>
+                controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "AUS", NormalMode)
+            }
+    case _                                  => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {

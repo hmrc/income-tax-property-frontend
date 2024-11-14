@@ -1941,3 +1941,9 @@ foreignPropertyIncomeStart.l3 = *Missing Welsh*
 foreignPropertyIncomeStart.l4 = *Missing Welsh*
 foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
+
+calculatedPremiumLeaseTaxable.title = *Missing Welsh*
+calculatedPremiumLeaseTaxable.heading = *Missing Welsh*
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
+calculatedPremiumLeaseTaxable.error.required = *Missing Welsh*
+calculatedPremiumLeaseTaxable.change.hidden = *Missing Welsh*

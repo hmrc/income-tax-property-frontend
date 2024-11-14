@@ -19,7 +19,7 @@ package controllers.premiumlease
 import controllers.actions._
 import forms.premiumlease.PremiumForLeaseFormProvider
 import models.{Mode, PropertyType}
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.premiumlease.PremiumForLeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PremiumForLeaseController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -71,7 +71,7 @@ class PremiumForLeaseController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(PremiumForLeasePage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator
+              foreignPropertyNavigator
                 .nextPage(PremiumForLeasePage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
