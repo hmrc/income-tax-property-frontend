@@ -14,7 +14,8 @@
  * limitations under the License.
  *@
 
-@import pages.{ForeignPropertySummaryPage, UKPropertySummaryPage}
+@import pages.UKPropertySummaryPage
+@import pages.foreign.ForeignPropertySummaryPage
 @import viewmodels.summary.TaskListItem
 @import viewmodels.summary.TaskListTag.CanNotStart
 
@@ -91,10 +92,18 @@
         @taskListSection(ukproperty.combinedItems)
     }
 
-    @if(ukproperty.startItems.nonEmpty) {
+    @if(foreignProperty.startItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
         @taskListSection(foreignProperty.startItems)
     }
+
+    @if(foreignProperty.foreignIncomeCountries.nonEmpty) {
+    @for(country <- foreignProperty.foreignIncomeCountries){
+        <h2 class="govuk-heading-m">@messages(s"foreign.heading", country.name) </h2>
+            @taskListSection(ForeignPropertySummaryPage.foreignIncomeTax(foreignProperty.taxYear,country.code))
+        }
+
+}
 }
 
 @{

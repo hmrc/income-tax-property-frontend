@@ -18,7 +18,7 @@ package pages.enhancedstructuresbuildingallowance
 
 import models.PropertyType
 import pages.PageConstants.eSbaPath
-import pages.{PageConstants, QuestionPage}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case class ClaimEsbaPage(propertyType: PropertyType) extends QuestionPage[Boolean] {

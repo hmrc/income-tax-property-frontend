@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign
 
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object ForeignSelectCountriesCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.foreignPropertySectionFinished \ toString
 
-  override def toString: String = "foreignSelectCountriesComplete"
+  override def toString: String = "foreignPropertySelectCountryComplete"
 }

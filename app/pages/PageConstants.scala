@@ -30,10 +30,10 @@ object PageConstants {
 
   val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
     propertyType match {
-      case Rentals => s"rentals$suffix"
-      case RentARoom => s"rentARoom$suffix"
+      case Rentals          => s"rentals$suffix"
+      case RentARoom        => s"rentARoom$suffix"
       case RentalsRentARoom => s"rentalsRentARoom$suffix"
-      case ForeignProperty => s"foreignProperty$suffix"
+      case ForeignProperty  => s"foreignProperty$suffix"
     }
 
   val countriesRentedPropertyGroup: String = "countriesRentedPropertyGroup"
@@ -53,14 +53,14 @@ object PageConstants {
 
   val eSbaPath: PropertyType => String = labelForPropertyType(_, "ESBA")
 
-  val foreignTaxPath: PropertyType => String = labelForPropertyType(_, "FT")
-
-  val selectCountryPath: PropertyType => String = labelForPropertyType(_, "SC")
-
   val propertyRentalSectionFinished: String = "propertyRentalSectionFinished"
 
   val rentARoomSectionFinished: String = "rentARoomSectionFinished"
 
-  val selectCountry: PropertyType => String = labelForPropertyType(_, "SelectCountry")
+  val selectCountryPath: PropertyType => String = labelForPropertyType(_, "SelectCountry")
 
+  val foreignTaxPath: PropertyType => String = labelForPropertyType(_, "ForeignTax")
+
+  val foreignPropertySectionFinished: String = "foreignPropertySectionFinished"
+  
 }

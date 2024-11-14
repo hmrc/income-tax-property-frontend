@@ -17,13 +17,13 @@
 package pages.foreign
 
 import models.ForeignProperty
-import pages.PageConstants.foreignTaxPath
+import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ toString
+  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
 }

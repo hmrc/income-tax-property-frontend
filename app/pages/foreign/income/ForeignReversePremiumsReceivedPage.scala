@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign.income
 
+import models.{ForeignProperty, ReversePremiumsReceived}
+import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ForeignTaxSectionCompletePage extends QuestionPage[Boolean] {
+case class ForeignReversePremiumsReceivedPage(countryCode:String)
+extends QuestionPage[ReversePremiumsReceived] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignTaxSectionComplete"
+  override def toString: String = "foreignReversePremiumsReceived"
 }

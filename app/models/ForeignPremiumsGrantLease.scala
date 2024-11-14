@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.expenses
+package models
 
-import pages.{PageConstants, QuestionPage}
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object ExpensesSectionFinishedPage extends QuestionPage[Boolean] {
+case class ForeignPremiumsGrantLease(foreignPremiumsGrantLeaseYesOrNo:Boolean,
+                                     foreignPremiumsGrantLease:Option[BigDecimal]) {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+}
 
-  override def toString: String = "expensesSectionFinishedYesOrNo"
+object ForeignPremiumsGrantLease {
+  implicit val format: Format[ForeignPremiumsGrantLease] = Json.format
+
+  def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal =
+    (premiumAmount * (BigDecimal(50 - minusOne(periods)) / 50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+
+  def minusOne(periods: Int): Int = periods - 1
 }

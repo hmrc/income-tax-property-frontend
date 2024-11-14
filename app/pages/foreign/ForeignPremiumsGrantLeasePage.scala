@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.expenses
+package pages.foreign
 
-import pages.{PageConstants, QuestionPage}
+import models.{ForeignPremiumsGrantLease, ForeignProperty}
+import pages.PageConstants.incomePath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ExpensesSectionFinishedPage extends QuestionPage[Boolean] {
+case class ForeignPremiumsGrantLeasePage(countryCode: String) extends QuestionPage[ForeignPremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+  override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "expensesSectionFinishedYesOrNo"
+  override def toString: String = "foreignPremiumsGrantLease"
+
 }

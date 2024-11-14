@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages.propertyrentals.expenses
+package pages.foreign
 
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object ExpensesSectionFinishedPage extends QuestionPage[Boolean] {
+case object ForeignTaxSectionCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.propertyRentalSectionFinished \ toString
+  override def path: JsPath = JsPath \ PageConstants.foreignPropertySectionFinished \ toString
 
-  override def toString: String = "expensesSectionFinishedYesOrNo"
+  override def toString: String = "foreignTaxSectionComplete"
 }
