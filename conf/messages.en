@@ -1908,6 +1908,20 @@ foreignReceivedGrantLeaseAmount.error.required.agent = Enter the amount your cli
 foreignReceivedGrantLeaseAmount.error.outOfRange = Enter an amount between £0 and £100,000,000
 foreignReceivedGrantLeaseAmount.change.hidden = How much did you receive for the grant of a lease?
 
+premiumsGrantLeaseYN.title = Premiums for the grant of a lease
+premiumsGrantLeaseYN.heading = Premiums for the grant of a lease
+premiumsGrantLeaseYN.p.1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
+premiumsGrantLeaseYN.bullet1 = a premium or lump sum
+premiumsGrantLeaseYN.bullet2 = regular rent payments
+premiumsGrantLeaseYN.p.2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
+premiumsGrantLeaseYN.p.3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
+premiumsGrantLeaseYN.checkYourAnswersLabel.individual = Did you receive a premium for granting a lease?
+premiumsGrantLeaseYN.checkYourAnswersLabel.agent = Did your client receive a premium for granting a lease?
+premiumsGrantLeaseYN.error.required.individual = Select yes if you received a premium for granting a lease
+premiumsGrantLeaseYN.error.required.agent = Select yes if your client received a premium for granting a lease
+premiumsGrantLeaseYN.change.hidden.individual = Did you receive a premium for granting a lease?
+premiumsGrantLeaseYN.change.hidden.agent = Did your client receive a premium for granting a lease?
+
 foreignPremiumsGrantLease.title = Premiums for the grant of a lease
 foreignPremiumsGrantLease.heading = Premiums for the grant of a lease
 foreignPremiumsGrantLease.calculation.subHeading = Your calculation:
