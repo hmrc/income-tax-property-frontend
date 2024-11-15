@@ -19,7 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import forms.foreign.ForeignIncomeTaxFormProvider
 import models.{ForeignIncomeTax, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
@@ -38,7 +38,7 @@ import scala.concurrent.Future
 
 class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear = 2024
@@ -98,7 +98,7 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

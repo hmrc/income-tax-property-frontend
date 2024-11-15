@@ -20,7 +20,7 @@ import com.google.inject.Singleton
 import controllers.foreign.routes._
 import controllers.foreign.income.routes._
 import controllers.routes.{IndexController, SummaryController}
-import models.{CheckMode, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
+import models.{CheckMode, ForeignIncomeTax, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.foreign._
 import pages.Page
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
@@ -49,6 +49,11 @@ class ForeignPropertyNavigator {
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case ForeignSelectCountriesCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    case ForeignIncomeTaxPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers)
+    case ClaimForeignTaxCreditReliefPage(countryCode) =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignTaxSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case _                                  => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -71,6 +76,10 @@ class ForeignPropertyNavigator {
             }
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    case ForeignIncomeTaxPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers, CheckMode)
+    case ClaimForeignTaxCreditReliefPage(countryCode) =>
+      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -106,5 +115,18 @@ class ForeignPropertyNavigator {
        ForeignReversePremiumsReceivedController
           .onPageLoad(taxYear, NormalMode, countryCode)
 
+    }
+
+  private def foreignIncomeTaxNavigation(
+                                          taxYear: Int,
+                                          countryCode: String,
+                                          userAnswers: UserAnswers,
+                                          mode: Mode = NormalMode
+                                        ): Call =
+    userAnswers.get(ForeignIncomeTaxPage(countryCode)) match {
+      case Some(ForeignIncomeTax(true, _)) =>
+        controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, mode)
+      case _ =>
+        controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onSubmit(taxYear, countryCode)
     }
 }

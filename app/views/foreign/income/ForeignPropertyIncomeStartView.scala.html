@@ -1,0 +1,45 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import pages.foreign.Country
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(taxYear: Int, individualOrAgent: String, country: Country)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages(s"foreignPropertyIncomeStart.title.$individualOrAgent", country.name))) {
+
+    <h1 class="govuk-heading-l">@messages(s"foreignPropertyIncomeStart.heading.$individualOrAgent", country.name)</h1>
+    <p class="govuk-body">@messages(s"foreignPropertyIncomeStart.p1.$individualOrAgent")</p>
+    <ul id="list" class="govuk-list govuk-list--bullet">
+        <li>@messages("foreignPropertyIncomeStart.l1")</li>
+        <li>@messages("foreignPropertyIncomeStart.l2")</li>
+        <li>@messages("foreignPropertyIncomeStart.l3")</li>
+        <li>@messages("foreignPropertyIncomeStart.l4")</li>
+    </ul>
+    <p class="govuk-body">@messages(s"foreignPropertyIncomeStart.p2.$individualOrAgent")</p>
+
+    <p class="govuk-body">
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+        .asLink(controllers.routes.IndexController.onPageLoad.url)
+        .withId("continue")
+    )
+    </p>
+}

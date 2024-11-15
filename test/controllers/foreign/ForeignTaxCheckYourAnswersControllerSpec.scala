@@ -31,7 +31,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute: Call = controllers.routes.IndexController.onPageLoad
+  def onwardRoute = controllers.foreign.routes.ForeignTaxSectionCompleteController.onPageLoad(taxYear)
   val foreignIncomeTaxAmount: BigDecimal = 234
 
   "Check Your Answers Controller" - {

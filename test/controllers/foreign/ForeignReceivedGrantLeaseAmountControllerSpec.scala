@@ -19,7 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import forms.foreign.ForeignReceivedGrantLeaseAmountFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
@@ -43,7 +43,7 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
   val taxYear: Int = LocalDate.now.getYear
   val countryCode = "USA"
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: BigDecimal = 0
 
@@ -101,7 +101,7 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

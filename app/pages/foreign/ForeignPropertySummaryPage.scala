@@ -34,15 +34,19 @@ object ForeignPropertySummaryPage {
         "foreign_property_select_country"
       )
     )
-  def foreignIncomeTax(taxYear: Int, countryCode: String): Seq[TaskListItem] =
+  def foreignPropertyItems(taxYear: Int, countryCode: String): Seq[TaskListItem] =
     Seq(
       TaskListItem(
         "foreign.tax",
         controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
         TaskListTag.NotStarted,
         "foreign_property_income_tax"
+      ),
+      TaskListItem(
+        "foreign.income",
+        controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+        TaskListTag.NotStarted,
+        s"foreign_property_income_$countryCode"
       )
     )
-
-
 }
