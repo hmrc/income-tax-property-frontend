@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
+@import viewmodels.LegendSize.Large
 
 @this(
     layout: templates.Layout,
@@ -36,25 +37,23 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")</h1>
-
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("calculatedPremiumLeaseTaxableYesOrNo"),
-                legend = Legend(),
+                legend = LegendViewModel(messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")).asPageHeading(Large),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("premiumCalculated"),
+                    field = form("calculatedPremiumLeaseTaxableYesOrNo"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(
                                 field = form("premiumCalculatedAmount"),
                                 label = LabelViewModel(messages("premiumCalculatedAmount.radio.question.label"))
                             )
-                            .asNumeric()
                             .withWidth(Fixed10)
                             .withPrefix(PrefixOrSuffix(content = Text("£")))
                         )
                     ),
+                    yesText = messages("calculatedPremiumLeaseTaxable.input.yesText"),
                     noText = messages("calculatedPremiumLeaseTaxable.input.noText")
                 )
             )
