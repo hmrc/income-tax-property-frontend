@@ -42,8 +42,10 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
   val formProvider = new CalculatedPremiumLeaseTaxableFormProvider()
   val form: Form[PremiumCalculated] = formProvider()
   val taxYear: Int = 2024
+  val countryCode: String = "AUS"
 
-  lazy val calculatedPremiumLeaseTaxableRoute: String = controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, NormalMode).url
+  lazy val calculatedPremiumLeaseTaxableRoute: String =
+    controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "CalculatedPremiumLeaseTaxable Controller" - {
 
@@ -59,7 +61,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
         val view = application.injector.instanceOf[CalculatedPremiumLeaseTaxableView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode, "individual")(
           request,
           messages(application)
         ).toString
@@ -73,7 +75,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
         Some(amount)
       )
       val userAnswers = UserAnswers(userAnswersId).set(
-        CalculatedPremiumLeaseTaxablePage,
+        CalculatedPremiumLeaseTaxablePage(countryCode),
         formAnswers
       ).success.value
 
@@ -87,7 +89,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(formAnswers), taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(form.fill(formAnswers), taxYear, countryCode ,NormalMode, "individual")(
           request,
           messages(application)
         ).toString
@@ -136,7 +138,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, "individual")(
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode, "individual")(
           request,
           messages(application)
         ).toString

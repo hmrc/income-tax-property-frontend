@@ -45,31 +45,31 @@ class CalculatedPremiumLeaseTaxableController @Inject()(
 
   val form: Form[PremiumCalculated] = formProvider()
 
-  def onPageLoad(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear:Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(CalculatedPremiumLeaseTaxablePage) match {
+      val preparedForm = request.userAnswers.get(CalculatedPremiumLeaseTaxablePage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+      Ok(view(preparedForm, taxYear, countryCode, mode, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedPremiumLeaseTaxablePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedPremiumLeaseTaxablePage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(
             foreignPropertyNavigator.nextPage(
-              CalculatedPremiumLeaseTaxablePage,
+              CalculatedPremiumLeaseTaxablePage(countryCode),
               taxYear,
               mode,
               request.userAnswers,

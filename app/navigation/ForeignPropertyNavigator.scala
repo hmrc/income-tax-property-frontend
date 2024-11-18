@@ -50,15 +50,15 @@ class ForeignPropertyNavigator {
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
       taxYear => _ => _ => ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignTaxSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case CalculatedPremiumLeaseTaxablePage =>
+    case CalculatedPremiumLeaseTaxablePage(countryCode) =>
       taxYear =>
         _ =>
           userAnswers =>
-            userAnswers.get(CalculatedPremiumLeaseTaxablePage) match {
+            userAnswers.get(CalculatedPremiumLeaseTaxablePage(countryCode)) match {
               case Some(PremiumCalculated(true, _)) =>
                 OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
               case Some(PremiumCalculated(false, _)) =>
-                controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "AUS", NormalMode)
+                controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
             }
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }

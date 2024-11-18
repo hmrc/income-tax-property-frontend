@@ -27,14 +27,15 @@ import viewmodels.implicits._
 
 object CalculatedPremiumLeaseTaxableSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CalculatedPremiumLeaseTaxablePage).flatMap {
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap {
       case PremiumCalculated(true, amount) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change",
+              controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedPremiumLeaseTaxable.change.hidden"))
           )))
       case PremiumCalculated(false, _) =>
@@ -42,7 +43,8 @@ object CalculatedPremiumLeaseTaxableSummary  {
           key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change",
+              controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedPremiumLeaseTaxable.change.hidden"))
           )
         ))
