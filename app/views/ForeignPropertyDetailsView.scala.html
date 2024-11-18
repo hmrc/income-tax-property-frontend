@@ -16,10 +16,12 @@
 
 @import controllers.foreign.routes
 @import viewmodels.PropertyDetailsPage
+@import models.NormalMode
+
 
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+layout: templates.Layout,
+govukButton: GovukButton
 )
 
 
@@ -27,28 +29,30 @@
 
 @layout(pageTitle = titleNoForm(messages("foreignPropertyDetails.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("foreignPropertyDetails.title")</h1>
+<h1 class="govuk-heading-l">@messages("foreignPropertyDetails.title")</h1>
 
-    <p class="govuk-body">@messages("foreignPropertyDetails.para1")</p>
+<p class="govuk-body">@messages("foreignPropertyDetails.para1")</p>
 
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages(s"foreignPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
-        <li>@messages(s"foreignPropertyDetails.bullet2.${page.individualOrAgent}") @messages(s"${page.cashOrAccrualsMessageKey}")</li>
-    </ul>
+<ul class="govuk-list govuk-list--bullet">
+    <li>@messages(s"foreignPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
+    <li>@messages(s"foreignPropertyDetails.bullet2.${page.individualOrAgent}")
+        @messages(s"${page.cashOrAccrualsMessageKey}")
+    </li>
+</ul>
 
-    <p class="govuk-body">@messages("foreignPropertyDetails.para2.part1")
-        <a href="#" class="govuk-link">@messages("foreignPropertyDetails.para2.part2")</a>
-        @messages("foreignPropertyDetails.para2.part3")</p>
+<p class="govuk-body">@messages("foreignPropertyDetails.para2.part1")
+    <a href="#" class="govuk-link">@messages("foreignPropertyDetails.para2.part2")</a>
+    @messages("foreignPropertyDetails.para2.part3")</p>
 
-    <p class="govuk-body">
+<p class="govuk-body">
     @govukButton(
-        ButtonViewModel(messages("foreignPropertyDetails.button"))
-        .asLink(routes.TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
-        .withId("continue")
+    ButtonViewModel(messages("foreignPropertyDetails.button"))
+    .asLink(routes.TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
+    .withId("continue")
     )
-    </p>
+</p>
 }
 
 @{
-    // $COVERAGE-OFF$
+// $COVERAGE-OFF$
 }

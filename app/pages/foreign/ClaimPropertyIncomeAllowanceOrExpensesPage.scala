@@ -25,5 +25,5 @@ case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Bool
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
-  override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
+  override def toString: String = "claimPropertyIncomeAllowance"
 }

@@ -28,7 +28,8 @@ object ClaimPropertyIncomeAllowanceOrExpensesSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ClaimPropertyIncomeAllowanceOrExpensesPage).map { answer =>
-      val value = if (answer) "site.yes" else "site.no"
+      val value =
+        if (answer) "claimPropertyIncomeAllowanceOrExpenses.PIA" else "claimPropertyIncomeAllowanceOrExpenses.expenses"
 
       SummaryListRowViewModel(
         key = KeyViewModel("claimPropertyIncomeAllowanceOrExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),

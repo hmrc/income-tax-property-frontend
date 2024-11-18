@@ -16,15 +16,35 @@
 
 package pages.foreign
 
-import models.{ForeignProperty, ForeignTotalIncome}
+import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
+import models.{ForeignProperty, ForeignTotalIncome, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object TotalIncomePage extends QuestionPage[ForeignTotalIncome] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "totalIncome"
+
+  override def cleanup(maybeTotalIncome: Option[ForeignTotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
+    val updatedAnswers = maybeTotalIncome
+      .filter(income => income == OneThousandAndMore)
+      .map(_ => userAnswers.remove(IncomeSourceCountries))
+      .map(_ => userAnswers.remove(PropertyIncomeReportPage))
+      .getOrElse(super.cleanup(maybeTotalIncome, userAnswers))
+
+    maybeTotalIncome match {
+      case Some(LessThanOneThousand) =>
+        for {
+          answers <- updatedAnswers
+        } yield answers
+
+      case _ => super.cleanup(maybeTotalIncome, userAnswers)
+    }
+  }
 
 }

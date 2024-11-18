@@ -1879,6 +1879,8 @@ claimPropertyIncomeAllowanceOrExpenses.content.l1 = deduct any expenses
 claimPropertyIncomeAllowanceOrExpenses.content.l2 = claim any other allowances
 claimPropertyIncomeAllowanceOrExpenses.content.l3 = rents, rates and insurance
 claimPropertyIncomeAllowanceOrExpenses.content.l4 = property repairs and maintenance
+claimPropertyIncomeAllowanceOrExpenses.PIA = Property income allowance
+claimPropertyIncomeAllowanceOrExpenses.expenses = Expenses
 
 doYouWantToRemoveCountry.title = Do you want to remove country?
 doYouWantToRemoveCountry.heading = Do you want to remove

@@ -19,25 +19,25 @@ package viewmodels.checkAnswers
 import models.{CheckMode, UserAnswers}
 import pages.foreign.PropertyIncomeReportPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object PropertyIncomeReportSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
     answers.get(PropertyIncomeReportPage).map { answer =>
-      val value = ValueViewModel(
-        HtmlContent(
-          HtmlFormat.escape(messages(s"propertyIncomeReport.$answer"))
-        )
-      )
-
+      val value = if (answer) {
+        s"propertyIncomeReport.reportPropertyIncome.$individualOrAgent"
+      } else {
+        s"propertyIncomeReport.doNotReportPropertyIncome.$individualOrAgent"
+      }
       SummaryListRowViewModel(
-        key = "propertyIncomeReport.checkYourAnswersLabel",
-        value = value,
+        key = KeyViewModel("propertyIncomeReport.checkYourAnswersLabel") withCssClass keyCssClass,
+        value = ValueViewModel(value).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

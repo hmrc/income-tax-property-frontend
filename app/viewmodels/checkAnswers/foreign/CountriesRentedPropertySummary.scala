@@ -41,7 +41,7 @@ object CountriesRentedPropertySummary {
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
           ActionItemViewModel(
             "site.remove",
-            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
+            controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index,CheckMode).url
           )
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
         ),
@@ -54,7 +54,7 @@ object CountriesRentedPropertySummary {
       val value: Seq[String] = country.toList.map { c: Country =>
         s"${c.name}"
       }
-      val countryList: String = value.mkString(" ")
+      val countryList: String = value.mkString("<br>")
       SummaryListRowViewModel(
         key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(HtmlContent(countryList)).withCssClass(valueCssClass),

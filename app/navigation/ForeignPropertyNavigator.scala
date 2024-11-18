@@ -17,22 +17,25 @@
 package navigation
 
 import com.google.inject.Singleton
-import controllers.foreign.routes._
 import controllers.foreign.income.routes._
+import controllers.foreign.routes._
 import controllers.routes.{IndexController, SummaryController}
+import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models.{CheckMode, ForeignIncomeTax, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
-import pages.foreign._
 import pages.Page
+import pages.foreign._
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.mvc.Call
 
 @Singleton
 class ForeignPropertyNavigator {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
-    case pages.foreign.TotalIncomePage =>
-      taxYear => _ => _ => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+    case TotalIncomePage =>
+      taxYear => _ => userAnswers => foreignTotalIncomeNavigationNormalMode(taxYear, userAnswers)
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+    case PropertyIncomeReportPage =>
+      taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers)
     case ForeignReversePremiumsReceivedPage(countryCode) =>
       taxYear => _ => userAnswers => foreignReversePremiumReceivedNavigation(taxYear, countryCode, userAnswers)
     case AddCountriesRentedPage =>
@@ -52,16 +55,21 @@ class ForeignPropertyNavigator {
     case ForeignIncomeTaxPage(countryCode) =>
       taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers)
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
-      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      taxYear =>
+        _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignTaxSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
-    case _                                  => _ => _ => _ => controllers.routes.IndexController.onPageLoad
+    case _                             => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
-    case pages.foreign.TotalIncomePage =>
-      taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    case TotalIncomePage =>
+      taxYear => previousAnswers => userAnswers => totalIncomeCheckModeNavigation(taxYear, previousAnswers, userAnswers)
     case SelectIncomeCountryPage(_) =>
-      taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+    case DoYouWantToRemoveCountryPage =>
+      taxYear => _ => userAnswers => removeCountryNavigation(taxYear, userAnswers)
+    case PropertyIncomeReportPage =>
+      taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers)
     case AddCountriesRentedPage =>
       taxYear =>
         _ =>
@@ -79,7 +87,8 @@ class ForeignPropertyNavigator {
     case ForeignIncomeTaxPage(countryCode) =>
       taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers, CheckMode)
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
-      taxYear => _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      taxYear =>
+        _ => _ => controllers.foreign.routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -100,6 +109,30 @@ class ForeignPropertyNavigator {
       case _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
     }
 
+  private def foreignTotalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(TotalIncomePage) match {
+      case Some(LessThanOneThousand) => PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
+      case _                         => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+    }
+
+  private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(PropertyIncomeReportPage) match {
+      case Some(true) => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      case _          => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def removeCountryNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
+
+    val countries = userAnswers.get(IncomeSourceCountries).toSeq.flatten
+    userAnswers.get(DoYouWantToRemoveCountryPage) match {
+      case Some(true) if countries.isEmpty => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      case Some(true)                      => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+      case Some(false)                     => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+      case None                            => IndexController.onPageLoad
+    }
+
+  }
+
   private def foreignReversePremiumReceivedNavigation(
     taxYear: Int,
     countryCode: String,
@@ -112,17 +145,25 @@ class ForeignPropertyNavigator {
           .onPageLoad(taxYear, NormalMode, countryCode)
       // TODO should go to the other income from property page
       case _ =>
-       ForeignReversePremiumsReceivedController
+        ForeignReversePremiumsReceivedController
           .onPageLoad(taxYear, NormalMode, countryCode)
 
     }
 
+  private def totalIncomeCheckModeNavigation(taxYear: Int, previousAnswers: UserAnswers, userAnswers: UserAnswers) =
+    (previousAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
+      case (Some(LessThanOneThousand), Some(OneThousandAndMore)) |
+          (Some(OneThousandAndMore), Some(LessThanOneThousand)) =>
+        PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
+      case _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
   private def foreignIncomeTaxNavigation(
-                                          taxYear: Int,
-                                          countryCode: String,
-                                          userAnswers: UserAnswers,
-                                          mode: Mode = NormalMode
-                                        ): Call =
+    taxYear: Int,
+    countryCode: String,
+    userAnswers: UserAnswers,
+    mode: Mode = NormalMode
+  ): Call =
     userAnswers.get(ForeignIncomeTaxPage(countryCode)) match {
       case Some(ForeignIncomeTax(true, _)) =>
         controllers.foreign.routes.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, mode)

@@ -16,14 +16,23 @@
 
 package pages.foreign
 
-import models.ForeignProperty
+import models.{ForeignProperty, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object PropertyIncomeReportPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
-  override def toString: String = "propertyIncomeReportYesOrNo"
+  override def toString: String = "reportPropertyIncome"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    for {
+      ua  <- userAnswers.remove(IncomeSourceCountries)
+      pia <- ua.remove(ClaimPropertyIncomeAllowanceOrExpensesPage)
+    } yield pia
+
 }

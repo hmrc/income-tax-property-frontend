@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.PropertyIncomeReportFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.PropertyIncomeReportPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PropertyIncomeReportController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

@@ -25,5 +25,5 @@ case object AddCountriesRentedPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
-  override def toString: String = "countriesRentedPropertyYesOrNo"
+  override def toString: String = "addAnotherCountry"
 }
