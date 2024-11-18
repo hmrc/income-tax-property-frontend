@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.foreign.routes.ForeignSelectCountriesCompleteController
 import controllers.routes
 import forms.foreign.ForeignSelectCountriesCompleteFormProvider
-import models.JourneyPath.{ForeignSelectCountry, PropertyRentalAbout}
+import models.JourneyPath.ForeignSelectCountry
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers

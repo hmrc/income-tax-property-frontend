@@ -23,7 +23,6 @@ import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
 import models.JourneyPath.PropertyRentalAbout
 import models.{JourneyContext, NormalMode, Rentals}
 import navigation.Navigator
-import pages.allowances.AllowancesSectionFinishedPage
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

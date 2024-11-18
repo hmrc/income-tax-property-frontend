@@ -19,7 +19,6 @@ package controllers.foreign
 import base.SpecBase
 import models.{ForeignIncomeTax, UserAnswers}
 import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency

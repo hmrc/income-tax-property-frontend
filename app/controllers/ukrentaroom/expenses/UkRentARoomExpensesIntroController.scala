@@ -22,7 +22,7 @@ import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{NormalMode, RentARoom, TotalIncome}
 import pages.TotalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.UkRentARoomExpensesIntroView

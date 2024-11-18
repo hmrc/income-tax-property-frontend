@@ -17,7 +17,6 @@
 package forms.foreign
 
 import forms.behaviours.BooleanFieldBehaviours
-import org.scalatest.prop.TableFor1
 import play.api.data.FormError
 
 class ClaimPropertyIncomeAllowanceOrExpensesFormProviderSpec extends BooleanFieldBehaviours {

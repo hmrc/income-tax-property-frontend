@@ -19,7 +19,6 @@ package navigation
 import models.{Mode, UserAnswers}
 import pages._
 import play.api.mvc.Call
-import service.CYADiversionService
 
 class FakeForeignPropertyNavigator(desiredRoute: Call) extends ForeignPropertyNavigator {
 

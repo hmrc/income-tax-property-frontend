@@ -20,7 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions._
 import forms.about.AboutPropertyCompleteFormProvider
 import models.JourneyPath.PropertyAbout
-import models.{JourneyContext, JourneyPath, Mode}
+import models.{JourneyContext, Mode}
 import navigation.Navigator
 import pages.AboutPropertyCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}

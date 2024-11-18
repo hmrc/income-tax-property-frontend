@@ -21,7 +21,7 @@ import controllers.actions._
 import controllers.statusError
 import forms.foreign.ForeignSelectCountriesCompleteFormProvider
 import models.JourneyPath.ForeignSelectCountry
-import models.{ForeignProperty, JourneyContext, NormalMode, Rentals}
+import models.{ForeignProperty, JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignSelectCountriesCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
