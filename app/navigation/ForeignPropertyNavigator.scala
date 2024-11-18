@@ -25,7 +25,8 @@ import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models.{CheckMode, ForeignIncomeTax, Mode, NormalMode, PremiumCalculated, Rentals, ReversePremiumsReceived, UserAnswers}
 import pages.Page
 import pages.foreign._
-import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage}
+import pages.foreign.income.{ForeignOtherIncomeFromPropertyPage, ForeignReversePremiumsReceivedPage, ForeignPropertyRentalIncomePage}
+import pages.premiumlease.PremiumForLeasePage
 import play.api.mvc.Call
 
 @Singleton
@@ -41,7 +42,7 @@ class ForeignPropertyNavigator {
     case PropertyIncomeReportPage =>
       taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers)
     case ForeignReversePremiumsReceivedPage(countryCode) =>
-      taxYear => _ => userAnswers => foreignReversePremiumReceivedNavigation(taxYear, countryCode, userAnswers)
+      taxYear => _ => _ => ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
     case AddCountriesRentedPage =>
       taxYear => _ => userAnswers => addCountryNavigationNormalMode(taxYear, userAnswers)
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
@@ -52,6 +53,9 @@ class ForeignPropertyNavigator {
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
       taxYear => _ => _ => ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignTaxSectionCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
+    //TODO route to CYA page once created
+    case ForeignOtherIncomeFromPropertyPage(countryCode) => taxYear => _ => _ =>
+      ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
     case CalculatedPremiumLeaseTaxablePage(countryCode) =>
       taxYear =>
         _ =>

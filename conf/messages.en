@@ -2000,6 +2000,11 @@ foreignPropertyRentalIncome.error.required.individual = Enter your property rent
 foreignPropertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 foreignPropertyRentalIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 
+foreignOtherIncomeFromProperty.error.nonNumeric = The amount for your other income from property can only include pounds and pence, for example £600 or £600.20
+foreignOtherIncomeFromProperty.error.required = Enter the amount for how much other income from property you received
+foreignOtherIncomeFromProperty.error.outOfRange = Enter an amount between {0} and {1}
+foreignOtherIncomeFromProperty.change.hidden = ForeignOtherIncomeFromProperty
+
 calculatedPremiumLeaseTaxable.title = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.individual = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?

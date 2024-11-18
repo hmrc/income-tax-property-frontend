@@ -1942,6 +1942,11 @@ foreignPropertyIncomeStart.l4 = *Missing Welsh*
 foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
 
+foreignOtherIncomeFromProperty.error.nonNumeric = *Missing Welsh*
+foreignOtherIncomeFromProperty.error.required = *Missing Welsh*
+foreignOtherIncomeFromProperty.error.outOfRange = *Missing Welsh*
+foreignOtherIncomeFromProperty.change.hidden = *Missing Welsh*
+
 calculatedPremiumLeaseTaxable.title = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.individual = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.agent = *Missing Welsh*
