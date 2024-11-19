@@ -26,17 +26,19 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 class ConsolidatedExpensesFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[ConsolidatedExpenses] = {
-    Form(mapping(
-      "consolidatedExpensesYesOrNo" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
-      "consolidatedExpensesAmount" -> {
-        mandatoryIfTrue("consolidatedExpensesYesOrNo",
-          currency(
-            s"consolidatedExpenses.error.required.amount.$individualOrAgent",
-            s"consolidatedExpenses.error.twoDecimalPlaces.$individualOrAgent",
-            s"consolidatedExpenses.error.nonNumeric.$individualOrAgent")
-            .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedExpenses.error.outOfRange"))
-        )
-      }
-    )(ConsolidatedExpenses.apply)(ConsolidatedExpenses.unapply))
+    Form[ConsolidatedExpenses](
+      mapping(
+        "consolidatedExpensesYesOrNo" -> boolean(s"consolidatedExpenses.error.required.$individualOrAgent"),
+        "consolidatedExpensesAmount" -> {
+          mandatoryIfTrue("consolidatedExpensesYesOrNo",
+            currency(
+              s"consolidatedExpenses.error.required.amount.$individualOrAgent",
+              s"consolidatedExpenses.error.twoDecimalPlaces.$individualOrAgent",
+              s"consolidatedExpenses.error.nonNumeric.$individualOrAgent")
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedExpenses.error.outOfRange"))
+          )
+        }
+      )(ConsolidatedExpenses.apply)(ConsolidatedExpenses.unapply)
+    )
   }
 }
