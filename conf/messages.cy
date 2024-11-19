@@ -1852,6 +1852,8 @@ claimPropertyIncomeAllowanceOrExpenses.content.l1 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l2 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l3 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.content.l4 = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.PIA = *Missing Welsh*
+claimPropertyIncomeAllowanceOrExpenses.expenses = *Missing Welsh*
 
 doYouWantToRemoveCountry.title = *Missing Welsh*
 doYouWantToRemoveCountry.heading = *Missing Welsh*

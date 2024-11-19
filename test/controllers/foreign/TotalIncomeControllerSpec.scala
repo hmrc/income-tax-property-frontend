@@ -19,11 +19,12 @@ package controllers.foreign
 import base.SpecBase
 import controllers.routes
 import forms.foreign.TotalIncomeFormProvider
-import models.{ForeignTotalIncome, NormalMode, TotalIncome, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{ForeignTotalIncome, NormalMode, UserAnswers}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
+import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import pages.foreign.TotalIncomePage
@@ -34,7 +35,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.foreign.TotalIncomeView
-import org.scalatest.prop.Tables.Table
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -98,7 +98,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

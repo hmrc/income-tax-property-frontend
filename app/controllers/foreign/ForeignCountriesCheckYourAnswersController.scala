@@ -28,6 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers.PropertyIncomeReportSummary
 import viewmodels.checkAnswers.foreign._
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.ForeignCountriesCheckYourAnswersView
@@ -50,6 +51,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           TotalIncomeSummary.row(taxYear, request.userAnswers),
+          PropertyIncomeReportSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
           CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers),
           ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten

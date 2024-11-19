@@ -19,11 +19,12 @@ package controllers
 import base.SpecBase
 import forms.DoYouWantToRemoveCountryFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, DoYouWantToRemoveCountryPage, SelectIncomeCountryPage}
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,12 +36,12 @@ import scala.concurrent.Future
 
 class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar {
   val taxYear = 2024
-  def onwardRoute = Call("GET", "/foo")
-  val country = Country("Spain", "ESP")
+  def onwardRoute: Call = Call("GET", "foo")
+  val country: Country = Country("Spain", "ESP")
   val formProvider = new DoYouWantToRemoveCountryFormProvider()
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
   val index = 0
-  lazy val doYouWantToRemoveCountryRoute =
+  lazy val doYouWantToRemoveCountryRoute: String =
     controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index, NormalMode).url
   val isAgent = false
 
@@ -107,7 +108,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
           isAgent
         )
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -154,7 +155,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, doYouWantToRemoveCountryRoute)
@@ -168,7 +169,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =

@@ -20,11 +20,12 @@ import base.SpecBase
 import controllers.routes
 import forms.foreign.PropertyIncomeReportFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.PropertyIncomeReportPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -36,14 +37,14 @@ import scala.concurrent.Future
 
 class PropertyIncomeReportControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
   val taxYear: Int = 2024
 
-  lazy val propertyIncomeReportRoute =
+  lazy val propertyIncomeReportRoute: String =
     controllers.foreign.routes.PropertyIncomeReportController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new PropertyIncomeReportFormProvider()
-  val form = formProvider("individual")
+  val form: Form[Boolean] = formProvider("individual")
 
   "PropertyIncomeReport Controller" - {
 
@@ -101,7 +102,7 @@ class PropertyIncomeReportControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -143,7 +144,7 @@ class PropertyIncomeReportControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, propertyIncomeReportRoute)
@@ -157,7 +158,7 @@ class PropertyIncomeReportControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =

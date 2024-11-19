@@ -17,12 +17,9 @@
 package controllers.foreign
 
 import controllers.actions._
-import controllers.exceptions.InternalErrorFailure
 import forms.DoYouWantToRemoveCountryFormProvider
-
-import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.{DoYouWantToRemoveCountryPage, SelectIncomeCountryPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,13 +28,14 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.DoYouWantToRemoveCountryView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 
 class DoYouWantToRemoveCountryController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -56,7 +54,7 @@ class DoYouWantToRemoveCountryController @Inject() (
         .map { country =>
           country.name
         }
-        .fold(Future.successful(InternalServerError("Country not found")))(name =>
+        .fold(Future.successful(InternalServerError("Country not found")))(name => //TODO we need to better handle this error we should not be displaying this to the user
           request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
             case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, index, mode, name)))
             case _           => Future.successful(Ok(view(form, taxYear, index, mode, name)))
@@ -72,17 +70,20 @@ class DoYouWantToRemoveCountryController @Inject() (
         .map { country =>
           country.name
         }
-        .fold(Future.successful(InternalServerError("Country not found")))(name =>
+        .fold(Future.successful(InternalServerError("Country not found")))(name => //TODO we need to better handle this error we should not be displaying this to the user
           form
             .bindFromRequest()
             .fold(
               formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, name))),
               value =>
                 for {
-                  updatedAnswers <- if (value) {
-                                      Future.fromTry(request.userAnswers.remove(SelectIncomeCountryPage(index)))
-                                    } else {
-                                      Future.fromTry(Success(request.userAnswers))
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(DoYouWantToRemoveCountryPage, value))
+                  updatedAnswers <- Future.fromTry {
+                                      if (value) {
+                                        updatedAnswers.remove(SelectIncomeCountryPage(index))
+                                      } else {
+                                        Success(updatedAnswers)
+                                      }
                                     }
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
