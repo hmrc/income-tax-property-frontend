@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreign.CalculatedPremiumLeaseTaxableFormProvider
 import models.{NormalMode, PremiumCalculated, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -37,7 +37,7 @@ import scala.concurrent.Future
 
 class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/income/AUS/received-grant-lease-amount")
+  def onwardRoute: Call = Call("GET", "/foo")
   val isAgentMessageKey = "individual"
   val formProvider = new CalculatedPremiumLeaseTaxableFormProvider()
   val form: Form[PremiumCalculated] = formProvider(isAgentMessageKey)
@@ -105,7 +105,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

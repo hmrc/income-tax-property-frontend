@@ -18,11 +18,14 @@ package navigation.foreign
 
 import base.SpecBase
 import controllers.foreign.routes._
-import models.{CheckMode, NormalMode, UserAnswers}
+import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
+import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
 import models.ForeignTotalIncome._
-import pages.foreign.{AddCountriesRentedPage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, DoYouWantToRemoveCountryPage, IncomeSourceCountries, PropertyIncomeReportPage, SelectIncomeCountryPage, TotalIncomePage}
+import models.JourneyName.{reads, writes}
+import pages.foreign.{AddCountriesRentedPage, CalculatedPremiumLeaseTaxablePage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, DoYouWantToRemoveCountryPage, IncomeSourceCountries, PropertyIncomeReportPage, SelectIncomeCountryPage, TotalIncomePage}
+import play.api.libs.json.Format.GenericFormat
 
 import java.time.LocalDate
 
@@ -141,7 +144,38 @@ class ForeignNavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
       }
-
+      "CalculatedPremiumLEaseTaxablePage" - {
+        "should go to ForeignReceivedGrantLeaseAmount if no selected" in {
+          val userAnswersWithData = UserAnswers("test").set(
+              CalculatedPremiumLeaseTaxablePage("ESP"),
+            PremiumCalculated(
+              premiumCalculatedYesNo = false,
+              None)
+          ).get
+          navigator.nextPage(
+            CalculatedPremiumLeaseTaxablePage("ESP"),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswersWithData
+          ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "ESP", NormalMode)
+        }
+        "should go to OtherPropertyRentalIncomeController if yes selected" in {
+          val userAnswersWithData = UserAnswers("test").set(
+            CalculatedPremiumLeaseTaxablePage("ESP"),
+            PremiumCalculated(
+              premiumCalculatedYesNo = true,
+              Some(BigDecimal(1234)))
+          ).get
+          navigator.nextPage(
+            CalculatedPremiumLeaseTaxablePage("ESP"),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswersWithData
+          ) mustBe OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
+        }
+      }
     }
 
     "in Check mode" - {
