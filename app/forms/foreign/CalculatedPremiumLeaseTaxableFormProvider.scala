@@ -26,14 +26,14 @@ import javax.inject.Inject
 
 class CalculatedPremiumLeaseTaxableFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[PremiumCalculated] =
+  def apply(individualOrAgent: String): Form[PremiumCalculated] =
     Form[PremiumCalculated](
       mapping(
-        "calculatedPremiumLeaseTaxableYesOrNo" -> boolean("calculatedPremiumLeaseTaxable.error.required"),
+        "calculatedPremiumLeaseTaxableYesOrNo" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
         "premiumCalculatedAmount" -> {
           mandatoryIfTrue("calculatedPremiumLeaseTaxableYesOrNo",
             currency(
-              "premiumCalculated.amount.error.required",
+              s"premiumCalculated.amount.error.required.$individualOrAgent",
               "premiumCalculated.amount.error.twoDecimalPlaces",
               "premiumCalculated.amount.error.nonNumeric")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),

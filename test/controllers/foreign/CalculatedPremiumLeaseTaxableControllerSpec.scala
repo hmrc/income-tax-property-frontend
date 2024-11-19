@@ -38,9 +38,9 @@ import scala.concurrent.Future
 class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/income/AUS/received-grant-lease-amount")
-
+  val isAgentMessageKey = "individual"
   val formProvider = new CalculatedPremiumLeaseTaxableFormProvider()
-  val form: Form[PremiumCalculated] = formProvider()
+  val form: Form[PremiumCalculated] = formProvider(isAgentMessageKey)
   val taxYear: Int = 2024
   val countryCode: String = "AUS"
 

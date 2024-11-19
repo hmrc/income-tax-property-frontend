@@ -24,10 +24,10 @@ import scala.collection.immutable.ArraySeq
 
 class CalculatedPremiumLeaseTaxableFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "calculatedPremiumLeaseTaxable.error.required"
+  val requiredKey = "calculatedPremiumLeaseTaxable.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new CalculatedPremiumLeaseTaxableFormProvider()()
+  val form = new CalculatedPremiumLeaseTaxableFormProvider()("individual")
 
 
   ".premiumCalculatedAmount" - {
@@ -40,7 +40,7 @@ class CalculatedPremiumLeaseTaxableFormProviderSpec extends BooleanFieldBehaviou
 
       "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true"))
-        boundForm.errors must contain(FormError("premiumCalculatedAmount", "premiumCalculated.amount.error.required"))
+        boundForm.errors must contain(FormError("premiumCalculatedAmount", "premiumCalculated.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {

@@ -43,11 +43,9 @@ class CalculatedPremiumLeaseTaxableController @Inject()(
                                          view: CalculatedPremiumLeaseTaxableView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[PremiumCalculated] = formProvider()
-
   def onPageLoad(taxYear:Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
+      val form: Form[PremiumCalculated] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(CalculatedPremiumLeaseTaxablePage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
@@ -58,7 +56,7 @@ class CalculatedPremiumLeaseTaxableController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form: Form[PremiumCalculated] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
