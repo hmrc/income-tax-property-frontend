@@ -17,10 +17,8 @@
 package service
 
 import base.SpecBase
-import models.{NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UserAnswers}
+import models.{PropertyType, RentARoom, Rentals, RentalsRentARoom, UserAnswers}
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.adjustments.RentalsAdjustmentsCompletePage
 import pages.allowances.AllowancesSectionFinishedPage
@@ -39,6 +37,7 @@ import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
 import pages.ukrentaroom.allowances.RaRAllowancesCompletePage
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
 import play.api.mvc.Call
+import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 
 class CYADiversionServiceSpec extends SpecBase with FutureAwaits with DefaultAwaitTimeout with Matchers {
   val cyaDiversionService = new CYADiversionService

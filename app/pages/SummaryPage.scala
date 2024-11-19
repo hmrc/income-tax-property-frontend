@@ -17,7 +17,7 @@
 package pages
 
 import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
-import pages.adjustments.{PrivateUseAdjustmentPage, RentalsAdjustmentsCompletePage}
+import pages.adjustments.RentalsAdjustmentsCompletePage
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
 import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSectionFinishedPage, RentsRatesAndInsurancePage}

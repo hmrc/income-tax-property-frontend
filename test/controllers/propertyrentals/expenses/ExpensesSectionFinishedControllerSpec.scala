@@ -21,7 +21,7 @@ import controllers.propertyrentals.expenses.routes.ExpensesSectionFinishedContro
 import controllers.routes
 import forms.ExpensesSectionFinishedFormProvider
 import models.JourneyPath.RentalExpenses
-import models.{JourneyContext, Rentals, User, UserAnswers}
+import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
