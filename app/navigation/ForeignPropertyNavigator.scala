@@ -25,6 +25,7 @@ import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models.{CheckMode, ForeignIncomeTax, PremiumCalculated, Rentals, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
 import pages.Page
 import pages.foreign._
+import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage}
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import pages.premiumlease.PremiumForLeasePage
 import play.api.mvc.Call
@@ -36,6 +37,9 @@ class ForeignPropertyNavigator {
       taxYear => _ => userAnswers => foreignTotalIncomeNavigationNormalMode(taxYear, userAnswers)
     case SelectIncomeCountryPage(_) =>
       taxYear => _ => _ => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+    case ForeignPropertyRentalIncomePage(countryCode) =>
+      taxYear => _ => _ => PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
+
     case PropertyIncomeReportPage =>
       taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers)
     case ForeignReversePremiumsReceivedPage(countryCode) =>

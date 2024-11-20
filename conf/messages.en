@@ -1969,6 +1969,37 @@ foreignPropertyIncomeStart.l4 = other income from property
 foreignPropertyIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your share of the income.
 foreignPropertyIncomeStart.p2.agent = If your client’s properties are jointly owned, only tell us about their share of the income.
 
+
+foreignPropertyRentalIncome.title = Foreign property rental income
+foreignPropertyRentalIncome.heading = Foreign property rental income
+foreignPropertyRentalIncome.checkYourAnswersLabel = Foreign property rental income
+foreignPropertyRentalIncome.change.hidden = Foreign property rental income
+foreignPropertyRentalIncome.deductions.hint = This is the amount before any deductions
+foreignPropertyRentalIncome.bullet1.individual = the use of furniture
+foreignPropertyRentalIncome.bullet1.agent = the use of furniture
+foreignPropertyRentalIncome.bullet2.individual = charges for services you provide (such as cleaning of communal areas, hot water, heating and repairs)
+foreignPropertyRentalIncome.bullet2.agent = charges for services your client provides (such as cleaning of communal areas, hot water, heating and repairs)
+foreignPropertyRentalIncome.link = Tax on foreign income
+foreignPropertyRentalIncome.link.p1 = at GOV.UK (opens in new tab).
+foreignPropertyRentalIncome.para = Read more about how to
+foreignPropertyRentalIncome.or = or
+foreignPropertyRentalIncome.para1.individual = Foreign rental income is the rent you get from your rentals abroad. This includes any payments for:
+foreignPropertyRentalIncome.para1.agent = Foreign rental income is the rent your client gets from their rentals abroad. This includes any payments for:
+foreignPropertyRentalIncome.para2.individual = How much total income did you get from your foreign property rental?
+foreignPropertyRentalIncome.para2.agent = How much total income did your client get from their foreign property rental?
+foreignPropertyRentalIncome.para3 = You can use the official HMRC
+foreignPropertyRentalIncome.link2 = average exchange rates
+foreignPropertyRentalIncome.link3 = monthly exchange rates
+foreignPropertyRentalIncome.href1 = https://www.gov.uk/tax-foreign-income/foreign-income-thats-taxed-differently
+foreignPropertyRentalIncome.href2 = https://www.trade-tariff.service.gov.uk/exchange_rates/average
+foreignPropertyRentalIncome.href3 = https://www.trade-tariff.service.gov.uk/exchange_rates/monthly
+foreignPropertyRentalIncome.error.nonNumeric.individual = Enter the amount for your property rental income
+foreignPropertyRentalIncome.error.nonNumeric.agent = Enter the amount for your client's property rental income
+foreignPropertyRentalIncome.error.required.agent = Enter your client’s property rental income
+foreignPropertyRentalIncome.error.required.individual = Enter your property rental income
+foreignPropertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+foreignPropertyRentalIncome.error.outOfRange = Enter an amount between £{0} and £{1}
+
 calculatedPremiumLeaseTaxable.title = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.individual = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?

@@ -15,6 +15,7 @@
  *@
 
 @import pages.foreign.Country
+@import models.Mode
 
 @this(
         layout: templates.Layout,
@@ -38,7 +39,7 @@
     <p class="govuk-body">
     @govukButton(
         ButtonViewModel(messages("site.continue"))
-        .asLink(controllers.routes.IndexController.onPageLoad.url)
+        .asLink(controllers.foreign.income.routes.ForeignPropertyRentalIncomeController.onPageLoad(taxYear,NormalMode,country.code).url)
         .withId("continue")
     )
     </p>
