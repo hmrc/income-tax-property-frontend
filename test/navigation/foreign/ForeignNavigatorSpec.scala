@@ -19,15 +19,14 @@ package navigation.foreign
 import base.SpecBase
 import controllers.foreign.routes._
 import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
+import models.ForeignTotalIncome._
+import models.JourneyName.{reads, writes}
 import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
-import models.ForeignTotalIncome._
-import models.JourneyName.{reads, writes}
-import pages.foreign.{AddCountriesRentedPage, CalculatedPremiumLeaseTaxablePage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, DoYouWantToRemoveCountryPage, IncomeSourceCountries, PropertyIncomeReportPage, SelectIncomeCountryPage, TotalIncomePage}
-import play.api.libs.json.Format.GenericFormat
 import pages.foreign.income.ForeignPropertyRentalIncomePage
-import pages.foreign.{AddCountriesRentedPage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, DoYouWantToRemoveCountryPage, IncomeSourceCountries, PropertyIncomeReportPage, SelectIncomeCountryPage, TotalIncomePage}
+import pages.foreign._
+import play.api.libs.json.Format.GenericFormat
 
 import java.time.LocalDate
 

@@ -18,16 +18,14 @@ package navigation
 
 import com.google.inject.Singleton
 import controllers.foreign.income.routes._
-import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
 import controllers.foreign.routes._
+import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
 import controllers.routes.{IndexController, SummaryController}
 import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
-import models.{CheckMode, ForeignIncomeTax, PremiumCalculated, Rentals, Mode, NormalMode, ReversePremiumsReceived, UserAnswers}
+import models.{CheckMode, ForeignIncomeTax, Mode, NormalMode, PremiumCalculated, Rentals, ReversePremiumsReceived, UserAnswers}
 import pages.Page
 import pages.foreign._
 import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage}
-import pages.foreign.income.ForeignReversePremiumsReceivedPage
-import pages.premiumlease.PremiumForLeasePage
 import play.api.mvc.Call
 
 @Singleton
