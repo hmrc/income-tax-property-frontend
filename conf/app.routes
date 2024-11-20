@@ -453,6 +453,11 @@ POST        /:taxYear/rent-a-room/adjustments/unused-residential-finance-cost-br
 GET         /:taxYear/rent-a-room/adjustments/change-unused-residential-finance-cost-brought-fwd                         controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/rent-a-room/adjustments/change-unused-residential-finance-cost-brought-fwd                         controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET         /:taxYear/rent-a-room/adjustments/unused-losses-brought-fwd                                                  controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/unused-losses-brought-fwd                                                  controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/adjustments/change-unused-losses-brought-fwd                                           controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/adjustments/change-unused-losses-brought-fwd                                           controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
 GET         /:taxYear/rent-a-room/adjustments/check-your-answers                                                         controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onPageLoad(taxYear: Int)
 POST        /:taxYear/rent-a-room/adjustments/check-your-answers                                                         controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onSubmit(taxYear: Int)
 
