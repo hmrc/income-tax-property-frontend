@@ -19,12 +19,12 @@ package navigation.foreign
 import base.SpecBase
 import controllers.foreign.routes._
 import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
-import models.ForeignTotalIncome._
-import models.JourneyName.{reads, writes}
 import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
-import pages.foreign.income.ForeignPropertyRentalIncomePage
+import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
+import models.ForeignTotalIncome._
+import models.JourneyName.{reads, writes}
 import pages.foreign._
 import play.api.libs.json.Format.GenericFormat
 
@@ -123,7 +123,17 @@ class ForeignNavigatorSpec extends SpecBase {
           updatedUserAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 1, NormalMode)
       }
-
+      "must go from ForeignOtherIncomeFromPropertyPage to ForeignOtherIncomeFromPropertyPage" in {
+        val userAnswers = UserAnswers("test")
+        val updatedUserAnswers = userAnswers.set(ForeignOtherIncomeFromPropertyPage("AUS"), BigDecimal(1000)).get
+        navigator.nextPage(
+          ForeignOtherIncomeFromPropertyPage("AUS"),
+          taxYear,
+          NormalMode,
+          userAnswers,
+          updatedUserAnswers
+        ) mustBe controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, "AUS", NormalMode)
+      }
       "must go from AddCountriesRentedPage to ClaimPropertyIncomeAllowanceOrExpensesPage if AddCountriesRentedPage is false" in {
         val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
 

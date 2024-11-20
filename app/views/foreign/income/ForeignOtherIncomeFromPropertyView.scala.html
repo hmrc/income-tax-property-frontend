@@ -27,7 +27,7 @@
 
 @(form: Form[_],taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("foreignOtherIncomeFromProperty.title"))) {
+@layout(pageTitle = title(form, messages("otherIncomeFromProperty.title"))) {
 
     @formHelper(action = controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 

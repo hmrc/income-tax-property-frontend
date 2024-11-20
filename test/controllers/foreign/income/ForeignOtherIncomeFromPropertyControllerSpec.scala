@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreign.income.ForeignOtherIncomeFromPropertyFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -37,7 +37,7 @@ import scala.concurrent.Future
 
 class ForeignOtherIncomeFromPropertyControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", foreignOtherIncomeFromPropertyRoute)
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val formProvider = new ForeignOtherIncomeFromPropertyFormProvider()
   val form: Form[BigDecimal] = formProvider("individual")
@@ -99,7 +99,7 @@ class ForeignOtherIncomeFromPropertyControllerSpec extends SpecBase with Mockito
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

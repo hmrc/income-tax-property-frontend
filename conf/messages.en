@@ -1969,7 +1969,6 @@ foreignPropertyIncomeStart.l4 = other income from property
 foreignPropertyIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your share of the income.
 foreignPropertyIncomeStart.p2.agent = If your client’s properties are jointly owned, only tell us about their share of the income.
 
-
 foreignPropertyRentalIncome.title = Foreign property rental income
 foreignPropertyRentalIncome.heading = Foreign property rental income
 foreignPropertyRentalIncome.checkYourAnswersLabel = Foreign property rental income
@@ -2000,9 +1999,6 @@ foreignPropertyRentalIncome.error.required.individual = Enter your property rent
 foreignPropertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 foreignPropertyRentalIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 
-foreignOtherIncomeFromProperty.error.nonNumeric = The amount for your other income from property can only include pounds and pence, for example £600 or £600.20
-foreignOtherIncomeFromProperty.error.required = Enter the amount for how much other income from property you received
-foreignOtherIncomeFromProperty.error.outOfRange = Enter an amount between {0} and {1}
 foreignOtherIncomeFromProperty.change.hidden = ForeignOtherIncomeFromProperty
 
 calculatedPremiumLeaseTaxable.title = Have you calculated the premium for the grant of a lease taxable amount?
