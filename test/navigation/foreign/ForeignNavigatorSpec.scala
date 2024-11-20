@@ -19,12 +19,13 @@ package navigation.foreign
 import base.SpecBase
 import controllers.foreign.routes._
 import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
+import models.ForeignTotalIncome._
+import models.JourneyName.{reads, writes}
 import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
-import models.ForeignTotalIncome._
-import models.JourneyName.{reads, writes}
-import pages.foreign.{AddCountriesRentedPage, CalculatedPremiumLeaseTaxablePage, ClaimPropertyIncomeAllowanceOrExpensesPage, Country, DoYouWantToRemoveCountryPage, IncomeSourceCountries, PropertyIncomeReportPage, SelectIncomeCountryPage, TotalIncomePage}
+import pages.foreign.income.ForeignPropertyRentalIncomePage
+import pages.foreign._
 import play.api.libs.json.Format.GenericFormat
 
 import java.time.LocalDate
@@ -176,6 +177,18 @@ class ForeignNavigatorSpec extends SpecBase {
           ) mustBe OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
         }
       }
+
+      "must go from ForeignPropertyRentalIncomePage to PremiumsGrantLeaseYNPage" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignPropertyRentalIncomePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
+        ) mustBe PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
     }
 
     "in Check mode" - {
@@ -187,7 +200,7 @@ class ForeignNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear,NormalMode)
+        ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from AddCountriesRentedPage to ForeignCountriesCheckYourAnswersController if AddCountriesRentedPage is false" in {
