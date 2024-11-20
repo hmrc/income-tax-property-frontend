@@ -19,10 +19,11 @@ package navigation.foreign
 import base.SpecBase
 import controllers.foreign.routes._
 import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
+import controllers.routes.SummaryController
 import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
-import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
+import pages.foreign.income._
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
 import pages.foreign._
@@ -155,7 +156,7 @@ class ForeignNavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
       }
-      "CalculatedPremiumLEaseTaxablePage" - {
+      "CalculatedPremiumLeaseTaxablePage" - {
         "should go to ForeignReceivedGrantLeaseAmount if no selected" in {
           val userAnswersWithData = UserAnswers("test").set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
@@ -187,7 +188,6 @@ class ForeignNavigatorSpec extends SpecBase {
           ) mustBe OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
         }
       }
-
       "must go from ForeignPropertyRentalIncomePage to PremiumsGrantLeaseYNPage" in {
         val countryCode = "BRA"
         navigator.nextPage(
@@ -198,7 +198,16 @@ class ForeignNavigatorSpec extends SpecBase {
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
         ) mustBe PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
       }
-
+      "must go from ForeignIncomeSectionCompletePage to SummaryPage" in {
+        val userAnswersWithData = UserAnswers("test").set(ForeignIncomeSectionCompletePage("ESP"), true).get
+        navigator.nextPage(
+          ForeignIncomeSectionCompletePage("ESP"),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswersWithData
+        ) mustBe SummaryController.show(taxYear)
+      }
     }
 
     "in Check mode" - {

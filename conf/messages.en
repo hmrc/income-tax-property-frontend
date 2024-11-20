@@ -2017,3 +2017,5 @@ premiumCalculated.amount.error.outOfRange = Enter an amount between £0 and £10
 calculatedPremiumLeaseTaxable.change.hidden = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.input.yesText = Yes
 calculatedPremiumLeaseTaxable.input.noText = No, calculate it for me
+
+foreignIncomeSectionComplete.change.hidden = Have you finished this section?
