@@ -30,6 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 import viewmodels.govuk.all.SummaryListViewModel
 import viewmodels.checkAnswers.foreign.{PremiumsGrantLeaseYNSummary, ForeignYearLeaseAmountSummary}
+import viewmodels.checkAnswers.foreign.income.ForeignPropertyRentalIncomeSummary
 import viewmodels.checkAnswers.premiumlease.{CalculatedFigureYourselfSummary, ReceivedGrantLeaseAmountSummary, PremiumsGrantLeaseSummary}
 import viewmodels.checkAnswers.propertyrentals.income.{OtherIncomeFromPropertySummary, ReversePremiumsReceivedSummary}
 
@@ -52,7 +53,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-
+          ForeignPropertyRentalIncomeSummary.row(taxYear, request.userAnswers, countryCode),
           PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, propertyType),
           ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, propertyType),
@@ -66,18 +67,8 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
       Ok(view(list, taxYear, countryCode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignPropertyIncomeCheckYourAnswersPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignPropertyIncomeCheckYourAnswersPage, mode, updatedAnswers))
-      )
+      Future.successful(Redirect(controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode, propertyType)))
   }
 }

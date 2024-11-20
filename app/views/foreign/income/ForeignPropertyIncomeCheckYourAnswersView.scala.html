@@ -23,7 +23,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(list: SummaryList, taxYear: Int, country: String)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
