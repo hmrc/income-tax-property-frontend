@@ -16,25 +16,40 @@
 
 package pages.foreign
 
-import models.NormalMode
+import models.{NormalMode, UserAnswers}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
-case class ForeignPropertySummaryPage(taxYear: Int, startItems: Seq[TaskListItem], foreignIncomeCountries: List[Country])
-
-
+case class ForeignPropertySummaryPage(
+  taxYear: Int,
+  startItems: Seq[TaskListItem],
+  foreignIncomeCountries: List[Country]
+)
 
 object ForeignPropertySummaryPage {
 
-  def propertyAboutItems(taxYear: Int): Seq[TaskListItem] =
+  def foreignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+    val isCompleteSection = userAnswers.flatMap(_.get(ForeignSelectCountriesCompletePage))
+    val taskListTag = isCompleteSection
+      .map(haveYouFinished => if (haveYouFinished) TaskListTag.Completed else TaskListTag.InProgress)
+      .getOrElse {
+        if (isCompleteSection.isDefined) {
+          TaskListTag.InProgress
+        } else {
+          TaskListTag.NotStarted
+        }
+      }
+
     Seq(
       TaskListItem(
         "foreign.selectCountry",
         controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
-        TaskListTag.NotStarted,
+        taskListTag,
         "foreign_property_select_country"
       )
     )
-  def foreignPropertyItems(taxYear: Int, countryCode: String): Seq[TaskListItem] =
+  }
+
+  def foreignPropertyItemsForEachCountry(taxYear: Int, countryCode: String): Seq[TaskListItem] =
     Seq(
       TaskListItem(
         "foreign.tax",
@@ -49,4 +64,5 @@ object ForeignPropertySummaryPage {
         s"foreign_property_income_$countryCode"
       )
     )
+
 }

@@ -34,17 +34,18 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ForeignTaxSectionCompleteController @Inject() (
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: ForeignPropertyNavigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ForeignTaxSectionCompleteFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignTaxSectionCompleteView,
-                                         journeyAnswersService: JourneyAnswersService
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignTaxSectionCompleteFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignTaxSectionCompleteView,
+  journeyAnswersService: JourneyAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
