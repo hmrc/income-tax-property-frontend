@@ -265,6 +265,18 @@ class ForeignNavigatorSpec extends SpecBase {
         ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from TotalIncomePage to SelectIncomeCountry if my previous answer was less than £1,000 and now £1,000 or more" in {
+
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, OneThousandAndMore).get
+        navigator.nextPage(
+          TotalIncomePage,
+          taxYear,
+          CheckMode,
+          UserAnswers("test").set(TotalIncomePage,LessThanOneThousand).get,
+          userAnswers
+        ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      }
+
       "must go from a page that doesn't exist in the route map to Index in CheckMode" in {
         case object UnknownPage extends Page
 

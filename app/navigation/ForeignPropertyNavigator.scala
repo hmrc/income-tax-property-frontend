@@ -60,7 +60,8 @@ class ForeignPropertyNavigator {
               case Some(PremiumCalculated(true, _)) =>
                 OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
               case Some(PremiumCalculated(false, _)) =>
-                controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
+                controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController
+                  .onPageLoad(taxYear, countryCode, NormalMode)
             }
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -164,8 +165,9 @@ class ForeignPropertyNavigator {
 
   private def totalIncomeCheckModeNavigation(taxYear: Int, previousAnswers: UserAnswers, userAnswers: UserAnswers) =
     (previousAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(LessThanOneThousand), Some(OneThousandAndMore)) |
-          (Some(OneThousandAndMore), Some(LessThanOneThousand)) =>
+      case (Some(LessThanOneThousand), Some(OneThousandAndMore)) =>
+        SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      case (Some(OneThousandAndMore), Some(LessThanOneThousand)) =>
         PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
       case _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     }
