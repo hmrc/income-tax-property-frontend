@@ -17,12 +17,10 @@
 package controllers.foreign.income
 
 import controllers.actions._
-import forms.ForeignPropertyIncomeCheckYourAnswersFormProvider
 
 import javax.inject.Inject
-import models.{Mode, PropertyType}
+import models.PropertyType
 import navigation.Navigator
-import pages.ForeignPropertyIncomeCheckYourAnswersPage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,7 +41,6 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: ForeignPropertyIncomeCheckYourAnswersFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: ForeignPropertyIncomeCheckYourAnswersView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -54,7 +51,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
       val list = SummaryListViewModel(
         rows = Seq(
           ForeignPropertyRentalIncomeSummary.row(taxYear, request.userAnswers, countryCode),
-          PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode),
+          PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode, request.user.isAgentMessageKey),
           CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, propertyType),
           ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, propertyType),
           ForeignYearLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
@@ -69,6 +66,6 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(Redirect(controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode, propertyType)))
+      Future.successful(Redirect(controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)))
   }
 }
