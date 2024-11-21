@@ -63,7 +63,7 @@ class SummaryController @Inject() (
                 UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems),
                 ForeignPropertySummaryPage(
                   taxYear = taxYear,
-                  startItems = ForeignPropertySummaryPage.propertyAboutItems(taxYear),
+                  startItems = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, request.userAnswers),
                   foreignIncomeCountries = maybeCountries
                 )
               )
