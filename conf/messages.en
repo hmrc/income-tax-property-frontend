@@ -1754,6 +1754,7 @@ foreign.selectCountry = Select country
 foreign.heading = {0} all properties
 foreign.tax = Foreign tax
 foreign.income = Income
+foreign.expenses = Expenses
 
 foreignPropertyDetails.title = Foreign property details
 foreignPropertyDetails.para1 = You previously told us:
@@ -2019,3 +2020,25 @@ calculatedPremiumLeaseTaxable.input.yesText = Yes
 calculatedPremiumLeaseTaxable.input.noText = No, calculate it for me
 
 foreignIncomeSectionComplete.change.hidden = Have you finished this section?
+
+foreignPropertyExpensesStart.title.individual = Expenses for your property in {0}
+foreignPropertyExpensesStart.title.agent = Expenses for your client property in {0}
+foreignPropertyExpensesStart.heading.individual = Expenses for your property in {0}
+foreignPropertyExpensesStart.heading.agent = Expenses for your client property in {0}
+foreignPropertyExpensesStart.p1.individual = In this section we''re going to ask you about your expenses. These are the things that you spend money on to run your property rental.
+foreignPropertyExpensesStart.p1.agent = In this section we''re going to ask you about your client''s expenses. These are the things that you spend money on to run your property rental.
+foreignPropertyExpensesStart.p2.individual = If your rental is jointly let, you only need to tell us about your share of the expenses for the property.
+foreignPropertyExpensesStart.p2.agent = If your client''s rental is jointly let, you only need to tell us about their share of the expenses for the property.
+foreignPropertyExpensesStart.p3 = The expenses categories are:
+foreignPropertyExpensesStart.bullet1 = rents, rates and insurance costs
+foreignPropertyExpensesStart.bullet2 = property repairs and maintenance
+foreignPropertyExpensesStart.bullet3 = non-residential property finance costs
+foreignPropertyExpensesStart.bullet4 = legal, management and other professional fees
+foreignPropertyExpensesStart.bullet5 = costs of services provided, including wages
+foreignPropertyExpensesStart.bullet6 = other allowable property expenses
+foreignPropertyExpensesStart.p4.individual = You can claim:
+foreignPropertyExpensesStart.p4.agent = Your client can claim:
+foreignPropertyExpensesStart.p5 = Consolidated expenses, where you add up all of your expenses and enter one total amount.
+foreignPropertyExpensesStart.p6 = or
+foreignPropertyExpensesStart.p7 = Individual expenses, where you enter an amount for each separate expenses type.
+
