@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,28 @@
  * limitations under the License.
  *@
 
-@import controllers.propertyrentals.income.routes._
-@import models.Mode
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize.Medium
 
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukErrorSummary: GovukErrorSummary,
-        govukInput: GovukInput,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
 )
 
-
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+@(form: Form[_],taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("otherIncomeFromProperty.title"))) {
 
-    @formHelper(action = OtherPropertyRentalIncomeController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
         <h1 class="govuk-heading-l">@messages("otherIncomeFromProperty.heading")</h1>
-
-        <h2 class="govuk-heading-s">@messages("otherIncomeFromProperty.heading2")</h2>
 
         <p class="govuk-body">@messages(s"otherIncomeFromProperty.para1.${individualOrAgent}")</p>
 
@@ -56,7 +51,7 @@
 
         @govukInput(
             InputViewModel(
-                field = form("otherIncomeFromProperty"),
+                field = form("foreignOtherIncomeFromProperty"),
                 label = LabelViewModel(messages(s"otherIncomeFromProperty.para2.${individualOrAgent}")).asPageHeading(Medium)
             )
             .asNumeric()
@@ -68,10 +63,5 @@
         @govukButton(
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
-
     }
-}
-
-@{
-    // $COVERAGE-OFF$
 }

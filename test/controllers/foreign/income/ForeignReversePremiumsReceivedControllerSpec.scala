@@ -40,13 +40,14 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
 
   private val taxYear = LocalDate.now.getYear
   val countryCode = "BRA"
-  def onwardRoute: Call = Call("GET",foreignReversePremiumsReceivedRoute)
+  def onwardRoute: Call = Call("GET",foreignOtherIncomeFromPropertyRoute)
   val formProvider = new ForeignReversePremiumsReceivedFormProvider()
   val form: Form[ReversePremiumsReceived] = formProvider("individual")
 
   lazy val foreignReversePremiumsReceivedRoute: String =
     controllers.foreign.income.routes.ForeignReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, countryCode).url
-
+  lazy val foreignOtherIncomeFromPropertyRoute: String =
+    controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignReversePremiumsReceived Controller" - {
 

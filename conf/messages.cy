@@ -257,6 +257,7 @@ propertyRentalIncome.deductions.hint	=	Dyma’r swm cyn i unrhyw ddidyniadau gae
 
 otherIncomeFromProperty.title	=	Incwm arall o eiddo
 otherIncomeFromProperty.heading	=	Incwm arall o eiddo
+otherIncomeFromProperty.heading2 = *Missing Welsh*
 otherIncomeFromProperty.checkYourAnswersLabel	=	Incwm arall o eiddo
 otherIncomeFromProperty.change.hidden	=	Incwm arall o eiddo
 otherIncomeFromProperty.para1.individual	=	Gall incwm arall o eiddo gynnwys y canlynol hefyd:
@@ -1941,6 +1942,8 @@ foreignPropertyIncomeStart.l3 = *Missing Welsh*
 foreignPropertyIncomeStart.l4 = *Missing Welsh*
 foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
+
+foreignOtherIncomeFromProperty.change.hidden = *Missing Welsh*
 
 calculatedPremiumLeaseTaxable.title = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.individual = *Missing Welsh*

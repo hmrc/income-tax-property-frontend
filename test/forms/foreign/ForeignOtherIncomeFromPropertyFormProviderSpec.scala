@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package forms.propertyrentals.income
+package forms.foreign
 
 import forms.behaviours.CurrencyFieldBehaviours
+import forms.foreign.income.ForeignOtherIncomeFromPropertyFormProvider
 import play.api.data.FormError
 
-class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
+class ForeignOtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val minimum = 0
-  val maximum = 100000000
+  val form = new ForeignOtherIncomeFromPropertyFormProvider()("individual")
 
-  val form = new OtherIncomeFromPropertyFormProvider()("individual")
+  ".foreignOtherIncomeFromProperty" - {
 
-  ".otherIncomeFromProperty" - {
+    val fieldName = "foreignOtherIncomeFromProperty"
 
-    val fieldName = "otherIncomeFromProperty"
+    val minimum = 0
+    val maximum = 100000000
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -58,6 +59,5 @@ class OtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, "otherIncomeFromProperty.error.required.individual")
     )
-
   }
 }
