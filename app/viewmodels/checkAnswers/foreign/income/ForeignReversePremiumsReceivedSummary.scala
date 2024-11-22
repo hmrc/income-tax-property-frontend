@@ -17,7 +17,6 @@
 package viewmodels.checkAnswers.foreign.income
 
 import models.{UserAnswers, CheckMode}
-import pages.foreign.TotalIncomePage
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat

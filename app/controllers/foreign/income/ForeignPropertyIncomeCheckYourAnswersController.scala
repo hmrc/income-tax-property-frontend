@@ -19,24 +19,18 @@ package controllers.foreign.income
 import controllers.actions._
 
 import javax.inject.Inject
-import models.PropertyType
-import navigation.Navigator
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 import viewmodels.govuk.all.SummaryListViewModel
 import viewmodels.checkAnswers.foreign.{ForeignOtherIncomeFromPropertySummary, ForeignYearLeaseAmountSummary, PremiumsGrantLeaseYNSummary}
 import viewmodels.checkAnswers.foreign.income.{ForeignPropertyRentalIncomeSummary, ForeignReversePremiumsReceivedSummary}
-import viewmodels.checkAnswers.premiumlease.{ReceivedGrantLeaseAmountSummary, PremiumsGrantLeaseSummary, CalculatedFigureYourselfSummary}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
@@ -44,17 +38,14 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
                                          view: ForeignPropertyIncomeCheckYourAnswersView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val list = SummaryListViewModel(
         rows = Seq(
           ForeignPropertyRentalIncomeSummary.row(taxYear, request.userAnswers, countryCode),
           PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode, request.user.isAgentMessageKey),
-          CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, propertyType),
-          ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, propertyType),
           ForeignYearLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
-          PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers, propertyType),
           ForeignReversePremiumsReceivedSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignOtherIncomeFromPropertySummary.row(taxYear, countryCode, request.userAnswers)
         ).flatten
@@ -63,7 +54,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
       Ok(view(list, taxYear, countryCode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       Future.successful(Redirect(controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)))
   }
