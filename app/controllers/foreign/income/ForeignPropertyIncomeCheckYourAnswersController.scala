@@ -57,7 +57,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
           ForeignYearLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
           PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers, propertyType),
           ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers, propertyType),
-          OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers, propertyType),
+          OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers, propertyType)
         ).flatten
       )
 
