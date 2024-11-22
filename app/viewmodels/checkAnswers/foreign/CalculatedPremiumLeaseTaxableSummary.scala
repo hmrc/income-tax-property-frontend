@@ -19,7 +19,6 @@ package viewmodels.checkAnswers.foreign
 import models.{CheckMode, PremiumCalculated, UserAnswers}
 import pages.foreign.CalculatedPremiumLeaseTaxablePage
 import play.api.i18n.Messages
-import play.api.routing.Router.empty.routes
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._

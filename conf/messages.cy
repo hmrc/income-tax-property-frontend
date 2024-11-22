@@ -1961,6 +1961,8 @@ calculatedPremiumLeaseTaxable.change.hidden = *Missing Welsh*
 calculatedPremiumLeaseTaxable.input.yesText = *Missing Welsh*
 calculatedPremiumLeaseTaxable.input.noText = *Missing Welsh*
 
+foreignIncomeSectionComplete.change.hidden = *Missing Welsh*
+
 foreignPropertyRentalIncome.title = *Missing Welsh*
 foreignPropertyRentalIncome.heading = *Missing Welsh*
 foreignPropertyRentalIncome.checkYourAnswersLabel = *Missing Welsh*

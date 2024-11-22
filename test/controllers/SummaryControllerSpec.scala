@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import controllers.session.SessionRecovery
-import models.UKPropertySelect
+import models.{UKPropertySelect, UserAnswers}
 import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
@@ -44,7 +44,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
   private val taxYear = LocalDate.now.getYear
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
   private val countries = List.empty[Country]
-
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("Test"))
   val fakeSessionRecovery: SessionRecovery = new SessionRecovery {
     override def withUpdatedData(taxYear: Int)(
       block: OptionalDataRequest[AnyContent] => Future[Result]
@@ -110,7 +110,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem]
           ),
-          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries)
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries, userAnswers)
         )(request, messages(application)).toString
       }
     }
@@ -162,7 +162,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem]
           ),
-          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries)
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries, userAnswers)
         )(request, messages(application)).toString
       }
     }
@@ -205,7 +205,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem]
           ),
-          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries)
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries, userAnswers)
         )(request, messages(application)).toString
       }
     }
@@ -260,7 +260,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             ukRentARoomItems,
             Seq.empty[TaskListItem]
           ),
-          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries)
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries, userAnswers)
         )(request, messages(application)).toString
       }
     }
@@ -315,7 +315,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             combinedItems
           ),
-          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries)
+          ForeignPropertySummaryPage(taxYear, foreignPropertyItems, countries, userAnswers)
         )(request, messages(application)).toString
       }
     }

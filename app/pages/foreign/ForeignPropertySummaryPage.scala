@@ -17,12 +17,14 @@
 package pages.foreign
 
 import models.{NormalMode, UserAnswers}
+import pages.foreign.income.ForeignIncomeSectionCompletePage
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
   taxYear: Int,
   startItems: Seq[TaskListItem],
-  foreignIncomeCountries: List[Country]
+  foreignIncomeCountries: List[Country],
+  userAnswers: Option[UserAnswers]
 )
 
 object ForeignPropertySummaryPage {
@@ -48,8 +50,14 @@ object ForeignPropertySummaryPage {
       )
     )
   }
+  def foreignPropertyItems(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+    val taskListTagForIncome =
+      userAnswers.flatMap { answers =>
+        answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        }
+      }.getOrElse(TaskListTag.NotStarted)
 
-  def foreignPropertyItemsForEachCountry(taxYear: Int, countryCode: String): Seq[TaskListItem] =
     Seq(
       TaskListItem(
         "foreign.tax",
@@ -60,9 +68,9 @@ object ForeignPropertySummaryPage {
       TaskListItem(
         "foreign.income",
         controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
-        TaskListTag.NotStarted,
+        taskListTagForIncome,
         s"foreign_property_income_$countryCode"
       )
     )
-
+  }
 }
