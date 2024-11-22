@@ -19,6 +19,8 @@ package models
 sealed trait JourneyName
 
 object JourneyName extends Enumerable.Implicits {
+
+  case object ForeignProperty extends WithName("ForeignProperty") with JourneyName
   case object Rentals extends WithName("Rentals") with JourneyName
   case object RentARoom extends WithName("RentARoom") with JourneyName
   case object RentalsRentARoom extends WithName("RentalsRentARoom") with JourneyName
@@ -26,7 +28,8 @@ object JourneyName extends Enumerable.Implicits {
   val values: Seq[JourneyName] = Seq(
     Rentals,
     RentARoom,
-    RentalsRentARoom
+    RentalsRentARoom,
+    ForeignProperty
   )
   implicit val enumerable: Enumerable[JourneyName] =
     Enumerable(values.map(v => v.toString -> v): _*)

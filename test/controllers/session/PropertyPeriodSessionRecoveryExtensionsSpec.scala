@@ -181,7 +181,11 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        },
       |        "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
       |    },
-      |    "journeyStatuses": []
+      |    "journeyStatuses": [],
+      |    "foreignPropertySelectCountry" : {
+      |       "totalIncome": "lessThanOneThousand",
+      |       "reportPropertyIncome": false}
+      |
       |}""".stripMargin
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
@@ -265,6 +269,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
       updated.get(RaRReplacementsOfDomesticGoodsPage).get mustBe 25
       updated.get(RaROtherCapitalAllowancesPage).get mustBe 20
+      updated.get(pages.foreign.TotalIncomePage).get mustBe ForeignTotalIncome.LessThanOneThousand
+      updated.get(pages.foreign.PropertyIncomeReportPage).get mustBe false
 
     }
   }

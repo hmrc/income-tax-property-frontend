@@ -16,21 +16,35 @@
 
 package controllers.foreign
 
+import audit.AuditService
 import base.SpecBase
 import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
-import models.{ForeignTotalIncome, UserAnswers}
-import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country, IncomeSourceCountries}
+import models.JourneyPath.ForeignSelectCountry
+import models.{ForeignPropertySelectCountry, ForeignTotalIncome, JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.ForeignTaxSectionCompletePage
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.govuk.all.SummaryListViewModel
+import service.PropertySubmissionService
+import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.ForeignCountriesCheckYourAnswersView
 
-class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
+  val taxYear = 2024
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
+
+  val audit: AuditService = mock[AuditService]
 
   "ForeignPropertiesCheckYourAnswers Controller" - {
-
-    val taxYear = 2024
 
     def submitOnwardRoute: Call = Call(
       "POST",
@@ -69,18 +83,29 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "must return OK and the POST for onSubmit() should redirect to the Have you finished this section page" in {
+      val userAnswers = UserAnswers("test").set(ForeignTaxSectionCompletePage, false).get
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
 
-      val userAnswers = UserAnswers("foreign-property-select-country")
-        .set(pages.foreign.TotalIncomePage, ForeignTotalIncome.LessThanOneThousand)
-        .flatMap { ua: UserAnswers =>
-          ua.set(IncomeSourceCountries, Array(Country("USA", "US")))
-        }
-        .flatMap { ua =>
-          ua.set(ClaimPropertyIncomeAllowanceOrExpensesPage, true)
-        }
-        .toOption
+      val userAnswersForeignSelectCountry =
+        userAnswers
+          .set(
+            ForeignPropertySelectCountry,
+            ForeignPropertySelectCountry(ForeignTotalIncome.LessThanOneThousand, Some(false), None, None, None)
+          )
+          .get
 
-      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersForeignSelectCountry), isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       running(application) {
@@ -90,6 +115,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual submitOnwardRoute.url
       }
     }

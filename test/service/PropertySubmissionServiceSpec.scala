@@ -22,7 +22,7 @@ import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.Under
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedBackendData, JourneyContext, UKPropertySelect, User,JourneyPath}
+import models.{FetchedBackendData, JourneyContext, JourneyPath, UKPropertySelect, User}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -62,7 +62,8 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         None,
         None,
         None,
-        List()
+        List(),
+        None
       )
       val incomeSourceId = "incomeSourceId"
       val details =
@@ -82,7 +83,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
     }
 
     "return FetchedPropertyData with empty JsObject when connector returns failure" in {
-      val resultFromConnector = ApiError(500, SingleErrorBody("500", "Some error"))
+      val resultFromConnector = ApiError(status = 500, SingleErrorBody("500", "Some error"))
       val incomeSourceId = "incomeSourceId"
       val details =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
@@ -109,7 +110,12 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
     val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
     val taxYear = 2024
     val context =
-      JourneyContext(taxYear = taxYear, mtditid = user.mtditid, nino = user.nino, journeyPath = JourneyPath.PropertyAbout)
+      JourneyContext(
+        taxYear = taxYear,
+        mtditid = user.mtditid,
+        nino = user.nino,
+        journeyPath = JourneyPath.PropertyAbout
+      )
     val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
 
     "return error when fails to get property data" in {

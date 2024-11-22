@@ -35,7 +35,7 @@ final case class Adjustments(
 )
 
 object Adjustments {
-  implicit val format = Json.format[Adjustments]
+  implicit val format: OFormat[Adjustments] = Json.format[Adjustments]
 }
 
 final case class Allowances(
@@ -145,7 +145,8 @@ final case class FetchedBackendData(
   rarExpenses: Option[RentARoomExpenses],
   raRAdjustments: Option[RentARoomAdjustments],
   rentARoomAllowances: Option[RentARoomAllowance],
-  journeyStatuses: List[JourneyWithStatus]
+  journeyStatuses: List[JourneyWithStatus],
+  foreignPropertySelectCountry: Option[ForeignPropertySelectCountry]
 )
 
 object FetchedBackendData {

@@ -80,8 +80,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua17 <- updateRentARoomAllowance(ua16, fetchedData.rentARoomAllowances)
         ua18 <- updateRentARoomAdjustments(ua17, fetchedData.raRAdjustments)
         ua19 <- updateRentalsAndRaRAbout(ua18, fetchedData.rentalsAndRaRAbout)
-        ua20 <- updateJourneyStatuses(ua19, fetchedData.journeyStatuses)
-      } yield ua20
+        ua20 <- updateForeignPropertySelectCountry(ua19, fetchedData.foreignPropertySelectCountry)
+        ua21 <- updateJourneyStatuses(ua20, fetchedData.journeyStatuses)
+      } yield ua21
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -124,25 +125,6 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "foreign-property-tax"                         => ForeignTaxSectionCompletePage
         case "foreign-property-select-country"              => ForeignSelectCountriesCompletePage
       }
-//      case object About extends JourneyName("property-about")
-//      case object RentalAbout extends JourneyName("property-rental-about")
-//      case object RentalIncome extends JourneyName("rental-income")
-//      case object RentalAllowances extends JourneyName("rental-allowances")
-//      case object RentalExpenses extends JourneyName("rental-expenses")
-//      case object RentalAdjustments extends JourneyName("rental-adjustments")
-//      case object RentalSBA extends JourneyName("rental-sba")
-//      case object RentalESBA extends JourneyName("rental-esba")
-//      case object RentARoomAbout extends JourneyName("rent-a-room-about")
-//      case object RentARoomAllowances extends JourneyName("rent-a-room-allowances")
-//      case object RentARoomExpenses extends JourneyName("rent-a-room-expenses")
-//      case object RentARoomAdjustments extends JourneyName("rent-a-room-adjustments")
-//      case object RentalsAndRaRAbout extends JourneyName("property-rentals-and-rent-a-room-about")
-//      case object RentalsAndRaRIncome extends JourneyName("property-rentals-and-rent-a-room-income")
-//      case object RentalsAndRaRAllowances extends JourneyName("property-rentals-and-rent-a-room-allowances")
-//      case object RentalsAndRaRExpenses extends JourneyName("property-rentals-and-rent-a-room-expenses")
-//      case object RentalsAndRaRAdjustments extends JourneyName("property-rentals-and-rent-a-room-adjustments")
-//      case object RentalsAndRaRSBA extends JourneyName("property-rentals-and-rent-a-room-sba")
-//      case object RentalsAndRaRESBA extends JourneyName("property-rentals-and-rent-a-room-esba")
 
     private def updatePropertyAboutPages(
       userAnswers: UserAnswers,
@@ -156,6 +138,38 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua2 <- ua1.set(TotalIncomePage, propertyAbout.totalIncome)
             ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
           } yield ua3
+      }
+
+    private def updateForeignPropertySelectCountry(
+      userAnswers: UserAnswers,
+      maybeForeignPropertySelectCountry: Option[ForeignPropertySelectCountry]
+    ): Try[UserAnswers] =
+      maybeForeignPropertySelectCountry match {
+        case None => Success(userAnswers)
+        case Some(foreignPropertySelectCountry) =>
+          for {
+            reportIncomeUserAnswers <-
+              foreignPropertySelectCountry.reportPropertyIncome.fold[Try[UserAnswers]](Success(userAnswers))(
+                reportIncome => userAnswers.set(pages.foreign.PropertyIncomeReportPage, reportIncome)
+              )
+            incomeCountriesUserAnswers <-
+              foreignPropertySelectCountry.incomeCountries.fold[Try[UserAnswers]](Success(reportIncomeUserAnswers))(
+                incomeCountries => reportIncomeUserAnswers.set(pages.foreign.IncomeSourceCountries, incomeCountries)
+              )
+            addCountriesUserAnswers <-
+              foreignPropertySelectCountry.addAnotherCountry.fold[Try[UserAnswers]](
+                Success(incomeCountriesUserAnswers)
+              )(addCountries => incomeCountriesUserAnswers.set(pages.foreign.AddCountriesRentedPage, addCountries))
+            claimPIAUserAnswers <-
+              foreignPropertySelectCountry.claimPropertyIncomeAllowance.fold[Try[UserAnswers]](
+                Success(addCountriesUserAnswers)
+              )(claimAllowances =>
+                addCountriesUserAnswers.set(pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage, claimAllowances)
+              )
+            foreignPropertySelectCountryUserAnswers <-
+              claimPIAUserAnswers.set(pages.foreign.TotalIncomePage, foreignPropertySelectCountry.totalIncome)
+
+          } yield foreignPropertySelectCountryUserAnswers
       }
 
     private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
