@@ -24,7 +24,7 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object CalculatedPremiumLeaseTaxableSummary  {
+object CalculatedPremiumLeaseTaxableSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap {

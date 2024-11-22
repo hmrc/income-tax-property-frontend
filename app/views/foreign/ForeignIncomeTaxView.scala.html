@@ -53,7 +53,7 @@
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(
-                                field = form("foreignIncomeTaxAmount"),
+                                field = form("foreignTaxPaidOrDeducted"),
                                 label = LabelViewModel(messages(s"foreignIncomeTax.yes.text.$individualOrAgent"))
                             )
                             .asNumeric()

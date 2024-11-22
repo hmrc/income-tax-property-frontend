@@ -17,6 +17,7 @@
 package controllers.foreign
 
 import base.SpecBase
+import controllers.foreign.routes.{ForeignTaxCheckYourAnswersController, ForeignTaxSectionCompleteController}
 import models.{ForeignIncomeTax, UserAnswers}
 import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
 import play.api.test.FakeRequest
@@ -30,15 +31,15 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = controllers.foreign.routes.ForeignTaxSectionCompleteController.onPageLoad(taxYear)
-  val foreignIncomeTaxAmount: BigDecimal = 234
+  def onwardRoute = ForeignTaxSectionCompleteController.onPageLoad(taxYear, countryCode)
+  val foreignTaxPaidOrDeducted: BigDecimal = 234
 
   "Check Your Answers Controller" - {
     "must return OK and the correct view for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -54,7 +55,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -67,16 +68,16 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       val userAnswers = UserAnswers("foreign-tax-user-answers")
         .set(
           ForeignIncomeTaxPage(countryCode),
-          ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(foreignIncomeTaxAmount))
-        ).flatMap(_.set(ClaimForeignTaxCreditReliefPage(countryCode), true))
+          ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(foreignTaxPaidOrDeducted))
+        )
+        .flatMap(_.set(ClaimForeignTaxCreditReliefPage(countryCode), true))
         .toOption
-
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, routes.ForeignTaxCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+        val request = FakeRequest(POST, ForeignTaxCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
