@@ -19,7 +19,7 @@ package controllers.foreign
 import controllers.actions._
 import forms.foreign.CalculatedPremiumLeaseTaxableFormProvider
 import models.{Mode, PremiumCalculated}
-import navigation.{ForeignPropertyNavigator, Navigator}
+import navigation.ForeignPropertyNavigator
 import pages.foreign.CalculatedPremiumLeaseTaxablePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,7 +31,7 @@ import views.html.foreign.CalculatedPremiumLeaseTaxableView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CalculatedPremiumLeaseTaxableController @Inject()(
+class CalculatedPremiumLeaseTaxableController @Inject() (
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          foreignPropertyNavigator: ForeignPropertyNavigator,

@@ -51,6 +51,6 @@ class ForeignTaxCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      Future.successful(Redirect(controllers.foreign.routes.ForeignTaxSectionCompleteController.onPageLoad(taxYear)))
+      Future.successful(Redirect(controllers.foreign.routes.ForeignTaxSectionCompleteController.onPageLoad(taxYear, countryCode)))
     }
 }

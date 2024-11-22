@@ -18,6 +18,10 @@ package pages.foreign
 
 import models.{NormalMode, UserAnswers}
 import pages.foreign.income.ForeignIncomeSectionCompletePage
+import controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController
+import models.{NormalMode, Rentals, UserAnswers}
+import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
+import play.api.mvc.Call
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
@@ -51,18 +55,29 @@ object ForeignPropertySummaryPage {
     )
   }
   def foreignPropertyItems(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
-    val taskListTagForIncome =
-      userAnswers.flatMap { answers =>
-        answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+    val taskListTagForForeignTax =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignTaxSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
         }
-      }.getOrElse(TaskListTag.NotStarted)
+        .getOrElse(TaskListTag.NotStarted)
+
+    val taskListTagForIncome =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
 
     Seq(
       TaskListItem(
         "foreign.tax",
         controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
-        TaskListTag.NotStarted,
+        taskListTagForForeignTax,
         "foreign_property_income_tax"
       ),
       TaskListItem(

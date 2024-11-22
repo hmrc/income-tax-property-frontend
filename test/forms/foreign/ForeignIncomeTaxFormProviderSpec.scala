@@ -39,14 +39,14 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
         val foreignIncomeTaxYesNo = true
 
         "and an amount is entered, should successfully bind" in {
-          val foreignIncomeTaxAmount: BigDecimal = 4534.65
+          val foreignTaxPaidOrDeducted: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
               "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-              "foreignIncomeTaxAmount" -> s"$foreignIncomeTaxAmount"
+              "foreignTaxPaidOrDeducted" -> s"$foreignTaxPaidOrDeducted"
             )
           )
-          boundForm.value.value mustBe ForeignIncomeTax(foreignIncomeTaxYesNo, Some(foreignIncomeTaxAmount))
+          boundForm.value.value mustBe ForeignIncomeTax(foreignIncomeTaxYesNo, Some(foreignTaxPaidOrDeducted))
           boundForm.errors mustBe empty
         }
 
@@ -54,7 +54,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm = form.bind(Map("foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo"))
           boundForm.errors must contain(
             FormError(
-              "foreignIncomeTaxAmount",
+              "foreignTaxPaidOrDeducted",
               s"foreignIncomeTax.error.amount.required.$individualOrAgent"
             )
           )
@@ -65,12 +65,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
             form.bind(
               Map(
                 "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-                "foreignIncomeTaxAmount" -> "non-numeric-value"
+                "foreignTaxPaidOrDeducted" -> "non-numeric-value"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignIncomeTaxAmount",
+              "foreignTaxPaidOrDeducted",
               "foreignIncomeTax.error.amount.nonNumeric"
             )
           )
@@ -81,12 +81,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
             form.bind(
               Map(
                 "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-                "foreignIncomeTaxAmount" -> "4534.6545"
+                "foreignTaxPaidOrDeducted" -> "4534.6545"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignIncomeTaxAmount",
+              "foreignTaxPaidOrDeducted",
               "foreignIncomeTax.error.amount.nonNumeric"
             )
           )
@@ -96,12 +96,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm = form.bind(
             Map(
               "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-              "foreignIncomeTaxAmount" -> "45334553534535345435345345434.65"
+              "foreignTaxPaidOrDeducted" -> "45334553534535345435345345434.65"
             )
           )
           boundForm.errors must contain(
             FormError(
-              "foreignIncomeTaxAmount",
+              "foreignTaxPaidOrDeducted",
               "foreignIncomeTax.error.amount.outOfRange",
               ArraySeq(0, 100000000)
             )

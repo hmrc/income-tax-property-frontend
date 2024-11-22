@@ -52,8 +52,8 @@ POST        /:taxYear/foreign-property/foreign-tax/:countryCode/change-claim-for
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answers                             controllers.foreign.ForeignTaxCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
 
-GET        /:taxYear/foreign-property/foreign-tax/complete-yes-no                                             controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/foreign-tax/complete-yes-no                                             controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/foreign-tax/:countryCode/complete-yes-no                                controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-tax/:countryCode/complete-yes-no                                controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 
 GET        /:taxYear/foreign-property/income/:countryCode/start                                               controllers.foreign.income.ForeignPropertyIncomeStartController.onPageLoad(taxYear: Int, countryCode: String)
 

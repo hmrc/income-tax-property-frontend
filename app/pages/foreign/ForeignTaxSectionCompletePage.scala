@@ -16,12 +16,14 @@
 
 package pages.foreign
 
-import pages.{PageConstants, QuestionPage}
+import models.ForeignProperty
+import pages.PageConstants.foreignTaxPath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ForeignTaxSectionCompletePage extends QuestionPage[Boolean] {
+case class ForeignTaxSectionCompletePage(countryCode: String) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ PageConstants.foreignPropertySectionFinished \ toString
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode \ toString
 
   override def toString: String = "foreignTaxSectionComplete"
 }
