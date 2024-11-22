@@ -27,10 +27,10 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 import viewmodels.govuk.all.SummaryListViewModel
-import viewmodels.checkAnswers.foreign.{PremiumsGrantLeaseYNSummary, ForeignYearLeaseAmountSummary}
+import viewmodels.checkAnswers.foreign.{ForeignYearLeaseAmountSummary, PremiumsGrantLeaseYNSummary, ForeignOtherIncomeFromPropertySummary}
 import viewmodels.checkAnswers.foreign.income.ForeignPropertyRentalIncomeSummary
-import viewmodels.checkAnswers.premiumlease.{CalculatedFigureYourselfSummary, ReceivedGrantLeaseAmountSummary, PremiumsGrantLeaseSummary}
-import viewmodels.checkAnswers.propertyrentals.income.{OtherIncomeFromPropertySummary, ReversePremiumsReceivedSummary}
+import viewmodels.checkAnswers.premiumlease.{ReceivedGrantLeaseAmountSummary, PremiumsGrantLeaseSummary, CalculatedFigureYourselfSummary}
+import viewmodels.checkAnswers.propertyrentals.income.ReversePremiumsReceivedSummary
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -57,7 +57,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
           ForeignYearLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
           PremiumsGrantLeaseSummary.row(taxYear, request.userAnswers, propertyType),
           ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers, propertyType),
-          OtherIncomeFromPropertySummary.row(taxYear, request.userAnswers, propertyType)
+          ForeignOtherIncomeFromPropertySummary.row(taxYear, countryCode, request.userAnswers)
         ).flatten
       )
 
