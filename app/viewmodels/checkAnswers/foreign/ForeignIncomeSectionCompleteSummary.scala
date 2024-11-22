@@ -35,7 +35,7 @@ object ForeignIncomeSectionCompleteSummary  {
           key     = "foreignIncomeSectionComplete.checkYourAnswersLabel",
           value   = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode).url)
               .withVisuallyHiddenText(messages("foreignIncomeSectionComplete.change.hidden"))
           )
         )

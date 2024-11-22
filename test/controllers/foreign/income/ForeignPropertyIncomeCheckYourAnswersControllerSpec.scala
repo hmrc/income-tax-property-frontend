@@ -18,22 +18,14 @@ package controllers.foreign.income
 
 import base.SpecBase
 import controllers.routes
-import models.{PremiumsGrantLease, CalculatedFigureYourself, UserAnswers, NormalMode, Rentals, PropertyType, ReversePremiumsReceived}
-import navigation.{Navigator, FakeNavigator}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
-import play.api.inject.bind
-import play.api.mvc.Call
+import models.{UserAnswers, ReversePremiumsReceived}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import controllers.foreign.income.routes._
 import pages.PremiumsGrantLeaseYNPage
 import pages.foreign.ForeignYearLeaseAmountPage
-import pages.foreign.income.ForeignPropertyRentalIncomePage
-import pages.premiumlease.{PremiumsGrantLeasePage, ReceivedGrantLeaseAmountPage, CalculatedFigureYourselfPage}
-import pages.propertyrentals.income.{OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage}
+import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
+
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
@@ -43,7 +35,7 @@ class ForeignPropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with 
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+  def onwardRoute = ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)
   val controller = ForeignPropertyIncomeCheckYourAnswersController
 
   "ForeignPropertyIncomeCheckYourAnswers Controller" - {
@@ -99,12 +91,9 @@ class ForeignPropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with 
       val userAnswers = UserAnswers("foreign-property-income-user-answers")
         .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67))
         .flatMap(_.set(PremiumsGrantLeaseYNPage(countryCode), true))
-        .flatMap(_.set(CalculatedFigureYourselfPage(Rentals), CalculatedFigureYourself(true, Some(BigDecimal(67)))))
-        .flatMap(_.set(ReceivedGrantLeaseAmountPage(Rentals), BigDecimal(23)))
         .flatMap(_.set(ForeignYearLeaseAmountPage(countryCode), 24))
-        .flatMap(_.set(PremiumsGrantLeasePage(Rentals), PremiumsGrantLease(true, Some(BigDecimal(23)))))
-        .flatMap(_.set(ReversePremiumsReceivedPage(Rentals), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
-        .flatMap(_.set(OtherIncomeFromPropertyPage(Rentals), BigDecimal(12)))
+        .flatMap(_.set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
+        .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
         .toOption
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)

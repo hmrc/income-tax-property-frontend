@@ -17,6 +17,7 @@
 package controllers.foreign.income
 
 import controllers.actions._
+import models.NormalMode
 
 import javax.inject.Inject
 import play.api.i18n.{MessagesApi, I18nSupport}
@@ -56,6 +57,6 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(Redirect(controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)))
+      Future.successful(Redirect(controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)))
   }
 }
