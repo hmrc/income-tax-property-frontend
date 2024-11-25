@@ -46,6 +46,7 @@ case class UKPropertySummaryPage(
 )
 
 case class SummaryPage(cyaDiversionService: CYADiversionService) {
+
   def createUkPropertyRows(
     userAnswers: Option[UserAnswers],
     taxYear: Int,

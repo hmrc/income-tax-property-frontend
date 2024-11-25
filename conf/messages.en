@@ -1762,6 +1762,10 @@ ukRentARoom.about.start.p4 = Read more about
 ukRentARoom.about.start.linkText = the Rent a Room Scheme at GOV.UK (opens in new tab)
 ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
 
+###################### UK & Foreign Property ######################
+
+ukAndForeign.summary.title = UK and Foreign property
+summary.aboutUKAndForeignProperties = About
 
 ###################### Foreign Property ######################
 
