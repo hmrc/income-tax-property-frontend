@@ -2079,3 +2079,12 @@ foreignRentsRatesAndInsurance.error.required.individual = Enter how much you spe
 foreignRentsRatesAndInsurance.error.required.agent = Enter how much your client spent on rents, rates and insurance for your property
 foreignRentsRatesAndInsurance.error.outOfRange = Enter an amount between £0 and £100,000,000
 foreignRentsRatesAndInsurance.change.hidden = Rents, rates and insurance costs for your property
+
+foreignPropertyRepairsAndMaintenance.title = ForeignPropertyRepairsAndMaintenance
+foreignPropertyRepairsAndMaintenance.heading = ForeignPropertyRepairsAndMaintenance
+foreignPropertyRepairsAndMaintenance.checkYourAnswersLabel = ForeignPropertyRepairsAndMaintenance
+foreignPropertyRepairsAndMaintenance.error.nonNumeric = Enter your foreignPropertyRepairsAndMaintenance using numbers
+foreignPropertyRepairsAndMaintenance.error.required = Enter your foreignPropertyRepairsAndMaintenance
+foreignPropertyRepairsAndMaintenance.error.wholeNumber = Enter your foreignPropertyRepairsAndMaintenance using whole numbers
+foreignPropertyRepairsAndMaintenance.error.outOfRange = ForeignPropertyRepairsAndMaintenance must be between {0} and {1}
+foreignPropertyRepairsAndMaintenance.change.hidden = ForeignPropertyRepairsAndMaintenance
