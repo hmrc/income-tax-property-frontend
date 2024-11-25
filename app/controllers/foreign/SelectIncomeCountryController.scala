@@ -32,6 +32,7 @@ import views.html.foreign.SelectIncomeCountryView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Failure
 
 class SelectIncomeCountryController @Inject() (
   override val messagesApi: MessagesApi,
@@ -70,12 +71,9 @@ class SelectIncomeCountryController @Inject() (
             ),
           countryCode =>
             for {
-              updatedAnswers <-
-                Future
-                  .fromTry(
-                    request.userAnswers
-                      .set(SelectIncomeCountryPage(index), CountryNamesDataSource.getCountry(countryCode))
-                  )
+              updatedAnswers <- Future.fromTry(CountryNamesDataSource.getCountry(countryCode)
+                                  .map(country => request.userAnswers.set(SelectIncomeCountryPage(index), country))
+                                  .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognized"))))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(SelectIncomeCountryPage(index), taxYear, mode, request.userAnswers, updatedAnswers)

@@ -54,7 +54,7 @@ class ForeignIncomeTaxController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      getCountry(countryCode) match {
+      CountryNamesDataSource.getCountry(countryCode) match {
         case Some(country) => Future.successful(Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, country, mode)))
         case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
       }
@@ -66,7 +66,7 @@ class ForeignIncomeTaxController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          getCountry(countryCode) match {
+          CountryNamesDataSource.getCountry(countryCode) match {
             case Some(country) => Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, country, mode)))
             case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
           },
@@ -77,9 +77,5 @@ class ForeignIncomeTaxController @Inject()(
           } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
-
-  private def getCountry(countryCode: String): Option[(String, String)] =
-    CountryNamesDataSource.countrySelectItems.find(selectItem => selectItem.value.contains(countryCode.toUpperCase))
-      .flatMap(selectItem => selectItem.value.map(value => (selectItem.text, value)))
 
 }

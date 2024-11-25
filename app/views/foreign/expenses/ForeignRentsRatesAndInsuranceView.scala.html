@@ -1,0 +1,65 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import controllers.foreign.expenses.routes
+@import viewmodels.LabelSize
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, countryCode: String, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages(s"foreignRentsRatesAndInsurance.title.$individualOrAgent"))) {
+
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form))
+    }
+
+    <h1 class="govuk-heading-l">@messages(s"foreignRentsRatesAndInsurance.heading.$individualOrAgent")</h1>
+
+    <ul id="list" class="govuk-list govuk-list--bullet">
+        <li>@messages(s"foreignRentsRatesAndInsurance.l1.$individualOrAgent")</li>
+        <li>@messages("foreignRentsRatesAndInsurance.l2")</li>
+        <li>@messages("foreignRentsRatesAndInsurance.l3")</li>
+        <li>@messages("foreignRentsRatesAndInsurance.l4")</li>
+        <li>@messages("foreignRentsRatesAndInsurance.l5")</li>
+    </ul>
+
+    <p class="govuk-body">@messages(s"foreignRentsRatesAndInsurance.p.$individualOrAgent")</p>
+
+    @formHelper(action = routes.ForeignRentsRatesAndInsuranceController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+
+        @govukInput(
+            InputViewModel(
+                field = form("foreignRentsRatesAndInsurance"),
+                label = LabelViewModel(messages(s"foreignRentsRatesAndInsurance.input.heading.$individualOrAgent")).asPageHeading(LabelSize.Medium)
+            )
+            .asNumeric()
+            .withWidth(Fixed10)
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
