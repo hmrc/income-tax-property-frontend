@@ -1,38 +1,60 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers.foreign.expenses
 
 import base.SpecBase
 import controllers.routes
 import forms.foreign.expenses.ForeignPropertyRepairsAndMaintenanceFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.expenses.ForeignPropertyRepairsAndMaintenancePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import views.html.foreign.expenses.ForeignPropertyRepairsAndMaintenanceView
 
 import scala.concurrent.Future
 
 class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with MockitoSugar {
 
+  val taxYear: Int = 2024
+  val countryCode: String = "AUS"
+  val isAgentMessageKey = "individual"
   val formProvider = new ForeignPropertyRepairsAndMaintenanceFormProvider()
-  val form = formProvider()
+  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val validAnswer = 0
+  val validAnswer: BigDecimal = BigDecimal(0)
 
-  lazy val foreignPropertyRepairsAndMaintenanceRoute = routes.ForeignPropertyRepairsAndMaintenanceController.onPageLoad(NormalMode).url
+  lazy val foreignPropertyRepairsAndMaintenanceRoute: String =
+    controllers.foreign.expenses.routes.ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignPropertyRepairsAndMaintenance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignPropertyRepairsAndMaintenanceRoute)
@@ -42,15 +64,15 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
         val view = application.injector.instanceOf[ForeignPropertyRepairsAndMaintenanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignPropertyRepairsAndMaintenancePage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignPropertyRepairsAndMaintenancePage(countryCode), validAnswer).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignPropertyRepairsAndMaintenanceRoute)
@@ -60,7 +82,7 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -71,9 +93,9 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -81,7 +103,7 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
       running(application) {
         val request =
           FakeRequest(POST, foreignPropertyRepairsAndMaintenanceRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignPropertyRepairsAndMaintenanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -92,21 +114,21 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
           FakeRequest(POST, foreignPropertyRepairsAndMaintenanceRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("foreignPropertyRepairsAndMaintenanceAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("foreignPropertyRepairsAndMaintenanceAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignPropertyRepairsAndMaintenanceView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -131,7 +153,7 @@ class ForeignPropertyRepairsAndMaintenanceControllerSpec extends SpecBase with M
       running(application) {
         val request =
           FakeRequest(POST, foreignPropertyRepairsAndMaintenanceRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignPropertyRepairsAndMaintenanceAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
