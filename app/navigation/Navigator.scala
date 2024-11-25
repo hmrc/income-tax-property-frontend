@@ -657,7 +657,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
             }
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode)
+
     case RaRAdjustmentsCompletePage     => taxYear => _ => _ => SummaryController.show(taxYear)
     case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case AboutPropertyCompletePage      => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -1016,10 +1017,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case RaRUnusedResidentialCostsPage =>
-      taxYear =>
-        _ =>
-          _ =>
-            RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => _ => _ => RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode)
 
         // Rentals and Rent a Room
     case JointlyLetPage(RentalsRentARoom) =>

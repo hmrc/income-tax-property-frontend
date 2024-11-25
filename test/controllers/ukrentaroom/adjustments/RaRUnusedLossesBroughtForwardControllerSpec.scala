@@ -14,79 +14,77 @@
  * limitations under the License.
  */
 
-package controllers.foreign
+package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
-import forms.foreign.ForeignIncomeTaxFormProvider
-import models.{ForeignIncomeTax, NormalMode, UserAnswers}
-import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
+import forms.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardFormProvider
+import models.{NormalMode, RaRUnusedLossesBroughtForward, UserAnswers}
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import pages.foreign.ForeignIncomeTaxPage
+import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.foreign.ForeignIncomeTaxView
+import views.html.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardView
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
+class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear: Int = LocalDate.now().getYear
-  val formProvider = new ForeignIncomeTaxFormProvider()
-  val country: (String, String) = ("United States of America", "USA")
-  val foreignIncomeTaxAnswers: ForeignIncomeTax = ForeignIncomeTax(foreignIncomeTaxYesNo = true, foreignTaxPaidOrDeducted = Some(123.45))
-  lazy val foreignIncomeTaxRoute: String = routes.ForeignIncomeTaxController.onPageLoad(taxYear, country._2, NormalMode).url
+  val formProvider = new RaRUnusedLossesBroughtForwardFormProvider()
+  val validAnswer: RaRUnusedLossesBroughtForward = RaRUnusedLossesBroughtForward(
+    raRUnusedLossesBroughtForwardYesOrNo = true, raRUnusedLossesBroughtForwardAmount = Some(123.45))
+  lazy val raRUnusedLossesBroughtForwardRoute: String = routes.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
     val isAgent: Boolean = individualOrAgent == "agent"
 
-
-    s"ForeignIncomeTax Controller for an $individualOrAgent" - {
+    s"RaRUnusedLossesBroughtForward Controller for an $individualOrAgent" - {
 
       "must return OK and the correct view for a GET" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, foreignIncomeTaxRoute)
+          val request = FakeRequest(GET, raRUnusedLossesBroughtForwardRoute)
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[ForeignIncomeTaxView]
+          val view = application.injector.instanceOf[RaRUnusedLossesBroughtForwardView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, country, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ForeignIncomeTaxPage(country._2), foreignIncomeTaxAnswers).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(RaRUnusedLossesBroughtForwardPage, validAnswer).success.value
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, foreignIncomeTaxRoute)
+          val request = FakeRequest(GET, raRUnusedLossesBroughtForwardRoute)
 
-          val view = application.injector.instanceOf[ForeignIncomeTaxView]
+          val view = application.injector.instanceOf[RaRUnusedLossesBroughtForwardView]
 
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(foreignIncomeTaxAnswers),
-            taxYear, individualOrAgent, country, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -97,19 +95,19 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
         val application =
-          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
+          applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent)
             .overrides(
-              bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()
 
         running(application) {
           val request =
-            FakeRequest(POST, foreignIncomeTaxRoute)
+            FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
               .withFormUrlEncodedBody(
-                ("foreignIncomeTaxYesNo", "true"),
-                ("foreignTaxPaidOrDeducted", "123.45")
+                "raRUnusedLossesBroughtForwardYesOrNo" -> "true",
+                "raRUnusedLossesBroughtForwardAmount" -> "123.45"
               )
 
           val result = route(application, request).value
@@ -121,30 +119,30 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
 
       "must return a Bad Request and errors when invalid data is submitted" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
         running(application) {
           val request =
-            FakeRequest(POST, foreignIncomeTaxRoute)
-              .withFormUrlEncodedBody(("value", ""))
+            FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
+              .withFormUrlEncodedBody(("value", "invalid value"))
 
-          val boundForm = form.bind(Map("value" -> ""))
+          val boundForm = form.bind(Map("value" -> "invalid value"))
 
-          val view = application.injector.instanceOf[ForeignIncomeTaxView]
+          val view = application.injector.instanceOf[RaRUnusedLossesBroughtForwardView]
 
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, country, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
         }
       }
 
       "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-        val application = applicationBuilder(userAnswers = None, isAgent).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, foreignIncomeTaxRoute)
+          val request = FakeRequest(GET, raRUnusedLossesBroughtForwardRoute)
 
           val result = route(application, request).value
 
@@ -155,21 +153,23 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
 
       "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-        val application = applicationBuilder(userAnswers = None, isAgent).build()
+        val application = applicationBuilder(userAnswers = None, isAgent = isAgent).build()
 
         running(application) {
           val request =
-            FakeRequest(POST, foreignIncomeTaxRoute)
-              .withFormUrlEncodedBody(("foreignIncomeTaxYesNo", "true"),
-                ("foreignTaxPaidOrDeducted", "123.45"))
+            FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
+              .withFormUrlEncodedBody(
+                "raRUnusedLossesBroughtForwardYesOrNo" -> validAnswer.raRUnusedLossesBroughtForwardYesOrNo.toString,
+                "raRUnusedLossesBroughtForwardAmount" -> validAnswer.raRUnusedLossesBroughtForwardAmount.toString
+              )
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
+
           redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
         }
       }
     }
   }
-
 }
