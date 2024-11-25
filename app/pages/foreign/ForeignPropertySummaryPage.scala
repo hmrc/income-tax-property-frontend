@@ -85,6 +85,12 @@ object ForeignPropertySummaryPage {
         controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
         taskListTagForIncome,
         s"foreign_property_income_$countryCode"
+      ),
+      TaskListItem(
+        "foreign.expenses",
+        controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+        TaskListTag.NotStarted,
+        s"foreign_property_expenses_$countryCode"
       )
     )
   }

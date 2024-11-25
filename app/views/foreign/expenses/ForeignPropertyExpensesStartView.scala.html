@@ -1,0 +1,55 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(taxYear: Int, countryName: String, isIncomeUnder85k: Boolean, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages(s"foreignPropertyExpensesStart.title.$individualOrAgent", countryName))) {
+
+    <h1 class="govuk-heading-l">@messages(s"foreignPropertyExpensesStart.heading.$individualOrAgent", countryName)</h1>
+
+    <p class="govuk-body">@messages(s"foreignPropertyExpensesStart.p1.$individualOrAgent")</p>
+
+    <p class="govuk-body">@messages(s"foreignPropertyExpensesStart.p2.$individualOrAgent")</p>
+
+    <p class="govuk-body">@messages("foreignPropertyExpensesStart.p3")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("foreignPropertyExpensesStart.bullet1")</li>
+        <li>@messages("foreignPropertyExpensesStart.bullet2")</li>
+        <li>@messages("foreignPropertyExpensesStart.bullet3")</li>
+        <li>@messages("foreignPropertyExpensesStart.bullet4")</li>
+        <li>@messages("foreignPropertyExpensesStart.bullet5")</li>
+        <li>@messages("foreignPropertyExpensesStart.bullet6")</li>
+    </ul>
+
+    @if(isIncomeUnder85k) {
+        <p class="govuk-body">@messages(s"foreignPropertyExpensesStart.p4.$individualOrAgent")</p>
+        <p class="govuk-body">@messages("foreignPropertyExpensesStart.p5")</p>
+        <p class="govuk-body">@messages("foreignPropertyExpensesStart.p6")</p>
+        <p class="govuk-body">@messages("foreignPropertyExpensesStart.p7")</p>
+    }
+
+    <p class="govuk-body">
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+    )
+    </p>
+}
