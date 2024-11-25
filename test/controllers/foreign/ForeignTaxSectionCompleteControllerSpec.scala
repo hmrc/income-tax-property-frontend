@@ -42,11 +42,14 @@ import scala.concurrent.Future
 
 class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
+
+  val taxYear = 2024
+  val countryCode: String = "USA"
 
   val formProvider = new ForeignTaxSectionCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
-  val taxYear = 2024
+
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val user: User = User(
     mtditid = "mtditid",
@@ -56,7 +59,8 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
     agentRef = Some("agentReferenceNumber")
   )
 
-  lazy val foreignTaxSectionCompleteRoute = ForeignTaxSectionCompleteController.onPageLoad(taxYear).url
+  lazy val foreignTaxSectionCompleteRoute: String =
+    ForeignTaxSectionCompleteController.onPageLoad(taxYear, countryCode).url
 
   "ForeignTaxSectionComplete Controller" - {
 
@@ -72,13 +76,16 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         val view = application.injector.instanceOf[ForeignTaxSectionCompleteView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignTaxSectionCompletePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignTaxSectionCompletePage(countryCode), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -90,7 +97,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, NormalMode)(
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -108,7 +115,6 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
           Right("completed")
         )
       )
-
         .when(mockJourneyAnswersService)
         .setStatus(
           ArgumentMatchers.eq(
@@ -123,7 +129,6 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
           ArgumentMatchers.eq(user)
         )(any())
 
-
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
@@ -135,8 +140,8 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear).url)
-            .withFormUrlEncodedBody(("foreignTaxIsSectionCompleteYesOrNo", "true"))
+          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear, countryCode).url)
+            .withFormUrlEncodedBody(("isForeignTaxSectionComplete", "true"))
 
         val result = route(application, request).value
 
@@ -163,17 +168,20 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear).url)
-            .withFormUrlEncodedBody(("foreignTaxIsSectionCompleteYesOrNo", ""))
+          FakeRequest(POST, ForeignTaxSectionCompleteController.onSubmit(taxYear, countryCode).url)
+            .withFormUrlEncodedBody(("isForeignTaxSectionComplete", ""))
 
-        val boundForm = form.bind(Map("foreignTaxIsSectionCompleteYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isForeignTaxSectionComplete" -> ""))
 
         val view = application.injector.instanceOf[ForeignTaxSectionCompleteView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -198,7 +206,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, foreignTaxSectionCompleteRoute)
-            .withFormUrlEncodedBody(("foreignTaxIsSectionCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isForeignTaxSectionComplete", "true"))
 
         val result = route(application, request).value
 

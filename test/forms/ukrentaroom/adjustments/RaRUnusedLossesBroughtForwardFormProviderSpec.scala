@@ -14,48 +14,48 @@
  * limitations under the License.
  */
 
-package forms.foreign
+package forms.ukrentaroom.adjustments
 
 import forms.behaviours.BooleanFieldBehaviours
-import models.ForeignIncomeTax
+import models.RaRUnusedLossesBroughtForward
 import org.scalatest.OptionValues
 import org.scalatest.prop.TableFor1
 import play.api.data.FormError
 
 import scala.collection.immutable.ArraySeq
 
-class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
+class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val invalidKey = "error.boolean"
 
-  val formProvider = new ForeignIncomeTaxFormProvider()
+  val formProvider = new RaRUnusedLossesBroughtForwardFormProvider()
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
 
-    s".foreignIncomeTax for $individualOrAgent" - {
-      "when foreignIncomeTaxYesNo is true" - {
-        val foreignIncomeTaxYesNo = true
+    s".raRUnusedLossesBroughtForward for $individualOrAgent" - {
+      "when raRUnusedLossesBroughtForwardYesOrNo is true" - {
+        val raRUnusedLossesBroughtForwardYesOrNo = true
 
         "and an amount is entered, should successfully bind" in {
-          val foreignTaxPaidOrDeducted: BigDecimal = 4534.65
+          val raRUnusedLossesBroughtForwardAmount: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
-              "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-              "foreignTaxPaidOrDeducted" -> s"$foreignTaxPaidOrDeducted"
+              "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+              "raRUnusedLossesBroughtForwardAmount" -> s"$raRUnusedLossesBroughtForwardAmount"
             )
           )
-          boundForm.value.value mustBe ForeignIncomeTax(foreignIncomeTaxYesNo, Some(foreignTaxPaidOrDeducted))
+          boundForm.value.value mustBe RaRUnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo, Some(raRUnusedLossesBroughtForwardAmount))
           boundForm.errors mustBe empty
         }
 
         "and no amount is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo"))
+          val boundForm = form.bind(Map("raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo"))
           boundForm.errors must contain(
             FormError(
-              "foreignTaxPaidOrDeducted",
-              s"foreignIncomeTax.error.amount.required.$individualOrAgent"
+              "raRUnusedLossesBroughtForwardAmount",
+              s"raRUnusedLossesBroughtForward.error.amount.required.$individualOrAgent"
             )
           )
         }
@@ -64,14 +64,14 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm =
             form.bind(
               Map(
-                "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-                "foreignTaxPaidOrDeducted" -> "non-numeric-value"
+                "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+                "raRUnusedLossesBroughtForwardAmount" -> "non-numeric-value"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.nonNumeric"
+              "raRUnusedLossesBroughtForwardAmount",
+              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
             )
           )
         }
@@ -80,14 +80,14 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm =
             form.bind(
               Map(
-                "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-                "foreignTaxPaidOrDeducted" -> "4534.6545"
+                "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+                "raRUnusedLossesBroughtForwardAmount" -> "4534.6545"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.nonNumeric"
+              "raRUnusedLossesBroughtForwardAmount",
+              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
             )
           )
         }
@@ -95,15 +95,15 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
         "and an amount is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
-              "foreignTaxPaidOrDeducted" -> "45334553534535345435345345434.65"
+              "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+              "raRUnusedLossesBroughtForwardAmount" -> "45334553534535345435345345434.65"
             )
           )
           boundForm.errors must contain(
             FormError(
-              "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.outOfRange",
-              ArraySeq(0, 100000000)
+              "raRUnusedLossesBroughtForwardAmount",
+              "raRUnusedLossesBroughtForward.error.amount.outOfRange",
+              ArraySeq(formProvider.minimum, formProvider.maximum)
             )
           )
         }

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package models
 
-import models.ForeignProperty
-import pages.PageConstants.foreignTaxPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case class ForeignTaxSectionCompletePage(countryCode: String) extends QuestionPage[Boolean] {
+case class RaRUnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo: Boolean,
+                                         raRUnusedLossesBroughtForwardAmount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode \ toString
-
-  override def toString: String = "foreignTaxSectionComplete"
+object RaRUnusedLossesBroughtForward {
+  implicit val format: Format[RaRUnusedLossesBroughtForward] = Json.format[RaRUnusedLossesBroughtForward]
 }

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package pages.ukrentaroom.adjustments
 
-import models.ForeignProperty
-import pages.PageConstants.foreignTaxPath
+import models.{RaRUnusedLossesBroughtForward, RentARoom}
+import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignTaxSectionCompletePage(countryCode: String) extends QuestionPage[Boolean] {
+case object RaRUnusedLossesBroughtForwardPage extends QuestionPage[RaRUnusedLossesBroughtForward] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode \ toString
+  override def path: JsPath = JsPath \ adjustmentsPath(RentARoom) \ toString
 
-  override def toString: String = "foreignTaxSectionComplete"
+  override def toString: String = "raRUnusedLossesBroughtForward"
 }

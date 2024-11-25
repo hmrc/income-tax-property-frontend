@@ -49,41 +49,46 @@ class ForeignTaxSectionCompleteController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-
-      val preparedForm = request.userAnswers.get(ForeignTaxSectionCompletePage) match {
-        case None => form
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      val preparedForm = request.userAnswers.get(ForeignTaxSectionCompletePage(countryCode)) match {
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
-  }
+      Ok(view(preparedForm, taxYear, countryCode, mode))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignTaxSectionCompletePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-            status <- journeyAnswersService.setStatus(
-              JourneyContext(
-                taxYear = taxYear,
-                mtditid = request.user.mtditid,
-                nino = request.user.nino,
-                journeyPath = ForeignPropertyTax
-              ),
-              status = statusForPage(value),
-              request.user
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignTaxSectionCompletePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyPath = ForeignPropertyTax
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield Redirect(
+              navigator.nextPage(
+                ForeignTaxSectionCompletePage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
-          } yield Redirect(
-                navigator.nextPage(ForeignTaxSectionCompletePage, taxYear, mode, request.userAnswers, updatedAnswers)
-          )
-      )
-  }
+        )
+    }
 }

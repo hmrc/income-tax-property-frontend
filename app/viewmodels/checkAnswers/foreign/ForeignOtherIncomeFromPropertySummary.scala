@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.foreign
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.income.ForeignOtherIncomeFromPropertyPage
 import play.api.i18n.Messages
@@ -25,7 +24,7 @@ import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignOtherIncomeFromPropertySummary  {
+object ForeignOtherIncomeFromPropertySummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ForeignOtherIncomeFromPropertyPage(countryCode)).map {

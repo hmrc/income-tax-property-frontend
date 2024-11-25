@@ -1421,6 +1421,22 @@ ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para2 = Rea
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link.text = tax relief for residential landlords at GOV.UK (opens in new tab)
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link = https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies#example-4-carrying-forward-unused-finance-costs
 
+raRUnusedLossesBroughtForward.title.individual = Did you have any unused losses for your rent a room in previous years?
+raRUnusedLossesBroughtForward.title.agent = Did your client have any unused losses for their rent a room in previous years?
+raRUnusedLossesBroughtForward.heading.individual = Did you have any unused losses for your rent a room in previous years?
+raRUnusedLossesBroughtForward.heading.agent = Did your client have any unused losses for their rent a room in previous years?
+raRUnusedLossesBroughtForward.p1.individual = These are unused losses that you have told us about in previous tax returns and chose to carry forward.
+raRUnusedLossesBroughtForward.p1.agent = These are unused losses that your client has told us about in previous tax returns and chose to carry forward.
+raRUnusedLossesBroughtForward.checkYourAnswersLabel = Unused Losses Brought Forward
+raRUnusedLossesBroughtForward.radio.question.label = Enter the amount
+raRUnusedLossesBroughtForward.error.required.individual = Select yes if you have any unused losses for your rent a room in previous years.
+raRUnusedLossesBroughtForward.error.required.agent = Select yes if your client has any unused losses for your rent a room in previous years.
+raRUnusedLossesBroughtForward.error.amount.required.individual = Enter the amount of any unused losses for your rent a room in previous years
+raRUnusedLossesBroughtForward.error.amount.required.agent = Enter the amount of any unused losses for your client’s rent a room in previous years
+raRUnusedLossesBroughtForward.error.amount.nonNumeric = Enter the amount in the correct format, for example £900 or £100.20
+raRUnusedLossesBroughtForward.error.amount.outOfRange = Enter an amount between £0 and £100,000,000
+raRUnusedLossesBroughtForward.change.hidden = Unused Losses Brought Forward
+
 rentsRatesAndInsuranceRR.title.agent=Rents, rates and insurance for your client’s property
 rentsRatesAndInsuranceRR.heading.agent=Rents, rates and insurance for your client’s property
 rentsRatesAndInsuranceRR.title.individual=Rents, rates and insurance
@@ -2041,4 +2057,3 @@ foreignPropertyExpensesStart.p4.agent = Your client can claim:
 foreignPropertyExpensesStart.p5 = Consolidated expenses, where you add up all of your expenses and enter one total amount.
 foreignPropertyExpensesStart.p6 = or
 foreignPropertyExpensesStart.p7 = Individual expenses, where you enter an amount for each separate expenses type.
-

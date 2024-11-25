@@ -27,9 +27,9 @@ class ForeignTaxSectionCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new ForeignTaxSectionCompleteFormProvider()()
 
-  ".foreignTaxIsSectionCompleteYesOrNo" - {
+  ".isForeignTaxSectionComplete" - {
 
-    val fieldName = "foreignTaxIsSectionCompleteYesOrNo"
+    val fieldName = "isForeignTaxSectionComplete"
 
     behave like booleanField(
       form,

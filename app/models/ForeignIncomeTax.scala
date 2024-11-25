@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class ForeignIncomeTax(foreignIncomeTaxYesNo: Boolean, foreignIncomeTaxAmount: Option[BigDecimal])
+case class ForeignIncomeTax(foreignIncomeTaxYesNo: Boolean, foreignTaxPaidOrDeducted: Option[BigDecimal])
 
 object ForeignIncomeTax {
   implicit val format: Format[ForeignIncomeTax] = Json.format

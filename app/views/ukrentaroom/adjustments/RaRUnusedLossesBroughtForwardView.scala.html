@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import controllers.ukrentaroom.adjustments.routes
 @import viewmodels.InputWidth.Fixed10
 
 @this(
@@ -25,40 +26,35 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, country: (String, String), mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"foreignIncomeTax.title.$individualOrAgent", country._1))) {
+@layout(pageTitle = title(form, messages(s"raRUnusedLossesBroughtForward.title.$individualOrAgent"))) {
 
     @if(form.errors.nonEmpty) {
-        @govukErrorSummary(ErrorSummaryViewModel(form, Map("foreignIncomeTaxYesNo" -> "foreignIncomeTaxForm")))
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("raRUnusedLossesBroughtForwardYesOrNo" -> "raRUnusedLossesBroughtForwardForm")))
     }
 
-    <h1 class="govuk-heading-l">@messages(s"foreignIncomeTax.heading.$individualOrAgent", country._1)</h1>
-    <p class="govuk-body">@messages(s"foreignIncomeTax.p.1.$individualOrAgent")</p>
-    <p class="govuk-body">
-    @messages(s"foreignIncomeTax.href.text.1")
-        <a class="govuk-link"  rel="noreferrer noopener" target="_blank" href="@messages("foreignIncomeTax.href.link")">
-        @messages(s"foreignIncomeTax.href.text.2")
-        </a>
-    </p>
+    <h1 class="govuk-heading-l">@messages(s"raRUnusedLossesBroughtForward.heading.$individualOrAgent")</h1>
+    <p class="govuk-body">@messages(s"raRUnusedLossesBroughtForward.p1.$individualOrAgent")</p>
 
-    @formHelper(action = controllers.foreign.routes.ForeignIncomeTaxController.onSubmit(taxYear, country._2, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.RaRUnusedLossesBroughtForwardController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("foreignIncomeTaxYesNo"),
+                field = form("raRUnusedLossesBroughtForwardYesOrNo"),
                 legend = Legend(),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("foreignIncomeTaxForm"),
+                    field = form("raRUnusedLossesBroughtForwardForm"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(
-                                field = form("foreignTaxPaidOrDeducted"),
-                                label = LabelViewModel(messages(s"foreignIncomeTax.yes.text.$individualOrAgent"))
+                                field = form("raRUnusedLossesBroughtForwardAmount"),
+                                label = LabelViewModel(messages("raRUnusedLossesBroughtForward.radio.question.label"))
                             )
                             .asNumeric()
                             .withWidth(Fixed10)
                             .withPrefix(PrefixOrSuffix(content = Text("£")))
+                            .withHint(HintViewModel(messages("amount.hint")))
                         )
                     )
                 )
@@ -66,7 +62,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
 }

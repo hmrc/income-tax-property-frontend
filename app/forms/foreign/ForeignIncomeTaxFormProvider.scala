@@ -33,7 +33,7 @@ class ForeignIncomeTaxFormProvider @Inject() extends Mappings {
     Form[ForeignIncomeTax](
       mapping(
         "foreignIncomeTaxYesNo" -> boolean(s"foreignIncomeTax.error.required.$individualOrAgent"),
-        "foreignIncomeTaxAmount" -> {
+        "foreignTaxPaidOrDeducted" -> {
           mandatoryIfTrue(
             "foreignIncomeTaxYesNo",
             currency(

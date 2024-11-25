@@ -1433,6 +1433,22 @@ ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.para2 = Dar
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link.text = rhyddhad treth i landlordiaid preswyl ar GOV.UK (yn agor tab newydd)
 ukrentaroom.expenses.unusedResidentialPropertyFinanceCostsBroughtFwd.link = https://www.gov.uk/guidance/changes-to-tax-relief-for-residential-landlords-how-its-worked-out-including-case-studies#example-4-carrying-forward-unused-finance-costs
 
+raRUnusedLossesBroughtForward.title.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.title.agent = *Missing Welsh*
+raRUnusedLossesBroughtForward.heading.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.heading.agent = *Missing Welsh*
+raRUnusedLossesBroughtForward.p1.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.p1.agent = *Missing Welsh*
+raRUnusedLossesBroughtForward.checkYourAnswersLabel = *Missing Welsh*
+raRUnusedLossesBroughtForward.radio.question.label = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.required.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.required.agent = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.amount.required.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.amount.required.agent = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.amount.nonNumeric = *Missing Welsh*
+raRUnusedLossesBroughtForward.error.amount.outOfRange = *Missing Welsh*
+raRUnusedLossesBroughtForward.change.hidden = *Missing Welsh*
+
 rentsRatesAndInsuranceRR.title.agent = Rhenti, ardrethi ac yswiriant ar gyfer eiddo eich cleient
 rentsRatesAndInsuranceRR.heading.agent = Rhenti, ardrethi ac yswiriant ar gyfer eiddo eich cleient
 rentsRatesAndInsuranceRR.title.individual = Rhenti, ardrethi ac yswiriant
