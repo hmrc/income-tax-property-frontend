@@ -1,0 +1,69 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, countryCode: String, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("foreignProfessionalFees.title"))) {
+
+    @formHelper(action = controllers.foreign.expenses.routes.ForeignProfessionalFeesController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <h1 class="govuk-heading-l">@messages("foreignProfessionalFees.heading")</h1>
+
+        <p class="govuk-body">@messages(s"foreignProfessionalFees.p1.$individualOrAgent")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("foreignProfessionalFees.bullet1")</li>
+            <li>@messages("foreignProfessionalFees.bullet2")</li>
+            <li>@messages("foreignProfessionalFees.bullet3")</li>
+            <li>@messages("foreignProfessionalFees.bullet4")</li>
+        </ul>
+
+        <p class="govuk-body">@messages(s"foreignProfessionalFees.p2.$individualOrAgent")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("foreignProfessionalFees.bullet5")</li>
+            <li>@messages("foreignProfessionalFees.bullet6")</li>
+            <li>@messages("foreignProfessionalFees.bullet7")</li>
+        </ul>
+        @govukInput(
+            InputViewModel(
+                field = form("foreignProfessionalFeesAmount"),
+                label = LabelViewModel(messages(s"foreignProfessionalFees.label.$individualOrAgent")).withCssClass("govuk-label govuk-label--m")
+            )
+            .asNumeric()
+            .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
