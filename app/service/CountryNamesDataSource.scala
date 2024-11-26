@@ -29,8 +29,7 @@ object CountryNamesDataSource {
 
   private def emptyOption: SelectItem = SelectItem(text = "", value = Some(""))
 
-  def getCountry(code: String): Country =
-    loadCountries.find(item => item.code == code).getOrElse(Country(code = code, name = ""))
+  def getCountry(code: String): Option[Country] = loadCountries.find(item => item.code == code)
 
   private def selectItems: Seq[SelectItem] =
     loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
