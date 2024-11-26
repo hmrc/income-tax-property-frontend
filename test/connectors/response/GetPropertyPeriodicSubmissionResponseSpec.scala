@@ -19,7 +19,8 @@ package connectors.response
 import audit.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
-import models.{Adjustments, BalancingCharge, CapitalAllowancesForACar, FetchedBackendData, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, TotalIncome, UKPropertySelect}
+import models.ForeignTotalIncome.LessThanOneThousand
+import models.{Adjustments, BalancingCharge, CapitalAllowancesForACar, FetchedBackendData, ForeignPropertySelectCountry, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, TotalIncome, UKPropertySelect}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
@@ -71,7 +72,16 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           None,
           None,
           None,
-          List()
+          List(),
+          foreignPropertySelectCountry = Some(
+            ForeignPropertySelectCountry(
+              totalIncome = LessThanOneThousand,
+              reportPropertyIncome = Some(false),
+              incomeCountries = None,
+              addAnotherCountry = None,
+              claimPropertyIncomeAllowance = None
+            )
+          )
         )
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 
