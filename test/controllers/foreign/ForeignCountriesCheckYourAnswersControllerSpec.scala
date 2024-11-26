@@ -83,7 +83,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
     }
 
     "must return OK and the POST for onSubmit() should redirect to the Have you finished this section page" in {
-      val userAnswers = UserAnswers("test").set(ForeignTaxSectionCompletePage, false).get
+      val userAnswers = UserAnswers("test").set(ForeignTaxSectionCompletePage("AUS"), false).get
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
 
