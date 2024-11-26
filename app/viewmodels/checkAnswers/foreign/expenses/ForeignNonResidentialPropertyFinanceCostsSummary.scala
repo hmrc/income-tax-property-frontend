@@ -16,11 +16,11 @@
 
 package viewmodels.checkAnswers.foreign.expenses
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,8 +31,8 @@ object ForeignNonResidentialPropertyFinanceCostsSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "foreignNonResidentialPropertyFinanceCosts.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = KeyViewModel("foreignNonResidentialPropertyFinanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear, countryCode , CheckMode).url)
               .withVisuallyHiddenText(messages("foreignNonResidentialPropertyFinanceCosts.change.hidden"))
