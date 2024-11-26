@@ -1,7 +1,7 @@
 package controllers
 
 import base.SpecBase
-import forms.ConsolidatedOrIndividualExpensesFormProvider
+import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 import models.{NormalMode, ConsolidatedOrIndividualExpenses, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any

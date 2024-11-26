@@ -16,30 +16,10 @@
 
 package models
 
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import play.api.libs.json.{Format, Json}
 
-sealed trait ConsolidatedOrIndividualExpenses
+final case class ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo: Boolean, enteredAmount: Option[BigDecimal])
 
-object ConsolidatedOrIndividualExpenses extends Enumerable.Implicits {
-
-  case object Consolidated extends WithName("consolidatedExpenses") with ConsolidatedOrIndividualExpenses
-  case object Individual extends WithName("individualExpenses") with ConsolidatedOrIndividualExpenses
-
-  val values: Seq[ConsolidatedOrIndividualExpenses] = Seq(
-    Consolidated, Individual
-  )
-
-  def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
-    case (value, index) =>
-      RadioItem(
-        content = Text(messages(s"consolidatedOrIndividualExpenses.${value.toString}")),
-        value   = Some(value.toString),
-        id      = Some(s"value_$index")
-      )
-  }
-
-  implicit val enumerable: Enumerable[ConsolidatedOrIndividualExpenses] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+object ConsolidatedOrIndividualExpenses {
+  implicit val format: Format[ConsolidatedOrIndividualExpenses] = Json.format
 }

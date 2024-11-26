@@ -1,6 +1,7 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
+import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 import models.ConsolidatedOrIndividualExpenses
 import play.api.data.FormError
 

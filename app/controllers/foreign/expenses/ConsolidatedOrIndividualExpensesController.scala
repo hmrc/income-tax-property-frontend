@@ -17,7 +17,7 @@
 package controllers.foreign.expenses
 
 import controllers.actions._
-import forms.ConsolidatedOrIndividualExpensesFormProvider
+import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 
 import javax.inject.Inject
 import models.Mode
