@@ -16,22 +16,36 @@
 
 package controllers.foreign
 
+import audit.AuditService
 import base.SpecBase
 import controllers.foreign.routes.{ForeignTaxCheckYourAnswersController, ForeignTaxSectionCompleteController}
-import models.{ForeignIncomeTax, UserAnswers}
+import models.JourneyPath.ForeignPropertyTax
+import models.{ForeignIncomeTax, JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
+import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.ForeignTaxCheckYourAnswersView
 
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
+  val audit: AuditService = mock[AuditService]
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = ForeignTaxSectionCompleteController.onPageLoad(taxYear, countryCode)
+  def onwardRoute: Call = ForeignTaxSectionCompleteController.onPageLoad(taxYear, countryCode)
   val foreignTaxPaidOrDeducted: BigDecimal = 234
 
   "Check Your Answers Controller" - {
@@ -73,7 +87,23 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
         .flatMap(_.set(ClaimForeignTaxCreditReliefPage(countryCode), true))
         .toOption
 
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyTax)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(
+            ArgumentMatchers.eq(context),
+            any()
+          )(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       running(application) {
@@ -82,6 +112,8 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
+
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
