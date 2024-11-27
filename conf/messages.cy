@@ -2053,6 +2053,7 @@ foreignRentsRatesAndInsurance.error.required.agent = *Missing Welsh*
 foreignRentsRatesAndInsurance.error.outOfRange = *Missing Welsh*
 foreignRentsRatesAndInsurance.change.hidden = *Missing Welsh*
 
+
 foreignPropertyRepairsAndMaintenance.title = *Missing Welsh*
 foreignPropertyRepairsAndMaintenance.heading = *Missing Welsh*
 foreignPropertyRepairsAndMaintenance.p1.individual = *Missing Welsh*
@@ -2069,3 +2070,24 @@ foreignPropertyRepairsAndMaintenance.error.required.individual = *Missing Welsh*
 foreignPropertyRepairsAndMaintenance.error.required.agent = *Missing Welsh*
 foreignPropertyRepairsAndMaintenance.error.outOfRange = *Missing Welsh*
 foreignPropertyRepairsAndMaintenance.change.hidden = *Missing Welsh*
+
+foreignCostsOfServicesProvided.title = *Missing Welsh*
+foreignCostsOfServicesProvided.heading = *Missing Welsh*
+foreignCostsOfServicesProvided.checkYourAnswersLabel = *Missing Welsh*
+foreignCostsOfServicesProvided.p1.individual = *Missing Welsh*
+foreignCostsOfServicesProvided.p1.agent = *Missing Welsh*
+foreignCostsOfServicesProvided.l1 = *Missing Welsh*
+foreignCostsOfServicesProvided.l2 = *Missing Welsh*
+foreignCostsOfServicesProvided.l3 = *Missing Welsh*
+foreignCostsOfServicesProvided.l4 = *Missing Welsh*
+foreignCostsOfServicesProvided.p2.individual = *Missing Welsh*
+foreignCostsOfServicesProvided.p2.agent = *Missing Welsh*
+foreignCostsOfServicesProvided.input.heading.individual = *Missing Welsh*
+foreignCostsOfServicesProvided.input.heading.agent = *Missing Welsh*
+foreignCostsOfServicesProvided.error.nonNumeric.individual = *Missing Welsh*
+foreignCostsOfServicesProvided.error.nonNumeric.agent = *Missing Welsh*
+foreignCostsOfServicesProvided.error.required.individual = *Missing Welsh*
+foreignCostsOfServicesProvided.error.required.agent = *Missing Welsh*
+foreignCostsOfServicesProvided.error.outOfRange = *Missing Welsh*
+foreignCostsOfServicesProvided.change.hidden = *Missing Welsh*
+
