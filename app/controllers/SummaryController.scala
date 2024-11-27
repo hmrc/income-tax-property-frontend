@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import controllers.session.SessionRecovery
 import models.requests.OptionalDataRequest
 import pages._
 import pages.foreign.{ForeignPropertySummaryPage, IncomeSourceCountries}
+import pages.ukAndForeignProperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
@@ -66,6 +67,10 @@ class SummaryController @Inject() (
                   startItems = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, request.userAnswers),
                   foreignIncomeCountries = maybeCountries,
                   userAnswers = request.userAnswers
+                ),
+                UkAndForeignPropertySummaryPage(
+                  taxYear = taxYear,
+                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, request.userAnswers, cyaDiversionService)
                 )
               )
             )

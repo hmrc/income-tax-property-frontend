@@ -21,8 +21,8 @@ import pages.foreign.ForeignPropertySummaryPage.foreignPropertyAboutItems
 import pages.{SummaryPage, isSelected}
 import service.CYADiversionService
 import viewmodels.summary.{TaskListItem, TaskListTag}
+import scala.collection.immutable.Seq
 
-import scala.collection.Seq
 
 case class UkAndForeignPropertySummaryPage(
                                             taxYear: Int,
@@ -47,17 +47,17 @@ object UkAndForeignPropertySummaryPage {
     val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
 
     val combinedTaskListTag = (ukPropertyComplete, foreignPropertyComplete) match {
-      case (true, true) => TaskListTag.Completed
-      case (false, false) => TaskListTag.NotStarted
-      case _ => TaskListTag.InProgress
+      case (true, true) => TaskListTag.NotStarted
+      case _ => TaskListTag.CanNotStart
     }
 
     Seq(
       TaskListItem(
-        "ukAndForeign.selectCountry",
-        controllers.routes.UkAndForeignPropertySummaryController.onPageLoad(taxYear),
-        combinedTaskListTag,
-        "uk_and_foreign_property_select_country"
+        "summary.aboutUKAndForeignProperties",
+        //TODO - Update with correct page
+        controllers.routes.SummaryController.show(taxYear),
+        combinedTaskListTag, //TODO complete logic to make the status work correctly
+        "uk_and_foreign_property_about_link"
       )
     )
   }
