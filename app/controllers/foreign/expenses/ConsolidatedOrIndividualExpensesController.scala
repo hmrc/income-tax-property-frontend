@@ -22,6 +22,7 @@ import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 import javax.inject.Inject
 import models.{ConsolidatedOrIndividualExpenses, Mode}
 import navigation.ForeignPropertyNavigator
+import pages.foreign.CalculatedPremiumLeaseTaxablePage
 import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ConsolidatedOrIndividualExpensesController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       navigator: ForeignPropertyNavigator,
+                                       foreignPropertyNavigator: ForeignPropertyNavigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
@@ -66,7 +67,7 @@ class ConsolidatedOrIndividualExpensesController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(controllers.foreign.expenses.routes.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear, countryCode, mode).url)
+          } yield Redirect(foreignPropertyNavigator.nextPage(ConsolidatedOrIndividualExpensesPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
