@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
 object ForeignYearLeaseAmountSummary  {
 
@@ -31,8 +32,8 @@ object ForeignYearLeaseAmountSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "foreignYearLeaseAmount.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = KeyViewModel("foreignYearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("foreignYearLeaseAmount.change.hidden"))

@@ -43,7 +43,7 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
   val formProvider = new ForeignIncomeSectionCompleteFormProvider()
   val form = formProvider()
 
-  lazy val foreignIncomeSectionCompleteRoute = controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignIncomeSectionCompleteRoute = controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode).url
 
   "ForeignIncomeSectionComplete Controller" - {
 

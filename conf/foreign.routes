@@ -99,8 +99,10 @@ POST       /:taxYear/foreign-property/income/:countryCode/change-other-income-fr
 
 GET        /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
+
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-property-expenses-start                   controllers.foreign.expenses.ForeignPropertyExpensesStartController.onPageLoad(taxYear: Int, countryCode: String)
 

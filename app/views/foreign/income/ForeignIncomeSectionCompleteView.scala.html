@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
