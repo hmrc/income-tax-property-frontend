@@ -21,11 +21,6 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryConsolidatedOrIndividualExpenses: Arbitrary[ConsolidatedOrIndividualExpenses] =
-    Arbitrary {
-      Gen.oneOf(ConsolidatedOrIndividualExpenses.values.toSeq)
-    }
-
   implicit lazy val arbitraryForeignTotalIncome: Arbitrary[ForeignTotalIncome] =
     Arbitrary {
       Gen.oneOf(ForeignTotalIncome.values)

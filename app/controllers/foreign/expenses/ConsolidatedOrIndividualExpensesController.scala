@@ -20,21 +20,22 @@ import controllers.actions._
 import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 
 import javax.inject.Inject
-import models.Mode
-import navigation.Navigator
-import pages.ConsolidatedOrIndividualExpensesPage
+import models.{ConsolidatedOrIndividualExpenses, Mode}
+import navigation.ForeignPropertyNavigator
+import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.expenses.ConsolidatedOrIndividualExpensesView
+import play.api.data.Form
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ConsolidatedOrIndividualExpensesController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       navigator: Navigator,
+                                       navigator: ForeignPropertyNavigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
@@ -43,12 +44,10 @@ class ConsolidatedOrIndividualExpensesController @Inject()(
                                        view: ConsolidatedOrIndividualExpensesView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.get(ConsolidatedOrIndividualExpensesPage) match {
+      val form: Form[ConsolidatedOrIndividualExpenses] = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(ConsolidatedOrIndividualExpensesPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -58,16 +57,16 @@ class ConsolidatedOrIndividualExpensesController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form: Form[ConsolidatedOrIndividualExpenses] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, request.user.isAgentMessageKey, taxYear, countryCode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ConsolidatedOrIndividualExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(controllers.foreign.expenses.routes.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear, countryCode, mode).url)
       )
   }
 }

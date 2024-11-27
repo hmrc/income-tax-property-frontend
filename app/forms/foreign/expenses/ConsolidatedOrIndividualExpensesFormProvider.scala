@@ -25,15 +25,15 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 class ConsolidatedOrIndividualExpensesFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[ConsolidatedOrIndividualExpenses] =
+  def apply(individualOrAgent: String): Form[ConsolidatedOrIndividualExpenses] =
     Form[ConsolidatedOrIndividualExpenses](
       mapping(
-      "consolidatedOrIndividualExpenses" -> boolean("consolidatedOrIndividualExpenses.error.required"),
+      "consolidatedOrIndividualExpenses" -> boolean(s"consolidatedOrIndividualExpenses.error.required.${individualOrAgent}"),
       "consolidatedExpensesAmount" -> {
         mandatoryIfTrue("consolidatedOrIndividualExpenses",
           currency(
-            "consolidatedOrIndividualExpenses.amount.error.required",
-            "consolidatedOrIndividualExpenses.amount.error.twoDecimalPlaces",
+            s"consolidatedOrIndividualExpenses.amount.error.required.${individualOrAgent}",
+            s"consolidatedOrIndividualExpenses.amount.error.twoDecimalPlaces.${individualOrAgent}",
             "consolidatedOrIndividualExpenses.amount.error.nonNumerical")
             .verifying(inRange(BigDecimal(0), BigDecimal(1000000000),
               "consolidatedOrIndividualExpenses.amount.error.outOfRange"))

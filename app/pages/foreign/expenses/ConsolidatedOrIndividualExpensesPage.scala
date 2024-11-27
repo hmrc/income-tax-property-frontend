@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign.expenses
 
-import models.ConsolidatedOrIndividualExpenses
+import models.{ConsolidatedOrIndividualExpenses, ForeignProperty}
+import pages.QuestionPage
 import play.api.libs.json.JsPath
+import pages.PageConstants.foreignTaxPath
 
-case object ConsolidatedOrIndividualExpensesPage extends QuestionPage[ConsolidatedOrIndividualExpenses] {
+case class ConsolidatedOrIndividualExpensesPage(countryCode: String) extends QuestionPage[ConsolidatedOrIndividualExpenses] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "consolidatedOrIndividualExpenses"
 }
