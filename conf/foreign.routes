@@ -130,3 +130,6 @@ GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-professional
 POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-professional-fees                         controllers.foreign.expenses.ForeignProfessionalFeesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
