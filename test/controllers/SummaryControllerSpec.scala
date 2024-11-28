@@ -17,12 +17,14 @@
 package controllers
 
 import base.SpecBase
+import connectors.error.ApiError
 import controllers.session.SessionRecovery
 import models.{UKPropertySelect, UserAnswers}
 import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
 import pages.ukAndForeignProperty.UkAndForeignPropertySummaryPage
@@ -31,7 +33,7 @@ import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertySubmissionService}
+import service.{BusinessService, CYADiversionService, PropertySubmissionService}
 import testHelpers.Fixture
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.summary.{TaskListItem, TaskListTag}
@@ -139,6 +141,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
           "rentals_about_link"
         )
       )
+
       val userAnswersWithPropertyRentals = emptyUserAnswers
         .set(
           UKPropertyPage,
@@ -146,6 +149,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         )
         .success
         .value
+
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
@@ -334,5 +338,67 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         )(request, messages(application)).toString
       }
     }
+
+    "return OK and the correct view when both foreignPropertyItems and propertyAboutItems are completed" in {
+      val mockBusinessService = mock[BusinessService]
+      val mockCyaDiversionService = mock[CYADiversionService]
+      val mockSessionRecovery = mock[SessionRecovery]
+
+      val taxYear = LocalDate.now().getYear
+      val userAnswers = Some(UserAnswers("id"))
+      val ukPropertyDetails = PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+      val foreignPropertyDetails = PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+
+      when(mockBusinessService.getUkPropertyDetails(any(), any())(any()))
+        .thenReturn(Future.successful(Right(Some(ukPropertyDetails))))
+
+      when(mockBusinessService.getForeignPropertyDetails(any(), any())(any()))
+        .thenReturn(Future.successful(Right(Some(foreignPropertyDetails))))
+
+      val completedPropertyAboutItems = Seq(
+        TaskListItem(
+          "summary.about",
+          controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.Completed,
+          "property_about_link"
+        )
+      )
+
+      val completedForeignPropertyItems = Seq(
+        TaskListItem(
+          "foreign.selectCountry",
+          controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.Completed,
+          "foreign_property_select_country"
+        )
+      )
+
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .overrides(bind[BusinessService].toInstance(mockBusinessService))
+        .overrides(bind[CYADiversionService].toInstance(mockCyaDiversionService))
+        .overrides(bind[SessionRecovery].toInstance(mockSessionRecovery))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
+        val result = route(application, request).value
+        val view = application.injector.instanceOf[SummaryView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(
+          UKPropertySummaryPage(
+            taxYear,
+            completedPropertyAboutItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem]
+          ),
+          ForeignPropertySummaryPage(taxYear, completedForeignPropertyItems, countries, userAnswers),
+          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+        )(request, messages(application)).toString
+      }
+    }
+
   }
 }

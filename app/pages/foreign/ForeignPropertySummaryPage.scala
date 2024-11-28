@@ -51,6 +51,7 @@ object ForeignPropertySummaryPage {
       )
     )
   }
+
   def foreignPropertyItems(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
     val taskListTagForForeignTax =
       userAnswers
