@@ -19,11 +19,11 @@ package pages.foreign.expenses
 import models.{ConsolidatedOrIndividualExpenses, ForeignProperty}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import pages.PageConstants.foreignTaxPath
+import pages.PageConstants.foreignPropertyExpensesPath
 
 case class ConsolidatedOrIndividualExpensesPage(countryCode: String) extends QuestionPage[ConsolidatedOrIndividualExpenses] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ foreignPropertyExpensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "consolidatedOrIndividualExpenses"
 }
