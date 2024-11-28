@@ -19,7 +19,7 @@ package controllers.foreign.expenses
 import controllers.actions._
 import forms.foreign.expenses.ForeignPropertyRepairsAndMaintenanceFormProvider
 import models.Mode
-import navigation.{ForeignPropertyNavigator, Navigator}
+import navigation.ForeignPropertyNavigator
 import pages.foreign.expenses.ForeignPropertyRepairsAndMaintenancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,7 +30,7 @@ import views.html.foreign.expenses.ForeignPropertyRepairsAndMaintenanceView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignPropertyRepairsAndMaintenanceController @Inject()(
+class ForeignPropertyRepairsAndMaintenanceController @Inject() (
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         foreignNavigator: ForeignPropertyNavigator,

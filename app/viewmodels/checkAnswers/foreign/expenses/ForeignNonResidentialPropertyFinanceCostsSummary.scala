@@ -16,6 +16,7 @@
 
 package viewmodels.checkAnswers.foreign.expenses
 
+import controllers.foreign.expenses.routes.ForeignNonResidentialPropertyFinanceCostsController
 import models.{CheckMode, UserAnswers}
 import pages.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsPage
 import play.api.i18n.Messages
@@ -24,19 +25,22 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignNonResidentialPropertyFinanceCostsSummary  {
+object ForeignNonResidentialPropertyFinanceCostsSummary {
 
-  def row(taxYear: Int, countryCode:String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignNonResidentialPropertyFinanceCostsPage(countryCode)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel("foreignNonResidentialPropertyFinanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear, countryCode , CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignNonResidentialPropertyFinanceCosts.change.hidden"))
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ForeignNonResidentialPropertyFinanceCostsPage(countryCode)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("foreignNonResidentialPropertyFinanceCosts.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear, countryCode, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("foreignNonResidentialPropertyFinanceCosts.change.hidden"))
         )
+      )
     }
 }

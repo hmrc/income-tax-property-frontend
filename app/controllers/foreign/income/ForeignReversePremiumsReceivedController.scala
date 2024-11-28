@@ -30,43 +30,53 @@ import views.html.foreign.ForeignReversePremiumsReceivedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignReversePremiumsReceivedController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: ForeignPropertyNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ReversePremiumsReceivedFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ForeignReversePremiumsReceivedView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignReversePremiumsReceivedController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ReversePremiumsReceivedFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignReversePremiumsReceivedView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, mode: Mode,countryCode:String): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignReversePremiumsReceivedPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm,mode, taxYear, request.user.isAgentMessageKey,countryCode))
-  }
+      Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, countryCode))
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode,countryCode:String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors,mode, taxYear, request.user.isAgentMessageKey,countryCode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignReversePremiumsReceivedPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignReversePremiumsReceivedPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, countryCode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignReversePremiumsReceivedPage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                ForeignReversePremiumsReceivedPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

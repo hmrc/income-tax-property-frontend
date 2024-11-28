@@ -24,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, countryCode: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 

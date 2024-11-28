@@ -19,12 +19,13 @@ package controllers.foreign.income
 import base.SpecBase
 import controllers.routes
 import forms.foreign.income.ForeignIncomeSectionCompleteFormProvider
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.income.ForeignIncomeSectionCompletePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -41,9 +42,10 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ForeignIncomeSectionCompleteFormProvider()
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val foreignIncomeSectionCompleteRoute = controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode).url
+  lazy val foreignIncomeSectionCompleteRoute: String =
+    controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode).url
 
   "ForeignIncomeSectionComplete Controller" - {
 
@@ -59,13 +61,14 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[ForeignIncomeSectionCompleteView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignIncomeSectionCompletePage(countryCode), true).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(ForeignIncomeSectionCompletePage(countryCode), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -77,7 +80,10 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -123,7 +129,7 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode)(request, messages(application)).toString
       }
     }
 
