@@ -149,3 +149,6 @@ GET        /:taxYear/foreign-property/expenses/:countryCode/consolidated-or-indi
 POST       /:taxYear/foreign-property/expenses/:countryCode/consolidated-or-individual-expenses               controllers.foreign.expenses.ConsolidatedOrIndividualExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-consolidated-or-individual-expenses        controllers.foreign.expenses.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-consolidated-or-individual-expenses        controllers.foreign.expenses.ConsolidatedOrIndividualExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/expenses/:countryCode/check-your-answers                                controllers.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/expenses/:countryCode/check-your-answers                                controllers.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
