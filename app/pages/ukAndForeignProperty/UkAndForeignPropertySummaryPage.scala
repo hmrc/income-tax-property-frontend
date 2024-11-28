@@ -17,7 +17,6 @@
 package pages.ukAndForeignProperty
 
 import models.{UKPropertySelect, UserAnswers}
-import pages.foreign.ForeignPropertySummaryPage
 import pages.foreign.ForeignPropertySummaryPage.foreignPropertyAboutItems
 import pages.{SummaryPage, isSelected}
 import service.CYADiversionService
@@ -37,31 +36,16 @@ object UkAndForeignPropertySummaryPage {
 
     val summaryPage = SummaryPage(cyaDiversionService)
 
-//    val ukPropertyItems: Seq[TaskListItem] = if (isSelected(userAnswers, UKPropertySelect.PropertyRentals)) {
-//      summaryPage.propertyAboutItems(userAnswers, taxYear)
-//    } else {
-//      Seq.empty
-//    }
-
     val ukPropertyItems: Seq[TaskListItem] = if (isSelected(userAnswers, UKPropertySelect.PropertyRentals)) {
-      val items = summaryPage.propertyAboutItems(userAnswers, taxYear)
-      println(s"UK Property Items (selected): $items")
-      items
+      summaryPage.propertyAboutItems(userAnswers, taxYear)
     } else {
-      println("UK Property Items (not selected): Seq.empty")
       Seq.empty
     }
-
 
     val foreignPropertyItems: Seq[TaskListItem] = foreignPropertyAboutItems(taxYear, userAnswers)
 
     val ukPropertyComplete = ukPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
     val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
-
-    println(s"UK Property Items: $ukPropertyItems")
-    println(s"Foreign Property Items: $foreignPropertyItems")
-    println(s"UK Property Complete: $ukPropertyComplete")
-    println(s"Foreign Property Complete: $foreignPropertyComplete")
 
     val combinedTaskListTag = (ukPropertyComplete, foreignPropertyComplete) match {
       case (true, true) => TaskListTag.NotStarted
