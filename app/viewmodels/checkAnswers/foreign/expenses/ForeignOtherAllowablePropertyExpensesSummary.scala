@@ -17,25 +17,25 @@
 package viewmodels.checkAnswers.foreign.expenses
 
 import models.{CheckMode, UserAnswers}
-import pages.foreign.expenses.ForeignPropertyRepairsAndMaintenancePage
+import pages.foreign.expenses.ForeignOtherAllowablePropertyExpensesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignPropertyRepairsAndMaintenanceSummary  {
+object ForeignOtherAllowablePropertyExpensesSummary  {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignPropertyRepairsAndMaintenancePage(countryCode)).map {
+    answers.get(ForeignOtherAllowablePropertyExpensesPage(countryCode)).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("foreignPropertyRepairsAndMaintenance.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key     = KeyViewModel("foreignOtherAllowablePropertyExpenses.checkYourAnswersLabel").withCssClass(valueCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignPropertyRepairsAndMaintenance.change.hidden"))
+            ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear, countryCode, CheckMode).url)
+              .withVisuallyHiddenText(messages("foreignOtherAllowablePropertyExpenses.change.hidden"))
           )
         )
     }
