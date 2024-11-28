@@ -17,11 +17,8 @@
 package pages.foreign
 
 import models.{NormalMode, UserAnswers}
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
-import controllers.propertyrentals.expenses.routes.ExpensesCheckYourAnswersController
-import models.{NormalMode, Rentals, UserAnswers}
-import pages.enhancedstructuresbuildingallowance.EsbaSectionFinishedPage
-import play.api.mvc.Call
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
@@ -73,6 +70,15 @@ object ForeignPropertySummaryPage {
         }
         .getOrElse(TaskListTag.NotStarted)
 
+    val taskListTagForExpenses =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
+
     Seq(
       TaskListItem(
         "foreign.tax",
@@ -89,7 +95,7 @@ object ForeignPropertySummaryPage {
       TaskListItem(
         "foreign.expenses",
         controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
-        TaskListTag.NotStarted,
+        taskListTagForExpenses,
         s"foreign_property_expenses_$countryCode"
       )
     )

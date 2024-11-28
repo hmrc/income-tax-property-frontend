@@ -25,6 +25,7 @@ import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models._
 import pages.Page
 import pages.foreign._
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income._
 import play.api.mvc.Call
 
@@ -71,6 +72,11 @@ class ForeignPropertyNavigator {
                 ForeignReceivedGrantLeaseAmountController
                   .onPageLoad(taxYear, countryCode, NormalMode)
             }
+    case ForeignExpensesSectionCompletePage(countryCode) =>
+      taxYear =>
+        _ =>
+          _ =>
+            SummaryController.show(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
