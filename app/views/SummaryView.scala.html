@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 @import pages.UKPropertySummaryPage
 @import pages.foreign.ForeignPropertySummaryPage
+@import pages.ukAndForeignProperty.UkAndForeignPropertySummaryPage
 @import viewmodels.summary.TaskListItem
 @import viewmodels.summary.TaskListTag.CanNotStart
 
@@ -25,7 +26,7 @@
 )
 
 
-@(ukproperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
+@(ukproperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage, ukAndForeignProperty: UkAndForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
 
 @taskListSection(items: Seq[TaskListItem]) = {
     <ol class="govuk-task-list">
@@ -90,6 +91,11 @@
     @if(ukproperty.combinedItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
         @taskListSection(ukproperty.combinedItems)
+    }
+
+    @if(ukproperty.startItems.nonEmpty && foreignProperty.startItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("ukAndForeign.summary.title")</h2>
+        @taskListSection(ukAndForeignProperty.startItems)
     }
 
     @if(foreignProperty.startItems.nonEmpty) {
