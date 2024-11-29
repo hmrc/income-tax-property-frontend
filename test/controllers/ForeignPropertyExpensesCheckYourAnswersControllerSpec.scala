@@ -1,119 +1,76 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
-import forms.ForeignPropertyExpensesCheckYourAnswersFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import controllers.foreign.expenses.routes.{ForeignPropertyExpensesCheckYourAnswersController, ForeignExpensesSectionCompleteController}
+import controllers.foreign.income.routes.{ForeignIncomeSectionCompleteController, ForeignPropertyIncomeCheckYourAnswersController}
+import models.{UserAnswers, NormalMode, ReversePremiumsReceived}
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ForeignPropertyExpensesCheckYourAnswersPage
+import pages.PremiumsGrantLeaseYNPage
+import pages.foreign.ForeignYearLeaseAmountPage
+import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ForeignPropertyExpensesCheckYourAnswersView
+import viewmodels.govuk.SummaryListFluency
+import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
+import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
-class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar {
+class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
-  def onwardRoute = Call("GET", "/foo")
-
-  val formProvider = new ForeignPropertyExpensesCheckYourAnswersFormProvider()
-  val form = formProvider()
-
-  lazy val foreignPropertyExpensesCheckYourAnswersRoute = routes.ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(NormalMode).url
+  val countryCode: String = "USA"
+  val taxYear: Int = LocalDate.now.getYear
+  def onwardRoute = ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)
+  val controller = ForeignPropertyExpensesCheckYourAnswersController
 
   "ForeignPropertyExpensesCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignPropertyExpensesCheckYourAnswersRoute)
+        val request = FakeRequest(GET, controller.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ForeignPropertyExpensesCheckYourAnswersView]
+        val list = SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignPropertyExpensesCheckYourAnswersPage, true).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, foreignPropertyExpensesCheckYourAnswersRoute)
-
-        val view = application.injector.instanceOf[ForeignPropertyExpensesCheckYourAnswersView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must redirect to the next page when valid data is submitted" in {
-
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, foreignPropertyExpensesCheckYourAnswersRoute)
-            .withFormUrlEncodedBody(("value", "true"))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
-
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, foreignPropertyExpensesCheckYourAnswersRoute)
-            .withFormUrlEncodedBody(("value", ""))
-
-        val boundForm = form.bind(Map("value" -> ""))
-
-        val view = application.injector.instanceOf[ForeignPropertyExpensesCheckYourAnswersView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, countryCode)(request, messages(application)).toString
       }
     }
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignPropertyExpensesCheckYourAnswersRoute)
+        val request = FakeRequest(GET, controller.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -128,13 +85,35 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignPropertyExpensesCheckYourAnswersRoute)
+          FakeRequest(POST, controller.onSubmit(taxYear, countryCode).url)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+      val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
+//        .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67))
+//        .flatMap(_.set(PremiumsGrantLeaseYNPage(countryCode), true))
+//        .flatMap(_.set(ForeignYearLeaseAmountPage(countryCode), 24))
+//        .flatMap(_.set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
+//        .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
+        .toOption
+
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, controller.onSubmit(taxYear, countryCode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
   }

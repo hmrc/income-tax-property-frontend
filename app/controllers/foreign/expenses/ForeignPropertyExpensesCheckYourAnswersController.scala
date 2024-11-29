@@ -17,7 +17,6 @@
 package controllers.foreign.expenses
 
 import controllers.actions._
-import forms.ForeignPropertyExpensesCheckYourAnswersFormProvider
 import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
 import controllers.foreign.expenses.routes.ForeignPropertyExpensesCheckYourAnswersController
 
@@ -25,7 +24,6 @@ import javax.inject.Inject
 import navigation.ForeignPropertyNavigator
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.govuk.all.SummaryListViewModel
 
