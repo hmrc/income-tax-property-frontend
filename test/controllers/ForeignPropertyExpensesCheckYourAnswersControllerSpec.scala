@@ -18,26 +18,14 @@ package controllers
 
 import base.SpecBase
 import controllers.foreign.expenses.routes.{ForeignPropertyExpensesCheckYourAnswersController, ForeignExpensesSectionCompleteController}
-import controllers.foreign.income.routes.{ForeignIncomeSectionCompleteController, ForeignPropertyIncomeCheckYourAnswersController}
-import models.{UserAnswers, NormalMode, ReversePremiumsReceived}
-import navigation.{Navigator, FakeNavigator}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
-import pages.PremiumsGrantLeaseYNPage
-import pages.foreign.ForeignYearLeaseAmountPage
-import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage}
-import play.api.inject.bind
-import play.api.mvc.Call
+import models.UserAnswers
+import pages.foreign.expenses._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
-import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import java.time.LocalDate
-import scala.concurrent.Future
 
 class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -97,11 +85,12 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
       val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
-//        .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67))
-//        .flatMap(_.set(PremiumsGrantLeaseYNPage(countryCode), true))
-//        .flatMap(_.set(ForeignYearLeaseAmountPage(countryCode), 24))
-//        .flatMap(_.set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
-//        .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
+        .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67))
+        .flatMap(_.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(68)))
+        .flatMap(_.set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), BigDecimal(69)))
+        .flatMap(_.set(ForeignProfessionalFeesPage(countryCode), BigDecimal(70)))
+        .flatMap(_.set(ForeignCostsOfServicesProvidedPage(countryCode), BigDecimal(71)))
+        .flatMap(_.set(ForeignOtherAllowablePropertyExpensesPage(countryCode), BigDecimal(72)))
         .toOption
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)

@@ -18,7 +18,7 @@ package controllers.foreign.expenses
 
 import controllers.actions._
 import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
-import controllers.foreign.expenses.routes.ForeignPropertyExpensesCheckYourAnswersController
+import controllers.foreign.expenses.routes.ForeignExpensesSectionCompleteController
 
 import javax.inject.Inject
 import navigation.ForeignPropertyNavigator
@@ -26,6 +26,7 @@ import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.govuk.all.SummaryListViewModel
+import viewmodels.checkAnswers.foreign.expenses._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,7 +45,12 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
-
+          ForeignRentsRatesAndInsuranceSummary.row(taxYear, countryCode, request.userAnswers),
+          ForeignPropertyRepairsAndMaintenanceSummary.row(taxYear, countryCode, request.userAnswers),
+          ForeignNonResidentialPropertyFinanceCostsSummary.row(taxYear, countryCode, request.userAnswers),
+          ForeignProfessionalFeesSummary.row(taxYear, countryCode, request.userAnswers),
+          ForeignCostsOfServicesProvidedSummary.row(taxYear, countryCode, request.userAnswers),
+          ForeignOtherAllowablePropertyExpensesSummary.row(taxYear, countryCode, request.userAnswers)
         ).flatten
       )
 
@@ -53,6 +59,6 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Future.successful(Redirect(ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)))
+      Future.successful(Redirect(ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)))
   }
 }
