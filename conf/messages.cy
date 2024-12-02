@@ -1741,6 +1741,22 @@ claimExpensesOrRRR.amount.error.maxAllowedClaim	= Ni all swm y rhyddhad rhentu y
 ukAndForeign.summary.title = *Missing Welsh*
 summary.aboutUKAndForeignProperties = *Missing Welsh*
 
+ukAndForeignPropertyDetails.title = *Missing Welsh*
+ukAndForeignPropertyDetails.heading = *Missing Welsh*
+ukAndForeignPropertyDetails.para1 = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet1.individual = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet1.agent = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet2.individual = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet2.agent = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet3.individual = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet3.agent = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet4.individual = *Missing Welsh*
+ukAndForeignPropertyDetails.bullet4.agent = *Missing Welsh*
+ukAndForeignPropertyDetails.para2.part1 = *Missing Welsh*
+ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
+ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
+ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
