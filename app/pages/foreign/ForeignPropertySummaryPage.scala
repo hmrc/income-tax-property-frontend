@@ -79,26 +79,39 @@ object ForeignPropertySummaryPage {
           }
         }
         .getOrElse(TaskListTag.NotStarted)
-
-    Seq(
-      TaskListItem(
-        "foreign.tax",
-        controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
-        taskListTagForForeignTax,
-        "foreign_property_income_tax"
-      ),
-      TaskListItem(
-        "foreign.income",
-        controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
-        taskListTagForIncome,
-        s"foreign_property_income_$countryCode"
-      ),
-      TaskListItem(
-        "foreign.expenses",
-        controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
-        taskListTagForExpenses,
-        s"foreign_property_expenses_$countryCode"
+    val taskList = {
+      Seq(
+        TaskListItem(
+          "foreign.tax",
+          controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
+          taskListTagForForeignTax,
+          "foreign_property_income_tax"
+        ),
+        TaskListItem(
+          "foreign.income",
+          controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+          taskListTagForIncome,
+          s"foreign_property_income_$countryCode"
+        )
       )
-    )
+    }
+    val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
+    isClaimingAllowances match {
+      case Some(true) => taskList.appended(TaskListItem(
+        "foreign.allowances",
+        controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
+        TaskListTag.NotStarted,
+        s"foreign_property_allowances_$countryCode"
+      ))
+      case Some(false) => taskList.appended(
+        TaskListItem(
+          "foreign.expenses",
+          controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+          taskListTagForExpenses,
+          s"foreign_property_expenses_$countryCode"
+        )
+      )
+      case None => taskList
+    }
   }
 }

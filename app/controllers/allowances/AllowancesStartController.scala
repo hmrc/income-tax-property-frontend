@@ -16,7 +16,7 @@
 
 package controllers.allowances
 
-import controllers.PropertyDetailsHandler
+import controllers.{PropertyDetailsHandler, routes}
 import controllers.actions._
 import models.PropertyType
 import models.backend.PropertyDetails
@@ -48,19 +48,27 @@ class AllowancesStartController @Inject() (
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyDetails: PropertyDetails) =>
-          Future(
-            Ok(
-              view(
-                AllowancesStartPage(
-                  taxYear,
-                  request.user.isAgentMessageKey,
-                  propertyDetails.accrualsOrCash.get,
-                  request.userAnswers,
-                  propertyType
-                )
+          propertyDetails.accrualsOrCash match {
+            case Some(true) => Future(Ok(view(
+              AllowancesStartPage(
+                taxYear,
+                request.user.isAgentMessageKey,
+                cashOrAccruals = true,
+                request.userAnswers, propertyType
               )
+            )))
+            case Some(false) => Future(Ok(view(
+              AllowancesStartPage(
+                taxYear,
+                request.user.isAgentMessageKey,
+                cashOrAccruals = false,
+                request.userAnswers, propertyType
+              )
+            )))
+            case _ => Future(
+              Redirect(routes.JourneyRecoveryController.onPageLoad())
             )
-          )
+          }
       }(hc, ec)
     }
 
