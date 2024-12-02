@@ -1939,6 +1939,7 @@ foreignPremiumsGrantLease.line4.part1 = *Missing Welsh*
 foreignPremiumsGrantLease.line4.part2 = *Missing Welsh*
 foreignPremiumsGrantLease.line5.part1 = *Missing Welsh*
 foreignPremiumsGrantLease.line5.part2 = *Missing Welsh*
+foreignPremiumsGrantLease.amount.label =*Missing Welsh*
 foreignPremiumsGrantLease.input.label = *Missing Welsh*
 foreignPremiumsGrantLease.checkYourAnswersLabel = *Missing Welsh*
 foreignPremiumsGrantLease.error.required.individual = *Missing Welsh*
