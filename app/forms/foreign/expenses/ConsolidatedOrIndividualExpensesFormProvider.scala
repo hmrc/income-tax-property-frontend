@@ -34,7 +34,7 @@ class ConsolidatedOrIndividualExpensesFormProvider @Inject() extends Mappings {
           currency(
             s"consolidatedOrIndividualExpenses.amount.error.required.${individualOrAgent}",
             s"consolidatedOrIndividualExpenses.amount.error.twoDecimalPlaces.${individualOrAgent}",
-            "consolidatedOrIndividualExpenses.amount.error.nonNumerical")
+            s"consolidatedOrIndividualExpenses.amount.error.nonNumerical.${individualOrAgent}")
             .verifying(inRange(BigDecimal(0), BigDecimal(1000000000),
               "consolidatedOrIndividualExpenses.amount.error.outOfRange"))
           )

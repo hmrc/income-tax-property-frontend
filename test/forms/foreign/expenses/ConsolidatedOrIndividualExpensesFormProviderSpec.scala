@@ -44,7 +44,7 @@ class ConsolidatedOrIndividualExpensesFormProviderSpec extends OptionFieldBehavi
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedOrIndividualExpenses.amount.error.nonNumerical"))
+        boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent"))
       }
 
 
