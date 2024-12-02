@@ -30,42 +30,53 @@ import views.html.foreign.ForeignReceivedGrantLeaseAmountView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignReceivedGrantLeaseAmountController @Inject()(
-                                                           override val messagesApi: MessagesApi,
-                                                           sessionRepository: SessionRepository,
-                                                           navigator: ForeignPropertyNavigator,
-                                                           identify: IdentifierAction,
-                                                           getData: DataRetrievalAction,
-                                                           requireData: DataRequiredAction,
-                                                           formProvider: ForeignReceivedGrantLeaseAmountFormProvider,
-                                                           val controllerComponents: MessagesControllerComponents,
-                                                           view: ForeignReceivedGrantLeaseAmountView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignReceivedGrantLeaseAmountController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignReceivedGrantLeaseAmountFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignReceivedGrantLeaseAmountView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignReceivedGrantLeaseAmountPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, countryCode, mode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, countryCode, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignReceivedGrantLeaseAmountPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignReceivedGrantLeaseAmountPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, countryCode, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignReceivedGrantLeaseAmountPage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              foreignPropertyNavigator.nextPage(
+                ForeignReceivedGrantLeaseAmountPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

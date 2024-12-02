@@ -16,6 +16,7 @@
 
 package viewmodels.checkAnswers.foreign.expenses
 
+import controllers.foreign.expenses.routes.ForeignPropertyRepairsAndMaintenanceController
 import models.{CheckMode, UserAnswers}
 import pages.foreign.expenses.ForeignPropertyRepairsAndMaintenancePage
 import play.api.i18n.Messages
@@ -24,19 +25,24 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignPropertyRepairsAndMaintenanceSummary  {
+object ForeignPropertyRepairsAndMaintenanceSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignPropertyRepairsAndMaintenancePage(countryCode)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel("foreignPropertyRepairsAndMaintenance.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignPropertyRepairsAndMaintenance.change.hidden"))
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ForeignPropertyRepairsAndMaintenancePage(countryCode)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("foreignPropertyRepairsAndMaintenance.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            ForeignPropertyRepairsAndMaintenanceController
+              .onPageLoad(taxYear, countryCode, CheckMode)
+              .url
           )
+            .withVisuallyHiddenText(messages("foreignPropertyRepairsAndMaintenance.change.hidden"))
         )
+      )
     }
 }

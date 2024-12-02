@@ -18,7 +18,7 @@ package controllers.foreign.income
 
 import controllers.actions._
 import forms.foreign.income.ForeignIncomeSectionCompleteFormProvider
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -42,7 +42,7 @@ class ForeignIncomeSectionCompleteController @Inject()(
                                                         view: ForeignIncomeSectionCompleteView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider()
 
@@ -51,21 +51,21 @@ class ForeignIncomeSectionCompleteController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, mode))
+      Ok(view(preparedForm, taxYear, countryCode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignIncomeSectionCompletePage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeSectionCompletePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeSectionCompletePage(countryCode), taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )
   }
 }

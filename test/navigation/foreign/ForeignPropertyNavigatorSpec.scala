@@ -18,20 +18,20 @@ package navigation.foreign
 
 import base.SpecBase
 import controllers.foreign.routes._
-import controllers.propertyrentals.income.routes.OtherPropertyRentalIncomeController
+import controllers.foreign.income.routes._
 import controllers.routes.SummaryController
-import models.{CheckMode, NormalMode, PremiumCalculated, Rentals, UserAnswers}
-import navigation.ForeignPropertyNavigator
-import pages.Page
-import pages.foreign.income._
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
+import models.{CheckMode, NormalMode, PremiumCalculated, UserAnswers}
+import navigation.ForeignPropertyNavigator
+import pages.Page
 import pages.foreign._
+import pages.foreign.income._
 import play.api.libs.json.Format.GenericFormat
 
 import java.time.LocalDate
 
-class ForeignNavigatorSpec extends SpecBase {
+class ForeignPropertyNavigatorSpec extends SpecBase {
 
   private val navigator = new ForeignPropertyNavigator
   private val taxYear = LocalDate.now.getYear
@@ -124,7 +124,7 @@ class ForeignNavigatorSpec extends SpecBase {
           updatedUserAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 1, NormalMode)
       }
-      "must go from ForeignOtherIncomeFromPropertyPage to ForeignOtherIncomeFromPropertyPage" in {
+      "must go from ForeignOtherIncomeFromPropertyPage to CheckYourAnswers Page" in {
         val userAnswers = UserAnswers("test")
         val updatedUserAnswers = userAnswers.set(ForeignOtherIncomeFromPropertyPage("AUS"), BigDecimal(1000)).get
         navigator.nextPage(
@@ -133,7 +133,8 @@ class ForeignNavigatorSpec extends SpecBase {
           NormalMode,
           userAnswers,
           updatedUserAnswers
-        ) mustBe controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, "AUS", NormalMode)
+        ) mustBe controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController
+          .onPageLoad(taxYear, "AUS")
       }
       "must go from AddCountriesRentedPage to ClaimPropertyIncomeAllowanceOrExpensesPage if AddCountriesRentedPage is false" in {
         val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
@@ -158,12 +159,12 @@ class ForeignNavigatorSpec extends SpecBase {
       }
       "CalculatedPremiumLeaseTaxablePage" - {
         "should go to ForeignReceivedGrantLeaseAmount if no selected" in {
-          val userAnswersWithData = UserAnswers("test").set(
+          val userAnswersWithData = UserAnswers("test")
+            .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
-            PremiumCalculated(
-              premiumCalculatedYesNo = false,
-              None)
-          ).get
+              PremiumCalculated(premiumCalculatedYesNo = false, None)
+            )
+            .get
           navigator.nextPage(
             CalculatedPremiumLeaseTaxablePage("ESP"),
             taxYear,
@@ -172,20 +173,20 @@ class ForeignNavigatorSpec extends SpecBase {
             userAnswersWithData
           ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "ESP", NormalMode)
         }
-        "should go to OtherPropertyRentalIncomeController if yes selected" in {
-          val userAnswersWithData = UserAnswers("test").set(
-            CalculatedPremiumLeaseTaxablePage("ESP"),
-            PremiumCalculated(
-              premiumCalculatedYesNo = true,
-              Some(BigDecimal(1234)))
-          ).get
+        "should go from CalculatedPremiumLeaseTaxablePage to Reverse premiums received" in {
+          val userAnswersWithData = UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage("ESP"),
+              PremiumCalculated(premiumCalculatedYesNo = true, Some(BigDecimal(1234)))
+            )
+            .get
           navigator.nextPage(
             CalculatedPremiumLeaseTaxablePage("ESP"),
             taxYear,
             NormalMode,
             UserAnswers("test"),
             userAnswersWithData
-          ) mustBe OtherPropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, Rentals)
+          ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, "ESP", NormalMode)
         }
       }
       "must go from ForeignPropertyRentalIncomePage to PremiumsGrantLeaseYNPage" in {
@@ -198,7 +199,7 @@ class ForeignNavigatorSpec extends SpecBase {
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
         ) mustBe PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
       }
-      "must go from ForeignIncomeSectionCompletePage to SummaryPage" in {
+      "must go from ForeignIncomeSectionCompletePage to Have You Finished" in {
         val userAnswersWithData = UserAnswers("test").set(ForeignIncomeSectionCompletePage("ESP"), true).get
         navigator.nextPage(
           ForeignIncomeSectionCompletePage("ESP"),
@@ -206,7 +207,7 @@ class ForeignNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswersWithData
-        ) mustBe SummaryController.show(taxYear)
+        ) mustBe ForeignIncomeSectionCompleteController.onPageLoad(taxYear, "ESP")
       }
     }
 
@@ -219,7 +220,7 @@ class ForeignNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+        ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode)
       }
 
       "must go from AddCountriesRentedPage to ForeignCountriesCheckYourAnswersController if AddCountriesRentedPage is false" in {
@@ -291,7 +292,7 @@ class ForeignNavigatorSpec extends SpecBase {
           TotalIncomePage,
           taxYear,
           CheckMode,
-          UserAnswers("test").set(TotalIncomePage,LessThanOneThousand).get,
+          UserAnswers("test").set(TotalIncomePage, LessThanOneThousand).get,
           userAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       }

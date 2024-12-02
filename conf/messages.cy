@@ -1939,6 +1939,7 @@ foreignPremiumsGrantLease.line4.part1 = *Missing Welsh*
 foreignPremiumsGrantLease.line4.part2 = *Missing Welsh*
 foreignPremiumsGrantLease.line5.part1 = *Missing Welsh*
 foreignPremiumsGrantLease.line5.part2 = *Missing Welsh*
+foreignPremiumsGrantLease.amount.label =*Missing Welsh*
 foreignPremiumsGrantLease.input.label = *Missing Welsh*
 foreignPremiumsGrantLease.checkYourAnswersLabel = *Missing Welsh*
 foreignPremiumsGrantLease.error.required.individual = *Missing Welsh*
@@ -1964,12 +1965,11 @@ foreignPropertyIncomeStart.l4 = *Missing Welsh*
 foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
 
-foreignOtherIncomeFromProperty.change.hidden = *Missing Welsh*
-
 calculatedPremiumLeaseTaxable.title = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.individual = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.agent = *Missing Welsh*
 calculatedPremiumLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
+calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel = *Missing Welsh*
 premiumCalculatedAmount.radio.question.label = *Missing Welsh*
 calculatedPremiumLeaseTaxable.error.required.individual = *Missing Welsh*
 calculatedPremiumLeaseTaxable.error.required.agent = *Missing Welsh*

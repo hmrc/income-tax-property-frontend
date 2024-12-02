@@ -20,33 +20,24 @@ import models.{CheckMode, PremiumCalculated, UserAnswers}
 import pages.foreign.CalculatedPremiumLeaseTaxablePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object CalculatedPremiumLeaseTaxableSummary {
+object CalculatedPremiumLeaseTaxableAmountSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap {
-      case PremiumCalculated(true, _) =>
+      case PremiumCalculated(true, amount) =>
         Some(SummaryListRowViewModel(
-          key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.yes").withCssClass(valueCssClass),
+          key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",
               controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("calculatedPremiumLeaseTaxable.change.hidden"))
           )))
-      case PremiumCalculated(false, _) =>
-        Some(SummaryListRowViewModel(
-          key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change",
-              controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("calculatedPremiumLeaseTaxable.change.hidden"))
-          )
-        ))
+      case PremiumCalculated(false, _) => None
       case _ => Option.empty[SummaryListRow]
     }
 }

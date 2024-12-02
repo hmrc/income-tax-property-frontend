@@ -37,17 +37,20 @@ import scala.concurrent.Future
 
 class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
 
-
   private val taxYear = LocalDate.now.getYear
   val countryCode = "BRA"
-  def onwardRoute: Call = Call("GET",foreignOtherIncomeFromPropertyRoute)
+  def onwardRoute: Call = Call("GET", foreignOtherIncomeFromPropertyRoute)
   val formProvider = new ForeignReversePremiumsReceivedFormProvider()
   val form: Form[ReversePremiumsReceived] = formProvider("individual")
 
   lazy val foreignReversePremiumsReceivedRoute: String =
-    controllers.foreign.income.routes.ForeignReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, countryCode).url
+    controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+      .onPageLoad(taxYear, countryCode, NormalMode)
+      .url
   lazy val foreignOtherIncomeFromPropertyRoute: String =
-    controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode).url
+    controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController
+      .onPageLoad(taxYear, countryCode, NormalMode)
+      .url
 
   "ForeignReversePremiumsReceived Controller" - {
 
@@ -73,14 +76,14 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val foreignUserAnswers = UserAnswers(userAnswersId)
-        .set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34)))
+        .set(
+          ForeignReversePremiumsReceivedPage(countryCode),
+          ReversePremiumsReceived(reversePremiumsReceived = true, Some(12.34))
+        )
         .success
         .value
 
-
-
       val foreignApplication = applicationBuilder(userAnswers = Some(foreignUserAnswers), isAgent = false).build()
-
 
       running(foreignApplication) {
         val request = FakeRequest(GET, foreignReversePremiumsReceivedRoute)
@@ -119,7 +122,6 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
           FakeRequest(POST, foreignReversePremiumsReceivedRoute)
             .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
 
-
         val foreignResult = route(application, foreignRequest).value
 
         status(foreignResult) mustEqual SEE_OTHER
@@ -136,7 +138,6 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
         val foreignRequest =
           FakeRequest(POST, foreignReversePremiumsReceivedRoute)
             .withFormUrlEncodedBody(("value", ""))
-
 
         val boundForm = form.bind(Map("value" -> ""))
 
@@ -176,7 +177,6 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
         val foreignRequest =
           FakeRequest(POST, foreignReversePremiumsReceivedRoute)
             .withFormUrlEncodedBody(("value", "true"))
-
 
         val foreignResult = route(application, foreignRequest).value
 
