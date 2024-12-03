@@ -22,9 +22,8 @@ import models.{UserAnswers, ReversePremiumsReceived}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import controllers.foreign.income.routes._
-import pages.PremiumsGrantLeaseYNPage
 import pages.foreign.ForeignYearLeaseAmountPage
-import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
+import pages.foreign.income.{ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
 
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView

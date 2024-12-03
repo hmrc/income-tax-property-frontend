@@ -16,33 +16,33 @@
 
 package viewmodels.checkAnswers.foreign.income
 
-import models.{UserAnswers, CheckMode}
+import models.{CheckMode, UserAnswers}
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignReversePremiumsReceivedSummary  {
+object ForeignReversePremiumsReceivedSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignReversePremiumsReceivedPage.apply(countryCode)).map { answer =>
-        val value = ValueViewModel(
-          HtmlContent(
-            HtmlFormat.escape(messages(s"reversePremiumsReceived.$answer"))
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ForeignReversePremiumsReceivedPage(countryCode)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value =
+          ValueViewModel(answer.amount.fold("site.no")(value => bigDecimalCurrency(value))).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.foreign.income.routes.ForeignReversePremiumsReceivedController
+              .onPageLoad(taxYear, countryCode, CheckMode)
+              .url
           )
+            .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
         )
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = value.withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreign.income.routes.ForeignReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode, countryCode).url)
-              .withVisuallyHiddenText(messages("reversePremiumsReceived.change.hidden"))
-          )
-        )
+      )
     }
 }

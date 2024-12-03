@@ -29,6 +29,10 @@
 
 @layout(pageTitle = title(form, messages("premiumsGrantLeaseYN.title"))) {
 
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form))
+    }
+
     <h1 class="govuk-heading-l">@messages("premiumsGrantLeaseYN.heading")</h1>
 
     <p class="govuk-body">@messages("premiumsGrantLeaseYN.p.1")</p>
@@ -43,10 +47,6 @@
     <p class="govuk-body">@messages("premiumsGrantLeaseYN.p.3")</p>
 
     @formHelper(action = PremiumsGrantLeaseYNController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
-
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
 
         @govukRadios(
             RadiosViewModel.yesNo(

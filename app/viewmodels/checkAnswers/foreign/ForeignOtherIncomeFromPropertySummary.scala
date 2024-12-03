@@ -20,23 +20,28 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.income.ForeignOtherIncomeFromPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ForeignOtherIncomeFromPropertySummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignOtherIncomeFromPropertyPage(countryCode)).map {
-      answer =>
-        SummaryListRowViewModel(
-          key     = KeyViewModel("foreignOtherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change",
-              controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignOtherIncomeFromProperty.change.hidden"))
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ForeignOtherIncomeFromPropertyPage(countryCode)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("otherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            controllers.foreign.income.routes.ForeignOtherIncomeFromPropertyController
+              .onPageLoad(taxYear, countryCode, CheckMode)
+              .url
           )
+            .withVisuallyHiddenText(messages("otherIncomeFromProperty.change.hidden"))
         )
+      )
     }
 }

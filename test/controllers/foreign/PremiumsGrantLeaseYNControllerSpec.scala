@@ -20,12 +20,12 @@ import base.SpecBase
 import controllers.foreign.routes.PremiumsGrantLeaseYNController
 import controllers.routes
 import forms.PremiumsGrantLeaseYNFormProvider
-import models.{UserAnswers, NormalMode}
-import navigation.{Navigator, FakeNavigator}
+import models.{NormalMode, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PremiumsGrantLeaseYNPage
+import pages.foreign.income.PremiumsGrantLeaseYNPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -37,15 +37,18 @@ import scala.concurrent.Future
 
 class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new PremiumsGrantLeaseYNFormProvider()
   val form = formProvider("agent")
   val countryCode = "gre"
   val taxYear = 2024
   val isAgent = "agent"
 
-  lazy val premiumsGrantLeaseYNRoute = PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode).url
+  private lazy val premiumsGrantLeaseYNRoute = PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode).url
+
+  def onwardRoute: Call = Call(
+    "GET",
+    "/update-and-submit-income-tax-return/property/2024/foreign-property/income/gre/calculated-premium-lease-taxable"
+  )
 
   "PremiumsGrantLeaseYN Controller" - {
 
@@ -61,7 +64,10 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[PremiumsGrantLeaseYNView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode, isAgent)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -79,7 +85,10 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode, isAgent)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -125,7 +134,10 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode, isAgent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode, isAgent)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

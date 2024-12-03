@@ -38,6 +38,7 @@ POST       /:taxYear/foreign-property/select-country/check-your-answers         
 GET        /:taxYear/foreign-property/select-country/complete-yes-no                             controllers.foreign.ForeignSelectCountriesCompleteController.onPageLoad(taxYear: Int)
 POST       /:taxYear/foreign-property/select-country/complete-yes-no                             controllers.foreign.ForeignSelectCountriesCompleteController.onSubmit(taxYear: Int)
 
+############################  Foreign Tax ###################################
 
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                             controllers.foreign.ForeignIncomeTaxController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/foreign-income-tax                             controllers.foreign.ForeignIncomeTaxController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
@@ -55,53 +56,57 @@ POST       /:taxYear/foreign-property/foreign-tax/:countryCode/check-your-answer
 GET        /:taxYear/foreign-property/foreign-tax/:countryCode/complete-yes-no                                controllers.foreign.ForeignTaxSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/foreign-tax/:countryCode/complete-yes-no                                controllers.foreign.ForeignTaxSectionCompleteController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 
+############################  Income ###################################
+
 GET        /:taxYear/foreign-property/income/:countryCode/start                                               controllers.foreign.income.ForeignPropertyIncomeStartController.onPageLoad(taxYear: Int, countryCode: String)
-
-GET        /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease-yn                             controllers.foreign.PremiumsGrantLeaseYNController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease-yn                             controllers.foreign.PremiumsGrantLeaseYNController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease-yn                      controllers.foreign.PremiumsGrantLeaseYNController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease-yn                      controllers.foreign.PremiumsGrantLeaseYNController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-
-GET        /:taxYear/foreign-property/income/:countryCode/received-grant-lease-amount                         controllers.foreign.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/received-grant-lease-amount                         controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-
-GET        /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-
-GET        /:taxYear/foreign-property/income/:countryCode/year-lease-amount                                   controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/year-lease-amount                                   controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/check-year-lease-amount                             controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/check-year-lease-amount                             controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-
-GET        /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode,countryCode:String)
-POST       /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode,countryCode:String)
-GET        /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode,countryCode:String)
-POST       /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode,countryCode:String)
-
-GET        /:taxYear/foreign-property/income/:countryCode/calculated-premium-lease-taxable                    controllers.foreign.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/calculated-premium-lease-taxable                    controllers.foreign.CalculatedPremiumLeaseTaxableController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/change-calculated-premium-lease-taxable             controllers.foreign.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/change-calculated-premium-lease-taxable             controllers.foreign.CalculatedPremiumLeaseTaxableController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 GET        /:taxYear/foreign-property/income/:countryCode/foreign-property-rental-income                      controllers.foreign.income.ForeignPropertyRentalIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode,countryCode:String)
 POST       /:taxYear/foreign-property/income/:countryCode/foreign-property-rental-income                      controllers.foreign.income.ForeignPropertyRentalIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode,countryCode:String)
 GET        /:taxYear/foreign-property/income/:countryCode/check-foreign-property-rental-income                controllers.foreign.income.ForeignPropertyRentalIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode,countryCode:String)
 POST       /:taxYear/foreign-property/income/:countryCode/check-foreign-property-rental-income                controllers.foreign.income.ForeignPropertyRentalIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode,countryCode:String)
 
+GET        /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease-yn                             controllers.foreign.PremiumsGrantLeaseYNController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease-yn                             controllers.foreign.PremiumsGrantLeaseYNController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease-yn                      controllers.foreign.PremiumsGrantLeaseYNController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease-yn                      controllers.foreign.PremiumsGrantLeaseYNController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/calculated-premium-lease-taxable                    controllers.foreign.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/calculated-premium-lease-taxable                    controllers.foreign.CalculatedPremiumLeaseTaxableController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/change-calculated-premium-lease-taxable             controllers.foreign.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/change-calculated-premium-lease-taxable             controllers.foreign.CalculatedPremiumLeaseTaxableController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/received-grant-lease-amount                         controllers.foreign.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/received-grant-lease-amount                         controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/check-received-grant-lease-amount                   controllers.foreign.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/twelve-month-periods                                controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/twelve-month-periods                                controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/check-twelve-month-periods                          controllers.foreign.ForeignYearLeaseAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/check-twelve-month-periods                          controllers.foreign.ForeignYearLeaseAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease                                controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, countryCode:String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, countryCode:String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, countryCode:String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, countryCode:String, mode: Mode = CheckMode)
+
 GET        /:taxYear/foreign-property/income/:countryCode/other-income-from-property                          controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/income/:countryCode/other-income-from-property                          controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/income/:countryCode/change-other-income-from-property                   controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/income/:countryCode/change-other-income-from-property                   controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/foreign-income-section-finished                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-
 GET        /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
+
+############################  Expenses ###################################
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-property-expenses-start                   controllers.foreign.expenses.ForeignPropertyExpensesStartController.onPageLoad(taxYear: Int, countryCode: String)
 
@@ -120,10 +125,10 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/costs-of-services-pr
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                               controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                                controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                             controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                             controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-non-residential-property-finance-costs                      controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-non-residential-property-finance-costs                       controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-non-residential-property-finance-costs                      controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-professional-fees                         controllers.foreign.expenses.ForeignProfessionalFeesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-professional-fees                         controllers.foreign.expenses.ForeignProfessionalFeesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)

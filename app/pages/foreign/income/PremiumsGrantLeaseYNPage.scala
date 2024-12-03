@@ -14,15 +14,33 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign.income
 
+import models.{ForeignProperty, UserAnswers}
 import pages.PageConstants.incomePath
+import pages.QuestionPage
+import pages.foreign._
 import play.api.libs.json.JsPath
-import models.ForeignProperty
+
+import scala.util.Try
 
 case class PremiumsGrantLeaseYNPage(countryCode: String) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "premiumsGrantLeaseYesOrNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case true => super.cleanup(value, userAnswers)
+        case false =>
+          for {
+            userAnswersWithoutCPLT  <- userAnswers.remove(CalculatedPremiumLeaseTaxablePage(countryCode))
+            userAnswersWithoutFRGLA <- userAnswersWithoutCPLT.remove(ForeignReceivedGrantLeaseAmountPage(countryCode))
+            userAnswersWithoutFYLA  <- userAnswersWithoutFRGLA.remove(ForeignYearLeaseAmountPage(countryCode))
+            userAnswersWithoutFPGL  <- userAnswersWithoutFYLA.remove(ForeignPremiumsGrantLeasePage(countryCode))
+          } yield userAnswersWithoutFPGL
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }

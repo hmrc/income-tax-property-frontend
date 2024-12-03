@@ -1767,6 +1767,22 @@ ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-r
 ukAndForeign.summary.title = UK and Foreign property
 summary.aboutUKAndForeignProperties = About
 
+ukAndForeignPropertyDetails.title = UK and foreign property details
+ukAndForeignPropertyDetails.heading = UK and foreign property details
+ukAndForeignPropertyDetails.para1 = You previously told us:
+ukAndForeignPropertyDetails.bullet1.individual = You started renting your UK property on {0}
+ukAndForeignPropertyDetails.bullet1.agent = Your client started renting their UK property on {0}
+ukAndForeignPropertyDetails.bullet2.individual = Your UK property accounting method is:
+ukAndForeignPropertyDetails.bullet2.agent = Your client's UK property accounting method is:
+ukAndForeignPropertyDetails.bullet3.individual = You started renting your foreign property on {0}
+ukAndForeignPropertyDetails.bullet3.agent = Your client started renting their foreign property on {0}
+ukAndForeignPropertyDetails.bullet4.individual = Your foreign property accounting method is:
+ukAndForeignPropertyDetails.bullet4.agent = Your client's foreign property accounting method is:
+ukAndForeignPropertyDetails.para2.part1 = If these details are wrong you can
+ukAndForeignPropertyDetails.para2.part2.individual = go back to your online account
+ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
+ukAndForeignPropertyDetails.para2.part3 = to change them.
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = Foreign property
@@ -1939,8 +1955,8 @@ premiumsGrantLeaseYN.bullet1 = a premium or lump sum
 premiumsGrantLeaseYN.bullet2 = regular rent payments
 premiumsGrantLeaseYN.p.2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
 premiumsGrantLeaseYN.p.3 = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
-premiumsGrantLeaseYN.checkYourAnswersLabel.individual = Did you receive a premium for granting a lease?
-premiumsGrantLeaseYN.checkYourAnswersLabel.agent = Did your client receive a premium for granting a lease?
+premiumsGrantLeaseYN.checkYourAnswersLabel.individual = Premiums for the grant of a lease
+premiumsGrantLeaseYN.checkYourAnswersLabel.agent = Premiums for the grant of a lease
 premiumsGrantLeaseYN.error.required.individual = Select yes if you received a premium for granting a lease
 premiumsGrantLeaseYN.error.required.agent = Select yes if your client received a premium for granting a lease
 premiumsGrantLeaseYN.change.hidden.individual = Did you receive a premium for granting a lease?
@@ -1966,8 +1982,9 @@ foreignPremiumsGrantLease.line4.part1 = Y
 foreignPremiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
 foreignPremiumsGrantLease.line5.part1 = 50
 foreignPremiumsGrantLease.line5.part2 = is for short leases with 50 years or less to go on them
+foreignPremiumsGrantLease.amount.label = Do you agree with this taxable amount?
 foreignPremiumsGrantLease.input.label = Enter the amount calculated
-foreignPremiumsGrantLease.checkYourAnswersLabel = Do you agree with this taxable amount?
+foreignPremiumsGrantLease.checkYourAnswersLabel = Premium for the grant of a lease taxable amount
 foreignPremiumsGrantLease.error.required.individual = Select yes if you’ve calculated the amount yourself
 foreignPremiumsGrantLease.error.required.agent = Select yes if your client agrees with this taxable amount
 foreignPremiumsGrantLease.error.amount.required.individual = Enter the amount you’ve calculated yourself
@@ -1993,8 +2010,8 @@ foreignPropertyIncomeStart.p2.agent = If your client’s properties are jointly 
 
 foreignPropertyRentalIncome.title = Foreign property rental income
 foreignPropertyRentalIncome.heading = Foreign property rental income
-foreignPropertyRentalIncome.checkYourAnswersLabel = Foreign property rental income
-foreignPropertyRentalIncome.change.hidden = Foreign property rental income
+foreignPropertyRentalIncome.checkYourAnswersLabel = Income from foreign property rentals
+foreignPropertyRentalIncome.change.hidden = Income from foreign property rentals
 foreignPropertyRentalIncome.deductions.hint = This is the amount before any deductions
 foreignPropertyRentalIncome.bullet1.individual = the use of furniture
 foreignPropertyRentalIncome.bullet1.agent = the use of furniture
@@ -2021,12 +2038,11 @@ foreignPropertyRentalIncome.error.required.individual = Enter your property rent
 foreignPropertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 foreignPropertyRentalIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 
-foreignOtherIncomeFromProperty.change.hidden = ForeignOtherIncomeFromProperty
-
 calculatedPremiumLeaseTaxable.title = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.individual = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
-calculatedPremiumLeaseTaxable.checkYourAnswersLabel = Have you calculated the premium for the grant of a lease taxable amount?
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel = Have you calculated the figure yourself?
+calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel = Premium for the grant of a lease taxable amount
 premiumCalculatedAmount.radio.question.label = Enter the amount calculated
 calculatedPremiumLeaseTaxable.error.required.individual = Select yes if you''ve calculated the amount yourself
 calculatedPremiumLeaseTaxable.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount

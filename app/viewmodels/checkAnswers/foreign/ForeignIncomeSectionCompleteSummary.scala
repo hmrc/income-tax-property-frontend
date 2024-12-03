@@ -16,14 +16,14 @@
 
 package viewmodels.checkAnswers.foreign
 
-import models.{CheckMode, UserAnswers}
+import models.UserAnswers
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignIncomeSectionCompleteSummary  {
+object ForeignIncomeSectionCompleteSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ForeignIncomeSectionCompletePage(countryCode)).map {

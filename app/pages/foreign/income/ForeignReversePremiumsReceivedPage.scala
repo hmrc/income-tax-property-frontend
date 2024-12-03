@@ -21,8 +21,7 @@ import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignReversePremiumsReceivedPage(countryCode:String)
-extends QuestionPage[ReversePremiumsReceived] {
+case class ForeignReversePremiumsReceivedPage(countryCode: String) extends QuestionPage[ReversePremiumsReceived] {
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 

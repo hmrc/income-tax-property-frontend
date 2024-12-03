@@ -22,11 +22,11 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.{ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage}
+import pages.foreign.ForeignSelectCountriesCompletePage
 import pages.premiumlease._
-import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage

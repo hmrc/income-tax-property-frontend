@@ -17,29 +17,32 @@
 package viewmodels.checkAnswers.foreign
 
 import controllers.foreign.routes
-import models.{UserAnswers, CheckMode}
-import pages.PremiumsGrantLeaseYNPage
+import models.{CheckMode, UserAnswers}
+import pages.foreign.income.PremiumsGrantLeaseYNPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
-object PremiumsGrantLeaseYNSummary  {
+object PremiumsGrantLeaseYNSummary {
 
-  def row(answers: UserAnswers, taxYear: Int, countryCode: String, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(PremiumsGrantLeaseYNPage(countryCode)).map {
-      answer =>
+  def row(answers: UserAnswers, taxYear: Int, countryCode: String, individualOrAgent: String)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(PremiumsGrantLeaseYNPage(countryCode)).map { answer =>
+      val value = if (answer) "site.yes" else "site.no"
 
-        val value = if (answer) "site.yes" else "site.no"
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel(s"premiumsGrantLeaseYN.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
-          value   = ValueViewModel(value).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("premiumsGrantLeaseYN.change.hidden"))
+      SummaryListRowViewModel(
+        key = KeyViewModel(s"premiumsGrantLeaseYN.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
+        value = ValueViewModel(value).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("premiumsGrantLeaseYN.change.hidden"))
         )
+      )
     }
 }

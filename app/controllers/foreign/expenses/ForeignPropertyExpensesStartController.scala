@@ -17,9 +17,8 @@
 package controllers.foreign.expenses
 
 import controllers.actions._
-import models.JourneyPath.PropertyAbout
+import pages.foreign.IncomeSourceCountries
 import pages.foreign.income.ForeignPropertyRentalIncomePage
-import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -27,7 +26,7 @@ import views.html.foreign.expenses.ForeignPropertyExpensesStartView
 
 import javax.inject.Inject
 
-class ForeignPropertyExpensesStartController @Inject()(
+class ForeignPropertyExpensesStartController @Inject() (
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
