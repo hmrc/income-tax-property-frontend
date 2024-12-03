@@ -2232,6 +2232,7 @@ consolidatedOrIndividualExpenses.radio.legend.individual = What do you want to d
 consolidatedOrIndividualExpenses.radio.legend.agent = What does your client want to do?
 consolidatedOrIndividualExpenses.radio.question.label = How much were your consolidated expenses?
 consolidatedOrIndividualExpenses.checkYourAnswersLabel = Consolidated or individual expenses
+consolidatedOrIndividualExpenses.checkYourAnswers.individual = Individual
 consolidatedOrIndividualExpenses.error.required.individual = Select if you want to claim consolidated expenses or individual expenses
 consolidatedOrIndividualExpenses.error.required.agent = Select if your client wants to claim consolidated expenses or individual expenses
 consolidatedOrIndividualExpenses.amount.error.required.individual = Enter the amount you want to claim for consolidated expenses

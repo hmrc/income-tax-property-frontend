@@ -135,9 +135,6 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-professional
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
-POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
-
 GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-other-allowable-property-expenses         controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-other-allowable-property-expenses         controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-other-allowable-property-expenses  controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
@@ -152,3 +149,6 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/change-consolidated-
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/check-your-answers                                controllers.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/expenses/:countryCode/check-your-answers                                controllers.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)

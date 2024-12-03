@@ -45,6 +45,7 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject()(
 
       val list = SummaryListViewModel(
         rows = Seq(
+          ConsolidatedOrIndividualExpensesSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignRentsRatesAndInsuranceSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignPropertyRepairsAndMaintenanceSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignNonResidentialPropertyFinanceCostsSummary.row(taxYear, countryCode, request.userAnswers),

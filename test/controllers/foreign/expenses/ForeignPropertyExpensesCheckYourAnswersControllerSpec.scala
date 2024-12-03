@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.foreign.expenses
 
 import base.SpecBase
 import controllers.foreign.expenses.routes.{ForeignPropertyExpensesCheckYourAnswersController, ForeignExpensesSectionCompleteController}
-import models.UserAnswers
+import controllers.routes
+import models.{ConsolidatedOrIndividualExpenses, UserAnswers}
 import pages.foreign.expenses._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -85,7 +86,8 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
       val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
-        .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67))
+        .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(true, Some(BigDecimal(66))))
+        .flatMap(_.set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67)))
         .flatMap(_.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(68)))
         .flatMap(_.set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), BigDecimal(69)))
         .flatMap(_.set(ForeignProfessionalFeesPage(countryCode), BigDecimal(70)))
