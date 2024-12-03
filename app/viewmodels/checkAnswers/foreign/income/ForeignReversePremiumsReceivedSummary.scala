@@ -20,7 +20,7 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.income.ForeignReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -28,16 +28,12 @@ object ForeignReversePremiumsReceivedSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
     messages: Messages
-  ): Option[SummaryListRow] = {
-
-    val value = answers.get(ForeignReversePremiumsReceivedPage(countryCode)).map { answer =>
-      answer.amount.fold("site.no")(value => value.toString)
-    }
-
+  ): Option[SummaryListRow] =
     answers.get(ForeignReversePremiumsReceivedPage(countryCode)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(value.get).withCssClass(valueCssClass),
+        value =
+          ValueViewModel(answer.amount.fold("site.no")(value => bigDecimalCurrency(value))).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
@@ -49,5 +45,4 @@ object ForeignReversePremiumsReceivedSummary {
         )
       )
     }
-  }
 }

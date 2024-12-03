@@ -71,8 +71,8 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignOtherIncomeFromPropertyPage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-    case ForeignIncomeSectionCompletePage(countryCode) =>
-      taxYear => _ => _ => ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)
+    case ForeignIncomeSectionCompletePage(_) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
     case ForeignExpensesSectionCompletePage(countryCode) =>
       taxYear => _ => _ => SummaryController.show(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad

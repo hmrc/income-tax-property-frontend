@@ -18,10 +18,8 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.PremiumsGrantLeaseYNFormProvider
-
-import javax.inject.Inject
 import models.Mode
-import navigation.{ForeignPropertyNavigator, Navigator}
+import navigation.ForeignPropertyNavigator
 import pages.PremiumsGrantLeaseYNPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.PremiumsGrantLeaseYNView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PremiumsGrantLeaseYNController @Inject() (

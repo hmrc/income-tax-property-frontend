@@ -17,10 +17,11 @@
 package controllers.foreign.expenses
 
 import base.SpecBase
+import controllers.foreign.expenses.routes.ForeignOtherAllowablePropertyExpensesController
 import controllers.routes
 import forms.foreign.expenses.ForeignOtherAllowablePropertyExpensesFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeForeignPropertyNavigator, FakeNavigator, ForeignPropertyNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -48,7 +49,7 @@ class ForeignOtherAllowablePropertyExpensesControllerSpec extends SpecBase with 
   val countryCode = "AUS"
 
   lazy val foreignOtherAllowablePropertyExpensesRoute =
-    controllers.foreign.expenses.routes.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear, countryCode, NormalMode).url
+    ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignOtherAllowablePropertyExpenses Controller" - {
 
@@ -64,13 +65,19 @@ class ForeignOtherAllowablePropertyExpensesControllerSpec extends SpecBase with 
         val view = application.injector.instanceOf[ForeignOtherAllowablePropertyExpensesView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignOtherAllowablePropertyExpensesPage(countryCode), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(ForeignOtherAllowablePropertyExpensesPage(countryCode), validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -82,7 +89,13 @@ class ForeignOtherAllowablePropertyExpensesControllerSpec extends SpecBase with 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(validAnswer),
+          taxYear,
+          countryCode,
+          isAgentMessageKey,
+          NormalMode
+        )(request, messages(application)).toString
       }
     }
 
@@ -128,7 +141,10 @@ class ForeignOtherAllowablePropertyExpensesControllerSpec extends SpecBase with 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

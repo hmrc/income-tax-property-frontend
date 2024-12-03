@@ -17,8 +17,8 @@
 package navigation.foreign
 
 import base.SpecBase
-import controllers.foreign.routes._
 import controllers.foreign.income.routes._
+import controllers.foreign.routes._
 import controllers.routes.SummaryController
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
@@ -199,7 +199,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
         ) mustBe PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
       }
-      "must go from ForeignIncomeSectionCompletePage to Have You Finished" in {
+      "must go from Have You Finished-ForeignIncomeSectionCompletePage to the Summary Page" in {
         val userAnswersWithData = UserAnswers("test").set(ForeignIncomeSectionCompletePage("ESP"), true).get
         navigator.nextPage(
           ForeignIncomeSectionCompletePage("ESP"),
@@ -207,7 +207,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswersWithData
-        ) mustBe ForeignIncomeSectionCompleteController.onPageLoad(taxYear, "ESP")
+        ) mustBe SummaryController.show(taxYear)
       }
     }
 
