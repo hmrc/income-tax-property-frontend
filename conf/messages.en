@@ -1767,6 +1767,22 @@ ukRentARoom.about.start.link = https://www.gov.uk/guidance/income-tax-when-you-r
 ukAndForeign.summary.title = UK and Foreign property
 summary.aboutUKAndForeignProperties = About
 
+ukAndForeignPropertyDetails.title = UK and foreign property details
+ukAndForeignPropertyDetails.heading = UK and foreign property details
+ukAndForeignPropertyDetails.para1 = You previously told us:
+ukAndForeignPropertyDetails.bullet1.individual = You started renting your UK property on {0}
+ukAndForeignPropertyDetails.bullet1.agent = Your client started renting their UK property on {0}
+ukAndForeignPropertyDetails.bullet2.individual = Your UK property accounting method is:
+ukAndForeignPropertyDetails.bullet2.agent = Your client's UK property accounting method is:
+ukAndForeignPropertyDetails.bullet3.individual = You started renting your foreign property on {0}
+ukAndForeignPropertyDetails.bullet3.agent = Your client started renting their foreign property on {0}
+ukAndForeignPropertyDetails.bullet4.individual = Your foreign property accounting method is:
+ukAndForeignPropertyDetails.bullet4.agent = Your client's foreign property accounting method is:
+ukAndForeignPropertyDetails.para2.part1 = If these details are wrong you can
+ukAndForeignPropertyDetails.para2.part2.individual = go back to your online account
+ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
+ukAndForeignPropertyDetails.para2.part3 = to change them.
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = Foreign property
@@ -2186,3 +2202,4 @@ foreignOtherAllowablePropertyExpenses.error.required.individual = Enter the amou
 foreignOtherAllowablePropertyExpenses.error.required.agent = Enter the amount for your client''s other allowable property expenses
 foreignOtherAllowablePropertyExpenses.error.outOfRange = Enter an amount between {0} and {1}
 foreignOtherAllowablePropertyExpenses.change.hidden = Other allowable property expenses
+
