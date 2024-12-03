@@ -18,11 +18,13 @@ package controllers.foreign
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.ForeignTaxSectionCompleteFormProvider
 import models.JourneyPath.ForeignPropertyTax
-import models.{JourneyContext, Mode}
+import models.{ForeignProperty, JourneyContext, Mode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignTaxSectionCompletePage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,7 +49,7 @@ class ForeignTaxSectionCompleteController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
@@ -80,14 +82,24 @@ class ForeignTaxSectionCompleteController @Inject() (
                           status = statusForPage(value),
                           request.user
                         )
-            } yield Redirect(
-              navigator.nextPage(
-                ForeignTaxSectionCompletePage(countryCode),
-                taxYear,
-                mode,
-                request.userAnswers,
-                updatedAnswers
-              )
+            } yield status.fold(
+              _ =>
+                statusError(
+                  journeyName = "foreign-property-tax",
+                  propertyType = ForeignProperty,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
+              _ =>
+                Redirect(
+                  navigator.nextPage(
+                    ForeignTaxSectionCompletePage(countryCode),
+                    taxYear,
+                    mode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
+                )
             )
         )
     }
