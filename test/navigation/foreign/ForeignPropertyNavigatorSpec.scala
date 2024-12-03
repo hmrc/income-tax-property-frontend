@@ -17,8 +17,8 @@
 package navigation.foreign
 
 import base.SpecBase
-import controllers.foreign.routes._
 import controllers.foreign.income.routes._
+import controllers.foreign.routes._
 import controllers.routes.SummaryController
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
@@ -124,6 +124,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           updatedUserAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 1, NormalMode)
       }
+
       "must go from ForeignOtherIncomeFromPropertyPage to CheckYourAnswers Page" in {
         val userAnswers = UserAnswers("test")
         val updatedUserAnswers = userAnswers.set(ForeignOtherIncomeFromPropertyPage("AUS"), BigDecimal(1000)).get
@@ -136,6 +137,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController
           .onPageLoad(taxYear, "AUS")
       }
+
       "must go from AddCountriesRentedPage to ClaimPropertyIncomeAllowanceOrExpensesPage if AddCountriesRentedPage is false" in {
         val userAnswersWithoutAddCountry = UserAnswers("test").set(AddCountriesRentedPage, false).get
 
@@ -157,6 +159,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
       }
+
       "CalculatedPremiumLeaseTaxablePage" - {
         "should go to ForeignReceivedGrantLeaseAmount if no selected" in {
           val userAnswersWithData = UserAnswers("test")
@@ -189,6 +192,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, "ESP", NormalMode)
         }
       }
+
       "must go from ForeignPropertyRentalIncomePage to PremiumsGrantLeaseYNPage" in {
         val countryCode = "BRA"
         navigator.nextPage(
@@ -199,7 +203,148 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
         ) mustBe PremiumsGrantLeaseYNController.onPageLoad(taxYear, countryCode, NormalMode)
       }
-      "must go from ForeignIncomeSectionCompletePage to Have You Finished" in {
+
+      "must go from PremiumsGrantLeaseYNPage to Have You Calculated Figure Yourself if true" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = true).get
+        ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from PremiumsGrantLeaseYNPage to Have You Calculated Figure Yourself if false" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = true).get
+        ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+            )
+            .get
+        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = false, None)
+            )
+            .get
+        ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from PremiumsGrantLeaseYNPage to Calculate Premium Lease Taxable if true" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = true).get
+        ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from PremiumsGrantLeaseYNPage to Reverse Premium Page if false" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = false).get
+        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in NormalMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+            )
+            .get
+        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false in Normal Mode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = false, None)
+            )
+            .get
+        ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignReceivedGrantLeaseAmount to ForeignYearLeaseAmount" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignReceivedGrantLeaseAmountPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              ForeignReceivedGrantLeaseAmountPage(countryCode),
+              BigDecimal(3.0)
+            )
+            .get
+        ) mustBe ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignYearLeaseAmount to ForeignPremiumsGrantLease" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignYearLeaseAmountPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              ForeignYearLeaseAmountPage(countryCode),
+              11
+            )
+            .get
+        ) mustBe ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from Have You Finished-ForeignIncomeSectionCompletePage to the Summary Page" in {
         val userAnswersWithData = UserAnswers("test").set(ForeignIncomeSectionCompletePage("ESP"), true).get
         navigator.nextPage(
           ForeignIncomeSectionCompletePage("ESP"),
@@ -207,7 +352,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           userAnswersWithData
-        ) mustBe ForeignIncomeSectionCompleteController.onPageLoad(taxYear, "ESP")
+        ) mustBe SummaryController.show(taxYear)
       }
     }
 
@@ -308,7 +453,136 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe controllers.routes.IndexController.onPageLoad
       }
+
+      "CalculatedPremiumLeaseTaxablePage" - {
+        "should go to ForeignReceivedGrantLeaseAmount if no selected" in {
+          val userAnswersWithData = UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage("ESP"),
+              PremiumCalculated(premiumCalculatedYesNo = false, None)
+            )
+            .get
+          navigator.nextPage(
+            CalculatedPremiumLeaseTaxablePage("ESP"),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswersWithData
+          ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "ESP", CheckMode)
+        }
+        "should go from CalculatedPremiumLeaseTaxablePage to Reverse premiums received" in {
+          val userAnswersWithData = UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage("ESP"),
+              PremiumCalculated(premiumCalculatedYesNo = true, Some(BigDecimal(1234)))
+            )
+            .get
+          navigator.nextPage(
+            CalculatedPremiumLeaseTaxablePage("ESP"),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswersWithData
+          ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, "ESP", CheckMode)
+        }
+      }
+      "must go from ForeignPropertyRentalIncomePage to CheckYourAnswers" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignPropertyRentalIncomePage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
+        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from PremiumsGrantLeaseYNPage to Calculate Premium Lease Taxable if true in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = true).get
+        ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
+      "must go from PremiumsGrantLeaseYNPage to CheckYourAnswers if false in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          PremiumsGrantLeaseYNPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = false).get
+        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+            )
+            .get
+        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          CalculatedPremiumLeaseTaxablePage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              CalculatedPremiumLeaseTaxablePage(countryCode),
+              PremiumCalculated(premiumCalculatedYesNo = false, None)
+            )
+            .get
+        ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
+      "must go from ForeignReceivedGrantLeaseAmount to ForeignYearLeaseAmount in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignReceivedGrantLeaseAmountPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              ForeignReceivedGrantLeaseAmountPage(countryCode),
+              BigDecimal(3.0)
+            )
+            .get
+        ) mustBe ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
+      "must go from ForeignYearLeaseAmount to ForeignPremiumsGrantLease in CheckMode" in {
+        val countryCode = "BRA"
+        navigator.nextPage(
+          ForeignYearLeaseAmountPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+            .set(
+              ForeignYearLeaseAmountPage(countryCode),
+              9
+            )
+            .get
+        ) mustBe ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
     }
   }
-
 }
