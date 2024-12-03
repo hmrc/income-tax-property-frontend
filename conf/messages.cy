@@ -1761,11 +1761,6 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
-foreignCountriesRentList.title.individual = *Missing Welsh*
-foreignCountriesRentList.title.agent = *Missing Welsh*
-foreignCountriesRentList.heading.individual = *Missing Welsh*
-foreignCountriesRentList.heading.agent = *Missing Welsh*
-
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
@@ -2226,6 +2221,28 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.individual = *Missing
 consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = *Missing Welsh*
 consolidatedOrIndividualExpenses.amount.error.outOfRange = *Missing Welsh*
 consolidatedOrIndividualExpenses.change.hidden = *Missing Welsh*
+
+foreignZeroEmissionCarAllowance.title = *Missing Welsh*
+foreignZeroEmissionCarAllowance.heading = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p1.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p1.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p2.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p2.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p3.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p3.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.text.1 = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.text.2 = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
+foreignZeroEmissionCarAllowance.legend.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.legend.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.checkYourAnswersLabel = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.required.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.required.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.twoDecimalPlaces = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.nonNumeric.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.nonNumeric.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.outOfRange = *Missing Welsh*
+foreignZeroEmissionCarAllowance.change.hidden = *Missing Welsh*
 
 totalPropertyIncome.title.individual = *Missing Welsh*
 totalPropertyIncome.title.agent = *Missing Welsh*
