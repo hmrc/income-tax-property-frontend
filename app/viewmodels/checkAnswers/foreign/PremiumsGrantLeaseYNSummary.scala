@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.foreign
 
 import controllers.foreign.routes
 import models.{CheckMode, UserAnswers}
-import pages.PremiumsGrantLeaseYNPage
+import pages.foreign.income.PremiumsGrantLeaseYNPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._

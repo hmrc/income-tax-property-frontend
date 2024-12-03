@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreign.income
 
 import models.{ForeignProperty, UserAnswers}
 import pages.PageConstants.incomePath
-import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignYearLeaseAmountPage}
+import pages.QuestionPage
+import pages.foreign._
 import play.api.libs.json.JsPath
 
 import scala.util.Try
