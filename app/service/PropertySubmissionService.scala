@@ -82,5 +82,4 @@ class PropertySubmissionService @Inject() (
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
-
 }

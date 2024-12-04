@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package models
 
-import models.ForeignProperty
-import pages.PageConstants.foreignTaxPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case class ClaimForeignTaxCreditReliefPage(countryCode: String) extends QuestionPage[Boolean] {
+case class ForeignPropertyTaxWithCountryCode(
+  countryCode: String,
+  foreignIncomeTax: Option[ForeignIncomeTax],
+  foreignTaxCreditRelief: Option[Boolean]
+)
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
-
-  override def toString: String = "foreignTaxCreditRelief"
+object ForeignPropertyTaxWithCountryCode {
+  implicit val format: Format[ForeignPropertyTaxWithCountryCode] = Json.format
 }
