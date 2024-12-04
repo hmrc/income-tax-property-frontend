@@ -28,10 +28,10 @@ object CalculatedPremiumLeaseTaxableAmountSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap {
-      case PremiumCalculated(true, amount) =>
+      case PremiumCalculated(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
+          value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",
               controllers.foreign.routes.CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)

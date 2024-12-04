@@ -22,6 +22,9 @@ import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign._
+import pages.foreign.income._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
@@ -37,8 +40,10 @@ import testHelpers.Fixture
 import java.time.LocalDate
 
 class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoSugar with Fixture {
+  val countryCode1 = "ESP"
+  val countryCode2 = "USA"
   val data: String =
-    """{
+    s"""{
       |  "ukPropertyData" : {
       |  "propertyAbout": {
       |    "totalIncome" : "between",
@@ -188,6 +193,43 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |    "reportPropertyIncome": false}
       |  },
       |  "foreignPropertyData": {
+      |    "foreignPropertyIncome": {
+      |      "$countryCode1": {
+      |        "rentIncome": 12345.75,
+      |        "premiumsGrantLeaseReceived": true,
+      |        "reversePremiumsReceived": {
+      |          "reversePremiumsReceived": true
+      |        },
+      |        "otherPropertyIncome": 345.65,
+      |        "calculatedPremiumLeaseTaxable": {
+      |          "calculatedPremiumLeaseTaxable": true
+      |        },
+      |        "receivedGrantLeaseAmount": 555.55,
+      |        "twelveMonthPeriodsInLease": 3,
+      |        "premiumsOfLeaseGrantAgreed": {
+      |          "premiumsOfLeaseGrantAgreed": true,
+      |          "premiumsOfLeaseGrant": 234.5
+      |        }
+      |      }
+      |    },
+      |    "foreignJourneyStatuses": {
+      |      "$countryCode1": [
+      |        {
+      |          "journeyName": "foreign-property-income",
+      |          "journeyStatus": "completed"
+      |        },
+      |        {
+      |          "journeyName": "foreign-property-tax",
+      |          "journeyStatus": "completed"
+      |        }
+      |      ],
+      |      "$countryCode2": [
+      |        {
+      |          "journeyName": "foreign-property-expenses",
+      |          "journeyStatus": "inProgress"
+      |        }
+      |      ]
+      |    }
       |  }
       |}""".stripMargin
 
@@ -275,6 +317,23 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(pages.foreign.TotalIncomePage).get mustBe ForeignTotalIncome.LessThanOneThousand
       updated.get(pages.foreign.PropertyIncomeReportPage).get mustBe false
 
+      updated.get(ForeignPropertyRentalIncomePage(countryCode1)).get mustBe 12345.75
+      updated.get(PremiumsGrantLeaseYNPage(countryCode1)).get mustBe true
+      updated.get(CalculatedPremiumLeaseTaxablePage(countryCode1)).get mustBe PremiumCalculated(
+        calculatedPremiumLeaseTaxable = true, None
+      )
+      updated.get(ForeignReceivedGrantLeaseAmountPage(countryCode1)).get mustBe 555.55
+      updated.get(TwelveMonthPeriodsInLeasePage(countryCode1)).get mustBe 3
+      updated.get(ForeignPremiumsGrantLeasePage(countryCode1)).get mustBe ForeignPremiumsGrantLease(
+        premiumsOfLeaseGrantAgreed = true, premiumsOfLeaseGrant = Some(234.5)
+      )
+      updated.get(ForeignReversePremiumsReceivedPage(countryCode1)).get mustBe ReversePremiumsReceived(
+        reversePremiumsReceived = true, reversePremiums = None
+      )
+      updated.get(ForeignOtherIncomeFromPropertyPage(countryCode1)).get mustBe 345.65
+      updated.get(ForeignIncomeSectionCompletePage(countryCode1)).get mustBe true
+      updated.get(ForeignTaxSectionCompletePage(countryCode1)).get mustBe true
+      updated.get(ForeignExpensesSectionCompletePage(countryCode2)).get mustBe false
     }
   }
 }
