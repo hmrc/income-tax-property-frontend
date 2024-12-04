@@ -2232,3 +2232,11 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.individual = The amou
 consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = The amount your client wants to claim for consolidated expenses can only include pounds and pence, for example £600 or £600.20
 consolidatedOrIndividualExpenses.amount.error.outOfRange = Enter an amount between £0 and £100,000,000,000
 consolidatedOrIndividualExpenses.change.hidden = Consolidated or individual expenses
+
+totalPropertyIncome.title = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.heading = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.lessthan = Less than £1,000
+totalPropertyIncome.maximum = £1,000 or more
+totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.error.required = Select totalPropertyIncome
+totalPropertyIncome.change.hidden = TotalPropertyIncome

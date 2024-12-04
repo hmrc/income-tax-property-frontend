@@ -798,3 +798,8 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 
 ############## UK & Foreign Property About ##############
 GET         /:taxYear/uk-foreign-property/about/start                                                                    controllers.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+
+GET        /totalPropertyIncome                        controllers.TotalPropertyIncomeController.onPageLoad(mode: Mode = NormalMode)
+POST       /totalPropertyIncome                        controllers.TotalPropertyIncomeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeTotalPropertyIncome                  controllers.TotalPropertyIncomeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeTotalPropertyIncome                  controllers.TotalPropertyIncomeController.onSubmit(mode: Mode = CheckMode)
