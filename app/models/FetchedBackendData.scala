@@ -146,7 +146,8 @@ final case class FetchedBackendData(
   raRAdjustments: Option[RentARoomAdjustments],
   rentARoomAllowances: Option[RentARoomAllowance],
   journeyStatuses: List[JourneyWithStatus],
-  foreignPropertySelectCountry: Option[ForeignPropertySelectCountry]
+  foreignPropertySelectCountry: Option[ForeignPropertySelectCountry],
+  foreignPropertyIncome: Option[Map[String, ForeignPropertyIncome]]
 )
 
 object FetchedBackendData {
