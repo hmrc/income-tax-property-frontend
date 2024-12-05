@@ -113,7 +113,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, calculatedPremiumLeaseTaxableRoute)
-            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxable", "false"), ("premiumCalculatedAmount","100"))
+            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxable", "false"), ("premiumsOfLeaseGrant","100"))
 
         val result = route(application, request).value
 

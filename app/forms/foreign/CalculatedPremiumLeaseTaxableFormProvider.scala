@@ -30,7 +30,7 @@ class CalculatedPremiumLeaseTaxableFormProvider @Inject() extends Mappings {
     Form[PremiumCalculated](
       mapping(
         "calculatedPremiumLeaseTaxable" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
-        "premiumCalculatedAmount" -> {
+        "premiumsOfLeaseGrant" -> {
           mandatoryIfTrue(
             "calculatedPremiumLeaseTaxable",
             currency(
