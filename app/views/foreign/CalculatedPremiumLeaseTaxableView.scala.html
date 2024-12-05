@@ -39,10 +39,10 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("calculatedPremiumLeaseTaxableYesOrNo"),
+                field = form("calculatedPremiumLeaseTaxable"),
                 legend = LegendViewModel(messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")).asPageHeading(Large),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("calculatedPremiumLeaseTaxableYesOrNo"),
+                    field = form("calculatedPremiumLeaseTaxable"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(

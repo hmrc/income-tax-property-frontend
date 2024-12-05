@@ -26,7 +26,7 @@ import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignYearLeaseAmountPage}
+import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, TwelveMonthPeriodsInLeasePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -46,7 +46,7 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
 
   override def emptyUserAnswers: UserAnswers = (for {
     ua1 <- UserAnswers(userAnswersId).set(ForeignReceivedGrantLeaseAmountPage(countryCode), premiumAmount)
-    ua2 <- ua1.set(ForeignYearLeaseAmountPage(countryCode), periods)
+    ua2 <- ua1.set(TwelveMonthPeriodsInLeasePage(countryCode), periods)
   } yield ua2).success.value
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")

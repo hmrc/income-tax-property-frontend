@@ -32,43 +32,43 @@ class CalculatedFigureYourselfFormProviderSpec extends BooleanFieldBehaviours wi
 
   ".calculatedFigureYourselfAmount" - {
     "when calculatedFigureYourself is true" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "4534.65"))
         boundForm.value.value mustBe CalculatedFigureYourself(true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
-      "and no amount is entered, should fail to bind" in {
+      "and no reversePremiums is entered, should fail to bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true"))
-        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.required.individual"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.reversePremiums.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "jdhfgdsgfzxmnbdv"))
-        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.nonNumeric.individual"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.reversePremiums.error.nonNumeric.individual"))
       }
 
 
-      "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
+      "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "4534.6545"))
-        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.individual"))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.reversePremiums.error.twoDecimalPlaces.individual"))
       }
 
 
-      "and an amount is entered that is out of range then should fail to bind" in {
+      "and an reversePremiums is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "45334553534535345435345345434.65"))
-        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.amount.error.outOfRange", ArraySeq(0, 100000000)))
+        boundForm.errors must contain(FormError("calculatedFigureYourselfAmount", "calculatedFigureYourselfAmount.reversePremiums.error.outOfRange", ArraySeq(0, 100000000)))
       }
 
 
     }
     "when calculatedFigureYourself is false" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "false", "calculatedFigureYourselfAmount" -> "9967.00"))
         boundForm.value.value mustBe CalculatedFigureYourself(false, None)
         boundForm.errors mustBe empty
       }
-      "and no amount is entered, should successfully bind" in {
+      "and no reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("calculatedFigureYourself" -> "false"))
         boundForm.value.value mustBe CalculatedFigureYourself(false, None)
         boundForm.errors mustBe empty

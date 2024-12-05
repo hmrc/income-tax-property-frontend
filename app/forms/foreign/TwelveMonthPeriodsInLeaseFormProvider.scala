@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package forms.foreign
 
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class FormatUtilsSpec extends AnyWordSpec with Matchers {
+import javax.inject.Inject
 
-  ".bigDecimalCurrency" should {
-    "Place comma in appropriate place when given reversePremiums over 999" in {
-      FormatUtils.bigDecimalCurrency(45000.10) shouldBe "£45,000.10"
-    }
-  }
+class TwelveMonthPeriodsInLeaseFormProvider @Inject() extends Mappings {
+
+  val minimum = 2
+  val maximum = 50
+
+  def apply(): Form[Int] =
+    Form(
+      "twelveMonthPeriodsInLease" -> int(
+        "twelveMonthPeriodsInLease.error.required",
+        "twelveMonthPeriodsInLease.error.nonNumeric",
+        "twelveMonthPeriodsInLease.error.nonNumeric")
+          .verifying(inRange(minimum, maximum, "twelveMonthPeriodsInLease.error.nonNumeric"))
+    )
 }

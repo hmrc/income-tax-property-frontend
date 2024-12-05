@@ -38,7 +38,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
       "when foreignIncomeTaxYesNo is true" - {
         val foreignIncomeTaxYesNo = true
 
-        "and an amount is entered, should successfully bind" in {
+        "and an reversePremiums is entered, should successfully bind" in {
           val foreignTaxPaidOrDeducted: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
@@ -50,12 +50,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors mustBe empty
         }
 
-        "and no amount is entered, should fail to bind" in {
+        "and no reversePremiums is entered, should fail to bind" in {
           val boundForm = form.bind(Map("foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo"))
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              s"foreignIncomeTax.error.amount.required.$individualOrAgent"
+              s"foreignIncomeTax.error.reversePremiums.required.$individualOrAgent"
             )
           )
         }
@@ -71,12 +71,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.nonNumeric"
+              "foreignIncomeTax.error.reversePremiums.nonNumeric"
             )
           )
         }
 
-        "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
+        "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
           val boundForm =
             form.bind(
               Map(
@@ -87,12 +87,12 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.nonNumeric"
+              "foreignIncomeTax.error.reversePremiums.nonNumeric"
             )
           )
         }
 
-        "and an amount is entered that is out of range then should fail to bind" in {
+        "and an reversePremiums is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
               "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
@@ -102,7 +102,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.amount.outOfRange",
+              "foreignIncomeTax.error.reversePremiums.outOfRange",
               ArraySeq(0, 100000000)
             )
           )

@@ -38,7 +38,7 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
       "when raRUnusedLossesBroughtForwardYesOrNo is true" - {
         val raRUnusedLossesBroughtForwardYesOrNo = true
 
-        "and an amount is entered, should successfully bind" in {
+        "and an reversePremiums is entered, should successfully bind" in {
           val raRUnusedLossesBroughtForwardAmount: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
@@ -50,12 +50,12 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           boundForm.errors mustBe empty
         }
 
-        "and no amount is entered, should fail to bind" in {
+        "and no reversePremiums is entered, should fail to bind" in {
           val boundForm = form.bind(Map("raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo"))
           boundForm.errors must contain(
             FormError(
               "raRUnusedLossesBroughtForwardAmount",
-              s"raRUnusedLossesBroughtForward.error.amount.required.$individualOrAgent"
+              s"raRUnusedLossesBroughtForward.error.reversePremiums.required.$individualOrAgent"
             )
           )
         }
@@ -71,12 +71,12 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           boundForm.errors must contain(
             FormError(
               "raRUnusedLossesBroughtForwardAmount",
-              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
+              "raRUnusedLossesBroughtForward.error.reversePremiums.nonNumeric"
             )
           )
         }
 
-        "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
+        "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
           val boundForm =
             form.bind(
               Map(
@@ -87,12 +87,12 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           boundForm.errors must contain(
             FormError(
               "raRUnusedLossesBroughtForwardAmount",
-              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
+              "raRUnusedLossesBroughtForward.error.reversePremiums.nonNumeric"
             )
           )
         }
 
-        "and an amount is entered that is out of range then should fail to bind" in {
+        "and an reversePremiums is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
               "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
@@ -102,7 +102,7 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           boundForm.errors must contain(
             FormError(
               "raRUnusedLossesBroughtForwardAmount",
-              "raRUnusedLossesBroughtForward.error.amount.outOfRange",
+              "raRUnusedLossesBroughtForward.error.reversePremiums.outOfRange",
               ArraySeq(formProvider.minimum, formProvider.maximum)
             )
           )

@@ -28,26 +28,26 @@ class ReversePremiumsReceivedFormProviderSpec extends BooleanFieldBehaviours wit
 
   val form = new ReversePremiumsReceivedFormProvider()("individual")
 
-  "reversePremiumsReceivedAmount" - {
+  "reversePremiums" - {
     "when reversePremiumsReceived is true" - {
-      "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "12.34"))
+      "and an reversePremiums is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "true", "reversePremiums" -> "12.34"))
         boundForm.value.value mustBe ReversePremiumsReceived(true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
-      "and no amount is entered, should fail to bind" in {
+      "and no reversePremiums is entered, should fail to bind" in {
         val boundForm = form.bind(Map("reversePremiumsReceived" -> "true"))
-        boundForm.errors must contain(FormError("reversePremiumsReceivedAmount", "reversePremiumsReceived.error.required.amount.individual"))
+        boundForm.errors must contain(FormError("reversePremiums", "reversePremiumsReceived.error.required.amount.individual"))
       }
     }
     "when reversePremiumsReceived is false" - {
-      "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("reversePremiumsReceived" -> "false", "reversePremiumsReceivedAmount" -> "1234"))
+      "and an reversePremiums is entered, should successfully bind" in {
+        val boundForm = form.bind(Map("reversePremiumsReceived" -> "false", "reversePremiums" -> "1234"))
         boundForm.value.value mustBe ReversePremiumsReceived(false, None)
         boundForm.errors mustBe empty
       }
-      "and no amount is entered, should successfully bind" in {
+      "and no reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("reversePremiumsReceived" -> "false"))
         boundForm.value.value mustBe ReversePremiumsReceived(false, None)
         boundForm.errors mustBe empty

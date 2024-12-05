@@ -52,8 +52,8 @@ class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "premiumsGrantLease.error.amount.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.amount.twoDecimalPlaces"),
+      nonNumericError = FormError(fieldName, "premiumsGrantLease.error.reversePremiums.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.reversePremiums.twoDecimalPlaces"),
       defaultFields = ("premiumsGrantLeaseYesOrNo", "false")
     )
 

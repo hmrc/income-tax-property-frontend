@@ -30,10 +30,10 @@ class ForeignReversePremiumsReceivedFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[ReversePremiumsReceived] = {
     Form(mapping(
       "reversePremiumsReceived" -> boolean(s"reversePremiumsReceived.error.required.$individualOrAgent"),
-      "reversePremiumsReceivedAmount" -> {
+      "reversePremiums" -> {
         mandatoryIfTrue("reversePremiumsReceived",
           currency(
-            s"reversePremiumsReceived.error.required.amount.$individualOrAgent",
+            s"reversePremiumsReceived.error.required.reversePremiums.$individualOrAgent",
             "reversePremiumsReceived.error.twoDecimalPlaces",
             s"reversePremiumsReceived.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "reversePremiumsReceived.error.outOfRange"))

@@ -41,6 +41,6 @@ case class ForeignPropertyRentalIncomePage(countryCode:String) extends QuestionP
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignPropertyRentalIncome"
+  override def toString: String = "rentIncome"
 }
 

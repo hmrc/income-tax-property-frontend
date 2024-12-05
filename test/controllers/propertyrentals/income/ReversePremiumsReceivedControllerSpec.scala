@@ -147,11 +147,11 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val rentalsRequest =
           FakeRequest(POST, rentalsReversePremiumsReceivedRoute)
-            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
+            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiums" -> "1234")
 
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomReversePremiumsReceivedRoute)
-            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
+            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiums" -> "1234")
 
         val rentalsResult = route(application, rentalsRequest).value
         val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value

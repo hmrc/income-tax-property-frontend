@@ -47,7 +47,7 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject() (
           CalculatedPremiumLeaseTaxableSummary.row(taxYear, countryCode, request.userAnswers),
           CalculatedPremiumLeaseTaxableAmountSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignReceivedGrantLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
-          ForeignYearLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
+          TwelveMonthPeriodsInLeaseSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignPremiumsGrantLeaseSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignReversePremiumsReceivedSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignOtherIncomeFromPropertySummary.row(taxYear, countryCode, request.userAnswers)

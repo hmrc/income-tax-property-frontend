@@ -29,15 +29,16 @@ class CalculatedPremiumLeaseTaxableFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[PremiumCalculated] =
     Form[PremiumCalculated](
       mapping(
-        "calculatedPremiumLeaseTaxableYesOrNo" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
+        "calculatedPremiumLeaseTaxable" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
         "premiumCalculatedAmount" -> {
-          mandatoryIfTrue("calculatedPremiumLeaseTaxableYesOrNo",
+          mandatoryIfTrue(
+            "calculatedPremiumLeaseTaxable",
             currency(
-              s"premiumCalculated.amount.error.required.$individualOrAgent",
-              "premiumCalculated.amount.error.twoDecimalPlaces",
-              "premiumCalculated.amount.error.nonNumeric")
-              .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                "premiumCalculated.amount.error.outOfRange"))
+              s"premiumCalculated.reversePremiums.error.required.$individualOrAgent",
+              "premiumCalculated.reversePremiums.error.twoDecimalPlaces",
+              "premiumCalculated.reversePremiums.error.nonNumeric"
+            )
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumCalculated.reversePremiums.error.outOfRange"))
           )
         }
       )(PremiumCalculated.apply)(PremiumCalculated.unapply)
