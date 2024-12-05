@@ -1765,6 +1765,7 @@ foreign.heading = *Missing Welsh*
 foreign.tax = *Missing Welsh*
 foreign.income = *Missing Welsh*
 foreign.expenses = *Missing Welsh*
+foreign.allowances = *Missing Welsh*
 
 foreignPropertyDetails.title = *Missing Welsh*
 foreignPropertyDetails.para1 = *Missing Welsh*
@@ -2176,6 +2177,15 @@ foreignOtherAllowablePropertyExpenses.error.required.individual = *Missing Welsh
 foreignOtherAllowablePropertyExpenses.error.required.agent = *Missing Welsh*
 foreignOtherAllowablePropertyExpenses.error.outOfRange = *Missing Welsh*
 foreignOtherAllowablePropertyExpenses.change.hidden = *Missing Welsh*
+
+foreignAllowancesStart.title.individual = *Missing Welsh*
+foreignAllowancesStart.title.agent = *Missing Welsh*
+foreignAllowancesStart.heading.individual = *Missing Welsh*
+foreignAllowancesStart.heading.agent = *Missing Welsh*
+foreignAllowancesStart.p2.traditional.individual = *Missing Welsh*
+foreignAllowancesStart.p2.traditional.agent = *Missing Welsh*
+foreignAllowancesStart.p2.cash.individual = *Missing Welsh*
+foreignAllowancesStart.p2.cash.agent = *Missing Welsh*
 
 consolidatedOrIndividualExpenses.title = *Missing Welsh*
 consolidatedOrIndividualExpenses.heading = *Missing Welsh*

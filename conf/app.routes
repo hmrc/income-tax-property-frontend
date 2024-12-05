@@ -795,6 +795,5 @@ GET         /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 
 POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no                                                    controllers.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteController.onSubmit(taxYear: Int)
 
-
 ############## UK & Foreign Property About ##############
 GET         /:taxYear/uk-foreign-property/about/start                                                                    controllers.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)

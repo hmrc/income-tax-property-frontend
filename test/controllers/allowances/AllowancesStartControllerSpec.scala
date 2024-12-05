@@ -26,6 +26,7 @@ import org.mockito.MockitoSugar.when
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
+import pages.foreign.{Country, IncomeSourceCountries}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import play.api.inject.bind
@@ -268,6 +269,32 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           status(route(application, request).value)
         }
         failure.getMessage mustBe "Encountered an issue retrieving property data from the business API"
+      }
+    }
+    "must redirect to journey recovery if accrualsOrCash is None" in {
+      val accrualsOrCash = None
+
+      val propertyDetails =
+        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
+
+      val businessService = mock[BusinessService]
+
+      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Some(propertyDetails))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, Rentals).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
