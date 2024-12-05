@@ -30,12 +30,12 @@ import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import java.time.LocalDate
 
-class ForeignPropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)
-  val controller = ForeignPropertyIncomeCheckYourAnswersController
+  def onwardRoute = ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)
+  val controller = ForeignIncomeCheckYourAnswersController
 
   "ForeignPropertyIncomeCheckYourAnswers Controller" - {
 

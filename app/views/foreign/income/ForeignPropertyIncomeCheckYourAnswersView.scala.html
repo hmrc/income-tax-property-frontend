@@ -29,7 +29,7 @@
     <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-    @formHelper(action = ForeignPropertyIncomeCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ForeignIncomeCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
         @govukSummaryList(list)
         @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
     }

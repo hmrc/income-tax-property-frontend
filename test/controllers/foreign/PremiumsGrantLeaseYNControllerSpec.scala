@@ -109,7 +109,7 @@ class PremiumsGrantLeaseYNControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, premiumsGrantLeaseYNRoute)
-            .withFormUrlEncodedBody(("premiumsGrantLeaseYesOrNo", "true"))
+            .withFormUrlEncodedBody(("premiumsGrantLeaseReceived", "true"))
 
         val result = route(application, request).value
 

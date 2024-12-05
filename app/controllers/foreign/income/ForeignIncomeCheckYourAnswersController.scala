@@ -16,24 +16,36 @@
 
 package controllers.foreign.income
 
+import audit.AuditService
 import controllers.actions._
+import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.foreign.income.routes.ForeignIncomeCompleteController
+import controllers.foreign.routes.ForeignSelectCountriesCompleteController
+import models.JourneyPath.{ForeignPropertyIncomePath, ForeignSelectCountry}
+import models.requests.DataRequest
+import models.{ForeignPropertyIncome, JourneyContext, ReadForeignPropertyIncome}
+import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.foreign.income.{ForeignPropertyRentalIncomeSummary, ForeignReversePremiumsReceivedSummary}
 import viewmodels.checkAnswers.foreign._
+import viewmodels.checkAnswers.foreign.income.{ForeignPropertyRentalIncomeSummary, ForeignReversePremiumsReceivedSummary}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignPropertyIncomeCheckYourAnswersController @Inject() (
+class ForeignIncomeCheckYourAnswersController @Inject()(
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
+  propertySubmissionService: PropertySubmissionService,
+  audit: AuditService,
   view: ForeignPropertyIncomeCheckYourAnswersView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
@@ -59,10 +71,39 @@ class ForeignPropertyIncomeCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers
+        .get(ReadForeignPropertyIncome(countryCode))
+        .map(foreignPropertyIncome => saveForeignPropertyIncome(taxYear, request, foreignPropertyIncome, countryCode))
+        .getOrElse {
+          logger.error(
+            s"Foreign property income section is not present in userAnswers for userId: ${request.userId} "
+          )
+          Future.failed(
+            NotFoundException("Foreign property income section is not present in userAnswers")
+          )
+        }
+
       Future.successful(
         Redirect(
-          controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)
+          ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)
         )
       )
     }
+
+  private def saveForeignPropertyIncome(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    foreignPropertyIncome: ForeignPropertyIncome,
+    countryCode: String
+  )(implicit hc: HeaderCarrier): Future[Result] = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignPropertyIncomePath)
+    propertySubmissionService.saveJourneyAnswers(context, foreignPropertyIncome).flatMap {
+      case Right(_) =>
+        Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
+      case Left(error) =>
+        logger.error(s"Failed to save Foreign Property Select Country section : ${error.toString}")
+        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Property Select Country section"))
+    }
+
+  }
 }

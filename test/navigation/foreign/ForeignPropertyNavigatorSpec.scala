@@ -134,7 +134,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           NormalMode,
           userAnswers,
           updatedUserAnswers
-        ) mustBe controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController
+        ) mustBe controllers.foreign.income.routes.ForeignIncomeCheckYourAnswersController
           .onPageLoad(taxYear, "AUS")
       }
 
@@ -494,7 +494,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
-        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        ) mustBe ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
 
       "must go from PremiumsGrantLeaseYNPage to Calculate Premium Lease Taxable if true in CheckMode" in {
@@ -516,7 +516,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = false).get
-        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        ) mustBe ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
 
       "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in CheckMode" in {

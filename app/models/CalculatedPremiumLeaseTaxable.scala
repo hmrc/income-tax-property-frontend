@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import javax.inject.Inject
+import play.api.libs.json.{Format, Json}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+final case class CalculatedPremiumLeaseTaxable(
+  calculatedPremiumLeaseTaxable: Boolean,
+  premiumCalculatedAmount: Option[BigDecimal]
+)
 
-class PremiumsGrantLeaseYNFormProvider @Inject() extends Mappings {
-
-  def apply(individualOrAgent: String): Form[Boolean] =
-    Form(
-      "premiumsGrantLeaseReceived" -> boolean(s"premiumsGrantLeaseYN.error.required.$individualOrAgent")
-    )
+object CalculatedPremiumLeaseTaxable {
+  implicit val format: Format[CalculatedPremiumLeaseTaxable] = Json.format
 }

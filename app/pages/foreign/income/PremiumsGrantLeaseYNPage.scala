@@ -28,7 +28,7 @@ case class PremiumsGrantLeaseYNPage(countryCode: String) extends QuestionPage[Bo
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "premiumsGrantLeaseYesOrNo"
+  override def toString: String = "premiumsGrantLeaseReceived"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value
