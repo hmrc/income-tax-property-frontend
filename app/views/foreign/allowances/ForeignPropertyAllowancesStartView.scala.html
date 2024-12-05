@@ -48,6 +48,7 @@
     <p class="govuk-body">
     @govukButton(
         ButtonViewModel(messages("site.continue"))
+        .asLink(controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onSubmit(taxYear, countryCode, accrualsOrCash).url)
         .withId("continue")
     )
     </p>
