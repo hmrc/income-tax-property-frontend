@@ -16,9 +16,9 @@
 
 package viewmodels.checkAnswers
 
-import controllers.routes
+import controllers.ukandforeignProperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.TotalPropertyIncomePage
+import pages.ukandforeignproperty.TotalPropertyIncomePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 
 object TotalPropertyIncomeSummary  {
 
-  def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(TotalPropertyIncomePage).map {
       answer =>
 
@@ -42,7 +42,7 @@ object TotalPropertyIncomeSummary  {
           key     = "totalPropertyIncome.checkYourAnswersLabel",
           value   = value,
           actions = Seq(
-            ActionItemViewModel("site.change", routes.TotalPropertyIncomeController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", routes.TotalPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("totalPropertyIncome.change.hidden"))
           )
         )

@@ -25,7 +25,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
-import pages.ukAndForeignProperty.UkAndForeignPropertySummaryPage
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import pages.{UKPropertyPage, UKPropertySummaryPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}

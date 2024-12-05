@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.ukandforeignProperty
 
 import forms.mappings.Mappings
-import play.api.data.Form
 import models.TotalPropertyIncome
+import play.api.data.Form
+
+import javax.inject.Inject
 
 class TotalPropertyIncomeFormProvider @Inject() extends Mappings {
 

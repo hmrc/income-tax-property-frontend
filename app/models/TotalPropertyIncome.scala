@@ -24,11 +24,11 @@ sealed trait TotalPropertyIncome
 
 object TotalPropertyIncome extends Enumerable.Implicits {
 
-  case object Lessthan extends WithName("lessthan") with TotalPropertyIncome
-  case object Maximum extends WithName("maximum") with TotalPropertyIncome
+  final case object LessThan extends WithName("lessThan") with TotalPropertyIncome
+  final case object Maximum extends WithName("maximum") with TotalPropertyIncome
 
   val values: Seq[TotalPropertyIncome] = Seq(
-    Lessthan, Maximum
+    LessThan, Maximum
   )
 
   def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {

@@ -25,7 +25,7 @@ import controllers.routes
 import org.scalatest.matchers.must.Matchers
 import pages.UKPropertySummaryPage
 import pages.foreign.ForeignPropertySummaryPage
-import pages.ukAndForeignProperty.UkAndForeignPropertySummaryPage
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.Application
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi

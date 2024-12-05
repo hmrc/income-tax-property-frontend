@@ -2235,7 +2235,7 @@ consolidatedOrIndividualExpenses.change.hidden = Consolidated or individual expe
 
 totalPropertyIncome.title = How much total income did you get from all of your UK and foreign properties?
 totalPropertyIncome.heading = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.lessthan = Less than £1,000
+totalPropertyIncome.lessThan = Less than £1,000
 totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
 totalPropertyIncome.error.required = Select totalPropertyIncome

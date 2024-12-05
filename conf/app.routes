@@ -797,9 +797,9 @@ POST        /:taxYear/rentals-rent-a-room/adjustments/complete-yes-no           
 
 
 ############## UK & Foreign Property About ##############
-GET         /:taxYear/uk-foreign-property/about/start                                                                    controllers.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+GET         /:taxYear/uk-foreign-property/about/start                                                                    controllers.ukandforeignProperty.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
 
-GET        /totalPropertyIncome                        controllers.TotalPropertyIncomeController.onPageLoad(mode: Mode = NormalMode)
-POST       /totalPropertyIncome                        controllers.TotalPropertyIncomeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeTotalPropertyIncome                  controllers.TotalPropertyIncomeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeTotalPropertyIncome                  controllers.TotalPropertyIncomeController.onSubmit(mode: Mode = CheckMode)
+GET        /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignProperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignProperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignProperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignProperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

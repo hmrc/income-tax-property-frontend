@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.ukandforeignproperty
 
 import models.TotalPropertyIncome
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object TotalPropertyIncomePage extends QuestionPage[TotalPropertyIncome] {
