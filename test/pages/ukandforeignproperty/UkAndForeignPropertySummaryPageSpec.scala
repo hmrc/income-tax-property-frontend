@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package pages.ukAndForeignProperty
+package pages.ukandforeignproperty
 
-import models.{UKPropertySelect, UserAnswers}
 import models.backend.PropertyDetails
+import models.{UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
 import org.mockito.MockitoSugar.when
 import org.scalatest.TryValues.convertTryToSuccessOrFailure
-import pages.{AboutPropertyCompletePage, ReportPropertyIncomePage, SummaryPage, UKPropertyPage}
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignSelectCountriesCompletePage
+import pages.{AboutPropertyCompletePage, ReportPropertyIncomePage, SummaryPage, UKPropertyPage}
 import service.{BusinessService, CYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
-import org.scalatest.concurrent.ScalaFutures
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -130,7 +130,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   def canNotStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
-      controllers.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
       TaskListTag.CanNotStart,
       "uk_and_foreign_property_about_link"
     )
@@ -139,7 +139,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   def notStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
-      controllers.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "uk_and_foreign_property_about_link"
     )

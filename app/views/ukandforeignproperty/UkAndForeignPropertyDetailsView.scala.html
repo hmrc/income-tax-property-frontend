@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.about.routes
+@import controllers.ukandforeignproperty.routes
 @import viewmodels.UkAndForeignPropertyDetailsPage
 
 @this(
@@ -44,7 +44,7 @@ govukButton: GovukButton
 <p class="govuk-body">
     @govukButton(
     ButtonViewModel(messages("site.continue"))
-    .asLink(routes.TotalIncomeController.onPageLoad(page.taxYear, NormalMode).url)
+    .asLink(routes.TotalPropertyIncomeController.onPageLoad(page.taxYear, NormalMode).url)
     .withId("continue")
     )
 </p>

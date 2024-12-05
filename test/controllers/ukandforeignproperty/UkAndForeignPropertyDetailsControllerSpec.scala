@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukandforeignproperty
+
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
@@ -34,7 +35,8 @@ import testHelpers.Retrievals.Ops
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core._
 import viewmodels.UkAndForeignPropertyDetailsPage
-import views.html.UkAndForeignPropertyDetailsView
+import views.html.ukandforeignproperty.UkAndForeignPropertyDetailsView
+
 import java.time.LocalDate
 import scala.concurrent.Future
 
@@ -77,7 +79,7 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
           .overrides(bind[BusinessService].toInstance(businessService))
           .build()
       running(application) {
-        val request = FakeRequest(GET, controllers.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
         val result = route(application, request).value
         val view = application.injector.instanceOf[UkAndForeignPropertyDetailsView]
         status(result) mustEqual OK
@@ -118,7 +120,7 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
           .overrides(bind[BusinessService].toInstance(businessService))
           .build()
       running(application) {
-        val request = FakeRequest(GET, controllers.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
           .withSession(SessionValues.ClientMtdid -> "mtditid", SessionValues.ClientNino -> "nino")
         val result = route(application, request).value
         val view = application.injector.instanceOf[UkAndForeignPropertyDetailsView]
@@ -158,7 +160,7 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
           .build()
       running(application) {
         val failure = intercept[InternalErrorFailure] {
-          val request = FakeRequest(GET, controllers.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
+          val request = FakeRequest(GET, controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear).url)
           status(route(application, request).value)
         }
         failure.getMessage mustBe "UK or foreign property details not found from 1171 API"

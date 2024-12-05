@@ -2216,3 +2216,11 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.individual = *Missing
 consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = *Missing Welsh*
 consolidatedOrIndividualExpenses.amount.error.outOfRange = *Missing Welsh*
 consolidatedOrIndividualExpenses.change.hidden = *Missing Welsh*
+
+totalPropertyIncome.title = *Missing Welsh*
+totalPropertyIncome.heading = *Missing Welsh*
+totalPropertyIncome.lessThan = *Missing Welsh*
+totalPropertyIncome.maximum = *Missing Welsh*
+totalPropertyIncome.checkYourAnswersLabel = *Missing Welsh*
+totalPropertyIncome.error.required = *Missing Welsh*
+totalPropertyIncome.change.hidden = *Missing Welsh*
