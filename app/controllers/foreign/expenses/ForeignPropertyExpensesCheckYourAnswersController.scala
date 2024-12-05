@@ -32,7 +32,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ForeignPropertyExpensesCheckYourAnswersController @Inject()(
                                          override val messagesApi: MessagesApi,
-                                         navigator: ForeignPropertyNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
