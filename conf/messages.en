@@ -67,8 +67,8 @@ index.title = income-tax-property-frontend
 index.heading = income-tax-property-frontend
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
-checkYourAnswers.title = Check Your Answers
-checkYourAnswers.heading = Check Your Answers
+checkYourAnswers.title = Check your answers
+checkYourAnswers.heading = Check your answers
 
 ukproperty.caption = 6 April {0} to 5 April {1}
 taxYear.caption = 6 April {0} to 5 April {1}
@@ -2108,7 +2108,7 @@ foreignRentsRatesAndInsurance.l4 = insurance paid against loss of rents
 foreignRentsRatesAndInsurance.l5 = ground rents
 foreignRentsRatesAndInsurance.p.individual = If your property is jointly let, only tell us about your share of the expenses.
 foreignRentsRatesAndInsurance.p.agent = If your client’s property is jointly let, only tell us about their share of the expenses.
-foreignRentsRatesAndInsurance.checkYourAnswersLabel = Rents, rates and insurance costs
+foreignRentsRatesAndInsurance.checkYourAnswersLabel = Rents, rates and insurance
 foreignRentsRatesAndInsurance.input.heading.individual = How much did you spend on rents, rates and insurance for your property?
 foreignRentsRatesAndInsurance.input.heading.agent = How much did your client spend on rents, rates and insurance for their property?
 foreignRentsRatesAndInsurance.error.nonNumeric.individual = The amount you spent on rents, rates and insurance can only include pounds and pence, for example £600 or £600.20
