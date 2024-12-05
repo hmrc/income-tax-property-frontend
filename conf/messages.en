@@ -2238,5 +2238,5 @@ totalPropertyIncome.heading = How much total income did you get from all of your
 totalPropertyIncome.lessThan = Less than £1,000
 totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.error.required = Select totalPropertyIncome
-totalPropertyIncome.change.hidden = TotalPropertyIncome
+totalPropertyIncome.error.required = Select how much total income you got from all of your UK and foreign properties
+totalPropertyIncome.change.hidden =  How much total income you got from all of your UK and foreign properties
