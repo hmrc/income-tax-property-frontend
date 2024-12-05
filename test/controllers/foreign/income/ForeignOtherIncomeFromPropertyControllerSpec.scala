@@ -107,7 +107,7 @@ class ForeignOtherIncomeFromPropertyControllerSpec extends SpecBase with Mockito
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("foreignOtherIncomeFromProperty", otherIncomeFromProperty.toString))
+            .withFormUrlEncodedBody(("otherPropertyIncome", otherIncomeFromProperty.toString))
 
         val result = route(application, request).value
 
@@ -123,9 +123,9 @@ class ForeignOtherIncomeFromPropertyControllerSpec extends SpecBase with Mockito
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("foreignOtherIncomeFromProperty", "invalid value"))
+            .withFormUrlEncodedBody(("otherPropertyIncome", "invalid value"))
 
-        val boundForm = form.bind(Map("foreignOtherIncomeFromProperty" -> "invalid value"))
+        val boundForm = form.bind(Map("otherPropertyIncome" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignOtherIncomeFromPropertyView]
 
@@ -157,7 +157,7 @@ class ForeignOtherIncomeFromPropertyControllerSpec extends SpecBase with Mockito
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherIncomeFromPropertyRoute)
-            .withFormUrlEncodedBody(("foreignOtherIncomeFromProperty", otherIncomeFromProperty.toString))
+            .withFormUrlEncodedBody(("otherPropertyIncome", otherIncomeFromProperty.toString))
 
         val result = route(application, request).value
 

@@ -35,7 +35,7 @@ import views.html.foreign.income.ForeignIncomeSectionCompleteView
 
 import scala.concurrent.Future
 
-class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
+class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
 
   val taxYear = 2024
   val countryCode = "AUS"
@@ -45,7 +45,7 @@ class ForeignIncomeSectionCompleteControllerSpec extends SpecBase with MockitoSu
   val form: Form[Boolean] = formProvider()
 
   lazy val foreignIncomeSectionCompleteRoute: String =
-    controllers.foreign.income.routes.ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode).url
+    controllers.foreign.income.routes.ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode).url
 
   "ForeignIncomeSectionComplete Controller" - {
 

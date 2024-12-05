@@ -33,9 +33,9 @@ class ForeignPremiumsGrantLeaseFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[ForeignPremiumsGrantLease] =
     Form[ForeignPremiumsGrantLease](
       mapping(
-        "foreignPremiumsGrantLeaseYesOrNo" -> boolean(s"foreignPremiumsGrantLease.error.required.$individualOrAgent"),
-        "foreignPremiumsGrantLeaseAmount" -> {
-          mandatoryIfFalse("foreignPremiumsGrantLeaseYesOrNo",
+        "premiumsOfLeaseGrantAgreed" -> boolean(s"foreignPremiumsGrantLease.error.required.$individualOrAgent"),
+        "premiumsOfLeaseGrant" -> {
+          mandatoryIfFalse("premiumsOfLeaseGrantAgreed",
             currency(
               s"foreignPremiumsGrantLease.error.reversePremiums.required.$individualOrAgent",
               "foreignPremiumsGrantLease.error.reversePremiums.twoDecimalPlaces",

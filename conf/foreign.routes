@@ -100,11 +100,11 @@ POST       /:taxYear/foreign-property/income/:countryCode/other-income-from-prop
 GET        /:taxYear/foreign-property/income/:countryCode/change-other-income-from-property                   controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/income/:countryCode/change-other-income-from-property                   controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
-POST       /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignPropertyIncomeCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
+GET        /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/income/:countryCode/check-your-answers                                  controllers.foreign.income.ForeignIncomeCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
 
-GET        /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
-POST       /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
+GET        /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/income/:countryCode/complete-yes-no                                     controllers.foreign.income.ForeignIncomeCompleteController.onSubmit(taxYear: Int, countryCode: String)
 
 ############################  Expenses ###################################
 
