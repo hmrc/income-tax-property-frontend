@@ -26,6 +26,6 @@ class TotalPropertyIncomeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[TotalPropertyIncome] =
     Form(
-      "value" -> enumerable[TotalPropertyIncome]("totalPropertyIncome.error.required")
+      "value" -> enumerable[TotalPropertyIncome]("totalPropertyIncome.error.required") // TODO error message is pending
     )
 }

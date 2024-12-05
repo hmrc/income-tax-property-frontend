@@ -10,20 +10,20 @@ You will need to have the following:
 
 The service manager profile for this service is:
 
-    sm --start INCOME_TAX_PROPERTY_FRONTEND
+    sm2 --start INCOME_TAX_PROPERTY_FRONTEND
 
 This service runs on port: `localhost:19161`
 
 Run the following command to start the remaining services locally:
 
     sudo mongod (If not already running)
-    sm --start INCOME_TAX_SUBMISSION_ALL -r
+    sm2 --start INCOME_TAX_SUBMISSION_ALL
 
 To run the service locally:
 
     sudo mongod (If not already running)
-    sm --start INCOME_TAX_SUBMISSION_ALL -r
-    sm --stop INCOME_TAX_PROPERTY_FRONTEND
+    sm2 --start INCOME_TAX_SUBMISSION_ALL
+    sm2 --stop INCOME_TAX_PROPERTY_FRONTEND
     ./run.sh **OR** sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
 ## Ninos with stub data for Property
