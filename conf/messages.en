@@ -799,8 +799,8 @@ rentsRatesAndInsurance.change.hidden = Rents, rates and insurance for your clien
 
 allowancesStart.title = Allowances
 allowancesStart.heading = Allowances
-allowancesStart.details.content1.individual = In this section we’re going to ask you about your allowances. These are amounts that you can offset against what you’ve spent running your property rentals:
-allowancesStart.details.content1.agent = In this section we’re going to ask you about allowances. These are amounts that your client can offset against what they’ve spent running their property rentals:
+allowancesStart.details.content1.individual = In this section we’re going to ask you about your allowances. These are amounts that you can offset against what you’ve spent running your property rentals.
+allowancesStart.details.content1.agent = In this section we’re going to ask you about allowances. These are amounts that your client can offset against what they’ve spent running their property rentals.
 allowancesStart.details.content2.individual = You told us previously that your accounting method is:
 allowancesStart.details.content2.agent = You told us previously that your client’s accounting method is:
 allowancesStart.details.content3.individual = Based on this information you can claim the following:
@@ -811,7 +811,7 @@ allowancesStart.details.content.l4 = zero-emission goods vehicle allowance
 allowancesStart.details.content.l5 = business premises renovation allowance
 allowancesStart.details.content.l6 = replacement of domestic goods
 allowancesStart.details.content.l7 = other capital allowances
-allowancesStart.details.content.l8 = Capital allowances for a car
+allowancesStart.details.content.l8 = capital allowances for a car
 
 capitalAllowancesForACar.title = Capital allowances for a car
 capitalAllowancesForACar.heading = Capital allowances for a car
@@ -1791,6 +1791,7 @@ foreign.heading = {0} all properties
 foreign.tax = Foreign tax
 foreign.income = Income
 foreign.expenses = Expenses
+foreign.allowances = Allowances
 
 foreignPropertyDetails.title = Foreign property details
 foreignPropertyDetails.para1 = You previously told us:
@@ -2202,6 +2203,15 @@ foreignOtherAllowablePropertyExpenses.error.required.individual = Enter the amou
 foreignOtherAllowablePropertyExpenses.error.required.agent = Enter the amount for your client''s other allowable property expenses
 foreignOtherAllowablePropertyExpenses.error.outOfRange = Enter an amount between {0} and {1}
 foreignOtherAllowablePropertyExpenses.change.hidden = Other allowable property expenses
+
+foreignAllowancesStart.title.individual = Allowances for your property in {0}
+foreignAllowancesStart.title.agent = Allowances for your client property in {0}
+foreignAllowancesStart.heading.individual = Allowances for your property in {0}
+foreignAllowancesStart.heading.agent = Allowances for your client property in {0}
+foreignAllowancesStart.p2.traditional.individual = You told us previously that your accounting method is: Traditional (accrual).
+foreignAllowancesStart.p2.traditional.agent = You told us previously that your client's accounting method is: Traditional (accrual).
+foreignAllowancesStart.p2.cash.individual = You told us previously that your accounting method is: cash basis
+foreignAllowancesStart.p2.cash.agent = You told us previously that your client's accounting method is: cash basis
 
 consolidatedOrIndividualExpenses.title = Consolidated or individual expenses
 consolidatedOrIndividualExpenses.heading = Consolidated or individual expenses
