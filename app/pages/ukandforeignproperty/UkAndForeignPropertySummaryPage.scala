@@ -53,7 +53,7 @@ object UkAndForeignPropertySummaryPage {
     Seq(
       TaskListItem(
         "summary.aboutUKAndForeignProperties",
-        controllers.ukandforeignProperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+        controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
         combinedTaskListTag, //TODO complete logic to make the status work correctly
         "uk_and_foreign_property_about_link"
       )

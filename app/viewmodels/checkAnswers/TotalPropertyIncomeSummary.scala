@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers
 
-import controllers.ukandforeignProperty.routes
+import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
 import pages.ukandforeignproperty.TotalPropertyIncomePage
 import play.api.i18n.Messages

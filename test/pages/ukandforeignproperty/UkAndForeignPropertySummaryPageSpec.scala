@@ -130,7 +130,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   def canNotStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
-      controllers.ukandforeignProperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
       TaskListTag.CanNotStart,
       "uk_and_foreign_property_about_link"
     )
@@ -139,7 +139,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   def notStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
-      controllers.ukandforeignProperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
       TaskListTag.NotStarted,
       "uk_and_foreign_property_about_link"
     )

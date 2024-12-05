@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package controllers.ukandforeignProperty
+package controllers.ukandforeignproperty
 
 import base.SpecBase
-import forms.ukandforeignProperty.TotalPropertyIncomeFormProvider
+import forms.ukandforeignproperty.TotalPropertyIncomeFormProvider
 import models.{NormalMode, TotalPropertyIncome, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukandforeignProperty.TotalPropertyIncomeView
+import views.html.ukandforeignproperty.TotalPropertyIncomeView
 
 import scala.concurrent.Future
 

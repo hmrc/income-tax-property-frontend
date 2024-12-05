@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.ukandforeignProperty
+package forms.ukandforeignproperty
 
 import forms.behaviours.OptionFieldBehaviours
 import models.TotalPropertyIncome

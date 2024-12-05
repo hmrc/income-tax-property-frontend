@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.ukandforeignProperty
+package controllers.ukandforeignproperty
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
@@ -23,7 +23,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.UkAndForeignPropertyDetailsPage
-import views.html.ukandforeignProperty.UkAndForeignPropertyDetailsView
+import views.html.ukandforeignproperty.UkAndForeignPropertyDetailsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
