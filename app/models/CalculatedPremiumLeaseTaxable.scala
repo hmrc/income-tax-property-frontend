@@ -20,7 +20,7 @@ import play.api.libs.json.{Format, Json}
 
 final case class CalculatedPremiumLeaseTaxable(
   calculatedPremiumLeaseTaxable: Boolean,
-  premiumCalculatedAmount: Option[BigDecimal]
+  premiumsOfLeaseGrant: Option[BigDecimal]
 )
 
 object CalculatedPremiumLeaseTaxable {

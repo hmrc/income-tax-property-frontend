@@ -20,8 +20,7 @@ import audit.AuditService
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
-import controllers.foreign.routes.ForeignSelectCountriesCompleteController
-import models.JourneyPath.{ForeignPropertyIncomePath, ForeignSelectCountry}
+import models.JourneyPath.ForeignPropertyIncomePath
 import models.requests.DataRequest
 import models.{ForeignPropertyIncome, JourneyContext, ReadForeignPropertyIncome}
 import play.api.i18n.Lang.logger
@@ -38,7 +37,7 @@ import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignIncomeCheckYourAnswersController @Inject()(
+class ForeignIncomeCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,

@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class PremiumCalculated(calculatedPremiumLeaseTaxable: Boolean, premiumCalculatedAmount: Option[BigDecimal])
+final case class PremiumCalculated(calculatedPremiumLeaseTaxable: Boolean, premiumsOfLeaseGrant: Option[BigDecimal])
 
 object PremiumCalculated {
   implicit val format: Format[PremiumCalculated] = Json.format
