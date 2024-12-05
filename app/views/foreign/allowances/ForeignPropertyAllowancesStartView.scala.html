@@ -16,7 +16,8 @@
 
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        formHelper: FormWithCSRF
 
 )
 
@@ -46,9 +47,10 @@
         }
     </ul>
     <p class="govuk-body">
-    @govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .withId("continue")
-    )
+        @formHelper(action = controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.nextPage(taxYear, countryCode, accrualsOrCash), Symbol("autoComplete") -> "off") {
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     </p>
 }
