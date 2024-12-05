@@ -1771,6 +1771,11 @@ foreign.income = *Missing Welsh*
 foreign.expenses = *Missing Welsh*
 foreign.allowances = *Missing Welsh*
 
+foreignCountriesRentList.title.individual = *Missing Welsh*
+foreignCountriesRentList.title.agent = *Missing Welsh*
+foreignCountriesRentList.heading.individual = *Missing Welsh*
+foreignCountriesRentList.heading.agent = *Missing Welsh*
+
 foreignPropertyDetails.title = *Missing Welsh*
 foreignPropertyDetails.para1 = *Missing Welsh*
 foreignPropertyDetails.bullet1.individual = *Missing Welsh*

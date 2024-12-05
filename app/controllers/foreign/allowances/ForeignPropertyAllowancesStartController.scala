@@ -19,10 +19,12 @@ package controllers.foreign.allowances
 import controllers.{PropertyDataError, PropertyDetailsHandler, routes}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models.{Mode, NormalMode}
 import models.backend.PropertyDetails
+import navigation.ForeignPropertyNavigator
 import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -38,6 +40,7 @@ class ForeignPropertyAllowancesStartController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
+                                       foreignNavigator: ForeignPropertyNavigator,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ForeignPropertyAllowancesStartView,
@@ -48,7 +51,6 @@ class ForeignPropertyAllowancesStartController @Inject()(
     implicit request =>
       val maybeCountryName = request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code==countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
-
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyData: PropertyDetails) =>
@@ -65,5 +67,14 @@ class ForeignPropertyAllowancesStartController @Inject()(
               Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
           }
         }(hc, ec)
+  }
+
+  def nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
+    implicit request =>
+    if (accrualsOrCash) {
+      Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, mode))
+    } else {
+      Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
   }
 }

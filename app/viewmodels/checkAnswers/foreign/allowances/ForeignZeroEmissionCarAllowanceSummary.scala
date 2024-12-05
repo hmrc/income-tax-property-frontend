@@ -27,16 +27,16 @@ import viewmodels.implicits._
 object ForeignZeroEmissionCarAllowanceSummary  {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignZeroEmissionCarAllowancePage(countryCode)).map {
-      answer =>
-
-        SummaryListRowViewModel(
+    answers.get(ForeignZeroEmissionCarAllowancePage(countryCode)).flatMap {
+        case answer =>
+        Some(SummaryListRowViewModel(
           key     = KeyViewModel("foreignZeroEmissionCarAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignZeroEmissionCarAllowance.change.hidden"))
-          )
+              .withVisuallyHiddenText(messages("foreignZeroEmissionCarAllowance.change.hidden")
+          )))
         )
+        case _ => Option.empty[SummaryListRow]
     }
 }
