@@ -85,7 +85,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |            "receivedGrantLeaseAmount": 6,
       |            "reversePremiumsReceived" : {
       |                "reversePremiumsReceived" : true,
-      |                "amount" : 45
+      |                "reversePremiums" : 45
       |            },
       |            "otherIncomeFromProperty" : 45
       |        },

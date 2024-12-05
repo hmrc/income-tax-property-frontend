@@ -33,11 +33,11 @@ class RenovationAllowanceBalancingChargeFormProvider @Inject() extends Mappings 
         "renovationAllowanceBalancingChargeAmount" -> {
           mandatoryIfTrue("renovationAllowanceBalancingChargeYesNo",
             currency(
-              s"renovationAllowanceBalancingCharge.amount.error.required.$individualOrAgent",
-              s"renovationAllowanceBalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
-              s"renovationAllowanceBalancingCharge.amount.error.nonNumeric.$individualOrAgent")
+              s"renovationAllowanceBalancingCharge.reversePremiums.error.required.$individualOrAgent",
+              s"renovationAllowanceBalancingCharge.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
+              s"renovationAllowanceBalancingCharge.reversePremiums.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                "renovationAllowanceBalancingCharge.amount.error.outOfRange"))
+                "renovationAllowanceBalancingCharge.reversePremiums.error.outOfRange"))
           )
         }
       )(RenovationAllowanceBalancingCharge.apply)(RenovationAllowanceBalancingCharge.unapply)

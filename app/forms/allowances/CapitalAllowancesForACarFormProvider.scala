@@ -35,7 +35,7 @@ class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
       "capitalAllowancesForACarAmount" -> {
         mandatoryIfTrue("capitalAllowancesForACarYesNo",
           currency(
-            s"capitalAllowancesForACar.error.required.amount.$individualOrAgent",
+            s"capitalAllowancesForACar.error.required.reversePremiums.$individualOrAgent",
             "capitalAllowancesForACar.error.twoDecimalPlaces",
             s"capitalAllowancesForACar.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "capitalAllowancesForACar.error.outOfRange"))

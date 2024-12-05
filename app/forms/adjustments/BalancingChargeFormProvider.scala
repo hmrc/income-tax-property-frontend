@@ -33,11 +33,11 @@ class BalancingChargeFormProvider @Inject() extends Mappings {
         "balancingChargeAmount" -> {
           mandatoryIfTrue("balancingChargeYesNo",
             currency(
-              s"balancingCharge.amount.error.required.$individualOrAgent",
-              s"balancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
-              s"balancingCharge.amount.error.nonNumeric.$individualOrAgent")
+              s"balancingCharge.reversePremiums.error.required.$individualOrAgent",
+              s"balancingCharge.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
+              s"balancingCharge.reversePremiums.error.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-                "balancingCharge.amount.error.outOfRange"))
+                "balancingCharge.reversePremiums.error.outOfRange"))
           )
         }
       )(BalancingCharge.apply)(BalancingCharge.unapply)

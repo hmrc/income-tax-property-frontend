@@ -51,8 +51,8 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
     behave like currencyField(
       form,
       fieldName,
-      nonNumericError = FormError(fieldName, "claimExpensesOrRelief.amount.error.nonNumeric.individual"),
-      twoDecimalPlacesError = FormError(fieldName, "claimExpensesOrRelief.amount.error.twoDecimalPlaces.individual"),
+      nonNumericError = FormError(fieldName, "claimExpensesOrRelief.reversePremiums.error.nonNumeric.individual"),
+      twoDecimalPlacesError = FormError(fieldName, "claimExpensesOrRelief.reversePremiums.error.twoDecimalPlaces.individual"),
       ("claimExpensesOrRelief", "true")
     )
 
@@ -60,7 +60,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       form,
       fieldName,
       maximum,
-      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.maxAllowedClaim", List(maximum)),
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.reversePremiums.error.maxAllowedClaim", List(maximum)),
       ("claimExpensesOrRelief", "true")
     )
 
@@ -68,7 +68,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       form,
       fieldName,
       0,
-      expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.outOfRange", List(minimum, maximum)),
+      expectedError = FormError(fieldName, "claimExpensesOrRelief.reversePremiums.error.outOfRange", List(minimum, maximum)),
       ("claimExpensesOrRelief", "true")
     )
   }

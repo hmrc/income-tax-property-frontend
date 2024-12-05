@@ -71,7 +71,7 @@ object SaveIncome {
   def fromPropertyRentalsIncome(propertyRentalsIncome: RentalsIncome): SaveIncome = {
     val ukOtherPropertyIncome = UkOtherPropertyIncome(
       propertyRentalsIncome.premiumsGrantLease.flatMap(_.premiumsGrantLease),
-      propertyRentalsIncome.reversePremiumsReceived.flatMap(_.amount),
+      propertyRentalsIncome.reversePremiumsReceived.flatMap(_.reversePremiums),
       propertyRentalsIncome.yearLeaseAmount,
       propertyRentalsIncome.deductingTax.flatMap(_.taxDeductedAmount),
       Some(propertyRentalsIncome.otherIncomeFromProperty),

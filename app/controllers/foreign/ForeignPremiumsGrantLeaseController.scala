@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.ForeignPremiumsGrantLeaseFormProvider
 import models.{ForeignPremiumsGrantLease, Mode}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignYearLeaseAmountPage}
+import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, TwelveMonthPeriodsInLeasePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,12 +47,12 @@ class ForeignPremiumsGrantLeaseController @Inject()(
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val foreignReceivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignReceivedGrantLeaseAmountPage(countryCode))
-      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(ForeignYearLeaseAmountPage(countryCode))
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignReceivedGrantLeaseAmountPage(countryCode))
+      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(TwelveMonthPeriodsInLeasePage(countryCode))
 
-      (foreignReceivedGrantLeaseAmount, foreignTotalYearPeriods) match {
+      (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) => Redirect(routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, mode))
-        case (_, None) => Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, mode))
+        case (_, None) => Redirect(routes.TwelveMonthPeriodsInLeaseController.onPageLoad(taxYear, countryCode, mode))
         case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(ForeignPremiumsGrantLeasePage(countryCode)) match {
             case None => form
@@ -65,12 +65,12 @@ class ForeignPremiumsGrantLeaseController @Inject()(
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val foreignReceivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignReceivedGrantLeaseAmountPage(countryCode))
-      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(ForeignYearLeaseAmountPage(countryCode))
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignReceivedGrantLeaseAmountPage(countryCode))
+      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(TwelveMonthPeriodsInLeasePage(countryCode))
 
-      (foreignReceivedGrantLeaseAmount, foreignTotalYearPeriods) match {
+      (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) => Future.successful(Redirect(routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, mode)))
-        case (_, None) => Future.successful(Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, mode)))
+        case (_, None) => Future.successful(Redirect(routes.TwelveMonthPeriodsInLeaseController.onPageLoad(taxYear, countryCode, mode)))
         case (Some(amount), Some(period)) =>
           form.bindFromRequest().fold(
             formWithErrors =>

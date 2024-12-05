@@ -38,7 +38,7 @@ case class PremiumsGrantLeaseYNPage(countryCode: String) extends QuestionPage[Bo
           for {
             userAnswersWithoutCPLT  <- userAnswers.remove(CalculatedPremiumLeaseTaxablePage(countryCode))
             userAnswersWithoutFRGLA <- userAnswersWithoutCPLT.remove(ForeignReceivedGrantLeaseAmountPage(countryCode))
-            userAnswersWithoutFYLA  <- userAnswersWithoutFRGLA.remove(ForeignYearLeaseAmountPage(countryCode))
+            userAnswersWithoutFYLA  <- userAnswersWithoutFRGLA.remove(TwelveMonthPeriodsInLeasePage(countryCode))
             userAnswersWithoutFPGL  <- userAnswersWithoutFYLA.remove(ForeignPremiumsGrantLeasePage(countryCode))
           } yield userAnswersWithoutFPGL
       }

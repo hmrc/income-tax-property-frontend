@@ -19,13 +19,13 @@ package forms.foreign
 import forms.behaviours.IntFieldBehaviours
 import play.api.data.FormError
 
-class ForeignYearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
+class TwelveMonthPeriodsInLeaseFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new ForeignYearLeaseAmountFormProvider()()
+  val form = new TwelveMonthPeriodsInLeaseFormProvider()()
 
-  ".foreignYearLeaseAmount" - {
+  ".twelveMonthPeriodsInLease" - {
 
-    val fieldName = "foreignYearLeaseAmount"
+    val fieldName = "twelveMonthPeriodsInLease"
 
     val minimum = 2
     val maximum = 50
@@ -41,8 +41,8 @@ class ForeignYearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
     behave like intField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "foreignYearLeaseAmount.error.nonNumeric"),
-      wholeNumberError = FormError(fieldName, "foreignYearLeaseAmount.error.nonNumeric")
+      nonNumericError  = FormError(fieldName, "twelveMonthPeriodsInLease.error.nonNumeric"),
+      wholeNumberError = FormError(fieldName, "twelveMonthPeriodsInLease.error.nonNumeric")
     )
 
     behave like intFieldWithRange(
@@ -50,13 +50,13 @@ class ForeignYearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
       fieldName,
       minimum       = minimum,
       maximum       = maximum,
-      expectedError = FormError(fieldName, "foreignYearLeaseAmount.error.nonNumeric", Seq(minimum, maximum))
+      expectedError = FormError(fieldName, "twelveMonthPeriodsInLease.error.nonNumeric", Seq(minimum, maximum))
     )
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, "foreignYearLeaseAmount.error.required")
+      requiredError = FormError(fieldName, "twelveMonthPeriodsInLease.error.required")
     )
   }
 }

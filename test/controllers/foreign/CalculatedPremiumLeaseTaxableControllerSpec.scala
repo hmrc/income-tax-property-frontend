@@ -71,7 +71,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
     "must populate the view correctly on a GET when the question has previously been answered" in {
       val amount = 100
       val formAnswers = PremiumCalculated(
-        premiumCalculatedYesNo = true,
+        calculatedPremiumLeaseTaxable = true,
         Some(amount)
       )
       val userAnswers = UserAnswers(userAnswersId).set(
@@ -113,7 +113,7 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, calculatedPremiumLeaseTaxableRoute)
-            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxableYesOrNo", "false"), ("premiumCalculatedAmount","100"))
+            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxable", "false"), ("premiumCalculatedAmount","100"))
 
         val result = route(application, request).value
 
@@ -129,9 +129,9 @@ class CalculatedPremiumLeaseTaxableControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, calculatedPremiumLeaseTaxableRoute)
-            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxableYesOrNo", ""))
+            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxable", ""))
 
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> ""))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> ""))
 
         val view = application.injector.instanceOf[CalculatedPremiumLeaseTaxableView]
 

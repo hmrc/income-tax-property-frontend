@@ -33,7 +33,7 @@ class ConsolidatedRRExpensesFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "consolidatedExpensesYesOrNo",
             currency(
-              s"consolidatedRRExpenses.error.required.amount.$individualOrAgent",
+              s"consolidatedRRExpenses.error.required.reversePremiums.$individualOrAgent",
               s"consolidatedRRExpenses.error.twoDecimalPlaces.$individualOrAgent",
               s"consolidatedRRExpenses.error.nonNumeric.$individualOrAgent"
             )

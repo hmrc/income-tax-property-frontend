@@ -29,28 +29,28 @@ class RaRCapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
 
   "RaRCapitalAllowancesForACar" - {
     "when raRCapitalAllowancesForACar is true" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm =
           form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "true", "raRCapitalAllowancesForACarAmount" -> "12.34"))
         boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
-      "and no amount is entered, should fail to bind" in {
+      "and no reversePremiums is entered, should fail to bind" in {
         val boundForm = form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "true"))
         boundForm.errors must contain(
-          FormError("raRCapitalAllowancesForACarAmount", "raRCapitalAllowancesForACar.error.required.amount.individual")
+          FormError("raRCapitalAllowancesForACarAmount", "raRCapitalAllowancesForACar.error.required.reversePremiums.individual")
         )
       }
     }
     "when raRCapitalAllowancesForACarYesNo is false" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm =
           form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false", "raRCapitalAllowancesForACarAmount" -> "1234"))
         boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
         boundForm.errors mustBe empty
       }
-      "and no amount is entered, should successfully bind" in {
+      "and no reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false"))
         boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
         boundForm.errors mustBe empty

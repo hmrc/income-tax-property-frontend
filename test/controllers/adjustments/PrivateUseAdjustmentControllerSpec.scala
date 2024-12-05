@@ -206,7 +206,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted for both the Rentals and Rentals and Rent a Room journeys" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "87.858585"))
@@ -220,7 +220,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
         val rentalsResult = route(application, rentalsRequest).value
 
         status(rentalsResult) mustEqual BAD_REQUEST
-        contentAsString(rentalsResult) mustEqual view(boundForm, taxYear, NormalMode, "agent", Rentals)(
+        contentAsString(rentalsResult) mustEqual view(boundForm, taxYear, NormalMode, "individual", Rentals)(
           rentalsRequest,
           messages(application)
         ).toString
@@ -237,7 +237,7 @@ class PrivateUseAdjustmentControllerSpec extends SpecBase with MockitoSugar {
           boundForm,
           taxYear,
           NormalMode,
-          "agent",
+          "individual",
           RentalsRentARoom
         )(
           rentalsRentARoomRequest,

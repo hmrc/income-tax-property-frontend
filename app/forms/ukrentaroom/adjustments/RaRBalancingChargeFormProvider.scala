@@ -34,11 +34,11 @@ class RaRBalancingChargeFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "raRbalancingChargeYesNo",
             currency(
-              s"raRbalancingCharge.amount.error.required.$individualOrAgent",
-              s"raRbalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
-              s"raRbalancingCharge.amount.error.nonNumeric.$individualOrAgent"
+              s"raRbalancingCharge.reversePremiums.error.required.$individualOrAgent",
+              s"raRbalancingCharge.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
+              s"raRbalancingCharge.reversePremiums.error.nonNumeric.$individualOrAgent"
             )
-              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "raRbalancingCharge.amount.error.outOfRange"))
+              .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "raRbalancingCharge.reversePremiums.error.outOfRange"))
           )
         }
       )(BalancingCharge.apply)(BalancingCharge.unapply)

@@ -17,6 +17,7 @@
 package controllers.foreign
 
 import base.SpecBase
+import controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController
 import forms.foreign.ForeignReceivedGrantLeaseAmountFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
@@ -42,17 +43,15 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
   val formProvider = new ForeignReceivedGrantLeaseAmountFormProvider()
   val taxYear: Int = LocalDate.now.getYear
   val countryCode = "USA"
-
-  def onwardRoute: Call = Call("GET", "/foo")
-
+  val field = "receivedGrantLeaseAmount"
   val validAnswer: BigDecimal = 0
-
-  lazy val foreignReceivedGrantLeaseAmountRoute: String = routes.ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignReceivedGrantLeaseAmountRoute: String =
+    ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode).url
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
 
   forAll(scenarios) { individualOrAgent =>
-
     val isAgent = individualOrAgent == "agent"
     val form = formProvider(individualOrAgent)
 
@@ -70,13 +69,17 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
           val view = application.injector.instanceOf[ForeignReceivedGrantLeaseAmountView]
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, countryCode, NormalMode)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ForeignReceivedGrantLeaseAmountPage(countryCode), validAnswer).success.value
+        val userAnswers =
+          UserAnswers(userAnswersId).set(ForeignReceivedGrantLeaseAmountPage(countryCode), validAnswer).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -88,7 +91,13 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(
+            form.fill(validAnswer),
+            taxYear,
+            individualOrAgent,
+            countryCode,
+            NormalMode
+          )(request, messages(application)).toString
         }
       }
 
@@ -109,7 +118,7 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
         running(application) {
           val request =
             FakeRequest(POST, foreignReceivedGrantLeaseAmountRoute)
-              .withFormUrlEncodedBody(("foreignReceivedGrantLeaseAmount", validAnswer.toString))
+              .withFormUrlEncodedBody((field, validAnswer.toString))
 
           val result = route(application, request).value
 
@@ -125,16 +134,19 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
         running(application) {
           val request =
             FakeRequest(POST, foreignReceivedGrantLeaseAmountRoute)
-              .withFormUrlEncodedBody(("foreignReceivedGrantLeaseAmount", "invalid value"))
+              .withFormUrlEncodedBody((field, "invalid value"))
 
-          val boundForm = form.bind(Map("foreignReceivedGrantLeaseAmount" -> "invalid value"))
+          val boundForm = form.bind(Map(field -> "invalid value"))
 
           val view = application.injector.instanceOf[ForeignReceivedGrantLeaseAmountView]
 
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, countryCode, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, countryCode, NormalMode)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
@@ -159,7 +171,7 @@ class ForeignReceivedGrantLeaseAmountControllerSpec extends SpecBase with Mockit
         running(application) {
           val request =
             FakeRequest(POST, foreignReceivedGrantLeaseAmountRoute)
-              .withFormUrlEncodedBody(("foreignReceivedGrantLeaseAmount", validAnswer.toString))
+              .withFormUrlEncodedBody((field, validAnswer.toString))
 
           val result = route(application, request).value
 

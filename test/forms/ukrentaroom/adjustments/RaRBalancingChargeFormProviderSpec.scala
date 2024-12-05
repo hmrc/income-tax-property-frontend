@@ -30,26 +30,26 @@ class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Opt
 
   "raRbalancingChargeAmount" - {
     "when raRbalancingCharge is true" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true", "raRbalancingChargeAmount" -> "12.34"))
         boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
-      "and no amount is entered, should fail to bind" in {
+      "and no reversePremiums is entered, should fail to bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true"))
         boundForm.errors must contain(
-          FormError("raRbalancingChargeAmount", "raRbalancingCharge.amount.error.required.individual")
+          FormError("raRbalancingChargeAmount", "raRbalancingCharge.reversePremiums.error.required.individual")
         )
       }
     }
     "when consolidatedExpenses is false" - {
-      "and an amount is entered, should successfully bind" in {
+      "and an reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false", "raRbalancingChargeAmount" -> "1234"))
         boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
         boundForm.errors mustBe empty
       }
-      "and no amount is entered, should successfully bind" in {
+      "and no reversePremiums is entered, should successfully bind" in {
         val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false"))
         boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
         boundForm.errors mustBe empty
