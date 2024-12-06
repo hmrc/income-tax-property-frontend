@@ -804,7 +804,7 @@ GET        /:taxYear/uk-foreign-property/total-property-income                  
 POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
-GET        /reportIncome                        controllers.ReportIncomeController.onPageLoad(mode: Mode = NormalMode)
-POST       /reportIncome                        controllers.ReportIncomeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeReportIncome                  controllers.ReportIncomeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeReportIncome                  controllers.ReportIncomeController.onSubmit(mode: Mode = CheckMode)
+GET        /:taxYear/reportIncome                                                                                        controllers.ukandforeignproperty.ReportIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/reportIncome                                                                                        controllers.ukandforeignproperty.ReportIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/changeReportIncome                                                                                  controllers.ukandforeignproperty.ReportIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/changeReportIncome                                                                                  controllers.ukandforeignproperty.ReportIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

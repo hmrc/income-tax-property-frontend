@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.ukandforeignproperty
 
 import controllers.actions._
-import forms.ReportIncomeFormProvider
-import javax.inject.Inject
+import forms.ukandforeignproperty.ReportIncomeFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ReportIncomePage
+import pages.ukandforeignproperty.ReportIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ReportIncomeView
+import views.html.ukandforeignproperty.ReportIncomeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ReportIncomeController @Inject()(
@@ -44,7 +44,7 @@ class ReportIncomeController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ReportIncomePage) match {
@@ -52,21 +52,21 @@ class ReportIncomeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm,taxYear, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors,taxYear, mode))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReportIncomePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReportIncomePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ReportIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

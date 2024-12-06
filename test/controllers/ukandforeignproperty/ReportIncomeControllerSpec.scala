@@ -1,27 +1,28 @@
-package controllers
+package controllers.ukandforeignproperty
 
 import base.SpecBase
-import forms.ReportIncomeFormProvider
+import forms.ukandforeignproperty.ReportIncomeFormProvider
 import models.{NormalMode, ReportIncome, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ReportIncomePage
+import pages.ukandforeignproperty.ReportIncomePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ReportIncomeView
+import views.html.ukandforeignproperty.ReportIncomeView
 
 import scala.concurrent.Future
 
 class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
+  val taxYear = 2024
 
-  lazy val reportIncomeRoute = routes.ReportIncomeController.onPageLoad(NormalMode).url
+  lazy val reportIncomeRoute = routes.ReportIncomeController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new ReportIncomeFormProvider()
   val form = formProvider()
@@ -30,7 +31,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, reportIncomeRoute)
@@ -40,7 +41,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ReportIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -48,7 +49,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(ReportIncomePage, ReportIncome.values.head).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
         val request = FakeRequest(GET, reportIncomeRoute)
@@ -69,7 +70,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -90,7 +91,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
         val request =
@@ -104,7 +105,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 

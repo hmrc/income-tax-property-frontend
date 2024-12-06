@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms.ukandforeignproperty
 
+import forms.mappings.Mappings
 import models.ReportIncome
-import play.api.libs.json.JsPath
+import play.api.data.Form
 
-case object ReportIncomePage extends QuestionPage[ReportIncome] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ toString
+class ReportIncomeFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "reportIncome"
+  def apply(): Form[ReportIncome] =
+    Form(
+      "value" -> enumerable[ReportIncome]("reportIncome.error.required")
+    )
 }

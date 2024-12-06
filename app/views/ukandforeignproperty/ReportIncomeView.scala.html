@@ -22,11 +22,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("reportIncome.title"))) {
 
-    @formHelper(action = routes.ReportIncomeController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.ReportIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))

@@ -1,8 +1,8 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
+import forms.ukandforeignproperty.ReportIncomeFormProvider
 import models.ReportIncome
-import play.api.data.FormError
 
 class ReportIncomeFormProviderSpec extends OptionFieldBehaviours {
 
