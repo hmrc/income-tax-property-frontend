@@ -17,11 +17,11 @@
 package viewmodels.checkAnswers.foreign.expenses
 
 import controllers.foreign.expenses.routes
-import models.{CheckMode, UserAnswers}
+import models.{UserAnswers, CheckMode}
 import pages.foreign.expenses.ForeignRentsRatesAndInsurancePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass, bigDecimalCurrency}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -33,7 +33,7 @@ object ForeignRentsRatesAndInsuranceSummary {
 
         SummaryListRowViewModel(
           key = KeyViewModel("foreignRentsRatesAndInsurance.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+          value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.ForeignRentsRatesAndInsuranceController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("foreignRentsRatesAndInsurance.change.hidden"))
