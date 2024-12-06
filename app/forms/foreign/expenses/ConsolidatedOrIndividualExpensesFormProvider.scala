@@ -32,11 +32,11 @@ class ConsolidatedOrIndividualExpensesFormProvider @Inject() extends Mappings {
       "consolidatedExpensesAmount" -> {
         mandatoryIfTrue("consolidatedOrIndividualExpenses",
           currency(
-            s"consolidatedOrIndividualExpenses.reversePremiums.error.required.${individualOrAgent}",
-            s"consolidatedOrIndividualExpenses.reversePremiums.error.twoDecimalPlaces.${individualOrAgent}",
-            s"consolidatedOrIndividualExpenses.reversePremiums.error.nonNumerical.${individualOrAgent}")
+            s"consolidatedOrIndividualExpenses.amount.error.required.${individualOrAgent}",
+            s"consolidatedOrIndividualExpenses.amount.error.twoDecimalPlaces.${individualOrAgent}",
+            s"consolidatedOrIndividualExpenses.amount.error.nonNumerical.${individualOrAgent}")
             .verifying(inRange(BigDecimal(0), BigDecimal(1000000000),
-              "consolidatedOrIndividualExpenses.reversePremiums.error.outOfRange"))
+              "consolidatedOrIndividualExpenses.amount.error.outOfRange"))
           )
         }
       )(ConsolidatedOrIndividualExpenses.apply)(ConsolidatedOrIndividualExpenses.unapply)

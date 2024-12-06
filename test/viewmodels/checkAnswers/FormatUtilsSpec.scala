@@ -22,7 +22,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class FormatUtilsSpec extends AnyWordSpec with Matchers {
 
   ".bigDecimalCurrency" should {
-    "Place comma in appropriate place when given reversePremiums over 999" in {
+    "Place comma in appropriate place when given amount over 999" in {
       FormatUtils.bigDecimalCurrency(45000.10) shouldBe "£45,000.10"
     }
   }

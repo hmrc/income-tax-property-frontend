@@ -20,9 +20,9 @@ import audit.AuditService
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
-import models.JourneyPath.ForeignPropertyIncomePath
+import models.JourneyPath.ForeignPropertyIncome
 import models.requests.DataRequest
-import models.{ForeignPropertyIncome, JourneyContext, ReadForeignPropertyIncome}
+import models.{ForeignPropertyIncome, JourneyContext, JourneyPath, ReadForeignPropertyIncome}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -95,13 +95,13 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     foreignPropertyIncome: ForeignPropertyIncome,
     countryCode: String
   )(implicit hc: HeaderCarrier): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignPropertyIncomePath)
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
     propertySubmissionService.saveJourneyAnswers(context, foreignPropertyIncome).flatMap {
       case Right(_) =>
         Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
       case Left(error) =>
-        logger.error(s"Failed to save Foreign Property Select Country section : ${error.toString}")
-        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Property Select Country section"))
+        logger.error(s"Failed to save Foreign Income section : ${error.toString}")
+        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Income section"))
     }
 
   }

@@ -34,18 +34,18 @@ class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "claimExpensesOrRelief",
             currency(
-              s"claimExpensesOrRelief.reversePremiums.error.required.$individualOrAgent",
-              s"claimExpensesOrRelief.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
-              s"claimExpensesOrRelief.reversePremiums.error.nonNumeric.$individualOrAgent"
+              s"claimExpensesOrRelief.amount.error.required.$individualOrAgent",
+              s"claimExpensesOrRelief.amount.error.twoDecimalPlaces.$individualOrAgent",
+              s"claimExpensesOrRelief.amount.error.nonNumeric.$individualOrAgent"
             )
               .verifying(
                 minimumValueWithCustomArgument(
                   BigDecimal(0),
-                  "claimExpensesOrRelief.reversePremiums.error.outOfRange",
+                  "claimExpensesOrRelief.amount.error.outOfRange",
                   maxAllowedIncome
                 )
               )
-              .verifying(maximumValue(maxAllowedIncome, "claimExpensesOrRelief.reversePremiums.error.maxAllowedClaim"))
+              .verifying(maximumValue(maxAllowedIncome, "claimExpensesOrRelief.amount.error.maxAllowedClaim"))
           )
         }
       )(ClaimExpensesOrRelief.apply)(ClaimExpensesOrRelief.unapply)

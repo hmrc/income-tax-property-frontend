@@ -32,9 +32,9 @@ class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
         "premiumsGrantLeaseAmount" -> {
           mandatoryIfFalse("premiumsGrantLeaseReceived",
             currency(
-              s"premiumsGrantLease.error.reversePremiums.required.$individualOrAgent",
-              "premiumsGrantLease.error.reversePremiums.twoDecimalPlaces",
-              s"premiumsGrantLease.error.reversePremiums.nonNumeric.$individualOrAgent")
+              s"premiumsGrantLease.error.amount.required.$individualOrAgent",
+              "premiumsGrantLease.error.amount.twoDecimalPlaces",
+              s"premiumsGrantLease.error.amount.nonNumeric.$individualOrAgent")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumsGrantLease.error.outOfRange"))
           )
         }

@@ -46,7 +46,7 @@ object ConsolidatedExpensesRRSummary {
               )
             ),
             SummaryListRowViewModel(
-              key = KeyViewModel(s"consolidatedRRExpenses.checkYourAnswersLabel.reversePremiums.$individualOrAgent")
+              key = KeyViewModel(s"consolidatedRRExpenses.checkYourAnswersLabel.amount.$individualOrAgent")
                 .withCssClass(keyCssClass),
               value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
               actions = Seq(
