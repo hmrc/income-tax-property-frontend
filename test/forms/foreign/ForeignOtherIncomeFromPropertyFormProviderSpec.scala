@@ -24,9 +24,9 @@ class ForeignOtherIncomeFromPropertyFormProviderSpec extends CurrencyFieldBehavi
 
   val form = new ForeignOtherIncomeFromPropertyFormProvider()("individual")
 
-  ".foreignOtherIncomeFromProperty" - {
+  ".otherPropertyIncome" - {
 
-    val fieldName = "foreignOtherIncomeFromProperty"
+    val fieldName = "otherPropertyIncome"
 
     val minimum = 0
     val maximum = 100000000

@@ -39,14 +39,14 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("calculatedPremiumLeaseTaxableYesOrNo"),
+                field = form("calculatedPremiumLeaseTaxable"),
                 legend = LegendViewModel(messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")).asPageHeading(Large),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("calculatedPremiumLeaseTaxableYesOrNo"),
+                    field = form("calculatedPremiumLeaseTaxable"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(
-                                field = form("premiumCalculatedAmount"),
+                                field = form("premiumsOfLeaseGrant"),
                                 label = LabelViewModel(messages("premiumCalculatedAmount.radio.question.label"))
                             )
                             .withWidth(Fixed10)

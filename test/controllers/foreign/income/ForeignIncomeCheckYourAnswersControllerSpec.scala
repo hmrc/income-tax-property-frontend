@@ -22,7 +22,7 @@ import models.{UserAnswers, ReversePremiumsReceived}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import controllers.foreign.income.routes._
-import pages.foreign.ForeignYearLeaseAmountPage
+import pages.foreign.TwelveMonthPeriodsInLeasePage
 import pages.foreign.income.{ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
 
 import viewmodels.govuk.SummaryListFluency
@@ -30,12 +30,12 @@ import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import java.time.LocalDate
 
-class ForeignPropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = ForeignIncomeSectionCompleteController.onPageLoad(taxYear, countryCode)
-  val controller = ForeignPropertyIncomeCheckYourAnswersController
+  def onwardRoute = ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)
+  val controller = ForeignIncomeCheckYourAnswersController
 
   "ForeignPropertyIncomeCheckYourAnswers Controller" - {
 
@@ -90,7 +90,7 @@ class ForeignPropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with 
       val userAnswers = UserAnswers("foreign-property-income-user-answers")
         .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67))
         .flatMap(_.set(PremiumsGrantLeaseYNPage(countryCode), true))
-        .flatMap(_.set(ForeignYearLeaseAmountPage(countryCode), 24))
+        .flatMap(_.set(TwelveMonthPeriodsInLeasePage(countryCode), 24))
         .flatMap(_.set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
         .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
         .toOption

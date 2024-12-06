@@ -26,7 +26,7 @@ class ForeignPropertyRentalIncomeFormProvider @Inject() extends Mappings {
   val maximum = 100000000
   def apply(agentOrIndividual: String): Form[BigDecimal] =
     Form(
-      "foreignPropertyRentalIncome" -> currency(
+      "rentIncome" -> currency(
         s"foreignPropertyRentalIncome.error.required.$agentOrIndividual",
         "foreignPropertyRentalIncome.error.twoDecimalPlaces",
         s"foreignPropertyRentalIncome.error.nonNumeric.$agentOrIndividual")

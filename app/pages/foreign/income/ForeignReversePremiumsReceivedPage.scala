@@ -25,5 +25,5 @@ case class ForeignReversePremiumsReceivedPage(countryCode: String) extends Quest
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignReversePremiumsReceived"
+  override def toString: String = "reversePremiumsReceived"
 }

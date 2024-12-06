@@ -32,8 +32,8 @@ object ForeignReversePremiumsReceivedSummary {
     answers.get(ForeignReversePremiumsReceivedPage(countryCode)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("reversePremiumsReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value =
-          ValueViewModel(answer.amount.fold("site.no")(value => bigDecimalCurrency(value))).withCssClass(valueCssClass),
+        value = ValueViewModel(answer.reversePremiums.fold("site.no")(value => bigDecimalCurrency(value)))
+          .withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

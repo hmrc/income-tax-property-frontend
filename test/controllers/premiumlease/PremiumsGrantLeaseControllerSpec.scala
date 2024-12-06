@@ -121,7 +121,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .set(YearLeaseAmountPage(Rentals), 10)
         .success
         .value
-        .set(PremiumsGrantLeasePage(Rentals), PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(validAnswer)))
+        .set(PremiumsGrantLeasePage(Rentals), PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer)))
         .success
         .value
 
@@ -136,7 +136,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(validAnswer))),
+          form.fill(PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))),
           taxYear,
           10,
           BigDecimal(100),
@@ -155,7 +155,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .value
         .set(
           PremiumsGrantLeasePage(RentalsRentARoom),
-          PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(validAnswer))
+          PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))
         )
         .success
         .value
@@ -172,7 +172,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(PremiumsGrantLease(premiumsGrantLeaseYesOrNo = true, Some(validAnswer))),
+          form.fill(PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))),
           taxYear,
           10,
           BigDecimal(100),
@@ -183,7 +183,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to received grant amount page, when no amount is found in user data for a GET" in {
+    "must redirect to received grant amount page, when no reversePremiums is found in user data for a GET" in {
 
       val rentalsUserAnswers = UserAnswers(userAnswersId)
         .set(YearLeaseAmountPage(Rentals), 10)
@@ -222,7 +222,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to year Lease amount page, when no period is found in user data for a GET" in {
+    "must redirect to year Lease reversePremiums page, when no period is found in user data for a GET" in {
 
       val rentalsUserAnswers = UserAnswers(userAnswersId)
         .set(ReceivedGrantLeaseAmountPage(Rentals), BigDecimal(100))
@@ -304,7 +304,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val request =
           FakeRequest(POST, rentalsPremiumsGrantLeaseRoute)
             .withFormUrlEncodedBody(
-              ("premiumsGrantLeaseYesOrNo", "false"),
+              ("premiumsGrantLeaseReceived", "false"),
               ("premiumsGrantLeaseAmount", validAnswer.toString())
             )
 
@@ -318,7 +318,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val request =
           FakeRequest(POST, rentalsRentARoomPremiumsGrantLeaseRoute)
             .withFormUrlEncodedBody(
-              ("premiumsGrantLeaseYesOrNo", "false"),
+              ("premiumsGrantLeaseReceived", "false"),
               ("premiumsGrantLeaseAmount", validAnswer.toString())
             )
 
@@ -329,7 +329,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to received grant amount page, when no amount is found in user data when valid data is submitted" in {
+    "must redirect to received grant reversePremiums page, when no reversePremiums is found in user data when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -388,7 +388,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to year lease amount page, when no amount is found in user data when valid data is submitted" in {
+    "must redirect to year lease reversePremiums page, when no reversePremiums is found in user data when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
