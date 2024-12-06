@@ -29,11 +29,11 @@ class PrivateUseAdjustmentFormProvider @Inject() extends Mappings {
     Form(mapping(
       "privateUseAdjustmentAmount" ->
           currency(
-            s"privateUseAdjustmentAmount.reversePremiums.error.required.$individualOrAgent",
-            s"privateUseAdjustmentAmount.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
-            s"privateUseAdjustmentAmount.reversePremiums.error.nonNumeric.$individualOrAgent")
+            s"privateUseAdjustmentAmount.amount.error.required.$individualOrAgent",
+            s"privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.$individualOrAgent",
+            s"privateUseAdjustmentAmount.amount.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-              "privateUseAdjustmentAmount.reversePremiums.error.outOfRange"))
+              "privateUseAdjustmentAmount.amount.error.outOfRange"))
     )(PrivateUseAdjustment.apply)(PrivateUseAdjustment.unapply))
   }
 }

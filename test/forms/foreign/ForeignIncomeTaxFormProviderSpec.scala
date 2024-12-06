@@ -55,7 +55,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              s"foreignIncomeTax.error.reversePremiums.required.$individualOrAgent"
+              s"foreignIncomeTax.error.amount.required.$individualOrAgent"
             )
           )
         }
@@ -71,7 +71,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.reversePremiums.nonNumeric"
+              "foreignIncomeTax.error.amount.nonNumeric"
             )
           )
         }
@@ -87,7 +87,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.reversePremiums.nonNumeric"
+              "foreignIncomeTax.error.amount.nonNumeric"
             )
           )
         }
@@ -102,7 +102,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
-              "foreignIncomeTax.error.reversePremiums.outOfRange",
+              "foreignIncomeTax.error.amount.outOfRange",
               ArraySeq(0, 100000000)
             )
           )

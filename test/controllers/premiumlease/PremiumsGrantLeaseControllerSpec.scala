@@ -183,7 +183,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to received grant reversePremiums page, when no reversePremiums is found in user data for a GET" in {
+    "must redirect to received grant amount page, when no reversePremiums is found in user data for a GET" in {
 
       val rentalsUserAnswers = UserAnswers(userAnswersId)
         .set(YearLeaseAmountPage(Rentals), 10)

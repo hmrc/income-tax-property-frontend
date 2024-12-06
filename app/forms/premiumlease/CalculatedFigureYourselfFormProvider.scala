@@ -32,11 +32,11 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
       "calculatedFigureYourselfAmount" -> {
         mandatoryIfTrue("calculatedFigureYourself",
           currency(
-            s"calculatedFigureYourselfAmount.reversePremiums.error.required.$individualOrAgent",
-            s"calculatedFigureYourselfAmount.reversePremiums.error.twoDecimalPlaces.$individualOrAgent",
-            s"calculatedFigureYourselfAmount.reversePremiums.error.nonNumeric.$individualOrAgent")
+            s"calculatedFigureYourselfAmount.amount.error.required.$individualOrAgent",
+            s"calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.$individualOrAgent",
+            s"calculatedFigureYourselfAmount.amount.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
-              "calculatedFigureYourselfAmount.reversePremiums.error.outOfRange"))
+              "calculatedFigureYourselfAmount.amount.error.outOfRange"))
         )
       }
     )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))

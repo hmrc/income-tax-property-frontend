@@ -32,35 +32,35 @@ class CalculatedPremiumLeaseTaxableFormProviderSpec extends BooleanFieldBehaviou
 
   ".premiumsOfLeaseGrant" - {
     "calculatedPremiumLeaseTaxable" - {
-      "and an reversePremiums is entered, should successfully bind" in {
+      "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.65"))
         boundForm.value.value mustBe PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
-      "and no reversePremiums is entered, should fail to bind" in {
+      "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true"))
-        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.reversePremiums.error.required.individual"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.reversePremiums.error.nonNumeric"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.nonNumeric"))
       }
 
 
-      "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
+      "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.6545"))
-        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.reversePremiums.error.twoDecimalPlaces"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.twoDecimalPlaces"))
       }
 
 
-      "and an reversePremiums is entered that is out of range then should fail to bind" in {
+      "and an amount is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
             "premiumsOfLeaseGrant",
-            "premiumCalculated.reversePremiums.error.outOfRange",
+            "premiumCalculated.amount.error.outOfRange",
             ArraySeq(0, 100000000)
           )
         )

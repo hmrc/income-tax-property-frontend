@@ -40,7 +40,7 @@ class ReceivedGrantLeaseAmountControllerSpec extends SpecBase with MockitoSugar 
   private val form = formProvider("individual")
   private val taxYear = LocalDate.now.getYear
   private val validAnswer = BigDecimal(100)
-  private def onwardRoute = Call("GET", "/year-lease-reversePremiums")
+  private def onwardRoute = Call("GET", "/year-lease-amount")
 
   "For Rentals ReceivedGrantLeaseAmount Controller" - {
 

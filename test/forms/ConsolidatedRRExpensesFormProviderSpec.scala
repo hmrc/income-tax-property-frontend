@@ -30,26 +30,26 @@ class ConsolidatedRRExpensesFormProviderSpec extends BooleanFieldBehaviours with
 
   "consolidatedRRExpensesAmount" - {
     "when consolidatedRRExpenses is true" - {
-      "and an reversePremiums is entered, should successfully bind" in {
+      "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "true", "consolidatedExpensesAmount" -> "12.34"))
         boundForm.value.value mustBe ConsolidatedRRExpenses(true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
-      "and no reversePremiums is entered, should fail to bind" in {
+      "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "true"))
         boundForm.errors must contain(
-          FormError("consolidatedExpensesAmount", "consolidatedRRExpenses.error.required.reversePremiums.individual")
+          FormError("consolidatedExpensesAmount", "consolidatedRRExpenses.error.required.amount.individual")
         )
       }
     }
     "when consolidatedExpenses is false" - {
-      "and an reversePremiums is entered, should successfully bind" in {
+      "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "false", "consolidatedExpensesAmount" -> "1234"))
         boundForm.value.value mustBe ConsolidatedRRExpenses(false, None)
         boundForm.errors mustBe empty
       }
-      "and no reversePremiums is entered, should successfully bind" in {
+      "and no amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("consolidatedExpensesYesOrNo" -> "false"))
         boundForm.value.value mustBe ConsolidatedRRExpenses(false, None)
         boundForm.errors mustBe empty
