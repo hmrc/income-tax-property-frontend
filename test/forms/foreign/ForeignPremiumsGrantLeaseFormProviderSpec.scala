@@ -37,7 +37,7 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
     s".premiumsOfLeaseGrant for $individualOrAgent" - {
       "when premiumsOfLeaseGrantAgreed is false" - {
 
-        "and an reversePremiums is entered, should successfully bind" in {
+        "and an amount is entered, should successfully bind" in {
 
           val boundForm = form.bind(
             Map(
@@ -49,12 +49,12 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
           boundForm.errors mustBe empty
         }
 
-        "and no reversePremiums is entered, should fail to bind" in {
+        "and no amount is entered, should fail to bind" in {
           val boundForm = form.bind(Map("premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed"))
           boundForm.errors must contain(
             FormError(
               "premiumsOfLeaseGrant",
-              s"foreignPremiumsGrantLease.error.reversePremiums.required.$individualOrAgent"
+              s"foreignPremiumsGrantLease.error.amount.required.$individualOrAgent"
             )
           )
         }
@@ -70,12 +70,12 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
           boundForm.errors must contain(
             FormError(
               "premiumsOfLeaseGrant",
-              s"foreignPremiumsGrantLease.error.reversePremiums.nonNumeric.$individualOrAgent"
+              s"foreignPremiumsGrantLease.error.amount.nonNumeric.$individualOrAgent"
             )
           )
         }
 
-        "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
+        "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
           val boundForm =
             form.bind(
               Map(
@@ -86,12 +86,12 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
           boundForm.errors must contain(
             FormError(
               "premiumsOfLeaseGrant",
-              "foreignPremiumsGrantLease.error.reversePremiums.twoDecimalPlaces"
+              "foreignPremiumsGrantLease.error.amount.twoDecimalPlaces"
             )
           )
         }
 
-        "and an reversePremiums is entered that is out of range then should fail to bind" in {
+        "and an amount is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
               "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",

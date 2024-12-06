@@ -19,8 +19,10 @@ package controllers.foreign.income
 import base.SpecBase
 import controllers.routes
 import forms.foreign.income.ForeignIncomeSectionCompleteFormProvider
-import models.UserAnswers
+import models.JourneyPath.{ForeignPropertyIncome, ForeignSelectCountry}
+import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -31,6 +33,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import views.html.foreign.income.ForeignIncomeSectionCompleteView
 
 import scala.concurrent.Future
@@ -43,6 +46,15 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new ForeignIncomeSectionCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
+
+  val user: User =
+    User(
+      mtditid = "mtditid",
+      nino = "nino",
+      isAgent = false,
+      affinityGroup = "affinityGroup",
+      agentRef = Some("agentReferenceNumber")
+    )
 
   lazy val foreignIncomeSectionCompleteRoute: String =
     controllers.foreign.income.routes.ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode).url
@@ -67,6 +79,19 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
+      when(
+        mockJourneyAnswersService.setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
+      ) thenReturn Future.successful(
+        Right("")
+      )
+
       val userAnswers =
         UserAnswers(userAnswersId).set(ForeignIncomeSectionCompletePage(countryCode), true).success.value
 
@@ -87,17 +112,30 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the summary page when the user selects Yes to confirm that the journey is finished" in {
 
       val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
+      when(
+        mockJourneyAnswersService.setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
+      ) thenReturn Future.successful(
+        Right("")
+      )
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 

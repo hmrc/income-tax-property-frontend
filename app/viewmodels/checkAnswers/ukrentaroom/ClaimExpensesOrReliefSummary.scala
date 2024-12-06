@@ -46,7 +46,7 @@ object ClaimExpensesOrReliefSummary {
               )
             ),
             SummaryListRowViewModel(
-              key = KeyViewModel(s"claimExpensesOrRelief.checkYourAnswersLabel.reversePremiums.$individualOrAgent")
+              key = KeyViewModel(s"claimExpensesOrRelief.checkYourAnswersLabel.amount.$individualOrAgent")
                 .withCssClass(keyCssClass),
               value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
               actions = Seq(

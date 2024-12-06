@@ -37,9 +37,9 @@ class ForeignPremiumsGrantLeaseFormProvider @Inject() extends Mappings {
         "premiumsOfLeaseGrant" -> {
           mandatoryIfFalse("premiumsOfLeaseGrantAgreed",
             currency(
-              s"foreignPremiumsGrantLease.error.reversePremiums.required.$individualOrAgent",
-              "foreignPremiumsGrantLease.error.reversePremiums.twoDecimalPlaces",
-              s"foreignPremiumsGrantLease.error.reversePremiums.nonNumeric.$individualOrAgent")
+              s"foreignPremiumsGrantLease.error.amount.required.$individualOrAgent",
+              "foreignPremiumsGrantLease.error.amount.twoDecimalPlaces",
+              s"foreignPremiumsGrantLease.error.amount.nonNumeric.$individualOrAgent")
               .verifying(inRange(minimum, maximum, "foreignPremiumsGrantLease.error.outOfRange"))
           )
         }

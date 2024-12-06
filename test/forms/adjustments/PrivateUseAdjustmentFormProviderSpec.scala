@@ -29,32 +29,32 @@ class PrivateUseAdjustmentFormProviderSpec extends BooleanFieldBehaviours with O
 
   ".privateUseAdjustmentAmount" - {
     "when privateUseAdjustment is true" - {
-      "and an reversePremiums is entered, should successfully bind" in {
+      "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "4534.65"))
         boundForm.value.value mustBe PrivateUseAdjustment(4534.65)
         boundForm.errors mustBe empty
       }
 
-      "and no reversePremiums is entered, should fail to bind" in {
+      "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map.empty[String, String])
-        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.reversePremiums.error.required.individual"))
+        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.reversePremiums.error.nonNumeric.individual"))
+        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.amount.error.nonNumeric.individual"))
       }
 
 
-      "and an reversePremiums is entered that has more than 2 decimal places then it should fail to bind" in {
+      "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "4534.6545"))
-        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.reversePremiums.error.twoDecimalPlaces.individual"))
+        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.amount.error.twoDecimalPlaces.individual"))
       }
 
 
-      "and an reversePremiums is entered that is out of range then should fail to bind" in {
+      "and an amount is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(Map("privateUseAdjustmentAmount" -> "45334553534535345435345345434.65"))
-        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.reversePremiums.error.outOfRange", ArraySeq(0, 100000000)))
+        boundForm.errors must contain(FormError("privateUseAdjustmentAmount", "privateUseAdjustmentAmount.amount.error.outOfRange", ArraySeq(0, 100000000)))
       }
     }
   }

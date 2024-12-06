@@ -37,7 +37,7 @@ class RaRCapitalAllowancesForACarFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "raRCapitalAllowancesForACarYesNo",
             currency(
-              s"raRCapitalAllowancesForACar.error.required.reversePremiums.$individualOrAgent",
+              s"raRCapitalAllowancesForACar.error.required.amount.$individualOrAgent",
               "raRCapitalAllowancesForACar.error.twoDecimalPlaces",
               s"raRCapitalAllowancesForACar.error.nonNumeric.$individualOrAgent"
             )

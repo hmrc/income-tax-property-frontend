@@ -92,7 +92,7 @@ object JourneyPath {
 
   case object ForeignPropertyTax extends WithName("foreign-property-tax") with JourneyPath
 
-  case object ForeignPropertyIncomePath extends WithName("foreign-property-income") with JourneyPath
+  case object ForeignPropertyIncome extends WithName("foreign-property-income") with JourneyPath
 
   case object ForeignPropertyExpenses extends WithName("foreign-property-expenses") with JourneyPath
 

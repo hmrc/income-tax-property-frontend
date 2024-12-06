@@ -37,10 +37,10 @@ class RaRUnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "raRUnusedLossesBroughtForwardYesOrNo",
             currency(
-              s"raRUnusedLossesBroughtForward.error.reversePremiums.required.$individualOrAgent",
-              "raRUnusedLossesBroughtForward.error.reversePremiums.nonNumeric",
-              "raRUnusedLossesBroughtForward.error.reversePremiums.nonNumeric"
-            ).verifying(inRange(minimum, maximum, "raRUnusedLossesBroughtForward.error.reversePremiums.outOfRange"))
+              s"raRUnusedLossesBroughtForward.error.amount.required.$individualOrAgent",
+              "raRUnusedLossesBroughtForward.error.amount.nonNumeric",
+              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
+            ).verifying(inRange(minimum, maximum, "raRUnusedLossesBroughtForward.error.amount.outOfRange"))
           )
         }
       )(RaRUnusedLossesBroughtForward.apply)(

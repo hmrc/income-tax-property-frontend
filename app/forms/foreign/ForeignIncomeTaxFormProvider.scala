@@ -37,10 +37,10 @@ class ForeignIncomeTaxFormProvider @Inject() extends Mappings {
           mandatoryIfTrue(
             "foreignIncomeTaxYesNo",
             currency(
-              s"foreignIncomeTax.error.reversePremiums.required.$individualOrAgent",
-              "foreignIncomeTax.error.reversePremiums.nonNumeric",
-              "foreignIncomeTax.error.reversePremiums.nonNumeric"
-            ).verifying(inRange(minimum, maximum, "foreignIncomeTax.error.reversePremiums.outOfRange"))
+              s"foreignIncomeTax.error.amount.required.$individualOrAgent",
+              "foreignIncomeTax.error.amount.nonNumeric",
+              "foreignIncomeTax.error.amount.nonNumeric"
+            ).verifying(inRange(minimum, maximum, "foreignIncomeTax.error.amount.outOfRange"))
           )
         }
       )(ForeignIncomeTax.apply)(
