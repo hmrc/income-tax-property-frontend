@@ -2250,3 +2250,11 @@ totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
 totalPropertyIncome.error.required = Select either 'Less than £1,000 or £1,000 or more'
 totalPropertyIncome.change.hidden =  How much total income you got from all of your UK and foreign properties
+
+reportIncome.title = Do you want to report your property income?
+reportIncome.heading = Do you want to report your property income?
+reportIncome.wantToReport = I want to report my property income
+reportIncome.doNotWantToReport = I do not want to report my property income
+reportIncome.checkYourAnswersLabel = Do you want to report your property income?
+reportIncome.error.required = Select reportIncome
+reportIncome.change.hidden = ReportIncome
