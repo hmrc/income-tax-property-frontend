@@ -35,37 +35,63 @@ class ForeignPropertyExpensesStartControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET if income under 85k" in {
 
-      val userAnswers: UserAnswers = UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(45000)).get
-      val userAnswersWithCountry: UserAnswers = userAnswers.set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
+      val userAnswers: UserAnswers =
+        UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(45000.00)).get
+      val userAnswersWithCountry: UserAnswers =
+        userAnswers.set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCountry), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(
+          GET,
+          controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController
+            .onPageLoad(taxYear, countryCode)
+            .url
+        )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ForeignPropertyExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, countryName, isIncomeUnder85k = true, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          taxYear,
+          countryName,
+          isIncomeUnder85k = true,
+          "individual",
+          countryCode
+        )(request, messages(application)).toString
       }
     }
     "must return OK and the correct view for a GET if income over 85k" in {
-      val userAnswers: UserAnswers = UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(85000)).get
-      val userAnswersWithCountry: UserAnswers = userAnswers.set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
+      val userAnswers: UserAnswers =
+        UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(85000.00)).get
+      val userAnswersWithCountry: UserAnswers =
+        userAnswers.set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCountry), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(
+          GET,
+          controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController
+            .onPageLoad(taxYear, countryCode)
+            .url
+        )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ForeignPropertyExpensesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, countryName, isIncomeUnder85k = false, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          taxYear,
+          countryName,
+          isIncomeUnder85k = false,
+          "individual",
+          countryCode
+        )(request, messages(application)).toString
       }
     }
   }

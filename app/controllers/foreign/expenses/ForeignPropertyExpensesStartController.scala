@@ -18,16 +18,14 @@ package controllers.foreign.expenses
 
 import controllers.actions._
 import controllers.routes
-import models.JourneyPath.PropertyAbout
-import pages.foreign.income.ForeignPropertyRentalIncomePage
 import pages.foreign.IncomeSourceCountries
+import pages.foreign.income.ForeignPropertyRentalIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.expenses.ForeignPropertyExpensesStartView
 
 import javax.inject.Inject
-import scala.concurrent.Future
 
 class ForeignPropertyExpensesStartController @Inject() (
                                        override val messagesApi: MessagesApi,
@@ -46,9 +44,9 @@ class ForeignPropertyExpensesStartController @Inject() (
 
       income match {
         case Some(income) if income < 85000 =>
-          Ok(view(taxYear, countryName, isIncomeUnder85k = true, request.user.isAgentMessageKey))
+          Ok(view(taxYear, countryName, isIncomeUnder85k = true, request.user.isAgentMessageKey,countryCode))
         case Some(income) if income >= 85000 =>
-          Ok(view(taxYear, countryName, isIncomeUnder85k = false, request.user.isAgentMessageKey))
+          Ok(view(taxYear, countryName, isIncomeUnder85k = false, request.user.isAgentMessageKey,countryCode))
         case _ => Redirect(routes.JourneyRecoveryController.onPageLoad())
       }
 
