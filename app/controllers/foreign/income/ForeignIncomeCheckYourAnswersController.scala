@@ -16,13 +16,12 @@
 
 package controllers.foreign.income
 
-import audit.AuditService
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
-import models.JourneyPath.ForeignPropertyIncome
 import models.requests.DataRequest
-import models.{ForeignPropertyIncome, JourneyContext, JourneyPath, ReadForeignPropertyIncome}
+import models._
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -98,11 +97,40 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
     propertySubmissionService.saveJourneyAnswers(context, foreignPropertyIncome).flatMap {
       case Right(_) =>
+        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, AccountingMethod.Traditional)
         Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
       case Left(error) =>
         logger.error(s"Failed to save Foreign Income section : ${error.toString}")
+        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, AccountingMethod.Traditional)
         Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Income section"))
     }
 
+  }
+
+  private def auditCYA(
+    taxYear: Int,
+    request: DataRequest[AnyContent],
+    foreignPropertyIncome: ForeignPropertyIncome,
+    isFailed: Boolean,
+    accountingMethod: AccountingMethod
+  )(implicit
+    hc: HeaderCarrier
+  ): Unit = {
+    val auditModel = AuditModel(
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
+      isUpdate = false,
+      sectionName = SectionName.ForeignPropertyIncome,
+      propertyType = AuditPropertyType.ForeignProperty,
+      journeyName = JourneyName.ForeignProperty,
+      accountingMethod = accountingMethod,
+      isFailed = isFailed,
+      foreignPropertyIncome
+    )
+
+    audit.sendAuditEvent(auditModel)
   }
 }

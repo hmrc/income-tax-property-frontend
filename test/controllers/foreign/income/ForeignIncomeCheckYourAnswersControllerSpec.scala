@@ -16,19 +16,28 @@
 
 package controllers.foreign.income
 
+import audit.AuditService
 import base.SpecBase
+import controllers.foreign.income.routes._
 import controllers.routes
-import models.{UserAnswers, ReversePremiumsReceived}
+import models.JourneyPath.ForeignPropertyIncome
+import models.{JourneyContext, PremiumCalculated, ReversePremiumsReceived, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.foreign.income._
+import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignReceivedGrantLeaseAmountPage, TwelveMonthPeriodsInLeasePage}
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import controllers.foreign.income.routes._
-import pages.foreign.TwelveMonthPeriodsInLeasePage
-import pages.foreign.income.{ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
-
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -36,6 +45,9 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
   val taxYear: Int = LocalDate.now.getYear
   def onwardRoute = ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)
   val controller = ForeignIncomeCheckYourAnswersController
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
+  val audit: AuditService = mock[AuditService]
 
   "ForeignPropertyIncomeCheckYourAnswers Controller" - {
 
@@ -87,15 +99,46 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
     }
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
-      val userAnswers = UserAnswers("foreign-property-income-user-answers")
-        .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67))
+
+      val userAnswers = UserAnswers("test").set(ForeignIncomeSectionCompletePage("AUS"), value = true).get
+
+      val userAnswersForeignIncome = userAnswers
+        .set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(67.75))
+        .flatMap(_.set(ForeignIncomeSectionAddCountryCode(countryCode), countryCode))
         .flatMap(_.set(PremiumsGrantLeaseYNPage(countryCode), true))
-        .flatMap(_.set(TwelveMonthPeriodsInLeasePage(countryCode), 24))
-        .flatMap(_.set(ForeignReversePremiumsReceivedPage(countryCode), ReversePremiumsReceived(true, Some(BigDecimal(121)))))
-        .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
+        .flatMap(
+          _.set(
+            CalculatedPremiumLeaseTaxablePage(countryCode),
+            PremiumCalculated(calculatedPremiumLeaseTaxable = true, premiumsOfLeaseGrant = Some(10.45))
+          )
+        )
+        .flatMap(
+          _.set(ForeignReceivedGrantLeaseAmountPage(countryCode), BigDecimal(25.50))
+            .flatMap(_.set(TwelveMonthPeriodsInLeasePage(countryCode), 24))
+            .flatMap(
+              _.set(
+                ForeignReversePremiumsReceivedPage(countryCode),
+                ReversePremiumsReceived(true, Some(BigDecimal(121)))
+              )
+            )
+            .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
+        )
         .toOption
 
-      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = userAnswersForeignIncome, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       running(application) {
@@ -104,6 +147,7 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
