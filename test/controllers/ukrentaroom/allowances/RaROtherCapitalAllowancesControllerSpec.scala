@@ -54,8 +54,7 @@ class RaROtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar
       "",
       "",
       "",
-      isAgent,
-      Some("agentReferenceNumber")
+      Option.when(isAgent)("agentReferenceNumber")
     )
     s"OtherCapitalAllowances Controller for $agencyOrIndividual" - {
 

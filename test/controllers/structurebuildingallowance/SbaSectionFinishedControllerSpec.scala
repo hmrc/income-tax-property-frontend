@@ -99,8 +99,7 @@ class SbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
         mtditid = "mtditid",
         nino = "nino",
         affinityGroup = "affinityGroup",
-        isAgent = false,
-        agentRef = Some("agentReferenceNumber")
+        agentRef = None
       )
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)

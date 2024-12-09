@@ -41,7 +41,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
   private val underTest = new BusinessService(mockBusinessConnector)
 
   "getBusinessDetails" should {
-    val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
+    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
 
     "return error when fails to get data" in {
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(
@@ -63,7 +63,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
   }
 
   "getUkPropertyDetails" should {
-    val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
+    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
 
     "return error when fails to get data" in {
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(

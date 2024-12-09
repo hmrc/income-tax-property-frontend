@@ -20,6 +20,7 @@ sealed abstract class Enrolment(val key: String, val value: String)
 
 object Enrolment {
   case object Individual extends Enrolment(key = "HMRC-MTD-IT", value = "MTDITID")
+  case object SupportingAgent extends Enrolment(key = "HMRC-MTD-IT-SUPP", value = "MTDITID")
   case object Agent extends Enrolment(key = "HMRC-AS-AGENT", value = "AgentReferenceNumber")
   case object Nino extends Enrolment(key = "HMRC-NI", value = "NINO")
 }

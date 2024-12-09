@@ -52,8 +52,7 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
     "",
     "",
     "",
-    isAgent = false,
-    Some("agentReferenceNumber")
+    None
   )
   private val isAgentMessageKey = "individual"
   "EsbaClaimAmount Controller" - {

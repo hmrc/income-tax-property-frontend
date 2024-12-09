@@ -48,9 +48,8 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
   val user = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
   lazy val RentalsAdjustmentsCompleteRoute: String =
     controllers.adjustments.routes.RentalsAdjustmentsCompleteController.onPageLoad(taxYear).url

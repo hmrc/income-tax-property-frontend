@@ -41,7 +41,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
     new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
 
   val taxYear = 2024
-  val user: User = User("", "", "", isAgent = false, Some("agentReferenceNumber"))
+  val user: User = User("", "", "", Some("agentReferenceNumber"))
 
   "PropertyPeriodSessionRecovery" - {
     "call the connector and set repository" in {

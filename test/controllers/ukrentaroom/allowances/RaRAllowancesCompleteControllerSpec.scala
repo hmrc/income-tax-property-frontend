@@ -48,9 +48,8 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
   private val user = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
   lazy val rarAllowancesCompleteRoute: String =
     controllers.ukrentaroom.allowances.routes.RaRAllowancesCompleteController.onPageLoad(taxYear).url

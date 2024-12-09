@@ -60,8 +60,7 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
       "",
       "",
       "",
-      isAgent,
-      Some("agentReferenceNumber")
+      Option.when(isAgent)("agentReferenceNumber")
     )
     s"JointlyLet Controller for $agencyOrIndividual" - {
 

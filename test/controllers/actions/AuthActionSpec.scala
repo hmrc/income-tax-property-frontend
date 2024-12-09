@@ -17,326 +17,377 @@
 package controllers.actions
 
 import base.SpecBase
-import com.google.inject.Inject
-import config.FrontendAppConfig
-import controllers.routes
-import models.authorisation.Enrolment.Nino
-import models.authorisation.SessionValues
-import play.api.mvc.BodyParsers
+import config.MockAppConfig
+import connectors.MockAuthConnector
+import models.authorisation.{DelegatedAuthRules, SessionValues, Enrolment => EnrolmentKeys}
+import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import testHelpers.Retrievals._
-import testHelpers.{FakeAuthConnector, Harness}
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
+import uk.gov.hmrc.auth.core.retrieve.~
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-class AuthActionSpec extends SpecBase {
+class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector {
 
-  private val enrolment: Enrolment = Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated")
-  val enrolmentsForIndividuals: Enrolments = Enrolments(
-    Set(
-      enrolment,
-      Enrolment(
-        models.authorisation.Enrolment.Individual.key,
-        Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")),
-        "Activated"
-      )
-    )
-  )
+  val mtditid = "123456789"
+  val nino = "AA123456C"
+  val arn = "012345678"
 
-  val enrolments: Enrolments = Enrolments(
-    Set(
-      enrolment,
-      Enrolment(
-        models.authorisation.Enrolment.Agent.key,
-        Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Agent.value, "agent")),
-        "Activated"
-      )
-    )
-  )
+  trait Fixture {
+
+    MockAppConfig.loginUrl("/sign-in")
+    MockAppConfig.viewAndChangeEnterUtrUrl("/enter-utr")
+    MockAppConfig.incomeTaxSubmissionIvRedirect("/iv-uplift")
+
+    lazy implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
+    lazy val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+    lazy val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+
+    lazy val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, mockAppConfig, bodyParsers)
+
+    class Harness(authAction: IdentifierAction) {
+      def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
+    }
+
+    lazy val controller = new Harness(authAction)
+  }
 
   "Auth Action" - {
 
-    "when the user hasn't logged in" - {
+    "when the user is an Individual" - {
 
-      "must redirect the user to log in " in {
+      "authorised with a satisfactory confidence level" - {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        "has a NINO and MTDITID enrolment" - {
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+          "must return OK" in new Fixture {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new MissingBearerToken),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
+            val enrolments = Enrolments(
+              Set(
+                Enrolment(EnrolmentKeys.Individual.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Individual.value, mtditid)), "Activated"),
+                Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated")
+              ))
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
+              )
+              .once()
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(enrolments, ConfidenceLevel.L250))
+              )
+              .once()
+
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe OK
+          }
+        }
+
+        "has a missing NINO" - {
+
+          "must return SEE_OTHER and redirect to login" in new Fixture {
+
+            val enrolments = Enrolments(
+              Set(
+                Enrolment(EnrolmentKeys.Individual.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Individual.value, mtditid)), "Activated")
+              ))
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
+              )
+              .once()
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(enrolments, ConfidenceLevel.L250))
+              )
+              .once()
+
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result) mustBe Some(mockAppConfig.loginUrl)
+          }
+        }
+
+        "has a missing MTDITID" - {
+
+          "must return SEE_OTHER and redirect to login" in new Fixture {
+
+            val enrolments = Enrolments(
+              Set(
+                Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated")
+              ))
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
+              )
+              .once()
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(
+                Future.successful(new~(enrolments, ConfidenceLevel.L250))
+              )
+              .once()
+
+            val result = controller.onPageLoad()(FakeRequest())
+
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result) mustBe Some(mockAppConfig.loginUrl)
+          }
+        }
+      }
+
+      "unauthorised with an insufficient confidence level" - {
+
+        "must return SEE_OTHER and redirect to IV Uplift journey" in new Fixture {
+
+          val enrolments = Enrolments(
+            Set(
+              Enrolment(EnrolmentKeys.Individual.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Individual.value, mtditid)), "Activated"),
+              Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated")
+            ))
+
+          MockAuthConnector
+            .authorise(EmptyPredicate)(
+              Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
+            )
+            .once()
+
+          MockAuthConnector
+            .authorise(EmptyPredicate)(
+              Future.successful(new~(enrolments, ConfidenceLevel.L200))
+            )
+            .once()
+
           val result = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
+          redirectLocation(result) mustBe Some(mockAppConfig.incomeTaxSubmissionIvRedirect)
         }
+      }
+    }
+
+    "when user is an Agent" - {
+
+      "when a clientID and NINO are in session" - {
+
+        val fakeRequestWithMtditidAndNINO = FakeRequest().withSession(
+          SessionValues.ClientMtdid -> mtditid,
+          SessionValues.ClientNino  -> nino
+        )
+
+        "Authorised as a Primary Agent" - {
+
+          "must return OK" in new Fixture {
+
+            val enrolments = Enrolments(
+              Set(
+                Enrolment(
+                  key = EnrolmentKeys.Individual.key,
+                  identifiers = Seq(EnrolmentIdentifier(EnrolmentKeys.Individual.value, mtditid)),
+                  state = "Activated",
+                  delegatedAuthRule = Some(DelegatedAuthRules.agentDelegatedAuthRule)
+                ),
+                Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated"),
+                Enrolment(EnrolmentKeys.Agent.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Agent.value, arn)), "Activated")
+              ))
+
+            MockAuthConnector
+              .authorise(EmptyPredicate)(Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent))))
+
+            MockAuthConnector
+              .authorise(authAction.agentAuthPredicate(mtditid))(Future.successful(enrolments))
+
+            val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+            status(result) mustBe OK
+          }
+        }
+
+        "Not Authorised as a Primary Agent" - {
+
+          "when EMA Supporting Agent feature is enabled" - {
+
+            "must return OK" in new Fixture {
+
+              MockAppConfig.emaSupportingAgentsEnabled(true)
+
+              val enrolments = Enrolments(Set(
+                Enrolment(
+                  key = EnrolmentKeys.SupportingAgent.key,
+                  identifiers = Seq(EnrolmentIdentifier(EnrolmentKeys.SupportingAgent.value, mtditid)),
+                  state = "Activated",
+                  delegatedAuthRule = Some(DelegatedAuthRules.supportingAgentDelegatedAuthRule)
+                ),
+                Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated"),
+                Enrolment(EnrolmentKeys.Agent.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Agent.value, arn)), "Activated")
+              ))
+
+              MockAuthConnector
+                .authorise(EmptyPredicate)(
+                  Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+                )
+
+              MockAuthConnector
+                .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+
+              MockAuthConnector
+                .authorise(authAction.secondaryAgentPredicate(mtditid))(Future.successful(enrolments))
+
+              val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+              status(result) mustBe OK
+            }
+          }
+
+          "when EMA Supporting Agent feature is disabled" - {
+
+            "must return SEE_OTHER (303) and redirect to Agent Error page" in new Fixture {
+
+              MockAppConfig.emaSupportingAgentsEnabled(false)
+
+              MockAuthConnector
+                .authorise(EmptyPredicate)(
+                  Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+                )
+
+              MockAuthConnector
+                .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+
+              val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+              status(result) mustBe SEE_OTHER
+              redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
+            }
+          }
+        }
+      }
+
+      "when a clientID is missing from session" - {
+
+        val fakeRequestWithNINO = FakeRequest().withSession(
+          SessionValues.ClientNino -> nino
+        )
+
+        "must return SEE_OTHER (303) and redirect to Unauthorised page" in new Fixture {
+
+          MockAuthConnector
+            .authorise(EmptyPredicate)(
+              Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+            )
+
+          val result = controller.onPageLoad()(fakeRequestWithNINO)
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result) mustBe Some(mockAppConfig.viewAndChangeEnterUtrUrl)
+        }
+      }
+
+      "when a NINO is missing from session" - {
+
+        val fakeRequestWithMtditid = FakeRequest().withSession(
+          SessionValues.ClientMtdid -> mtditid
+        )
+
+        "must return SEE_OTHER (303) and redirect to Agent Error page" in new Fixture {
+
+          MockAuthConnector
+            .authorise(EmptyPredicate)(
+              Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+            )
+
+          val result = controller.onPageLoad()(fakeRequestWithMtditid)
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result) mustBe Some(mockAppConfig.viewAndChangeEnterUtrUrl)
+        }
+      }
+    }
+
+    "when the user hasn't logged in" - {
+
+      "must redirect the user to log in " in new Fixture {
+
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(MissingBearerToken()))
+
+        val result = controller.onPageLoad()(FakeRequest())
+
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value must startWith(mockAppConfig.loginUrl)
       }
     }
 
     "the user's session has expired" - {
 
-      "must redirect the user to log in " in {
+      "must redirect the user to log in " in new Fixture {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(BearerTokenExpired()))
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val result = controller.onPageLoad()(FakeRequest())
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new BearerTokenExpired),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginUrl)
-        }
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value must startWith(mockAppConfig.loginUrl)
       }
     }
 
     "the user doesn't have sufficient enrolments" - {
 
-      "must redirect the user to the unauthorised page" in {
+      "must redirect the user to the unauthorised page" in new Fixture {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(InsufficientEnrolments()))
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val result = controller.onPageLoad()(FakeRequest())
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new InsufficientEnrolments),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
-        }
-      }
-    }
-
-    "the user doesn't have sufficient confidence level" - {
-
-      "must redirect the user to the unauthorised page" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
-        }
-      }
-
-      "must be redirected to uplift their confidence level" in {
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L200 ~ enrolments),
-            appConfig,
-            bodyParsers
-          )
-
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual "http://localhost:9302/update-and-submit-income-tax-return/iv-uplift"
-        }
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustBe controllers.routes.UnauthorisedController.onPageLoad.url
       }
     }
 
     "the user used an unaccepted auth provider" - {
 
-      "must redirect the user to the unauthorised page" in {
+      "must redirect the user to the unauthorised page" in new Fixture {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(UnsupportedAuthProvider()))
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val result = controller.onPageLoad()(FakeRequest())
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedAuthProvider),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
-        }
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustBe controllers.routes.UnauthorisedController.onPageLoad.url
       }
     }
 
     "the user has an unsupported affinity group" - {
 
-      "must redirect the user to the unauthorised page" in {
+      "must redirect the user to the unauthorised page" in new Fixture {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(UnsupportedAffinityGroup()))
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val result = controller.onPageLoad()(FakeRequest())
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedAffinityGroup),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
-        }
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
       }
     }
 
     "the user has an unsupported credential role" - {
 
-      "must redirect the user to the unauthorised page" in {
+      "must redirect the user to the unauthorised page" in new Fixture {
 
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(UnsupportedCredentialRole()))
 
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val result = controller.onPageLoad()(FakeRequest())
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedCredentialRole),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
-        }
-      }
-    }
-
-    "the user is an agent and is authorised" - {
-
-      "must allow access to the user" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(Some(Agent) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolments),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(
-            FakeRequest().withSession(SessionValues.ClientMtdid -> "mtditid", SessionValues.ClientNino -> "nino")
-          )
-
-          status(result) mustBe OK
-        }
-      }
-    }
-
-    "the user is an agent and dont have agent reference number authorised" - {
-
-      "must not allow access to the user" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(
-              Some(Agent) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ Enrolments(Set(enrolment))
-            ),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(
-            FakeRequest().withSession(SessionValues.ClientMtdid -> "mtditid", SessionValues.ClientNino -> "nino")
-          )
-
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
-        }
-      }
-    }
-
-    "the user is an individual and is authorised" - {
-
-      "must allow access to the user" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgent = false).build()
-
-        running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeAuthConnector(
-              Some(Individual) ~ Some("internal id") ~ ConfidenceLevel.L250 ~ enrolmentsForIndividuals
-            ),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
-
-          status(result) mustBe OK
-        }
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
       }
     }
   }
-}
-
-class FakeFailingAuthConnector @Inject()(exceptionToReturn: Throwable) extends AuthConnector {
-  val serviceUrl: String = ""
-
-  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit
-                                                                           hc: HeaderCarrier,
-                                                                           ec: ExecutionContext
-  ): Future[A] =
-    Future.failed(exceptionToReturn)
 }
