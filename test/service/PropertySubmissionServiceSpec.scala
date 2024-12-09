@@ -37,7 +37,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   val propertyPeriodicSubmissionConnector: PropertySubmissionConnector = mock[PropertySubmissionConnector]
   val mockBusinessConnector: BusinessService = mock[BusinessService]
   val taxYear = 2024
-  val user: User = User("mtditid", "nino", "individual", isAgent = false, Some("agentReferenceNumber"))
+  val user: User = User("mtditid", "nino", "individual", Some("agentReferenceNumber"))
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val propertyPeriodSubmissionService =
     new PropertySubmissionService(propertyPeriodicSubmissionConnector, mockBusinessConnector)
@@ -107,7 +107,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   }
 
   "saveJourneyAnswers" - {
-    val user = User("mtditid", "nino", "group", isAgent = true, Some("agentReferenceNumber"))
+    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
     val taxYear = 2024
     val context =
       JourneyContext(

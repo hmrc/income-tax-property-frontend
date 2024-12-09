@@ -36,8 +36,7 @@ class AddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
       "",
       "",
       "",
-      isAgent,
-      agentRef = Some("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()

@@ -81,8 +81,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
         "",
         "",
         "",
-        isAgent,
-        agentRef = Some("agentReferenceNumber")
+        agentRef = Option.when(isAgent)("agentReferenceNumber")
       )
       s"UkRentARoomExpensesIntro Controller isAgent: $isAgent property income: ${isLessThanEightyFiveThousandWithContainingString
           .fold("Does not contain")(r => if (r._1) "More" else "Less")}" - {

@@ -16,20 +16,45 @@
 
 package config
 
-import com.google.inject.{Inject, Singleton}
+import com.google.inject.{ImplementedBy, Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 
+@ImplementedBy(classOf[FrontendAppConfigImpl])
+trait FrontendAppConfig {
+  def host: String
+  def appName: String
+  def contactHost: String
+  def contactFormServiceIdentifier: String
+  def feedbackUrl(implicit request: RequestHeader): String
+  def loginUrl: String
+  def loginContinueUrl: String
+  def signOutUrl: String
+  def exitSurveyBaseUrl: String
+  def exitSurveyUrl: String
+  def incomeTaxSubmissionBaseUrl: String
+  def incomeTaxSubmissionIvRedirect: String
+  def propertyServiceBaseUrl: String
+  def languageTranslationEnabled: Boolean
+  def emaSupportingAgentsEnabled: Boolean
+  def languageMap: Map[String, Lang]
+  def timeout: Int
+  def countdown: Int
+  def cacheTtl: Int
+  def cacheTtlSecondsOrDays: String
+  def viewAndChangeEnterUtrUrl: String
+}
+
 @Singleton
-class FrontendAppConfig @Inject() (configuration: Configuration) {
+class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends FrontendAppConfig {
 
   val host: String = configuration.get[String]("host")
   val appName: String = configuration.get[String]("appName")
 
-  private val contactHost = configuration.get[String]("contact-frontend.host")
-  private val contactFormServiceIdentifier = "income-tax-property-frontend"
+  val contactHost = configuration.get[String]("contact-frontend.host")
+  val contactFormServiceIdentifier = "income-tax-property-frontend"
 
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
@@ -38,11 +63,11 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   val signOutUrl: String = configuration.get[String]("urls.signOut")
 
-  private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
+  val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: String = s"$exitSurveyBaseUrl/feedback/income-tax-property-frontend"
 
   private lazy val incomeTaxSubmissionFrontendUrlKey = "microservice.services.income-tax-submission-frontend.url"
-  private def incomeTaxSubmissionBaseUrl: String = configuration.get[String](incomeTaxSubmissionFrontendUrlKey) +
+  def incomeTaxSubmissionBaseUrl: String = configuration.get[String](incomeTaxSubmissionFrontendUrlKey) +
     configuration.get[String]("microservice.services.income-tax-submission-frontend.context")
 
   def incomeTaxSubmissionIvRedirect: String = incomeTaxSubmissionBaseUrl +
@@ -51,8 +76,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   private lazy val propertyUrlKey = "microservice.services.income-tax-property.url"
   lazy val propertyServiceBaseUrl: String = s"${configuration.get[String](propertyUrlKey)}/income-tax-property"
 
-  val languageTranslationEnabled: Boolean =
-    configuration.get[Boolean]("features.welsh-translation")
+  val languageTranslationEnabled: Boolean = configuration.get[Boolean]("features.welsh-translation")
+  val emaSupportingAgentsEnabled: Boolean = configuration.get[Boolean]("features.ema-supporting-agents-enabled")
 
   def languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en"),
@@ -64,4 +89,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   val cacheTtl: Int = configuration.get[Int]("mongodb.timeToLive")
   val cacheTtlSecondsOrDays: String = configuration.get[String]("mongodb.timeToLiveDaysOrSeconds")
+
+  val viewAndChangeEnterUtrUrl: String = configuration.get[String]("microservice.services.view-and-change.url") +
+    "/report-quarterly/income-and-expenses/view/agents/client-utr"
 }

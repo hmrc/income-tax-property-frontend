@@ -61,9 +61,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
     val user: User = User(
       mtditid = "mtditid",
       nino = "nino",
-      isAgent = isAgent,
       affinityGroup = "affinityGroup",
-      agentRef = Some("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
 
     s"ForeignExpensesSectionComplete Controller for an $individualOrAgent" - {

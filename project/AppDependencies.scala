@@ -21,6 +21,7 @@ object AppDependencies {
     "org.scalatestplus"   %% "scalacheck-1-15"         % "3.2.11.0",
     "org.scalatestplus"   %% "mockito-3-4"             % "3.2.10.0",
     "org.mockito"         %% "mockito-scala"           % "1.17.31",
+    "org.scalamock"       %% "scalamock"               % "5.2.0",
     "org.scalacheck"      %% "scalacheck"              % "1.18.0",
     "org.pegdown"          % "pegdown"                 % "1.6.0",
     "org.jsoup"            % "jsoup"                   % "1.17.2",
