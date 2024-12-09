@@ -1783,8 +1783,8 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
-foreignCountriesList.title = Foreign countries where you rented out property
-foreignCountriesList.heading = Do you want to add another country?
+foreignCountriesRentList.title = Foreign countries where you rented out property
+foreignCountriesRentList.heading = Do you want to add another country?
 
 ###################### Foreign Property ######################
 

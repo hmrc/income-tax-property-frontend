@@ -34,13 +34,13 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.summarylist._
-import views.html.ukandforeignproperty.CountriesListView
+import views.html.ukandforeignproperty.ForeignCountriesRentListView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class CountriesListController @Inject() (
+class ForeignCountriesRentListController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           sessionRepository: SessionRepository,
                                           navigator: Navigator,
@@ -50,7 +50,7 @@ class CountriesListController @Inject() (
                                           formProvider: CountriesListFormProvider,
                                           propertySubmissionService: PropertySubmissionService,
                                           val controllerComponents: MessagesControllerComponents,
-                                          view: CountriesListView
+                                          view: ForeignCountriesRentListView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
