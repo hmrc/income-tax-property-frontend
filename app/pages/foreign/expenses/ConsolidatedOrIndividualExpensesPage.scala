@@ -16,14 +16,34 @@
 
 package pages.foreign.expenses
 
-import models.{ConsolidatedOrIndividualExpenses, ForeignProperty}
+import models.{ConsolidatedOrIndividualExpenses, ForeignProperty, UserAnswers}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import pages.PageConstants.foreignPropertyExpensesPath
 
-case class ConsolidatedOrIndividualExpensesPage(countryCode: String) extends QuestionPage[ConsolidatedOrIndividualExpenses] {
+import scala.util.Try
+
+case class ConsolidatedOrIndividualExpensesPage(countryCode: String)
+    extends QuestionPage[ConsolidatedOrIndividualExpenses] {
 
   override def path: JsPath = JsPath \ foreignPropertyExpensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "consolidatedOrIndividualExpenses"
+
+  override def cleanup(value: Option[ConsolidatedOrIndividualExpenses], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case ConsolidatedOrIndividualExpenses(false, _) => super.cleanup(value, userAnswers)
+
+        case ConsolidatedOrIndividualExpenses(true, _) =>
+          for {
+            insurance <- userAnswers.remove(ForeignRentsRatesAndInsurancePage(countryCode))
+            repairs   <- insurance.remove(ForeignPropertyRepairsAndMaintenancePage(countryCode))
+            cost      <- repairs.remove(ForeignCostsOfServicesProvidedPage(countryCode))
+            finance   <- cost.remove(ForeignNonResidentialPropertyFinanceCostsPage(countryCode))
+            fees      <- finance.remove(ForeignProfessionalFeesPage(countryCode))
+            other     <- fees.remove(ForeignOtherAllowablePropertyExpensesPage(countryCode))
+          } yield other
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }
