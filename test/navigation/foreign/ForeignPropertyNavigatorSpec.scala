@@ -17,15 +17,17 @@
 package navigation.foreign
 
 import base.SpecBase
+import controllers.foreign.expenses.routes._
 import controllers.foreign.income.routes._
 import controllers.foreign.routes._
 import controllers.routes.SummaryController
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
-import models.{CheckMode, NormalMode, PremiumCalculated, UserAnswers}
+import models.{CheckMode, ConsolidatedOrIndividualExpenses, NormalMode, PremiumCalculated, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
 import pages.foreign._
+import pages.foreign.expenses._
 import pages.foreign.income._
 import play.api.libs.json.Format.GenericFormat
 
@@ -35,6 +37,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
 
   private val navigator = new ForeignPropertyNavigator
   private val taxYear = LocalDate.now.getYear
+  private val countryCode = "BRA"
 
   "ForeignPropertyNavigator" - {
 
@@ -127,7 +130,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
 
       "must go from ForeignOtherIncomeFromPropertyPage to CheckYourAnswers Page" in {
         val userAnswers = UserAnswers("test")
-        val updatedUserAnswers = userAnswers.set(ForeignOtherIncomeFromPropertyPage("AUS"), BigDecimal(1000)).get
+        val updatedUserAnswers = userAnswers.set(ForeignOtherIncomeFromPropertyPage("AUS"), BigDecimal(1000.00)).get
         navigator.nextPage(
           ForeignOtherIncomeFromPropertyPage("AUS"),
           taxYear,
@@ -353,6 +356,118 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test"),
           userAnswersWithData
         ) mustBe SummaryController.show(taxYear)
+      }
+      "must go from ConsolidatedOrIndividualExpensesPage to ForeignRentsRatesAndInsuranceController if claiming individual expenses " in {
+        val userAnswers = UserAnswers("test")
+          .set(
+            ConsolidatedOrIndividualExpensesPage(countryCode),
+            ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = false, None)
+          )
+          .get
+        navigator.nextPage(
+          ConsolidatedOrIndividualExpensesPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignRentsRatesAndInsuranceController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ConsolidatedOrIndividualExpensesPage to ForeignPropertyExpensesCheckYourAnswersController if claiming consolidated expenses " in {
+        val userAnswers = UserAnswers("test")
+          .set(
+            ConsolidatedOrIndividualExpensesPage(countryCode),
+            ConsolidatedOrIndividualExpenses(
+              consolidatedOrIndividualExpensesYesNo = true,
+              enteredAmount = Some(BigDecimal(789.00))
+            )
+          )
+          .get
+        navigator.nextPage(
+          ConsolidatedOrIndividualExpensesPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignRentsRatesAndInsurancePage to ForeignPropertyRepairsAndMaintenanceController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(25.00))
+          .get
+        navigator.nextPage(
+          ForeignRentsRatesAndInsurancePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignPropertyRepairsAndMaintenancePage to ForeignNonResidentialPropertyFinanceCostsController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(650.49))
+          .get
+        navigator.nextPage(
+          ForeignPropertyRepairsAndMaintenancePage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignNonResidentialPropertyFinanceCostsPage to ForeignProfessionalFeesController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), BigDecimal(432.00))
+          .get
+        navigator.nextPage(
+          ForeignNonResidentialPropertyFinanceCostsPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignProfessionalFeesController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignProfessionalFeesPage to ForeignCostsOfServicesProvidedController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignProfessionalFeesPage(countryCode), BigDecimal(99.99))
+          .get
+        navigator.nextPage(
+          ForeignProfessionalFeesPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignCostsOfServicesProvidedController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignCostsOfServicesProvidedPage to ForeignOtherAllowablePropertyExpensesController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignCostsOfServicesProvidedPage(countryCode), BigDecimal(432.00))
+          .get
+        navigator.nextPage(
+          ForeignCostsOfServicesProvidedPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear, countryCode, NormalMode)
+      }
+
+      "must go from ForeignOtherAllowablePropertyExpensesPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignOtherAllowablePropertyExpensesPage(countryCode), BigDecimal(657.00))
+          .get
+        navigator.nextPage(
+          ForeignOtherAllowablePropertyExpensesPage(countryCode),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
     }
 
@@ -581,6 +696,119 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             )
             .get
         ) mustBe ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, CheckMode)
+      }
+
+      "must go from ForeignRentsRatesAndInsurancePage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(25.00))
+          .get
+        navigator.nextPage(
+          ForeignRentsRatesAndInsurancePage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignPropertyRepairsAndMaintenancePage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(650.49))
+          .get
+        navigator.nextPage(
+          ForeignPropertyRepairsAndMaintenancePage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignNonResidentialPropertyFinanceCostsPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), BigDecimal(432.00))
+          .get
+        navigator.nextPage(
+          ForeignNonResidentialPropertyFinanceCostsPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignProfessionalFeesPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignProfessionalFeesPage(countryCode), BigDecimal(99.99))
+          .get
+        navigator.nextPage(
+          ForeignProfessionalFeesPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignCostsOfServicesProvidedPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignCostsOfServicesProvidedPage(countryCode), BigDecimal(432.00))
+          .get
+        navigator.nextPage(
+          ForeignCostsOfServicesProvidedPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ForeignOtherAllowablePropertyExpensesPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(ForeignOtherAllowablePropertyExpensesPage(countryCode), BigDecimal(657.00))
+          .get
+        navigator.nextPage(
+          ForeignOtherAllowablePropertyExpensesPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ConsolidatedOrIndividualExpensesPage to ForeignPropertyExpensesCheckYourAnswersController" in {
+        val userAnswers = UserAnswers("test")
+          .set(
+            ConsolidatedOrIndividualExpensesPage(countryCode),
+            ConsolidatedOrIndividualExpenses(
+              consolidatedOrIndividualExpensesYesNo = true,
+              enteredAmount = Some(BigDecimal(789.00))
+            )
+          )
+          .get
+        navigator.nextPage(
+          ConsolidatedOrIndividualExpensesPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      }
+
+      "must go from ConsolidatedOrIndividualExpensesPage to ForeignRentsRatesAndInsurancePage" in {
+        val userAnswers = UserAnswers("test")
+          .set(
+            ConsolidatedOrIndividualExpensesPage(countryCode),
+            ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = false, None)
+          )
+          .get
+        navigator.nextPage(
+          ConsolidatedOrIndividualExpensesPage(countryCode),
+          taxYear,
+          CheckMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe ForeignRentsRatesAndInsuranceController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
     }
