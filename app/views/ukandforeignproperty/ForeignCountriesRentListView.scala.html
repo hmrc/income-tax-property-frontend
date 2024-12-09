@@ -25,8 +25,9 @@
 
 @(form: Form[_], list: SummaryList, taxYear: Int, mode: Mode, countryCode: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("foreignCountriesList.title"))) {
-    @formHelper(action = controllers.ukandforeignproperty.routes.CountriesListController.onSubmit(taxYear, mode, countryCode), 'autoComplete -> "off") {
+@layout(pageTitle = title(form, messages("foreignCountriesRentList.title"))) {
+
+    @formHelper(action = controllers.ukandforeignproperty.routes.ForeignCountriesRentListController.onSubmit(taxYear, countryCode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
@@ -37,7 +38,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field  = form("CountriesListYesOrNo"),
-                legend = LegendViewModel(messages("foreignCountriesList.heading")).asPageHeading()
+                legend = LegendViewModel(messages("foreignCountriesRentList.heading")).asPageHeading()
             )
         )
 
