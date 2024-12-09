@@ -44,7 +44,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
   private val underTest = new JourneyAnswersService(mockJourneyAnswersConnector, mockBusinessService)
 
   "setStatus" should {
-    val user = User("mtditid", "nino", "group", isAgent = true, agentRef = Some("agentReferenceNumber"))
+    val user = User("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
 
     when(mockBusinessService.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
       Right(

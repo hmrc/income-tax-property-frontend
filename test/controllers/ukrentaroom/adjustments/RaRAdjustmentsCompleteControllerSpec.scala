@@ -48,9 +48,8 @@ class RaRAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSugar {
   val user = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
   lazy val raRAdjustmentsCompleteRoute: String =
     controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCompleteController.onPageLoad(taxYear).url

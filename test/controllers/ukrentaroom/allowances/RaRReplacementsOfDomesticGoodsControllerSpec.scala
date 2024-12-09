@@ -55,8 +55,7 @@ class RaRReplacementsOfDomesticGoodsControllerSpec extends SpecBase with Mockito
       "",
       "",
       "",
-      isAgent,
-      agentRef = Some("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
     s"ReplacementsOfDomesticGoods Controller for $agencyOrIndividual" - {
 

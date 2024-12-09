@@ -33,7 +33,6 @@ class FakeAgentIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends 
         User(
           mtditid = "mtditid",
           nino = "nino",
-          isAgent = true,
           affinityGroup = "affinityGroup",
           agentRef = Some("agentReferenceNumber")
         )
@@ -57,9 +56,8 @@ class FakeIndividualIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) ext
         User(
           mtditid = "mtditid",
           nino = "nino",
-          isAgent = false,
           affinityGroup = "affinityGroup",
-          agentRef = Some("agentReferenceNumber")
+          agentRef = None
         )
       )
     )

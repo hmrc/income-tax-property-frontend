@@ -31,7 +31,7 @@ class EsbaAddClaimControllerSpec extends SpecBase {
   val taxYear = 2024
   private val individualAgent = Array("individual", "agent")
   private val individualOrAgent = individualAgent(Random.nextInt(individualAgent.length))
-  private val isAgent = individualOrAgent.equals("individual")
+  private val isAgent = individualOrAgent.equals("agent")
 
   s"EsbaAddClaimController for an $individualOrAgent must return OK and the correct view for a GET" in {
 
@@ -39,8 +39,7 @@ class EsbaAddClaimControllerSpec extends SpecBase {
       "",
       "",
       "",
-      isAgent,
-      agentRef = Some("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
 
     val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()

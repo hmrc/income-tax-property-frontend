@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package models.authorisation
 
-case class User(mtditid: String,
-                nino: String,
-                affinityGroup: String,
-                agentRef: Option[String],
-                isSupportingAgent: Boolean = false) {
-
-  val isAgent: Boolean = agentRef.isDefined
-
-  def isAgentMessageKey: String = if (isAgent) "agent" else "individual"
-
+object DelegatedAuthRules {
+  val agentDelegatedAuthRule           = "mtd-it-auth"
+  val supportingAgentDelegatedAuthRule = "mtd-it-auth-supp"
 }

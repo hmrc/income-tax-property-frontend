@@ -48,9 +48,8 @@ class AboutPropertyCompleteControllerSpec extends SpecBase with MockitoSugar {
   val user = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
   lazy val AboutPropertyCompleteRoute: String =
     controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear).url

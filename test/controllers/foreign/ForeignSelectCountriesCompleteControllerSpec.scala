@@ -49,9 +49,8 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
     User(
       mtditid = "mtditid",
       nino = "nino",
-      isAgent = false,
       affinityGroup = "affinityGroup",
-      agentRef = Some("agentReferenceNumber")
+      agentRef = None
     )
 
   private lazy val foreignSelectCountriesCompleteRoute =
