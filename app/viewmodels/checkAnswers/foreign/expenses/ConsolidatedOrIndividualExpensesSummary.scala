@@ -43,7 +43,7 @@ object ConsolidatedOrIndividualExpensesSummary  {
       case ConsolidatedOrIndividualExpenses(false, _) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("consolidatedOrIndividualExpenses.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value = ValueViewModel("site.no").withCssClass(valueCssClass),
+          value = ValueViewModel("consolidatedOrIndividualExpenses.checkYourAnswers.individual").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",
               ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear, countryCode, CheckMode).url)
