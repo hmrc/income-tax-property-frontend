@@ -11,3 +11,7 @@ POST       /:taxYear/uk-foreign-property/report-income                          
 GET        /:taxYear/uk-foreign-property/change-report-income                              controllers.ukandforeignproperty.ReportIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-foreign-property/change-report-income                              controllers.ukandforeignproperty.ReportIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/select-country/:index                                                 controllers.ukandforeignproperty.SelectCountryController.onPageLoad(taxYear:Int, index:Index, mode: Mode = NormalMode)
+POST       /:taxYear/select-country/:index                                                 controllers.ukandforeignproperty.SelectCountryController.onSubmit(taxYear:Int, index:Index, mode: Mode = NormalMode)
+GET        /:taxYear/change-select-country/:index                                          controllers.ukandforeignproperty.SelectCountryController.onPageLoad(taxYear:Int, index:Index, mode: Mode = CheckMode)
+POST       /:taxYear/change-select-country/:index                                          controllers.ukandforeignproperty.SelectCountryController.onSubmit(taxYear:Int, index:Index, mode: Mode = CheckMode)
