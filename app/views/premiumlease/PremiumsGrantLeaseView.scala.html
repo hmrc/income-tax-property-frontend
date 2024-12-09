@@ -84,7 +84,7 @@
 
     @govukRadios(
         radios.RadiosViewModel.yesNoWithConditionalHtml(
-            field = form("premiumsGrantLeaseYesOrNo"),
+            field = form("premiumsGrantLeaseReceived"),
             legend = LegendViewModel(messages(s"premiumsGrantLease.checkYourAnswersLabel.${agentOrIndividual}")).asPageHeading(LegendSize.Medium),
             items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                 field = form("premiumsGrantLease"),

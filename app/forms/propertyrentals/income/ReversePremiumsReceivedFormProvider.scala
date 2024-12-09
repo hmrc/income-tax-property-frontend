@@ -30,7 +30,7 @@ class ReversePremiumsReceivedFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[ReversePremiumsReceived] = {
     Form(mapping(
       "reversePremiumsReceived" -> boolean(s"reversePremiumsReceived.error.required.$individualOrAgent"),
-      "reversePremiumsReceivedAmount" -> {
+      "reversePremiums" -> {
         mandatoryIfTrue("reversePremiumsReceived",
           currency(
             s"reversePremiumsReceived.error.required.amount.$individualOrAgent",

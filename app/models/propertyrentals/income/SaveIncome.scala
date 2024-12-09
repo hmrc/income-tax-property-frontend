@@ -71,7 +71,7 @@ object SaveIncome {
   def fromPropertyRentalsIncome(propertyRentalsIncome: RentalsIncome): SaveIncome = {
     val ukOtherPropertyIncome = UkOtherPropertyIncome(
       propertyRentalsIncome.premiumsGrantLease.flatMap(_.premiumsGrantLease),
-      propertyRentalsIncome.reversePremiumsReceived.flatMap(_.amount),
+      propertyRentalsIncome.reversePremiumsReceived.flatMap(_.reversePremiums),
       propertyRentalsIncome.yearLeaseAmount,
       propertyRentalsIncome.deductingTax.flatMap(_.taxDeductedAmount),
       Some(propertyRentalsIncome.otherIncomeFromProperty),
@@ -81,14 +81,14 @@ object SaveIncome {
     val incomeToSave = Income(
       propertyRentalsIncome.isNonUKLandlord,
       propertyRentalsIncome.propertyRentalIncome,
-      propertyRentalsIncome.premiumsGrantLease.map(_.premiumsGrantLeaseYesOrNo).getOrElse(false), // ToDo: Recheck
+      propertyRentalsIncome.premiumsGrantLease.map(_.premiumsGrantLeaseReceived).getOrElse(false), // ToDo: Recheck
       ReversePremiumsReceived(
         propertyRentalsIncome.reversePremiumsReceived.map(_.reversePremiumsReceived).getOrElse(false)
       ), // Todo: Recheck
       propertyRentalsIncome.deductingTax.map(x => DeductingTax(x.taxDeductedYesNo)),
       propertyRentalsIncome.calculatedFigureYourself.map(x => CalculatedFigureYourself(x.calculatedFigureYourself)),
       propertyRentalsIncome.yearLeaseAmount,
-      propertyRentalsIncome.premiumsGrantLease.map(x => PremiumsGrantLease(x.premiumsGrantLeaseYesOrNo)),
+      propertyRentalsIncome.premiumsGrantLease.map(x => PremiumsGrantLease(x.premiumsGrantLeaseReceived)),
       propertyRentalsIncome.receivedGrantLeaseAmount
     )
     // Todo: None to be replaced by expenses

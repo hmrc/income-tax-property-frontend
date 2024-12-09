@@ -112,7 +112,7 @@ class ForeignPropertyRentalIncomeControllerSpec extends SpecBase with MockitoSug
       running(application) {
         val request =
           FakeRequest(POST, foreignPropertyRentalIncomeRoute)
-            .withFormUrlEncodedBody(("foreignPropertyRentalIncome", validAnswer.toString))
+            .withFormUrlEncodedBody(("rentIncome", validAnswer.toString))
 
         val result = route(application, request).value
 

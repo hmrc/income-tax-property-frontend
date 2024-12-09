@@ -134,7 +134,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           NormalMode,
           userAnswers,
           updatedUserAnswers
-        ) mustBe controllers.foreign.income.routes.ForeignPropertyIncomeCheckYourAnswersController
+        ) mustBe controllers.foreign.income.routes.ForeignIncomeCheckYourAnswersController
           .onPageLoad(taxYear, "AUS")
       }
 
@@ -165,7 +165,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
-              PremiumCalculated(premiumCalculatedYesNo = false, None)
+              PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)
             )
             .get
           navigator.nextPage(
@@ -180,7 +180,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
-              PremiumCalculated(premiumCalculatedYesNo = true, Some(BigDecimal(1234)))
+              PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(BigDecimal(1234)))
             )
             .get
           navigator.nextPage(
@@ -236,7 +236,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+              PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
         ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
@@ -252,7 +252,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = false, None)
+              PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)
             )
             .get
         ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
@@ -290,7 +290,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+              PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
         ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
@@ -306,7 +306,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = false, None)
+              PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)
             )
             .get
         ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
@@ -325,19 +325,19 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               BigDecimal(3.0)
             )
             .get
-        ) mustBe ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode)
+        ) mustBe TwelveMonthPeriodsInLeaseController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
       "must go from ForeignYearLeaseAmount to ForeignPremiumsGrantLease" in {
         val countryCode = "BRA"
         navigator.nextPage(
-          ForeignYearLeaseAmountPage(countryCode),
+          TwelveMonthPeriodsInLeasePage(countryCode),
           taxYear,
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
             .set(
-              ForeignYearLeaseAmountPage(countryCode),
+              TwelveMonthPeriodsInLeasePage(countryCode),
               11
             )
             .get
@@ -459,7 +459,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
-              PremiumCalculated(premiumCalculatedYesNo = false, None)
+              PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)
             )
             .get
           navigator.nextPage(
@@ -474,7 +474,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
-              PremiumCalculated(premiumCalculatedYesNo = true, Some(BigDecimal(1234)))
+              PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(BigDecimal(1234)))
             )
             .get
           navigator.nextPage(
@@ -494,7 +494,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test").set(ForeignPropertyRentalIncomePage(countryCode), BigDecimal(2.3)).get
-        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        ) mustBe ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
 
       "must go from PremiumsGrantLeaseYNPage to Calculate Premium Lease Taxable if true in CheckMode" in {
@@ -516,7 +516,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = false).get
-        ) mustBe ForeignPropertyIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        ) mustBe ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
 
       "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in CheckMode" in {
@@ -529,7 +529,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = true, Some(10.00))
+              PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
         ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, CheckMode)
@@ -545,7 +545,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage(countryCode),
-              PremiumCalculated(premiumCalculatedYesNo = false, None)
+              PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)
             )
             .get
         ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode)
@@ -564,19 +564,19 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               BigDecimal(3.0)
             )
             .get
-        ) mustBe ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode)
+        ) mustBe TwelveMonthPeriodsInLeaseController.onPageLoad(taxYear, countryCode, CheckMode)
       }
 
       "must go from ForeignYearLeaseAmount to ForeignPremiumsGrantLease in CheckMode" in {
         val countryCode = "BRA"
         navigator.nextPage(
-          ForeignYearLeaseAmountPage(countryCode),
+          TwelveMonthPeriodsInLeasePage(countryCode),
           taxYear,
           CheckMode,
           UserAnswers("test"),
           UserAnswers("test")
             .set(
-              ForeignYearLeaseAmountPage(countryCode),
+              TwelveMonthPeriodsInLeasePage(countryCode),
               9
             )
             .get

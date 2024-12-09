@@ -28,7 +28,7 @@ class ForeignReceivedGrantLeaseAmountFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "foreignReceivedGrantLeaseAmount" -> currency(
+      "receivedGrantLeaseAmount" -> currency(
         s"foreignReceivedGrantLeaseAmount.error.required.$individualOrAgent",
         s"foreignReceivedGrantLeaseAmount.error.nonNumeric.$individualOrAgent",
         s"foreignReceivedGrantLeaseAmount.error.nonNumeric.$individualOrAgent")

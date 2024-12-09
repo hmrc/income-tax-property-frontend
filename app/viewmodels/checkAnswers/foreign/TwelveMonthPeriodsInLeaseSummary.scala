@@ -18,26 +18,29 @@ package viewmodels.checkAnswers.foreign
 
 import controllers.foreign.routes
 import models.{CheckMode, UserAnswers}
-import pages.foreign.ForeignYearLeaseAmountPage
+import pages.foreign.TwelveMonthPeriodsInLeasePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
-object ForeignYearLeaseAmountSummary  {
+object TwelveMonthPeriodsInLeaseSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignYearLeaseAmountPage(countryCode)).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = KeyViewModel("foreignYearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignYearLeaseAmount.change.hidden"))
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(TwelveMonthPeriodsInLeasePage(countryCode)).map { answer =>
+      SummaryListRowViewModel(
+        key = KeyViewModel("twelveMonthPeriodsInLease.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+        actions = Seq(
+          ActionItemViewModel(
+            "site.change",
+            routes.TwelveMonthPeriodsInLeaseController.onPageLoad(taxYear, countryCode, CheckMode).url
           )
+            .withVisuallyHiddenText(messages("twelveMonthPeriodsInLease.change.hidden"))
         )
+      )
     }
 }

@@ -26,7 +26,7 @@ import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignYearLeaseAmountPage}
+import pages.foreign.{ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, TwelveMonthPeriodsInLeasePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -46,14 +46,14 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
 
   override def emptyUserAnswers: UserAnswers = (for {
     ua1 <- UserAnswers(userAnswersId).set(ForeignReceivedGrantLeaseAmountPage(countryCode), premiumAmount)
-    ua2 <- ua1.set(ForeignYearLeaseAmountPage(countryCode), periods)
+    ua2 <- ua1.set(TwelveMonthPeriodsInLeasePage(countryCode), periods)
   } yield ua2).success.value
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new ForeignPremiumsGrantLeaseFormProvider()
   val foreignPremiumsGrantLeaseAnswers: ForeignPremiumsGrantLease =
-    ForeignPremiumsGrantLease(foreignPremiumsGrantLeaseYesOrNo = true, Some(123.45))
+    ForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed = true, Some(123.45))
 
   lazy val foreignPremiumsGrantLeaseRoute: String =
     routes.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
@@ -135,8 +135,8 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
           val request =
             FakeRequest(POST, foreignPremiumsGrantLeaseRoute)
               .withFormUrlEncodedBody(
-                ("foreignPremiumsGrantLeaseYesOrNo", "true"),
-                ("foreignPremiumsGrantLeaseAmount", "123.45")
+                ("premiumsOfLeaseGrantAgreed", "true"),
+                ("premiumsOfLeaseGrant", "123.45")
               )
 
           val result = route(application, request).value
