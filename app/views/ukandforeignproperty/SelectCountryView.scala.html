@@ -21,8 +21,8 @@
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukSelect: GovukSelect,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    govukSelect: GovukSelect
 )
 
 @(form: Form[_], taxYear:Int, index: Index, userType: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
@@ -30,24 +30,25 @@
 @layout(pageTitle = title(form, messages(s"selectCountry.title.$userType"))) {
     <h1 class="govuk-heading-l">@messages(s"selectCountry.title.$userType")</h1>
 
+    <div class="govuk-inset-text">
+        <p class="govuk-body">@messages("income.from.otherCountry.info")</p>
+    </div>
+
     @formHelper(action = routes.SelectCountryController.onSubmit(taxYear, index, mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+    <h2 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h2>
+    <div class="govuk-hint"> @messages("start.typing.country.hint") </div>
+
+    <div class="govuk-!-width-one-half">
         @govukSelect(Select(
-            id = "country-autocomplete",
-            name = "country-autocomplete",
-            items = countries,
-            label = Label(
-                content = Text("Choose location"),
-                isPageHeading = true
-            ),
-            hint = Some(Hint(
-             content = Text("This can be different to where you went before")
-            ))
-        ).asAccessibleAutocomplete())
+            id = "value",
+            items = countries
+        ).asAccessibleAutocomplete().withFormField(form("country")))
+    </div>
 
         @govukButton(
             ButtonViewModel(messages("site.continue"))

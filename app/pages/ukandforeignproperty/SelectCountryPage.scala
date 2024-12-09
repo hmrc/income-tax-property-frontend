@@ -25,5 +25,5 @@ case class SelectCountryPage(index: Index) extends QuestionPage[Country] {
 
   override def path: JsPath = JsPath \ toString \ index.position
 
-  override def toString: String = "selectCountry"
+  override def toString: String = "selectedCountry"
 }

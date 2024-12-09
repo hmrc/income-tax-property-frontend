@@ -25,7 +25,7 @@ class SelectCountryFormProvider @Inject() extends Mappings {
 
   def apply(userType: String): Form[String] =
     Form(
-      "value" -> text(s"selectCountry.error.required.$userType")
+      "country" -> text(s"selectCountry.error.required.$userType")
         .verifying(validCountry("error.select.validCountry"))
     )
 }

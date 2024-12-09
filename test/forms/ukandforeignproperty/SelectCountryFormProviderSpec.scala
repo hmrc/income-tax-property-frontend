@@ -29,7 +29,7 @@ class SelectCountryFormProviderSpec extends StringFieldBehaviours {
 
   ".value" - {
 
-    val fieldName = "value"
+    val fieldName = "country"
 
     behave like mandatoryField(
       form,

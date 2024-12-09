@@ -104,9 +104,9 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, selectCountryRoute)
-              .withFormUrlEncodedBody(("value", ""))
+              .withFormUrlEncodedBody(("country", ""))
 
-          val boundForm = form.bind(Map("value" -> ""))
+          val boundForm = form.bind(Map("country" -> ""))
 
           val view = application.injector.instanceOf[SelectCountryView]
 
@@ -138,7 +138,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, selectCountryRoute)
-            .withFormUrlEncodedBody(("value", "IND"))
+            .withFormUrlEncodedBody(("country", "IND"))
 
         val result = route(application, request).value
 
@@ -168,7 +168,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, selectCountryRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("country", "answer"))
 
         val result = route(application, request).value
 

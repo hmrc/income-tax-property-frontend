@@ -54,6 +54,9 @@ error.number	=	Nodwch rif dilys
 error.required	=	Nodwch werth
 error.summary.title	=	Mae problem wedi codi
 error.select.validCountry = *Missing Welsh*
+start.typing.country.hint = *Missing Welsh*
+country.legend = *Missing Welsh*
+income.from.otherCountry.info = *Missing Welsh*
 
 businessDetails.accruals	=	Traddodiadol (ar sail croniadau)
 businessDetails.cash	=	Sail arian parod
