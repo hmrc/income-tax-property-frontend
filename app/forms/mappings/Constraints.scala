@@ -18,6 +18,7 @@ package forms.mappings
 
 import models.Addressable
 import play.api.data.validation.{Constraint, Invalid, Valid}
+import service.CountryNamesDataSource.loadCountries
 
 import java.time.LocalDate
 
@@ -134,5 +135,13 @@ trait Constraints {
           Valid
         }
       }
+    }
+
+   def validCountry(errorMsg: String): Constraint[String] =
+    Constraint {
+      case countryCode if loadCountries.map(_.code).contains(countryCode) =>
+        Valid
+      case _ =>
+        Invalid(errorMsg)
     }
 }

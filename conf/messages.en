@@ -58,6 +58,7 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 error.year.invalid = Year must include 4 numbers
+error.select.validCountry = Select country from the list
 
 businessDetails.accruals = Traditional (accrual)
 businessDetails.cash = Cash basis
@@ -2250,3 +2251,12 @@ totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
 totalPropertyIncome.error.required = Select either 'Less than £1,000 or £1,000 or more'
 totalPropertyIncome.change.hidden =  How much total income you got from all of your UK and foreign properties
+
+selectCountry.title.individual = From which country did you receive your foreign property rental income?
+selectCountry.title.agent  = Message for agent is missing
+selectCountry.heading.individual  = From which country did you receive your foreign property rental income?
+selectCountry.heading.agent  = Message for agent is missing
+selectCountry.checkYourAnswersLabel = From which country did you receive your foreign property rental income?
+selectCountry.error.required.individual = Select which country you received this income from
+selectCountry.error.required.agent = Select which country your client received this income from
+selectCountry.change.hidden = From which country you received your foreign property rental income?
