@@ -30,36 +30,36 @@ class CalculatedPremiumLeaseTaxableFormProviderSpec extends BooleanFieldBehaviou
   val form = new CalculatedPremiumLeaseTaxableFormProvider()("individual")
 
 
-  ".premiumCalculatedAmount" - {
-    "calculatedPremiumLeaseTaxableYesOrNo" - {
+  ".premiumsOfLeaseGrant" - {
+    "calculatedPremiumLeaseTaxable" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true", "premiumCalculatedAmount" -> "4534.65"))
-        boundForm.value.value mustBe PremiumCalculated(premiumCalculatedYesNo = true, Some(4534.65))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.65"))
+        boundForm.value.value mustBe PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true"))
-        boundForm.errors must contain(FormError("premiumCalculatedAmount", "premiumCalculated.amount.error.required.individual"))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true", "premiumCalculatedAmount" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("premiumCalculatedAmount", "premiumCalculated.amount.error.nonNumeric"))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "non-numeric-value"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.nonNumeric"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true", "premiumCalculatedAmount" -> "4534.6545"))
-        boundForm.errors must contain(FormError("premiumCalculatedAmount", "premiumCalculated.amount.error.twoDecimalPlaces"))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.6545"))
+        boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.twoDecimalPlaces"))
       }
 
 
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxableYesOrNo" -> "true", "premiumCalculatedAmount" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
-            "premiumCalculatedAmount",
+            "premiumsOfLeaseGrant",
             "premiumCalculated.amount.error.outOfRange",
             ArraySeq(0, 100000000)
           )

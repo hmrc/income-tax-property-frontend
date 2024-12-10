@@ -16,21 +16,25 @@
 
 package controllers.foreign.income
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.foreign.income.ForeignIncomeSectionCompleteFormProvider
-import models.NormalMode
+import models.JourneyPath.ForeignPropertyIncome
+import models.{ForeignProperty, JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.income.ForeignIncomeSectionCompleteView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignIncomeSectionCompleteController @Inject() (
+class ForeignIncomeCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignPropertyNavigator: ForeignPropertyNavigator,
@@ -39,7 +43,8 @@ class ForeignIncomeSectionCompleteController @Inject() (
   requireData: DataRequiredAction,
   formProvider: ForeignIncomeSectionCompleteFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ForeignIncomeSectionCompleteView
+  view: ForeignIncomeSectionCompleteView,
+  journeyAnswersService: JourneyAnswersService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -67,14 +72,34 @@ class ForeignIncomeSectionCompleteController @Inject() (
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(ForeignIncomeSectionCompletePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              foreignPropertyNavigator.nextPage(
-                ForeignIncomeSectionCompletePage(countryCode),
-                taxYear,
-                NormalMode,
-                request.userAnswers,
-                updatedAnswers
-              )
+              status <- journeyAnswersService.setStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyPath = ForeignPropertyIncome
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
+            } yield status.fold(
+              _ =>
+                statusError(
+                  journeyName = "foreign-property-income",
+                  propertyType = ForeignProperty,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
+              _ =>
+                Redirect(
+                  foreignPropertyNavigator.nextPage(
+                    ForeignIncomeSectionCompletePage(countryCode),
+                    taxYear,
+                    NormalMode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
+                )
             )
         )
     }

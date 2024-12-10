@@ -120,7 +120,7 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
       running(application) {
         val foreignRequest =
           FakeRequest(POST, foreignReversePremiumsReceivedRoute)
-            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiumsReceivedAmount" -> "1234")
+            .withFormUrlEncodedBody("reversePremiumsReceived" -> "true", "reversePremiums" -> "1234")
 
         val foreignResult = route(application, foreignRequest).value
 
