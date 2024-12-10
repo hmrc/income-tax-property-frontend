@@ -101,7 +101,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
         Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
       case Left(error) =>
         logger.error(s"Failed to save Foreign Income section : ${error.toString}")
-        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, AccountingMethod.Traditional)
+        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, AccountingMethod.Traditional)
         Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Income section"))
     }
 
