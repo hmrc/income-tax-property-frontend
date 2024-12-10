@@ -100,7 +100,8 @@ class ForeignCountriesRentListController @Inject()(
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CountriesListPage, countriesList))
       _ <- sessionRepository.set(updatedAnswers)
       result <- if (countriesList.addAnotherCountry) {
-        // TODO - next page is back to previous page/uk-foreign-property/select-country/select-country
+        // TODO - next page is back to previous page
+        // /uk-foreign-property/select-country/select-country
         Future.successful(Redirect(navigator.nextPage(CountriesListPage, taxYear, mode, request.userAnswers, updatedAnswers)))
       } else {
         saveJourneyAnswers(taxYear, request, countryCode)

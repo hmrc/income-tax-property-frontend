@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package pages.ukandforeignproperty
 
-import pages.foreign.Country
-import play.api.libs.json.{Format, Json}
+import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
+import play.api.libs.json.JsPath
 
-final case class CountriesList(addAnotherCountry: Boolean, rentIncomeCountries: Seq[Country])
+class CountriesListPageSpec extends AnyFreeSpec with Matchers with OptionValues  {
 
-object CountriesList {
-  implicit val format: Format[CountriesList] = Json.format
+  "CountriesListPage" - {
+    "have the correct path" in {
+      CountriesListPage.path shouldEqual JsPath \ "countriesList"
+    }
+
+    "have the correct toString value" in {
+      CountriesListPage.toString shouldEqual "countriesList"
+    }
+  }
 }
