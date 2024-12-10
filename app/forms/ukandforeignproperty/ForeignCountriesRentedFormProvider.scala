@@ -17,26 +17,14 @@
 package forms.ukandforeignproperty
 
 import forms.mappings.Mappings
-import models.CountriesList
-import pages.foreign.Country
-
 import play.api.data.Form
-import play.api.data.Forms._
 import javax.inject.Inject
 
 
-class CountriesListFormProvider @Inject() extends Mappings {
+class ForeignCountriesRentedFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[CountriesList] =
+  def apply(): Form[Boolean] =
     Form(
-      mapping(
-        "addAnotherCountry" -> boolean(s"selectIncomeCountry.error.required.individual"),
-        "rentIncomeCountries" -> seq(
-          mapping(
-            "countryName" -> nonEmptyText,
-            "countryCode" -> nonEmptyText
-          )(Country.apply)(Country.unapply)
-        )
-      )(CountriesList.apply)(CountriesList.unapply)
+      "foreignCountriesRentedPropertyYesOrNo" -> boolean("selectIncomeCountry.error.required.individual")
     )
 }

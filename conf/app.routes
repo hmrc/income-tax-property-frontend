@@ -803,8 +803,7 @@ POST       /:taxYear/uk-foreign-property/total-property-income                  
 GET        /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, countryCode: String)
-POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onSubmit(taxYear: Int, mode: Mode = NormalMode, countryCode: String)
-
-#GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, countryCode: String)
-#POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onSubmit(taxYear: Int, mode: Mode = CheckMode, countryCode: String)
+GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+#GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+#POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
