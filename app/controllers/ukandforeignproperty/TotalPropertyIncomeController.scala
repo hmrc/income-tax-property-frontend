@@ -67,7 +67,13 @@ class TotalPropertyIncomeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalPropertyIncomePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield  {
+            if (value == TotalPropertyIncome.Maximum) {
+              Redirect(routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode))
+            } else {
+              Redirect(navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+            }
+          }
       )
   }
 }
