@@ -20,9 +20,9 @@ import forms.mappings.Mappings
 import models.CountriesList
 import pages.foreign.Country
 
-import javax.inject.Inject
 import play.api.data.Form
 import play.api.data.Forms._
+import javax.inject.Inject
 
 
 class CountriesListFormProvider @Inject() extends Mappings {
@@ -31,12 +31,12 @@ class CountriesListFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "addAnotherCountry" -> boolean(s"selectIncomeCountry.error.required.individual"),
-        "rentIncomeCountries" -> optional(seq(
+        "rentIncomeCountries" -> seq(
           mapping(
             "countryName" -> nonEmptyText,
             "countryCode" -> nonEmptyText
           )(Country.apply)(Country.unapply)
-        ).transform[Array[Country]](_.toArray, _.toSeq))
+        )
       )(CountriesList.apply)(CountriesList.unapply)
     )
 }
