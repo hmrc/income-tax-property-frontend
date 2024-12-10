@@ -21,7 +21,7 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import forms.ukandforeignproperty.CountriesListFormProvider
 import models.JourneyPath.ForeignSelectCountry
 import models.requests.DataRequest
-import models.{JourneyContext, Mode}
+import models.{CountriesList, JourneyContext, Mode}
 import navigation.Navigator
 import play.api.i18n.Lang.logger
 import pages.ukandforeignproperty.CountriesListPage
@@ -55,7 +55,7 @@ class ForeignCountriesRentListController @Inject()(
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  val form: Form[Boolean] = formProvider()
+  val form: Form[CountriesList] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
@@ -90,22 +90,23 @@ class ForeignCountriesRentListController @Inject()(
     }
 
   private def handleValidForm(
-                               addAnotherCountry: Boolean,
+                               countriesList: CountriesList,
                                taxYear: Int,
                                mode: Mode,
                                request: DataRequest[AnyContent],
                                countryCode: String
                              )(implicit hc: HeaderCarrier): Future[Result] =
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(CountriesListPage, addAnotherCountry))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(CountriesListPage, countriesList))
       _ <- sessionRepository.set(updatedAnswers)
-      result <- if (addAnotherCountry) {
+      result <- if (countriesList.addAnotherCountry) {
         // TODO - next page is back to previous page/uk-foreign-property/select-country/select-country
         Future.successful(Redirect(navigator.nextPage(CountriesListPage, taxYear, mode, request.userAnswers, updatedAnswers)))
       } else {
         saveJourneyAnswers(taxYear, request, countryCode)
       }
     } yield result
+
 
   private def saveJourneyAnswers(
                                   taxYear: Int,
