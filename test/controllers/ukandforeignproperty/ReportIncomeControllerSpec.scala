@@ -42,12 +42,12 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
   lazy val reportIncomeRoute: String = routes.ReportIncomeController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new ReportIncomeFormProvider()
-  val form: Form[ReportIncome] = formProvider()
+
 
   "ReportIncome Controller" - {
 
     Seq(("individual", false), ("agent", true)) foreach {case (userType, isAgent) =>
-
+      val form: Form[ReportIncome] = formProvider(userType)
       s"must return OK and the correct view for a GET for the userType $userType" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()

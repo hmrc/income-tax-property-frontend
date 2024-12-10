@@ -22,12 +22,12 @@ import play.api.data.FormError
 
 class ReportIncomeFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new ReportIncomeFormProvider()()
+  val form = new ReportIncomeFormProvider()("agent")
 
   ".value" - {
 
     val fieldName = "value"
-    val requiredKey = "reportIncome.error.required"
+    val requiredKey = "reportIncome.error.required.agent"
 
     behave like optionsField[ReportIncome](
       form,

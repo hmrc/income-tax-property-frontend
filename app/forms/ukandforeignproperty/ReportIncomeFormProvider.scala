@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 class ReportIncomeFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[ReportIncome] =
+  def apply(userType: String): Form[ReportIncome] =
     Form(
-      "value" -> enumerable[ReportIncome]("reportIncome.error.required")
+      "value" -> enumerable[ReportIncome](s"reportIncome.error.required.$userType")
     )
 }

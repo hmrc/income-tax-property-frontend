@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -35,7 +37,7 @@
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages(s"reportIncome.heading.$userType")).asPageHeading(),
+                legend = LegendViewModel(messages(s"reportIncome.heading.$userType")).asPageHeading(LegendSize.Large),
                 items  = ReportIncome.options(userType)
             ).withHint(Hint(content = messages(s"reportIncome.details.hint.$userType")))
         )
