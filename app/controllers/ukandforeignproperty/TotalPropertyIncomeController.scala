@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.TotalPropertyIncomeFormProvider
 import models.{Mode, TotalPropertyIncome}
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.TotalPropertyIncomePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TotalPropertyIncomeController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
-                                       navigator: Navigator,
+                                       navigator: UkAndForeignPropertyNavigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
