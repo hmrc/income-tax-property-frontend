@@ -1,13 +1,30 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers.ukandforeignproperty
 
 import base.SpecBase
 import forms.ukandforeignproperty.ReportIncomeFormProvider
 import models.{NormalMode, ReportIncome, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukandforeignproperty.ReportIncomePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -19,47 +36,70 @@ import scala.concurrent.Future
 
 class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
   val taxYear = 2024
 
-  lazy val reportIncomeRoute = routes.ReportIncomeController.onPageLoad(taxYear, NormalMode).url
+  lazy val reportIncomeRoute: String = routes.ReportIncomeController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new ReportIncomeFormProvider()
-  val form = formProvider()
+  val form: Form[ReportIncome] = formProvider()
 
   "ReportIncome Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    Seq(("individual", false), ("agent", true)) foreach {case (userType, isAgent) =>
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      s"must return OK and the correct view for a GET for the userType $userType" in {
 
-      running(application) {
-        val request = FakeRequest(GET, reportIncomeRoute)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request = FakeRequest(GET, reportIncomeRoute)
 
-        val view = application.injector.instanceOf[ReportIncomeView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+          val view = application.injector.instanceOf[ReportIncomeView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
       }
-    }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+      s"must populate the view correctly on a GET when the question has previously been answered for the userType $userType" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReportIncomePage, ReportIncome.values.head).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ReportIncomePage, ReportIncome.values.head).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
-      running(application) {
-        val request = FakeRequest(GET, reportIncomeRoute)
+        running(application) {
+          val request = FakeRequest(GET, reportIncomeRoute)
 
-        val view = application.injector.instanceOf[ReportIncomeView]
+          val view = application.injector.instanceOf[ReportIncomeView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(ReportIncome.values.head), NormalMode)(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(ReportIncome.values.head), taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
+      }
+
+      s"must return a Bad Request and errors when invalid data is submitted for the userType $userType" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, reportIncomeRoute)
+              .withFormUrlEncodedBody(("value", "invalid value"))
+
+          val boundForm = form.bind(Map("value" -> "invalid value"))
+
+          val view = application.injector.instanceOf[ReportIncomeView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
       }
     }
 
@@ -70,9 +110,9 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -89,29 +129,9 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, reportIncomeRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
-
-        val boundForm = form.bind(Map("value" -> "invalid value"))
-
-        val view = application.injector.instanceOf[ReportIncomeView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
-      }
-    }
-
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, reportIncomeRoute)
@@ -119,13 +139,13 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
@@ -136,7 +156,7 @@ class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

@@ -1,0 +1,13 @@
+############### UK & Foreign Property About ##############
+GET         /:taxYear/uk-foreign-property/about/start                                      controllers.ukandforeignproperty.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+
+GET        /:taxYear/uk-foreign-property/total-property-income                             controllers.ukandforeignproperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-foreign-property/total-property-income                             controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-foreign-property/change-total-property-income                      controllers.ukandforeignproperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-foreign-property/change-total-property-income                      controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear:Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-foreign-property/report-income                                     controllers.ukandforeignproperty.ReportIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/uk-foreign-property/report-income                                     controllers.ukandforeignproperty.ReportIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/uk-foreign-property/change-report-income                              controllers.ukandforeignproperty.ReportIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/uk-foreign-property/change-report-income                              controllers.ukandforeignproperty.ReportIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+

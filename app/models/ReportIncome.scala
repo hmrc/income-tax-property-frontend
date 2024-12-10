@@ -31,10 +31,10 @@ object ReportIncome extends Enumerable.Implicits {
     Wanttoreport, Donotwanttoreport
   )
 
-  def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
+  def options(userType: String)(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
     case (value, index) =>
       RadioItem(
-        content = Text(messages(s"reportIncome.${value.toString}")),
+        content = Text(messages(s"reportIncome.${value.toString}.$userType")),
         value   = Some(value.toString),
         id      = Some(s"value_$index")
       )
