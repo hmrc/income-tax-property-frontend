@@ -46,38 +46,62 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
   "TotalPropertyIncome Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    Seq(("individual", false), ("agent", true)) foreach { case (userType, isAgent) =>
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+      s"must return OK and the correct view for a GET for the userType $userType" in {
 
-      running(application) {
-        val request = FakeRequest(GET, totalPropertyIncomeRoute)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request = FakeRequest(GET, totalPropertyIncomeRoute)
 
-        val view = application.injector.instanceOf[TotalPropertyIncomeView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(request, messages(application)).toString
+          val view = application.injector.instanceOf[TotalPropertyIncomeView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
       }
-    }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+      s"must populate the view correctly on a GET when the question has previously been answered for the userType $userType" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(TotalPropertyIncomePage, TotalPropertyIncome.values.head).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(TotalPropertyIncomePage, TotalPropertyIncome.values.head).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
-      running(application) {
-        val request = FakeRequest(GET, totalPropertyIncomeRoute)
+        running(application) {
+          val request = FakeRequest(GET, totalPropertyIncomeRoute)
 
-        val view = application.injector.instanceOf[TotalPropertyIncomeView]
+          val view = application.injector.instanceOf[TotalPropertyIncomeView]
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(TotalPropertyIncome.values.head), taxYear, NormalMode)(request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(TotalPropertyIncome.values.head), taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
       }
+
+      s"must return a Bad Request and errors when invalid data is submitted for the userType $userType" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, totalPropertyIncomeRoute)
+              .withFormUrlEncodedBody(("value", "invalid value"))
+
+          val boundForm = form.bind(Map("value" -> "invalid value"))
+
+          val view = application.injector.instanceOf[TotalPropertyIncomeView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, taxYear, userType, NormalMode)(request, messages(application)).toString
+        }
+      }
+
     }
 
     "must redirect to the next page when valid data is submitted" in {
@@ -103,26 +127,6 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
-
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, totalPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
-
-        val boundForm = form.bind(Map("value" -> "invalid value"))
-
-        val view = application.injector.instanceOf[TotalPropertyIncomeView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 

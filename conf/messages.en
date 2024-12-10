@@ -2244,10 +2244,13 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = The amount yo
 consolidatedOrIndividualExpenses.amount.error.outOfRange = Enter an amount between £0 and £100,000,000,000
 consolidatedOrIndividualExpenses.change.hidden = Consolidated or individual expenses
 
-totalPropertyIncome.title = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.heading = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.title.individual = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.title.agent = How much total income did your client get from all of their UK and foreign properties?
+totalPropertyIncome.heading.individual = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.heading.agent = How much total income did your client get from all of their UK and foreign properties?
+totalPropertyIncome.p = This is the amount before any deductions have been made.
 totalPropertyIncome.lessThan = Less than £1,000
 totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.error.required = Select either 'Less than £1,000 or £1,000 or more'
+totalPropertyIncome.error.required = Select either ‘Less than £1,000’ or ‘£1,000 or more’
 totalPropertyIncome.change.hidden =  How much total income you got from all of your UK and foreign properties
