@@ -16,14 +16,22 @@
 
 package pages.ukandforeignproperty
 
-import models.CountriesList
-import pages.QuestionPage
+import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import pages.foreign.AddCountriesRentedPage
 import play.api.libs.json.JsPath
 
-case object CountriesListPage extends QuestionPage[CountriesList] {
+class ForeignCountriesRentedPageSpec extends AnyFreeSpec with Matchers with OptionValues {
 
-  override def path: JsPath = JsPath \ toString
+  "ForeignCountriesRentedPage" - {
+    "have the correct path" in {
+      ForeignCountriesRentedPage.path mustEqual JsPath \ "ukandforeignSelectCountry" \ "addAnotherCountry"
+    }
 
-  override def toString: String = "countriesList"
-
+    "have the correct toString value" in {
+      AddCountriesRentedPage.toString shouldEqual "addAnotherCountry"
+    }
+  }
 }

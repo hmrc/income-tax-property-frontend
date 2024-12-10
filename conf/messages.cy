@@ -1757,8 +1757,10 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
-foreignCountriesRentList.title = *Missing Welsh*
-foreignCountriesRentList.heading = *Missing Welsh*
+foreignCountriesRentList.title.individual = *Missing Welsh*
+foreignCountriesRentList.title.agent = *Missing Welsh*
+foreignCountriesRentList.heading.individual = *Missing Welsh*
+foreignCountriesRentList.heading.agent = *Missing Welsh*
 
 ###################### Foreign Property ######################
 

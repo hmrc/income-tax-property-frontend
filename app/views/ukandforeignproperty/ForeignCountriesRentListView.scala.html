@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -23,22 +25,24 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], list: SummaryList, taxYear: Int, mode: Mode, countryCode: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], list: SummaryList, taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("foreignCountriesRentList.title"))) {
+@layout(pageTitle = title(form, messages(s"foreignCountriesRentList.title.$individualOrAgent"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.ForeignCountriesRentListController.onSubmit(taxYear, countryCode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onSubmit(taxYear), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages(s"foreignCountriesRentList.heading.$individualOrAgent")</h1>
 
         @govukSummaryList(list)
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field  = form("addAnotherCountry"),
-                legend = LegendViewModel(messages("foreignCountriesRentList.heading")).asPageHeading()
+                field  = form("foreignCountriesRentedPropertyYesOrNo"),
+                legend = LegendViewModel(messages("countriesRentedProperty.legend")).asPageHeading(LegendSize.Medium)
             )
         )
 
