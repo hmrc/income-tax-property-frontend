@@ -35,7 +35,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.all.SummaryListViewModel
-import views.html.ukandforeignproperty.ForeignCountriesRentListView
+import views.html.ukandforeignproperty.ForeignCountriesRentedView
 
 import scala.concurrent.Future
 
@@ -45,7 +45,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
   val form: Form[Boolean]                              = formProvider()
 
   val taxYear: Int = 2024
-  lazy val foreignCountriesRentedRoute: String = controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear).url
+  lazy val foreignCountriesRentedRoute: String = controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode = NormalMode).url
 
   val list: SummaryList         = SummaryListViewModel(Seq.empty)
   val isAgentMessageKey: String = "individual"
@@ -68,7 +68,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ForeignCountriesRentListView]
+        val view = application.injector.instanceOf[ForeignCountriesRentedView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, list, taxYear, isAgentMessageKey, NormalMode)(

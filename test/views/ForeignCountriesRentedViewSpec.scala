@@ -33,11 +33,11 @@ import uk.gov.hmrc.govukfrontend.views.html.components.GovukTag
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import views.html.templates.Layout
-import views.html.ukandforeignproperty.ForeignCountriesRentListView
+import views.html.ukandforeignproperty.ForeignCountriesRentedView
 
 import java.time.LocalDate
 
-class ForeignCountriesRentListViewSpec extends SpecBase with Matchers {
+class ForeignCountriesRentedViewSpec extends SpecBase with Matchers {
 
   val application: Application = new GuiceApplicationBuilder().build()
 
@@ -45,14 +45,14 @@ class ForeignCountriesRentListViewSpec extends SpecBase with Matchers {
 
   val layout: Layout     = application.injector.instanceOf[Layout]
   val govukTag: GovukTag = application.injector.instanceOf[GovukTag]
-  val view: ForeignCountriesRentListView = application.injector.instanceOf[ForeignCountriesRentListView]
+  val view: ForeignCountriesRentedView = application.injector.instanceOf[ForeignCountriesRentedView]
   private val taxYear    = LocalDate.now.getYear
 
   def createView(form: Form[_], list: SummaryList, individualOrAgent: String, mode: Mode)(implicit request: Request[_]): Html = {
     view(form, list, taxYear, individualOrAgent, mode)(request, messages)
   }
 
-  "ForeignCountriesRentListView" - {
+  "ForeignCountriesRentedView" - {
 
     "render correctly" in {
       val form = Form("addAnotherCountry" -> boolean)

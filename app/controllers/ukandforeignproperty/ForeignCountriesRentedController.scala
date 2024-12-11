@@ -30,7 +30,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.summarylist._
-import views.html.ukandforeignproperty.ForeignCountriesRentListView
+import views.html.ukandforeignproperty.ForeignCountriesRentedView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,7 +45,7 @@ class ForeignCountriesRentedController @Inject()(
                                                     requireData: DataRequiredAction,
                                                     formProvider: ForeignCountriesRentedFormProvider,
                                                     val controllerComponents: MessagesControllerComponents,
-                                                    view: ForeignCountriesRentListView
+                                                    view: ForeignCountriesRentedView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
@@ -53,7 +53,13 @@ class ForeignCountriesRentedController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val list: SummaryList = summaryList(taxYear, request.userAnswers)
-      Ok(view(form, list, taxYear, request.user.isAgentMessageKey, mode))
+
+      val preparedForm = request.userAnswers.get(ForeignCountriesRentedPage) match {
+        case None => form
+        case Some(value) => form.fill(value)
+      }
+
+      Ok(view(preparedForm, list, taxYear, request.user.isAgentMessageKey, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {

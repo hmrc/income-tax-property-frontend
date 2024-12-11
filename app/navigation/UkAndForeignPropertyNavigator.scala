@@ -20,7 +20,7 @@ import com.google.inject.Singleton
 import models._
 import pages.Page
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.TotalPropertyIncomePage
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
 import play.api.mvc.Call
 
 @Singleton
@@ -28,6 +28,8 @@ class UkAndForeignPropertyNavigator {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
     case TotalPropertyIncomePage =>
       taxYear => _ => userAnswers => totalIncomeNavigation(taxYear, userAnswers, NormalMode)
+    case ForeignCountriesRentedPage =>
+      taxYear => _ => userAnswers => foreignCountriesRentedNavigation(taxYear, userAnswers)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -48,4 +50,17 @@ class UkAndForeignPropertyNavigator {
       case Some(TotalPropertyIncome.LessThan) => routes.ReportIncomeController.onPageLoad(taxYear, mode)
     }
   }
+
+  private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(ForeignCountriesRentedPage) match {
+      case Some(true) =>
+        //TODO TRUE map redirect to:
+        //Redirect to previous page to add another country when branch merged
+        //controllers.ukandforeignproperty.SelectCountryController.onPageLoad(taxYear:Int, index:Index, mode: Mode = NormalMode)
+        //val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
+        controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+        //TODO FALSE redirect to:
+        //Redirect to next page /property/uk-foreign-property/select-country/pia-yes-no
+      case Some(false) =>  ???
+    }
 }
