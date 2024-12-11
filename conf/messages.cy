@@ -2210,6 +2210,7 @@ consolidatedOrIndividualExpenses.radio.legend.individual = *Missing Welsh*
 consolidatedOrIndividualExpenses.radio.legend.agent = *Missing Welsh*
 consolidatedOrIndividualExpenses.radio.question.label = *Missing Welsh*
 consolidatedOrIndividualExpenses.checkYourAnswersLabel = *Missing Welsh*
+consolidatedOrIndividualExpenses.checkYourAnswers.individual = *Missing Welsh*
 consolidatedOrIndividualExpenses.error.required.individual = *Missing Welsh*
 consolidatedOrIndividualExpenses.error.required.agent = *Missing Welsh*
 consolidatedOrIndividualExpenses.amount.error.required.individual = *Missing Welsh*
