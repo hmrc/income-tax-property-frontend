@@ -84,7 +84,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(
-            form.fill("IND"),
+            form.fill("FRA"),
             taxYear,
             index,
             userType,
