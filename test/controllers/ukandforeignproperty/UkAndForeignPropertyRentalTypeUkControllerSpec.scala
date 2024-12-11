@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.UkAndForeignPropertyRentalTypeUkFormProvider
 import models.{NormalMode, UkAndForeignPropertyRentalTypeUk, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNavigator, FakeUKAndForeignPropertyNavigator, Navigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -103,7 +103,7 @@ class UkAndForeignPropertyRentalTypeUkControllerSpec extends SpecBase with Mocki
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .overrides(bind[AuthConnector].toInstance(authConnector))

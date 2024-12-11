@@ -31,7 +31,7 @@
 
 @layout(pageTitle = title(form, messages(s"ukAndForeignPropertyRentalTypeUk.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.UkAndForeignPropertyRentalTypeUkController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyRentalTypeUkController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))

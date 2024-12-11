@@ -152,17 +152,3 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/check-your-answers  
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
-
-############## UK & Foreign Property About ##############
-GET         /:taxYear/uk-foreign-property/about/start                                                                    controllers.ukandforeignproperty.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
-
-GET        /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/uk-foreign-property/total-property-income                                                           controllers.ukandforeignproperty.TotalPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
-
-
-GET        /:taxYear/uk-foreign-property/rental-type-uk                        controllers.ukandforeignproperty.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST       /:taxYear/uk-foreign-property/rental-type-uk                        controllers.ukandforeignproperty.UkAndForeignPropertyRentalTypeUkController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET        /:taxYear/change-uk-foreign-property/rental-type-uk                  controllers.ukandforeignproperty.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST       /:taxYear/change-uk-foreign-property/rental-type-uk                  controllers.ukandforeignproperty.UkAndForeignPropertyRentalTypeUkController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
