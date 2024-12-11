@@ -27,7 +27,6 @@ import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.summarylist._
@@ -49,20 +48,12 @@ class ForeignCountriesRentedController @Inject()(
                                                     view: ForeignCountriesRentListView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  implicit val hc: HeaderCarrier = HeaderCarrier()
-
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val list: SummaryList = summaryList(taxYear, request.userAnswers)
-
-      val preparedForm = request.userAnswers.get(ForeignCountriesRentedPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, list, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(form, list, taxYear, request.user.isAgentMessageKey, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -76,12 +67,8 @@ class ForeignCountriesRentedController @Inject()(
           addAnotherCountry =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCountriesRentedPage, addAnotherCountry))
-              //TODO navigation
-              //Redirect to previous page to add another country /property/uk-foreign-property/select-country/select-country
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              //TODO navigation
-              //Redirect to next page /property/uk-foreign-property/select-country/pia-yes-no
               navigator.nextPage(ForeignCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )

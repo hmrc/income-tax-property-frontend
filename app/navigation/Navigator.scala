@@ -38,12 +38,14 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.IncomeSourceCountries
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumForLeasePage}
 import pages.propertyrentals._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.rentalsandrentaroom.adjustments.BusinessPremisesRenovationAllowanceBalancingChargePage
 import pages.structurebuildingallowance._
+import pages.ukandforeignproperty.ForeignCountriesRentedPage
 import pages.ukrentaroom._
 import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
@@ -771,6 +773,9 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
                 .onPageLoad(taxYear)
             }
 
+    case ForeignCountriesRentedPage =>
+      taxYear => _ => userAnswers => addForeignCountriesNavigation(taxYear, userAnswers)
+
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -785,6 +790,9 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
+
+    case ForeignCountriesRentedPage =>
+      taxYear => _ => userAnswers => addForeignCountriesNavigation(taxYear, userAnswers)
 
     case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case ConsolidatedExpensesRRPage =>
@@ -1380,6 +1388,18 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case (Some(pre), Some(cur)) if pre != cur =>
         ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
       case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def addForeignCountriesNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+    userAnswers.get(ForeignCountriesRentedPage) match {
+      case Some(true) =>
+        val nextIndex = userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)
+        //Redirect to previous page to add another country /property/uk-foreign-property/select-country/select-country
+        controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+        //Redirect to next page /property/uk-foreign-property/select-country/pia-yes-no
+      case Some(false) =>  controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+      case _           =>  controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+
     }
 
 }

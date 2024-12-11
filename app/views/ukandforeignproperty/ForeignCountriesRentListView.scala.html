@@ -15,6 +15,7 @@
  *@
 
 @import viewmodels.LegendSize
+@import controllers.ukandforeignproperty.routes._
 
 @this(
     layout: templates.Layout,
@@ -29,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages(s"foreignCountriesRentList.title.$individualOrAgent"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onSubmit(taxYear), 'autoComplete -> "off") {
+    @formHelper(action = ForeignCountriesRentedController.onSubmit(taxYear), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

@@ -567,7 +567,6 @@ POST        /:taxYear/rentals-rent-a-room/income/complete-yes-no                
 
 GET         /:taxYear/rentals-rent-a-room/expenses/start                                                                 controllers.propertyrentals.expenses.ExpensesStartController.onPageLoad(taxYear : Int, propertyType: PropertyType = RentalsRentARoom)
 
-
 GET         /:taxYear/rentals-rent-a-room/expenses/consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode,  propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/consolidated-expenses                                                 controllers.propertyrentals.expenses.ConsolidatedExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode,  propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/expenses/change-consolidated-expenses                                          controllers.propertyrentals.expenses.ConsolidatedExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode,  propertyType: PropertyType = RentalsRentARoom)
@@ -582,7 +581,6 @@ GET         /:taxYear/rentals-rent-a-room/expenses/repairs-and-maintenance-costs
 POST        /:taxYear/rentals-rent-a-room/expenses/repairs-and-maintenance-costs                                         controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 GET         /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenance-costs                                  controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/change-repairs-and-maintenance-costs                                  controllers.propertyrentals.expenses.RepairsAndMaintenanceCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentalsRentARoom)
-
 
 GET         /:taxYear/rentals-rent-a-room/expenses/loan-interest                                                         controllers.propertyrentals.expenses.LoanInterestController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/expenses/loan-interest                                                         controllers.propertyrentals.expenses.LoanInterestController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
@@ -805,5 +803,5 @@ POST       /:taxYear/uk-foreign-property/total-property-income                  
 
 GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-#GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-#POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentListController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+#GET        /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+#POST       /:taxYear/uk-foreign-property/select-country/countries-list                                                   controllers.ukandforeignproperty.ForeignCountriesRentedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
