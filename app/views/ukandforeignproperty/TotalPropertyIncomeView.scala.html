@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.LegendSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -22,9 +24,9 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, userType: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("totalPropertyIncome.title"))) {
+@layout(pageTitle = title(form, messages(s"totalPropertyIncome.title.$userType"))) {
 
     @formHelper(action = controllers.ukandforeignproperty.routes.TotalPropertyIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
@@ -32,10 +34,12 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        <h1 class="govuk-heading-l">@messages(s"totalPropertyIncome.heading.$userType")</h1>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("totalPropertyIncome.heading")).asPageHeading(),
+                legend = LegendViewModel(messages("totalPropertyIncome.p")),
                 items  = TotalPropertyIncome.options
             )
         )
