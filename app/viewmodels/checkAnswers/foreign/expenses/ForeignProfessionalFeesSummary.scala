@@ -16,11 +16,11 @@
 
 package viewmodels.checkAnswers.foreign.expenses
 
-import models.{CheckMode, UserAnswers}
+import models.{UserAnswers, CheckMode}
 import pages.foreign.expenses.ForeignProfessionalFeesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{valueCssClass, bigDecimalCurrency, keyCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -31,7 +31,7 @@ object ForeignProfessionalFeesSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("foreignProfessionalFees.checkYourAnswersLabel").withCssClass(valueCssClass),
+          key     = KeyViewModel("foreignProfessionalFees.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.foreign.expenses.routes.ForeignProfessionalFeesController.onPageLoad(taxYear, countryCode, CheckMode).url)
