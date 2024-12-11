@@ -34,12 +34,16 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        <h1 class="govuk-heading-xl">@messages(s"reportIncome.heading.$userType")</h1>
+        <p class="govuk-body"> @messages(s"reportIncome.details.additionalInfo.$userType")</p>
+
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages(s"reportIncome.heading.$userType")).asPageHeading(LegendSize.Large),
+                legend = LegendViewModel(messages(s"reportIncome.heading.$userType")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m govuk-visually-hidden"),
                 items  = ReportIncome.options(userType)
-            ).withHint(Hint(content = messages(s"reportIncome.details.hint.$userType")))
+            )
         )
 
         @govukButton(
