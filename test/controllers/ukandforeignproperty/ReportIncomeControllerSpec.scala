@@ -17,47 +17,47 @@
 package controllers.ukandforeignproperty
 
 import base.SpecBase
-import forms.ukandforeignproperty.TotalPropertyIncomeFormProvider
-import models.{NormalMode, TotalPropertyIncome, UserAnswers}
+import forms.ukandforeignproperty.ReportIncomeFormProvider
+import models.{NormalMode, ReportIncome, UserAnswers}
 import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.TotalPropertyIncomePage
+import pages.ukandforeignproperty.ReportIncomePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukandforeignproperty.TotalPropertyIncomeView
+import views.html.ukandforeignproperty.ReportIncomeView
 
 import scala.concurrent.Future
 
-class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
+class ReportIncomeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
   val taxYear = 2024
 
-  lazy val totalPropertyIncomeRoute: String = routes.TotalPropertyIncomeController.onPageLoad(taxYear, NormalMode).url
+  lazy val reportIncomeRoute: String = routes.ReportIncomeController.onPageLoad(taxYear, NormalMode).url
 
-  val formProvider = new TotalPropertyIncomeFormProvider()
-  val form: Form[TotalPropertyIncome] = formProvider()
+  val formProvider = new ReportIncomeFormProvider()
 
-  "TotalPropertyIncome Controller" - {
 
-    Seq(("individual", false), ("agent", true)) foreach { case (userType, isAgent) =>
+  "ReportIncome Controller" - {
 
+    Seq(("individual", false), ("agent", true)) foreach {case (userType, isAgent) =>
+      val form: Form[ReportIncome] = formProvider(userType)
       s"must return OK and the correct view for a GET for the userType $userType" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, totalPropertyIncomeRoute)
+          val request = FakeRequest(GET, reportIncomeRoute)
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[TotalPropertyIncomeView]
+          val view = application.injector.instanceOf[ReportIncomeView]
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, taxYear, userType, NormalMode)(request, messages(application)).toString
@@ -66,19 +66,19 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
       s"must populate the view correctly on a GET when the question has previously been answered for the userType $userType" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(TotalPropertyIncomePage, TotalPropertyIncome.values.head).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(ReportIncomePage, ReportIncome.values.head).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
         running(application) {
-          val request = FakeRequest(GET, totalPropertyIncomeRoute)
+          val request = FakeRequest(GET, reportIncomeRoute)
 
-          val view = application.injector.instanceOf[TotalPropertyIncomeView]
+          val view = application.injector.instanceOf[ReportIncomeView]
 
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(TotalPropertyIncome.values.head), taxYear, userType, NormalMode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(ReportIncome.values.head), taxYear, userType, NormalMode)(request, messages(application)).toString
         }
       }
 
@@ -88,12 +88,12 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
         running(application) {
           val request =
-            FakeRequest(POST, totalPropertyIncomeRoute)
+            FakeRequest(POST, reportIncomeRoute)
               .withFormUrlEncodedBody(("value", "invalid value"))
 
           val boundForm = form.bind(Map("value" -> "invalid value"))
 
-          val view = application.injector.instanceOf[TotalPropertyIncomeView]
+          val view = application.injector.instanceOf[ReportIncomeView]
 
           val result = route(application, request).value
 
@@ -101,7 +101,6 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
           contentAsString(result) mustEqual view(boundForm, taxYear, userType, NormalMode)(request, messages(application)).toString
         }
       }
-
     }
 
     "must redirect to the next page when valid data is submitted" in {
@@ -111,7 +110,7 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -120,8 +119,8 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, totalPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("value", TotalPropertyIncome.values.head.toString))
+          FakeRequest(POST, reportIncomeRoute)
+            .withFormUrlEncodedBody(("value", ReportIncome.values.head.toString))
 
         val result = route(application, request).value
 
@@ -132,10 +131,10 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, totalPropertyIncomeRoute)
+        val request = FakeRequest(GET, reportIncomeRoute)
 
         val result = route(application, request).value
 
@@ -146,12 +145,12 @@ class TotalPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, totalPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("value", TotalPropertyIncome.values.head.toString))
+          FakeRequest(POST, reportIncomeRoute)
+            .withFormUrlEncodedBody(("value", ReportIncome.values.head.toString))
 
         val result = route(application, request).value
 

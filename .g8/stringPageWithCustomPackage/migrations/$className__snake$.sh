@@ -3,16 +3,18 @@
 echo ""
 echo "Applying migration $className;format="snake"$"
 
-echo "Adding routes to conf/app.routes"
+echo "Adding routes to conf/$packageName$.routes"
 
-echo "" >> ../conf/app.routes
-echo "GET        /:taxYear/$className;format="decap"$                        controllers.$packageName$.$className$Controller.onPageLoad(taxYear:Int, mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /:taxYear/$className;format="decap"$                        controllers.$packageName$.$className$Controller.onSubmit(taxYear:Int, mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /:taxYear/change$className$                  controllers.$packageName$.$className$Controller.onPageLoad(taxYear:Int, mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /:taxYear/change$className$                  controllers.$packageName$.$className$Controller.onSubmit(taxYear:Int, mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "" >> ../conf/$packageName$.routes
+echo "GET        /:taxYear/$className;format="decap"$                        controllers.$packageName$.$className$Controller.onPageLoad(taxYear:Int, mode: Mode = NormalMode)" >> ../conf/$packageName$.routes
+echo "POST       /:taxYear/$className;format="decap"$                        controllers.$packageName$.$className$Controller.onSubmit(taxYear:Int, mode: Mode = NormalMode)" >> ../conf/$packageName$.routes
+
+echo "GET        /:taxYear/change$className$                                 controllers.$packageName$.$className$Controller.onPageLoad(taxYear:Int, mode: Mode = CheckMode)" >> ../conf/$packageName$.routes
+echo "POST       /:taxYear/change$className$                                 controllers.$packageName$.$className$Controller.onSubmit(taxYear:Int, mode: Mode = CheckMode)" >> ../conf/$packageName$.routes
 
 echo "Adding messages to conf.messages"
+
 echo "" >> ../conf/messages.en
 echo "$className;format="decap"$.title = $className;format="decap"$" >> ../conf/messages.en
 echo "$className;format="decap"$.heading = $className;format="decap"$" >> ../conf/messages.en

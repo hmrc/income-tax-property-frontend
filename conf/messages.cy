@@ -2218,13 +2218,31 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = *Missing Wels
 consolidatedOrIndividualExpenses.amount.error.outOfRange = *Missing Welsh*
 consolidatedOrIndividualExpenses.change.hidden = *Missing Welsh*
 
-totalPropertyIncome.title = *Missing Welsh*
-totalPropertyIncome.heading = *Missing Welsh*
+totalPropertyIncome.title.individual = *Missing Welsh*
+totalPropertyIncome.title.agent = *Missing Welsh*
+totalPropertyIncome.heading.individual = *Missing Welsh*
+totalPropertyIncome.heading.agent = *Missing Welsh*
+totalPropertyIncome.p = *Missing Welsh*
 totalPropertyIncome.lessThan = *Missing Welsh*
 totalPropertyIncome.maximum = *Missing Welsh*
 totalPropertyIncome.checkYourAnswersLabel = *Missing Welsh*
 totalPropertyIncome.error.required = *Missing Welsh*
 totalPropertyIncome.change.hidden = *Missing Welsh*
+
+reportIncome.title.individual = *Missing Welsh*
+reportIncome.title.agent = *Missing Welsh*
+reportIncome.heading.individual = *Missing Welsh*
+reportIncome.heading.agent = *Missing Welsh*
+reportIncome.wantToReport.individual = *Missing Welsh*
+reportIncome.wantToReport.agent = *Missing Welsh*
+reportIncome.doNotWantToReport.individual = *Missing Welsh*
+reportIncome.doNotWantToReport.agent = *Missing Welsh*
+reportIncome.checkYourAnswersLabel = *Missing Welsh*
+reportIncome.error.required.individual = *Missing Welsh*
+reportIncome.error.required.agent = *Missing Welsh*
+reportIncome.details.additionalInfo.individual = *Missing Welsh*
+reportIncome.details.additionalInfo.agent = *Missing Welsh*
+reportIncome.change.hidden = *Missing Welsh*
 
 ukAndForeignPropertyRentalTypeUk.title.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.title.agent = *Missing Welsh*

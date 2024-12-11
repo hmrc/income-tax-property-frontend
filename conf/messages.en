@@ -2244,13 +2244,31 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = The amount yo
 consolidatedOrIndividualExpenses.amount.error.outOfRange = Enter an amount between £0 and £100,000,000,000
 consolidatedOrIndividualExpenses.change.hidden = Consolidated or individual expenses
 
-totalPropertyIncome.title = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.heading = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.title.individual = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.title.agent = How much total income did your client get from all of their UK and foreign properties?
+totalPropertyIncome.heading.individual = How much total income did you get from all of your UK and foreign properties?
+totalPropertyIncome.heading.agent = How much total income did your client get from all of their UK and foreign properties?
+totalPropertyIncome.p = This is the amount before any deductions have been made.
 totalPropertyIncome.lessThan = Less than £1,000
 totalPropertyIncome.maximum = £1,000 or more
 totalPropertyIncome.checkYourAnswersLabel = How much total income did you get from all of your UK and foreign properties?
-totalPropertyIncome.error.required = Select either 'Less than £1,000 or £1,000 or more'
+totalPropertyIncome.error.required = Select either ‘Less than £1,000’ or ‘£1,000 or more’
 totalPropertyIncome.change.hidden =  How much total income you got from all of your UK and foreign properties
+
+reportIncome.title.individual = Do you want to report your property income?
+reportIncome.title.agent = Do you want to report your client’s property income?
+reportIncome.heading.individual = Do you want to report your property income?
+reportIncome.heading.agent = Do you want to report your client’s property income?
+reportIncome.wantToReport.individual = Yes, I want to report my property income
+reportIncome.wantToReport.agent = Yes, my client wants to report their property income
+reportIncome.doNotWantToReport.individual = No, I do not want to report my property income
+reportIncome.doNotWantToReport.agent = No, my client does not want to report their property income
+reportIncome.checkYourAnswersLabel = Do you want to report your property income?
+reportIncome.error.required.individual = Select yes if you want to report your property income
+reportIncome.error.required.agent = Select yes if you want to report your client’s property income
+reportIncome.details.additionalInfo.individual = You do not need to report property income less than £1,000. You may want to if your allowable expenses are higher than your income and you want to be able to claim relief for the loss against future property income.
+reportIncome.details.additionalInfo.agent = Your client does not need to report property income less than £1,000. They may want to if their allowable expenses are higher than their income and they want to be able to claim relief for the loss against future property income.
+reportIncome.change.hidden = ReportIncome
 
 ukAndForeignPropertyRentalTypeUk.title.individual = Which type of rental property do you have in the UK?
 ukAndForeignPropertyRentalTypeUk.title.agent = Which type of rental property does your client have in the UK?
