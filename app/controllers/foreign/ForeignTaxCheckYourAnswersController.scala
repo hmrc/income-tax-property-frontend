@@ -20,19 +20,18 @@ import audit.{AuditModel, AuditService}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
-import models.{AccountingMethod, AuditPropertyType, ForeignPropertyTax, ForeignPropertyTaxWithCountryCode, JourneyContext, JourneyName, JourneyPath, SectionName}
 import models.requests.DataRequest
+import models._
+import pages.foreign.income.ForeignPropertyTaxPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.{ClaimForeignTaxCreditReliefSummary, ForeignIncomeTaxSummary}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.ForeignTaxCheckYourAnswersView
-import pages.foreign.income.ForeignPropertyTaxPage
-import play.api.mvc.Results.Redirect
-import service.PropertySubmissionService
-import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 

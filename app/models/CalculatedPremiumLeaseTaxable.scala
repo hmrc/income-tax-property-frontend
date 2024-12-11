@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package models
 
-import pages.PageConstants.incomePath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case class ForeignYearLeaseAmountPage(countryCode: String) extends QuestionPage[Int] {
+final case class CalculatedPremiumLeaseTaxable(
+  calculatedPremiumLeaseTaxable: Boolean,
+  premiumsOfLeaseGrant: Option[BigDecimal]
+)
 
-  override def path: JsPath = JsPath \ incomePath(models.ForeignProperty) \ countryCode.toUpperCase \ toString
-
-  override def toString: String = "foreignYearLeaseAmount"
+object CalculatedPremiumLeaseTaxable {
+  implicit val format: Format[CalculatedPremiumLeaseTaxable] = Json.format
 }

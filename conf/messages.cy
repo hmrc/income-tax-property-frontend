@@ -1903,12 +1903,12 @@ doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
 doYouWantToRemoveCountry.error.required = *Missing Welsh*
 doYouWantToRemoveCountry.change.hidden = *Missing Welsh*
 
-foreignYearLeaseAmount.title = *Missing Welsh*
-foreignYearLeaseAmount.heading = *Missing Welsh*
-foreignYearLeaseAmount.checkYourAnswersLabel = *Missing Welsh*
-foreignYearLeaseAmount.error.required = *Missing Welsh*
-foreignYearLeaseAmount.error.nonNumeric = *Missing Welsh*
-foreignYearLeaseAmount.change.hidden = *Missing Welsh*
+twelveMonthPeriodsInLease.title = *Missing Welsh*
+twelveMonthPeriodsInLease.heading = *Missing Welsh*
+twelveMonthPeriodsInLease.checkYourAnswersLabel = *Missing Welsh*
+twelveMonthPeriodsInLease.error.required = *Missing Welsh*
+twelveMonthPeriodsInLease.error.nonNumeric = *Missing Welsh*
+twelveMonthPeriodsInLease.change.hidden = *Missing Welsh*
 
 foreignReceivedGrantLeaseAmount.title.individual = *Missing Welsh*
 foreignReceivedGrantLeaseAmount.title.agent = *Missing Welsh*

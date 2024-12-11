@@ -16,20 +16,20 @@
 
 package viewmodels.checkAnswers.foreign.expenses
 
-import models.{UserAnswers, CheckMode, ConsolidatedOrIndividualExpenses}
+import controllers.foreign.expenses.routes.ConsolidatedOrIndividualExpensesController
+import models.{CheckMode, ConsolidatedOrIndividualExpenses, UserAnswers}
+import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-import controllers.foreign.expenses.routes.ConsolidatedOrIndividualExpensesController
-import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, bigDecimalCurrency, valueCssClass}
 
-object ConsolidatedOrIndividualExpensesSummary  {
+object ConsolidatedOrIndividualExpensesSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+                                                                   messages: Messages
+  ): Option[SummaryListRow] =
     answers.get(ConsolidatedOrIndividualExpensesPage(countryCode)).flatMap {
       case ConsolidatedOrIndividualExpenses(true, amount) =>
         Some(SummaryListRowViewModel(

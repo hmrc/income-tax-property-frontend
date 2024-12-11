@@ -31,7 +31,7 @@ object ForeignPremiumsGrantLeaseSummary {
     answers.get(ForeignPremiumsGrantLeasePage(countryCode)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("foreignPremiumsGrantLease.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(bigDecimalCurrency(answer.foreignPremiumsGrantLease.get)).withCssClass(valueCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer.premiumsOfLeaseGrant.get)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

@@ -31,28 +31,29 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
+    val premiumsOfLeaseGrantAgreed = false
+    val premiumsOfLeaseGrant: BigDecimal = 4534.65
 
-    s".foreignPremiumsGrantLease for $individualOrAgent" - {
-      "when foreignPremiumsGrantLeaseYesOrNo is false" - {
-        val foreignPremiumsGrantLeaseYesOrNo = false
+    s".premiumsOfLeaseGrant for $individualOrAgent" - {
+      "when premiumsOfLeaseGrantAgreed is false" - {
 
         "and an amount is entered, should successfully bind" in {
-          val foreignPremiumsGrantLeaseAmount: BigDecimal = 4534.65
+
           val boundForm = form.bind(
             Map(
-              "foreignPremiumsGrantLeaseYesOrNo" -> s"$foreignPremiumsGrantLeaseYesOrNo",
-              "foreignPremiumsGrantLeaseAmount" -> s"$foreignPremiumsGrantLeaseAmount"
+              "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+              "premiumsOfLeaseGrant"       -> s"$premiumsOfLeaseGrant"
             )
           )
-          boundForm.value.value mustBe ForeignPremiumsGrantLease(foreignPremiumsGrantLeaseYesOrNo, Some(foreignPremiumsGrantLeaseAmount))
+          boundForm.value.value mustBe ForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed, Some(premiumsOfLeaseGrant))
           boundForm.errors mustBe empty
         }
 
         "and no amount is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("foreignPremiumsGrantLeaseYesOrNo" -> s"$foreignPremiumsGrantLeaseYesOrNo"))
+          val boundForm = form.bind(Map("premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed"))
           boundForm.errors must contain(
             FormError(
-              "foreignPremiumsGrantLeaseAmount",
+              "premiumsOfLeaseGrant",
               s"foreignPremiumsGrantLease.error.amount.required.$individualOrAgent"
             )
           )
@@ -62,13 +63,13 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
           val boundForm =
             form.bind(
               Map(
-                "foreignPremiumsGrantLeaseYesOrNo" -> s"$foreignPremiumsGrantLeaseYesOrNo",
-                "foreignPremiumsGrantLeaseAmount" -> "non-numeric-value"
+                "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+                "premiumsOfLeaseGrant"       -> "non-numeric-value"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignPremiumsGrantLeaseAmount",
+              "premiumsOfLeaseGrant",
               s"foreignPremiumsGrantLease.error.amount.nonNumeric.$individualOrAgent"
             )
           )
@@ -78,13 +79,13 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
           val boundForm =
             form.bind(
               Map(
-                "foreignPremiumsGrantLeaseYesOrNo" -> s"$foreignPremiumsGrantLeaseYesOrNo",
-                "foreignPremiumsGrantLeaseAmount" -> "4534.6545"
+                "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+                "premiumsOfLeaseGrant"       -> "4534.6545"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "foreignPremiumsGrantLeaseAmount",
+              "premiumsOfLeaseGrant",
               "foreignPremiumsGrantLease.error.amount.twoDecimalPlaces"
             )
           )
@@ -93,13 +94,13 @@ class ForeignPremiumsGrantLeaseFormProviderSpec extends BooleanFieldBehaviours w
         "and an amount is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "foreignPremiumsGrantLeaseYesOrNo" -> s"$foreignPremiumsGrantLeaseYesOrNo",
-              "foreignPremiumsGrantLeaseAmount" -> "45334553534535345435345345434.65"
+              "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+              "premiumsOfLeaseGrant"       -> "45334553534535345435345345434.65"
             )
           )
           boundForm.errors must contain(
             FormError(
-              "foreignPremiumsGrantLeaseAmount",
+              "premiumsOfLeaseGrant",
               "foreignPremiumsGrantLease.error.outOfRange",
               ArraySeq(0, 100000000)
             )

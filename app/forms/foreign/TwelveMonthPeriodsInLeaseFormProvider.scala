@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package forms
-
-import javax.inject.Inject
+package forms.foreign
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class PremiumsGrantLeaseYNFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  def apply(individualOrAgent: String): Form[Boolean] =
+class TwelveMonthPeriodsInLeaseFormProvider @Inject() extends Mappings {
+
+  val minimum = 2
+  val maximum = 50
+
+  def apply(): Form[Int] =
     Form(
-      "premiumsGrantLeaseReceived" -> boolean(s"premiumsGrantLeaseYN.error.required.$individualOrAgent")
+      "twelveMonthPeriodsInLease" -> int(
+        "twelveMonthPeriodsInLease.error.required",
+        "twelveMonthPeriodsInLease.error.nonNumeric",
+        "twelveMonthPeriodsInLease.error.nonNumeric")
+          .verifying(inRange(minimum, maximum, "twelveMonthPeriodsInLease.error.nonNumeric"))
     )
 }

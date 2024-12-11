@@ -17,7 +17,7 @@
 package pages.foreign
 
 import models.{ForeignProperty, PremiumCalculated, UserAnswers}
-import pages.PageConstants.foreignTaxPath
+import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
@@ -25,18 +25,18 @@ import scala.util.Try
 
 case class CalculatedPremiumLeaseTaxablePage(countryCode: String) extends QuestionPage[PremiumCalculated] {
 
-  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "calculatedPremiumLeaseTaxableYesOrNo"
+  override def toString: String = "calculatedPremiumLeaseTaxable"
 
   override def cleanup(value: Option[PremiumCalculated], userAnswers: UserAnswers): Try[UserAnswers] = {
-    val premiumCalculatedYesNo = value.map(_.premiumCalculatedYesNo)
+    val premiumCalculatedYesNo = value.map(_.calculatedPremiumLeaseTaxable)
     premiumCalculatedYesNo
       .map {
         case true =>
           for {
             userAnswersWithoutFRGLA <- userAnswers.remove(ForeignReceivedGrantLeaseAmountPage(countryCode))
-            userAnswersWithoutFYLA  <- userAnswersWithoutFRGLA.remove(ForeignYearLeaseAmountPage(countryCode))
+            userAnswersWithoutFYLA  <- userAnswersWithoutFRGLA.remove(TwelveMonthPeriodsInLeasePage(countryCode))
             userAnswersWithoutFPGL  <- userAnswersWithoutFYLA.remove(ForeignPremiumsGrantLeasePage(countryCode))
           } yield userAnswersWithoutFPGL
         case false => super.cleanup(value, userAnswers)

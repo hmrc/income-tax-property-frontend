@@ -23,7 +23,7 @@ import play.api.data.FormError
 class ForeignPropertyRentalIncomeFormProviderSpec extends CurrencyFieldBehaviours {
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
-  val fieldName = "foreignPropertyRentalIncome"
+  val fieldName = "rentIncome"
 
   val minimum = 0
   val maximum = 100000000
