@@ -24,11 +24,11 @@ sealed trait ReportIncome
 
 object ReportIncome extends Enumerable.Implicits {
 
-  case object Wanttoreport extends WithName("wantToReport") with ReportIncome
-  case object Donotwanttoreport extends WithName("doNotWantToReport") with ReportIncome
+  case object WantToReport extends WithName("wantToReport") with ReportIncome
+  case object DoNoWantToReport extends WithName("doNotWantToReport") with ReportIncome
 
   val values: Seq[ReportIncome] = Seq(
-    Wanttoreport, Donotwanttoreport
+    WantToReport, DoNoWantToReport
   )
 
   def options(userType: String)(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
