@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package forms.foreign
+package pages.ukandforeignproperty
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case object ForeignCountriesRentedPage extends QuestionPage[Boolean] {
 
-class ForeignYearLeaseAmountFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
 
-  val minimum = 2
-  val maximum = 50
-
-  def apply(): Form[Int] =
-    Form(
-      "foreignYearLeaseAmount" -> int(
-        "foreignYearLeaseAmount.error.required",
-        "foreignYearLeaseAmount.error.nonNumeric",
-        "foreignYearLeaseAmount.error.nonNumeric")
-          .verifying(inRange(minimum, maximum, "foreignYearLeaseAmount.error.nonNumeric"))
-    )
+  override def toString: String = "addAnotherCountry"
 }

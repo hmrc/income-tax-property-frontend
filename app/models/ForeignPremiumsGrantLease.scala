@@ -18,10 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class ForeignPremiumsGrantLease(foreignPremiumsGrantLeaseYesOrNo:Boolean,
-                                     foreignPremiumsGrantLease:Option[BigDecimal]) {
-
-}
+case class ForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed: Boolean, premiumsOfLeaseGrant: Option[BigDecimal])
 
 object ForeignPremiumsGrantLease {
   implicit val format: Format[ForeignPremiumsGrantLease] = Json.format

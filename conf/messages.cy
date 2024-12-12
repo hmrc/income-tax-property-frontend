@@ -1761,6 +1761,11 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
+foreignCountriesRentList.title.individual = *Missing Welsh*
+foreignCountriesRentList.title.agent = *Missing Welsh*
+foreignCountriesRentList.heading.individual = *Missing Welsh*
+foreignCountriesRentList.heading.agent = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
@@ -1907,12 +1912,12 @@ doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
 doYouWantToRemoveCountry.error.required = *Missing Welsh*
 doYouWantToRemoveCountry.change.hidden = *Missing Welsh*
 
-foreignYearLeaseAmount.title = *Missing Welsh*
-foreignYearLeaseAmount.heading = *Missing Welsh*
-foreignYearLeaseAmount.checkYourAnswersLabel = *Missing Welsh*
-foreignYearLeaseAmount.error.required = *Missing Welsh*
-foreignYearLeaseAmount.error.nonNumeric = *Missing Welsh*
-foreignYearLeaseAmount.change.hidden = *Missing Welsh*
+twelveMonthPeriodsInLease.title = *Missing Welsh*
+twelveMonthPeriodsInLease.heading = *Missing Welsh*
+twelveMonthPeriodsInLease.checkYourAnswersLabel = *Missing Welsh*
+twelveMonthPeriodsInLease.error.required = *Missing Welsh*
+twelveMonthPeriodsInLease.error.nonNumeric = *Missing Welsh*
+twelveMonthPeriodsInLease.change.hidden = *Missing Welsh*
 
 foreignReceivedGrantLeaseAmount.title.individual = *Missing Welsh*
 foreignReceivedGrantLeaseAmount.title.agent = *Missing Welsh*
@@ -2244,9 +2249,28 @@ reportIncome.doNotWantToReport.agent = *Missing Welsh*
 reportIncome.checkYourAnswersLabel = *Missing Welsh*
 reportIncome.error.required.individual = *Missing Welsh*
 reportIncome.error.required.agent = *Missing Welsh*
-reportIncome.details.hint.individual = *Missing Welsh*
-reportIncome.details.hint.agent = *Missing Welsh*
+reportIncome.details.additionalInfo.individual = *Missing Welsh*
+reportIncome.details.additionalInfo.agent = *Missing Welsh*
 reportIncome.change.hidden = *Missing Welsh*
+
+ukAndForeignPropertyRentalTypeUk.title.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.title.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.heading.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.heading.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.hint = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.propertyRentals = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.propertyRentals.hint.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.propertyRentals.hint.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.rentARoom = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.rentARoom.hint.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.rentARoom.hint.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.checkYourAnswersLabel.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.checkYourAnswersLabel.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.change.hidden.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.change.hidden.agent = *Missing Welsh*
+
 
 selectCountry.title.individual = *Missing Welsh*
 selectCountry.title.agent = *Missing Welsh*

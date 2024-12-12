@@ -25,7 +25,7 @@ class ForeignReceivedGrantLeaseAmountFormProviderSpec extends CurrencyFieldBehav
 
   val formProvider = new ForeignReceivedGrantLeaseAmountFormProvider()
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
-  val fieldName = "foreignReceivedGrantLeaseAmount"
+  val fieldName = "receivedGrantLeaseAmount"
   val minimum = 0
   val maximum = 100000000
   val validDataGenerator: Gen[String] = intsInRangeWithCommas(minimum, maximum)

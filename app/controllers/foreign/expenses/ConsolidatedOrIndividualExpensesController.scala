@@ -18,56 +18,66 @@ package controllers.foreign.expenses
 
 import controllers.actions._
 import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
-
-import javax.inject.Inject
 import models.{ConsolidatedOrIndividualExpenses, Mode}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.CalculatedPremiumLeaseTaxablePage
 import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.data.Form
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.expenses.ConsolidatedOrIndividualExpensesView
-import play.api.data.Form
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConsolidatedOrIndividualExpensesController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       foreignPropertyNavigator: ForeignPropertyNavigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: ConsolidatedOrIndividualExpensesFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ConsolidatedOrIndividualExpensesView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ConsolidatedOrIndividualExpensesController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ConsolidatedOrIndividualExpensesFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ConsolidatedOrIndividualExpensesView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[ConsolidatedOrIndividualExpenses] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ConsolidatedOrIndividualExpensesPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode, request.user.isAgentMessageKey, taxYear, countryCode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[ConsolidatedOrIndividualExpenses] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.user.isAgentMessageKey, taxYear, countryCode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(foreignPropertyNavigator.nextPage(ConsolidatedOrIndividualExpensesPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, mode, request.user.isAgentMessageKey, taxYear, countryCode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              foreignPropertyNavigator.nextPage(
+                ConsolidatedOrIndividualExpensesPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

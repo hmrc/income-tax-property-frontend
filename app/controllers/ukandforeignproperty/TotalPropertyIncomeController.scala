@@ -67,7 +67,9 @@ class TotalPropertyIncomeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalPropertyIncomePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield  {
+              Redirect(navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+            }
       )
   }
 }

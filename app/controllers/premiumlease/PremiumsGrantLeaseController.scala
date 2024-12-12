@@ -72,14 +72,17 @@ class PremiumsGrantLeaseController @Inject() (
       (receivedGrantLeaseAmount, totalYearPeriods) match {
         case (None, _) =>
           Future.successful(Redirect(routes.ReceivedGrantLeaseAmountController.onPageLoad(taxYear, mode, propertyType)))
-        case (_, None) => Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode, propertyType)))
+        case (_, None) =>
+          Future.successful(Redirect(routes.YearLeaseAmountController.onPageLoad(taxYear, mode, propertyType)))
         case (Some(amount), Some(period)) =>
           formProvider(request.user.isAgentMessageKey)
             .bindFromRequest()
             .fold(
               formWithErrors =>
                 Future.successful(
-                  BadRequest(view(formWithErrors, taxYear, period, amount, mode, request.user.isAgentMessageKey, propertyType))
+                  BadRequest(
+                    view(formWithErrors, taxYear, period, amount, mode, request.user.isAgentMessageKey, propertyType)
+                  )
                 ),
               value =>
                 for {
@@ -87,7 +90,7 @@ class PremiumsGrantLeaseController @Inject() (
                                       request.userAnswers.set(
                                         PremiumsGrantLeasePage(propertyType),
                                         PremiumsGrantLease(
-                                          value.premiumsGrantLeaseYesOrNo,
+                                          value.premiumsGrantLeaseReceived,
                                           Some(
                                             value.premiumsGrantLease.getOrElse(
                                               PremiumsGrantLeasePage(propertyType)
