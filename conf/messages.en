@@ -2287,3 +2287,12 @@ ukAndForeignPropertyRentalTypeUk.error.required.individual = Select which type o
 ukAndForeignPropertyRentalTypeUk.error.required.agent = Select which type of property your client has
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = which rental property do you have in the UK?
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = which rental property does your client have in the UK?
+
+foreignZeroEmissionGoodsVehicles.title = ForeignZeroEmissionGoodsVehicles
+foreignZeroEmissionGoodsVehicles.heading = ForeignZeroEmissionGoodsVehicles
+foreignZeroEmissionGoodsVehicles.checkYourAnswersLabel = ForeignZeroEmissionGoodsVehicles
+foreignZeroEmissionGoodsVehicles.error.nonNumeric = Enter your foreignZeroEmissionGoodsVehicles using numbers
+foreignZeroEmissionGoodsVehicles.error.required = Enter your foreignZeroEmissionGoodsVehicles
+foreignZeroEmissionGoodsVehicles.error.wholeNumber = Enter your foreignZeroEmissionGoodsVehicles using whole numbers
+foreignZeroEmissionGoodsVehicles.error.outOfRange = ForeignZeroEmissionGoodsVehicles must be between {0} and {1}
+foreignZeroEmissionGoodsVehicles.change.hidden = ForeignZeroEmissionGoodsVehicles

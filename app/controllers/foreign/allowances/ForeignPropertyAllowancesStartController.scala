@@ -19,6 +19,7 @@ package controllers.foreign.allowances
 import controllers.{PropertyDataError, PropertyDetailsHandler, routes}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
+import models.Mode
 import models.backend.PropertyDetails
 import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -65,5 +66,14 @@ class ForeignPropertyAllowancesStartController @Inject()(
               Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
           }
         }(hc, ec)
+  }
+
+  def onSubmit(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
+    implicit request =>
+      if (accrualsOrCash) {
+        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
+      } else {
+        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
+      }
   }
 }
