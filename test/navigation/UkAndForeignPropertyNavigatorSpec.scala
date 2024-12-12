@@ -20,7 +20,7 @@ import base.SpecBase
 import models.{NormalMode, TotalPropertyIncome, UserAnswers}
 import pages.Page
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.TotalPropertyIncomePage
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
 
 import java.time.LocalDate
 
@@ -31,7 +31,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
   "ForeignPropertyNavigator" - {
 
-    "in Normal mode" - {
+    "Total Property Income in Normal mode" - {
 
       "must go from a page that doesn't exist in the route map to Index" in {
         case object UnknownPage extends Page
@@ -70,6 +70,46 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           NormalMode,
           UserAnswers("id"),
           ua
+        ) mustBe ???
+      }
+    }
+
+    "Foreign Countries Rented in Normal mode" - {
+
+      "must go from a page that doesn't exist in the route map to Index" in {
+        case object UnknownPage extends Page
+
+        navigator.nextPage(
+          UnknownPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          UserAnswers("id")
+        ) mustBe controllers.routes.IndexController.onPageLoad
+      }
+
+      "must go from AddCountriesRentedPage to previous page(SelectIncomeCountryPage) if AddCountriesRentedPage is true" in {
+        val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, true).get
+
+        navigator.nextPage(
+          ForeignCountriesRentedPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          userAnswersWithAddCountry
+        ) mustBe
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+      }
+
+      "must go from AddCountriesRentedPage to next page(ClaimIncomeAndExpensesPage) if AddCountriesRentedPage is false" ignore {
+        val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, false).get
+
+        navigator.nextPage(
+          ForeignCountriesRentedPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          userAnswersWithAddCountry
         ) mustBe ???
       }
     }
