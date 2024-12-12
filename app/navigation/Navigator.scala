@@ -770,7 +770,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
                 .onPageLoad(taxYear)
             }
-
     case _ => _ => _ => _ => IndexController.onPageLoad
   }
 
@@ -785,7 +784,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRElectricChargePointAllowanceForAnEVPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-
     case OtherPropertyExpensesRRPage => taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case ConsolidatedExpensesRRPage =>
       taxYear => _=>
