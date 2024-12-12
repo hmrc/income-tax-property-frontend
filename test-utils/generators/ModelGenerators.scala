@@ -26,6 +26,11 @@ trait ModelGenerators {
       Gen.oneOf(ReportIncome.values.toSeq)
     }
 
+  implicit lazy val arbitraryUkAndForeignPropertyRentalTypeUk: Arbitrary[UkAndForeignPropertyRentalTypeUk] =
+    Arbitrary {
+      Gen.oneOf(UkAndForeignPropertyRentalTypeUk.values)
+    }
+
   implicit lazy val arbitraryTotalPropertyIncome: Arbitrary[TotalPropertyIncome] =
     Arbitrary {
       Gen.oneOf(TotalPropertyIncome.values.toSeq)

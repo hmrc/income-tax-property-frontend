@@ -44,7 +44,7 @@ class UkAndForeignPropertyNavigator {
 
   private def totalIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
     userAnswers.get(TotalPropertyIncomePage) match {
-      case Some(TotalPropertyIncome.Maximum) => ???
+      case Some(TotalPropertyIncome.Maximum) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
       case Some(TotalPropertyIncome.LessThan) => routes.ReportIncomeController.onPageLoad(taxYear, mode)
     }
   }
