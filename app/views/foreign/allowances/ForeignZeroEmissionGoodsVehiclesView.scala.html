@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import viewmodels.LabelSize
+@import viewmodels.LegendSize.Medium
 
 @this(
     layout: templates.Layout,
@@ -34,11 +35,29 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-
+        <h1 class="govuk-heading-l">@messages(s"foreignZeroEmissionGoodsVehicles.heading")</h1>
+        <p class="govuk-body">@messages(s"foreignZeroEmissionGoodsVehicles.p1.${individualOrAgent}")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages(s"foreignZeroEmissionGoodsVehicles.bullet.1.${individualOrAgent}")</li>
+            <li>@messages(s"foreignZeroEmissionGoodsVehicles.bullet.2.${individualOrAgent}")</li>
+        </ul>
+        <p class="govuk-body">@messages(s"foreignZeroEmissionGoodsVehicles.p2.${individualOrAgent}")</p>
+        <p class="govuk-body">@messages(s"foreignZeroEmissionGoodsVehicles.p3.${individualOrAgent}")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("foreignZeroEmissionGoodsVehicles.bullet.3")</li>
+            <li>@messages("foreignZeroEmissionGoodsVehicles.bullet.4")</li>
+            <li>@messages("foreignZeroEmissionGoodsVehicles.bullet.5")</li>
+        </ul>
+        <p class="govuk-body">@messages("foreignZeroEmissionGoodsVehicles.p4")</p>
+        <p class="govuk-body">@messages("foreignZeroEmissionGoodsVehicles.p5")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("foreignZeroEmissionGoodsVehicles.bullet.6")</li>
+            <li>@messages("foreignZeroEmissionGoodsVehicles.bullet.7")</li>
+        </ul>
         @govukInput(
             InputViewModel(
                 field = form("foreignZeroEmissionGoodsVehiclesAmount"),
-                label = LabelViewModel(messages("foreignZeroEmissionGoodsVehicles.heading")).asPageHeading(LabelSize.Medium)
+                label = LabelViewModel(messages(s"foreignZeroEmissionGoodsVehicles.label.${individualOrAgent}")).withCssClass("govuk-label govuk-label--m")
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))

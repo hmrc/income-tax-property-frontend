@@ -1,10 +1,26 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers.foreign.allowances
 
 import base.SpecBase
 import controllers.routes
 import forms.foreign.allowances.ForeignZeroEmissionGoodsVehiclesFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -15,6 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import views.html.foreign.allowances.ForeignZeroEmissionGoodsVehiclesView
 
 import scala.concurrent.Future
 
@@ -28,8 +45,8 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
-
-  lazy val foreignZeroEmissionGoodsVehiclesRoute = controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, NormalMode).url
+  val countryCode = "AUS"
+  lazy val foreignZeroEmissionGoodsVehiclesRoute = controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignZeroEmissionGoodsVehicles Controller" - {
 
@@ -45,13 +62,13 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
         val view = application.injector.instanceOf[ForeignZeroEmissionGoodsVehiclesView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignZeroEmissionGoodsVehiclesPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignZeroEmissionGoodsVehiclesPage(countryCode), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -63,7 +80,7 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -76,7 +93,7 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -84,7 +101,7 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionGoodsVehiclesRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignZeroEmissionGoodsVehiclesAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -100,16 +117,16 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionGoodsVehiclesRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+            .withFormUrlEncodedBody(("foreignZeroEmissionGoodsVehiclesAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+        val boundForm = form.bind(Map("foreignZeroEmissionGoodsVehiclesAmount" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignZeroEmissionGoodsVehiclesView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -134,7 +151,7 @@ class ForeignZeroEmissionGoodsVehiclesControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionGoodsVehiclesRoute)
-            .withFormUrlEncodedBody(("value", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignZeroEmissionGoodsVehiclesAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
