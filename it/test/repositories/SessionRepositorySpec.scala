@@ -148,15 +148,27 @@ class SessionRepositorySpec
     "must preserve MDC" in {
 
       val service = Executors.newFixedThreadPool(2)
-      implicit lazy val ec: ExecutionContext =
-        ExecutionContext.fromExecutor(new MDCPropagatingExecutorService(service))
+      implicit val ec: ExecutionContext =
+        ExecutionContext.fromExecutorService(new MDCPropagatingExecutorService(service))
+
+      val testKey = "test"
+      val testValue = "foo"
+
       try {
-        MDC.put("test", "foo")
-        f.map { _ =>
-          MDC.get("test") mustEqual "foo"
-        }.futureValue
+        val result = Future {
+          MDC.put(testKey, testValue)
+          try {
+            f.flatMap { _ =>
+              val actualValue = MDC.get(testKey)
+              Future.successful(actualValue mustEqual testValue)
+            }
+          } finally {
+            MDC.clear()
+          }
+        }
+
+        result.futureValue
       } finally {
-        MDC.clear()
         service.shutdown()
       }
     }
