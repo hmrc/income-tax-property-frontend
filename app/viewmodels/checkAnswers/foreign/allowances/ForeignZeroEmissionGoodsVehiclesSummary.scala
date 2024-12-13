@@ -20,6 +20,7 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.allowances.ForeignZeroEmissionGoodsVehiclesPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -30,8 +31,8 @@ object ForeignZeroEmissionGoodsVehiclesSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "foreignZeroEmissionGoodsVehicles.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = KeyViewModel("foreignZeroEmissionGoodsVehicles.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",
               controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, CheckMode).url)

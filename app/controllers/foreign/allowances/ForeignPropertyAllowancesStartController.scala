@@ -71,7 +71,7 @@ class ForeignPropertyAllowancesStartController @Inject()(
   def onSubmit(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
     implicit request =>
       if (accrualsOrCash) {
-        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
       } else {
         Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
       }
