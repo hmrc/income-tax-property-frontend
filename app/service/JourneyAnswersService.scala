@@ -33,8 +33,8 @@ class JourneyAnswersService @Inject() (
   val ec: ExecutionContext
 ) extends Logging {
 
-  def setStatus(ctx: JourneyContext, status: String, user: User)(implicit
-    hc: HeaderCarrier
+  def setStatus(ctx: JourneyContext, status: String, user: User, countryCode: Option[String] = None)(implicit
+                                                                                                     hc: HeaderCarrier
   ): Future[Either[ServiceError, String]] =
     businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
@@ -42,7 +42,7 @@ class JourneyAnswersService @Inject() (
         propertyDetails
           .map { ukProperty =>
             journeyAnswersConnector
-              .setStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyPath, status, user)
+              .setStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyPath, status, user, countryCode)
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
@@ -53,4 +53,5 @@ class JourneyAnswersService @Inject() (
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
 
     }
+
 }

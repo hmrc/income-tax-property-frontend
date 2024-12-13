@@ -50,11 +50,17 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
   ec: ExecutionContext
 ) extends Logging {
 
-  def setStatus(taxYear: Int, incomeSourceId: String, journeyName: JourneyPath, status: String, user: User)(implicit
-    hc: HeaderCarrier
+  def setStatus(taxYear: Int, incomeSourceId: String, journeyName: JourneyPath, status: String, user: User, countryCode: Option[String] = None)(implicit
+                                                                                                                                                hc: HeaderCarrier
   ): Future[Either[ApiError, String]] = {
-    val updateStatusUrl =
-      s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear"
+    val countryCodeString = countryCode.getOrElse("")
+    val updateStatusUrl = {
+      countryCodeString match {
+        case "" => s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear"
+        case _ => s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear/$countryCodeString"
+      }
+    }
+
 
     httpClient
       .put(url"$updateStatusUrl")
