@@ -28,8 +28,8 @@ class ForeignZeroEmissionGoodsVehiclesFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
       "foreignZeroEmissionGoodsVehiclesAmount" -> currency(
-        "foreignZeroEmissionGoodsVehicles.error.required",
-        "foreignZeroEmissionGoodsVehicles.error.wholeNumber",
+        s"foreignZeroEmissionGoodsVehicles.error.required.${individualOrAgent}",
+        "foreignZeroEmissionGoodsVehicles.error.twoDecimalPlaces",
         "foreignZeroEmissionGoodsVehicles.error.nonNumeric")
           .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "foreignZeroEmissionGoodsVehicles.error.outOfRange"))
     )

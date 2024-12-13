@@ -16,13 +16,13 @@
 
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton
-
+        govukButton: GovukButton,
+        formHelper: FormWithCSRF
 )
 
 @(taxYear: Int, countryCode: String, countryName: String, individualOrAgent: String ,accrualsOrCash: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages(s"foreignAllowancesStart.title.${individualOrAgent}, countryName"))) {
+@layout(pageTitle = titleNoForm(messages(s"foreignAllowancesStart.title.${individualOrAgent}", countryName))) {
 
     <h1 class="govuk-heading-l">@messages(s"foreignAllowancesStart.heading.${individualOrAgent}", countryName)</h1>
 
@@ -46,9 +46,10 @@
         }
     </ul>
     <p class="govuk-body">
-    @govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .withId("continue")
-    )
+        @formHelper(action = controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.nextPage(taxYear, countryCode, accrualsOrCash), Symbol("autoComplete") -> "off") {
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+        }
     </p>
 }
