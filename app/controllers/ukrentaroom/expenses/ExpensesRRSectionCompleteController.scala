@@ -79,7 +79,7 @@ class ExpensesRRSectionCompleteController @Inject() (
                           ),
                           status = statusForPage(value),
                           user = request.user,
-                          None
+                          countryCode = None
                         )
             } yield status.fold(
               _ =>
