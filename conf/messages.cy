@@ -53,6 +53,10 @@ error.non_numeric	=	Rhowch werth gan ddefnyddio rhifau yn unig
 error.number	=	Nodwch rif dilys
 error.required	=	Nodwch werth
 error.summary.title	=	Mae problem wedi codi
+error.select.validCountry = *Missing Welsh*
+start.typing.country.hint = *Missing Welsh*
+country.legend = *Missing Welsh*
+income.from.otherCountry.info = *Missing Welsh*
 
 businessDetails.accruals	=	Traddodiadol (ar sail croniadau)
 businessDetails.cash	=	Sail arian parod
@@ -2266,3 +2270,13 @@ ukAndForeignPropertyRentalTypeUk.error.required.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = *Missing Welsh*
+
+
+selectCountry.title.individual = *Missing Welsh*
+selectCountry.title.agent = *Missing Welsh*
+selectCountry.heading.individual = *Missing Welsh*
+selectCountry.heading.agent = *Missing Welsh*
+selectCountry.checkYourAnswersLabel = *Missing Welsh*
+selectCountry.error.required.individual = *Missing Welsh*
+selectCountry.error.required.agent = *Missing Welsh*
+selectCountry.change.hidden = *Missing Welsh*

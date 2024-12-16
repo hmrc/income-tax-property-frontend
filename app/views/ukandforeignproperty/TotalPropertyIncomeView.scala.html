@@ -16,6 +16,8 @@
 
 @import viewmodels.LegendSize
 
+@import controllers.ukandforeignproperty.routes
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -28,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages(s"totalPropertyIncome.title.$userType"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.TotalPropertyIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.TotalPropertyIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))

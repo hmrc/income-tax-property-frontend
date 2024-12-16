@@ -58,6 +58,11 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 error.year.invalid = Year must include 4 numbers
+error.select.validCountry = Select country from the list
+
+start.typing.country.hint = Start typing in the box to find the country name
+country.legend = Country
+income.from.otherCountry.info = You can add income from other countries later.
 
 businessDetails.accruals = Traditional (accrual)
 businessDetails.cash = Cash basis
@@ -2292,3 +2297,12 @@ ukAndForeignPropertyRentalTypeUk.error.required.individual = Select which type o
 ukAndForeignPropertyRentalTypeUk.error.required.agent = Select which type of property your client has
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = which rental property do you have in the UK?
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = which rental property does your client have in the UK?
+
+selectCountry.title.individual = From which country did you receive your foreign property rental income?
+selectCountry.title.agent  = Message for agent is missing
+selectCountry.heading.individual  = From which country did you receive your foreign property rental income?
+selectCountry.heading.agent  = Message for agent is missing
+selectCountry.checkYourAnswersLabel = From which country did you receive your foreign property rental income?
+selectCountry.error.required.individual = Select which country you received this income from
+selectCountry.error.required.agent = Select which country your client received this income from
+selectCountry.change.hidden = From which country you received your foreign property rental income?

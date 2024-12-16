@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package forms.foreign
+package pages.ukandforeignproperty
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import models.Index
+import pages.QuestionPage
+import pages.foreign.Country
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case class SelectCountryPage(index: Index) extends QuestionPage[Country] {
 
-class SelectIncomeCountryFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ toString \ index.position
 
-  def apply(individualOrAgent: String): Form[String] =
-    Form(
-      "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
-        .verifying(validCountry("selectIncomeCountry.error.validCountry"))
-    )
+  override def toString: String = "selectedCountry"
 }

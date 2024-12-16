@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms.foreign
+package forms.ukandforeignproperty
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class SelectIncomeCountryFormProvider @Inject() extends Mappings {
+class SelectCountryFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[String] =
+  def apply(userType: String): Form[String] =
     Form(
-      "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
-        .verifying(validCountry("selectIncomeCountry.error.validCountry"))
+      "country" -> text(s"selectCountry.error.required.$userType")
+        .verifying(validCountry("error.select.validCountry"))
     )
 }
