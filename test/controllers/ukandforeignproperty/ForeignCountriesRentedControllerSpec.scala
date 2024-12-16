@@ -53,10 +53,10 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
   val index: Int = 0
 
   def onwardRoute: Call =
-    Call("GET", "/property/uk-foreign-property/select-country/pia-yes-no")
+    Call("GET", "/update-and-submit-income-tax-return/property")
 
   def addCountryRoute(): Call =
-    Call("GET", "/property/uk-foreign-property/select-country")
+    Call("GET", "/update-and-submit-income-tax-return/property/2024/uk-foreign-property/select-country/1")
 
   "ForeignCountriesRented Controller" - {
 
@@ -79,79 +79,122 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-        "must redirect to next page when valid data is submitted" in {
+    "must redirect to next page when valid data is submitted" in {
 
-          val mockSessionRepository = mock[SessionRepository]
+      val mockSessionRepository = mock[SessionRepository]
 
-          when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-          val application =
-            applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-              .overrides(
-                bind[Navigator].toInstance(new FakeNavigator(addCountryRoute())),
-                bind[SessionRepository].toInstance(mockSessionRepository)
-              )
-              .build()
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(addCountryRoute())),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
 
-          val request = FakeRequest(POST, foreignCountriesRentedRoute)
-            .withFormUrlEncodedBody(("foreignCountriesRentedPropertyYesOrNo", "true"))
+      val request = FakeRequest(POST, foreignCountriesRentedRoute)
+        .withFormUrlEncodedBody(("foreignCountriesRentedPropertyYesOrNo", "true"))
 
-          running(application) {
-            val controller = application.injector.instanceOf[ForeignCountriesRentedController]
+      running(application) {
+        val controller = application.injector.instanceOf[ForeignCountriesRentedController]
 
-            val result = controller.onSubmit(taxYear, NormalMode)(request)
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
 
-            status(result) mustEqual SEE_OTHER
-            redirectLocation(result).value mustEqual addCountryRoute().url
-          }
-        }
-
-        "must redirect to the previous select page when no is selected" in {
-
-          val mockSessionRepository = mock[SessionRepository]
-
-          when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-          val application =
-            applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-              .overrides(
-                bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-                bind[SessionRepository].toInstance(mockSessionRepository)
-              )
-              .build()
-
-          val request =
-            FakeRequest(POST, foreignCountriesRentedRoute)
-              .withFormUrlEncodedBody(("foreignCountriesRentedPropertyYesOrNo", "false"))
-
-
-          running(application) {
-            val controller = application.injector.instanceOf[ForeignCountriesRentedController]
-
-            val result = controller.onSubmit(taxYear, NormalMode)(request)
-
-            status(result) mustEqual SEE_OTHER
-            redirectLocation(result).value mustEqual onwardRoute.url
-          }
-        }
-
-      "must redirect to Journey Recovery for a POST if no existing data is found" in {
-
-        val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-        val request =
-          FakeRequest(POST, foreignCountriesRentedRoute)
-            .withFormUrlEncodedBody(("value", "true"))
-
-        running(application) {
-          val controller = application.injector.instanceOf[ForeignCountriesRentedController]
-
-          val result = controller.onSubmit(taxYear, NormalMode)(request)
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
-        }
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual addCountryRoute().url
       }
+    }
+
+    "must redirect to the previous select page when no is selected" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      val request =
+        FakeRequest(POST, foreignCountriesRentedRoute)
+          .withFormUrlEncodedBody(("foreignCountriesRentedPropertyYesOrNo", "false"))
+
+      running(application) {
+        val controller = application.injector.instanceOf[ForeignCountriesRentedController]
+
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+      val request =
+        FakeRequest(POST, foreignCountriesRentedRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      running(application) {
+        val controller = application.injector.instanceOf[ForeignCountriesRentedController]
+
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return BAD_REQUEST when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(POST, foreignCountriesRentedRoute)
+          .withFormUrlEncodedBody(("foreignCountriesRentedPropertyYesOrNo", ""))
+
+        val controller = application.injector.instanceOf[ForeignCountriesRentedController]
+        val view = application.injector.instanceOf[ForeignCountriesRentedView]
+
+        val boundForm = form.bind(Map("foreignCountriesRentedPropertyYesOrNo" -> ""))
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, list, taxYear, isAgentMessageKey, NormalMode)(
+          request,
+          messages(application)
+        ).toString()
+      }
+    }
+
+    "must correctly resolve the route to the controller" in {
+      val expectedRoute = s"/update-and-submit-income-tax-return/property/$taxYear/uk-foreign-property/select-country/countries-list"
+
+      val actualRoute = controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode).url
+
+      actualRoute mustEqual expectedRoute
+    }
+
+    "must handle invalid url" in {
+      val invalidRoute = "/invalid-route"
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, invalidRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual NOT_FOUND
+      }
+    }
 
     "must return OK and the list should display the country" in {
 
@@ -180,6 +223,5 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
 
       }
     }
-
   }
 }

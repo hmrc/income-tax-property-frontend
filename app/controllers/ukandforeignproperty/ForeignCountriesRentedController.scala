@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.ForeignCountriesRentedFormProvider
 import models.{Mode, UserAnswers}
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.foreign.IncomeSourceCountries
 import pages.ukandforeignproperty.ForeignCountriesRentedPage
 import play.api.data.Form
@@ -35,18 +35,18 @@ import views.html.ukandforeignproperty.ForeignCountriesRentedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class ForeignCountriesRentedController @Inject()(
-                                                    override val messagesApi: MessagesApi,
-                                                    sessionRepository: SessionRepository,
-                                                    navigator: Navigator,
-                                                    identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    formProvider: ForeignCountriesRentedFormProvider,
-                                                    val controllerComponents: MessagesControllerComponents,
-                                                    view: ForeignCountriesRentedView
-                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignCountriesRentedController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignCountriesRentedFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignCountriesRentedView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
@@ -80,11 +80,12 @@ class ForeignCountriesRentedController @Inject()(
         )
   }
 
-  private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages) = {
+  private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages): SummaryList = {
     val countries = userAnswers.get(IncomeSourceCountries).toSeq.flatten
     val rows = countries.zipWithIndex.flatMap { case (_, idx) =>
       CountriesRentedPropertySummary.row(taxYear, idx, userAnswers)
     }
     SummaryListViewModel(rows)
   }
+
 }
