@@ -38,7 +38,7 @@ import scala.concurrent.Future
 
 class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2025/uk-foreign-property/select-country/countries-list")
   val taxYear = 2025
   val index: Index = Index(0)
   val country: Country = Country(name = "France", code = "FRA")
