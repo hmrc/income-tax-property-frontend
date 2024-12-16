@@ -80,12 +80,6 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
             NotFoundException("Foreign property income section is not present in userAnswers")
           )
         }
-
-      Future.successful(
-        Redirect(
-          ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)
-        )
-      )
     }
 
   private def saveForeignPropertyIncome(
