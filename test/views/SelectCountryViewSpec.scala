@@ -28,9 +28,7 @@ import play.api.mvc.Request
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout}
 import play.twirl.api.Html
-import uk.gov.hmrc.govukfrontend.views.html.components.GovukTag
 import uk.gov.hmrc.govukfrontend.views.viewmodels.select.SelectItem
-import views.html.templates.Layout
 import views.html.ukandforeignproperty.SelectCountryView
 
 import java.time.LocalDate
@@ -40,9 +38,6 @@ class SelectCountryViewSpec extends SpecBase with Matchers {
   val application: Application = new GuiceApplicationBuilder().build()
 
   implicit val messages: Messages = application.injector.instanceOf[MessagesApi].preferred(Seq.empty)
-
-  val layout: Layout     = application.injector.instanceOf[Layout]
-  val govukTag: GovukTag = application.injector.instanceOf[GovukTag]
 
   val view: SelectCountryView = application.injector.instanceOf[SelectCountryView]
   private val taxYear    = LocalDate.now.getYear
