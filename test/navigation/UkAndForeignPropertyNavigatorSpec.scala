@@ -17,7 +17,7 @@
 package navigation
 
 import base.SpecBase
-import models.{NormalMode, TotalPropertyIncome, UserAnswers}
+import models.{Index, NormalMode, TotalPropertyIncome, UserAnswers}
 import pages.Page
 import controllers.ukandforeignproperty.routes
 import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
@@ -98,7 +98,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           UserAnswers("id"),
           userAnswersWithAddCountry
         ) mustBe
-          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+          controllers.ukandforeignproperty.routes.SelectCountryController.onPageLoad(taxYear, Index(0), NormalMode)
       }
 
       "must go from AddCountriesRentedPage to next page(ClaimIncomeAndExpensesPage) if AddCountriesRentedPage is false" ignore {
