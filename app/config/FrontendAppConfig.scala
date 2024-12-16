@@ -76,8 +76,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   private lazy val propertyUrlKey = "microservice.services.income-tax-property.url"
   lazy val propertyServiceBaseUrl: String = s"${configuration.get[String](propertyUrlKey)}/income-tax-property"
 
-  val languageTranslationEnabled: Boolean = configuration.get[Boolean]("features.welsh-translation")
-  val emaSupportingAgentsEnabled: Boolean = configuration.get[Boolean]("features.ema-supporting-agents-enabled")
+  val languageTranslationEnabled: Boolean = configuration.get[Boolean]("feature-switch.welsh-translation")
+  val emaSupportingAgentsEnabled: Boolean = configuration.get[Boolean]("feature-switch.ema-supporting-agents-enabled")
 
   def languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en"),
