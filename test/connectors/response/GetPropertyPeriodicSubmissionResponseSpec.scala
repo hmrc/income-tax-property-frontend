@@ -20,7 +20,7 @@ import audit.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
 import models.ForeignTotalIncome.LessThanOneThousand
-import models.{Adjustments, BalancingCharge, CapitalAllowancesForACar, FetchedBackendData, ForeignPropertySelectCountry, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, TotalIncome, UKPropertySelect}
+import models._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
@@ -39,50 +39,58 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
     "convert JsValue to GetPropertyPeriodicSubmissionResponse" when {
       "status is OK and valid jsValue" in {
 
-        val propertyPeriodicSubmissionResponse = FetchedBackendData(
-          Some(CapitalAllowancesForACar(true, Some(3.2))),
-          Some(
-            PropertyAbout(
-              TotalIncome.Between,
-              Seq(UKPropertySelect.PropertyRentals),
-              Some(true)
-            )
-          ),
-          None,
-          None,
-          Some(
-            Adjustments(
-              BalancingCharge(true, Some(4.2)),
-              PrivateUseAdjustment(4.5),
-              45,
-              RenovationAllowanceBalancingCharge(true, Some(4.2)),
-              4.2,
-              4.2
-            )
-          ),
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          None,
-          List(),
-          foreignPropertySelectCountry = Some(
-            ForeignPropertySelectCountry(
-              totalIncome = LessThanOneThousand,
-              reportPropertyIncome = Some(false),
-              incomeCountries = None,
-              addAnotherCountry = None,
-              claimPropertyIncomeAllowance = None
+        val ukPropertyData =
+          FetchedBackendData(
+            Some(CapitalAllowancesForACar(true, Some(3.2))),
+            Some(
+              PropertyAbout(
+                TotalIncome.Between,
+                Seq(UKPropertySelect.PropertyRentals),
+                Some(true)
+              )
+            ),
+            None,
+            None,
+            Some(
+              Adjustments(
+                BalancingCharge(true, Some(4.2)),
+                PrivateUseAdjustment(4.5),
+                45,
+                RenovationAllowanceBalancingCharge(true, Some(4.2)),
+                4.2,
+                4.2
+              )
+            ),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            List(),
+            foreignPropertySelectCountry = Some(
+              ForeignPropertySelectCountry(
+                totalIncome = LessThanOneThousand,
+                reportPropertyIncome = Some(false),
+                incomeCountries = None,
+                addAnotherCountry = None,
+                claimPropertyIncomeAllowance = None
+              )
             )
           )
+
+        val foreignPropertyData = FetchedForeignPropertyData(
+          Some(Map("ESP" -> ForeignPropertyTax(Some(ForeignIncomeTax(true, Some(BigDecimal(456.00)))), Some(false)))),
+          Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed"))))
         )
+        val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData)
+
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 
         val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)

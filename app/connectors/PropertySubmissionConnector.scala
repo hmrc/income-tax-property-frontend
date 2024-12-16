@@ -19,7 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{FetchedPropertyData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -35,7 +35,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
 
   def getPropertySubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ApiError, FetchedBackendData]] = {
+  ): Future[Either[ApiError, FetchedPropertyData]] = {
     val propertyPeriodicSubmissionUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/$taxYear/income/${user.nino}/$incomeSourceId"
 

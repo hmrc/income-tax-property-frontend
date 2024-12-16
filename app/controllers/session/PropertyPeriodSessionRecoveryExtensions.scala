@@ -46,42 +46,42 @@ object PropertyPeriodSessionRecoveryExtensions {
 
   implicit class UserAnswersExtension(userAnswersArg: UserAnswers) {
 
-    def update(fetchedData: FetchedBackendData): UserAnswers = {
+    def update(fetchedData: FetchedPropertyData): UserAnswers = {
       for {
-        ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage(Rentals), fetchedData.capitalAllowancesForACar)
-        ua2 <- updatePropertyAboutPages(ua1, fetchedData.propertyAbout)
-        ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.propertyRentalsAbout)
-        ua4 <- updateAdjustmentsPages(ua3, fetchedData.adjustments)
-        ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.rentalsAndRaRAdjustments)
-        ua6 <- updateAllowancesPages(ua5, fetchedData.allowances, Rentals)
-        ua7 <- updateAllowancesPages(ua6, fetchedData.allowances, RentalsRentARoom)
+        ua1 <- updatePart(userAnswersArg, CapitalAllowancesForACarPage(Rentals), fetchedData.ukPropertyData.capitalAllowancesForACar)
+        ua2 <- updatePropertyAboutPages(ua1, fetchedData.ukPropertyData.propertyAbout)
+        ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.ukPropertyData.propertyRentalsAbout)
+        ua4 <- updateAdjustmentsPages(ua3, fetchedData.ukPropertyData.adjustments)
+        ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
+        ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
+        ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
         ua8 <-
-          updateStructureBuildingPages(ua7, fetchedData.rentalsSBA, Rentals)
+          updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
         ua9 <-
-          updateStructureBuildingPages(ua8, fetchedData.rentalsSBA, RentalsRentARoom)
+          updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
 
         ua10 <-
           updateEnhancedStructureBuildingPages(
             ua9,
-            fetchedData.esbasWithSupportingQuestions,
+            fetchedData.ukPropertyData.esbasWithSupportingQuestions,
             Rentals
           )
         ua11 <-
           updateEnhancedStructureBuildingPages(
             ua10,
-            fetchedData.esbasWithSupportingQuestions,
+            fetchedData.ukPropertyData.esbasWithSupportingQuestions,
             RentalsRentARoom
           )
-        ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.propertyRentalsIncome)
-        ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.rentalsAndRaRIncome)
-        ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.propertyRentalsExpenses, Rentals)
-        ua15 <- updatePropertyRentalsExpensesPages(ua14, fetchedData.propertyRentalsExpenses, RentalsRentARoom)
-        ua16 <- updateRentARoomAbout(ua15, fetchedData.raRAbout)
-        ua17 <- updateRentARoomAllowance(ua16, fetchedData.rentARoomAllowances)
-        ua18 <- updateRentARoomAdjustments(ua17, fetchedData.raRAdjustments)
-        ua19 <- updateRentalsAndRaRAbout(ua18, fetchedData.rentalsAndRaRAbout)
-        ua20 <- updateForeignPropertySelectCountry(ua19, fetchedData.foreignPropertySelectCountry)
-        ua21 <- updateJourneyStatuses(ua20, fetchedData.journeyStatuses)
+        ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.ukPropertyData.propertyRentalsIncome)
+        ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.ukPropertyData.rentalsAndRaRIncome)
+        ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.ukPropertyData.propertyRentalsExpenses, Rentals)
+        ua15 <- updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
+        ua16 <- updateRentARoomAbout(ua15, fetchedData.ukPropertyData.raRAbout)
+        ua17 <- updateRentARoomAllowance(ua16, fetchedData.ukPropertyData.rentARoomAllowances)
+        ua18 <- updateRentARoomAdjustments(ua17, fetchedData.ukPropertyData.raRAdjustments)
+        ua19 <- updateRentalsAndRaRAbout(ua18, fetchedData.ukPropertyData.rentalsAndRaRAbout)
+        ua20 <- updateForeignPropertySelectCountry(ua19, fetchedData.ukPropertyData.foreignPropertySelectCountry)
+        ua21 <- updateJourneyStatuses(ua20, fetchedData.ukPropertyData.journeyStatuses)
       } yield ua21
     }.getOrElse(userAnswersArg)
 

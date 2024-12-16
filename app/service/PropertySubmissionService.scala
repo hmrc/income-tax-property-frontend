@@ -20,7 +20,7 @@ import audit.RentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{HttpParserError, ServiceError, UKPropertyDetailsError}
-import models.{FetchedBackendData, JourneyContext, User}
+import models.{FetchedPropertyData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
@@ -37,7 +37,7 @@ class PropertySubmissionService @Inject() (
 
   def getPropertySubmission(taxYear: Int, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ServiceError, FetchedBackendData]] =
+  ): Future[Either[ServiceError, FetchedPropertyData]] =
     businessService.getUkPropertyDetails(user.nino, user.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
       case Right(propertyDetails) =>

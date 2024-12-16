@@ -22,7 +22,7 @@ import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.Under
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedBackendData, JourneyContext, JourneyPath, UKPropertySelect, User}
+import models.{FetchedBackendData, FetchedForeignPropertyData, FetchedPropertyData, JourneyContext, JourneyPath, UKPropertySelect, User}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -44,7 +44,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
   "getPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val resultFromConnector = FetchedBackendData(
+      val ukPropertyData = FetchedBackendData(
         None,
         None,
         None,
@@ -65,6 +65,8 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         List(),
         None
       )
+      val foreignPropertyData = FetchedForeignPropertyData(None,None)
+      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData)
       val incomeSourceId = "incomeSourceId"
       val details =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)

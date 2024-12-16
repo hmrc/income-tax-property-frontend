@@ -18,13 +18,13 @@ package connectors.response
 
 import connectors.Parser
 import connectors.error.ApiError
-import models.FetchedBackendData
+import models.FetchedPropertyData
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 final case class GetPropertyPeriodicSubmissionResponse(
   httpResponse: HttpResponse,
-  result: Either[ApiError, FetchedBackendData]
+  result: Either[ApiError, FetchedPropertyData]
 )
 
 object GetPropertyPeriodicSubmissionResponse {
@@ -42,10 +42,10 @@ object GetPropertyPeriodicSubmissionResponse {
           case _ => GetPropertyPeriodicSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
         }
 
-      private def extractResult(response: HttpResponse): Either[ApiError, FetchedBackendData] =
+      private def extractResult(response: HttpResponse): Either[ApiError, FetchedPropertyData] =
         response.json
-          .validate[FetchedBackendData]
-          .fold[Either[ApiError, FetchedBackendData]](
+          .validate[FetchedPropertyData]
+          .fold[Either[ApiError, FetchedPropertyData]](
             e => {
               //Todo: Proper specific error to be logged.
               badSuccessJsonResponse
