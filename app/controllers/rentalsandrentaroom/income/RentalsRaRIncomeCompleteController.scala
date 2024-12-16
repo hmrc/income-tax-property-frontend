@@ -79,7 +79,8 @@ class RentalsRaRIncomeCompleteController @Inject() (
                             journeyPath = PropertyRentalsAndRentARoomIncome
                           ),
                           status = statusForPage(value),
-                          request.user
+                          request.user,
+                          None
                         )
             } yield status.fold(
               _ =>

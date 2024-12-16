@@ -118,7 +118,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
               )
             ),
             ArgumentMatchers.eq("completed"),
-            ArgumentMatchers.eq(user)
+            ArgumentMatchers.eq(user),
+            ArgumentMatchers.eq(None)
           )(any())
 
         val application =

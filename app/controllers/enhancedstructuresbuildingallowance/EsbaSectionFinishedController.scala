@@ -95,7 +95,8 @@ class EsbaSectionFinishedController @Inject() (
       .setStatus(
         context,
         statusForPage(value),
-        request.user
+        request.user,
+        None
       )
       .flatMap {
         case Right(_) => Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))

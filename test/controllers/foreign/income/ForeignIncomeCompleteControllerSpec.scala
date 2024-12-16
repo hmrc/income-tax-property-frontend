@@ -85,7 +85,8 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(Some(countryCode))
         )(any())
       ) thenReturn Future.successful(
         Right("")
@@ -123,7 +124,8 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(Some(countryCode))
         )(any())
       ) thenReturn Future.successful(
         Right("")

@@ -106,7 +106,8 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(None)
         )(any())
       ) thenReturn Future.successful(
         Right("")

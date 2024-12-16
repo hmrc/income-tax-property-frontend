@@ -79,7 +79,8 @@ class AboutSectionCompleteController @Inject() (
                             journeyPath = RentARoomAbout
                           ),
                           status = statusForPage(value),
-                          request.user
+                          request.user,
+                          None
                         )
             } yield status.fold(
               _ =>

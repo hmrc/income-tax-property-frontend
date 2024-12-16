@@ -117,7 +117,8 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
             )
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(None)
         )(any())
 
       val application =

@@ -79,7 +79,8 @@ class AboutPropertyRentalsSectionFinishedController @Inject() (
                             PropertyRentalAbout
                           ),
                           statusForPage(value),
-                          request.user
+                          request.user,
+                          None
                         )
             } yield status.fold(
               _ => statusError(journeyName = "about", propertyType = Rentals, user = request.user, taxYear = taxYear),

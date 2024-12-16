@@ -78,7 +78,8 @@ class RentalsAdjustmentsCompleteController @Inject() (
                             journeyPath = RentalAdjustments
                           ),
                           status = statusForPage(value),
-                          user = request.user
+                          user = request.user,
+                          countryCode = None
                         )
             } yield status.fold(
               _ =>

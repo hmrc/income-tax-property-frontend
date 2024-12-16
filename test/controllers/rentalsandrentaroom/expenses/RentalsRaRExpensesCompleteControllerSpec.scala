@@ -94,7 +94,7 @@ class RentalsRaRExpensesCompleteControllerSpec extends SpecBase with MockitoSuga
       val journeyAnswersService = mock[JourneyAnswersService]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-      when(journeyAnswersService.setStatus(any(), any(), any())(any())) thenReturn Future.successful(Right("true"))
+      when(journeyAnswersService.setStatus(any(), any(), any(), any())(any())) thenReturn Future.successful(Right("true"))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)

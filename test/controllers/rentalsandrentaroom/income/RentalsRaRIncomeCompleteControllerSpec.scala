@@ -117,7 +117,8 @@ class RentalsRaRIncomeCompleteControllerSpec extends SpecBase with MockitoSugar 
             )
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(None)
         )(any())
 
       val application =
@@ -148,7 +149,7 @@ class RentalsRaRIncomeCompleteControllerSpec extends SpecBase with MockitoSugar 
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
-        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())
+        mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any(), any())(any())
       ).thenReturn(
         Future.successful(
           Right("")

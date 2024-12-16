@@ -105,7 +105,8 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = PropertyRentalAbout)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(None)
         )(any())
       ) thenReturn Future.successful(
         Right("")

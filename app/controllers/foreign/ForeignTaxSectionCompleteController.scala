@@ -80,7 +80,8 @@ class ForeignTaxSectionCompleteController @Inject() (
                             journeyPath = ForeignPropertyTax
                           ),
                           status = statusForPage(value),
-                          request.user
+                          request.user,
+                          None
                         )
             } yield status.fold(
               _ =>

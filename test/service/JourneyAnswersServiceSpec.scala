@@ -79,7 +79,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
     }
 
     "return data" in {
-      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any())(any())) thenReturn Future(
+      when(mockJourneyAnswersConnector.setStatus(any(), any(), any(), any(), any(), any())(any())) thenReturn Future(
         Right("")
       )
 

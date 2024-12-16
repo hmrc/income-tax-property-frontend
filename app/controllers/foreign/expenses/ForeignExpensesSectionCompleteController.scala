@@ -78,7 +78,8 @@ class ForeignExpensesSectionCompleteController @Inject()(
                 journeyPath = ForeignPropertyExpenses
               ),
               status = statusForPage(value),
-              request.user
+              request.user,
+              None
             )
           } yield Redirect(navigator.nextPage(ForeignExpensesSectionCompletePage(countryCode), taxYear, NormalMode, request.userAnswers, updatedAnswers))
       )

@@ -78,7 +78,8 @@ class IncomeSectionFinishedController @Inject() (
                             journeyPath = RentalIncome
                           ),
                           status = statusForPage(value),
-                          user = request.user
+                          user = request.user,
+                          countryCode = None
                         )
             } yield status.fold(
               _ => statusError(journeyName = "income", propertyType = Rentals, user = request.user, taxYear = taxYear),

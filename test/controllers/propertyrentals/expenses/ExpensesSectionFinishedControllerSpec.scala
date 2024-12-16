@@ -103,7 +103,8 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalExpenses)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(None)
         )(ArgumentMatchers.any())
       ) thenReturn Future.successful(
         Right("")

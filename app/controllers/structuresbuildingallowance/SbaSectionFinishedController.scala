@@ -82,7 +82,7 @@ class SbaSectionFinishedController @Inject() (
     val sectionPath = if (propertyType == Rentals) RentalSBA else PropertyRentalsAndRentARoomSBA
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
     journeyAnswersService
-      .setStatus(context, statusForPage(value), request.user)
+      .setStatus(context, statusForPage(value), request.user, None)
       .flatMap {
         case Right(_) => Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
         case Left(_) =>
