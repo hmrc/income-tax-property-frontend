@@ -17,8 +17,8 @@
 package navigation
 
 import base.SpecBase
-import models.{NormalMode, TotalPropertyIncome, UserAnswers}
-import pages.Page
+import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UserAnswers}
+import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import controllers.ukandforeignproperty.routes
 import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
 
@@ -72,6 +72,33 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           ua
         ) mustBe ???
       }
+    }
+
+    "Uk And Foreign Property Rental Type Uk" - {
+      "in Normal mode" - {
+        "must go to SelectCountryPage" in {
+          navigator.nextPage(
+            UkAndForeignPropertyRentalTypeUkPage,
+            taxYear,
+            NormalMode,
+            UserAnswers("id"),
+            UserAnswers("id")
+          ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+        }
+      }
+
+      "in Check mode" - {
+        "must go to the CYA page" in {
+          navigator.nextPage(
+            UkAndForeignPropertyRentalTypeUkPage,
+            taxYear,
+            CheckMode,
+            UserAnswers("id"),
+            UserAnswers("id")
+          ) mustBe controllers.routes.IndexController.onPageLoad //TODO - update to CYA route when it exists
+        }
+      }
+
     }
 
     "Foreign Countries Rented in Normal mode" - {

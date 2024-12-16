@@ -19,8 +19,8 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.Page
 import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, TotalPropertyIncomePage}
+import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
 @Singleton
@@ -30,12 +30,15 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => userAnswers => totalIncomeNavigation(taxYear, userAnswers, NormalMode)
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers, NormalMode)
+    case UkAndForeignPropertyRentalTypeUkPage =>
+      taxYear => _ => _ => ukAndForeignPropertyRentalTypeUkNavigation(taxYear, NormalMode)
     case ForeignCountriesRentedPage =>
       taxYear => _ => userAnswers => foreignCountriesRentedNavigation(taxYear, userAnswers)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
-  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = (_ => _ => _ => _ => controllers.routes.IndexController.onPageLoad) //TODO CYA page
+  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call =
+    (_ => _ => _ => _ => controllers.routes.IndexController.onPageLoad) //TODO CYA page
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = {
     mode match {
@@ -59,6 +62,9 @@ class UkAndForeignPropertyNavigator {
       case Some(ReportIncome.DoNoWantToReport) => controllers.routes.IndexController.onPageLoad // TODO: route to CYA page when created
     }
   }
+
+  private def ukAndForeignPropertyRentalTypeUkNavigation(taxYear: Int, mode: Mode): Call =
+    routes.SelectCountryController.onPageLoad(taxYear, Index(1), mode)
 
   private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ForeignCountriesRentedPage) match {
