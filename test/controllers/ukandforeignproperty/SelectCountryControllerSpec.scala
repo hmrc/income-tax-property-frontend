@@ -57,9 +57,11 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request = FakeRequest(GET, selectCountryRoute)
 
-          val result = route(application, request).value
-
+          val controller = application.injector.instanceOf[SelectCountryController]
           val view = application.injector.instanceOf[SelectCountryView]
+
+
+          val result = controller.onPageLoad(taxYear, index, NormalMode)(request)
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItems)(
@@ -78,9 +80,10 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request = FakeRequest(GET, selectCountryRoute)
 
+          val controller = application.injector.instanceOf[SelectCountryController]
           val view = application.injector.instanceOf[SelectCountryView]
 
-          val result = route(application, request).value
+          val result = controller.onPageLoad(taxYear, index, NormalMode)(request)
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(
@@ -108,9 +111,10 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
           val boundForm = form.bind(Map("country" -> ""))
 
-          val view = application.injector.instanceOf[SelectCountryView]
+          val controller = application.injector.instanceOf[SelectCountryController]
+          val view       = application.injector.instanceOf[SelectCountryView]
 
-          val result = route(application, request).value
+          val result = controller.onSubmit(taxYear, index, NormalMode)(request)
 
           status(result) mustEqual BAD_REQUEST
           contentAsString(result) mustEqual view(boundForm, taxYear, index, userType, NormalMode, countrySelectItems)(
@@ -140,7 +144,9 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, selectCountryRoute)
             .withFormUrlEncodedBody(("country", "IND"))
 
-        val result = route(application, request).value
+        val controller = application.injector.instanceOf[SelectCountryController]
+
+        val result = controller.onSubmit(taxYear, index, NormalMode)(request)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
@@ -154,7 +160,9 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request = FakeRequest(GET, selectCountryRoute)
 
-        val result = route(application, request).value
+        val controller = application.injector.instanceOf[SelectCountryController]
+
+        val result = controller.onPageLoad(taxYear, index, NormalMode)(request)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
@@ -169,8 +177,9 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
         val request =
           FakeRequest(POST, selectCountryRoute)
             .withFormUrlEncodedBody(("country", "answer"))
+        val controller = application.injector.instanceOf[SelectCountryController]
 
-        val result = route(application, request).value
+        val result = controller.onSubmit(taxYear, index, NormalMode)(request)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url

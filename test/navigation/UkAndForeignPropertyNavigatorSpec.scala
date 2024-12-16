@@ -17,10 +17,11 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UserAnswers}
+import models._
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
+import pages.foreign.Country
+import pages.ukandforeignproperty._
 
 import java.time.LocalDate
 
@@ -31,19 +32,19 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
   "ForeignPropertyNavigator" - {
 
+    "must go from a page that doesn't exist in the route map to Index" - {
+      case object UnknownPage extends Page
+
+      navigator.nextPage(
+        UnknownPage,
+        taxYear,
+        NormalMode,
+        UserAnswers("id"),
+        UserAnswers("id")
+      ) mustBe controllers.routes.IndexController.onPageLoad
+    }
+
     "Total Property Income in Normal mode" - {
-
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
 
       "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is 'less then £1000'" in {
 
@@ -103,18 +104,6 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
     "Foreign Countries Rented in Normal mode" - {
 
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
-
       "must go from AddCountriesRentedPage to previous page(SelectIncomeCountryPage) if AddCountriesRentedPage is true" in {
         val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, true).get
 
@@ -138,6 +127,24 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           UserAnswers("id"),
           userAnswersWithAddCountry
         ) mustBe ???
+      }
+    }
+
+    "Select Country in Normal mode" - {
+
+      "must go from a SelectCountry to ForeignCountriesRentedPage" in {
+        val country = Country("United Kingdom", "UK")
+
+        val ua = UserAnswers("id")
+          .set(SelectCountryPage(Index(0)), country).get
+
+        navigator.nextPage(
+          SelectCountryPage(Index(0)),
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          ua
+        ) mustBe routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
       }
     }
   }

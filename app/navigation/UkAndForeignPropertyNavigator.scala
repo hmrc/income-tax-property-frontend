@@ -19,8 +19,8 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, TotalPropertyIncomePage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
+import pages.ukandforeignproperty._
 import play.api.mvc.Call
 
 @Singleton
@@ -34,6 +34,8 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => ukAndForeignPropertyRentalTypeUkNavigation(taxYear, NormalMode)
     case ForeignCountriesRentedPage =>
       taxYear => _ => userAnswers => foreignCountriesRentedNavigation(taxYear, userAnswers)
+    case SelectCountryPage(_) =>
+      taxYear => _ => _ => controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
