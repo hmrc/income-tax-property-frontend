@@ -19,7 +19,7 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, countryName: String, isIncomeUnder85k: Boolean, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, countryName: String, isIncomeUnder85k: Boolean, individualOrAgent: String, countryCode:String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"foreignPropertyExpensesStart.title.$individualOrAgent", countryName))) {
 
@@ -48,8 +48,10 @@
     }
 
     <p class="govuk-body">
-    @govukButton(
+        @govukButton(
         ButtonViewModel(messages("site.continue"))
-    )
+        .asLink(controllers.foreign.expenses.routes.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear,countryCode,NormalMode).url)
+        .withId("continue")
+        )
     </p>
 }
