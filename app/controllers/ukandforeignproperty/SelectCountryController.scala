@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.SelectCountryFormProvider
 import models.{Index, Mode}
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -35,18 +35,18 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Failure
 
 class SelectCountryController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: SelectCountryFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: SelectCountryView
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: UkAndForeignPropertyNavigator,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         formProvider: SelectCountryFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: SelectCountryView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear:Int, index:Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
 
@@ -58,7 +58,7 @@ class SelectCountryController @Inject()(
       Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
   }
 
-  def onSubmit(taxYear:Int, index:Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
