@@ -20,6 +20,7 @@ import controllers.ukandforeignproperty.routes
 import models.{CheckMode, Index, UserAnswers}
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.i18n.Messages
+import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.keyCssClass
@@ -28,18 +29,16 @@ import viewmodels.implicits._
 
 object SelectCountrySummary  {
 
-  def row(taxYear: Int, index:Index, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-  answers.get(SelectCountryPage(index)).map { answer =>
+  def row(taxYear: Int, index: Index, name: String)(implicit messages: Messages): SummaryListRow =
     SummaryListRowViewModel(
-      key = KeyViewModel("selectCountry.checkYourAnswersLabel").withCssClass(keyCssClass),
-      value = ValueViewModel(HtmlFormat.escape(answer.name).toString),
+      key = KeyViewModel(HtmlFormat.escape(name).toString).withCssClass(keyCssClass),
+      value = ValueViewModel(HtmlFormat.escape("").toString),
       actions = Seq(
         ActionItemViewModel(
           "site.change",
-          routes.SelectCountryController.onPageLoad(taxYear, index, CheckMode).url
-        )
-          .withVisuallyHiddenText(messages("selectCountry.change.hidden"))
+          routes.SelectCountryController.onPageLoad(taxYear, Index(index.position), CheckMode).url
+        ).withVisuallyHiddenText(messages("selectCountry.change.hidden")),
+        ActionItemViewModel("site.remove", "/")
       )
     )
-  }
 }
