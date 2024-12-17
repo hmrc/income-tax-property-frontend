@@ -14,32 +14,15 @@
  * limitations under the License.
  */
 
-package testHelpers
+package models
 
-import models.{FetchedBackendData, FetchedForeignPropertyData, FetchedPropertyData}
+import play.api.libs.json.{Json, OFormat}
 
-trait Fixture {
-  val ukPropertyData: FetchedBackendData = FetchedBackendData(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    List(),
-    None
-  )
-  val foreignPropertyData: FetchedForeignPropertyData = FetchedForeignPropertyData(None,None)
-  val fetchedPropertyData: FetchedPropertyData = FetchedPropertyData(ukPropertyData,foreignPropertyData)
+final case class FetchedPropertyData(
+  ukPropertyData: FetchedBackendData,
+  foreignPropertyData: FetchedForeignPropertyData
+)
+
+object FetchedPropertyData {
+  implicit val format: OFormat[FetchedPropertyData] = Json.format[FetchedPropertyData]
 }

@@ -39,158 +39,161 @@ import java.time.LocalDate
 class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoSugar with Fixture {
   val data: String =
     """{
-      |        "propertyAbout": {
-      |            "totalIncome" : "between",
-      |            "ukProperty" : [
-      |               "property.rentals"
-      |             ]
-      |        },
-      |        "esbasWithSupportingQuestions": {
-      |        "claimEnhancedStructureBuildingAllowance" : true,
-      |        "esbas" : [
-      |            {
-      |                "esbaQualifyingDate" : "2022-01-04",
-      |                "esbaQualifyingAmount" : 5,
-      |                "esbaClaim" : 6,
-      |                "esbaAddress" : {
-      |                    "buildingName" : "12",
-      |                    "buildingNumber" : "12",
-      |                    "postCode" : "EH1 AB1"
-      |                }
-      |            },
-      |            {
-      |                "esbaQualifyingDate" : "2022-03-03",
-      |                "esbaQualifyingAmount" : 4,
-      |                "esbaClaim" : 5,
-      |                "esbaAddress" : {
-      |                    "buildingName" : "2",
-      |                    "buildingNumber" : "2",
-      |                    "postCode" : "EH1 AB1"
-      |                }
-      |            }
-      |        ],
-      |        "esbaClaims" : false
-      |        },
-      |        "propertyRentalsAbout" : {
-      |            "claimPropertyIncomeAllowanceYesOrNo" : false
-      |        },
-      |        "propertyRentalsIncome" : {
-      |            "isNonUKLandlord" : false,
-      |            "propertyRentalIncome" : 45,
-      |            "premiumForLeaseYesOrNo" : true,
-      |            "calculatedFigureYourself" : {
-      |                "calculatedFigureYourself" : true,
-      |                "amount" : 45
-      |            },
-      |            "receivedGrantLeaseAmount": 6,
-      |            "reversePremiumsReceived" : {
-      |                "reversePremiumsReceived" : true,
-      |                "reversePremiums" : 45
-      |            },
-      |            "otherIncomeFromProperty" : 45
-      |        },
-      |        "propertyRentalsExpenses" : {
-      |            "consolidatedExpenses" : {
-      |                "consolidatedExpensesYesOrNo" : false
-      |            },
-      |            "rentsRatesAndInsurance" : 55,
-      |            "repairsAndMaintenanceCosts" : 7,
-      |            "loanInterestOrOtherFinancialCost" : 56,
-      |            "otherProfessionalFees" : 4,
-      |            "costsOfServicesProvided" : 34,
-      |            "propertyBusinessTravelCosts" : 4,
-      |            "otherAllowablePropertyExpenses" : 3
-      |        },
-      |        "allowances" : {
-      |            "annualInvestmentAllowance" : 44,
-      |            "electricChargePointAllowance" : {
-      |                "electricChargePointAllowanceYesOrNo" : true,
-      |                "electricChargePointAllowanceAmount" : 45
-      |            },
-      |            "zeroEmissionCarAllowance" : 4,
-      |            "zeroEmissionGoodsVehicleAllowance" : 4,
-      |            "businessPremisesRenovationAllowance" : 4,
-      |            "replacementOfDomesticGoodsAllowance" : 4,
-      |            "otherCapitalAllowance" : 4
-      |        },
-      |        "rentalsSBA": {
-      |        "claimStructureBuildingAllowance" : true,
-      |        "sbaClaims" : true,
-      |             "structureBuildingFormGroup" : [ {
-      |                "structureBuildingQualifyingDate" : "2022-04-03",
-      |                "structureBuildingQualifyingAmount" : 3,
-      |                "structureBuildingAllowanceClaim" : 4,
-      |                "structuredBuildingAllowanceAddress" : {
-      |                    "buildingName" : "3",
-      |                    "buildingNumber" : "3",
-      |                    "postCode" : "EH1 AB2"
-      |                }
-      |            },
-      |            {
-      |                "structureBuildingQualifyingDate" : "2022-02-02",
-      |                "structureBuildingQualifyingAmount" : 4,
-      |                "structureBuildingAllowanceClaim" : 5,
-      |                "structuredBuildingAllowanceAddress" : {
-      |                    "buildingName" : "4",
-      |                    "buildingNumber" : "4",
-      |                    "postCode" : "EH1 AB2"
-      |                }
-      |            }
-      |        ]
-      |
-      |        },
-      |        "adjustments" : {
-      |            "privateUseAdjustment" : 2,
-      |            "balancingCharge" : {
-      |                "balancingChargeYesNo" : true,
-      |                "balancingChargeAmount" : 3
-      |            },
-      |            "propertyIncomeAllowance" : 4,
-      |            "renovationAllowanceBalancingCharge" : {
-      |                "renovationAllowanceBalancingChargeYesNo" : true,
-      |                "renovationAllowanceBalancingChargeAmount" : 23
-      |            },
-      |            "residentialFinanceCost" : 2,
-      |            "unusedResidentialFinanceCost" : 3
-      |
+      |  "ukPropertyData" : {
+      |  "propertyAbout": {
+      |    "totalIncome" : "between",
+      |    "ukProperty" : [
+      |      "property.rentals"
+      |    ]
+      |  },
+      |  "esbasWithSupportingQuestions": {
+      |    "claimEnhancedStructureBuildingAllowance" : true,
+      |    "esbas" : [
+      |      {
+      |        "esbaQualifyingDate" : "2022-01-04",
+      |        "esbaQualifyingAmount" : 5,
+      |        "esbaClaim" : 6,
+      |        "esbaAddress" : {
+      |          "buildingName" : "12",
+      |          "buildingNumber" : "12",
+      |          "postCode" : "EH1 AB1"
+      |        }
+      |      },
+      |      {
+      |        "esbaQualifyingDate" : "2022-03-03",
+      |        "esbaQualifyingAmount" : 4,
+      |        "esbaClaim" : 5,
+      |        "esbaAddress" : {
+      |          "buildingName" : "2",
+      |          "buildingNumber" : "2",
+      |          "postCode" : "EH1 AB1"
+      |        }
+      |      }
+      |    ],
+      |    "esbaClaims" : false
+      |  },
+      |  "propertyRentalsAbout" : {
+      |    "claimPropertyIncomeAllowanceYesOrNo" : false
+      |  },
+      |  "propertyRentalsIncome" : {
+      |    "isNonUKLandlord" : false,
+      |    "propertyRentalIncome" : 45,
+      |    "premiumForLeaseYesOrNo" : true,
+      |    "calculatedFigureYourself" : {
+      |      "calculatedFigureYourself" : true,
+      |      "amount" : 45
       |    },
-      |    "raRAbout" : {
-      |            "jointlyLetYesOrNo" : false,
-      |            "totalIncomeAmount" : 30,
-      |            "claimExpensesOrRelief" : {
-      |                "claimExpensesOrReliefYesNo" : false,
-      |                "rentARoomAmount" : 50
-      |            }
-      |        },
-      |    "rentARoomAllowances" : {
-      |        "capitalAllowancesForACar" : {
-      |            "capitalAllowancesForACarYesNo" : true,
-      |            "capitalAllowancesForACarAmount" : 20
-      |        },
-      |        "annualInvestmentAllowance" : 5,
-      |        "electricChargePointAllowance" : 30,
-      |        "zeroEmissionCarAllowance" : 35,
-      |        "zeroEmissionGoodsVehicleAllowance" : 10,
-      |        "replacementOfDomesticGoodsAllowance" : 25,
-      |        "otherCapitalAllowance" : 20
+      |    "receivedGrantLeaseAmount": 6,
+      |    "reversePremiumsReceived" : {
+      |      "reversePremiumsReceived" : true,
+      |      "reversePremiums" : 45
       |    },
-      |    "raRAdjustments" : {
-      |        "balancingCharge" : {
-      |            "balancingChargeYesNo" : true,
-      |            "balancingChargeAmount" : 10
-      |        },
-      |        "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
+      |    "otherIncomeFromProperty" : 45
+      |  },
+      |  "propertyRentalsExpenses" : {
+      |    "consolidatedExpenses" : {
+      |      "consolidatedExpensesYesOrNo" : false
       |    },
-      |    "journeyStatuses": [],
-      |    "foreignPropertySelectCountry" : {
-      |       "totalIncome": "lessThanOneThousand",
-      |       "reportPropertyIncome": false}
+      |    "rentsRatesAndInsurance" : 55,
+      |    "repairsAndMaintenanceCosts" : 7,
+      |    "loanInterestOrOtherFinancialCost" : 56,
+      |    "otherProfessionalFees" : 4,
+      |    "costsOfServicesProvided" : 34,
+      |    "propertyBusinessTravelCosts" : 4,
+      |    "otherAllowablePropertyExpenses" : 3
+      |  },
+      |  "allowances" : {
+      |    "annualInvestmentAllowance" : 44,
+      |    "electricChargePointAllowance" : {
+      |      "electricChargePointAllowanceYesOrNo" : true,
+      |      "electricChargePointAllowanceAmount" : 45
+      |    },
+      |    "zeroEmissionCarAllowance" : 4,
+      |    "zeroEmissionGoodsVehicleAllowance" : 4,
+      |    "businessPremisesRenovationAllowance" : 4,
+      |    "replacementOfDomesticGoodsAllowance" : 4,
+      |    "otherCapitalAllowance" : 4
+      |  },
+      |  "rentalsSBA": {
+      |    "claimStructureBuildingAllowance" : true,
+      |    "sbaClaims" : true,
+      |    "structureBuildingFormGroup" : [ {
+      |      "structureBuildingQualifyingDate" : "2022-04-03",
+      |      "structureBuildingQualifyingAmount" : 3,
+      |      "structureBuildingAllowanceClaim" : 4,
+      |      "structuredBuildingAllowanceAddress" : {
+      |        "buildingName" : "3",
+      |        "buildingNumber" : "3",
+      |        "postCode" : "EH1 AB2"
+      |      }
+      |    },
+      |      {
+      |        "structureBuildingQualifyingDate" : "2022-02-02",
+      |        "structureBuildingQualifyingAmount" : 4,
+      |        "structureBuildingAllowanceClaim" : 5,
+      |        "structuredBuildingAllowanceAddress" : {
+      |          "buildingName" : "4",
+      |          "buildingNumber" : "4",
+      |          "postCode" : "EH1 AB2"
+      |        }
+      |      }
+      |    ]
       |
+      |  },
+      |  "adjustments" : {
+      |    "privateUseAdjustment" : 2,
+      |    "balancingCharge" : {
+      |      "balancingChargeYesNo" : true,
+      |      "balancingChargeAmount" : 3
+      |    },
+      |    "propertyIncomeAllowance" : 4,
+      |    "renovationAllowanceBalancingCharge" : {
+      |      "renovationAllowanceBalancingChargeYesNo" : true,
+      |      "renovationAllowanceBalancingChargeAmount" : 23
+      |    },
+      |    "residentialFinanceCost" : 2,
+      |    "unusedResidentialFinanceCost" : 3
+      |
+      |  },
+      |  "raRAbout" : {
+      |    "jointlyLetYesOrNo" : false,
+      |    "totalIncomeAmount" : 30,
+      |    "claimExpensesOrRelief" : {
+      |      "claimExpensesOrReliefYesNo" : false,
+      |      "rentARoomAmount" : 50
+      |    }
+      |  },
+      |  "rentARoomAllowances" : {
+      |    "capitalAllowancesForACar" : {
+      |      "capitalAllowancesForACarYesNo" : true,
+      |      "capitalAllowancesForACarAmount" : 20
+      |    },
+      |    "annualInvestmentAllowance" : 5,
+      |    "electricChargePointAllowance" : 30,
+      |    "zeroEmissionCarAllowance" : 35,
+      |    "zeroEmissionGoodsVehicleAllowance" : 10,
+      |    "replacementOfDomesticGoodsAllowance" : 25,
+      |    "otherCapitalAllowance" : 20
+      |  },
+      |  "raRAdjustments" : {
+      |    "balancingCharge" : {
+      |      "balancingChargeYesNo" : true,
+      |      "balancingChargeAmount" : 10
+      |    },
+      |    "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
+      |  },
+      |  "journeyStatuses": [],
+      |  "foreignPropertySelectCountry" : {
+      |    "totalIncome": "lessThanOneThousand",
+      |    "reportPropertyIncome": false}
+      |  },
+      |  "foreignPropertyData": {
+      |  }
       |}""".stripMargin
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
-      val fetchedData: FetchedBackendData = Json.parse(data).as[FetchedBackendData] // fetchedPropertyData
+      val fetchedData = Json.parse(data).as[FetchedPropertyData]
 
       val updated = emptyUserAnswers
         .update(fetchedData)
