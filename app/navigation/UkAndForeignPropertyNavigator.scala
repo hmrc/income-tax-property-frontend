@@ -66,7 +66,7 @@ class UkAndForeignPropertyNavigator {
   }
 
   private def ukAndForeignPropertyRentalTypeUkNavigation(taxYear: Int, mode: Mode): Call =
-    routes.SelectCountryController.onPageLoad(taxYear, Index(1), mode)
+    routes.SelectCountryController.onPageLoad(taxYear, Index(0), mode)
 
   private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(ForeignCountriesRentedPage) match {

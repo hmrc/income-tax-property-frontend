@@ -84,7 +84,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
             NormalMode,
             UserAnswers("id"),
             UserAnswers("id")
-          ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+          ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(0), NormalMode)
         }
       }
 
