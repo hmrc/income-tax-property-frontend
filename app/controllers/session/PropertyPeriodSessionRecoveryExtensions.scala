@@ -147,9 +147,13 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(foreignPropertySelectCountry) =>
           for {
+            totalIncomeAnswers <-
+              userAnswers.set(pages.foreign.TotalIncomePage, foreignPropertySelectCountry.totalIncome)
             reportIncomeUserAnswers <-
-              foreignPropertySelectCountry.reportPropertyIncome.fold[Try[UserAnswers]](Success(userAnswers))(
-                reportIncome => userAnswers.set(pages.foreign.PropertyIncomeReportPage, reportIncome)
+              foreignPropertySelectCountry.reportPropertyIncome.fold[Try[UserAnswers]](
+                Success(totalIncomeAnswers)
+              )(reportIncome =>
+                totalIncomeAnswers.set(pages.foreign.PropertyIncomeReportPage, reportIncome)
               )
             incomeCountriesUserAnswers <-
               foreignPropertySelectCountry.incomeCountries.fold[Try[UserAnswers]](Success(reportIncomeUserAnswers))(
@@ -165,10 +169,8 @@ object PropertyPeriodSessionRecoveryExtensions {
               )(claimAllowances =>
                 addCountriesUserAnswers.set(pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage, claimAllowances)
               )
-            foreignPropertySelectCountryUserAnswers <-
-              claimPIAUserAnswers.set(pages.foreign.TotalIncomePage, foreignPropertySelectCountry.totalIncome)
 
-          } yield foreignPropertySelectCountryUserAnswers
+          } yield claimPIAUserAnswers
       }
 
     private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
