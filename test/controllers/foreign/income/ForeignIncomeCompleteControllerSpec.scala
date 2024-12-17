@@ -51,9 +51,8 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
     User(
       mtditid = "mtditid",
       nino = "nino",
-      isAgent = false,
       affinityGroup = "affinityGroup",
-      agentRef = Some("agentReferenceNumber")
+      agentRef = None
     )
 
   lazy val foreignIncomeSectionCompleteRoute: String =

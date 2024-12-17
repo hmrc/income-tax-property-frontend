@@ -51,7 +51,6 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar {
               User(
                 mtditid = "mtditid",
                 nino = "nino",
-                isAgent = true,
                 affinityGroup = "affinityGroup",
                 agentRef = Some("agentReferenceNumber")
               )
@@ -79,7 +78,6 @@ class DataRetrievalActionSpec extends SpecBase with MockitoSugar {
               User(
                 mtditid = "mtditid",
                 nino = "nino",
-                isAgent = true,
                 affinityGroup = "affinityGroup",
                 agentRef = Some("agentReferenceNumber")
               )

@@ -50,9 +50,8 @@ class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
   val user = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
 
   lazy val rentalsRaRAboutCompleteRoute = routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear).url

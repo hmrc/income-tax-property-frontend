@@ -47,8 +47,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",
-    isAgent = false,
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
 
   lazy val aboutExpenseIncomeAllowanceSectionFinishedRoute =

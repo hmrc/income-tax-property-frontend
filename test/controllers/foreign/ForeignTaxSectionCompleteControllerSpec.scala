@@ -54,9 +54,8 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
   val user: User = User(
     mtditid = "mtditid",
     nino = "nino",
-    isAgent = false,
     affinityGroup = "affinityGroup",
-    agentRef = Some("agentReferenceNumber")
+    agentRef = None
   )
 
   lazy val foreignTaxSectionCompleteRoute: String =
