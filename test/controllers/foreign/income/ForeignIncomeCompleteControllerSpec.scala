@@ -80,12 +80,13 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
 
       val mockJourneyAnswersService = mock[JourneyAnswersService]
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(countryCode)
         )(any())
       ) thenReturn Future.successful(
         Right("")
@@ -118,12 +119,13 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
 
       val mockJourneyAnswersService = mock[JourneyAnswersService]
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyIncome)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(countryCode)
         )(any())
       ) thenReturn Future.successful(
         Right("")

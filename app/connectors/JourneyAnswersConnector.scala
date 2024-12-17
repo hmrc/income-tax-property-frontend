@@ -71,4 +71,26 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
         response.result
       }
   }
+
+  def setForeignStatus(taxYear: Int, incomeSourceId: String, journeyName: JourneyPath, status: String, user: User, countryCode: String)
+                      (implicit hc: HeaderCarrier
+  ): Future[Either[ApiError, String]] = {
+    val updateStatusUrl =
+      s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear/$countryCode"
+
+    httpClient
+      .put(url"$updateStatusUrl")
+      .setHeader("mtditid" -> user.mtditid)
+      .withBody(Json.obj("status" -> JsString(status)))
+      .execute[UpdateStatusResponse]
+      .map { response: UpdateStatusResponse =>
+        if (response.result.isLeft) {
+          logger.error(
+            s"Error updating the status of the journey" +
+              s" status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
 }
