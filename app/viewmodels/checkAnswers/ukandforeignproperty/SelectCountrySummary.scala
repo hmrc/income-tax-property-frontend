@@ -17,10 +17,8 @@
 package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
-import models.{CheckMode, Index, UserAnswers}
-import pages.ukandforeignproperty.SelectCountryPage
+import models.{CheckMode, Index}
 import play.api.i18n.Messages
-import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.keyCssClass
@@ -39,6 +37,7 @@ object SelectCountrySummary  {
           routes.SelectCountryController.onPageLoad(taxYear, Index(index.position), CheckMode).url
         ).withVisuallyHiddenText(messages("selectCountry.change.hidden")),
         ActionItemViewModel("site.remove", "/")
-      )
+      ),
+      actionsCss = "w-25"
     )
 }
