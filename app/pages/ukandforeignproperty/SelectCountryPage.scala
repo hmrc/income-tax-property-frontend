@@ -21,9 +21,10 @@ import pages.QuestionPage
 import pages.foreign.Country
 import play.api.libs.json.JsPath
 
-case class SelectCountryPage(index: Index) extends QuestionPage[Country] {
+case object SelectCountryPage extends QuestionPage[Set[Country]] {
 
-  override def path: JsPath = JsPath \ toString \ index.position
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "selectedCountry"
+  override def toString: String = "countries"
+
 }

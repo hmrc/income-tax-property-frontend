@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages(s"foreignCountriesRentList.title.$individualOrAgent"))) {
 
-    @formHelper(action = ForeignCountriesRentedController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = ForeignCountriesRentedController.onSubmit(taxYear, mode), Symbol("autocomplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -42,7 +42,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field  = form("foreignCountriesRentedPropertyYesOrNo"),
+                field  = form("addAnother"),
                 legend = LegendViewModel(messages("countriesRentedProperty.legend")).asPageHeading(LegendSize.Medium)
             )
         )
