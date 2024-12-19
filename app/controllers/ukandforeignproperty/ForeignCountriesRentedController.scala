@@ -19,8 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.ForeignCountriesRentedFormProvider
 import models.{Index, Mode, UserAnswers}
-import navigation.{Navigator, UkAndForeignPropertyNavigator}
-import pages.foreign.IncomeSourceCountries
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.{ForeignCountriesRentedPage, SelectCountryPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -28,7 +27,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.checkAnswers.ukandforeignproperty.SelectCountrySummary
 import viewmodels.govuk.summarylist._
 import views.html.ukandforeignproperty.ForeignCountriesRentedView
@@ -55,8 +53,15 @@ class ForeignCountriesRentedController @Inject()(
     implicit request =>
       val list: SummaryList = summaryList(taxYear, request.userAnswers)
 
-      // Shouldn't populate form as the answer could change each time the user visits the page
-      Ok(view(form, list, taxYear, request.user.isAgentMessageKey, mode))
+      // TODO: Update to call backend instead when completing backend tickets
+      request.userAnswers.get(SelectCountryPage) match {
+        case Some(countries) if countries.nonEmpty =>
+          // Don't populate form, as the answer could change each time the user visits the page
+          Ok(view(form, list, taxYear, request.user.isAgentMessageKey, mode))
+        case _ =>
+          Redirect(routes.SelectCountryController.onPageLoad(taxYear, Index(1), mode))
+      }
+
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -70,10 +75,11 @@ class ForeignCountriesRentedController @Inject()(
           addAnotherCountry =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCountriesRentedPage, addAnotherCountry))
-              countries      <- Future(request.userAnswers.get(SelectCountryPage))
+              countries      <- Future(request.userAnswers.get(SelectCountryPage).getOrElse(Set.empty))
+              nextIndex      =  countries.size
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextIndex(ForeignCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers, countries.size + 1)
+              navigator.nextIndex(ForeignCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers, nextIndex)
             )
         )
   }

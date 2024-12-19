@@ -19,11 +19,10 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.SelectCountryFormProvider
 import models.{Index, Mode}
-import navigation.{Navigator, UkAndForeignPropertyNavigator}
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource

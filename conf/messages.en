@@ -2299,9 +2299,9 @@ ukAndForeignPropertyRentalTypeUk.change.hidden.individual = which rental propert
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = which rental property does your client have in the UK?
 
 selectCountry.title.individual = From which country did you receive your foreign property rental income?
-selectCountry.title.agent  = Message for agent is missing
+selectCountry.title.agent  = From which country did your client receive their foreign property rental income?
 selectCountry.heading.individual  = From which country did you receive your foreign property rental income?
-selectCountry.heading.agent  = Message for agent is missing
+selectCountry.heading.agent  = From which country did your client receive their foreign property rental income?
 selectCountry.checkYourAnswersLabel = From which country did you receive your foreign property rental income?
 selectCountry.error.required.individual = Select which country you received this income from
 selectCountry.error.required.agent = Select which country your client received this income from

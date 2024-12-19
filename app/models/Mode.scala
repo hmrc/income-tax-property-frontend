@@ -41,7 +41,6 @@ object Mode {
         case Some(`normalMode`) => Some(Right(NormalMode))
         case Some(`checkMode`) => Some(Right(CheckMode))
         case Some(x) => {
-          println(s"MYSTERY VALUE: $x")
           Some(Left(x))
         }
         case None => None
