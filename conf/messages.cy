@@ -2280,3 +2280,17 @@ selectCountry.checkYourAnswersLabel = *Missing Welsh*
 selectCountry.error.required.individual = *Missing Welsh*
 selectCountry.error.required.agent = *Missing Welsh*
 selectCountry.change.hidden = *Missing Welsh*
+
+foreignStructureBuildingAllowanceClaim.title =	Faint yw’ch hawliad am lwfans strwythurau ac adeiladau?
+foreignStructureBuildingAllowanceClaim.heading.individual =	Faint yw’ch hawliad am lwfans strwythurau ac adeiladau?
+foreignStructureBuildingAllowanceClaim.heading.agent =	Faint yw hawliad eich cleient am lwfans strwythurau ac adeiladau?
+foreignStructureBuildingAllowanceClaim.legend.individual =	Nodwch y swm rydych wedi’i gyfrifo ar gyfer eich lwfans.
+foreignStructureBuildingAllowanceClaim.legend.agent =	Nodwch y swm rydych wedi’i gyfrifo ar gyfer lwfans eich cleient.
+foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel =	Gwerth yr hawliad
+foreignStructureBuildingAllowanceClaim.error.nonNumeric =	Nodwch swm yr hawliad am lwfans strwythurau ac adeiladau
+foreignStructureBuildingAllowanceClaim.error.required.individual =	Nodwch swm eich hawliad am lwfans strwythurau ac adeiladau
+foreignStructureBuildingAllowanceClaim.error.required.agent =	Nodwch swm hawliad eich cleient am lwfans strwythurau ac adeiladau
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.individual =	Gall yr hawliad am lwfans strwythurau ac adeiladau gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.agent =	Gall yr hawliad am lwfans strwythurau ac adeiladau gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
+foreignStructureBuildingAllowanceClaim.error.outOfRange =	Nodwch swm rhwng £{0} a £{1}
+foreignStructureBuildingAllowanceClaim.change.hidden =	Hawliad am Lwfans Strwythurau ac Adeiladau
