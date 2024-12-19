@@ -27,9 +27,11 @@ object CountryNamesDataSource {
   // Adding an empty option as a workaround for the Select component
   lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems
 
+  private lazy val loadedCountries: Seq[Country] = loadCountries
+
   private def emptyOption: SelectItem = SelectItem(text = "", value = Some(""))
 
-  def getCountry(code: String): Option[Country] = loadCountries.find(item => item.code == code)
+  def getCountry(code: String): Option[Country] = loadedCountries.find(item => item.code == code)
 
   private def selectItems: Seq[SelectItem] =
     loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))

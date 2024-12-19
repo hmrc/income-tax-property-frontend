@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.SelectCountryFormProvider
 import models.{Index, Mode}
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -32,46 +32,60 @@ import views.html.ukandforeignproperty.SelectCountryView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Failure
 
-class SelectCountryController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: SelectCountryFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: SelectCountryView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SelectCountryController @Inject() (
+                                          override val messagesApi: MessagesApi,
+                                          sessionRepository: SessionRepository,
+                                          navigator: UkAndForeignPropertyNavigator,
+                                          identify: IdentifierAction,
+                                          getData: DataRetrievalAction,
+                                          requireData: DataRequiredAction,
+                                          formProvider: SelectCountryFormProvider,
+                                          val controllerComponents: MessagesControllerComponents,
+                                          view: SelectCountryView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear:Int, index:Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
 
-      val preparedForm = request.userAnswers.get(SelectCountryPage(index)) match {
+      val preparedForm = request.userAnswers.get(SelectCountryPage) match {
         case None => form
-        case Some(value) => form.fill(value.code)
+        case Some(countrySet) =>
+          countrySet.toList.lift(index.position - 1) match {
+            case Some(country) => form.fill(country.code)
+            case _             => form
+          }
       }
 
       Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
-  }
+    }
 
-  def onSubmit(taxYear:Int, index:Index, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[String] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))),
-
-        countryCode =>
-          for {
-            updatedAnswers <- Future.fromTry(CountryNamesDataSource.getCountry(countryCode)
-              .map(country => request.userAnswers.set(SelectCountryPage(index), country))
-              .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognized"))))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SelectCountryPage(index), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
+            ),
+          countryCode =>
+            for {
+              existingCountryList <- Future(request.userAnswers.get(SelectCountryPage))
+              country             <- Future(CountryNamesDataSource.getCountry(countryCode))
+              updatedCountryList =
+                existingCountryList
+                  .map(_ ++ country)
+                  .getOrElse(country)
+                  .toSet
+              updatedUserAnswers <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountryList))
+              _ <- sessionRepository.set(updatedUserAnswers)
+            } yield Redirect(
+                navigator.nextPage(SelectCountryPage, taxYear, mode, request.userAnswers, updatedUserAnswers)
+              )
+        )
+    }
 }

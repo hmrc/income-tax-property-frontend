@@ -29,23 +29,23 @@ class ForeignCountriesRentedFormProviderSpec extends AnyWordSpec with Matchers {
   "CountriesListFormProvider" must {
 
     "bind true" in {
-      val result = form.bind(Map("foreignCountriesRentedPropertyYesOrNo" -> "true"))
+      val result = form.bind(Map("addAnother" -> "true"))
       result.value shouldBe Some(true)
     }
 
     "bind false" in {
-      val result = form.bind(Map("foreignCountriesRentedPropertyYesOrNo" -> "false"))
+      val result = form.bind(Map("addAnother" -> "false"))
       result.value mustBe Some(false)
     }
 
     "fail to bind when key is not present" in {
       val result = form.bind(Map.empty[String, String])
-      result.errors must contain only FormError("foreignCountriesRentedPropertyYesOrNo", requiredKey)
+      result.errors must contain only FormError("addAnother", requiredKey)
     }
 
     "fail to bind when value is invalid" in {
-      val result = form.bind(Map("foreignCountriesRentedPropertyYesOrNo" -> "invalid"))
-      result.errors must contain only FormError("foreignCountriesRentedPropertyYesOrNo", "error.boolean")
+      val result = form.bind(Map("addAnother" -> "invalid"))
+      result.errors must contain only FormError("addAnother", "error.boolean")
     }
   }
 }

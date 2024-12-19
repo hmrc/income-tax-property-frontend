@@ -25,6 +25,6 @@ class ForeignCountriesRentedFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "foreignCountriesRentedPropertyYesOrNo" -> boolean("selectIncomeCountry.error.required.individual")
+      "addAnother" -> boolean("selectIncomeCountry.error.required.individual")
     )
 }

@@ -41,7 +41,7 @@ object CountriesRentedPropertySummary {
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
           ActionItemViewModel(
             "site.remove",
-            controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index,CheckMode).url
+            controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index, CheckMode).url
           )
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
         ),

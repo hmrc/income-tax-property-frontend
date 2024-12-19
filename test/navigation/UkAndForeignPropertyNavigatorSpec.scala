@@ -29,7 +29,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
   private val navigator = new UkAndForeignPropertyNavigator
   private val taxYear = LocalDate.now.getYear
 
-  "ForeignPropertyNavigator" - {
+  "UkAndForeignPropertyNavigator" - {
 
     "Total Property Income in Normal mode" - {
 
@@ -115,17 +115,18 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
         ) mustBe controllers.routes.IndexController.onPageLoad
       }
 
-      "must go from AddCountriesRentedPage to previous page(SelectIncomeCountryPage) if AddCountriesRentedPage is true" in {
+      "must go from AddCountriesRentedPage to  if AddCountriesRentedPage is true" in {
         val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, true).get
 
-        navigator.nextPage(
+        navigator.nextIndex(
           ForeignCountriesRentedPage,
           taxYear,
           NormalMode,
           UserAnswers("id"),
-          userAnswersWithAddCountry
+          userAnswersWithAddCountry,
+          1
         ) mustBe
-          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)
+          routes.SelectCountryController.onPageLoad(taxYear, Index(2), NormalMode)
       }
 
       "must go from AddCountriesRentedPage to next page(ClaimIncomeAndExpensesPage) if AddCountriesRentedPage is false" ignore {

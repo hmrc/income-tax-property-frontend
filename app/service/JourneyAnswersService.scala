@@ -53,4 +53,25 @@ class JourneyAnswersService @Inject() (
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
 
     }
+
+  def setForeignStatus(ctx: JourneyContext, status: String, user: User, countryCode: String)(implicit
+                                                                 hc: HeaderCarrier
+  ): Future[Either[ServiceError, String]] =
+    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            journeyAnswersConnector
+              .setForeignStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyPath, status, user, countryCode)
+              .map {
+                case Left(error) =>
+                  logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
+                  Left(ConnectorError(error.status, "Error while calling set status on backend"))
+                case Right(r) => Right(r)
+              }
+          }
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
+
+    }
 }
