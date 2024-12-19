@@ -152,3 +152,8 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/check-your-answers  
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/allowances/:countryCode/other-capital-allowances                        controllers.foreign.allowances.ForeignOtherCapitalAllowancesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/other-capital-allowances                        controllers.foreign.allowances.ForeignOtherCapitalAllowancesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/change-other-capital-allowances                 controllers.foreign.allowances.ForeignOtherCapitalAllowancesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/change-other-capital-allowances                 controllers.foreign.allowances.ForeignOtherCapitalAllowancesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
