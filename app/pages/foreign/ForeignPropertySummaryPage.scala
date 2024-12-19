@@ -16,7 +16,7 @@
 
 package pages.foreign
 
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import viewmodels.summary.{TaskListItem, TaskListTag}
@@ -95,7 +95,7 @@ object ForeignPropertySummaryPage {
         ),
         TaskListItem(
           "summary.structuresAndBuildingAllowance",
-          controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+          controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
           taskListTagForIncome,
           s"foreign_property_income_$countryCode"
         )

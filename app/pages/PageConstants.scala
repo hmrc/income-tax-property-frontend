@@ -64,5 +64,7 @@ object PageConstants {
   val foreignPropertyExpensesPath: PropertyType => String = labelForPropertyType(_, "Expenses")
 
   val foreignPropertySectionFinished: String = "foreignPropertySectionFinished"
-  
+
+  val foreignPropertySbaPath: PropertyType => String = labelForPropertyType(_, "ForeignSBA")
+
 }

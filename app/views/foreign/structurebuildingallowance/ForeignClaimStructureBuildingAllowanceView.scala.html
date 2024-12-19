@@ -1,0 +1,74 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.LegendSize.Medium
+
+@this(
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
+        govukButton: GovukButton
+)
+
+
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+
+    @layout(pageTitle = title(form, messages("ForeignClaimStructureBuildingAllowance.title"))) {
+
+        @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+
+            @if(form.errors.nonEmpty) {
+                @govukErrorSummary(ErrorSummaryViewModel(form))
+            }
+
+            <h1 class="govuk-heading-l">@messages("ForeignClaimStructureBuildingAllowance.heading")</h1>
+
+
+            <p class="govuk-body">@messages("ForeignClaimStructureBuildingAllowance.details.content")</p>
+            <p class="govuk-body">@messages(s"ForeignClaimStructureBuildingAllowance.details.p1")</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l1")</li>
+                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l2")</li>
+                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l3")</li>
+                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l4")</li>
+                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l5")</li>
+            </ul>
+            <p class="govuk-body">@messages(s"ForeignClaimStructureBuildingAllowance.details.p2")
+                <a href="@messages("ForeignClaimStructureBuildingAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("ForeignClaimStructureBuildingAllowance.details.content.link.text")
+                </a>
+            </p>
+
+
+            @govukRadios(
+                RadiosViewModel.yesNoWithOtherNames(
+                    field = form("ForeignClaimStructureBuildingAllowance"),
+                    legend = LegendViewModel(messages(s"ForeignClaimStructureBuildingAllowance.legend.$individualOrAgent")).asPageHeading(Medium),
+                    yesText = "ForeignClaimStructureBuildingAllowance.yes",
+                    noText = "ForeignClaimStructureBuildingAllowance.no"
+                )
+            )
+
+            @govukButton(
+                ButtonViewModel(messages("site.continue"))
+            )
+        }
+    }
+
+    @{
+        // $COVERAGE-OFF$
+    }
