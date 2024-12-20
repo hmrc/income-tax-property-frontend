@@ -65,7 +65,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignTaxSectionCompleteRoute)
@@ -86,7 +86,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
       val userAnswers = UserAnswers(userAnswersId).set(ForeignTaxSectionCompletePage(countryCode), true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignTaxSectionCompleteRoute)
@@ -115,7 +115,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         )
       )
         .when(mockJourneyAnswersService)
-        .setStatus(
+        .setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,
@@ -125,11 +125,12 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
             )
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(countryCode)
         )(any())
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
             bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
@@ -163,7 +164,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         )
       )
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request =
@@ -186,7 +187,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignTaxSectionCompleteRoute)
@@ -200,7 +201,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
         val request =

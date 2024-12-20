@@ -25,5 +25,5 @@ case class ForeignIncomeSectionCompletePage(countryCode: String) extends Questio
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignIncomeSectionComplete"
+  override def toString: String = "sectionComplete"
 }

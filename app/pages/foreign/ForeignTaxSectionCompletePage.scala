@@ -25,5 +25,5 @@ case class ForeignTaxSectionCompletePage(countryCode: String) extends QuestionPa
 
   override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode \ toString
 
-  override def toString: String = "foreignTaxSectionComplete"
+  override def toString: String = "sectionComplete"
 }
