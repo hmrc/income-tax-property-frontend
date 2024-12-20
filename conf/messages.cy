@@ -2280,3 +2280,17 @@ selectCountry.checkYourAnswersLabel = *Missing Welsh*
 selectCountry.error.required.individual = *Missing Welsh*
 selectCountry.error.required.agent = *Missing Welsh*
 selectCountry.change.hidden = *Missing Welsh*
+
+foreignStructureBuildingAllowanceClaim.title = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.heading.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.heading.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.legend.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.legend.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.nonNumeric = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.required.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.required.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.outOfRange = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.change.hidden = *Missing Welsh*

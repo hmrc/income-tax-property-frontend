@@ -2306,3 +2306,17 @@ selectCountry.checkYourAnswersLabel = From which country did you receive your fo
 selectCountry.error.required.individual = Select which country you received this income from
 selectCountry.error.required.agent = Select which country your client received this income from
 selectCountry.change.hidden = From which country you received your foreign property rental income?
+
+foreignStructureBuildingAllowanceClaim.title = How much is your structures and buildings allowance claim?
+foreignStructureBuildingAllowanceClaim.heading.individual = How much is your structures and buildings allowance claim?
+foreignStructureBuildingAllowanceClaim.heading.agent = How much is your client’s structures and buildings allowance claim?
+foreignStructureBuildingAllowanceClaim.legend.individual = Enter the amount that you’ve calculated for your allowance.
+foreignStructureBuildingAllowanceClaim.legend.agent = Enter the amount that you’ve calculated for your client’s allowance.
+foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel = Claim value
+foreignStructureBuildingAllowanceClaim.error.nonNumeric = The structures and buildings allowance claim value can only include pounds and pence, for example £600 or £600.20
+foreignStructureBuildingAllowanceClaim.error.required.individual = Enter the amount for the structures and buildings allowance claim value
+foreignStructureBuildingAllowanceClaim.error.required.agent = Enter the amount for the structures and buildings allowance claim value
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = The structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = The structures and buildings allowance claim can only include pounds and pence, for example £600 or £600.20
+foreignStructureBuildingAllowanceClaim.error.outOfRange = Enter an amount between £{0} and £{1}
+foreignStructureBuildingAllowanceClaim.change.hidden = Structures and Buildings Allowance Claim
