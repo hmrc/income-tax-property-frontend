@@ -19,6 +19,7 @@ package controllers.actions
 import base.SpecBase
 import config.MockAppConfig
 import connectors.MockAuthConnector
+import handlers.MockErrorHandler
 import models.authorisation.{DelegatedAuthRules, SessionValues, Enrolment => EnrolmentKeys}
 import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.FakeRequest
@@ -29,7 +30,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 
 import scala.concurrent.Future
 
-class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector {
+class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector with MockErrorHandler {
 
   val mtditid = "123456789"
   val nino = "AA123456C"
@@ -45,7 +46,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
     lazy val application = applicationBuilder(userAnswers = None, isAgent = false).build()
     lazy val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
 
-    lazy val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, mockAppConfig, bodyParsers)
+    lazy val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, mockAppConfig, bodyParsers, mockErrorHandler)
 
     class Harness(authAction: IdentifierAction) {
       def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
@@ -216,56 +217,136 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
           "when EMA Supporting Agent feature is enabled" - {
 
-            "must return OK" in new Fixture {
+            "when authorised as a Secondary Agent" - {
 
-              MockAppConfig.emaSupportingAgentsEnabled(true)
+              "must return OK" in new Fixture {
 
-              val enrolments = Enrolments(Set(
-                Enrolment(
-                  key = EnrolmentKeys.SupportingAgent.key,
-                  identifiers = Seq(EnrolmentIdentifier(EnrolmentKeys.SupportingAgent.value, mtditid)),
-                  state = "Activated",
-                  delegatedAuthRule = Some(DelegatedAuthRules.supportingAgentDelegatedAuthRule)
-                ),
-                Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated"),
-                Enrolment(EnrolmentKeys.Agent.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Agent.value, arn)), "Activated")
-              ))
+                MockAppConfig.emaSupportingAgentsEnabled(true)
 
-              MockAuthConnector
-                .authorise(EmptyPredicate)(
-                  Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
-                )
+                val enrolments = Enrolments(Set(
+                  Enrolment(
+                    key = EnrolmentKeys.SupportingAgent.key,
+                    identifiers = Seq(EnrolmentIdentifier(EnrolmentKeys.SupportingAgent.value, mtditid)),
+                    state = "Activated",
+                    delegatedAuthRule = Some(DelegatedAuthRules.supportingAgentDelegatedAuthRule)
+                  ),
+                  Enrolment(EnrolmentKeys.Nino.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Nino.value, nino)), "Activated"),
+                  Enrolment(EnrolmentKeys.Agent.key, Seq(EnrolmentIdentifier(EnrolmentKeys.Agent.value, arn)), "Activated")
+                ))
 
-              MockAuthConnector
-                .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+                MockAuthConnector
+                  .authorise(EmptyPredicate)(
+                    Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
+                  )
 
-              MockAuthConnector
-                .authorise(authAction.secondaryAgentPredicate(mtditid))(Future.successful(enrolments))
+                MockAuthConnector
+                  .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
 
-              val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+                MockAuthConnector
+                  .authorise(authAction.secondaryAgentPredicate(mtditid))(Future.successful(enrolments))
 
-              status(result) mustBe OK
+                val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+                status(result) mustBe OK
+              }
+            }
+
+            "when NOT authorised as a Secondary Agent" - {
+
+              "when the Exception is an AuthorisationException" - {
+
+                "must return SEE_OTHER (303) and redirect to Agent Error page" in new Fixture {
+
+                  MockAppConfig.emaSupportingAgentsEnabled(true)
+
+                  MockAuthConnector
+                    .authorise(EmptyPredicate)(
+                      Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
+                    )
+
+                  MockAuthConnector
+                    .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+
+                  MockAuthConnector
+                    .authorise(authAction.secondaryAgentPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+
+                  val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+                  status(result) mustBe SEE_OTHER
+                  redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
+                }
+              }
+
+              "when the Exception is any other type of Unexpected Exception" - {
+
+                "must render ISE (500)" in new Fixture {
+
+                  MockAppConfig.emaSupportingAgentsEnabled(true)
+
+                  MockAuthConnector
+                    .authorise(EmptyPredicate)(
+                      Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
+                    )
+
+                  MockAuthConnector
+                    .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+
+                  MockAuthConnector
+                    .authorise(authAction.secondaryAgentPredicate(mtditid))(Future.failed(new Exception("bang")))
+
+                  mockInternalServerError()
+
+                  val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+                  status(result) mustBe INTERNAL_SERVER_ERROR
+                  contentAsString(result) mustBe "There is a problem."
+                }
+              }
             }
           }
 
           "when EMA Supporting Agent feature is disabled" - {
 
-            "must return SEE_OTHER (303) and redirect to Agent Error page" in new Fixture {
+            "when the Exception is an AuthorisationException" - {
 
-              MockAppConfig.emaSupportingAgentsEnabled(false)
+              "must return SEE_OTHER (303) and redirect to Agent Error page" in new Fixture {
 
-              MockAuthConnector
-                .authorise(EmptyPredicate)(
-                  Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
-                )
+                MockAppConfig.emaSupportingAgentsEnabled(false)
 
-              MockAuthConnector
-                .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
+                MockAuthConnector
+                  .authorise(EmptyPredicate)(
+                    Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
+                  )
 
-              val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+                MockAuthConnector
+                  .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(InsufficientEnrolments()))
 
-              status(result) mustBe SEE_OTHER
-              redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
+                val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+                status(result) mustBe SEE_OTHER
+                redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
+              }
+            }
+
+            "when the Exception is any other type of Unexpected Exception" - {
+
+              "must render ISE (500)" in new Fixture {
+
+                MockAuthConnector
+                  .authorise(EmptyPredicate)(
+                    Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
+                  )
+
+                MockAuthConnector
+                  .authorise(authAction.agentAuthPredicate(mtditid))(Future.failed(new Exception("bang")))
+
+                mockInternalServerError()
+
+                val result = controller.onPageLoad()(fakeRequestWithMtditidAndNINO)
+
+                status(result) mustBe INTERNAL_SERVER_ERROR
+                contentAsString(result) mustBe "There is a problem."
+              }
             }
           }
         }
@@ -387,6 +468,20 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.UnauthorisedController.onPageLoad.url)
+      }
+    }
+
+    "any other type of unexpected exception has bubbled up" - {
+
+      "render ISE" in new Fixture {
+
+        MockAuthConnector.authorise(EmptyPredicate)(Future.failed(new Exception("bang")))
+        mockInternalServerError()
+
+        val result = controller.onPageLoad()(FakeRequest())
+
+        status(result) mustBe INTERNAL_SERVER_ERROR
+        contentAsString(result) mustBe "There is a problem."
       }
     }
   }

@@ -17,7 +17,8 @@
 package handlers
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.RequestHeader
+import play.api.mvc.Results.InternalServerError
+import play.api.mvc.{Request, RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 import views.html.ErrorTemplate
@@ -36,4 +37,7 @@ class ErrorHandler @Inject() (
     rh: RequestHeader
   ): Future[Html] =
     Future.successful(view(pageTitle, heading, message))
+
+  def internalServerError()(implicit request: Request[_]): Future[Result] =
+    internalServerErrorTemplate.map(InternalServerError(_))
 }

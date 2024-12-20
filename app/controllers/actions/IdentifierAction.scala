@@ -19,6 +19,7 @@ package controllers.actions
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
+import handlers.ErrorHandler
 import models.authorisation.{DelegatedAuthRules, SessionValues, Enrolment => EnrolmentKeys}
 import models.requests.IdentifierRequest
 import play.api.Logging
@@ -41,7 +42,8 @@ trait IdentifierAction
 class AuthenticatedIdentifierAction @Inject()(
                                                override val authConnector: AuthConnector,
                                                config: FrontendAppConfig,
-                                               val parser: BodyParsers.Default
+                                               val parser: BodyParsers.Default,
+                                               errorHandler: ErrorHandler
                                              )(implicit val executionContext: ExecutionContext)
   extends IdentifierAction with AuthorisedFunctions with Logging {
 
@@ -55,13 +57,16 @@ class AuthenticatedIdentifierAction @Inject()(
       case Some(internalId) ~ Some(affinityGroup) =>
         individualAuthentication(block, internalId, affinityGroup)(request, hc)
       case _ =>
-        logger.info("[AuthenticatedIdentifierAction][invokeBlock] - No internal Id retrieved from auth")
+        logger.warn("[AuthenticatedIdentifierAction][invokeBlock] - No internal Id retrieved from auth")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
-    } recover {
+    } recoverWith {
       case _: NoActiveSession =>
-        Redirect(config.loginUrl)
-      case _ =>
-        Redirect(routes.UnauthorisedController.onPageLoad)
+        Future(Redirect(config.loginUrl))
+      case _: AuthorisationException =>
+        Future(Redirect(routes.UnauthorisedController.onPageLoad))
+      case e =>
+        logger.error(s"[AuthorisedAction][invokeBlock] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+        errorHandler.internalServerError()(request)
     }
   }
 
@@ -96,12 +101,12 @@ class AuthenticatedIdentifierAction @Inject()(
               )
             ))
           case (mtditid, nino) =>
-            logger.info(s"[AuthorisedAction][individualAuthentication] - User has missing MTDITID and/or NINO." +
+            logger.warn(s"[AuthorisedAction][individualAuthentication] - User has missing MTDITID and/or NINO." +
               s"Redirecting to ${config.loginUrl}. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}")
             Future.successful(Redirect(config.loginUrl))
         }
       case _ ~ confidenceLevel =>
-        logger.info(s"[AuthenticatedIdentifierAction][invokeBlock] - Insufficient confidence level of $confidenceLevel returned from auth." +
+        logger.warn(s"[AuthenticatedIdentifierAction][invokeBlock] - Insufficient confidence level of $confidenceLevel returned from auth." +
           s" Redirecting to IV uplift.")
         upliftIv
     }
@@ -140,13 +145,20 @@ class AuthenticatedIdentifierAction @Inject()(
         .retrieve(allEnrolments) {
           populateAgent(block, internalId, mtdItId, nino, _, isSupportingAgent = true)
         }
-        .recover { case _ =>
-          logger.info(s"[AuthorisedAction][agentAuthentication] - Agent does not have secondary delegated authority for Client.")
-          Redirect(routes.UnauthorisedController.onPageLoad)
+        .recoverWith {
+          case _: AuthorisationException =>
+            logger.warn(s"[AuthorisedAction][agentAuthentication] - Agent does not have secondary delegated authority for Client.")
+            Future(Redirect(routes.UnauthorisedController.onPageLoad))
+          case e =>
+            logger.error(s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+            errorHandler.internalServerError()
         }
     case _: AuthorisationException =>
-      logger.info(s"[AuthorisedAction][agentAuthentication] - Agent does not have delegated authority for Client.")
+      logger.warn(s"[AuthorisedAction][agentAuthentication] - Agent does not have delegated authority for Client.")
       Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
+    case e =>
+      logger.error(s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+      errorHandler.internalServerError()
   }
 
   private def populateAgent[A](block: IdentifierRequest[A] => Future[Result],
@@ -159,7 +171,7 @@ class AuthenticatedIdentifierAction @Inject()(
       case Some(arn) =>
         block(IdentifierRequest(request, internalId, models.User(mtdItId, nino, AffinityGroup.Agent.toString, Some(arn), isSupportingAgent)))
       case None =>
-        logger.info("[AuthorisedAction][agentAuthentication] Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
+        logger.warn("[AuthorisedAction][agentAuthentication] Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     }
 
