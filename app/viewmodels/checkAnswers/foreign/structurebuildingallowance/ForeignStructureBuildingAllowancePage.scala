@@ -19,5 +19,5 @@ package viewmodels.checkAnswers.foreign.structurebuildingallowance
 case class ForeignStructureBuildingAllowancePage(
   taxYear: Int,
   countryCode: String,
-  individualOrAgent: String,
+  individualOrAgent: String
 )

@@ -14,16 +14,15 @@
  * limitations under the License.
  *@
 
-@import controllers.structuresbuildingallowance.routes
-@import models.NormalMode
-@import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
+@import controllers.foreign.structuresbuildingallowance.routes
+@import viewmodels.checkAnswers.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage
 
 @this(
         layout: templates.Layout,
         govukButton: GovukButton
 )
 
-@(page: StructureBuildingAllowancePage)(implicit request: Request[_], messages: Messages)
+@(page: ForeignStructureBuildingAllowancePage)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"foreignStructureBuildingAllowance.title.${page.individualOrAgent}"))) {
 
@@ -35,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("foreignStructureBuildingAllowance.button"))
-                .asLink(routes.StructureBuildingQualifyingDateController.onPageLoad(page.taxYear, NormalMode, page.nextIndex, page.propertyType).url)
+                .asLink(routes.ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(page.taxYear, page.countryCode).url)
                 .withId("continue")
         )
     </p>

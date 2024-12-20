@@ -2327,3 +2327,4 @@ foreignStructureBuildingAllowance.title.agent = Structures Buildings Allowance
 foreignStructureBuildingAllowance.heading = Structures and buildings allowance claims
 foreignStructureBuildingAllowance.para1 = Tell HMRC if you’ve paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be able to claim tax relief.
 foreignStructureBuildingAllowance.button = Add a claim
+foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim

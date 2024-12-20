@@ -2294,3 +2294,11 @@ foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = *Miss
 foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignStructureBuildingAllowanceClaim.error.outOfRange = *Missing Welsh*
 foreignStructureBuildingAllowanceClaim.change.hidden = *Missing Welsh*
+
+
+foreignStructureBuildingAllowance.title.individual = *Missing Welsh*
+foreignStructureBuildingAllowance.title.agent = *Missing Welsh*
+foreignStructureBuildingAllowance.heading = *Missing Welsh*
+foreignStructureBuildingAllowance.para1 = *Missing Welsh*
+foreignStructureBuildingAllowance.button = *Missing Welsh*
+foreignStructureBuildingAllowanceAddress.hint = *Missing Welsh*
