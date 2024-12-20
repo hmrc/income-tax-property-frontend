@@ -153,4 +153,9 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/check-your-answers  
 GET        /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no                                   controllers.foreign.expenses.ForeignExpensesSectionCompleteController.onSubmit(taxYear: Int, countryCode: String)
 
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claim-amount                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claim-amount                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/change-claim-amount         controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/change-claim-amount         controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/add-claim                   controllers.foreign.structuresbuildingallowance.ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, countryCode: String)
