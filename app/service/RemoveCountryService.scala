@@ -17,7 +17,7 @@
 package service
 
 import jakarta.inject.Inject
-import models.{Index, UserAnswers}
+import models.Index
 import models.requests.DataRequest
 import pages.ukandforeignproperty.SelectCountryPage
 import repositories.SessionRepository
@@ -27,14 +27,14 @@ import scala.concurrent.{ExecutionContext, Future}
 class RemoveCountryService @Inject()(sessionRepository: SessionRepository)
                                     (implicit ec: ExecutionContext) {
 
-  def removeCountry(index: Index)(implicit request: DataRequest[_]): Future[UserAnswers] =
+  def removeCountry(index: Index)(implicit request: DataRequest[_]): Future[Boolean] =
     for {
       countries               <- Future { request.userAnswers.get(SelectCountryPage).getOrElse(Set.empty) }
       countryToRemove         = countries.toList.lift(index.positionZeroIndexed)
-                                  .getOrElse(throw new IndexOutOfBoundsException(s"No country exists for position index: ${index.position}"))
+                                  .getOrElse(throw new IndexOutOfBoundsException(s"No country exists for index: $index"))
       updatedCountries        = countries.filterNot(_ == countryToRemove)
       updatedUserAnswers      <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountries))
-      _                       <- sessionRepository.set(updatedUserAnswers)
-    } yield updatedUserAnswers
+      result                  <- sessionRepository.set(updatedUserAnswers)
+    } yield result
 
 }

@@ -24,8 +24,3 @@ POST       /:taxYear/uk-foreign-property/countries                              
 
 GET        /:taxYear/uk-foreign-property/countries/:index/remove                           controllers.ukandforeignproperty.RemoveCountryController.onPageLoad(taxYear: Int,  index: Index, mode: Mode ?= NormalMode)
 POST       /:taxYear/uk-foreign-property/countries/:index/remove                           controllers.ukandforeignproperty.RemoveCountryController.onSubmit(taxYear: Int,  index: Index, mode: Mode ?= NormalMode)
-
-GET         /:taxYear/uk-foreign-property/claim-expenses-or-relief                         controllers.ukandforeignproperty.ClaimExpensesOrReliefController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
-POST        /:taxYear/uk-foreign-property/claim-expenses-or-relief                         controllers.ukandforeignproperty.ClaimExpensesOrReliefController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
-GET         /:taxYear/uk-foreign-property/change-claim-expenses-or-relief                  controllers.ukandforeignproperty.ClaimExpensesOrReliefController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
-POST        /:taxYear/uk-foreign-property/change-claim-expenses-or-relief                  controllers.ukandforeignproperty.ClaimExpensesOrReliefController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
