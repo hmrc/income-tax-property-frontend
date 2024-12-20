@@ -2303,3 +2303,17 @@ ForeignClaimStructureBuildingAllowance.checkYourAnswersLabel = *Missing Welsh*
 ForeignClaimStructureBuildingAllowance.error.required.agent = *Missing Welsh*
 ForeignClaimStructureBuildingAllowance.error.required.individual = *Missing Welsh*
 ForeignClaimStructureBuildingAllowance.change.hidden = *Missing Welsh*
+
+foreignStructureBuildingAllowanceClaim.title = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.heading.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.heading.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.legend.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.legend.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.nonNumeric = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.required.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.required.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.error.outOfRange = *Missing Welsh*
+foreignStructureBuildingAllowanceClaim.change.hidden = *Missing Welsh*
