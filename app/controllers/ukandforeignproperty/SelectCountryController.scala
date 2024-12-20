@@ -53,7 +53,7 @@ class SelectCountryController @Inject() (
       val preparedForm = request.userAnswers.get(SelectCountryPage) match {
         case None => form
         case Some(countrySet) =>
-          countrySet.toList.lift(index.position - 1) match {
+          countrySet.toList.lift(index.positionZeroIndexed) match {
             case Some(country) => form.fill(country.code)
             case _             => form
           }

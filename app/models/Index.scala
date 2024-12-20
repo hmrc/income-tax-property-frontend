@@ -18,7 +18,11 @@ package models
 
 import play.api.mvc.PathBindable
 
-case class Index(position: Int)
+case class Index(position: Int) {
+
+  def positionZeroIndexed: Int = position - 1
+
+}
 
 object Index {
 
