@@ -54,7 +54,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
   val countryCode: String = "USA"
   implicit val hc: HeaderCarrier = new HeaderCarrier()
 
-  lazy val foreignExpensesSectionCompleteRoute: String = routes.ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode).url
+  lazy val foreignExpensesSectionCompleteRoute: String =
+    routes.ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val isAgent: Boolean = individualOrAgent == "agent"
@@ -85,7 +86,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(ForeignExpensesSectionCompletePage(countryCode), true).success.value
+        val userAnswers =
+          UserAnswers(userAnswersId).set(ForeignExpensesSectionCompletePage(countryCode), true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -97,7 +99,10 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 
@@ -108,7 +113,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
 
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
         doReturn(Future.successful(Right("completed")))
-          .when(mockJourneyAnswersService).setStatus(
+          .when(mockJourneyAnswersService)
+          .setForeignStatus(
             ArgumentMatchers.eq(
               JourneyContext(
                 taxYear = taxYear,
@@ -118,7 +124,8 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
               )
             ),
             ArgumentMatchers.eq("completed"),
-            ArgumentMatchers.eq(user)
+            ArgumentMatchers.eq(user),
+            ArgumentMatchers.eq(countryCode)
           )(any())
 
         val application =
@@ -158,7 +165,10 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
           val result = route(application, request).value
 
           status(result) mustEqual BAD_REQUEST
-          contentAsString(result) mustEqual view(boundForm, taxYear, countryCode)(request, messages(application)).toString
+          contentAsString(result) mustEqual view(boundForm, taxYear, countryCode)(
+            request,
+            messages(application)
+          ).toString
         }
       }
 

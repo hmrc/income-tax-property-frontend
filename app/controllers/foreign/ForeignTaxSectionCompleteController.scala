@@ -72,7 +72,7 @@ class ForeignTaxSectionCompleteController @Inject() (
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(ForeignTaxSectionCompletePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setForeignStatus(
                           JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
@@ -80,7 +80,8 @@ class ForeignTaxSectionCompleteController @Inject() (
                             journeyPath = ForeignPropertyTax
                           ),
                           status = statusForPage(value),
-                          request.user
+                          request.user,
+                          countryCode
                         )
             } yield status.fold(
               _ =>
