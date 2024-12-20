@@ -18,11 +18,13 @@ package controllers.foreign.expenses
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.statusError
 import forms.foreign.expenses.ForeignExpensesSectionCompleteFormProvider
 import models.JourneyPath.ForeignPropertyExpenses
-import models.{JourneyContext, NormalMode}
+import models.{ForeignProperty, JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -33,54 +35,73 @@ import views.html.foreign.expenses.ForeignExpensesSectionCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignExpensesSectionCompleteController @Inject()(
-                                                          override val messagesApi: MessagesApi,
-                                                          sessionRepository: SessionRepository,
-                                                          navigator: ForeignPropertyNavigator,
-                                                          identify: IdentifierAction,
-                                                          getData: DataRetrievalAction,
-                                                          requireData: DataRequiredAction,
-                                                          formProvider: ForeignExpensesSectionCompleteFormProvider,
-                                                          val controllerComponents: MessagesControllerComponents,
-                                                          view: ForeignExpensesSectionCompleteView,
-                                                          journeyAnswersService: JourneyAnswersService
-                                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignExpensesSectionCompleteController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignExpensesSectionCompleteFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignExpensesSectionCompleteView,
+  journeyAnswersService: JourneyAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val preparedForm = request.userAnswers.get(ForeignExpensesSectionCompletePage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignExpensesSectionCompletePage(countryCode), value))
-            _ <- sessionRepository.set(updatedAnswers)
-            status <- journeyAnswersService.setStatus(
-              JourneyContext(
-                taxYear = taxYear,
-                mtditid = request.user.mtditid,
-                nino = request.user.nino,
-                journeyPath = ForeignPropertyExpenses
-              ),
-              status = statusForPage(value),
-              request.user
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignExpensesSectionCompletePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+              status <- journeyAnswersService.setForeignStatus(
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyPath = ForeignPropertyExpenses
+                          ),
+                          status = statusForPage(value),
+                          request.user,
+                          countryCode
+                        )
+            } yield status.fold(
+              _ =>
+                statusError(
+                  journeyName = "foreign-property-expenses",
+                  propertyType = ForeignProperty,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
+              _ =>
+                Redirect(
+                  navigator.nextPage(
+                    ForeignExpensesSectionCompletePage(countryCode),
+                    taxYear,
+                    NormalMode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
+                )
             )
-          } yield Redirect(navigator.nextPage(ForeignExpensesSectionCompletePage(countryCode), taxYear, NormalMode, request.userAnswers, updatedAnswers))
-      )
-  }
+        )
+    }
 }
