@@ -1,0 +1,54 @@
+@*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import views.html.templates.Layout
+@import pages.foreign.Country
+
+@this(
+        layout: Layout,
+        formWithCsrf: FormWithCSRF,
+        govukButton: GovukButton
+)
+
+@(taxYear: Int, mode: Mode, index: Index, country: Country)(implicit request: Request[_], messages: Messages)
+
+@titleHtml = {
+  @messages("doYouWantToRemoveCountry.heading") @country.name @messages("doYouWantToRemoveCountry.heading2")
+}
+
+@layout(pageTitle = titleNoForm(titleHtml.toString()), showBackLink = true) {
+
+  <h1 class="govuk-heading-l">@titleHtml</h1>
+
+  @formWithCsrf(action = controllers.ukandforeignproperty.routes.RemoveCountryController.onSubmit(taxYear, index, NormalMode)) {
+    <div class="govuk-!-margin-bottom-9 govuk-!-display-inline">
+      @govukButton(
+        Button(
+          content = Text(messages("site.remove")),
+          classes = """govuk-button--warning govuk-!-display-inline-block"""
+        )
+      )
+
+      <div class="govuk-!-display-inline-block govuk-!-padding-left-2 govuk-!-padding-top-2">
+        <a class="govuk-link" href="@controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode).url">
+        @messages("dontRemove.link")
+        </a>
+      </div>
+
+    </div>
+  }
+
+}
