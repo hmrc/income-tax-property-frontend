@@ -18,13 +18,12 @@ package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions._
 import forms.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowanceFormProvider
-import models.{Mode, PropertyType}
+import models.Mode
 import navigation.Navigator
 import pages.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowanceView
 
@@ -39,27 +38,22 @@ class ForeignClaimStructureBuildingAllowanceController @Inject()(
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: ForeignClaimStructureBuildingAllowanceFormProvider,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignClaimStructureBuildingAllowanceView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      diversionService
-        .redirectToCYAIfFinished[Result](taxYear, request.userAnswers, "sba", propertyType, mode) {
-
-          val form = formProvider(request.user.isAgentMessageKey)
-          val preparedForm = request.userAnswers.get(ForeignClaimStructureBuildingAllowancePage(propertyType)) match {
-            case None        => form
-            case Some(value) => form.fill(value)
-          }
-          Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
-        }(Redirect(_))
+      val form = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)) match {
+        case None        => form
+        case Some(value) => form.fill(value)
+      }
+      Ok(view(preparedForm, taxYear, countryCode, mode, request.user.isAgentMessageKey))
     }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
@@ -67,17 +61,17 @@ class ForeignClaimStructureBuildingAllowanceController @Inject()(
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+              BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))
             ),
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignClaimStructureBuildingAllowancePage(propertyType), value))
+                Future.fromTry(request.userAnswers.set(ForeignClaimStructureBuildingAllowancePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
                 .nextPage(
-                  ForeignClaimStructureBuildingAllowancePage(propertyType),
+                  ForeignClaimStructureBuildingAllowancePage(countryCode),
                   taxYear,
                   mode,
                   request.userAnswers,

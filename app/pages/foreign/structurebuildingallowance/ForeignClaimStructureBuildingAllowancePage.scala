@@ -16,14 +16,14 @@
 
 package pages.foreign.structurebuildingallowance
 
-import models.PropertyType
+import models.ForeignProperty
 import pages.PageConstants.foreignPropertySbaPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignClaimStructureBuildingAllowancePage(propertyType: PropertyType) extends QuestionPage[Boolean] {
+case class ForeignClaimStructureBuildingAllowancePage(countryCode: String) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ foreignPropertySbaPath(propertyType) \ toString
+  override def path: JsPath = JsPath \ foreignPropertySbaPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "claimStructureBuildingAllowance"
+  override def toString: String = "foreignClaimStructureBuildingAllowance"
 }

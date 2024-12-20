@@ -25,11 +25,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("ForeignClaimStructureBuildingAllowance.title"))) {
 
-        @formHelper(action = controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))
