@@ -38,9 +38,7 @@ class ForeignPropertySummaryPageSpec
       val userAnswers = UserAnswers(
         id = "foreign-property-select",
         data = Json.obj(
-          "foreignPropertySectionFinished" -> Json.obj(
-            "foreignPropertySelectCountryComplete" -> false
-          )
+          "selectCountrySectionComplete" -> false
         ),
         Instant.ofEpochSecond(1)
       )
@@ -52,9 +50,7 @@ class ForeignPropertySummaryPageSpec
       val userAnswers = UserAnswers(
         id = "foreign-property-select",
         data = Json.obj(
-          "foreignPropertySectionFinished" -> Json.obj(
-            "foreignPropertySelectCountryComplete" -> true
-          )
+          "selectCountrySectionComplete" -> true
         ),
         Instant.ofEpochSecond(1)
       )
@@ -66,7 +62,7 @@ class ForeignPropertySummaryPageSpec
       val userAnswers = UserAnswers(
         id = "foreign-property-select",
         data = Json.obj(
-          "foreignPropertySectionFinished" -> ""
+          "selectCountrySectionComplete" -> ""
         ),
         Instant.ofEpochSecond(1)
       )
