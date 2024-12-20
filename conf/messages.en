@@ -1940,6 +1940,7 @@ doYouWantToRemoveCountry.legend = Do you want to remove this country?
 doYouWantToRemoveCountry.checkYourAnswersLabel = Do you want to remove country?
 doYouWantToRemoveCountry.error.required = Select yes if you want to remove this country
 doYouWantToRemoveCountry.change.hidden = Do you want to remove this country?
+dontRemove.link = Don’t remove
 
 twelveMonthPeriodsInLease.title = How many complete 12 month periods were in the term of the lease?
 twelveMonthPeriodsInLease.heading = How many complete 12 month periods were in the term of the lease?

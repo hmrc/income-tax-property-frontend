@@ -1911,6 +1911,7 @@ doYouWantToRemoveCountry.legend = *Missing Welsh*
 doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
 doYouWantToRemoveCountry.error.required = *Missing Welsh*
 doYouWantToRemoveCountry.change.hidden = *Missing Welsh*
+dontRemove.link = *Missing Welsh*
 
 twelveMonthPeriodsInLease.title = *Missing Welsh*
 twelveMonthPeriodsInLease.heading = *Missing Welsh*

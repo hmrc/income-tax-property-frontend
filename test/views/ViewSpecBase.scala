@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms.ukandforeignproperty
+package views
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import javax.inject.Inject
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.i18n.{Lang, Messages, MessagesApi}
+import play.api.mvc.{AnyContent, Request}
+import play.api.test.FakeRequest
 
+class ViewSpecBase extends AnyWordSpec with GuiceOneAppPerSuite with Matchers {
 
-class ForeignCountriesRentedFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Boolean] =
-    Form(
-      "addAnother" -> boolean("selectIncomeCountry.error.required.individual")
-    )
+  implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq(Lang("en")))
+  implicit val request: Request[AnyContent] = FakeRequest("GET", "/")
 
 }
