@@ -27,7 +27,7 @@
 
 @(form: Form[_], taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = title(form, messages("ForeignClaimStructureBuildingAllowance.title"))) {
+    @layout(pageTitle = title(form, messages("foreignClaimStructureBuildingAllowance.title"))) {
 
         @formHelper(action = controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
@@ -35,31 +35,31 @@
                 @govukErrorSummary(ErrorSummaryViewModel(form))
             }
 
-            <h1 class="govuk-heading-l">@messages("ForeignClaimStructureBuildingAllowance.heading")</h1>
+            <h1 class="govuk-heading-l">@messages("foreignClaimStructureBuildingAllowance.heading")</h1>
 
 
-            <p class="govuk-body">@messages("ForeignClaimStructureBuildingAllowance.details.content")</p>
-            <p class="govuk-body">@messages(s"ForeignClaimStructureBuildingAllowance.details.p1")</p>
+            <p class="govuk-body">@messages("foreignClaimStructureBuildingAllowance.details.content")</p>
+            <p class="govuk-body">@messages(s"foreignClaimStructureBuildingAllowance.details.p1")</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l1")</li>
-                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l2")</li>
-                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l3")</li>
-                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l4")</li>
-                <li>@messages("ForeignClaimStructureBuildingAllowance.details.l5")</li>
+                <li>@messages("foreignClaimStructureBuildingAllowance.details.l1")</li>
+                <li>@messages("foreignClaimStructureBuildingAllowance.details.l2")</li>
+                <li>@messages("foreignClaimStructureBuildingAllowance.details.l3")</li>
+                <li>@messages("foreignClaimStructureBuildingAllowance.details.l4")</li>
+                <li>@messages("foreignClaimStructureBuildingAllowance.details.l5")</li>
             </ul>
-            <p class="govuk-body">@messages(s"ForeignClaimStructureBuildingAllowance.details.p2")
-                <a href="@messages("ForeignClaimStructureBuildingAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
-                @messages("ForeignClaimStructureBuildingAllowance.details.content.link.text")
+            <p class="govuk-body">@messages(s"foreignClaimStructureBuildingAllowance.details.p2")
+                <a href="@messages("foreignClaimStructureBuildingAllowance.details.content.link.href")" class="govuk-link" target="_blank" rel="noreferrer noopener">
+                @messages("foreignClaimStructureBuildingAllowance.details.content.link.text")
                 </a>
             </p>
 
 
             @govukRadios(
                 RadiosViewModel.yesNoWithOtherNames(
-                    field = form("ForeignClaimStructureBuildingAllowance"),
-                    legend = LegendViewModel(messages(s"ForeignClaimStructureBuildingAllowance.legend.$individualOrAgent")).asPageHeading(Medium),
-                    yesText = "ForeignClaimStructureBuildingAllowance.yes",
-                    noText = "ForeignClaimStructureBuildingAllowance.no"
+                    field = form("foreignClaimStructureBuildingAllowance"),
+                    legend = LegendViewModel(messages(s"foreignClaimStructureBuildingAllowance.legend.$individualOrAgent")).asPageHeading(Medium),
+                    yesText = "foreignClaimStructureBuildingAllowance.yes",
+                    noText = "foreignClaimStructureBuildingAllowance.no"
                 )
             )
 

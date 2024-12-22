@@ -19,7 +19,7 @@ package controllers.foreign.structuresbuildingallowance
 import controllers.actions._
 import forms.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowanceFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignPropertyNavigator
 import pages.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignClaimStructureBuildingAllowanceController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  foreignNavigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -69,7 +69,7 @@ class ForeignClaimStructureBuildingAllowanceController @Inject()(
                 Future.fromTry(request.userAnswers.set(ForeignClaimStructureBuildingAllowancePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator
+              foreignNavigator
                 .nextPage(
                   ForeignClaimStructureBuildingAllowancePage(countryCode),
                   taxYear,

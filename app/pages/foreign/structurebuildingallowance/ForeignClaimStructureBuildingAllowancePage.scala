@@ -21,9 +21,10 @@ import pages.PageConstants.sbaPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignClaimStructureBuildingAllowancePage(countryCode: String) extends QuestionPage[Boolean] {
+case class ForeignClaimStructureBuildingAllowancePage(countryCode: String)
+  extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "ClaimStructureBuildingAllowance"
+  override def toString: String = "claimStructureBuildingAllowance"
 }
