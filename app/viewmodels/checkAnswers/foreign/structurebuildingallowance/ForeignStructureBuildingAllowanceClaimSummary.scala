@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
-import controllers.structuresbuildingallowance.routes
+import controllers.foreign.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
