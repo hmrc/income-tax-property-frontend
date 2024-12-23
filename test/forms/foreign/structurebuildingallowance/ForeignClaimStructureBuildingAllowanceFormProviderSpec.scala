@@ -26,7 +26,7 @@ class ForeignClaimStructureBuildingAllowanceFormProviderSpec extends BooleanFiel
 
   val form = new ForeignClaimStructureBuildingAllowanceFormProvider()("individual")
 
-  ".value" - {
+  ".foreignClaimStructureBuildingAllowance" - {
 
     val fieldName = "foreignClaimStructureBuildingAllowance"
 

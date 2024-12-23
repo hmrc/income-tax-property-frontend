@@ -18,6 +18,7 @@ package controllers.foreign.structurebuildingallowance
 
 import base.SpecBase
 import controllers.routes
+import controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController
 import forms.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
@@ -39,7 +40,7 @@ import scala.concurrent.Future
 class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val foreignClaimStructureBuildingAllowanceRoute: String =
-    controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode).url
+    ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   val formProvider = new ForeignClaimStructureBuildingAllowanceFormProvider()
   private val isAgentMessageKey = "individual"

@@ -92,12 +92,6 @@ object ForeignPropertySummaryPage {
           controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
           taskListTagForIncome,
           s"foreign_property_income_$countryCode"
-        ),
-        TaskListItem(
-          "summary.structuresAndBuildingAllowance",
-          controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
-          taskListTagForIncome,
-          s"foreign_property_income_$countryCode"
         )
       )
     }
@@ -109,12 +103,20 @@ object ForeignPropertySummaryPage {
         TaskListTag.NotStarted,
         s"foreign_property_allowances_$countryCode"
       ))
-      case Some(false) => taskList.appended(
-        TaskListItem(
-          "foreign.expenses",
-          controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
-          taskListTagForExpenses,
-          s"foreign_property_expenses_$countryCode"
+      case Some(false) => taskList.appendedAll(
+        Seq(
+          TaskListItem(
+            "foreign.expenses",
+            controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+            taskListTagForExpenses,
+            s"foreign_property_expenses_$countryCode"
+          ),
+          TaskListItem(
+            "summary.structuresAndBuildingAllowance",
+            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
+            taskListTagForExpenses,
+            s"foreign_structure_and_building_allowance_$countryCode"
+          )
         )
       )
       case None => taskList
