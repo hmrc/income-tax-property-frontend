@@ -16,20 +16,17 @@
 
 package controllers.foreign.allowances
 
-import controllers.{PropertyDataError, PropertyDetailsHandler, routes}
 import controllers.actions._
-import controllers.exceptions.InternalErrorFailure
-import models.{Mode, NormalMode}
+import controllers.{PropertyDetailsHandler, routes}
+import models.Mode
 import models.backend.PropertyDetails
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{Country, IncomeSourceCountries}
+import pages.foreign.IncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import viewmodels.{AllowancesStartPage, PropertyDetailsPage}
-import views.html.JourneyRecoveryStartAgainView
 import views.html.foreign.allowances.ForeignPropertyAllowancesStartView
 
 import javax.inject.Inject
@@ -51,6 +48,7 @@ class ForeignPropertyAllowancesStartController @Inject()(
     implicit request =>
       val maybeCountryName = request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code==countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
+
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyData: PropertyDetails) =>
@@ -71,10 +69,11 @@ class ForeignPropertyAllowancesStartController @Inject()(
 
   def nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
     implicit request =>
-    if (accrualsOrCash) {
-      Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, mode))
-    } else {
-      Redirect(routes.JourneyRecoveryController.onPageLoad())
-    }
+      if (accrualsOrCash) {
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      } else {
+        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
+      }
   }
+
 }
