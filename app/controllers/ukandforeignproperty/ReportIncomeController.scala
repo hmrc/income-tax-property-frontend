@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.ReportIncomeFormProvider
 import models.Mode
-import navigation.{Navigator, UkAndForeignPropertyNavigator}
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ReportIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

@@ -2319,6 +2319,8 @@ foreignZeroEmissionGoodsVehicles.error.nonNumeric = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.error.required.individual = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.error.required.agent = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.error.twoDecimalPlaces = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.required = = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.wholeNumber = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.error.outOfRange = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.change.hidden = *Missing Welsh*
 
