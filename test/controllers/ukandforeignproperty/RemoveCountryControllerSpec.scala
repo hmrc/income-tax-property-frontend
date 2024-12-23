@@ -26,6 +26,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ukandforeignproperty.RemoveCountryView
 
+import scala.util.Try
+
 class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
 
   val testTaxYear: Int = 2024
@@ -61,8 +63,44 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
     }
   }
 
-//  "POST" must {
-//
-//  }
+
+  "POST" - {
+    "onSubmit must redirect to ForeignCountriesRentedController when valid data is provided" in {
+      val application: Application = applicationBuilder(userAnswers = Some(testAnswers), isAgent = false).build()
+
+      running(application) {
+        val controller = application.injector.instanceOf[RemoveCountryController]
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/"))
+
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value must startWith(routes.ForeignCountriesRentedController.onPageLoad(taxYear = testTaxYear, mode = NormalMode).url)
+      }
+    }
+
+    "onSubmit must fail and throw an exception when invalid index data is provided" in {
+      val application: Application = applicationBuilder(userAnswers = Some(testAnswers), isAgent = false).build()
+      running(application) {
+        val invalidIndex = Index(2)
+        val controller = application.injector.instanceOf[RemoveCountryController]
+
+        val request = FakeRequest(POST, "/")
+        val result = controller.onSubmit(testTaxYear, invalidIndex, NormalMode)(request)
+        val s = Try{status(result)}
+        s.isFailure mustBe true
+        s.asInstanceOf[scala.util.Failure[String]].exception.getMessage mustBe s"No country exists for position index: ${invalidIndex.position}"
+      }
+    }
+
+    "must redirect to Journey Recovery when no existing data is found" in {
+      val application: Application = applicationBuilder(userAnswers = None, isAgent = false).build()
+
+      running(application) {
+        val controller = application.injector.instanceOf[RemoveCountryController]
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/"))
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+  }
 
 }
