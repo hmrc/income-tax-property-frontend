@@ -31,7 +31,7 @@ class RemoveCountryService @Inject()(sessionRepository: SessionRepository)
     for {
       countries               <- Future { request.userAnswers.get(SelectCountryPage).getOrElse(Set.empty) }
       countryToRemove         = countries.toList.lift(index.positionZeroIndexed)
-                                  .getOrElse(throw new IndexOutOfBoundsException(s"No country exists for index: $index"))
+                                  .getOrElse(throw new IndexOutOfBoundsException(s"No country exists for position index: ${index.position}"))
       updatedCountries        = countries.filterNot(_ == countryToRemove)
       updatedUserAnswers      <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountries))
       _                       <- sessionRepository.set(updatedUserAnswers)
