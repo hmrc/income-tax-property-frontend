@@ -20,6 +20,7 @@ import base.SpecBase
 import models.requests.DataRequest
 import models.{Index, User, UserAnswers}
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.argThat
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -34,10 +35,6 @@ import scala.concurrent.Future
 
 class RemoveCountryServiceSpec extends SpecBase with FutureAwaits with DefaultAwaitTimeout {
 
-  val mockSessionRepository: SessionRepository = mock[SessionRepository]
-
-  val service = new RemoveCountryService(mockSessionRepository)
-
   val france: Country = Country("France", "FR")
   val spain: Country = Country("Spain", "ES")
   val testCountries: Set[Country] = Set(france, spain)
@@ -49,29 +46,47 @@ class RemoveCountryServiceSpec extends SpecBase with FutureAwaits with DefaultAw
   private def buildDataRequest(countries: Set[Country]): DataRequest[AnyContent] =
     DataRequest(FakeRequest(), userAnswersId, user, buildUserAnswers(countries))
 
-  private def mockSessionSet(countries: Set[Country]): OngoingStubbing[Future[Boolean]] =
-    when(mockSessionRepository.set(ArgumentMatchers.any())).thenReturn(Future.successful(true))
+  private def mockSessionSet(mockSessionRepository: SessionRepository, countries:Set[Country]): OngoingStubbing[Future[Boolean]] =
+    when(
+      mockSessionRepository.set(
+        argThat {
+          answers: UserAnswers =>
+            (answers.data \ "countries").as[Set[Country]] == countries
+        }
+      )
+    ).thenReturn(Future.successful(true))
 
   "remove country" - {
+
     "should remove the 1st country from list when called with Index(1)" in {
-      mockSessionSet(testCountries.filterNot(_ == france))
+      val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-      val result = await(service.removeCountry(Index(1))(buildDataRequest(testCountries)))
+      val service = new RemoveCountryService(mockSessionRepository)
 
-      result mustBe true
+      mockSessionSet(mockSessionRepository, Set(spain))
+
+      val result    = await(service.removeCountry(Index(1))(buildDataRequest(testCountries)))
+      val countries = result.get(SelectCountryPage)
+      countries mustBe Some(Set(spain))
     }
+
     "should remove the 2nd country from list when called with Index(2)" in {
-      mockSessionSet(testCountries.filterNot(_ == spain))
+      val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-      val result = await(service.removeCountry(Index(2))(buildDataRequest(testCountries)))
+      val service = new RemoveCountryService(mockSessionRepository)
+      mockSessionSet(mockSessionRepository, Set(france))
 
-      result mustBe true
+      val result    = await(service.removeCountry(Index(2))(buildDataRequest(testCountries)))
+      val countries = result.get(SelectCountryPage)
+      countries mustBe Some(Set(france))
     }
+
     "should throw an IndexOutOfBoundsException when called with Index(3)" in {
+      val mockSessionRepository: SessionRepository = mock[SessionRepository]
+      val service = new RemoveCountryService(mockSessionRepository)
       val result = service.removeCountry(Index(3))(buildDataRequest(testCountries))
 
       result.failed.futureValue mustBe an[IndexOutOfBoundsException]
     }
   }
-
 }
