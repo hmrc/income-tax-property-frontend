@@ -154,7 +154,7 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no     
 ############################  Allowances  ###################################
 
 GET        /:taxYear/foreign-property/allowances/:countryCode/allowances-intro                                controllers.foreign.allowances.ForeignPropertyAllowancesStartController.onPageLoad(taxYear: Int, countryCode: String)
-POST       /:taxYear/foreign-property/allowances/:countryCode/allowances-intro                               controllers.foreign.allowances.ForeignPropertyAllowancesStartController.nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/allowances-intro                                controllers.foreign.allowances.ForeignPropertyAllowancesStartController.nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode = NormalMode)
 
 GET        /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
