@@ -18,7 +18,7 @@ package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingAmountFormProvider
-import models.{Mode, PropertyType}
+import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,7 +45,7 @@ class ForeignStructureBuildingQualifyingAmountController @Inject() (
 
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
+      val form = formProvider()
       val preparedForm = request.userAnswers.get(ForeignStructureBuildingQualifyingAmountPage(countryCode)) match {
         case None        => form
         case Some(value) => form.fill(value)
@@ -56,7 +56,7 @@ class ForeignStructureBuildingQualifyingAmountController @Inject() (
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
+      val form = formProvider()
       form
         .bindFromRequest()
         .fold(

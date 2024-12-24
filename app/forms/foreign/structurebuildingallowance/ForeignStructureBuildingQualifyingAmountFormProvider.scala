@@ -26,7 +26,7 @@ class ForeignStructureBuildingQualifyingAmountFormProvider @Inject() extends Map
   val minimum = 0
   val maximum = 100000000
 
-  def apply(individualOrAgent: String): Form[BigDecimal] =
+  def apply(): Form[BigDecimal] =
     Form(
       "foreignStructureBuildingQualifyingAmount" -> currency(
         "foreignStructureBuildingQualifyingAmount.error.required",
