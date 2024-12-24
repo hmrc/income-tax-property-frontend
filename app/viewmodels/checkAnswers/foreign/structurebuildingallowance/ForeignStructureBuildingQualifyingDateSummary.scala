@@ -20,6 +20,7 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -34,8 +35,9 @@ object ForeignStructureBuildingQualifyingDateSummary {
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
       SummaryListRowViewModel(
-        key = "foreignStructureBuildingQualifyingDate.checkYourAnswersLabel",
-        value = ValueViewModel(answer.format(dateFormatter)),
+        key = KeyViewModel("foreignStructureBuildingQualifyingDate.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(answer.format(dateFormatter))
+          .withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
