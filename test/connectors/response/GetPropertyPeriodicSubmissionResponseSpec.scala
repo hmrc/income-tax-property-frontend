@@ -86,8 +86,14 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           )
 
         val foreignPropertyData = FetchedForeignPropertyData(
-          Some(Map("ESP" -> ForeignPropertyTax(Some(ForeignIncomeTax(true, Some(BigDecimal(456.00)))), Some(false)))),
-          Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed"))))
+          foreignPropertyTax = Some(Map("ESP" -> ForeignPropertyTax(Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(456.00)))), Some(false)))),
+          foreignPropertyIncome = Some(Map("ESP" -> ForeignIncomeAnswers(Some(123.45), premiumsGrantLeaseReceived = false,
+            reversePremiumsReceived = Some(ReversePremiumsReceived(reversePremiumsReceived = true, reversePremiums = Some(123.5))),
+            otherPropertyIncome = Some(456.7),
+            calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
+            receivedGrantLeaseAmount = None, twelveMonthPeriodsInLease = None, premiumsOfLeaseGrantAgreed = None))
+          ),
+          foreignJourneyStatuses = Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed"))))
         )
         val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData)
 
