@@ -16,12 +16,14 @@
 
 package pages.foreign.allowances
 
+import models.ForeignProperty
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case class ForeignOtherCapitalAllowancesPage(countryCode: String) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "foreignOtherCapitalAllowances"
 }
