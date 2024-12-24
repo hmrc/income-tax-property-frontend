@@ -49,7 +49,7 @@ import queries.Gettable
 
 import javax.inject.Inject
 
-class CYADiversionService @Inject() () {
+class CYADiversionService @Inject() {
   private val EXPENSES = "expenses"
   private val INCOME = "income"
   private val ALLOWANCES = "allowances"

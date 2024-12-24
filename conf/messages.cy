@@ -1761,11 +1761,6 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
-foreignCountriesRentList.title.individual = *Missing Welsh*
-foreignCountriesRentList.title.agent = *Missing Welsh*
-foreignCountriesRentList.heading.individual = *Missing Welsh*
-foreignCountriesRentList.heading.agent = *Missing Welsh*
-
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
@@ -1775,6 +1770,11 @@ foreign.tax = *Missing Welsh*
 foreign.income = *Missing Welsh*
 foreign.expenses = *Missing Welsh*
 foreign.allowances = *Missing Welsh*
+
+foreignCountriesRentList.title.individual = *Missing Welsh*
+foreignCountriesRentList.title.agent = *Missing Welsh*
+foreignCountriesRentList.heading.individual = *Missing Welsh*
+foreignCountriesRentList.heading.agent = *Missing Welsh*
 
 foreignPropertyDetails.title = *Missing Welsh*
 foreignPropertyDetails.para1 = *Missing Welsh*
@@ -2227,6 +2227,28 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = *Missing Wels
 consolidatedOrIndividualExpenses.amount.error.outOfRange = *Missing Welsh*
 consolidatedOrIndividualExpenses.change.hidden = *Missing Welsh*
 
+foreignZeroEmissionCarAllowance.title = *Missing Welsh*
+foreignZeroEmissionCarAllowance.heading = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p1.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p1.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p2.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p2.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p3.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.p3.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.text.1 = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.text.2 = *Missing Welsh*
+foreignZeroEmissionCarAllowance.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
+foreignZeroEmissionCarAllowance.legend.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.legend.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.checkYourAnswersLabel = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.required.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.required.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.twoDecimalPlaces = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.nonNumeric.individual = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.nonNumeric.agent = *Missing Welsh*
+foreignZeroEmissionCarAllowance.error.outOfRange = *Missing Welsh*
+foreignZeroEmissionCarAllowance.change.hidden = *Missing Welsh*
+
 totalPropertyIncome.title.individual = *Missing Welsh*
 totalPropertyIncome.title.agent = *Missing Welsh*
 totalPropertyIncome.heading.individual = *Missing Welsh*
@@ -2271,6 +2293,36 @@ ukAndForeignPropertyRentalTypeUk.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = *Missing Welsh*
 
+foreignZeroEmissionGoodsVehicles.title = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.heading = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p1.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p1.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.1.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.1.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.2.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.2.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p2.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p2.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p3.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p3.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.3 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.4 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.5 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p4 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.p5 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.6 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.bullet.7 = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.label.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.label.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.checkYourAnswersLabel = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.nonNumeric = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.required.individual = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.required.agent = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.twoDecimalPlaces = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.required = = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.wholeNumber = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.error.outOfRange = *Missing Welsh*
+foreignZeroEmissionGoodsVehicles.change.hidden = *Missing Welsh*
 
 selectCountry.title.individual = *Missing Welsh*
 selectCountry.title.agent = *Missing Welsh*

@@ -1788,10 +1788,6 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
-foreignCountriesRentList.title.individual = Foreign countries where you rented out property
-foreignCountriesRentList.title.agent = Foreign countries where your client rented out property
-foreignCountriesRentList.heading.individual = Foreign countries where you rented out property
-foreignCountriesRentList.heading.agent = Foreign countries where your client rented out property
 
 ###################### Foreign Property ######################
 
@@ -1802,6 +1798,11 @@ foreign.tax = Foreign tax
 foreign.income = Income
 foreign.expenses = Expenses
 foreign.allowances = Allowances
+
+foreignCountriesRentList.title.individual = Foreign countries where you rented out property
+foreignCountriesRentList.title.agent = Foreign countries where your client rented out property
+foreignCountriesRentList.heading.individual = Foreign countries where you rented out property
+foreignCountriesRentList.heading.agent = Foreign countries where your client rented out property
 
 foreignPropertyDetails.title = Foreign property details
 foreignPropertyDetails.para1 = You previously told us:
@@ -2254,6 +2255,28 @@ consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent = The amount yo
 consolidatedOrIndividualExpenses.amount.error.outOfRange = Enter an amount between £0 and £100,000,000,000
 consolidatedOrIndividualExpenses.change.hidden = Consolidated or individual expenses
 
+foreignZeroEmissionCarAllowance.title = Zero-emission car allowance
+foreignZeroEmissionCarAllowance.heading = Zero-emission car allowance
+foreignZeroEmissionCarAllowance.p1.individual = If you have property income you can claim 100% of the cost of buying a new or unused zero-emission electric car.
+foreignZeroEmissionCarAllowance.p1.agent = If your client has property income they can claim 100% of the cost of buying a new or unused zero-emission electric car.
+foreignZeroEmissionCarAllowance.p2.individual = If you use the car outside of your business, you must reduce the claim by the amount of non-business use.
+foreignZeroEmissionCarAllowance.p2.agent = If they use the car outside of their business, they must reduce the claim by the amount of non-business use.
+foreignZeroEmissionCarAllowance.p3.individual = If you use your car for non-business use 20% of the time, then reduce the claim by 20%.
+foreignZeroEmissionCarAllowance.p3.agent = If your client uses their car for non-business use 20% of the time, then reduce the claim by 20%.
+foreignZeroEmissionCarAllowance.link.text.1 = Read more about
+foreignZeroEmissionCarAllowance.link.text.2 = first year allowances at GOV.UK (opens in new tab)
+foreignZeroEmissionCarAllowance.link.href = https://www.gov.uk/capital-allowances/first-year-allowances
+foreignZeroEmissionCarAllowance.legend.individual = How much do you want to claim for zero-emission car allowance?
+foreignZeroEmissionCarAllowance.legend.agent = How much does your client want to claim for zero-emission car allowance?
+foreignZeroEmissionCarAllowance.checkYourAnswersLabel = Zero-emission car allowance
+foreignZeroEmissionCarAllowance.error.required.individual = Enter the amount you want to claim for zero-emission car allowance
+foreignZeroEmissionCarAllowance.error.required.agent = Enter an amount for how much your client wants to claim for zero-emission car allowance
+foreignZeroEmissionCarAllowance.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+foreignZeroEmissionCarAllowance.error.nonNumeric.individual = Amount can only include pounds and pence, for example £600 or £600.20
+foreignZeroEmissionCarAllowance.error.nonNumeric.agent = Amount can only include pounds and pence, for example £600 or £600.20
+foreignZeroEmissionCarAllowance.error.outOfRange = Enter an amount between £{0} and £{1}
+foreignZeroEmissionCarAllowance.change.hidden = Zero-emission car allowance
+
 totalPropertyIncome.title.individual = How much total income did you get from all of your UK and foreign properties?
 totalPropertyIncome.title.agent = How much total income did your client get from all of their UK and foreign properties?
 totalPropertyIncome.heading.individual = How much total income did you get from all of your UK and foreign properties?
@@ -2297,6 +2320,36 @@ ukAndForeignPropertyRentalTypeUk.error.required.individual = Select which type o
 ukAndForeignPropertyRentalTypeUk.error.required.agent = Select which type of property your client has
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = which rental property do you have in the UK?
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = which rental property does your client have in the UK?
+
+foreignZeroEmissionGoodsVehicles.title = Zero-emission goods vehicles
+foreignZeroEmissionGoodsVehicles.heading = Zero-emission goods vehicles
+foreignZeroEmissionGoodsVehicles.p1.individual = For a zero-emission goods vehicle, you can claim:
+foreignZeroEmissionGoodsVehicles.p1.agent = For a zero-emission goods vehicle, your client can claim:
+foreignZeroEmissionGoodsVehicles.bullet.1.individual = all the 100% first year allowance if you only used the vehicle for the running of your property rental
+foreignZeroEmissionGoodsVehicles.bullet.1.agent = all the 100% first year allowance if they only used the vehicle for the running of their property rental
+foreignZeroEmissionGoodsVehicles.bullet.2.individual = part of the cost of the vehicle if you also used it outside of running your property rental
+foreignZeroEmissionGoodsVehicles.bullet.2.agent = part of the cost of the vehicle if they also used it outside of running their property rental
+foreignZeroEmissionGoodsVehicles.p2.individual = If you use your car for non-business use 20% of the time, then reduce the claim by 20%.
+foreignZeroEmissionGoodsVehicles.p2.agent = If your client uses their car for non-business use 20% of the time, then reduce the claim by 20%.
+foreignZeroEmissionGoodsVehicles.p3.individual = Your vehicle is a zero-emission goods vehicle if it:
+foreignZeroEmissionGoodsVehicles.p3.agent = Your client’s vehicle is a zero-emission goods vehicle if it:
+foreignZeroEmissionGoodsVehicles.bullet.3 = is designed primarily for transporting goods
+foreignZeroEmissionGoodsVehicles.bullet.4 = cannot emit CO2 by being driven
+foreignZeroEmissionGoodsVehicles.bullet.5 = is registered for use on the road
+foreignZeroEmissionGoodsVehicles.p4 = It can include vans and HGVs.
+foreignZeroEmissionGoodsVehicles.p5 = Zero-emission vehicles that are designed for:
+foreignZeroEmissionGoodsVehicles.bullet.6 = carrying passengers, or
+foreignZeroEmissionGoodsVehicles.bullet.7 = specialist works like mobile cranes or hoists are not goods vehicles
+foreignZeroEmissionGoodsVehicles.label.individual = How much do you want to claim for zero-emission goods vehicle allowance?
+foreignZeroEmissionGoodsVehicles.label.agent = How much does your client want to claim for zero-emission goods vehicle allowance?
+foreignZeroEmissionGoodsVehicles.checkYourAnswersLabel = Zero-emission goods vehicles
+foreignZeroEmissionGoodsVehicles.error.nonNumeric = The amount for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
+foreignZeroEmissionGoodsVehicles.error.required.individual = Enter the amount you want to claim for zero-emission goods vehicle allowance
+foreignZeroEmissionGoodsVehicles.error.required.agent = Enter the amount your client wants to claim for zero-emission goods vehicle allowance
+foreignZeroEmissionGoodsVehicles.error.twoDecimalPlaces = The amount for zero-emission goods vehicle allowance can only include pounds and pence, for example £600 or £600.20
+foreignZeroEmissionGoodsVehicles.error.wholeNumber = The amount for zero-emission goods vehicle allowance can only include whole numbers
+foreignZeroEmissionGoodsVehicles.error.outOfRange = Enter an amount between {0} and {1}
+foreignZeroEmissionGoodsVehicles.change.hidden = Zero-emission goods vehicles
 
 selectCountry.title.individual = From which country did you receive your foreign property rental income?
 selectCountry.title.agent  = From which country did your client receive their foreign property rental income?

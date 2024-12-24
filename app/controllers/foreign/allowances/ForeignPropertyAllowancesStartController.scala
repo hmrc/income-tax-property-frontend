@@ -16,18 +16,17 @@
 
 package controllers.foreign.allowances
 
-import controllers.{PropertyDataError, PropertyDetailsHandler, routes}
 import controllers.actions._
-import controllers.exceptions.InternalErrorFailure
+import controllers.{PropertyDetailsHandler, routes}
+import models.Mode
 import models.backend.PropertyDetails
-import pages.foreign.{Country, IncomeSourceCountries}
+import navigation.ForeignPropertyNavigator
+import pages.foreign.IncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import viewmodels.{AllowancesStartPage, PropertyDetailsPage}
-import views.html.JourneyRecoveryStartAgainView
 import views.html.foreign.allowances.ForeignPropertyAllowancesStartView
 
 import javax.inject.Inject
@@ -38,6 +37,7 @@ class ForeignPropertyAllowancesStartController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
+                                       foreignNavigator: ForeignPropertyNavigator,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ForeignPropertyAllowancesStartView,
@@ -66,4 +66,14 @@ class ForeignPropertyAllowancesStartController @Inject()(
           }
         }(hc, ec)
   }
+
+  def nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
+    implicit request =>
+      if (accrualsOrCash) {
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      } else {
+        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
+      }
+  }
+
 }
