@@ -17,10 +17,11 @@
 package controllers.foreign.allowances
 
 import base.SpecBase
+import controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController
 import controllers.routes
 import forms.foreign.allowances.ForeignZeroEmissionCarAllowanceFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeForeignPropertyNavigator, FakeNavigator, ForeignPropertyNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -47,7 +48,7 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
   val taxYear = 2023
   val countryCode = "AUS"
 
-  lazy val foreignZeroEmissionCarAllowanceRoute = controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignZeroEmissionCarAllowanceRoute = ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignZeroEmissionCarAllowance Controller" - {
 
