@@ -2407,3 +2407,15 @@ foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.individual = *Missing W
 foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignReplacementOfDomesticGoods.error.outOfRange = *Missing Welsh*
 foreignReplacementOfDomesticGoods.change.hidden = *Missing Welsh*
+
+foreignStructuresBuildingAllowanceAddress.title = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.heading = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.buildingName.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingName.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingName.length = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.postcode.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.postcode.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.duplicate = *Missing Welsh*

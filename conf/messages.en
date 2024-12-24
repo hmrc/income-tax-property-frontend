@@ -2436,3 +2436,21 @@ foreignStructureBuildingAllowance.para1 = Tell HMRC if you’ve paid some, or al
 foreignStructureBuildingAllowance.button = Add a claim
 foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim
 
+
+foreignStructuresBuildingAllowanceAddress.title = Structure and building allowance address?
+foreignStructuresBuildingAllowanceAddress.heading = Structure and building allowance address?
+foreignStructuresBuildingAllowanceAddress.buildingName.legend = Building name
+foreignStructuresBuildingAllowanceAddress.error.buildingName.required = Enter a building name for the structure or building
+foreignStructuresBuildingAllowanceAddress.error.buildingName.length = Building name for the qualifying structure or building must not be more than 90 characters long
+foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = Building number
+foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = Enter a number for the qualifying building or structure
+foreignStructuresBuildingAllowanceAddress.postcode.legend = Postcode
+foreignStructuresBuildingAllowanceAddress.error.postcode.required = Enter a full postcode for the qualifying building or structure
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Address
+foreignStructuresBuildingAllowanceAddress.error.duplicate = The address for this claim has already been added
+
+
+
+
+
+
