@@ -17,51 +17,51 @@
 package controllers.foreign.allowances
 
 import base.SpecBase
-import controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController
 import controllers.routes
-import forms.foreign.allowances.ForeignZeroEmissionCarAllowanceFormProvider
+import forms.foreign.allowances.ForeignReplacementOfDomesticGoodsFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.allowances.ForeignZeroEmissionCarAllowancePage
+import pages.foreign.allowances.ForeignReplacementOfDomesticGoodsPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.foreign.allowances.ForeignZeroEmissionCarAllowanceView
+import views.html.foreign.allowances.ForeignReplacementOfDomesticGoodsView
 
 import scala.concurrent.Future
 
-class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with MockitoSugar {
+class ForeignReplacementOfDomesticGoodsControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ForeignZeroEmissionCarAllowanceFormProvider()
+  val formProvider = new ForeignReplacementOfDomesticGoodsFormProvider()
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
   val countryCode = "AUS"
 
-  lazy val foreignZeroEmissionCarAllowanceRoute = ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignReplacementOfDomesticGoodsRoute: String =
+    controllers.foreign.allowances.routes.ForeignReplacementOfDomesticGoodsController.onPageLoad(taxYear, countryCode, NormalMode).url
 
-  "ForeignZeroEmissionCarAllowance Controller" - {
+  "ForeignReplacementOfDomesticGoods Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, foreignReplacementOfDomesticGoodsRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ForeignZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ForeignReplacementOfDomesticGoodsView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
@@ -70,19 +70,19 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignZeroEmissionCarAllowancePage(countryCode), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignReplacementOfDomesticGoodsPage(countryCode), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, foreignReplacementOfDomesticGoodsRoute)
 
-        val view = application.injector.instanceOf[ForeignZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ForeignReplacementOfDomesticGoodsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode ,isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -102,8 +102,8 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", validAnswer.toString))
+          FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
+            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -118,17 +118,17 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", "invalid value"))
+          FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
+            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("foreignZeroEmissionCarAllowanceAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("foreignReplacementOfDomesticGoodsAmount" -> "invalid value"))
 
-        val view = application.injector.instanceOf[ForeignZeroEmissionCarAllowanceView]
+        val view = application.injector.instanceOf[ForeignReplacementOfDomesticGoodsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode ,isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -137,7 +137,7 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignZeroEmissionCarAllowanceRoute)
+        val request = FakeRequest(GET, foreignReplacementOfDomesticGoodsRoute)
 
         val result = route(application, request).value
 
@@ -152,8 +152,8 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", validAnswer.toString))
+          FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
+            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
