@@ -196,3 +196,8 @@ GET         /:taxYear/foreign-property/structures-buildings-allowance/:countryCo
 POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/change-qualifying-amount                             controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 
+
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/address                controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/address                controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onSubmit(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/change-address         controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear: Int, index: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/change-address         controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onSubmit(taxYear: Int, index: Int, countryCode: String, mode: Mode = CheckMode)

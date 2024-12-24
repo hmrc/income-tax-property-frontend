@@ -2443,3 +2443,15 @@ foreignStructureBuildingQualifyingAmount.error.required = *Missing Welsh*
 foreignStructureBuildingQualifyingAmount.error.twoDecimalPlaces = *Missing Welsh*
 foreignStructureBuildingQualifyingAmount.error.outOfRange = *Missing Welsh*
 foreignStructureBuildingQualifyingAmount.change.hidden = *Missing Welsh*
+
+foreignStructuresBuildingAllowanceAddress.title = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.heading = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.buildingName.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingName.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingName.length = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.postcode.legend = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.postcode.required = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = *Missing Welsh*
+foreignStructuresBuildingAllowanceAddress.error.duplicate = *Missing Welsh*
