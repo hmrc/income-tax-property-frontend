@@ -26,7 +26,6 @@ import org.mockito.MockitoSugar.when
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
-import pages.foreign.{Country, IncomeSourceCountries}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.ukrentaroom.ClaimExpensesOrReliefPage
 import play.api.inject.bind

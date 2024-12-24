@@ -18,10 +18,9 @@ package controllers.foreign.allowances
 
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
-import controllers.{PropertyDataError, routes}
-import controllers.allowances.routes
 import controllers.exceptions.InternalErrorFailure
-import models.{Rentals, UserAnswers}
+import controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController
+import models.UserAnswers
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
@@ -64,7 +63,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
 
 
       running(application) {
-        val request = FakeRequest(GET, controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -94,7 +93,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
 
 
       running(application) {
-        val request = FakeRequest(GET, controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -119,7 +118,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val failure = intercept[InternalErrorFailure] {
-          val request = FakeRequest(GET, controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
+          val request = FakeRequest(GET, ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
           status(route(application, request).value)
         }
         failure.getMessage mustBe "Encountered an issue retrieving property data from the business API"
@@ -143,7 +142,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
