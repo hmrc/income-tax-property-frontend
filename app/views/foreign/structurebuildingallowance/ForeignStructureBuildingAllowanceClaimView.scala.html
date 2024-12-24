@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.structuresbuildingallowance.routes
+@import controllers.foreign.structuresbuildingallowance.routes
 @import viewmodels.InputWidth._
 
 @this(
@@ -29,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages("foreignStructureBuildingAllowanceClaim.title"))) {
 
-    @formHelper(action = controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

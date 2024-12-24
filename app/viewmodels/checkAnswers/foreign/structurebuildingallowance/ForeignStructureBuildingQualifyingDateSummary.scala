@@ -17,30 +17,32 @@
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
 import models.{CheckMode, UserAnswers}
-import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimPage
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ForeignStructureBuildingAllowanceClaimSummary {
+import java.time.format.DateTimeFormatter
+
+object ForeignStructureBuildingQualifyingDateSummary {
 
   def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignStructureBuildingAllowanceClaimPage(countryCode)).map { answer =>
+    answers.get(ForeignStructureBuildingQualifyingDatePage(countryCode)).map { answer =>
+      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+
       SummaryListRowViewModel(
-        key = "foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel",
-        value = ValueViewModel(bigDecimalCurrency(answer)),
+        key = "foreignStructureBuildingQualifyingDate.checkYourAnswersLabel",
+        value = ValueViewModel(answer.format(dateFormatter)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, CheckMode).url
+            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, CheckMode).url
           )
-            .withVisuallyHiddenText(messages("foreignStructureBuildingAllowanceClaim.change.hidden"))
+            .withVisuallyHiddenText(messages("foreignStructureBuildingQualifyingDate.change.hidden"))
         )
       )
     }
-
 }

@@ -2407,3 +2407,36 @@ foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.individual = *Missing W
 foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignReplacementOfDomesticGoods.error.outOfRange = *Missing Welsh*
 foreignReplacementOfDomesticGoods.change.hidden = *Missing Welsh*
+
+foreignStructureBuildingAllowance.title.individual = *Missing Welsh*
+foreignStructureBuildingAllowance.title.agent = *Missing Welsh*
+foreignStructureBuildingAllowance.heading = *Missing Welsh*
+foreignStructureBuildingAllowance.para1 = *Missing Welsh*
+foreignStructureBuildingAllowance.button = *Missing Welsh*
+foreignStructureBuildingAllowanceAddress.hint = *Missing Welsh*
+
+
+foreignStructureBuildingQualifyingDate.title = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.heading = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.legend = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.hint = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.heading = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content1.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content1.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l1.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l1.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l2.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l2.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.intro = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.text = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.href = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.checkYourAnswersLabel = *Missing Welsh*
+
+foreignStructureBuildingQualifyingDate.error.required.all = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.required.two = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.required = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.invalid = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*
+
