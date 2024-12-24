@@ -2487,14 +2487,6 @@ foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignReplacementOfDomesticGoods.error.outOfRange = *Missing Welsh*
 foreignReplacementOfDomesticGoods.change.hidden = *Missing Welsh*
 
-foreignStructureBuildingAllowance.title.individual = *Missing Welsh*
-foreignStructureBuildingAllowance.title.agent = *Missing Welsh*
-foreignStructureBuildingAllowance.heading = *Missing Welsh*
-foreignStructureBuildingAllowance.para1 = *Missing Welsh*
-foreignStructureBuildingAllowance.button = *Missing Welsh*
-foreignStructureBuildingAllowanceAddress.hint = *Missing Welsh*
-
-
 foreignStructureBuildingQualifyingDate.title = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.heading = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.legend = *Missing Welsh*
