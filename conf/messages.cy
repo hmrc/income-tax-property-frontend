@@ -2354,3 +2354,18 @@ foreignStructureBuildingAllowance.heading = *Missing Welsh*
 foreignStructureBuildingAllowance.para1 = *Missing Welsh*
 foreignStructureBuildingAllowance.button = *Missing Welsh*
 foreignStructureBuildingAllowanceAddress.hint = *Missing Welsh*
+
+foreignStructureBuildingQualifyingAmount.title = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.heading = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.checkYourAnswersLabel = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.details.content.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.details.content.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.details.l1 = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.details.l2 = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.input.legend = *Missing Welsh*
+
+foreignStructureBuildingQualifyingAmount.error.nonNumeric = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.error.required = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.error.twoDecimalPlaces = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.error.outOfRange = *Missing Welsh*
+foreignStructureBuildingQualifyingAmount.change.hidden = *Missing Welsh*
