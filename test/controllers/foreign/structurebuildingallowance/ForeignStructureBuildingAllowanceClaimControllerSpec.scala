@@ -45,7 +45,6 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
-  val index = 0
   val countryCode = "AUS"
 
   def onwardRoute: Call = Call("GET", "/foo")
