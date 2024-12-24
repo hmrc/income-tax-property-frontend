@@ -18,9 +18,10 @@ package controllers.ukandforeignproperty
 
 import base.SpecBase
 import controllers.routes
+import controllers.ukandforeignproperty.routes.UkAndForeignPropertyRentalTypeUkController
 import forms.UkAndForeignPropertyRentalTypeUkFormProvider
 import models.{NormalMode, UkAndForeignPropertyRentalTypeUk, UserAnswers}
-import navigation.{FakeNavigator, FakeUKAndForeignPropertyNavigator, Navigator, UkAndForeignPropertyNavigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -44,7 +45,7 @@ class UkAndForeignPropertyRentalTypeUkControllerSpec extends SpecBase with Mocki
   def onwardRoute: Call = Call("GET", "/foo")
   val taxYear = 2024
 
-  lazy val ukAndForeignPropertyRentalTypeUkRoute: String = controllers.ukandforeignproperty.routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode).url
+  lazy val ukAndForeignPropertyRentalTypeUkRoute: String = UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode).url
 
   val formProvider = new UkAndForeignPropertyRentalTypeUkFormProvider()
   val form: Form[Set[UkAndForeignPropertyRentalTypeUk]] = formProvider("individual")
