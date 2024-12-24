@@ -2459,3 +2459,18 @@ foreignStructureBuildingAllowance.para1 = Tell HMRC if you’ve paid some, or al
 foreignStructureBuildingAllowance.button = Add a claim
 foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim
 
+
+foreignStructureBuildingQualifyingAmount.title = Structures and buildings allowance qualifying amount
+foreignStructureBuildingQualifyingAmount.heading = Structures and buildings allowance qualifying amount
+foreignStructureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
+foreignStructureBuildingQualifyingAmount.details.content.individual = You may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+foreignStructureBuildingQualifyingAmount.details.content.agent = Your client may claim 3% a year from 6 April 2020 on qualifying costs and the allowance period will end 33 and one third years from the later of:
+foreignStructureBuildingQualifyingAmount.details.l1 = the date the structure first came into non-residential use
+foreignStructureBuildingQualifyingAmount.details.l2 = the date on which the qualifying expenditure is incurred
+foreignStructureBuildingQualifyingAmount.input.legend = What is the total qualifying amount?
+
+foreignStructureBuildingQualifyingAmount.error.nonNumeric = Enter the total qualifying amount for enhanced structures and buildings allowance
+foreignStructureBuildingQualifyingAmount.error.required = Enter the total qualifying amount for enhanced structures and buildings allowance
+foreignStructureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
+foreignStructureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
+foreignStructureBuildingQualifyingAmount.change.hidden = Qualifying amount
