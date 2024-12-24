@@ -19,7 +19,7 @@ package controllers.foreign.income
 import base.SpecBase
 import controllers.routes
 import forms.foreign.income.ForeignIncomeSectionCompleteFormProvider
-import models.JourneyPath.{ForeignPropertyIncome, ForeignSelectCountry}
+import models.JourneyPath.ForeignPropertyIncome
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers

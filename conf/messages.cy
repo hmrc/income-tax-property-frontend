@@ -2364,6 +2364,27 @@ foreignReplacementOfDomesticGoods.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignReplacementOfDomesticGoods.error.outOfRange = *Missing Welsh*
 foreignReplacementOfDomesticGoods.change.hidden = *Missing Welsh*
 
+foreignOtherCapitalAllowances.title = *Missing Welsh*
+foreignOtherCapitalAllowances.heading = *Missing Welsh*
+foreignOtherCapitalAllowances.p1.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.p1.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.p2.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.p2.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.p3 = *Missing Welsh*
+foreignOtherCapitalAllowances.p3.link.text = *Missing Welsh*
+foreignOtherCapitalAllowances.p3.link.href = *Missing Welsh*
+foreignOtherCapitalAllowances.label.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.label.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.checkYourAnswersLabel = *Missing Welsh*
+foreignOtherCapitalAllowances.error.nonNumeric.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.error.nonNumeric.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.error.required.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.error.required.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignOtherCapitalAllowances.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignOtherCapitalAllowances.error.outOfRange = *Missing Welsh*
+foreignOtherCapitalAllowances.change.hidden = *Missing Welsh*
+
 foreignStructureBuildingAllowance.title.individual = *Missing Welsh*
 foreignStructureBuildingAllowance.title.agent = *Missing Welsh*
 foreignStructureBuildingAllowance.heading = *Missing Welsh*
