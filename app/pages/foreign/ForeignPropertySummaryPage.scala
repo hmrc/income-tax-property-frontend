@@ -16,7 +16,7 @@
 
 package pages.foreign
 
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import viewmodels.summary.{TaskListItem, TaskListTag}
@@ -103,12 +103,20 @@ object ForeignPropertySummaryPage {
         TaskListTag.NotStarted,
         s"foreign_property_allowances_$countryCode"
       ))
-      case Some(false) => taskList.appended(
-        TaskListItem(
-          "foreign.expenses",
-          controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
-          taskListTagForExpenses,
-          s"foreign_property_expenses_$countryCode"
+      case Some(false) => taskList.appendedAll(
+        Seq(
+          TaskListItem(
+            "foreign.expenses",
+            controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+            taskListTagForExpenses,
+            s"foreign_property_expenses_$countryCode"
+          ),
+          TaskListItem(
+            "summary.structuresAndBuildingAllowance",
+            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
+            taskListTagForExpenses,
+            s"foreign_structure_and_building_allowance_$countryCode"
+          )
         )
       )
       case None => taskList
