@@ -32,21 +32,22 @@ import views.html.foreign.allowances.ForeignPropertyAllowancesStartView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
+class ForeignPropertyAllowancesStartController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  foreignNavigator: ForeignPropertyNavigator,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignPropertyAllowancesStartView,
+  businessService: BusinessService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
-class ForeignPropertyAllowancesStartController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       foreignNavigator: ForeignPropertyNavigator,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ForeignPropertyAllowancesStartView,
-                                       businessService: BusinessService
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
-
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val maybeCountryName = request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code==countryCode)).map(_.name)
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      val maybeCountryName =
+        request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code == countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
 
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
@@ -64,16 +65,7 @@ class ForeignPropertyAllowancesStartController @Inject()(
             case _ =>
               Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
           }
-        }(hc, ec)
-  }
-
-  def nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode): Action[AnyContent] = identify {
-    implicit request =>
-      if (accrualsOrCash) {
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      } else {
-        Redirect(controllers.foreign.allowances.routes.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, mode))
-      }
-  }
+      }(hc, ec)
+    }
 
 }

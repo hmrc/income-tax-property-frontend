@@ -108,7 +108,7 @@ POST       /:taxYear/foreign-property/income/:countryCode/complete-yes-no       
 
 ############################  Expenses ###################################
 
-GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-property-expenses-start                   controllers.foreign.expenses.ForeignPropertyExpensesStartController.onPageLoad(taxYear: Int, countryCode: String)
+GET        /:taxYear/foreign-property/expenses/:countryCode/start                                             controllers.foreign.expenses.ForeignPropertyExpensesStartController.onPageLoad(taxYear: Int, countryCode: String)
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/rents-rates-and-insurance                         controllers.foreign.expenses.ForeignRentsRatesAndInsuranceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/rents-rates-and-insurance                         controllers.foreign.expenses.ForeignRentsRatesAndInsuranceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
@@ -120,11 +120,6 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-property-rep
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-property-repairs-and-maintenance   controllers.foreign.expenses.ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear:Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-property-repairs-and-maintenance   controllers.foreign.expenses.ForeignPropertyRepairsAndMaintenanceController.onSubmit(taxYear:Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/expenses/:countryCode/costs-of-services-provided                        controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/costs-of-services-provided                        controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-
 GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                             controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-non-residential-property-finance-costs                             controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-non-residential-property-finance-costs                      controllers.foreign.expenses.ForeignNonResidentialPropertyFinanceCostsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
@@ -135,10 +130,15 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-professional
 GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-professional-fees                  controllers.foreign.expenses.ForeignProfessionalFeesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/expenses/:countryCode/foreign-other-allowable-property-expenses         controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/foreign-other-allowable-property-expenses         controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/expenses/:countryCode/change-foreign-other-allowable-property-expenses  controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/expenses/:countryCode/change-foreign-other-allowable-property-expenses  controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/expenses/:countryCode/costs-of-services-provided                        controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/costs-of-services-provided                        controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/change-costs-of-services-provided                 controllers.foreign.expenses.ForeignCostsOfServicesProvidedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-property/expenses/:countryCode/other-allowable-property-expenses                 controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/other-allowable-property-expenses                 controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/expenses/:countryCode/change-other-allowable-property-expenses          controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/expenses/:countryCode/change-other-allowable-property-expenses          controllers.foreign.expenses.ForeignOtherAllowablePropertyExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 GET        /:taxYear/foreign-property/expenses/:countryCode/consolidated-or-individual-expenses               controllers.foreign.expenses.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/expenses/:countryCode/consolidated-or-individual-expenses               controllers.foreign.expenses.ConsolidatedOrIndividualExpensesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
@@ -153,18 +153,17 @@ POST       /:taxYear/foreign-property/expenses/:countryCode/complete-yes-no     
 
 ############################  Allowances  ###################################
 
-GET        /:taxYear/foreign-property/allowances/:countryCode/allowances-intro                                controllers.foreign.allowances.ForeignPropertyAllowancesStartController.onPageLoad(taxYear: Int, countryCode: String)
-POST       /:taxYear/foreign-property/allowances/:countryCode/allowances-intro                                controllers.foreign.allowances.ForeignPropertyAllowancesStartController.nextPage(taxYear: Int, countryCode: String, accrualsOrCash: Boolean, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/start                                          controllers.foreign.allowances.ForeignPropertyAllowancesStartController.onPageLoad(taxYear: Int, countryCode: String)
 
-GET        /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/allowances/:countryCode/change-foreign-zero-emission-car-allowance      controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/allowances/:countryCode/change-foreign-zero-emission-car-allowance      controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/zero-emission-car-allowance                    controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/zero-emission-car-allowance                    controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/change-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/change-zero-emission-car-allowance             controllers.foreign.allowances.ForeignZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-goods-vehicles            controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/allowances/:countryCode/foreign-zero-emission-goods-vehicles            controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/allowances/:countryCode/change-foreign-zero-emission-goods-vehicles     controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/allowances/:countryCode/change-foreign-zero-emission-goods-vehicles     controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/zero-emission-goods-vehicles                   controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/zero-emission-goods-vehicles                   controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/allowances/:countryCode/change-zero-emission-goods-vehicles            controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/allowances/:countryCode/change-zero-emission-goods-vehicles            controllers.foreign.allowances.ForeignZeroEmissionGoodsVehiclesController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 GET        /:taxYear/foreign-property/allowances/:countryCode/replacement-of-domestic-goods                   controllers.foreign.allowances.ForeignReplacementOfDomesticGoodsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/allowances/:countryCode/replacement-of-domestic-goods                   controllers.foreign.allowances.ForeignReplacementOfDomesticGoodsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
