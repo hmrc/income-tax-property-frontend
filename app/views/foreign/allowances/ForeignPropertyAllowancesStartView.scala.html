@@ -46,10 +46,10 @@
         }
     </ul>
     <p class="govuk-body">
-        @formHelper(action = controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.nextPage(taxYear, countryCode, accrualsOrCash), Symbol("autoComplete") -> "off") {
-            @govukButton(
-                ButtonViewModel(messages("site.continue")).withId("continue")
-            )
-        }
+        @govukButton(
+        ButtonViewModel(messages("site.continue"))
+        .asLink(controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear,countryCode, NormalMode).url)
+        .withId("continue")
+        )
     </p>
 }
