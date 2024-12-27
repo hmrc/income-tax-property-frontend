@@ -2455,3 +2455,27 @@ foreignStructuresBuildingAllowanceAddress.postcode.legend = *Missing Welsh*
 foreignStructuresBuildingAllowanceAddress.error.postcode.required = *Missing Welsh*
 foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = *Missing Welsh*
 foreignStructuresBuildingAllowanceAddress.error.duplicate = *Missing Welsh*
+
+foreignStructureBuildingQualifyingDate.title = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.heading = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.legend = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.hint = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.heading = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content1.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content1.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l1.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l1.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l2.individual = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.l2.agent = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.intro = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.text = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.details.content2.link.href = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.checkYourAnswersLabel = *Missing Welsh*
+
+foreignStructureBuildingQualifyingDate.error.required.all = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.required.two = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.required = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.invalid = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
+foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*

@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.foreign.structurebuildingallowance
+package pages.foreign.structurebuildingallowance
 
-case class ForeignStructureBuildingAllowancePage(
-  taxYear: Int,
-  countryCode: String,
-  individualOrAgent: String
-)
+import models.ForeignProperty
+import pages.PageConstants.{sbaPath, structureBuildingFormGroup}
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+
+import java.time.LocalDate
+
+case class ForeignStructureBuildingQualifyingDatePage(countryCode: String) extends QuestionPage[LocalDate] {
+
+
+  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+
+  override def toString: String = "foreignStructureBuildingQualifyingDate"
+}
