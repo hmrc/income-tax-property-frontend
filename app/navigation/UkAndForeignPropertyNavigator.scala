@@ -79,8 +79,10 @@ class UkAndForeignPropertyNavigator {
 
   private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
     userAnswers.get(ForeignCountriesRentedPage) match {
-      case Some(true) => routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
-      case Some(false) => Call("GET", "/") // TODO: Update once page exists
+      case Some(true) =>
+        routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
+      case Some(false) =>
+       routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
   }
 
