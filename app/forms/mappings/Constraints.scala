@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import models.Addressable
+import models.{Addressable, ForeignAddressable}
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import service.CountryNamesDataSource.loadCountries
 
@@ -130,6 +130,18 @@ trait Constraints {
     Constraint[T] {
       address: T => {
         if (allAddresses.exists(a => Addressable.checkAddresses[T, U](address, a))) {
+          Invalid(errorKey)
+        } else {
+          Valid
+        }
+      }
+    }
+
+  def checkIfForeignAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)
+                                        (implicit addressableChecked: ForeignAddressable[T], addressableInList: ForeignAddressable[U]): Constraint[T] =
+    Constraint[T] {
+      address: T => {
+        if (allAddresses.exists(a => ForeignAddressable.checkForeignAddresses[T, U](address, a))) {
           Invalid(errorKey)
         } else {
           Valid

@@ -2459,7 +2459,6 @@ foreignStructureBuildingAllowance.para1 = Tell HMRC if you’ve paid some, or al
 foreignStructureBuildingAllowance.button = Add a claim
 foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim
 
-
 foreignStructureBuildingQualifyingAmount.title = Structures and buildings allowance qualifying amount
 foreignStructureBuildingQualifyingAmount.heading = Structures and buildings allowance qualifying amount
 foreignStructureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
@@ -2474,3 +2473,39 @@ foreignStructureBuildingQualifyingAmount.error.required = Enter the total qualif
 foreignStructureBuildingQualifyingAmount.error.twoDecimalPlaces = The total qualifying amount for enhanced structures and buildings allowance can only include pounds and pence, for example £600 or £600.20
 foreignStructureBuildingQualifyingAmount.error.outOfRange = Enter an amount between £{0} and £{1}
 foreignStructureBuildingQualifyingAmount.change.hidden = Qualifying amount
+
+foreignStructuresBuildingAllowanceAddress.title = Structure and building allowance address?
+foreignStructuresBuildingAllowanceAddress.heading = Structure and building allowance address?
+foreignStructuresBuildingAllowanceAddress.buildingName.legend = Building name
+foreignStructuresBuildingAllowanceAddress.error.buildingName.required = Enter a building name for the structure or building
+foreignStructuresBuildingAllowanceAddress.error.buildingName.length = Building name for the qualifying structure or building must not be more than 90 characters long
+foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = Building number
+foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = Enter a number for the qualifying building or structure
+foreignStructuresBuildingAllowanceAddress.postcode.legend = Postcode
+foreignStructuresBuildingAllowanceAddress.error.postcode.required = Enter a full postcode for the qualifying building or structure
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Address
+foreignStructuresBuildingAllowanceAddress.error.duplicate = The address for this claim has already been added
+
+foreignStructureBuildingQualifyingDate.title = Qualifying date
+foreignStructureBuildingQualifyingDate.heading = Qualifying date
+foreignStructureBuildingQualifyingDate.legend = What is the qualifying date?
+foreignStructureBuildingQualifyingDate.hint = For example, 29 10 2018
+foreignStructureBuildingQualifyingDate.details.heading = Understanding structures and buildings allowance qualifying date
+foreignStructureBuildingQualifyingDate.details.content1.individual = Start your claim from whichever date is later:
+foreignStructureBuildingQualifyingDate.details.content1.agent = Start your client’s claim from whichever date is later:
+foreignStructureBuildingQualifyingDate.details.l1.individual = the date when you started using the structure for a qualifying activity
+foreignStructureBuildingQualifyingDate.details.l1.agent = the date when your client started using the structure for a qualifying activity
+foreignStructureBuildingQualifyingDate.details.l2.individual = the date that you’re due to pay for the structure or construction
+foreignStructureBuildingQualifyingDate.details.l2.agent = the date that your client is due to pay for the structure or construction
+foreignStructureBuildingQualifyingDate.details.content2.link.intro = Read more about
+foreignStructureBuildingQualifyingDate.details.content2.link.text = the structures and building allowance at GOV.UK (opens in new tab)
+foreignStructureBuildingQualifyingDate.details.content2.link.href = https://www.gov.uk/guidance/claiming-capital-allowances-for-structures-and-buildings#what-you-can-claim-the-allowance-on
+foreignStructureBuildingQualifyingDate.checkYourAnswersLabel = Qualifying date
+
+foreignStructureBuildingQualifyingDate.error.required.all = Enter the qualifying date for structures and building allowance
+foreignStructureBuildingQualifyingDate.error.required.two = Qualifying date for structures and buildings allowance must include a {0} and a {1}
+foreignStructureBuildingQualifyingDate.error.required = Qualifying date for structures and buildings allowance must include a {0}
+foreignStructureBuildingQualifyingDate.error.invalid = Qualifying date for structures and building allowance must include a date, month and a year in numbers
+foreignStructureBuildingQualifyingDate.error.maxDate = Qualifying date for structures and buildings allowance must be before September 2026
+foreignStructureBuildingQualifyingDate.error.minDate = Qualifying date for structures and buildings allowance must be after 29 October 2018
+foreignStructureBuildingQualifyingDate.change.hidden = Qualifying date

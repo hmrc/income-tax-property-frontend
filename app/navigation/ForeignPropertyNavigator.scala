@@ -17,14 +17,16 @@
 package navigation
 
 import com.google.inject.Singleton
-import controllers.foreign.income.routes._
+import controllers.foreign.allowances.routes._
 import controllers.foreign.expenses.routes._
+import controllers.foreign.income.routes._
 import controllers.foreign.routes._
 import controllers.routes.{IndexController, SummaryController}
 import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models._
 import pages.Page
 import pages.foreign._
+import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.income._
 import play.api.mvc.Call
@@ -74,10 +76,7 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignIncomeSectionCompletePage(_) =>
       taxYear => _ => _ => SummaryController.show(taxYear)
-    case ForeignExpensesSectionCompletePage(_) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
-    case ConsolidatedOrIndividualExpensesPage(countryCode) =>
-      taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers, countryCode)
+    //Expenses
     case ForeignRentsRatesAndInsurancePage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignPropertyRepairsAndMaintenancePage(countryCode) =>
@@ -91,6 +90,19 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignOtherAllowablePropertyExpensesController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignOtherAllowablePropertyExpensesPage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ConsolidatedOrIndividualExpensesPage(countryCode) =>
+      taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers, countryCode)
+    case ForeignExpensesSectionCompletePage(_) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
+    //Allowances
+    case ForeignZeroEmissionCarAllowancePage(countryCode) =>
+      taxYear => _ => _ => ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignZeroEmissionGoodsVehiclesPage(countryCode) =>
+      taxYear => _ => _ => ForeignReplacementOfDomesticGoodsController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignReplacementOfDomesticGoodsPage(countryCode) =>
+      taxYear => _ => _ => ForeignOtherCapitalAllowancesController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignOtherCapitalAllowancesPage(countryCode) => // TODO route to CYA page once created
+      taxYear => _ => _ => SummaryController.show(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -162,6 +174,16 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ConsolidatedOrIndividualExpensesPage(countryCode) =>
       taxYear => _ => userAnswers => consolidatedExpensesNavigationCheckMode(taxYear, userAnswers, countryCode)
+    //Allowances
+    // TODO route to CYA page once created
+    case ForeignZeroEmissionCarAllowancePage(countryCode) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
+    case ForeignZeroEmissionGoodsVehiclesPage(countryCode) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
+    case ForeignReplacementOfDomesticGoodsPage(countryCode) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
+    case ForeignOtherCapitalAllowancesPage(countryCode) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 

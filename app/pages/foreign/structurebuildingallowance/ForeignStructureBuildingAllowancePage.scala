@@ -16,6 +16,8 @@
 
 package pages.foreign.structurebuildingallowance
 
-import pages.Page
-
-object ForeignStructureBuildingAllowancePage extends Page {}
+case class ForeignStructureBuildingAllowancePage(
+                                                  taxYear: Int,
+                                                  countryCode: String,
+                                                  individualOrAgent: String
+                                                )

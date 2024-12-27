@@ -14,39 +14,41 @@
  * limitations under the License.
  */
 
-package controllers.foreign.allowances
+package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions._
-import forms.foreign.allowances.ForeignZeroEmissionGoodsVehiclesFormProvider
+import forms.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDateFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.allowances.ForeignZeroEmissionGoodsVehiclesPage
+import pages.foreign.structurebuildingallowance.{ForeignStructureBuildingAllowanceClaimPage, ForeignStructureBuildingQualifyingDatePage}
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.foreign.allowances.ForeignZeroEmissionGoodsVehiclesView
+import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDateView
 
+import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignZeroEmissionGoodsVehiclesController @Inject() (
+class ForeignStructureBuildingQualifyingDateController @Inject()(
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignNavigator: ForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ForeignZeroEmissionGoodsVehiclesFormProvider,
+  formProvider: ForeignStructureBuildingQualifyingDateFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ForeignZeroEmissionGoodsVehiclesView
+  view: ForeignStructureBuildingQualifyingDateView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ForeignZeroEmissionGoodsVehiclesPage(countryCode)) match {
+      val form: Form[LocalDate] = formProvider()
+      val preparedForm = request.userAnswers.get(ForeignStructureBuildingQualifyingDatePage(countryCode)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -56,21 +58,22 @@ class ForeignZeroEmissionGoodsVehiclesController @Inject() (
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
+      val form: Form[LocalDate] = formProvider()
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future
-              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+            ),
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignZeroEmissionGoodsVehiclesPage(countryCode), value))
+                Future.fromTry(request.userAnswers.set(ForeignStructureBuildingQualifyingDatePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               foreignNavigator.nextPage(
-                ForeignZeroEmissionGoodsVehiclesPage(countryCode),
+                ForeignStructureBuildingAllowanceClaimPage(countryCode),
                 taxYear,
                 mode,
                 request.userAnswers,

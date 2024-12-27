@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.foreign.structurebuildingallowance
+package models
 
-case class ForeignStructureBuildingAllowancePage(
-  taxYear: Int,
-  countryCode: String,
-  individualOrAgent: String
-)
+import play.api.libs.json._
+
+case class ForeignStructuresBuildingAllowanceAddress(buildingName: String, buildingNumber: String, postCode: String)
+
+object ForeignStructuresBuildingAllowanceAddress {
+  implicit val format: Format[ForeignStructuresBuildingAllowanceAddress] = Json.format
+}

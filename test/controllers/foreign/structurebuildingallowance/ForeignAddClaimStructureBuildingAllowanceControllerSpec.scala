@@ -22,7 +22,7 @@ import models.requests.DataRequest
 import models.{Rentals, User}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.checkAnswers.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceView
 
 class ForeignAddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {

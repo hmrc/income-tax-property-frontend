@@ -14,65 +14,67 @@
  * limitations under the License.
  */
 
-package controllers.foreign.allowances
+package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions._
-import forms.foreign.allowances.ForeignZeroEmissionGoodsVehiclesFormProvider
+import forms.foreign.structurebuildingallowance.ForeignStructuresBuildingAllowanceAddressFormProvider
 import models.Mode
-import navigation.ForeignPropertyNavigator
-import pages.foreign.allowances.ForeignZeroEmissionGoodsVehiclesPage
+import navigation.Navigator
+import pages.foreign.structurebuildingallowance.ForeignStructuresBuildingAllowanceAddressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.foreign.allowances.ForeignZeroEmissionGoodsVehiclesView
+import views.html.foreign.structurebuildingallowance.ForeignStructuresBuildingAllowanceAddressView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignZeroEmissionGoodsVehiclesController @Inject() (
+class ForeignStructuresBuildingAllowanceAddressController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  foreignNavigator: ForeignPropertyNavigator,
+  navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ForeignZeroEmissionGoodsVehiclesFormProvider,
+  formProvider: ForeignStructuresBuildingAllowanceAddressFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ForeignZeroEmissionGoodsVehiclesView
-)(implicit ec: ExecutionContext)
+  view: ForeignStructuresBuildingAllowanceAddressView
+)(implicit val ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, index: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ForeignZeroEmissionGoodsVehiclesPage(countryCode)) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+      val form = formProvider(request.userAnswers, countryCode, index)
+      val preparedForm =
+        request.userAnswers.get(ForeignStructuresBuildingAllowanceAddressPage(index, countryCode)) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, index, countryCode, mode))
     }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onSubmit(taxYear: Int, index: Int, countryCode: String, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey)
+      val form = formProvider(request.userAnswers, countryCode, index)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors =>
-            Future
-              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, index, countryCode, mode))),
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignZeroEmissionGoodsVehiclesPage(countryCode), value))
+                Future.fromTry(
+                  request.userAnswers.set(ForeignStructuresBuildingAllowanceAddressPage(index, countryCode), value)
+                )
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              foreignNavigator.nextPage(
-                ForeignZeroEmissionGoodsVehiclesPage(countryCode),
+              navigator.sbaNextPage(
+                ForeignStructuresBuildingAllowanceAddressPage(index, countryCode),
                 taxYear,
                 mode,
+                index,
                 request.userAnswers,
                 updatedAnswers
               )
