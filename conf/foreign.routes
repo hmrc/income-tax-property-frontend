@@ -195,4 +195,5 @@ POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCo
 GET         /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/change-qualifying-amount                             controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/change-qualifying-amount                             controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onSubmit(taxYear: Int, countryCode: String)
