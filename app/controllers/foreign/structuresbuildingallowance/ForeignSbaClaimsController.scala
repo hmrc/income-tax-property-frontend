@@ -18,13 +18,17 @@ package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions._
 import forms.ForeignSbaClaimsFormProvider
-import models.Mode
+import models.UserAnswers
+import play.api.Logging
+import play.api.data.Form
 import navigation.ForeignPropertyNavigator
 import pages.ForeignSbaClaimsPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceGroup
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.structurebuildingallowance.ForeignSbaClaimsView
 
 import javax.inject.Inject
@@ -42,31 +46,37 @@ class ForeignSbaClaimsController @Inject()(
                                          view: ForeignSbaClaimsView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ForeignSbaClaimsPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+      val form: Form[Boolean] = formProvider()
+      val list: SummaryList = summaryList(taxYear, countryCode, request.userAnswers)
 
-      Ok(view(preparedForm, mode))
+      Ok(view(form, list, taxYear, countryCode, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+//  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+//    implicit request =>
+//
+//      form.bindFromRequest().fold(
+//        formWithErrors =>
+//          Future.successful(BadRequest(view(formWithErrors, mode))),
+//
+//        value =>
+//          for {
+//            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSbaClaimsPage, value))
+//            _              <- sessionRepository.set(updatedAnswers)
+//          } yield Redirect(navigator.nextPage(ForeignSbaClaimsPage, mode, updatedAnswers))
+//      )
+//  }
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSbaClaimsPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignSbaClaimsPage, mode, updatedAnswers))
-      )
+  private def summaryList(taxYear: Int, countryCode: String, userAnswers: UserAnswers)(implicit
+                                                                                              messages: Messages
+  ) = {
+    val sbaEntries = userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)).toSeq.flatten
+    val rows = sbaEntries.zipWithIndex.flatMap { case (_, index) =>
+      StructureBuildingAllowanceSummary.row(taxYear, index, userAnswers, propertyType)
+    }
+    SummaryListViewModel(rows)
   }
 }
