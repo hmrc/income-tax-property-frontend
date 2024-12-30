@@ -45,10 +45,11 @@ class ForeignStructureBuildingQualifyingAmountControllerSpec extends SpecBase wi
 
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
+  val index = 0
   val countryCode = "AUS"
 
   lazy val requestRoute: String =
-    ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear, countryCode, NormalMode).url
+    ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear, countryCode, index, NormalMode).url
 
   "ForeignStructureBuildingQualifyingAmount Controller" - {
 
@@ -64,7 +65,7 @@ class ForeignStructureBuildingQualifyingAmountControllerSpec extends SpecBase wi
         val view = application.injector.instanceOf[ForeignStructureBuildingQualifyingAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, index, isAgentMessageKey, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -74,7 +75,10 @@ class ForeignStructureBuildingQualifyingAmountControllerSpec extends SpecBase wi
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(ForeignStructureBuildingQualifyingAmountPage(countryCode), validAnswer).success.value
+        UserAnswers(userAnswersId)
+          .set(ForeignStructureBuildingQualifyingAmountPage(countryCode, index), validAnswer)
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -86,7 +90,14 @@ class ForeignStructureBuildingQualifyingAmountControllerSpec extends SpecBase wi
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, isAgentMessageKey, NormalMode)(
+        contentAsString(result) mustEqual view(
+          form.fill(validAnswer),
+          taxYear,
+          countryCode,
+          index,
+          isAgentMessageKey,
+          NormalMode
+        )(
           request,
           messages(application)
         ).toString
@@ -135,7 +146,7 @@ class ForeignStructureBuildingQualifyingAmountControllerSpec extends SpecBase wi
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, index, isAgentMessageKey, NormalMode)(
           request,
           messages(application)
         ).toString

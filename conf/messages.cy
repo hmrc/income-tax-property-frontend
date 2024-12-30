@@ -2479,3 +2479,9 @@ foreignStructureBuildingQualifyingDate.error.invalid = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*
+
+
+foreignSbaRemoveConfirmation.title = *Missing Welsh*
+foreignSbaRemoveConfirmation.heading = *Missing Welsh*
+foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
+foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*

@@ -28,10 +28,10 @@ import java.time.format.DateTimeFormatter
 
 object ForeignStructureBuildingQualifyingDateSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+  def row(taxYear: Int, countryCode: String, index: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignStructureBuildingQualifyingDatePage(countryCode)).map { answer =>
+    answers.get(ForeignStructureBuildingQualifyingDatePage(countryCode, index)).map { answer =>
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
       SummaryListRowViewModel(
@@ -41,7 +41,7 @@ object ForeignStructureBuildingQualifyingDateSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, CheckMode).url
+            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, index, CheckMode).url
           )
             .withVisuallyHiddenText(messages("foreignStructureBuildingQualifyingDate.change.hidden"))
         )

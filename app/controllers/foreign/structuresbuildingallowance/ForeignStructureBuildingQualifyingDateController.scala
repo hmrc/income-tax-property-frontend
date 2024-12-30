@@ -45,18 +45,18 @@ class ForeignStructureBuildingQualifyingDateController @Inject()(
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, countryCode: String, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[LocalDate] = formProvider()
-      val preparedForm = request.userAnswers.get(ForeignStructureBuildingQualifyingDatePage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignStructureBuildingQualifyingDatePage(countryCode, index)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, countryCode, index, request.user.isAgentMessageKey, mode))
     }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onSubmit(taxYear: Int, countryCode: String, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[LocalDate] = formProvider()
       form
@@ -64,16 +64,16 @@ class ForeignStructureBuildingQualifyingDateController @Inject()(
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+              BadRequest(view(formWithErrors, taxYear, countryCode, index, request.user.isAgentMessageKey, mode))
             ),
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignStructureBuildingQualifyingDatePage(countryCode), value))
+                Future.fromTry(request.userAnswers.set(ForeignStructureBuildingQualifyingDatePage(countryCode, index), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               foreignNavigator.nextPage(
-                ForeignStructureBuildingAllowanceClaimPage(countryCode),
+                ForeignStructureBuildingAllowanceClaimPage(countryCode, index),
                 taxYear,
                 mode,
                 request.userAnswers,

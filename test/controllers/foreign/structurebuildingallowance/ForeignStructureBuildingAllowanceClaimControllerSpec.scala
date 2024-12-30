@@ -38,13 +38,16 @@ import scala.concurrent.Future
 class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val foreignStructureBuildingAllowanceClaimRoute: String =
-    controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, NormalMode).url
+    controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController
+      .onPageLoad(taxYear, countryCode, index, NormalMode)
+      .url
 
   val formProvider = new ForeignStructureBuildingAllowanceClaimFormProvider()
   private val isAgentMessageKey = "individual"
   val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
+  val index = 0
   val countryCode = "AUS"
 
   def onwardRoute: Call = Call("GET", "/foo")
@@ -62,7 +65,7 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
         val view = application.injector.instanceOf[ForeignStructureBuildingAllowanceClaimView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, index, isAgentMessageKey, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -72,7 +75,10 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(ForeignStructureBuildingAllowanceClaimPage(countryCode), validAnswer).success.value
+        UserAnswers(userAnswersId)
+          .set(ForeignStructureBuildingAllowanceClaimPage(countryCode, index), validAnswer)
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -86,8 +92,9 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
           form.fill(validAnswer),
           taxYear,
           countryCode,
+          index,
           isAgentMessageKey,
-          NormalMode,
+          NormalMode
         )(
           request,
           messages(application)
@@ -139,8 +146,9 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
           boundForm,
           taxYear,
           countryCode,
+          index,
           isAgentMessageKey,
-          NormalMode,
+          NormalMode
         )(
           request,
           messages(application)
