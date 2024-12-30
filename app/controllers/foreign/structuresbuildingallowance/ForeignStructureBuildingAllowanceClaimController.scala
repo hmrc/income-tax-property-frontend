@@ -30,7 +30,7 @@ import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAll
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignStructureBuildingAllowanceClaimController @Inject()(
+class ForeignStructureBuildingAllowanceClaimController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignNavigator: ForeignPropertyNavigator,
@@ -43,18 +43,18 @@ class ForeignStructureBuildingAllowanceClaimController @Inject()(
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, countryCode: String, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ForeignStructureBuildingAllowanceClaimPage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignStructureBuildingAllowanceClaimPage(countryCode, index)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, countryCode, index, request.user.isAgentMessageKey, mode))
     }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onSubmit(taxYear: Int, countryCode: String, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
@@ -62,16 +62,18 @@ class ForeignStructureBuildingAllowanceClaimController @Inject()(
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+              BadRequest(view(formWithErrors, taxYear, countryCode, index, request.user.isAgentMessageKey, mode))
             ),
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignStructureBuildingAllowanceClaimPage(countryCode), value))
+                Future.fromTry(
+                  request.userAnswers.set(ForeignStructureBuildingAllowanceClaimPage(countryCode, index), value)
+                )
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               foreignNavigator.nextPage(
-                ForeignStructureBuildingAllowanceClaimPage(countryCode),
+                ForeignStructureBuildingAllowanceClaimPage(countryCode, index),
                 taxYear,
                 mode,
                 request.userAnswers,

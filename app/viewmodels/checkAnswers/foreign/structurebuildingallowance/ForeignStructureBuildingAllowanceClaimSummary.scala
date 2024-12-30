@@ -16,6 +16,7 @@
 
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
+import controllers.foreign.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimPage
 import play.api.i18n.Messages
@@ -26,17 +27,19 @@ import viewmodels.implicits._
 
 object ForeignStructureBuildingAllowanceClaimSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+  def row(taxYear: Int, countryCode: String, index: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignStructureBuildingAllowanceClaimPage(countryCode)).map { answer =>
+    answers.get(ForeignStructureBuildingAllowanceClaimPage(countryCode, index)).map { answer =>
       SummaryListRowViewModel(
         key = "foreignStructureBuildingAllowanceClaim.checkYourAnswersLabel",
         value = ValueViewModel(bigDecimalCurrency(answer)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, CheckMode).url
+            routes.ForeignStructureBuildingAllowanceClaimController
+              .onPageLoad(taxYear, countryCode, index, CheckMode)
+              .url
           )
             .withVisuallyHiddenText(messages("foreignStructureBuildingAllowanceClaim.change.hidden"))
         )

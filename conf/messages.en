@@ -2459,6 +2459,7 @@ foreignStructureBuildingAllowance.para1 = Tell HMRC if you’ve paid some, or al
 foreignStructureBuildingAllowance.button = Add a claim
 foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim
 
+
 foreignStructureBuildingQualifyingAmount.title = Structures and buildings allowance qualifying amount
 foreignStructureBuildingQualifyingAmount.heading = Structures and buildings allowance qualifying amount
 foreignStructureBuildingQualifyingAmount.checkYourAnswersLabel = Qualifying amount
@@ -2509,3 +2510,8 @@ foreignStructureBuildingQualifyingDate.error.invalid = Qualifying date for struc
 foreignStructureBuildingQualifyingDate.error.maxDate = Qualifying date for structures and buildings allowance must be before September 2026
 foreignStructureBuildingQualifyingDate.error.minDate = Qualifying date for structures and buildings allowance must be after 29 October 2018
 foreignStructureBuildingQualifyingDate.change.hidden = Qualifying date
+
+foreignSbaRemoveConfirmation.title = Do you want to remove this structures and buildings allowance claim?
+foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance claim?
+foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
+foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
