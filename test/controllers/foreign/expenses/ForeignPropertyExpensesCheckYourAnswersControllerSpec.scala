@@ -16,17 +16,27 @@
 
 package controllers.foreign.expenses
 
+import audit.AuditService
 import base.SpecBase
-import controllers.foreign.expenses.routes.{ForeignPropertyExpensesCheckYourAnswersController, ForeignExpensesSectionCompleteController}
+import controllers.foreign.expenses.routes._
 import controllers.routes
-import models.{ConsolidatedOrIndividualExpenses, UserAnswers}
+import models.JourneyPath.ForeignPropertyExpenses
+import models.{ConsolidatedOrIndividualExpenses, JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.expenses._
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import java.time.LocalDate
+import scala.concurrent.Future
 
 class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -34,6 +44,9 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
   val taxYear: Int = LocalDate.now.getYear
   def onwardRoute = ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)
   val controller = ForeignPropertyExpensesCheckYourAnswersController
+
+  private val propertySubmissionService = mock[PropertySubmissionService]
+  val audit: AuditService = mock[AuditService]
 
   "ForeignPropertyExpensesCheckYourAnswers Controller" - {
 
@@ -88,6 +101,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
       val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
         .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(true, Some(BigDecimal(66))))
         .flatMap(_.set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67)))
+        .flatMap(_.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
         .flatMap(_.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(68)))
         .flatMap(_.set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), BigDecimal(69)))
         .flatMap(_.set(ForeignProfessionalFeesPage(countryCode), BigDecimal(70)))
@@ -95,7 +109,20 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
         .flatMap(_.set(ForeignOtherAllowablePropertyExpensesPage(countryCode), BigDecimal(72)))
         .toOption
 
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyExpenses)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
         .build()
 
       running(application) {
@@ -104,6 +131,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }

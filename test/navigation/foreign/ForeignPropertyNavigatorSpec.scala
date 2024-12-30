@@ -462,7 +462,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               ConsolidatedOrIndividualExpensesPage(countryCode),
               ConsolidatedOrIndividualExpenses(
                 consolidatedOrIndividualExpensesYesNo = true,
-                enteredAmount = Some(BigDecimal(789.00))
+                consolidatedExpense = Some(BigDecimal(789.00))
               )
             )
             .get
@@ -850,7 +850,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             ConsolidatedOrIndividualExpensesPage(countryCode),
             ConsolidatedOrIndividualExpenses(
               consolidatedOrIndividualExpensesYesNo = true,
-              enteredAmount = Some(BigDecimal(789.00))
+              consolidatedExpense = Some(BigDecimal(789.00))
             )
           )
           .get

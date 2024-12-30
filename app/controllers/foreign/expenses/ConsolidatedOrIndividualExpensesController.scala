@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.expenses.ConsolidatedOrIndividualExpensesFormProvider
 import models.{ConsolidatedOrIndividualExpenses, Mode}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
+import pages.foreign.expenses.{ConsolidatedOrIndividualExpensesPage, ForeignExpensesSectionAddCountryCode}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -68,7 +68,9 @@ class ConsolidatedOrIndividualExpensesController @Inject() (
             for {
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(ConsolidatedOrIndividualExpensesPage(countryCode), value))
-              _ <- sessionRepository.set(updatedAnswers)
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
             } yield Redirect(
               foreignPropertyNavigator.nextPage(
                 ConsolidatedOrIndividualExpensesPage(countryCode),
