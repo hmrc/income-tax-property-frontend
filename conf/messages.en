@@ -2509,3 +2509,9 @@ foreignStructureBuildingQualifyingDate.error.invalid = Qualifying date for struc
 foreignStructureBuildingQualifyingDate.error.maxDate = Qualifying date for structures and buildings allowance must be before September 2026
 foreignStructureBuildingQualifyingDate.error.minDate = Qualifying date for structures and buildings allowance must be after 29 October 2018
 foreignStructureBuildingQualifyingDate.change.hidden = Qualifying date
+
+foreignSbaClaims.title = foreignSbaClaims
+foreignSbaClaims.heading = foreignSbaClaims
+foreignSbaClaims.checkYourAnswersLabel = foreignSbaClaims
+foreignSbaClaims.error.required = Select yes if foreignSbaClaims
+foreignSbaClaims.change.hidden = ForeignSbaClaims
