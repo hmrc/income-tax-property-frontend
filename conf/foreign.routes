@@ -208,3 +208,6 @@ POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCo
 
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/remove-claim           controllers.foreign.structuresbuildingallowance.ForeignSbaRemoveConfirmationController.onPageLoad(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/remove-claim           controllers.foreign.structuresbuildingallowance.ForeignSbaRemoveConfirmationController.onSubmit(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
+
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onSubmit(taxYear: Int, countryCode: String)
