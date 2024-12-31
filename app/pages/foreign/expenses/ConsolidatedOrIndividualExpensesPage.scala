@@ -28,7 +28,7 @@ case class ConsolidatedOrIndividualExpensesPage(countryCode: String)
 
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "consolidatedOrIndividualExpenses"
+  override def toString: String = "consolidatedExpenses"
 
   override def cleanup(value: Option[ConsolidatedOrIndividualExpenses], userAnswers: UserAnswers): Try[UserAnswers] =
     value

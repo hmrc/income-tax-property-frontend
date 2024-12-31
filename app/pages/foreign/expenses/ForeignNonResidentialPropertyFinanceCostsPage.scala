@@ -25,5 +25,5 @@ case class ForeignNonResidentialPropertyFinanceCostsPage(countryCode: String) ex
 
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "nonResidentialPropertyFinanceCosts"
+  override def toString: String = "financialCosts"
 }

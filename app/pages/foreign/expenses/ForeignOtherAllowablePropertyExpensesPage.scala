@@ -25,5 +25,5 @@ case class ForeignOtherAllowablePropertyExpensesPage(countryCode: String) extend
 
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "otherAllowablePropertyExpenses"
+  override def toString: String = "other"
 }

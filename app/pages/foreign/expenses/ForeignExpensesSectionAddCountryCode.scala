@@ -16,15 +16,14 @@
 
 package pages.foreign.expenses
 
-
 import models.ForeignProperty
-import pages.PageConstants.expensesPath
+import pages.PageConstants.{expensesPath, incomePath}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignCostsOfServicesProvidedPage(countryCode: String) extends QuestionPage[BigDecimal] {
+case class ForeignExpensesSectionAddCountryCode(countryCode: String) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "costOfServices"
+  override def toString: String = "countryCode"
 }
