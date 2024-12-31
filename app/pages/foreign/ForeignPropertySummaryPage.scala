@@ -123,7 +123,7 @@ object ForeignPropertySummaryPage {
           TaskListItem(
             "foreign.allowances",
             controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
-            TaskListTag.NotStarted,
+            taskListTagForAllowances,
             s"foreign_property_allowances_$countryCode"
           ),
           TaskListItem(
