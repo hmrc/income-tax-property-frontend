@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package pages.foreign.structurebuildingallowance
+package forms.foreign.structurebuildingallowance
 
-import models.ForeignProperty
-import pages.PageConstants.{foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-import java.time.LocalDate
+import javax.inject.Inject
 
-case class ForeignStructureBuildingQualifyingDatePage(countryCode: String, index: Int) extends QuestionPage[LocalDate] {
+class ForeignSbaRemoveConfirmationFormProvider @Inject() extends Mappings {
 
-
-  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ foreignSbaFormGroup \ index \ toString
-
-  override def toString: String = "foreignStructureBuildingQualifyingDate"
+  def apply(): Form[Boolean] =
+    Form(
+      "foreignSbaRemoveConfirmation" -> boolean("foreignSbaRemoveConfirmation.error.required")
+    )
 }

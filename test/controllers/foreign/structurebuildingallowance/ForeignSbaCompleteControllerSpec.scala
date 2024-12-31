@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,54 +18,53 @@ package controllers.foreign.structurebuildingallowance
 
 import base.SpecBase
 import controllers.routes
-import forms.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
+import forms.foreign.structurebuildingallowance.ForeignSbaCompleteFormProvider
+import models.JourneyPath.ForeignStructureBuildingAllowance
+import models.{JourneyContext, NormalMode, User, UserAnswers}
+import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimPage
+import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimView
+import service.JourneyAnswersService
+import views.html.foreign.structurebuildingallowance.ForeignSbaCompleteView
 
 import scala.concurrent.Future
 
-class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with MockitoSugar {
+class ForeignSbaCompleteControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val foreignStructureBuildingAllowanceClaimRoute: String =
-    controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimController
-      .onPageLoad(taxYear, countryCode, index, NormalMode)
-      .url
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
 
-  val formProvider = new ForeignStructureBuildingAllowanceClaimFormProvider()
-  private val isAgentMessageKey = "individual"
-  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
-  val validAnswer: BigDecimal = BigDecimal(0)
-  val taxYear = 2023
-  val index = 0
-  val countryCode = "AUS"
+  val formProvider = new ForeignSbaCompleteFormProvider()
+  val form: Form[Boolean] = formProvider()
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  val taxYear: Int = 2024
+  val countryCode: String = "AUS"
+  lazy val foreignSbaCompleteRoute: String =
+    controllers.foreign.structuresbuildingallowance.routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode).url
 
-  "ForeignStructureBuildingAllowanceClaim Controller" - {
+  "ForeignSbaComplete Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignStructureBuildingAllowanceClaimRoute)
+        val request = FakeRequest(GET, foreignSbaCompleteRoute)
+
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ForeignStructureBuildingAllowanceClaimView]
+        val view = application.injector.instanceOf[ForeignSbaCompleteView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, index, isAgentMessageKey, NormalMode)(
+        contentAsString(result) mustEqual view(form, NormalMode, taxYear, countryCode)(
           request,
           messages(application)
         ).toString
@@ -74,28 +73,19 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        UserAnswers(userAnswersId)
-          .set(ForeignStructureBuildingAllowanceClaimPage(countryCode, index), validAnswer)
-          .success
-          .value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignSbaCompletePage(countryCode), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignStructureBuildingAllowanceClaimRoute)
+        val request = FakeRequest(GET, foreignSbaCompleteRoute)
+
+        val view = application.injector.instanceOf[ForeignSbaCompleteView]
+
         val result = route(application, request).value
-        val view = application.injector.instanceOf[ForeignStructureBuildingAllowanceClaimView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          form.fill(validAnswer),
-          taxYear,
-          countryCode,
-          index,
-          isAgentMessageKey,
-          NormalMode
-        )(
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, taxYear, countryCode)(
           request,
           messages(application)
         ).toString
@@ -105,21 +95,38 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
     "must redirect to the next page when valid data is submitted" in {
 
       val mockSessionRepository = mock[SessionRepository]
+      val mockJourneyAnswersService = mock[JourneyAnswersService]
+      val user: User = User(
+        mtditid = "mtditid",
+        nino = "nino",
+        affinityGroup = "affinityGroup",
+        agentRef = None
+      )
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(
+        mockJourneyAnswersService.setStatus(
+          ArgumentMatchers.eq(
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignStructureBuildingAllowance)
+          ),
+          ArgumentMatchers.eq("completed"),
+          ArgumentMatchers.eq(user)
+        )(any())
+      ) thenReturn Future.successful(Right(""))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
           .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignStructureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("foreignStructureBuildingAllowanceClaim", validAnswer.toString))
+          FakeRequest(POST, foreignSbaCompleteRoute)
+            .withFormUrlEncodedBody(("foreignSbaComplete", "true"))
 
         val result = route(application, request).value
 
@@ -131,25 +138,20 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-      val boundForm = form.bind(Map("foreignStructureBuildingAllowanceClaim" -> "invalid value"))
-      val view = application.injector.instanceOf[ForeignStructureBuildingAllowanceClaimView]
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignStructureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("foreignStructureBuildingAllowanceClaim", "invalid value"))
+          FakeRequest(POST, foreignSbaCompleteRoute)
+            .withFormUrlEncodedBody(("foreignSbaComplete", ""))
+
+        val boundForm = form.bind(Map("foreignSbaComplete" -> ""))
+
+        val view = application.injector.instanceOf[ForeignSbaCompleteView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(
-          boundForm,
-          taxYear,
-          countryCode,
-          index,
-          isAgentMessageKey,
-          NormalMode
-        )(
+        contentAsString(result) mustEqual view(boundForm, NormalMode, taxYear, countryCode)(
           request,
           messages(application)
         ).toString
@@ -158,10 +160,11 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, foreignStructureBuildingAllowanceClaimRoute)
+        val request = FakeRequest(GET, foreignSbaCompleteRoute)
+
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -171,14 +174,15 @@ class ForeignStructureBuildingAllowanceClaimControllerSpec extends SpecBase with
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, foreignStructureBuildingAllowanceClaimRoute)
-            .withFormUrlEncodedBody(("foreignStructureBuildingAllowanceClaim", validAnswer.toString))
+          FakeRequest(POST, foreignSbaCompleteRoute)
+            .withFormUrlEncodedBody(("sbaSectionFinishedYesOrNo", "true"))
 
         val result = route(application, request).value
+
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }

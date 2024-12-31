@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,13 @@
 package pages.foreign.structurebuildingallowance
 
 import models.ForeignProperty
-import pages.PageConstants.{foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
+import pages.PageConstants.sbaPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-import java.time.LocalDate
+case class ForeignSbaCompletePage(countryCode: String) extends QuestionPage[Boolean] {
 
-case class ForeignStructureBuildingQualifyingDatePage(countryCode: String, index: Int) extends QuestionPage[LocalDate] {
+  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-
-  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ foreignSbaFormGroup \ index \ toString
-
-  override def toString: String = "foreignStructureBuildingQualifyingDate"
+  override def toString: String = "structureBuildingAllowanceComplete"
 }
