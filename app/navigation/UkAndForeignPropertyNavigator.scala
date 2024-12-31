@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage, ClaimPropertyIncomeAllowanceOrExpensesPage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -83,6 +83,15 @@ class UkAndForeignPropertyNavigator {
         routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
       case Some(false) =>
        routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
+    }
+  }
+
+  private def ClaimPropertyIncomeAllowanceORExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+    userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage) match {
+      case Some(true) =>
+        routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
+      case Some(false) =>
+        routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
   }
 
