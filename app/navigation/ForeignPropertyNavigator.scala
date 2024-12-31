@@ -102,7 +102,7 @@ class ForeignPropertyNavigator {
     case ForeignReplacementOfDomesticGoodsPage(countryCode) =>
       taxYear => _ => _ => ForeignOtherCapitalAllowancesController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignOtherCapitalAllowancesPage(countryCode) => // TODO route to CYA page once created
-      taxYear => _ => _ => SummaryController.show(taxYear)
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -177,13 +177,13 @@ class ForeignPropertyNavigator {
     //Allowances
     // TODO route to CYA page once created
     case ForeignZeroEmissionCarAllowancePage(countryCode) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignZeroEmissionGoodsVehiclesPage(countryCode) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignReplacementOfDomesticGoodsPage(countryCode) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignOtherCapitalAllowancesPage(countryCode) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
