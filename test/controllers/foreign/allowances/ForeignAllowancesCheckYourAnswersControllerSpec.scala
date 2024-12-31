@@ -16,50 +16,24 @@
 
 package controllers.foreign.allowances
 
-import audit.AuditService
 import base.SpecBase
-import models.UserAnswers
-import models.backend.PropertyDetails
-import org.mockito.ArgumentMatchers.{any, anyString}
-import org.mockito.Mockito.doNothing
-import org.mockito.MockitoSugar.when
-import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.allowances.ForeignAllowancesCheckYourAnswersView
 
 import java.time.LocalDate
-import scala.concurrent.Future
 
 class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = LocalDate.now.getYear
-  val countryCode = "aus"
+  val countryCode = "AUS"
 
   val onwardRoute: Call = Call(
     "GET",
     s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/allowances/$countryCode/complete-yes-no"
   )
-
-  val zeroEmissionCarAllowanceValue = 300
-  val zeroEmissionCarAllowance = BigDecimal.valueOf(zeroEmissionCarAllowanceValue)
-
-  val zeroEmissionGoodsVehicleAllowanceValue = 400
-  val zeroEmissionGoodsVehicleAllowance = BigDecimal.valueOf(zeroEmissionGoodsVehicleAllowanceValue)
-
-  val replacementOfDomesticGoodsValue = 600
-  val replacementOfDomesticGoods = BigDecimal.valueOf(replacementOfDomesticGoodsValue)
-
-  val annualInvestmentAllowanceSummaryValue = 100
-  val annualInvestmentAllowanceSummary = BigDecimal.valueOf(annualInvestmentAllowanceSummaryValue)
-
-  val otherCapitalAllowanceValue = 700
-  val otherCapitalAllowance = BigDecimal.valueOf(otherCapitalAllowanceValue)
-
 
   "Check Your Answers Controller" - {
 
@@ -93,60 +67,6 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
-//
-//    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
-//
-//      val userAnswers = UserAnswers("allowances-user-answers")
-//        .set(
-//          RentalsAllowance,
-//          RentalsAllowance(
-//            capitalAllowancesForACar = None,
-//            annualInvestmentAllowance = Some(annualInvestmentAllowanceSummary),
-//            zeroEmissionCarAllowance = Some(zeroEmissionCarAllowance),
-//            zeroEmissionGoodsVehicleAllowance = Some(zeroEmissionGoodsVehicleAllowance),
-//            businessPremisesRenovationAllowance = Some(businessPremisesRenovation),
-//            replacementOfDomesticGoodsAllowance = Some(replacementOfDomesticGoods),
-//            otherCapitalAllowance = Some(otherCapitalAllowance)
-//          )
-//        )
-//        .toOption
-//
-//      val propertyDetails = PropertyDetails(
-//        Some("uk-property"),
-//        Some(LocalDate.of(taxYear, 1, 2)),
-//        accrualsOrCash = Some(false),
-//        "incomeSourceId"
-//      )
-//
-//      // mocks
-//      val propertySubmissionService = mock[PropertySubmissionService]
-//      val businessService = mock[BusinessService]
-//      val auditService = mock[AuditService]
-//
-//      // when
-//      when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
-//        Right(Some(propertyDetails))
-//      )
-//      when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
-//        Right(())
-//      )
-//      doNothing().when(auditService).sendRentalsAuditEvent(any())(any(), any())
-//
-//      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
-//        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
-//        .overrides(bind[BusinessService].toInstance(businessService))
-//        .overrides(bind[AuditService].toInstance(auditService))
-//        .build()
-//
-//      running(application) {
-//        val request = FakeRequest(POST, routes.AllowancesCheckYourAnswersController.onSubmit(taxYear).url)
-//
-//        val result = route(application, request).value
-//
-//        status(result) mustEqual SEE_OTHER
-//        redirectLocation(result).value mustEqual onwardRoute.url
-//      }
-//    }
   }
 
 }
