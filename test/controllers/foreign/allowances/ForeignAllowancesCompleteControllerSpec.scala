@@ -19,7 +19,7 @@ package controllers.foreign.allowances
 import base.SpecBase
 import controllers.routes
 import forms.foreign.allowances.ForeignAllowancesCompleteFormProvider
-import models.JourneyPath.ForeignPropertyAllowances
+import models.JourneyPath.ForeignPropertyAllowancesPath
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
@@ -107,7 +107,7 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowances)
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowancesPath)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)

@@ -19,7 +19,7 @@ package controllers.foreign.allowances
 import audit.{AuditModel, AuditService, ForeignPropertyAllowances, ReadForeignPropertyAllowances}
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
-import controllers.foreign.income.routes.ForeignIncomeCompleteController
+import controllers.foreign.allowances.routes.ForeignAllowancesCompleteController
 import models._
 import models.requests.DataRequest
 import play.api.Logging
@@ -89,7 +89,7 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
     propertySubmissionService.saveJourneyAnswers(context, foreignPropertyAllowances).flatMap {
       case Right(_) =>
         auditAllowanceCYA(taxYear, request, foreignPropertyAllowances, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
+        Future.successful(Redirect(ForeignAllowancesCompleteController.onPageLoad(taxYear, countryCode)))
       case Left(error) =>
         logger.error(s"Failed to save Foreign Allowances section : ${error.toString}")
         auditAllowanceCYA(taxYear, request, foreignPropertyAllowances, isFailed = true, AccountingMethod.Traditional)
@@ -121,6 +121,6 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
       allowances
     )
 
-    auditService.sendRentalsAuditEvent(auditModel)
+    auditService.sendAuditEvent(auditModel)
   }
 }

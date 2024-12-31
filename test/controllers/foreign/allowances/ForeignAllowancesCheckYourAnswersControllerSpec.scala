@@ -16,14 +16,26 @@
 
 package controllers.foreign.allowances
 
+import audit.AuditService
 import base.SpecBase
+import models.JourneyPath.ForeignPropertyAllowancesPath
+import models.{JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.foreign.allowances._
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.allowances.ForeignAllowancesCheckYourAnswersView
 
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
@@ -35,6 +47,9 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
     s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/allowances/$countryCode/complete-yes-no"
   )
 
+  private val propertySubmissionService = mock[PropertySubmissionService]
+  val audit: AuditService = mock[AuditService]
+
   "Check Your Answers Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -42,7 +57,8 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request =
+          FakeRequest(GET, routes.ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -59,12 +75,74 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request =
+          FakeRequest(GET, routes.ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, true).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, routes.ForeignAllowancesCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+
+      val userAnswers = UserAnswers("test").set(ForeignAllowancesCompletePage("AUS"), value = true).get
+
+      val userAnswersForeignPropertyAllowances = userAnswers
+        .set(ForeignZeroEmissionCarAllowancePage(countryCode), BigDecimal(56.75))
+        .flatMap(_.set(ForeignAllowancesSectionAddCountryCode(countryCode), countryCode))
+        .flatMap(_.set(ForeignZeroEmissionGoodsVehiclesPage(countryCode), BigDecimal(67.75)))
+        .flatMap(_.set(ForeignReplacementOfDomesticGoodsPage(countryCode), BigDecimal(78.75)))
+        .flatMap(_.set(ForeignOtherCapitalAllowancesPage(countryCode), BigDecimal(89.91)))
+        .toOption
+
+      val context =
+        JourneyContext(
+          taxYear = taxYear,
+          mtditid = "mtditid",
+          nino = "nino",
+          journeyPath = ForeignPropertyAllowancesPath
+        )
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = userAnswersForeignPropertyAllowances, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[AuditService].toInstance(audit))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, routes.ForeignAllowancesCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
   }
