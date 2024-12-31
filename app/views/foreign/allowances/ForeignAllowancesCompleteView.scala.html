@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.foreign.structuresbuildingallowance.routes._
+@import controllers.foreign.allowances.routes._
 @import viewmodels.LegendSize
 @this(
     layout: templates.Layout,
@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("haveYouFinishedThisSection.title"))) {
 
-    @formHelper(action = ForeignSbaCompleteController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = ForeignAllowancesCompleteController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -36,7 +36,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("foreignSbaComplete"),
+                field = form("foreignAllowancesComplete"),
                 legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
             ).withHint(HintViewModel(messages(s"haveYouFinishedThisSection.hint")))
         )

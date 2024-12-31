@@ -178,6 +178,9 @@ POST       /:taxYear/foreign-property/allowances/:countryCode/change-other-capit
 GET         /:taxYear/foreign-property/allowances/:countryCode/check-your-answers                             controllers.foreign.allowances.ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
 POST        /:taxYear/foreign-property/allowances/:countryCode/check-your-answers                             controllers.foreign.allowances.ForeignAllowancesCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
 
+GET        /:taxYear/foreign-property/allowances/:countryCode/complete-yes-no                                controllers.foreign.allowances.ForeignAllowancesCompleteController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/allowances/:countryCode/complete-yes-no                                controllers.foreign.allowances.ForeignAllowancesCompleteController.onSubmit(taxYear: Int, countryCode: String)
+
 ############################  Structure and Building Allowance  ###################################
 
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claim-yes-no                controllers.foreign.structuresbuildingallowance.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
@@ -196,8 +199,6 @@ GET         /:taxYear/foreign-property/structures-buildings-allowance/:countryCo
 POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/qualifying-amount                                    controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, countryCode: String, index: Int, mode: Mode = NormalMode)
 GET         /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/change-qualifying-amount                             controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear: Int, countryCode: String, index: Int, mode: Mode = CheckMode)
 POST        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/change-qualifying-amount                             controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingQualifyingAmountController.onSubmit(taxYear: Int, countryCode: String, index: Int, mode: Mode = CheckMode)
-
-
 
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/address                controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/:index/address                controllers.foreign.structuresbuildingallowance.ForeignStructuresBuildingAllowanceAddressController.onSubmit(taxYear: Int, index: Int, countryCode: String, mode: Mode = NormalMode)
