@@ -532,7 +532,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe SummaryController.show(taxYear)
+          ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
       }
@@ -892,7 +892,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             CheckMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe SummaryController.show(taxYear)
+          ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
         "must go from ForeignZeroEmissionGoodsVehiclesPage to ForeignAllowancesCheckYourAnswersController" in {
@@ -906,7 +906,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             CheckMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe SummaryController.show(taxYear)
+          ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
         "must go from ForeignReplacementOfDomesticGoodsPage to ForeignAllowancesCheckYourAnswersController" in {
@@ -920,7 +920,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             CheckMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe SummaryController.show(taxYear)
+          ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
         "must go from ForeignOtherCapitalAllowancesPage to ForeignAllowancesCheckYourAnswersController" in {
@@ -934,7 +934,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             CheckMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe SummaryController.show(taxYear)
+          ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
       }
