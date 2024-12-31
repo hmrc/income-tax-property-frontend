@@ -118,14 +118,14 @@ object ForeignPropertySummaryPage {
     }
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
-      case Some(true) => taskList.appended(TaskListItem(
-        "foreign.allowances",
-        controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
-        taskListTagForAllowances,
-        s"foreign_property_allowances_$countryCode"
-      ))
       case Some(false) => taskList.appendedAll(
         Seq(
+          TaskListItem(
+            "foreign.allowances",
+            controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
+            TaskListTag.NotStarted,
+            s"foreign_property_allowances_$countryCode"
+          ),
           TaskListItem(
             "foreign.expenses",
             controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
