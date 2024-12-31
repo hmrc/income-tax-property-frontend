@@ -17,8 +17,7 @@
 package models
 
 import audit._
-import pages.PageConstants
-import pages.PageConstants.{eSbaPath, esbas, sbaPath}
+import pages.PageConstants.{eSbaPath, esbas, foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
@@ -84,7 +83,7 @@ object Sba {
 
 final case class SbaOnIndex(index: Int, propertyType: PropertyType) extends Gettable[Sba] {
   override def path: JsPath =
-    JsPath \ sbaPath(propertyType) \ PageConstants.structureBuildingFormGroup \ index
+    JsPath \ sbaPath(propertyType) \ structureBuildingFormGroup \ index
 }
 
 final case class SbasWithSupportingQuestions(
@@ -100,6 +99,22 @@ object SbasWithSupportingQuestions
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = sbaPath(Rentals)
+}
+
+final case class ForeignSba(
+  foreignStructureBuildingAddress: ForeignStructuresBuildingAllowanceAddress,
+  foreignStructureBuildingQualifyingDate: LocalDate,
+  foreignStructureBuildingQualifyingAmount: BigDecimal,
+  foreignStructureBuildingAllowanceClaim: BigDecimal
+)
+
+object ForeignSba {
+  implicit val format: OFormat[ForeignSba] = Json.format[ForeignSba]
+}
+
+final case class ForeignSbaOnIndex(index: Int, countryCode: String) extends Gettable[ForeignSba] {
+  override def path: JsPath =
+    JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ foreignSbaFormGroup \ index
 }
 
 final case class EsbasWithSupportingQuestions(

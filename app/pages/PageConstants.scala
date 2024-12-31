@@ -26,6 +26,8 @@ object PageConstants {
   val esbas: String = "esbas"
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
+  val foreignSbaFormGroup = "foreignSbaFormGroup"
+
   val propertyAbout: String = "propertyAbout"
 
   val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>

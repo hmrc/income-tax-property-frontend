@@ -25,11 +25,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, countryCode: String, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, countryCode: String, index: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("foreignStructureBuildingAllowanceClaim.title"))) {
 
-    @formHelper(action = routes.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.ForeignStructureBuildingAllowanceClaimController.onSubmit(taxYear, countryCode, index, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

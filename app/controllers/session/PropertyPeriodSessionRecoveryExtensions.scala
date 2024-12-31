@@ -22,7 +22,9 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.ForeignSelectCountriesCompletePage
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
+import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -82,7 +84,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua19 <- updateRentalsAndRaRAbout(ua18, fetchedData.ukPropertyData.rentalsAndRaRAbout)
         ua20 <- updateForeignPropertySelectCountry(ua19, fetchedData.ukPropertyData.foreignPropertySelectCountry)
         ua21 <- updateJourneyStatuses(ua20, fetchedData.ukPropertyData.journeyStatuses)
-      } yield ua21
+        ua22 <- updateForeignPropertyIncome(ua21, fetchedData.foreignPropertyData.foreignPropertyIncome)
+        ua23 <- updateForeignJourneyStatuses(ua22, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+      } yield ua23
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -123,6 +127,34 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentARoom)
         case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentARoom)
         case "foreign-property-select-country"              => ForeignSelectCountriesCompletePage
+      }
+
+    private def updateForeignJourneyStatuses(
+      userAnswers: UserAnswers,
+      maybeForeignJourneyStatuses: Option[Map[String, List[JourneyWithStatus]]]
+    ): Try[UserAnswers] = {
+      maybeForeignJourneyStatuses match {
+        case Some(foreignJourneyStatuses) =>
+          val r: UserAnswers = foreignJourneyStatuses.foldLeft(userAnswers) {
+            case (acc: UserAnswers, (countryCode: String, journeys: List[JourneyWithStatus])) =>
+              journeys.foldLeft(acc) {
+                case (innerAcc: UserAnswers, journey: JourneyWithStatus) =>
+                  innerAcc.set(updateSingleForeignJourneyStatus(countryCode, journey), isCompleted(journey.journeyStatus)) match {
+                    case Success(ua) => ua
+                    case Failure(_) => innerAcc
+                  }
+            }
+          }
+          Success(r)
+        case _ => Success(userAnswers)
+      }
+    }
+
+    private def updateSingleForeignJourneyStatus(countryCode: String, foreignJourneyWithStatus: JourneyWithStatus): Settable[Boolean] =
+      foreignJourneyWithStatus.journeyName match {
+        case "foreign-property-tax"      => ForeignTaxSectionCompletePage(countryCode)
+        case "foreign-property-income"   => ForeignIncomeSectionCompletePage(countryCode)
+        case "foreign-property-expenses" => ForeignExpensesSectionCompletePage(countryCode)
       }
 
     private def updatePropertyAboutPages(
@@ -172,6 +204,36 @@ object PropertyPeriodSessionRecoveryExtensions {
 
           } yield claimPIAUserAnswers
       }
+
+    private def updateForeignPropertyIncome(
+      userAnswers: UserAnswers,
+      maybeForeignPropertyIncome: Option[Map[String, ForeignIncomeAnswers]]
+   ): Try[UserAnswers] = maybeForeignPropertyIncome match {
+      case None => Success(userAnswers)
+      case Some(foreignPropertyIncomeMap) =>
+        foreignPropertyIncomeMap.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+          case (userAnswers: Try[UserAnswers], (countryCode: String, foreignPropertyIncome: ForeignIncomeAnswers)) =>
+            for {
+              ua <- userAnswers
+              ua1 <- foreignPropertyIncome.rentIncome.fold[Try[UserAnswers]](Success(ua))(
+                rentIncome => ua.set(ForeignPropertyRentalIncomePage(countryCode), rentIncome))
+              ua2 <- ua1.set(PremiumsGrantLeaseYNPage(countryCode), foreignPropertyIncome.premiumsGrantLeaseReceived)
+              ua3 <- foreignPropertyIncome.calculatedPremiumLeaseTaxable.fold[Try[UserAnswers]](Success(ua2))(
+                premiumCalculated => ua2.set(CalculatedPremiumLeaseTaxablePage(countryCode), premiumCalculated))
+              ua4 <- foreignPropertyIncome.receivedGrantLeaseAmount.fold[Try[UserAnswers]](Success(ua3))(
+                receivedGrantLeaseAmount => ua3.set(ForeignReceivedGrantLeaseAmountPage(countryCode), receivedGrantLeaseAmount))
+              ua5 <- foreignPropertyIncome.twelveMonthPeriodsInLease.fold[Try[UserAnswers]](Success(ua4))(
+                foreignYearLeaseAmount => ua4.set(TwelveMonthPeriodsInLeasePage(countryCode), foreignYearLeaseAmount.intValue))
+              ua6 <- foreignPropertyIncome.premiumsOfLeaseGrantAgreed.fold[Try[UserAnswers]](Success(ua5))(
+                premiumsOfLeaseGrantAgreed => ua5.set(ForeignPremiumsGrantLeasePage(countryCode), premiumsOfLeaseGrantAgreed))
+              ua7 <- foreignPropertyIncome.reversePremiumsReceived.fold[Try[UserAnswers]](Success(ua6))(
+                reversePremiumsReceived => ua6.set(ForeignReversePremiumsReceivedPage(countryCode), reversePremiumsReceived))
+              ua8 <- foreignPropertyIncome.otherPropertyIncome.fold[Try[UserAnswers]](Success(ua7))(
+                otherPropertyIncome => ua7.set(ForeignOtherIncomeFromPropertyPage(countryCode), otherPropertyIncome)
+              )
+            } yield ua8
+        }
+    }
 
     private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
       writes: Writes[T]
