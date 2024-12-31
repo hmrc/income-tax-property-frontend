@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.ukrentaroom.routes
+@import controllers.ukandforeignproperty.routes._
 @import viewmodels.InputWidth._
 @import viewmodels.LegendSize
 @import viewmodels.govuk._
@@ -34,7 +34,7 @@
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRelief.title"))) {
 
-        @formHelper(action = routes.ClaimExpensesOrReliefController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+        @formHelper(action = controllers.ukandforeignproperty.routes.ClaimExpensesOrReliefController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))

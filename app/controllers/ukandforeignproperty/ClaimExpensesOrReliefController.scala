@@ -18,10 +18,12 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.ClaimExpensesOrReliefFormProvider
-import models.{Mode, PropertyType}
-import pages.ukandforeignproperty.ClaimExpensesOrReliefPage
+import models.{ClaimPropertyIncomeAllowanceOrExpenses, Mode, PropertyType}
+import navigation.UkAndForeignPropertyNavigator
+import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.ClaimExpensesOrReliefView
 
@@ -30,6 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimExpensesOrReliefController @Inject()(
                                                  override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 navigator: UkAndForeignPropertyNavigator,
                                                  identify: IdentifierAction,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
@@ -53,7 +57,21 @@ class ClaimExpensesOrReliefController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      ???
+        val form = formProvider(request.user.isAgentMessageKey, BigDecimal(0))
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors =>
+              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(
+                //navigator.nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+                navigator.nextPage(ClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
+              )
+          )
     }
 
 }
