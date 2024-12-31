@@ -16,16 +16,15 @@
 
 package controllers.foreign.allowances
 
-import audit.{AuditModel, AuditService, ForeignAllowance}
+import audit.{AuditModel, AuditService, ForeignPropertyAllowances, ReadForeignPropertyAllowances}
 import controllers.actions._
-import controllers.exceptions.SaveJourneyAnswersFailed
-import models.JourneyPath.ForeignPropertyAllowances
-import models.backend.ServiceError
-import models.requests.DataRequest
+import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.foreign.income.routes.ForeignIncomeCompleteController
 import models._
+import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,8 +47,8 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
           ForeignZeroEmissionCarAllowanceSummary.row(taxYear, countryCode, request.userAnswers),
@@ -60,56 +59,49 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
       )
 
       Ok(view(list, taxYear, countryCode))
-  }
-
-  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(ForeignAllowance) match {
-        case Some(allowance) => saveAllowances(taxYear, countryCode, request, allowance)
-        case None =>
-          logger.error("Allowance in property rentals is not present in userAnswers")
-          Future.failed(NotFoundException)
-      }
-  }
-
-
-  private def saveAllowances(taxYear: Int, countryCode: String, request: DataRequest[AnyContent], allowance: ForeignAllowance)(implicit
-                                                                                                                               hc: HeaderCarrier
-  ) =
-    saveAllowanceForPropertyRentals(taxYear, countryCode, request, allowance).flatMap {
-      case Right(_: Unit) =>
-        auditAllowanceCYA(taxYear, countryCode, request, allowance, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(
-          Redirect(controllers.allowances.routes.AllowancesSectionFinishedController.onPageLoad(taxYear))
-        )
-      case Left(error) =>
-        logger.error(s"Failed to save Allowances section: ${error.toString}")
-        auditAllowanceCYA(taxYear, countryCode, request, allowance, isFailed = true, AccountingMethod.Traditional)
-        Future.failed(SaveJourneyAnswersFailed("Failed to save Rentals Allowances section"))
     }
 
-  private def saveAllowanceForPropertyRentals(
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers
+        .get(ReadForeignPropertyAllowances(countryCode))
+        .map(foreignPropertyAllowances =>
+          saveForeignPropertyAllowances(taxYear, request, foreignPropertyAllowances, countryCode)
+        )
+        .getOrElse {
+          logger.error(
+            s"Foreign property allowances section is not present in userAnswers for userId: ${request.userId} "
+          )
+          Future.failed(
+            NotFoundException("Foreign property allowances section is not present in userAnswers")
+          )
+        }
+    }
+
+  private def saveForeignPropertyAllowances(
     taxYear: Int,
-    countryCode: String,
     request: DataRequest[AnyContent],
-    allowance: ForeignAllowance
-  )(implicit
-    hc: HeaderCarrier
-  ): Future[Either[ServiceError, Unit]] = {
-    val context = JourneyContext(
-      taxYear = taxYear,
-      mtditid = request.user.mtditid,
-      nino = request.user.nino,
-      journeyPath = ForeignPropertyAllowances
-    )
-    propertySubmissionService.saveJourneyAnswers[ForeignAllowance](context, allowance)
+    foreignPropertyAllowances: ForeignPropertyAllowances,
+    countryCode: String
+  )(implicit hc: HeaderCarrier): Future[Result] = {
+    val context =
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAllowancesPath)
+    propertySubmissionService.saveJourneyAnswers(context, foreignPropertyAllowances).flatMap {
+      case Right(_) =>
+        auditAllowanceCYA(taxYear, request, foreignPropertyAllowances, isFailed = false, AccountingMethod.Traditional)
+        Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
+      case Left(error) =>
+        logger.error(s"Failed to save Foreign Allowances section : ${error.toString}")
+        auditAllowanceCYA(taxYear, request, foreignPropertyAllowances, isFailed = true, AccountingMethod.Traditional)
+        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Allowances section"))
+    }
+
   }
 
   private def auditAllowanceCYA(
     taxYear: Int,
-    countryCode: String,
     request: DataRequest[AnyContent],
-    allowances: ForeignAllowance,
+    allowances: ForeignPropertyAllowances,
     isFailed: Boolean,
     accountingMethod: AccountingMethod
   )(implicit hc: HeaderCarrier): Unit = {
@@ -132,5 +124,3 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
     auditService.sendRentalsAuditEvent(auditModel)
   }
 }
-
-case object NotFoundException extends Exception("Allowance in property rentals is not present in userAnswers")

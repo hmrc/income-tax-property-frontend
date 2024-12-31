@@ -25,5 +25,5 @@ case class ForeignZeroEmissionGoodsVehiclesPage(countryCode: String) extends Que
 
   override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignZeroEmissionGoodsVehicles"
+  override def toString: String = "zeroEmissionsGoodsVehicleAllowance"
 }

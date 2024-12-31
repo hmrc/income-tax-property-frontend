@@ -102,7 +102,7 @@ class ForeignOtherCapitalAllowancesControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherCapitalAllowancesRoute)
-            .withFormUrlEncodedBody(("foreignOtherCapitalAllowancesAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("otherCapitalAllowance", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -118,9 +118,9 @@ class ForeignOtherCapitalAllowancesControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherCapitalAllowancesRoute)
-            .withFormUrlEncodedBody(("foreignOtherCapitalAllowancesAmount", "invalid value"))
+            .withFormUrlEncodedBody(("otherCapitalAllowance", "invalid value"))
 
-        val boundForm = form.bind(Map("foreignOtherCapitalAllowancesAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("otherCapitalAllowance" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignOtherCapitalAllowancesView]
 
@@ -152,7 +152,7 @@ class ForeignOtherCapitalAllowancesControllerSpec extends SpecBase with MockitoS
       running(application) {
         val request =
           FakeRequest(POST, foreignOtherCapitalAllowancesRoute)
-            .withFormUrlEncodedBody(("foreignOtherCapitalAllowancesAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("otherCapitalAllowance", validAnswer.toString))
 
         val result = route(application, request).value
 

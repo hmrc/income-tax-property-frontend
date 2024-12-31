@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.allowances.ForeignZeroEmissionCarAllowanceFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.allowances.ForeignZeroEmissionCarAllowancePage
+import pages.foreign.allowances.{ForeignAllowancesSectionAddCountryCode, ForeignZeroEmissionCarAllowancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -67,7 +67,9 @@ class ForeignZeroEmissionCarAllowanceController @Inject() (
             for {
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(ForeignZeroEmissionCarAllowancePage(countryCode), value))
-              _ <- sessionRepository.set(updatedAnswers)
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignAllowancesSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
             } yield Redirect(
               foreignNavigator.nextPage(
                 ForeignZeroEmissionCarAllowancePage(countryCode),

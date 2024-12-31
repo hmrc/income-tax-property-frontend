@@ -27,7 +27,7 @@ class ForeignZeroEmissionCarAllowanceFormProvider @Inject() extends Mappings {
   val maximum = 100000000;
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "foreignZeroEmissionCarAllowanceAmount" -> currency(
+      "zeroEmissionsCarAllowance" -> currency(
         s"foreignZeroEmissionCarAllowance.error.required.${individualOrAgent}",
         "foreignZeroEmissionCarAllowance.error.twoDecimalPlaces",
         s"foreignZeroEmissionCarAllowance.error.nonNumeric.${individualOrAgent}")
