@@ -31,19 +31,19 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
   "UkAndForeignPropertyNavigator" - {
 
+    "must go from a page that doesn't exist in the route map to Index" in {
+      case object UnknownPage extends Page
+
+      navigator.nextPage(
+        UnknownPage,
+        taxYear,
+        NormalMode,
+        UserAnswers("id"),
+        UserAnswers("id")
+      ) mustBe controllers.routes.IndexController.onPageLoad
+    }
+
     "Total Property Income in Normal mode" - {
-
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
 
       "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is 'less then £1000'" in {
 
@@ -59,7 +59,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
         ) mustBe routes.ReportIncomeController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is '£1000 or more'" ignore {
+      "must go from a TotalPropertyIncomePage to UkAndForeignPropertyRentalTypeUkPage when the option selected is '£1000 or more'" in {
 
         val ua = UserAnswers("id")
           .set(TotalPropertyIncomePage, TotalPropertyIncome.Maximum).success.value
@@ -70,7 +70,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           NormalMode,
           UserAnswers("id"),
           ua
-        ) mustBe ???
+        ) mustBe routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear = taxYear, mode = NormalMode)
       }
     }
 
@@ -102,18 +102,6 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
     }
 
     "Foreign Countries Rented in Normal mode" - {
-
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
 
       "must go from AddCountriesRentedPage to  if AddCountriesRentedPage is true" in {
         val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, true).get

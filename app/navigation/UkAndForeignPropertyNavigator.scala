@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, NonResidentLandlordUKPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty._
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -40,7 +40,7 @@ class UkAndForeignPropertyNavigator {
   }
 
   private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
-    (userAnswers.get(TotalPropertyIncomePage), mode) match {
+    (userAnswers.get(NonResidentLandlordUKPage), mode) match {
       case (Some(true), NormalMode) => ???
       case (Some(false), NormalMode) => ???
       case (_, CheckMode) => ??? //TODO CYA page
