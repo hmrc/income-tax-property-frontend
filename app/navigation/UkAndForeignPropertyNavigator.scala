@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, NonResidentLandlordUKPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -34,8 +34,18 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+    case NonResidentLandlordUKPage =>
+      taxYear => _ => userAnswers => nonResidentLandlordNavigation(taxYear, userAnswers, NormalMode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
+
+  private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    (userAnswers.get(TotalPropertyIncomePage), mode) match {
+      case (Some(true), NormalMode) => ???
+      case (Some(false), NormalMode) => ???
+      case (_, CheckMode) => ??? //TODO CYA page
+      case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
+    }
 
   private val indexableRoutes: Page => Int => UserAnswers => UserAnswers => Int => Call = {
     case ForeignCountriesRentedPage =>
@@ -43,45 +53,50 @@ class UkAndForeignPropertyNavigator {
   }
 
   private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call =
-    _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad //TODO CYA page
+    _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad // TODO CYA page
 
-  def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = {
+  def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call =
     mode match {
       case NormalMode =>
         normalRoutes(page)(taxYear)(previousUserAnswers)(userAnswers)
       case CheckMode =>
         checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
     }
-  }
 
-  def nextIndex(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers, index: Int): Call = {
+  def nextIndex(
+    page: Page,
+    taxYear: Int,
+    mode: Mode,
+    previousUserAnswers: UserAnswers,
+    userAnswers: UserAnswers,
+    index: Int
+  ): Call =
     mode match {
       case NormalMode =>
         indexableRoutes(page)(taxYear)(previousUserAnswers)(userAnswers)(index)
       case CheckMode =>
         checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
     }
-  }
 
-  private def totalIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
+  private def totalIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
     userAnswers.get(TotalPropertyIncomePage) match {
-      case Some(TotalPropertyIncome.Maximum) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
+      case Some(TotalPropertyIncome.Maximum) =>
+        routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
       case Some(TotalPropertyIncome.LessThan) => routes.ReportIncomeController.onPageLoad(taxYear, mode)
     }
-  }
 
-  private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
+  private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
     userAnswers.get(ReportIncomePage) match {
-      case Some(ReportIncome.WantToReport) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
-      case Some(ReportIncome.DoNoWantToReport) => controllers.routes.IndexController.onPageLoad // TODO: route to CYA page when created
+      case Some(ReportIncome.WantToReport) =>
+        routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
+      case Some(ReportIncome.DoNoWantToReport) =>
+        controllers.routes.IndexController.onPageLoad // TODO: route to CYA page when created
     }
-  }
 
-  private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+  private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call =
     userAnswers.get(ForeignCountriesRentedPage) match {
-      case Some(true) => routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
+      case Some(true)  => routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
       case Some(false) => Call("GET", "/") // TODO: Update once page exists
     }
-  }
 
 }

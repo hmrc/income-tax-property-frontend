@@ -2515,3 +2515,16 @@ foreignSbaRemoveConfirmation.title = Do you want to remove this structures and b
 foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance claim?
 foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
 foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
+
+nonResidentLandlordUK.title = Non-UK resident landlord
+nonResidentLandlordUK.heading = Non-UK resident landlord
+nonResidentLandlordUK.error.required.agent = Select yes if your client was a non-UK resident landlord
+nonResidentLandlordUK.error.required.individual = Select yes if you were a non-UK resident landlord
+nonResidentLandlordUK.p = You’re considered a non-UK resident landlord if at least one of these applies to you:
+nonResidentLandlordUK.b1 = lived abroad for more than six months of the year but rented out a property in the UK
+nonResidentLandlordUK.b2 = had a usual place of residence outside the UK
+nonResidentLandlordUK.b3 = were a UK resident for tax purposes, but lived outside the UK
+nonResidentLandlordUK.legend.agent = Was your client a non-UK resident landlord?
+nonResidentLandlordUK.legend.individual = Were you a non-UK resident landlord?
+nonResidentLandlordUK.checkYourAnswersLabel = Were you a non-UK resident landlord?
+nonResidentLandlordUK.change.hidden = Non-UK resident landlord

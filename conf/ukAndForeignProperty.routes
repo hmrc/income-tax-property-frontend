@@ -21,3 +21,8 @@ POST       /:taxYear/uk-foreign-property/countries/:index                       
 
 GET        /:taxYear/uk-foreign-property/countries                                         controllers.ukandforeignproperty.ForeignCountriesRentedController.onPageLoad(taxYear: Int, mode: Mode ?= NormalMode)
 POST       /:taxYear/uk-foreign-property/countries                                         controllers.ukandforeignproperty.ForeignCountriesRentedController.onSubmit(taxYear: Int, mode: Mode ?= NormalMode)
+
+GET        /:taxYear/nonResidentLandlordUK                        controllers.ukandforeignproperty.NonResidentLandlordUKController.onPageLoad(taxYear:Int, mode: Mode = NormalMode)
+POST       /:taxYear/nonResidentLandlordUK                        controllers.ukandforeignproperty.NonResidentLandlordUKController.onSubmit(taxYear:Int, mode: Mode = NormalMode)
+GET        /:taxYear/changeNonResidentLandlordUK                  controllers.ukandforeignproperty.NonResidentLandlordUKController.onPageLoad(taxYear:Int, mode: Mode = CheckMode)
+POST       /:taxYear/changeNonResidentLandlordUK                  controllers.ukandforeignproperty.NonResidentLandlordUKController.onSubmit(taxYear:Int, mode: Mode = CheckMode)
