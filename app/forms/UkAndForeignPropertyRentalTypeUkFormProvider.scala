@@ -27,7 +27,8 @@ class UkAndForeignPropertyRentalTypeUkFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Set[UkAndForeignPropertyRentalTypeUk]] =
     Form(
-      "value" -> set(enumerable[UkAndForeignPropertyRentalTypeUk](s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent"))
-        .verifying(nonEmptySet(s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent"))
+      "value" -> set(
+        enumerable[UkAndForeignPropertyRentalTypeUk](s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent")
+      ).verifying(nonEmptySet(s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent"))
     )
 }

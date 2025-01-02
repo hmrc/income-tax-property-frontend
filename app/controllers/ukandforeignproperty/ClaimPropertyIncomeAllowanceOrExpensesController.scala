@@ -18,12 +18,12 @@ package controllers.ukandforeignproperty
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
-import models.{ClaimPropertyIncomeAllowanceOrExpenses, Mode, PropertyType}
+import models.{ClaimExpensesOrRelief, Mode, PropertyType}
+import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import pages.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukandforeignproperty.ClaimExpensesOrReliefView
+import views.html.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,7 +35,7 @@ class ClaimPropertyIncomeAllowanceOrExpensesController @Inject()(
                                                                   requireData: DataRequiredAction,
                                                                   formProvider: ClaimPropertyIncomeAllowanceOrExpensesFormProvider,
                                                                   val controllerComponents: MessagesControllerComponents,
-                                                                  view: ClaimExpensesOrReliefView
+                                                                  view: ClaimPropertyIncomeAllowanceOrExpensesView
 )(implicit ec: ExecutionContext)
 extends FrontendBaseController with I18nSupport {
 
@@ -43,16 +43,28 @@ extends FrontendBaseController with I18nSupport {
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
       val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
+        case None        =>
+          form
+        case Some(value) =>
+          form.fill(value)
       }
       Future.successful(
-        Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+        Ok(view(taxYear, preparedForm, mode, request.user.isAgentMessageKey))
       )
     }
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      ???
+      val form = formProvider()
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(taxYear, form, mode, request.user.isAgentMessageKey))),
+          (value) => {
+              println(value)
+            ???
+          }
+        )
     }
 }
