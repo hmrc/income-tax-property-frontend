@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
 import models.{ClaimExpensesOrRelief, Mode, PropertyType}
-import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
+import pages.ukandforeignproperty.{UkAndForeignPropertyClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController

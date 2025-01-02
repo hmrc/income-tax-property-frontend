@@ -34,7 +34,10 @@
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRelief.title"))) {
 
-        @formHelper(action = controllers.ukandforeignproperty.routes.ClaimExpensesOrReliefController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+        @formHelper(
+            action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyClaimExpensesOrReliefController.onSubmit(taxYear, mode),
+            Symbol("autoComplete") -> "off"
+        ) {
 
             @if(form.errors.nonEmpty) {
                 @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -44,25 +47,12 @@
 
 
             @govukRadios(
-                radios.RadiosViewModel.yesNoWithConditionalHtml(
+                RadiosViewModel.yesNoWithOtherNames(
                     field = form("claimExpensesOrRelief"),
                     legend = LegendViewModel(messages(s"claimExpensesOrRelief.legend.$individualOrAgent")).asPageHeading(LegendSize.Medium),
-                    items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                        field = form("rentARoomAmount"),
-                        conditionalYesHtml = Some(
-                            govukInput(
-                                InputViewModel(
-                                    field = form("rentARoomAmount"),
-                                    label = LabelViewModel(messages(s"claimExpensesOrRelief.radio.question.label.$individualOrAgent"))
-                                )
-                                .asNumeric()
-                                .withWidth(Fixed10)
-                                .withPrefix(PrefixOrSuffix(content = Text("£")))
-                            )
-                        ),
-                        yesText = "claimExpensesOrRelief.rentARoom",
-                        noText = "claimExpensesOrRelief.expenses"
-                    )
+                    yesText = "claimExpensesOrRelief.rentARoom",
+                    noText = "claimExpensesOrRelief.expenses",
+                    isInline = false
                 )
             )
 

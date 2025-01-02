@@ -17,36 +17,36 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
-import forms.ukandforeignproperty.ClaimExpensesOrReliefFormProvider
-import models.{ClaimExpensesOrRelief, ClaimPropertyIncomeAllowanceOrExpenses, Mode, PropertyType}
+import forms.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefFormProvider
+import models.{Mode, PropertyType, UkAndForeignPropertyClaimExpensesOrRelief}
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
+import pages.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukandforeignproperty.ClaimExpensesOrReliefView
+import views.html.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimExpensesOrReliefController @Inject()(
+class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
                                                  override val messagesApi: MessagesApi,
                                                  sessionRepository: SessionRepository,
                                                  navigator: UkAndForeignPropertyNavigator,
                                                  identify: IdentifierAction,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
-                                                 formProvider: ClaimExpensesOrReliefFormProvider,
+                                                 formProvider: UkAndForeignPropertyClaimExpensesOrReliefFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
-                                                 view: ClaimExpensesOrReliefView
+                                                 view: UkAndForeignPropertyClaimExpensesOrReliefView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form = formProvider(request.user.isAgentMessageKey, BigDecimal(0))
-      val preparedForm = request.userAnswers.get(ClaimExpensesOrReliefPage(propertyType)) match {
+      val form = formProvider(request.user.isAgentMessageKey)
+      val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType)) match {
         case None        =>
           form
         case Some(value) =>
@@ -59,18 +59,19 @@ class ClaimExpensesOrReliefController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-        val form = formProvider(request.user.isAgentMessageKey, BigDecimal(0))
+        val form = formProvider(request.user.isAgentMessageKey)
         form
           .bindFromRequest()
           .fold(
             formWithErrors =>
               Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
-            (value: ClaimExpensesOrRelief) =>
+            (value: UkAndForeignPropertyClaimExpensesOrRelief) =>
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), value))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
-                navigator.nextIndex(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
+                navigator.nextIndex(
+                UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
               )
           )
     }

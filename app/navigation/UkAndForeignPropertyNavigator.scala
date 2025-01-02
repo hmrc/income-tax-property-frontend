@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.{UkAndForeignPropertyClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -40,7 +40,7 @@ class UkAndForeignPropertyNavigator {
   private val indexableRoutes: Page => Int => UserAnswers => UserAnswers => Int => Call = {
     case ForeignCountriesRentedPage =>
       taxYear => _ => userAnswers => index => foreignCountriesRentedNavigation(taxYear, userAnswers, index)
-    case ClaimExpensesOrReliefPage(propertyType) =>
+    case UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType) =>
       taxYear => _ => userAnswers => index => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, index, propertyType)
     case _ =>
       _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
@@ -87,15 +87,15 @@ class UkAndForeignPropertyNavigator {
       case Some(true) =>
         routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
       case Some(false) =>
-       routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
+       routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
   }
 
   private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int, propertyType: PropertyType): Call =
-    userAnswers.get(ClaimExpensesOrReliefPage(propertyType)) match {
-      case Some(ClaimExpensesOrRelief(true,_)) =>
-        ???
-      case Some(ClaimExpensesOrRelief(false,_)) =>
+    userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType)) match {
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(true)) =>
+        routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(false)) =>
         routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
     }
 
