@@ -118,6 +118,7 @@ object ForeignPropertySummaryPage {
     }
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
+      //TODO add a case for PIA once adjustments section is created
       case Some(false) => taskList.appendedAll(
         Seq(
           TaskListItem(
@@ -140,7 +141,7 @@ object ForeignPropertySummaryPage {
           )
         )
       )
-      case None => taskList
+      case _ => taskList // TODO revert back to none once we have a case for PIA
     }
   }
 }
