@@ -18,11 +18,10 @@ package pages.ukandforeignproperty
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import pages.PageConstants.aboutPath
 
 case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ "ukandforeignClaims" \ toString
+  override def path: JsPath = JsPath \ "ukandforeignClaimsAllowances" \ toString
 
   override def toString: String = "claimPropertyIncomeAllowanceOrExpenses"
 

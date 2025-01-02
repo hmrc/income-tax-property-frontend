@@ -68,8 +68,7 @@ class ClaimExpensesOrReliefController @Inject()(
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
-                //navigator.nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
-                navigator.nextPage(ClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                navigator.nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
               )
           )
     }

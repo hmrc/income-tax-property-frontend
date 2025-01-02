@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage, ClaimPropertyIncomeAllowanceOrExpensesPage}
+import pages.ukandforeignproperty.{ClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -34,6 +34,8 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+    case ClaimExpensesOrReliefPage(_) =>
+      taxYear => _ => _ => routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -86,13 +88,13 @@ class UkAndForeignPropertyNavigator {
     }
   }
 
-  private def ClaimPropertyIncomeAllowanceORExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+  /*private def ClaimPropertyIncomeAllowanceORExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
     userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage) match {
       case Some(true) =>
         routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
       case Some(false) =>
         routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
-  }
+  }*/
 
 }
