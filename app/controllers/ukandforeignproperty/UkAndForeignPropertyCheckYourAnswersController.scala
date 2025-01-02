@@ -47,7 +47,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
       val list = SummaryListViewModel(
         rows = Seq(
           TotalPropertyIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-          ReportIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers)
+          ReportIncomeSummary.row(taxYear = taxYear, request.user.isAgentMessageKey, answers = request.userAnswers)
         ).flatten
       )
 
