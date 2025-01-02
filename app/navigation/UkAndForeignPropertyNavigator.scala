@@ -39,14 +39,6 @@ class UkAndForeignPropertyNavigator {
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
-  private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
-    (userAnswers.get(NonResidentLandlordUKPage), mode) match {
-      case (Some(true), NormalMode) => ???
-      case (Some(false), NormalMode) => ???
-      case (_, CheckMode) => ??? //TODO CYA page
-      case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
-    }
-
   private val indexableRoutes: Page => Int => UserAnswers => UserAnswers => Int => Call = {
     case ForeignCountriesRentedPage =>
       taxYear => _ => userAnswers => index => foreignCountriesRentedNavigation(taxYear, userAnswers, index)
@@ -97,6 +89,14 @@ class UkAndForeignPropertyNavigator {
     userAnswers.get(ForeignCountriesRentedPage) match {
       case Some(true)  => routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
       case Some(false) => Call("GET", "/") // TODO: Update once page exists
+    }
+
+  private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    (userAnswers.get(NonResidentLandlordUKPage), mode) match {
+      case (Some(true), NormalMode) => ???
+      case (Some(false), NormalMode) => ???
+      case (_, CheckMode) => ??? //TODO CYA page
+      case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
     }
 
 }

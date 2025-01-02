@@ -17,10 +17,10 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UserAnswers}
-import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
+import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UserAnswers}
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, NonResidentLandlordUKPage, TotalPropertyIncomePage}
+import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 
 import java.time.LocalDate
 
@@ -126,6 +126,46 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           NormalMode,
           UserAnswers("id"),
           userAnswersWithAddCountry
+        ) mustBe ???
+      }
+    }
+
+    "Non-UK resident landlord" - {
+
+      "must go from NonResidentLandlordUKPage to 'Deducting tax from non-UK resident landlord' when the option 'true' is selected" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, true).get
+
+        navigator.nextIndex(
+          NonResidentLandlordUKPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage,
+          1
+        ) mustBe ???
+      }
+
+      "must go from NonResidentLandlordUKPage to 'How much income did you get from your foreign property rentals?' when the option 'false' is selected" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, false).get
+
+        navigator.nextPage(
+          NonResidentLandlordUKPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage
+        ) mustBe ???
+      }
+
+      "must go from NonResidentLandlordUKPage to 'CYA page' when in CheckMode" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, false).get
+
+        navigator.nextPage(
+          NonResidentLandlordUKPage,
+          taxYear,
+          CheckMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage
         ) mustBe ???
       }
     }
