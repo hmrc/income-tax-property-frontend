@@ -2515,3 +2515,13 @@ foreignSbaRemoveConfirmation.title = Do you want to remove this structures and b
 foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance claim?
 foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
 foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
+
+foreignAdjustmentsStart.title = Adjustments
+foreignAdjustmentsStart.heading = Adjustments
+foreignAdjustmentsStart.details.content = In this section we’re going to ask you about the following adjustments:
+foreignAdjustmentsStart.details.content.l1 = private use adjustment
+foreignAdjustmentsStart.details.content.l2 = balancing charge
+foreignAdjustmentsStart.details.content.l3 = residential property finance costs
+foreignAdjustmentsStart.details.content.l4 = unused residential property finance costs brought forward
+foreignAdjustmentsStart.details.content.l5 = loss brought forward
+foreignAdjustmentsStart.details.content.l6 = property income allowance

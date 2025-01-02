@@ -2485,3 +2485,14 @@ foreignSbaRemoveConfirmation.title = *Missing Welsh*
 foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
 foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*
+
+
+foreignAdjustmentsStart.title = *Missing Welsh*
+foreignAdjustmentsStart.heading = *Missing Welsh*
+foreignAdjustmentsStart.details.content = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l1 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l2 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l3 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l4 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l5 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l6 = *Missing Welsh*
