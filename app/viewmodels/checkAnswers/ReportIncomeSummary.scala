@@ -26,25 +26,26 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object ReportIncomeSummary  {
+object ReportIncomeSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ReportIncomePage).map {
-      answer =>
-
-        val value = ValueViewModel(
-          HtmlContent(
-            HtmlFormat.escape(messages(s"reportIncome.$answer"))
-          )
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit
+    messages: Messages
+  ): Option[SummaryListRow] =
+    answers.get(ReportIncomePage).map { answer =>
+      val value = ValueViewModel(
+        HtmlContent(
+          HtmlFormat.escape(messages(s"reportIncome.$answer.$individualOrAgent"))
         )
+      )
 
-        SummaryListRowViewModel(
-          key     = "reportIncome.checkYourAnswersLabel",
-          value   = value,
-          actions = Seq(
-            ActionItemViewModel("site.change", routes.ReportIncomeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("reportIncome.change.hidden"))
-          )
+      SummaryListRowViewModel(
+        key = "reportIncome.checkYourAnswersLabel",
+        value = value,
+        actions = Seq(
+          ActionItemViewModel("site.change", routes.ReportIncomeController.onPageLoad(taxYear, CheckMode).url)
+            .withVisuallyHiddenText(messages("reportIncome.change.hidden"))
         )
+      )
     }
+
 }

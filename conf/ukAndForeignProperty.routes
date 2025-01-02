@@ -21,3 +21,5 @@ POST       /:taxYear/uk-foreign-property/countries/:index                       
 
 GET        /:taxYear/uk-foreign-property/countries                                         controllers.ukandforeignproperty.ForeignCountriesRentedController.onPageLoad(taxYear: Int, mode: Mode ?= NormalMode)
 POST       /:taxYear/uk-foreign-property/countries                                         controllers.ukandforeignproperty.ForeignCountriesRentedController.onSubmit(taxYear: Int, mode: Mode ?= NormalMode)
+
+GET        /:taxYear/uk-foreign-property/check-your-answers                                controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear: Int, mode: Mode ?= NormalMode)
