@@ -19,7 +19,7 @@ package controllers.foreign.allowances
 import controllers.ControllerUtils.statusForPage
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.foreign.allowances.ForeignAllowancesCompleteFormProvider
-import models.JourneyPath.ForeignPropertyAllowancesPath
+import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.allowances.ForeignAllowancesCompletePage
@@ -72,15 +72,16 @@ class ForeignAllowancesCompleteController @Inject() (
                 Future.fromTry(request.userAnswers.set(ForeignAllowancesCompletePage(countryCode), value))
               _ <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                          .setStatus(
+                          .setForeignStatus(
                             JourneyContext(
                               taxYear = taxYear,
                               mtditid = request.user.mtditid,
                               nino = request.user.nino,
-                              journeyPath = ForeignPropertyAllowancesPath
+                              journeyPath = ForeignPropertyAllowances
                             ),
                             status = statusForPage(value),
-                            request.user
+                            request.user,
+                            countryCode
                           )
             } yield status.fold(
               _ =>

@@ -18,7 +18,7 @@ package controllers.foreign.allowances
 
 import audit.AuditService
 import base.SpecBase
-import models.JourneyPath.ForeignPropertyAllowancesPath
+import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -118,7 +118,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
           taxYear = taxYear,
           mtditid = "mtditid",
           nino = "nino",
-          journeyPath = ForeignPropertyAllowancesPath
+          journeyPath = ForeignPropertyAllowances
         )
 
       when(
