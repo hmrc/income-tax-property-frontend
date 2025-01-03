@@ -19,7 +19,7 @@ package views
 import base.SpecBase
 import play.api.test.Helpers._
 import play.api.test.FakeRequest
-import models.{CheckMode, Mode, NormalMode, UserAnswers}
+import models.{CheckMode, Index, Mode, NormalMode, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import pages.foreign.{Country, SelectIncomeCountryPage}
 import play.api.Application
@@ -32,6 +32,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.html.components.GovukTag
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
+import viewmodels.checkAnswers.ukandforeignproperty.SelectCountrySummary
 import views.html.templates.Layout
 import views.html.ukandforeignproperty.ForeignCountriesRentedView
 
@@ -104,38 +105,25 @@ class ForeignCountriesRentedViewSpec extends SpecBase with Matchers {
 
       contentAsString(result) must include("Yes")
       contentAsString(result) must include("No")
-      contentAsString(result) must include("All Properties")
       contentAsString(result) must include("Change")
       contentAsString(result) must include("Remove")
       contentAsString(result) must include("Save and continue")
     }
   }
 
-  "CountriesRentedPropertySummary.row" - {
+  "SelectCountrySummary.row" - {
 
     "return a summary list row for a given country" in {
-      val country = Country("France", "FR")
-      val userAnswers = UserAnswers("id").set(SelectIncomeCountryPage(0), country).success.value
+      val result: SummaryListRow = SelectCountrySummary.row(2024, Index(1), "France")
 
-      val result: Option[SummaryListRow] = CountriesRentedPropertySummary.row(2024, 0, userAnswers)
+      result.key.content.asHtml.toString must include("France")
 
-      result mustBe defined
-      result.get.key.content.asHtml.toString must include("France")
-      result.get.value.content.asHtml.toString must include(messages("countriesRentedProperty.staticContent"))
-
-      val actions = result.get.actions.head.items
-      actions.head.href must include(controllers.foreign.routes.SelectIncomeCountryController.onPageLoad(2024, 0, CheckMode).url)
+      val actions = result.actions.head.items
+      actions.head.href must include(controllers.ukandforeignproperty.routes.SelectCountryController.onPageLoad(2024, Index(1), CheckMode).url)
       actions.head.content.asHtml.toString must include(messages("site.change"))
-      actions(1).href must include(controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(2024, 0, CheckMode).url)
+      actions(1).href must include(controllers.ukandforeignproperty.routes.RemoveCountryController.onPageLoad(2024, Index(1), CheckMode).url)
       actions(1).content.asHtml.toString must include(messages("site.remove"))
     }
 
-    "return None if no country is found" in {
-      val userAnswers = UserAnswers("id")
-
-      val result: Option[SummaryListRow] = CountriesRentedPropertySummary.row(2024, 0, userAnswers)
-
-      result mustBe None
-    }
   }
 }
