@@ -44,204 +44,213 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
   val countryCode2 = "USA"
   val data: String =
     s"""{
-      |  "ukPropertyData" : {
-      |  "propertyAbout": {
-      |    "totalIncome" : "between",
-      |    "ukProperty" : [
-      |      "property.rentals"
-      |    ]
-      |  },
-      |  "esbasWithSupportingQuestions": {
-      |    "claimEnhancedStructureBuildingAllowance" : true,
-      |    "esbas" : [
-      |      {
-      |        "esbaQualifyingDate" : "2022-01-04",
-      |        "esbaQualifyingAmount" : 5,
-      |        "esbaClaim" : 6,
-      |        "esbaAddress" : {
-      |          "buildingName" : "12",
-      |          "buildingNumber" : "12",
-      |          "postCode" : "EH1 AB1"
-      |        }
-      |      },
-      |      {
-      |        "esbaQualifyingDate" : "2022-03-03",
-      |        "esbaQualifyingAmount" : 4,
-      |        "esbaClaim" : 5,
-      |        "esbaAddress" : {
-      |          "buildingName" : "2",
-      |          "buildingNumber" : "2",
-      |          "postCode" : "EH1 AB1"
-      |        }
-      |      }
-      |    ],
-      |    "esbaClaims" : false
-      |  },
-      |  "propertyRentalsAbout" : {
-      |    "claimPropertyIncomeAllowanceYesOrNo" : false
-      |  },
-      |  "propertyRentalsIncome" : {
-      |    "isNonUKLandlord" : false,
-      |    "propertyRentalIncome" : 45,
-      |    "premiumForLeaseYesOrNo" : true,
-      |    "calculatedFigureYourself" : {
-      |      "calculatedFigureYourself" : true,
-      |      "amount" : 45
-      |    },
-      |    "receivedGrantLeaseAmount": 6,
-      |    "reversePremiumsReceived" : {
-      |      "reversePremiumsReceived" : true,
-      |      "reversePremiums" : 45
-      |    },
-      |    "otherIncomeFromProperty" : 45
-      |  },
-      |  "propertyRentalsExpenses" : {
-      |    "consolidatedExpenses" : {
-      |      "consolidatedExpensesYesOrNo" : false
-      |    },
-      |    "rentsRatesAndInsurance" : 55,
-      |    "repairsAndMaintenanceCosts" : 7,
-      |    "loanInterestOrOtherFinancialCost" : 56,
-      |    "otherProfessionalFees" : 4,
-      |    "costsOfServicesProvided" : 34,
-      |    "propertyBusinessTravelCosts" : 4,
-      |    "otherAllowablePropertyExpenses" : 3
-      |  },
-      |  "allowances" : {
-      |    "annualInvestmentAllowance" : 44,
-      |    "electricChargePointAllowance" : {
-      |      "electricChargePointAllowanceYesOrNo" : true,
-      |      "electricChargePointAllowanceAmount" : 45
-      |    },
-      |    "zeroEmissionCarAllowance" : 4,
-      |    "zeroEmissionGoodsVehicleAllowance" : 4,
-      |    "businessPremisesRenovationAllowance" : 4,
-      |    "replacementOfDomesticGoodsAllowance" : 4,
-      |    "otherCapitalAllowance" : 4
-      |  },
-      |  "rentalsSBA": {
-      |    "claimStructureBuildingAllowance" : true,
-      |    "sbaClaims" : true,
-      |    "structureBuildingFormGroup" : [ {
-      |      "structureBuildingQualifyingDate" : "2022-04-03",
-      |      "structureBuildingQualifyingAmount" : 3,
-      |      "structureBuildingAllowanceClaim" : 4,
-      |      "structuredBuildingAllowanceAddress" : {
-      |        "buildingName" : "3",
-      |        "buildingNumber" : "3",
-      |        "postCode" : "EH1 AB2"
-      |      }
-      |    },
-      |      {
-      |        "structureBuildingQualifyingDate" : "2022-02-02",
-      |        "structureBuildingQualifyingAmount" : 4,
-      |        "structureBuildingAllowanceClaim" : 5,
-      |        "structuredBuildingAllowanceAddress" : {
-      |          "buildingName" : "4",
-      |          "buildingNumber" : "4",
-      |          "postCode" : "EH1 AB2"
-      |        }
-      |      }
-      |    ]
-      |
-      |  },
-      |  "adjustments" : {
-      |    "privateUseAdjustment" : 2,
-      |    "balancingCharge" : {
-      |      "balancingChargeYesNo" : true,
-      |      "balancingChargeAmount" : 3
-      |    },
-      |    "propertyIncomeAllowance" : 4,
-      |    "renovationAllowanceBalancingCharge" : {
-      |      "renovationAllowanceBalancingChargeYesNo" : true,
-      |      "renovationAllowanceBalancingChargeAmount" : 23
-      |    },
-      |    "residentialFinanceCost" : 2,
-      |    "unusedResidentialFinanceCost" : 3
-      |
-      |  },
-      |  "raRAbout" : {
-      |    "jointlyLetYesOrNo" : false,
-      |    "totalIncomeAmount" : 30,
-      |    "claimExpensesOrRelief" : {
-      |      "claimExpensesOrReliefYesNo" : false,
-      |      "rentARoomAmount" : 50
-      |    }
-      |  },
-      |  "rentARoomAllowances" : {
-      |    "capitalAllowancesForACar" : {
-      |      "capitalAllowancesForACarYesNo" : true,
-      |      "capitalAllowancesForACarAmount" : 20
-      |    },
-      |    "annualInvestmentAllowance" : 5,
-      |    "electricChargePointAllowance" : 30,
-      |    "zeroEmissionCarAllowance" : 35,
-      |    "zeroEmissionGoodsVehicleAllowance" : 10,
-      |    "replacementOfDomesticGoodsAllowance" : 25,
-      |    "otherCapitalAllowance" : 20
-      |  },
-      |  "raRAdjustments" : {
-      |    "balancingCharge" : {
-      |      "balancingChargeYesNo" : true,
-      |      "balancingChargeAmount" : 10
-      |    },
-      |    "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
-      |  },
-      |  "journeyStatuses": [],
-      |  "foreignPropertySelectCountry" : {
-      |    "totalIncome": "lessThanOneThousand",
-      |    "reportPropertyIncome": false}
-      |  },
-      |  "foreignPropertyData": {
-      |    "foreignPropertyIncome": {
-      |      "$countryCode1": {
-      |        "rentIncome": 12345.75,
-      |        "premiumsGrantLeaseReceived": true,
-      |        "reversePremiumsReceived": {
-      |          "reversePremiumsReceived": true
-      |        },
-      |        "otherPropertyIncome": 345.65,
-      |        "calculatedPremiumLeaseTaxable": {
-      |          "calculatedPremiumLeaseTaxable": true
-      |        },
-      |        "receivedGrantLeaseAmount": 555.55,
-      |        "twelveMonthPeriodsInLease": 3,
-      |        "premiumsOfLeaseGrantAgreed": {
-      |          "premiumsOfLeaseGrantAgreed": true,
-      |          "premiumsOfLeaseGrant": 234.5
-      |        }
-      |      }
-      |    },
-      |    "foreignPropertyExpenses": {
-      |      "$countryCode1": {
-      |        "premisesRunningCosts": 15.15,
-      |        "repairsAndMaintenance": 25.15,
-      |        "financialCosts": 35.15,
-      |        "professionalFees": 45.15,
-      |        "costOfServices": 65.15,
-      |        "other": 95.15
-      |      }
-      |    },
-      |    "foreignJourneyStatuses": {
-      |      "$countryCode1": [
-      |        {
-      |          "journeyName": "foreign-property-income",
-      |          "journeyStatus": "completed"
-      |        },
-      |        {
-      |          "journeyName": "foreign-property-tax",
-      |          "journeyStatus": "completed"
-      |        }
-      |      ],
-      |      "$countryCode2": [
-      |        {
-      |          "journeyName": "foreign-property-expenses",
-      |          "journeyStatus": "inProgress"
-      |        }
-      |      ]
-      |    }
-      |  }
-      |}""".stripMargin
+       |  "ukPropertyData" : {
+       |  "propertyAbout": {
+       |    "totalIncome" : "between",
+       |    "ukProperty" : [
+       |      "property.rentals"
+       |    ]
+       |  },
+       |  "esbasWithSupportingQuestions": {
+       |    "claimEnhancedStructureBuildingAllowance" : true,
+       |    "esbas" : [
+       |      {
+       |        "esbaQualifyingDate" : "2022-01-04",
+       |        "esbaQualifyingAmount" : 5,
+       |        "esbaClaim" : 6,
+       |        "esbaAddress" : {
+       |          "buildingName" : "12",
+       |          "buildingNumber" : "12",
+       |          "postCode" : "EH1 AB1"
+       |        }
+       |      },
+       |      {
+       |        "esbaQualifyingDate" : "2022-03-03",
+       |        "esbaQualifyingAmount" : 4,
+       |        "esbaClaim" : 5,
+       |        "esbaAddress" : {
+       |          "buildingName" : "2",
+       |          "buildingNumber" : "2",
+       |          "postCode" : "EH1 AB1"
+       |        }
+       |      }
+       |    ],
+       |    "esbaClaims" : false
+       |  },
+       |  "propertyRentalsAbout" : {
+       |    "claimPropertyIncomeAllowanceYesOrNo" : false
+       |  },
+       |  "propertyRentalsIncome" : {
+       |    "isNonUKLandlord" : false,
+       |    "propertyRentalIncome" : 45,
+       |    "premiumForLeaseYesOrNo" : true,
+       |    "calculatedFigureYourself" : {
+       |      "calculatedFigureYourself" : true,
+       |      "amount" : 45
+       |    },
+       |    "receivedGrantLeaseAmount": 6,
+       |    "reversePremiumsReceived" : {
+       |      "reversePremiumsReceived" : true,
+       |      "reversePremiums" : 45
+       |    },
+       |    "otherIncomeFromProperty" : 45
+       |  },
+       |  "propertyRentalsExpenses" : {
+       |    "consolidatedExpenses" : {
+       |      "consolidatedExpensesYesOrNo" : false
+       |    },
+       |    "rentsRatesAndInsurance" : 55,
+       |    "repairsAndMaintenanceCosts" : 7,
+       |    "loanInterestOrOtherFinancialCost" : 56,
+       |    "otherProfessionalFees" : 4,
+       |    "costsOfServicesProvided" : 34,
+       |    "propertyBusinessTravelCosts" : 4,
+       |    "otherAllowablePropertyExpenses" : 3
+       |  },
+       |  "allowances" : {
+       |    "annualInvestmentAllowance" : 44,
+       |    "electricChargePointAllowance" : {
+       |      "electricChargePointAllowanceYesOrNo" : true,
+       |      "electricChargePointAllowanceAmount" : 45
+       |    },
+       |    "zeroEmissionCarAllowance" : 4,
+       |    "zeroEmissionGoodsVehicleAllowance" : 4,
+       |    "businessPremisesRenovationAllowance" : 4,
+       |    "replacementOfDomesticGoodsAllowance" : 4,
+       |    "otherCapitalAllowance" : 4
+       |  },
+       |  "rentalsSBA": {
+       |    "claimStructureBuildingAllowance" : true,
+       |    "sbaClaims" : true,
+       |    "structureBuildingFormGroup" : [ {
+       |      "structureBuildingQualifyingDate" : "2022-04-03",
+       |      "structureBuildingQualifyingAmount" : 3,
+       |      "structureBuildingAllowanceClaim" : 4,
+       |      "structuredBuildingAllowanceAddress" : {
+       |        "buildingName" : "3",
+       |        "buildingNumber" : "3",
+       |        "postCode" : "EH1 AB2"
+       |      }
+       |    },
+       |      {
+       |        "structureBuildingQualifyingDate" : "2022-02-02",
+       |        "structureBuildingQualifyingAmount" : 4,
+       |        "structureBuildingAllowanceClaim" : 5,
+       |        "structuredBuildingAllowanceAddress" : {
+       |          "buildingName" : "4",
+       |          "buildingNumber" : "4",
+       |          "postCode" : "EH1 AB2"
+       |        }
+       |      }
+       |    ]
+       |
+       |  },
+       |  "adjustments" : {
+       |    "privateUseAdjustment" : 2,
+       |    "balancingCharge" : {
+       |      "balancingChargeYesNo" : true,
+       |      "balancingChargeAmount" : 3
+       |    },
+       |    "propertyIncomeAllowance" : 4,
+       |    "renovationAllowanceBalancingCharge" : {
+       |      "renovationAllowanceBalancingChargeYesNo" : true,
+       |      "renovationAllowanceBalancingChargeAmount" : 23
+       |    },
+       |    "residentialFinanceCost" : 2,
+       |    "unusedResidentialFinanceCost" : 3
+       |
+       |  },
+       |  "raRAbout" : {
+       |    "jointlyLetYesOrNo" : false,
+       |    "totalIncomeAmount" : 30,
+       |    "claimExpensesOrRelief" : {
+       |      "claimExpensesOrReliefYesNo" : false,
+       |      "rentARoomAmount" : 50
+       |    }
+       |  },
+       |  "rentARoomAllowances" : {
+       |    "capitalAllowancesForACar" : {
+       |      "capitalAllowancesForACarYesNo" : true,
+       |      "capitalAllowancesForACarAmount" : 20
+       |    },
+       |    "annualInvestmentAllowance" : 5,
+       |    "electricChargePointAllowance" : 30,
+       |    "zeroEmissionCarAllowance" : 35,
+       |    "zeroEmissionGoodsVehicleAllowance" : 10,
+       |    "replacementOfDomesticGoodsAllowance" : 25,
+       |    "otherCapitalAllowance" : 20
+       |  },
+       |  "raRAdjustments" : {
+       |    "balancingCharge" : {
+       |      "balancingChargeYesNo" : true,
+       |      "balancingChargeAmount" : 10
+       |    },
+       |    "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
+       |  },
+       |  "journeyStatuses": [],
+       |  "foreignPropertySelectCountry" : {
+       |    "totalIncome": "lessThanOneThousand",
+       |    "reportPropertyIncome": false}
+       |  },
+       |  "foreignPropertyData": {
+       |    "foreignPropertyIncome": {
+       |      "$countryCode1": {
+       |        "rentIncome": 12345.75,
+       |        "premiumsGrantLeaseReceived": true,
+       |        "reversePremiumsReceived": {
+       |          "reversePremiumsReceived": true
+       |        },
+       |        "otherPropertyIncome": 345.65,
+       |        "calculatedPremiumLeaseTaxable": {
+       |          "calculatedPremiumLeaseTaxable": true
+       |        },
+       |        "receivedGrantLeaseAmount": 555.55,
+       |        "twelveMonthPeriodsInLease": 3,
+       |        "premiumsOfLeaseGrantAgreed": {
+       |          "premiumsOfLeaseGrantAgreed": true,
+       |          "premiumsOfLeaseGrant": 234.5
+       |        }
+       |      }
+       |    },
+       |    "foreignPropertyExpenses": {
+       |      "$countryCode1": {
+       |        "premisesRunningCosts": 15.15,
+       |        "repairsAndMaintenance": 25.15,
+       |        "financialCosts": 35.15,
+       |        "professionalFees": 45.15,
+       |        "costOfServices": 65.15,
+       |        "other": 95.15
+       |      }
+       |    },
+       |      "foreignPropertyTax": {
+       |      "$countryCode1": {
+       |      "foreignIncomeTax": {
+       |        "foreignIncomeTaxYesNo": true,
+       |        "foreignTaxPaidOrDeducted": 590.55
+       |      },
+       |      "foreignTaxCreditRelief": true
+       |      }
+       |    },
+       |    "foreignJourneyStatuses": {
+       |      "$countryCode1": [
+       |        {
+       |          "journeyName": "foreign-property-income",
+       |          "journeyStatus": "completed"
+       |        },
+       |        {
+       |          "journeyName": "foreign-property-tax",
+       |          "journeyStatus": "completed"
+       |        }
+       |      ],
+       |      "$countryCode2": [
+       |        {
+       |          "journeyName": "foreign-property-expenses",
+       |          "journeyStatus": "inProgress"
+       |        }
+       |      ]
+       |    }
+       |  }
+       |}""".stripMargin
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
@@ -260,23 +269,35 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
 //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
       // Todo: do we need this? updated.get(PremiumForLeasePage).get mustBe true
-      updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(true, Some(45))
-      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
+      updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(
+        calculatedFigureYourself = true,
+        Some(45)
+      )
+      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
+        reversePremiumsReceived = true,
+        Some(45)
+      )
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
-      updated.get(ClaimExpensesOrReliefPage(RentARoom)).get mustBe ClaimExpensesOrRelief(false, Some(50))
+      updated.get(ClaimExpensesOrReliefPage(RentARoom)).get mustBe ClaimExpensesOrRelief(
+        claimExpensesOrReliefYesNo = false,
+        Some(50)
+      )
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56
       updated.get(OtherProfessionalFeesPage(Rentals)).get mustBe 4
       updated.get(CostsOfServicesProvidedPage(Rentals)).get mustBe 34
       updated.get(PropertyBusinessTravelCostsPage(Rentals)).get mustBe 4
       updated.get(OtherAllowablePropertyExpensesPage(Rentals)).get mustBe 3
-      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(true, Some(3))
+      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(3))
       updated.get(PrivateUseAdjustmentPage(Rentals)).get mustBe PrivateUseAdjustment(2)
       updated.get(PropertyIncomeAllowancePage(Rentals)).get mustBe 4
-      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(true, Some(45))
+      updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
+        reversePremiumsReceived = true,
+        Some(45)
+      )
       updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(
-        true,
+        renovationAllowanceBalancingChargeYesNo = true,
         Some(23)
       )
       updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
@@ -316,9 +337,12 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "4",
         "EH1 AB2"
       )
-      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(true, Some(10))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(10))
 
-      updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(true, Some(20))
+      updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(
+        capitalAllowancesForACarYesNo = true,
+        Some(20)
+      )
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
       updated.get(RaRZeroEmissionCarAllowancePage).get mustBe 35
       updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
@@ -330,20 +354,28 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignPropertyRentalIncomePage(countryCode1)).get mustBe 12345.75
       updated.get(PremiumsGrantLeaseYNPage(countryCode1)).get mustBe true
       updated.get(CalculatedPremiumLeaseTaxablePage(countryCode1)).get mustBe PremiumCalculated(
-        calculatedPremiumLeaseTaxable = true, None
+        calculatedPremiumLeaseTaxable = true,
+        None
       )
       updated.get(ForeignReceivedGrantLeaseAmountPage(countryCode1)).get mustBe 555.55
       updated.get(TwelveMonthPeriodsInLeasePage(countryCode1)).get mustBe 3
       updated.get(ForeignPremiumsGrantLeasePage(countryCode1)).get mustBe ForeignPremiumsGrantLease(
-        premiumsOfLeaseGrantAgreed = true, premiumsOfLeaseGrant = Some(234.5)
+        premiumsOfLeaseGrantAgreed = true,
+        premiumsOfLeaseGrant = Some(234.5)
       )
       updated.get(ForeignReversePremiumsReceivedPage(countryCode1)).get mustBe ReversePremiumsReceived(
-        reversePremiumsReceived = true, reversePremiums = None
+        reversePremiumsReceived = true,
+        reversePremiums = None
       )
       updated.get(ForeignOtherIncomeFromPropertyPage(countryCode1)).get mustBe 345.65
       updated.get(ForeignIncomeSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignTaxSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignExpensesSectionCompletePage(countryCode2)).get mustBe false
+      updated.get(ForeignIncomeTaxPage(countryCode1)).get mustBe ForeignIncomeTax(
+        foreignIncomeTaxYesNo = true,
+        Some(590.55)
+      )
+      updated.get(ClaimForeignTaxCreditReliefPage(countryCode1)).get mustBe true
 
       updated.get(ConsolidatedOrIndividualExpensesPage(countryCode1)) mustBe None
       updated.get(ForeignRentsRatesAndInsurancePage(countryCode1)) mustBe Some(15.15)
