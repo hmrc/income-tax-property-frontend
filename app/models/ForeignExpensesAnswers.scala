@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,18 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json}
 
-final case class FetchedForeignPropertyData(
-  foreignPropertyTax: Option[Map[String, ForeignPropertyTax]],
-  foreignPropertyIncome: Option[Map[String, ForeignIncomeAnswers]],
-  foreignPropertyExpenses: Option[Map[String, ForeignExpensesAnswers]],
-  foreignJourneyStatuses: Option[Map[String, List[JourneyWithStatus]]]
+case class ForeignExpensesAnswers(
+  consolidatedExpenses: Option[ConsolidatedOrIndividualExpenses],
+  premisesRunningCosts: Option[BigDecimal],
+  repairsAndMaintenance: Option[BigDecimal],
+  financialCosts: Option[BigDecimal],
+  professionalFees: Option[BigDecimal],
+  costOfServices: Option[BigDecimal],
+  other: Option[BigDecimal]
 )
 
-object FetchedForeignPropertyData {
-  implicit val format: OFormat[FetchedForeignPropertyData] = Json.format[FetchedForeignPropertyData]
+object ForeignExpensesAnswers {
+  implicit val format: Format[ForeignExpensesAnswers] = Json.format[ForeignExpensesAnswers]
 }
