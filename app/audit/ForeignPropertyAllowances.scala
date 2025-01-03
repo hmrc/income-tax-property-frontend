@@ -21,17 +21,28 @@ import pages.PageConstants.allowancesPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
-case class ForeignAllowance(
-  zeroEmissionCarAllowance: Option[BigDecimal],
-  zeroEmissionGoodsVehicleAllowance: Option[BigDecimal],
-  replacementOfDomesticGoodsAllowance: Option[BigDecimal],
+case class ForeignPropertyAllowances(
+  countryCode: String,
+  zeroEmissionsCarAllowance: Option[BigDecimal],
+  zeroEmissionsGoodsVehicleAllowance: Option[BigDecimal],
+  costOfReplacingDomesticItems: Option[BigDecimal],
   otherCapitalAllowance: Option[BigDecimal]
 )
 
-case object ForeignAllowance extends Gettable[ForeignAllowance] with Settable[ForeignAllowance] {
-  implicit val format: Format[ForeignAllowance] = Json.format[ForeignAllowance]
+case object ForeignPropertyAllowances
+    extends Gettable[ForeignPropertyAllowances] with Settable[ForeignPropertyAllowances] {
+
+  implicit val format: Format[ForeignPropertyAllowances] = Json.format[ForeignPropertyAllowances]
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = allowancesPath(ForeignProperty)
+}
+
+case class ReadForeignPropertyAllowances(countryCode: String) extends Gettable[ForeignPropertyAllowances] {
+
+  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ toString
+
+  override def toString: String = countryCode.toUpperCase
+
 }

@@ -23,9 +23,9 @@ class ForeignReplacementOfDomesticGoodsFormProviderSpec extends CurrencyFieldBeh
 
   val form = new ForeignReplacementOfDomesticGoodsFormProvider()("individual")
 
-  ".foreignReplacementOfDomesticGoodsAmount" - {
+  ".costOfReplacingDomesticItems" - {
 
-    val fieldName = "foreignReplacementOfDomesticGoodsAmount"
+    val fieldName = "costOfReplacingDomesticItems"
 
     val minimum = 0
     val maximum = 100000000

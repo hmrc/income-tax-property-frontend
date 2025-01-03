@@ -23,9 +23,9 @@ class ForeignZeroEmissionCarAllowanceFormProviderSpec extends CurrencyFieldBehav
 
   val form = new ForeignZeroEmissionCarAllowanceFormProvider()("individual")
 
-  ".foreignZeroEmissionCarAllowanceAmount" - {
+  ".zeroEmissionsCarAllowance" - {
 
-    val fieldName = "foreignZeroEmissionCarAllowanceAmount"
+    val fieldName = "zeroEmissionsCarAllowance"
 
     val minimum = 0
     val maximum = 100000000
