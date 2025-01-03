@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,32 @@
 
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
+import controllers.foreign.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
-import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDatePage
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.keyCssClass
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass}
 import viewmodels.govuk.summarylist._
+import viewmodels.checkAnswers.FormatUtils.keyCssClass
 import viewmodels.implicits._
 
-import java.time.format.DateTimeFormatter
-
-object ForeignStructureBuildingQualifyingDateSummary {
-
+object ForeignStructureBuildingQualifyingAmountSummary {
   def row(taxYear: Int, countryCode: String, index: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignStructureBuildingQualifyingDatePage(countryCode, index)).map { answer =>
-      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
+    answers.get(ForeignStructureBuildingQualifyingAmountPage(countryCode, index)).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel("foreignStructureBuildingQualifyingDate.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(answer.format(dateFormatter)),
+        key = KeyViewModel("foreignStructureBuildingQualifyingAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, index, CheckMode).url
+            routes.ForeignStructureBuildingQualifyingAmountController
+              .onPageLoad(taxYear, countryCode, index, CheckMode)
+              .url
           )
-            .withVisuallyHiddenText(messages("foreignStructureBuildingQualifyingDate.change.hidden"))
+            .withVisuallyHiddenText(messages("foreignStructureBuildingQualifyingAmount.change.hidden"))
         )
       )
     }
