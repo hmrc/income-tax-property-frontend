@@ -135,7 +135,7 @@ object ForeignPropertySummaryPage {
           ),
           TaskListItem(
             "summary.structuresAndBuildingAllowance",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
+            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode),
             taskListTagForSba,
             s"foreign_structure_and_building_allowance_$countryCode"
           )
