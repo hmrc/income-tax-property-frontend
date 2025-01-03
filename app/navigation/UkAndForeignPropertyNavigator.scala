@@ -19,7 +19,7 @@ package navigation
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.{ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -85,11 +85,16 @@ class UkAndForeignPropertyNavigator {
   }
 
   private def foreignCountriesRentedNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
-    userAnswers.get(ForeignCountriesRentedPage) match {
-      case Some(true) =>
+
+    ( userAnswers.get(ForeignCountriesRentedPage), userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).map(_.toSeq)) match {
+      case (Some(true),_) =>
         routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), NormalMode)
-      case Some(false) =>
-       routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
+      case (Some(false), None) =>
+        throw new RuntimeException("No rental type selected")  // should never happen
+      case (Some(false), Some(Seq(UkAndForeignPropertyRentalTypeUk.PropertyRentals))) =>
+        ??? //TODO
+      case _ =>
+        routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
   }
 
