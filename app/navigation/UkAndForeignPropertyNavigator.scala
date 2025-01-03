@@ -42,6 +42,8 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => userAnswers => index => foreignCountriesRentedNavigation(taxYear, userAnswers, index)
     case UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType) =>
       taxYear => _ => userAnswers => index => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, index, propertyType)
+    case ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType) =>
+      taxYear => _ => userAnswers => index => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers, index, propertyType)
     case _ =>
       _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
 
@@ -97,6 +99,22 @@ class UkAndForeignPropertyNavigator {
         routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
       case Some(UkAndForeignPropertyClaimExpensesOrRelief(false)) =>
         routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
+    }
+
+  private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int, propertyType: PropertyType): Call =
+    (userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType)),propertyType) match {
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), Rentals) =>
+        ???
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), RentARoom) =>
+        ???
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), RentalsRentARoom) =>
+        ???
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), Rentals) =>
+        ???
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), RentARoom) =>
+        ???
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), RentalsRentARoom) =>
+        ???
     }
 
 

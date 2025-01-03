@@ -65,13 +65,13 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
           .fold(
             formWithErrors =>
               Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
-            (value: UkAndForeignPropertyClaimExpensesOrRelief) =>
+            value =>
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), value))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
                 navigator.nextIndex(
-                UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
+                  UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
               )
           )
     }

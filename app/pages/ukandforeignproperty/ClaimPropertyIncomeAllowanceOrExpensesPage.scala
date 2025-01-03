@@ -16,15 +16,16 @@
 
 package pages.ukandforeignproperty
 
+import models.{ClaimPropertyIncomeAllowanceOrExpenses, PropertyType}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import pages.PageConstants.aboutPath
 
-case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
+case class ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType: PropertyType) extends QuestionPage[ClaimPropertyIncomeAllowanceOrExpenses] {
 
-  override def path: JsPath = JsPath \ "ukandforeignClaims" \ toString
+  override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
-  override def toString: String = "claimPropertyIncomeAllowanceOrExpenses"
+  override def toString: String = "ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses"
 
 }
 

@@ -28,7 +28,7 @@
     govukInput: GovukInput
 )
 
-@(taxYear: Int, form: Form[_], mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("claimPropertyIncomeAllowanceOrExpenses.title"))) {
 

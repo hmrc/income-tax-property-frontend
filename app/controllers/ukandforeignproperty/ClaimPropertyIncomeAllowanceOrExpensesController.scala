@@ -18,10 +18,12 @@ package controllers.ukandforeignproperty
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
-import models.{ClaimExpensesOrRelief, Mode, PropertyType}
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimExpensesOrReliefPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
+import models.{Mode, PropertyType}
+import navigation.UkAndForeignPropertyNavigator
+import pages.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesView
 
@@ -30,6 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimPropertyIncomeAllowanceOrExpensesController @Inject()(
                                                                   override val messagesApi: MessagesApi,
+                                                                  sessionRepository: SessionRepository,
+                                                                  navigator: UkAndForeignPropertyNavigator,
                                                                   identify: IdentifierAction,
                                                                   getData: DataRetrievalAction,
                                                                   requireData: DataRequiredAction,
@@ -42,14 +46,14 @@ extends FrontendBaseController with I18nSupport {
   def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
-      val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage) match {
+      val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType)) match {
         case None        =>
           form
         case Some(value) =>
           form.fill(value)
       }
       Future.successful(
-        Ok(view(taxYear, preparedForm, mode, request.user.isAgentMessageKey))
+        Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
       )
     }
 
@@ -60,10 +64,15 @@ extends FrontendBaseController with I18nSupport {
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(taxYear, form, mode, request.user.isAgentMessageKey))),
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
           (value) => {
-              println(value)
-            ???
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextIndex(
+                ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
+            )
           }
         )
     }

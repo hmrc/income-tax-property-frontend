@@ -17,14 +17,17 @@
 package forms.ukandforeignproperty
 
 import forms.mappings.Mappings
+import models.ClaimPropertyIncomeAllowanceOrExpenses
 import play.api.data.Form
-
+import play.api.data.Forms._
 import javax.inject.Inject
 
 class ClaimPropertyIncomeAllowanceOrExpensesFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "claimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
+  def apply(): Form[ClaimPropertyIncomeAllowanceOrExpenses] =
+    Form[ClaimPropertyIncomeAllowanceOrExpenses](
+      mapping(
+        "claimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
+      )(ClaimPropertyIncomeAllowanceOrExpenses.apply)(ClaimPropertyIncomeAllowanceOrExpenses.unapply)
     )
 }
