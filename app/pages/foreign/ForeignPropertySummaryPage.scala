@@ -118,17 +118,32 @@ object ForeignPropertySummaryPage {
     }
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
-      //TODO add a case for PIA once adjustments section is created
+      case Some(true) => taskList.appendedAll(
+        Seq(
+          TaskListItem(
+            "summary.adjustments",
+            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(true)),
+            taskListTagForAllowances,
+            s"foreign_property_adjustments_$countryCode"
+          )
+        )
+      )
       case Some(false) => taskList.appendedAll(
         Seq(
           TaskListItem(
-            "foreign.allowances",
+            "summary.adjustments",
+            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(false)),
+            taskListTagForAllowances,
+            s"foreign_property_adjustments_$countryCode"
+          ),
+          TaskListItem(
+            "summary.allowances",
             controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
             taskListTagForAllowances,
             s"foreign_property_allowances_$countryCode"
           ),
           TaskListItem(
-            "foreign.expenses",
+            "summary.expenses",
             controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
             taskListTagForExpenses,
             s"foreign_property_expenses_$countryCode"
@@ -141,7 +156,7 @@ object ForeignPropertySummaryPage {
           )
         )
       )
-      case _ => taskList // TODO revert back to none once we have a case for PIA
+      case None => taskList
     }
   }
 }

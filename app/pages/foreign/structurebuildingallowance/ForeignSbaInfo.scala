@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.foreign.allowances
+package pages.foreign.structurebuildingallowance
 
-import models.ForeignProperty
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case class ForeignReplacementOfDomesticGoodsPage(countryCode: String) extends QuestionPage[BigDecimal] {
+final case class ForeignSbaInfo(
+  allowances: Array[SaveForeignSba]
+)
+object ForeignSbaInfo {
+  implicit val format: OFormat[ForeignSbaInfo] = Json.format[ForeignSbaInfo]
 
-  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
-
-  override def toString: String = "costOfReplacingDomesticItems"
+  def apply(allowances: Array[ForeignStructureBuildingAllowance]): ForeignSbaInfo = ForeignSbaInfo(
+    allowances.map(SaveForeignSba(_))
+  )
 }

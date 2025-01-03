@@ -2486,7 +2486,6 @@ foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
 foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*
 
-
 foreignBalancingCharge.title.agent = *Missing Welsh*
 foreignBalancingCharge.title.individual = *Missing Welsh*
 foreignBalancingCharge.heading.agent = *Missing Welsh*
@@ -2514,3 +2513,19 @@ foreignBalancingCharge.amount.error.nonNumeric.agent = *Missing Welsh*
 foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
 foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
+
+foreignStructureBuildingAllowanceClaims.title = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.heading = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.legend = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.error.required = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.change.hidden = *Missing Welsh*
+
+foreignAdjustmentsStart.title = *Missing Welsh*
+foreignAdjustmentsStart.heading = *Missing Welsh*
+foreignAdjustmentsStart.details.content = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l1 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l2 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l3 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l4 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l5 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l6 = *Missing Welsh*

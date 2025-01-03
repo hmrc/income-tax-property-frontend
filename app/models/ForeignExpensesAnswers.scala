@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package pages.foreign.allowances
+package models
 
-import models.ForeignProperty
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case class ForeignReplacementOfDomesticGoodsPage(countryCode: String) extends QuestionPage[BigDecimal] {
+case class ForeignExpensesAnswers(
+  consolidatedExpenses: Option[ConsolidatedOrIndividualExpenses],
+  premisesRunningCosts: Option[BigDecimal],
+  repairsAndMaintenance: Option[BigDecimal],
+  financialCosts: Option[BigDecimal],
+  professionalFees: Option[BigDecimal],
+  costOfServices: Option[BigDecimal],
+  other: Option[BigDecimal]
+)
 
-  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
-
-  override def toString: String = "costOfReplacingDomesticItems"
+object ForeignExpensesAnswers {
+  implicit val format: Format[ForeignExpensesAnswers] = Json.format[ForeignExpensesAnswers]
 }

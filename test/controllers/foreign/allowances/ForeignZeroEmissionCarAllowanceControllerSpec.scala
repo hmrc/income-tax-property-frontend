@@ -103,7 +103,7 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionsCarAllowance", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", "invalid value"))
+            .withFormUrlEncodedBody(("zeroEmissionsCarAllowance", "invalid value"))
 
-        val boundForm = form.bind(Map("foreignZeroEmissionCarAllowanceAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("zeroEmissionsCarAllowance" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignZeroEmissionCarAllowanceView]
 
@@ -153,7 +153,7 @@ class ForeignZeroEmissionCarAllowanceControllerSpec extends SpecBase with Mockit
       running(application) {
         val request =
           FakeRequest(POST, foreignZeroEmissionCarAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignZeroEmissionCarAllowanceAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("zeroEmissionsCarAllowance", validAnswer.toString))
 
         val result = route(application, request).value
 

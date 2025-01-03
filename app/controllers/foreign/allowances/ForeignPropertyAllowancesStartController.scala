@@ -18,7 +18,6 @@ package controllers.foreign.allowances
 
 import controllers.actions._
 import controllers.{PropertyDetailsHandler, routes}
-import models.Mode
 import models.backend.PropertyDetails
 import navigation.ForeignPropertyNavigator
 import pages.foreign.IncomeSourceCountries

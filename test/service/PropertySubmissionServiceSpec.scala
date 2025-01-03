@@ -65,7 +65,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         List(),
         None
       )
-      val foreignPropertyData = FetchedForeignPropertyData(None, None, None)
+      val foreignPropertyData = FetchedForeignPropertyData(None, None, None, None)
       val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData)
       val incomeSourceId = "incomeSourceId"
       val details =

@@ -23,9 +23,9 @@ class ForeignOtherCapitalAllowancesFormProviderSpec extends CurrencyFieldBehavio
 
   val form = new ForeignOtherCapitalAllowancesFormProvider()("individual")
 
-  ".foreignOtherCapitalAllowancesAmount" - {
+  ".otherCapitalAllowance" - {
 
-    val fieldName = "foreignOtherCapitalAllowancesAmount"
+    val fieldName = "otherCapitalAllowance"
 
     val minimum = 0
     val maximum = 100000000

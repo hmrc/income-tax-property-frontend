@@ -22,9 +22,11 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.expenses._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
 import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
+import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
@@ -85,8 +87,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua20 <- updateForeignPropertySelectCountry(ua19, fetchedData.ukPropertyData.foreignPropertySelectCountry)
         ua21 <- updateJourneyStatuses(ua20, fetchedData.ukPropertyData.journeyStatuses)
         ua22 <- updateForeignPropertyIncome(ua21, fetchedData.foreignPropertyData.foreignPropertyIncome)
-        ua23 <- updateForeignJourneyStatuses(ua22, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-      } yield ua23
+        ua23 <- updateForeignPropertyExpenses(ua22, fetchedData.foreignPropertyData.foreignPropertyExpenses)
+        ua24 <- updateForeignJourneyStatuses(ua23, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+      } yield ua24
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -152,9 +155,11 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     private def updateSingleForeignJourneyStatus(countryCode: String, foreignJourneyWithStatus: JourneyWithStatus): Settable[Boolean] =
       foreignJourneyWithStatus.journeyName match {
-        case "foreign-property-tax"      => ForeignTaxSectionCompletePage(countryCode)
-        case "foreign-property-income"   => ForeignIncomeSectionCompletePage(countryCode)
-        case "foreign-property-expenses" => ForeignExpensesSectionCompletePage(countryCode)
+        case "foreign-property-tax"        => ForeignTaxSectionCompletePage(countryCode)
+        case "foreign-property-income"     => ForeignIncomeSectionCompletePage(countryCode)
+        case "foreign-property-expenses"   => ForeignExpensesSectionCompletePage(countryCode)
+        case "foreign-property-allowances" => ForeignAllowancesCompletePage(countryCode)
+        case "foreign-property-sba"        => ForeignSbaCompletePage(countryCode)
       }
 
     private def updatePropertyAboutPages(
@@ -232,6 +237,34 @@ object PropertyPeriodSessionRecoveryExtensions {
                 otherPropertyIncome => ua7.set(ForeignOtherIncomeFromPropertyPage(countryCode), otherPropertyIncome)
               )
             } yield ua8
+        }
+    }
+
+    private def updateForeignPropertyExpenses(
+      userAnswers: UserAnswers,
+      maybeForeignPropertyExpenses: Option[Map[String, ForeignExpensesAnswers]]
+    ): Try[UserAnswers] = maybeForeignPropertyExpenses match {
+      case None => Success(userAnswers)
+      case Some(foreignPropertyExpensesMap) =>
+        foreignPropertyExpensesMap.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+          case (userAnswers: Try[UserAnswers], (countryCode: String, foreignPropertyExpenses: ForeignExpensesAnswers)) =>
+            for {
+              ua <- userAnswers
+              ua1 <- foreignPropertyExpenses.consolidatedExpenses.fold[Try[UserAnswers]](Success(ua))(
+                consolidatedExpenses => ua.set(ConsolidatedOrIndividualExpensesPage(countryCode), consolidatedExpenses))
+              ua2 <- foreignPropertyExpenses.premisesRunningCosts.fold[Try[UserAnswers]](Success(ua1))(
+                premisesRunningCosts => ua1.set(ForeignRentsRatesAndInsurancePage(countryCode), premisesRunningCosts))
+              ua3 <- foreignPropertyExpenses.repairsAndMaintenance.fold[Try[UserAnswers]](Success(ua2))(
+                repairsAndMaintenance => ua2.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), repairsAndMaintenance))
+              ua4 <- foreignPropertyExpenses.financialCosts.fold[Try[UserAnswers]](Success(ua3))(
+                financialCosts => ua3.set(ForeignNonResidentialPropertyFinanceCostsPage(countryCode), financialCosts))
+              ua5 <- foreignPropertyExpenses.professionalFees.fold[Try[UserAnswers]](Success(ua4))(
+                professionalFees => ua4.set(ForeignProfessionalFeesPage(countryCode), professionalFees))
+              ua6 <- foreignPropertyExpenses.costOfServices.fold[Try[UserAnswers]](Success(ua5))(
+                costOfServices => ua5.set(ForeignCostsOfServicesProvidedPage(countryCode), costOfServices))
+              ua7 <- foreignPropertyExpenses.other.fold[Try[UserAnswers]](Success(ua6))(
+                other => ua6.set(ForeignOtherAllowablePropertyExpensesPage(countryCode), other))
+            } yield ua7
         }
     }
 

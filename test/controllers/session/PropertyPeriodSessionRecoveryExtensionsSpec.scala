@@ -22,7 +22,7 @@ import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.expenses.{ConsolidatedOrIndividualExpensesPage, ForeignCostsOfServicesProvidedPage, ForeignExpensesSectionCompletePage, ForeignNonResidentialPropertyFinanceCostsPage, ForeignOtherAllowablePropertyExpensesPage, ForeignProfessionalFeesPage, ForeignPropertyRepairsAndMaintenancePage, ForeignRentsRatesAndInsurancePage}
 import pages.foreign._
 import pages.foreign.income._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
@@ -212,6 +212,16 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       |        }
       |      }
       |    },
+      |    "foreignPropertyExpenses": {
+      |      "$countryCode1": {
+      |        "premisesRunningCosts": 15.15,
+      |        "repairsAndMaintenance": 25.15,
+      |        "financialCosts": 35.15,
+      |        "professionalFees": 45.15,
+      |        "costOfServices": 65.15,
+      |        "other": 95.15
+      |      }
+      |    },
       |    "foreignJourneyStatuses": {
       |      "$countryCode1": [
       |        {
@@ -334,6 +344,14 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignIncomeSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignTaxSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignExpensesSectionCompletePage(countryCode2)).get mustBe false
+
+      updated.get(ConsolidatedOrIndividualExpensesPage(countryCode1)) mustBe None
+      updated.get(ForeignRentsRatesAndInsurancePage(countryCode1)) mustBe Some(15.15)
+      updated.get(ForeignPropertyRepairsAndMaintenancePage(countryCode1)) mustBe Some(25.15)
+      updated.get(ForeignNonResidentialPropertyFinanceCostsPage(countryCode1)) mustBe Some(35.15)
+      updated.get(ForeignProfessionalFeesPage(countryCode1)) mustBe Some(45.15)
+      updated.get(ForeignCostsOfServicesProvidedPage(countryCode1)) mustBe Some(65.15)
+      updated.get(ForeignOtherAllowablePropertyExpensesPage(countryCode1)) mustBe Some(95.15)
     }
   }
 }

@@ -105,12 +105,13 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowances)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq("AUS")
         )(any())
       ) thenReturn Future.successful(Right(""))
 

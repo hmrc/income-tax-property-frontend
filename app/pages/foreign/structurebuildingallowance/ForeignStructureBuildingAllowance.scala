@@ -18,16 +18,16 @@ package pages.foreign.structurebuildingallowance
 
 import models.{ForeignProperty, ForeignStructuresBuildingAllowanceAddress}
 import pages.PageConstants.{foreignSbaFormGroup, sbaPath}
-import play.api.libs.json.{Format, JsPath, Json}
+import play.api.libs.json.{Format, JsPath, Json, OFormat}
 import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
 case class ForeignStructureBuildingAllowance(
-  structureBuildingQualifyingDate: LocalDate,
-  structureBuildingQualifyingAmount: BigDecimal,
-  structureBuildingAllowanceClaim: BigDecimal,
-  structuredBuildingAllowanceAddress: ForeignStructuresBuildingAllowanceAddress
+  foreignStructureBuildingAllowanceClaim: BigDecimal,
+  foreignStructureBuildingQualifyingDate: LocalDate,
+  foreignStructureBuildingQualifyingAmount: BigDecimal,
+  foreignStructureBuildingAddress: ForeignStructuresBuildingAllowanceAddress
 )
 
 object ForeignStructureBuildingAllowance {
@@ -38,6 +38,48 @@ case class ForeignStructureBuildingAllowanceGroup(countryCode: String)
     extends Gettable[Array[ForeignStructureBuildingAllowance]] with Settable[Array[ForeignStructureBuildingAllowance]] {
   override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode \ toString
   override def toString: String = foreignSbaFormGroup
+}
+
+case class SaveForeignSba(
+  amount: BigDecimal,
+  firstYear: Option[StructuredBuildingAllowanceDate],
+  building: StructuredBuildingAllowanceBuilding
+)
+
+object SaveForeignSba {
+
+  implicit val format: OFormat[SaveForeignSba] = Json.format[SaveForeignSba]
+
+  def apply(foreignSBA: ForeignStructureBuildingAllowance): SaveForeignSba = {
+    val amount = foreignSBA.foreignStructureBuildingAllowanceClaim
+    val firstYear = Some(
+      StructuredBuildingAllowanceDate(
+        foreignSBA.foreignStructureBuildingQualifyingDate,
+        foreignSBA.foreignStructureBuildingQualifyingAmount
+      )
+    )
+    val building = StructuredBuildingAllowanceBuilding(foreignSBA.foreignStructureBuildingAddress)
+    SaveForeignSba(amount, firstYear, building)
+  }
+}
+
+case class StructuredBuildingAllowanceDate(qualifyingDate: LocalDate, qualifyingAmountExpenditure: BigDecimal)
+
+object StructuredBuildingAllowanceDate {
+  implicit val format: OFormat[StructuredBuildingAllowanceDate] = Json.format[StructuredBuildingAllowanceDate]
+}
+
+case class StructuredBuildingAllowanceBuilding(name: Option[String], number: Option[String], postCode: String)
+
+object StructuredBuildingAllowanceBuilding {
+  implicit val format: OFormat[StructuredBuildingAllowanceBuilding] = Json.format[StructuredBuildingAllowanceBuilding]
+
+  def apply(address: ForeignStructuresBuildingAllowanceAddress): StructuredBuildingAllowanceBuilding =
+    StructuredBuildingAllowanceBuilding(
+      Some(address.buildingName),
+      Some(address.buildingNumber),
+      address.postCode
+    )
 }
 
 case class ForeignStructureBuildingAllowanceWithIndex(index: Int, countryCode: String)

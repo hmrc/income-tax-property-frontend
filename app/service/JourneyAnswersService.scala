@@ -18,7 +18,7 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
-import models.backend.{ConnectorError, HttpParserError, UKPropertyDetailsError, ServiceError}
+import models.backend.{ConnectorError, HttpParserError, ServiceError, UKPropertyDetailsError}
 import models.{JourneyContext, User}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
@@ -55,7 +55,7 @@ class JourneyAnswersService @Inject() (
     }
 
   def setForeignStatus(ctx: JourneyContext, status: String, user: User, countryCode: String)(implicit
-                                                                 hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[Either[ServiceError, String]] =
     businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))

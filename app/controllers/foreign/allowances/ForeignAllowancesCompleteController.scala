@@ -34,19 +34,19 @@ import views.html.foreign.allowances.ForeignAllowancesCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignAllowancesCompleteController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              foreignPropertyNavigator: ForeignPropertyNavigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: ForeignAllowancesCompleteFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: ForeignAllowancesCompleteView,
-                                              journeyAnswersService: JourneyAnswersService
-                                                 )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport{
+class ForeignAllowancesCompleteController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignAllowancesCompleteFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignAllowancesCompleteView,
+  journeyAnswersService: JourneyAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
@@ -68,24 +68,25 @@ class ForeignAllowancesCompleteController @Inject()(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear, countryCode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignAllowancesCompletePage(countryCode), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignAllowancesCompletePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                .setStatus(
-                  JourneyContext(
-                    taxYear = taxYear,
-                    mtditid = request.user.mtditid,
-                    nino = request.user.nino,
-                    journeyPath = ForeignPropertyAllowances
-                  ),
-                  status = statusForPage(value),
-                  request.user
-                )
+                          .setForeignStatus(
+                            JourneyContext(
+                              taxYear = taxYear,
+                              mtditid = request.user.mtditid,
+                              nino = request.user.nino,
+                              journeyPath = ForeignPropertyAllowances
+                            ),
+                            status = statusForPage(value),
+                            request.user,
+                            countryCode
+                          )
             } yield status.fold(
               _ =>
-                //TODO: When we implement navigation story, update the route to show message from backend or error
-                Redirect(controllers.routes.SummaryController.show(taxYear)
-                ),
+                // TODO: When we implement navigation story, update the route to show message from backend or error
+                Redirect(controllers.routes.SummaryController.show(taxYear)),
               _ =>
                 Redirect(
                   foreignPropertyNavigator

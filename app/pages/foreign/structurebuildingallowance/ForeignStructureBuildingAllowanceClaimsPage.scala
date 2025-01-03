@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.foreign.allowances
+package pages.foreign.structurebuildingallowance
 
 import models.ForeignProperty
-import pages.PageConstants.allowancesPath
-import pages.QuestionPage
 import play.api.libs.json.JsPath
+import pages.PageConstants.sbaPath
+import pages.QuestionPage
 
-case class ForeignReplacementOfDomesticGoodsPage(countryCode: String) extends QuestionPage[BigDecimal] {
+case class ForeignStructureBuildingAllowanceClaimsPage(countryCode: String) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode \ toString
 
-  override def toString: String = "costOfReplacingDomesticItems"
+  override def toString: String = "foreignStructureBuildingAllowanceClaims"
 }
