@@ -2486,6 +2486,11 @@ foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
 foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*
 
+foreignStructureBuildingAllowanceClaims.title = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.heading = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.legend = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.error.required = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.change.hidden = *Missing Welsh*
 
 foreignAdjustmentsStart.title = *Missing Welsh*
 foreignAdjustmentsStart.heading = *Missing Welsh*

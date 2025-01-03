@@ -2516,6 +2516,13 @@ foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and
 foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
 foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
 
+foreignStructureBuildingAllowanceClaims.title = Your structures and buildings allowance claims
+foreignStructureBuildingAllowanceClaims.heading = Your structures and buildings allowance claims
+foreignStructureBuildingAllowanceClaims.legend = Do you want to add another claim?
+foreignStructureBuildingAllowanceClaims.error.required = Select yes if you want to add another claim
+foreignStructureBuildingAllowanceClaims.change.hidden = Structures and Buildings Allowance Claim
+
+
 foreignAdjustmentsStart.title = Adjustments for your property in {0}
 foreignAdjustmentsStart.heading = Adjustments for your property in {0}
 foreignAdjustmentsStart.details.content = In this section we’re going to ask you about the following adjustments:
