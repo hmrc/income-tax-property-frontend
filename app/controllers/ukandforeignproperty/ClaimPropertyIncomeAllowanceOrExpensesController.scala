@@ -18,7 +18,7 @@ package controllers.ukandforeignproperty
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesFormProvider
-import models.{Mode, PropertyType}
+import models.Mode
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,10 +43,10 @@ class ClaimPropertyIncomeAllowanceOrExpensesController @Inject()(
 )(implicit ec: ExecutionContext)
 extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
-      val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType)) match {
+      val preparedForm = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage) match {
         case None        =>
           form
         case Some(value) =>
@@ -57,7 +57,7 @@ extends FrontendBaseController with I18nSupport {
       )
     }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
       form
@@ -67,11 +67,11 @@ extends FrontendBaseController with I18nSupport {
             Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
           (value) => {
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType), value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimPropertyIncomeAllowanceOrExpensesPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextIndex(
-                ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
+                ClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers,0)
             )
           }
         )

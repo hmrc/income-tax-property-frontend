@@ -18,7 +18,7 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefFormProvider
-import models.{Mode, PropertyType, UkAndForeignPropertyClaimExpensesOrRelief}
+import models.Mode
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,35 +43,35 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType)) match {
+      val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
         case None        =>
           form
         case Some(value) =>
           form.fill(value)
       }
       Future.successful(
-        Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+        Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
       )
     }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
         val form = formProvider(request.user.isAgentMessageKey)
         form
           .bindFromRequest()
           .fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
             value =>
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), value))
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, value))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
                 navigator.nextIndex(
-                  UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers,0)
+                  UkAndForeignPropertyClaimExpensesOrReliefPage, taxYear, mode, request.userAnswers, updatedAnswers,0)
               )
           )
     }

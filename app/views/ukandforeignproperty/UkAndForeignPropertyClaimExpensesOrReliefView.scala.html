@@ -30,7 +30,7 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String,  propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRelief.title"))) {
 

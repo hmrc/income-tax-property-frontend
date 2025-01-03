@@ -40,10 +40,10 @@ class UkAndForeignPropertyNavigator {
   private val indexableRoutes: Page => Int => UserAnswers => UserAnswers => Int => Call = {
     case ForeignCountriesRentedPage =>
       taxYear => _ => userAnswers => index => foreignCountriesRentedNavigation(taxYear, userAnswers, index)
-    case UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType) =>
-      taxYear => _ => userAnswers => index => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, index, propertyType)
-    case ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType) =>
-      taxYear => _ => userAnswers => index => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers, index, propertyType)
+    case UkAndForeignPropertyClaimExpensesOrReliefPage =>
+      taxYear => _ => userAnswers => index => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, index)
+    case ClaimPropertyIncomeAllowanceOrExpensesPage =>
+      taxYear => _ => userAnswers => index => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers, index)
     case _ =>
       _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
 
@@ -92,35 +92,34 @@ class UkAndForeignPropertyNavigator {
       case (Some(false), None) =>
         throw new RuntimeException("No rental type selected")  // should never happen
       case (Some(false), Some(Seq(UkAndForeignPropertyRentalTypeUk.PropertyRentals))) =>
-        ??? //TODO
+        routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
       case _ =>
         routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
     }
   }
 
-  private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int, propertyType: PropertyType): Call =
-    userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage(propertyType)) match {
-      case Some(UkAndForeignPropertyClaimExpensesOrRelief(true)) =>
-        routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
-      case Some(UkAndForeignPropertyClaimExpensesOrRelief(false)) =>
+  private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call =
+    userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(_)) =>
         routes.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
     }
 
-  private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int, propertyType: PropertyType): Call =
-    (userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage(propertyType)),propertyType) match {
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), Rentals) =>
+  private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+    (userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage), userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).map(_.toSeq)) match {
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), Some(Seq(UkAndForeignPropertyRentalTypeUk.RentARoom))) =>
+        // AC6 Then the 'How much income did you get from your foreign property rentals' page is displayed.
         ???
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), RentARoom) =>
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), Some(_)) =>
+        // AC5  Then the 'Non-UK resident landlord' page is displayed.
         ???
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(true)), RentalsRentARoom) =>
+      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), _) =>
+        // AC7 Then the 'Check your answers' page is displayed
         ???
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), Rentals) =>
-        ???
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), RentARoom) =>
-        ???
-      case (Some(ClaimPropertyIncomeAllowanceOrExpenses(false)), RentalsRentARoom) =>
+      case _ =>
+        // Should not happen
         ???
     }
+  }
 
 
 }
