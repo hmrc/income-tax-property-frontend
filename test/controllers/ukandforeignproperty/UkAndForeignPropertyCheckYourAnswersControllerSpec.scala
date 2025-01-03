@@ -17,28 +17,35 @@
 package controllers.ukandforeignproperty
 
 import base.SpecBase
-import models.NormalMode
+import models.JourneyPath.ForeignSelectCountry
+import models.{ForeignPropertySelectCountry, ForeignTotalIncome, JourneyContext, NormalMode, ReportIncome, TotalPropertyIncome, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.http.Status.OK
+import pages.foreign.ForeignTaxSectionCompletePage
+import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
+import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.inject
 import play.api.mvc.Call
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout, running, status}
-//import service.PropertySubmissionService
+import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, running, status}
+import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersView
 
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
-  //private val propertySubmissionService = mock[PropertySubmissionService]
+  private val propertySubmissionService = mock[PropertySubmissionService]
 
-  val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
   lazy val UkAndForeignPropertyCheckYourAnswersRoute: String =
     controllers.ukandforeignproperty.routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear = taxYear, mode = NormalMode).url
   def onwardRoute: Call = Call("GET", "/")
-  val foreignTaxPaidOrDeducted: BigDecimal = 234
 
   "UkAndForeignPropertyCheckYourAnswers Controller" - {
     "must return OK and the correct view for a GET" in {
@@ -57,6 +64,98 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
         contentAsString(result) mustEqual view(list, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, UkAndForeignPropertyCheckYourAnswersRoute)
+        val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
+
+        val result = controller.onPageLoad(taxYear, NormalMode)(request)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect" in {
+      val userAnswers = UserAnswers("test").set(ForeignTaxSectionCompletePage("AUS"), false).get
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
+
+      val userAnswersForeignSelectCountry =
+        userAnswers
+          .set(
+            ForeignPropertySelectCountry,
+            ForeignPropertySelectCountry(ForeignTotalIncome.LessThanOneThousand, Some(false), None, None, None)
+          )
+          .get
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersForeignSelectCountry), isAgent = true)
+        .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, UkAndForeignPropertyCheckYourAnswersRoute)
+        val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
+
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.IndexController.onPageLoad.url
+      }
+    }
+
+    "must save ReportIncome and TotalPropertyIncome and return OK" in {
+
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(
+          ForeignPropertySelectCountry,
+          ForeignPropertySelectCountry(ForeignTotalIncome.LessThanOneThousand, Some(false), None, None, None)
+        ).get
+        .set(ReportIncomePage, ReportIncome.values.head).success.value
+        .set(TotalPropertyIncomePage, TotalPropertyIncome.values.head).success.value
+
+      val context = JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+        .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, UkAndForeignPropertyCheckYourAnswersRoute)
+        val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
+
+        val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.IndexController.onPageLoad.url
+
+        userAnswers.get(ReportIncomePage) mustBe Some(ReportIncome.values.head)
+        userAnswers.get(TotalPropertyIncomePage) mustBe Some(TotalPropertyIncome.values.head)
+      }
+    }
+
   }
 
 }

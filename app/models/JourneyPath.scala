@@ -102,4 +102,7 @@ object JourneyPath {
 
   case object ForeignPropertyAdjustments extends WithName("foreign-property-adjustments") with JourneyPath
 
+  // ####################### Foreign Property #######################
+  case object UkAndForeignPropertyAbout extends WithName("uk-and-foreign-property-about") with JourneyPath
+
 }

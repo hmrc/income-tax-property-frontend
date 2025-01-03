@@ -41,3 +41,4 @@ GET        /:taxYear/uk-foreign-property/change-non-resident-landlord-uk        
 POST       /:taxYear/uk-foreign-property/change-non-resident-landlord-uk                   controllers.ukandforeignproperty.NonResidentLandlordUKController.onSubmit(taxYear:Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/uk-foreign-property/check-your-answers                                controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear: Int, mode: Mode ?= NormalMode)
+POST       /:taxYear/uk-foreign-property/check-your-answers                                controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear: Int, mode: Mode ?= NormalMode)
