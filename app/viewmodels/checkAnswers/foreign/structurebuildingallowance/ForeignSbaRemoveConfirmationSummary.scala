@@ -38,7 +38,7 @@ object ForeignSbaRemoveConfirmationSummary {
         key = KeyViewModel(HtmlContent(value)).withCssClass(keyCssClass),
         value = ValueViewModel(
           bigDecimalCurrency(answer.foreignStructureBuildingAllowanceClaim)
-        ).withCssClass(valueCssClass),
+        ),
         actions = Seq()
       )
 
