@@ -2480,8 +2480,23 @@ foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*
 
-
 foreignSbaRemoveConfirmation.title = *Missing Welsh*
 foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
 foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*
+
+foreignPrivateUseAdjustment.title = *Missing Welsh*
+foreignPrivateUseAdjustment.heading = *Missing Welsh*
+foreignPrivateUseAdjustment.p1.individual = *Missing Welsh*
+foreignPrivateUseAdjustment.p1.agent = *Missing Welsh*
+foreignPrivateUseAdjustment.p2.individual = *Missing Welsh*
+foreignPrivateUseAdjustment.p2.agent = *Missing Welsh*
+foreignPrivateUseAdjustment.label.individual = *Missing Welsh*
+foreignPrivateUseAdjustment.label.agent = *Missing Welsh*
+foreignPrivateUseAdjustment.checkYourAnswersLabel = *Missing Welsh*
+foreignPrivateUseAdjustmentAmount.amount.error.required.individual = *Missing Welsh*
+foreignPrivateUseAdjustmentAmount.amount.error.required.agent = *Missing Welsh*
+foreignPrivateUseAdjustmentAmount.amount.error.nonNumeric = *Missing Welsh*
+foreignPrivateUseAdjustmentAmount.amount.error.twoDecimalPlaces = *Missing Welsh*
+foreignPrivateUseAdjustment.error.outOfRange = *Missing Welsh*
+foreignPrivateUseAdjustment.change.hidden = *Missing Welsh*

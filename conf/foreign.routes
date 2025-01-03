@@ -215,3 +215,8 @@ POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCod
 
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                                controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/adjustments/:countryCode/private-use-adjustment                             controllers.foreign.adjustments.ForeignPrivateUseAdjustmentController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/adjustments/:countryCode/private-use-adjustment                                controllers.foreign.adjustments.ForeignPrivateUseAdjustmentController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/adjustments/:countryCode/private-use-adjustment                          controllers.foreign.adjustments.ForeignPrivateUseAdjustmentController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/adjustments/:countryCode/private-use-adjustment                          controllers.foreign.adjustments.ForeignPrivateUseAdjustmentController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
