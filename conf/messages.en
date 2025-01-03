@@ -2484,7 +2484,7 @@ foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = Building numbe
 foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = Enter a number for the qualifying building or structure
 foreignStructuresBuildingAllowanceAddress.postcode.legend = Postcode
 foreignStructuresBuildingAllowanceAddress.error.postcode.required = Enter a full postcode for the qualifying building or structure
-foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Address
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Structure and building allowance address
 foreignStructuresBuildingAllowanceAddress.error.duplicate = The address for this claim has already been added
 
 foreignStructureBuildingQualifyingDate.title = Qualifying date
