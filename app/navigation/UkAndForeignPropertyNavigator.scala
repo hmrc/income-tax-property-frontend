@@ -91,6 +91,7 @@ class UkAndForeignPropertyNavigator {
       case Some(false) => Call("GET", "/") // TODO: Update once page exists
     }
 
+  //TODO add the next pages to navigate when they are available
   private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
     (userAnswers.get(NonResidentLandlordUKPage), mode) match {
       case (Some(true), NormalMode) => ???
