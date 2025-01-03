@@ -215,3 +215,7 @@ POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCod
 
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                       controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/complete-yes-no                       controllers.foreign.structuresbuildingallowance.ForeignSbaCompleteController.onSubmit(taxYear: Int, countryCode: String)
+
+GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claims                                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claims                                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimsController.onSubmit(taxYear: Int, countryCode: String)
+
