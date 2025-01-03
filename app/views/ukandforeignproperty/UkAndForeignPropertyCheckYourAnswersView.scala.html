@@ -28,7 +28,7 @@
     <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-    @formHelper(action = UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
         @govukSummaryList(list)
         @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
     }
