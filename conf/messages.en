@@ -2515,3 +2515,9 @@ foreignSbaRemoveConfirmation.title = Do you want to remove this structures and b
 foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and buildings allowance claim?
 foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
 foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
+
+foreignStructureBuildingAllowanceClaims.title = Your structures and buildings allowance claims
+foreignStructureBuildingAllowanceClaims.heading = Your structures and buildings allowance claims
+foreignStructureBuildingAllowanceClaims.legend = Do you want to add another claim?
+foreignStructureBuildingAllowanceClaims.error.required = Select yes if you want to add another claim
+foreignStructureBuildingAllowanceClaims.change.hidden = Structures and Buildings Allowance Claim
