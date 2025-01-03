@@ -29,13 +29,13 @@
 
 @layout(pageTitle = title(form, messages("nonResidentLandlordUK.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("nonResidentLandlordUK.heading")</h1>
-
     @formHelper(action = routes.NonResidentLandlordUKController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages("nonResidentLandlordUK.heading")</h1>
 
         <p class="govuk-body">@messages("nonResidentLandlordUK.p")</p>
 
