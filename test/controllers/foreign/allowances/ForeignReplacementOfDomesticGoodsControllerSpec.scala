@@ -103,7 +103,7 @@ class ForeignReplacementOfDomesticGoodsControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
-            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("costOfReplacingDomesticItems", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class ForeignReplacementOfDomesticGoodsControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
-            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", "invalid value"))
+            .withFormUrlEncodedBody(("costOfReplacingDomesticItems", "invalid value"))
 
-        val boundForm = form.bind(Map("foreignReplacementOfDomesticGoodsAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("costOfReplacingDomesticItems" -> "invalid value"))
 
         val view = application.injector.instanceOf[ForeignReplacementOfDomesticGoodsView]
 
@@ -153,7 +153,7 @@ class ForeignReplacementOfDomesticGoodsControllerSpec extends SpecBase with Mock
       running(application) {
         val request =
           FakeRequest(POST, foreignReplacementOfDomesticGoodsRoute)
-            .withFormUrlEncodedBody(("foreignReplacementOfDomesticGoodsAmount", validAnswer.toString))
+            .withFormUrlEncodedBody(("costOfReplacingDomesticItems", validAnswer.toString))
 
         val result = route(application, request).value
 

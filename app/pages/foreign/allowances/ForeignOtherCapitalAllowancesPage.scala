@@ -25,5 +25,5 @@ case class ForeignOtherCapitalAllowancesPage(countryCode: String) extends Questi
 
   override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignOtherCapitalAllowances"
+  override def toString: String = "otherCapitalAllowance"
 }

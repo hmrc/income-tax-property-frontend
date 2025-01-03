@@ -17,6 +17,8 @@
 package controllers.foreign.adjustments
 
 import base.SpecBase
+import models.UserAnswers
+import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.foreign.adjustments.ForeignAdjustmentsStartView
@@ -25,13 +27,15 @@ class ForeignAdjustmentsStartControllerSpec extends SpecBase {
 
   val taxYear = 2023
   val countryCode = "AUS"
+  val countryName = "Australia"
   val isPIA = true
 
   "ForeignAdjustmentsStart Controller" - {
 
     "must return OK and the correct view for a GET" in {
+      val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers),isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA).url)
@@ -41,7 +45,7 @@ class ForeignAdjustmentsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ForeignAdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, countryCode, isPIA)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, countryName, isPIA)(request, messages(application)).toString
       }
     }
   }
