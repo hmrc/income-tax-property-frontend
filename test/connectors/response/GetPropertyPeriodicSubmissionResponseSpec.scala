@@ -93,7 +93,12 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
             receivedGrantLeaseAmount = None, twelveMonthPeriodsInLease = None, premiumsOfLeaseGrantAgreed = None))
           ),
-          foreignJourneyStatuses = Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed"))))
+          foreignPropertyExpenses = Some(Map("ESP" -> ForeignExpensesAnswers(
+            Some(ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(456))), premisesRunningCosts = Some(11),
+            repairsAndMaintenance = Some(22.30), financialCosts = Some(44), professionalFees = Some(56),
+            costOfServices = Some(78), other = Some(90)))
+          ),
+          foreignJourneyStatuses = Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed")))),
         )
         val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData)
 
