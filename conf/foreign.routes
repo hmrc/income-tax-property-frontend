@@ -219,3 +219,7 @@ POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCod
 GET        /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claims                                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear: Int, countryCode: String)
 POST       /:taxYear/foreign-property/structures-buildings-allowance/:countryCode/claims                                controllers.foreign.structuresbuildingallowance.ForeignStructureBuildingAllowanceClaimsController.onSubmit(taxYear: Int, countryCode: String)
 
+############################  foreign property adjustments  ###################################
+
+GET         /:taxYear/foreign-property/adjustments/:countryCode/start                                                   controllers.foreign.adjustments.ForeignAdjustmentsStartController.onPageLoad(taxYear: Int, countryCode: String, isPIA: Boolean)
+

@@ -2491,3 +2491,13 @@ foreignStructureBuildingAllowanceClaims.heading = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.legend = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.error.required = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.change.hidden = *Missing Welsh*
+
+foreignAdjustmentsStart.title = *Missing Welsh*
+foreignAdjustmentsStart.heading = *Missing Welsh*
+foreignAdjustmentsStart.details.content = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l1 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l2 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l3 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l4 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l5 = *Missing Welsh*
+foreignAdjustmentsStart.details.content.l6 = *Missing Welsh*
