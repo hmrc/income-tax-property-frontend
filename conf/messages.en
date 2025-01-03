@@ -2516,8 +2516,8 @@ foreignSbaRemoveConfirmation.heading = Do you want to remove this structures and
 foreignSbaRemoveConfirmation.error.required = Select yes if you want to remove the claim
 foreignSbaRemoveConfirmation.change.hidden = Remove Structures Buildings Allowance Claim
 
-foreignAdjustmentsStart.title = Adjustments
-foreignAdjustmentsStart.heading = Adjustments
+foreignAdjustmentsStart.title = Adjustments for your property in {0}
+foreignAdjustmentsStart.heading = Adjustments for your property in {0}
 foreignAdjustmentsStart.details.content = In this section we’re going to ask you about the following adjustments:
 foreignAdjustmentsStart.details.content.l1 = private use adjustment
 foreignAdjustmentsStart.details.content.l2 = balancing charge

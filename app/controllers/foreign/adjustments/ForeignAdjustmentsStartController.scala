@@ -17,6 +17,7 @@
 package controllers.foreign.adjustments
 
 import controllers.actions._
+import pages.foreign.IncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,7 +36,10 @@ class ForeignAdjustmentsStartController @Inject()(
 
   def onPageLoad(taxYear: Int, countryCode: String, isPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(taxYear, countryCode, isPIA))
+      val maybeCountryName =
+        request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code == countryCode)).map(_.name)
+      val countryName = maybeCountryName.getOrElse("")
+      Ok(view(taxYear, countryName, isPIA))
 
     }
 }

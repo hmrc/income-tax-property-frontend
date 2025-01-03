@@ -21,11 +21,11 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, countryCode: String, isPIA: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, countryName: String, isPIA: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("foreignAdjustmentsStart.title"))) {
+@layout(pageTitle = titleNoForm(messages(s"foreignAdjustmentsStart.title", countryName))) {
 
-    <h1 class="govuk-heading-l">@messages("foreignAdjustmentsStart.heading")</h1>
+    <h1 class="govuk-heading-l">@messages(s"foreignAdjustmentsStart.heading", countryName)</h1>
     <p class="govuk-body">@messages("foreignAdjustmentsStart.details.content")</p>
     <ul id="list" class="govuk-list govuk-list--bullet" >
         @if(isPIA){
@@ -41,12 +41,13 @@
         <li>@messages("foreignAdjustmentsStart.details.content.l5")</li>
         }
     </ul>
-
-    @govukButton(
+    <p class="govuk-body">
+        @govukButton(
         ButtonViewModel(messages("propertyIncomeStart.button"))
-        .asLink(routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA).url)
+        .asLink(routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryName, isPIA).url)
         .withId("continue")
-    )
+        )
+    </p>
 }
 
 @{
