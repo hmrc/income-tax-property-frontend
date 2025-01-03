@@ -2522,7 +2522,6 @@ foreignStructureBuildingAllowanceClaims.legend = Do you want to add another clai
 foreignStructureBuildingAllowanceClaims.error.required = Select yes if you want to add another claim
 foreignStructureBuildingAllowanceClaims.change.hidden = Structures and Buildings Allowance Claim
 
-
 foreignAdjustmentsStart.title = Adjustments for your property in {0}
 foreignAdjustmentsStart.heading = Adjustments for your property in {0}
 foreignAdjustmentsStart.details.content = In this section we’re going to ask you about the following adjustments:
@@ -2532,3 +2531,19 @@ foreignAdjustmentsStart.details.content.l3 = residential property finance costs
 foreignAdjustmentsStart.details.content.l4 = unused residential property finance costs brought forward
 foreignAdjustmentsStart.details.content.l5 = loss brought forward
 foreignAdjustmentsStart.details.content.l6 = property income allowance
+
+foreignPrivateUseAdjustment.title = Private use adjustment
+foreignPrivateUseAdjustment.heading = Private use adjustment
+foreignPrivateUseAdjustment.p1.individual = Personal expenses are not allowable as a deduction so if you''ve included any amounts that were not just for the business in the expenses section, then enter the private (non-business) proportion here.
+foreignPrivateUseAdjustment.p1.agent = Personal expenses are not allowable as a deduction so if your client has included any amounts that were not wholly for the business in the expenses section, then enter the private (non-business) proportion here.
+foreignPrivateUseAdjustment.p2.individual = For example, if you let a property for 8 months in a year and you use it for the other 4 months, you could include the full annual cost of insuring the property in expenses and the 4 months cost in your private use adjustment.
+foreignPrivateUseAdjustment.p2.agent = For example, if your client let a property for 8 months in a year and they use it for the other 4 months, you could include the full annual cost of insuring the property in expenses and the 4 months cost in private use adjustment.
+foreignPrivateUseAdjustment.label.individual = How much was your private use adjustment?
+foreignPrivateUseAdjustment.label.agent = How much was your client’s private use adjustment?
+foreignPrivateUseAdjustment.checkYourAnswersLabel = Private use adjustment
+foreignPrivateUseAdjustment.error.required.individual = Enter the amount for your private use adjustment
+foreignPrivateUseAdjustment.error.required.agent = Enter the amount for your client’s private use adjustment
+foreignPrivateUseAdjustment.error.nonNumeric = The amount for private use adjustment can only include pounds and pence, for example £600 or £600.20
+foreignPrivateUseAdjustment.error.twoDecimalPlaces = The amount for private use adjustment can only include pounds and pence, for example £600 or £600.20
+foreignPrivateUseAdjustment.error.outOfRange = Enter an amount between {0} and {1}
+foreignPrivateUseAdjustment.change.hidden = Private use adjustment

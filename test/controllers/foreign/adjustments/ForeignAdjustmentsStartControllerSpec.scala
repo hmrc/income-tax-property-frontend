@@ -45,7 +45,7 @@ class ForeignAdjustmentsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ForeignAdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, countryName, isPIA)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, countryName, countryCode, isPIA)(request, messages(application)).toString
       }
     }
   }

@@ -21,7 +21,7 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, countryName: String, isPIA: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, countryName: String, countryCode: String, isPIA: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages(s"foreignAdjustmentsStart.title", countryName))) {
 
@@ -44,7 +44,7 @@
     <p class="govuk-body">
         @govukButton(
         ButtonViewModel(messages("propertyIncomeStart.button"))
-        .asLink(routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryName, isPIA).url)
+        .asLink(routes.ForeignPrivateUseAdjustmentController.onPageLoad(taxYear, countryCode, NormalMode).url)
         .withId("continue")
         )
     </p>
