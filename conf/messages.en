@@ -2485,7 +2485,7 @@ foreignStructuresBuildingAllowanceAddress.buildingNumber.legend = Building numbe
 foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required = Enter a number for the qualifying building or structure
 foreignStructuresBuildingAllowanceAddress.postcode.legend = Postcode
 foreignStructuresBuildingAllowanceAddress.error.postcode.required = Enter a full postcode for the qualifying building or structure
-foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Structure and building allowance address
+foreignStructuresBuildingAllowanceAddress.checkYourAnswersLabel = Address
 foreignStructuresBuildingAllowanceAddress.error.duplicate = The address for this claim has already been added
 
 foreignStructureBuildingQualifyingDate.title = Qualifying date
@@ -2567,3 +2567,32 @@ foreignUnusedResidentialFinanceCost.error.amount.required.individual = Enter how
 foreignUnusedResidentialFinanceCost.error.amount.required.agent = Enter how much unused residential finance costs your client wants to carry forward
 foreignUnusedResidentialFinanceCost.error.amount.outOfRange = Enter an amount between £{0} and £{1}
 foreignUnusedResidentialFinanceCost.change.hidden = Unused residential property finance costs brought forward
+
+
+foreignBalancingCharge.title.agent = Balancing charge
+foreignBalancingCharge.title.individual = Balancing charge
+foreignBalancingCharge.heading.agent = How much was your client’s balancing charge?
+foreignBalancingCharge.heading.individual = Balancing charge
+foreignBalancingCharge.para.individual = Understanding balancing charge
+foreignBalancingCharge.para.agent = Understanding balancing charge
+
+foreignBalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
+
+foreignBalancingCharge.checkYourAnswersLabel = Balancing charge
+foreignBalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
+foreignBalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
+foreignBalancingCharge.change.hidden = Balancing charge
+foreignBalancingCharge.details.line1 = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+foreignBalancingCharge.details.line2 = Any balancing charges are regarded as income if you’re claiming property income allowance.
+foreignBalancingCharge.details.line2.link.text = Not Required, will default to some value
+foreignBalancingCharge.radio.legend.individual = Do you have to report a balancing charge?
+foreignBalancingCharge.radio.legend.agent = Does your client have to report a balancing charge?
+foreignBalancingCharge.radio.question.label = How much is the balancing charge?
+foreignBalancingCharge.label = Enter the figure
+foreignBalancingCharge.amount.error.required.individual = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.required.agent = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.nonNumeric.individual = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.nonNumeric.agent = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}

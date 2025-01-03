@@ -2481,6 +2481,7 @@ foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*
 
+
 foreignSbaRemoveConfirmation.title = *Missing Welsh*
 foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
@@ -2536,3 +2537,31 @@ foreignUnusedResidentialFinanceCost.error.amount.required.individual = *Missing 
 foreignUnusedResidentialFinanceCost.error.amount.required.agent = *Missing Welsh*
 foreignUnusedResidentialFinanceCost.error.amount.outOfRange = *Missing Welsh*
 foreignUnusedResidentialFinanceCost.change.hidden = *Missing Welsh*
+
+foreignBalancingCharge.title.agent = *Missing Welsh*
+foreignBalancingCharge.title.individual = *Missing Welsh*
+foreignBalancingCharge.heading.agent = *Missing Welsh*
+foreignBalancingCharge.heading.individual = *Missing Welsh*
+foreignBalancingCharge.para.individual = *Missing Welsh*
+foreignBalancingCharge.para.agent = *Missing Welsh*
+
+foreignBalancingCharge.checkYourAnswersAmountLabel = *Missing Welsh*
+
+foreignBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
+foreignBalancingCharge.error.required.agent = *Missing Welsh*
+foreignBalancingCharge.error.required.individual = *Missing Welsh*
+foreignBalancingCharge.change.hidden = *Missing Welsh*
+foreignBalancingCharge.details.line1 = *Missing Welsh*
+foreignBalancingCharge.details.line2 = *Missing Welsh*
+foreignBalancingCharge.details.line2.link.text = *Missing Welsh*
+foreignBalancingCharge.radio.legend.individual = *Missing Welsh*
+foreignBalancingCharge.radio.legend.agent = *Missing Welsh*
+foreignBalancingCharge.radio.question.label = *Missing Welsh*
+foreignBalancingCharge.label = *Missing Welsh*
+foreignBalancingCharge.amount.error.required.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.required.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.nonNumeric.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.nonNumeric.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
