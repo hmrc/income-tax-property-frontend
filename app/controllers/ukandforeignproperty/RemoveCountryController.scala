@@ -17,6 +17,7 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
+import handlers.ErrorHandler
 import models.{Index, Mode}
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -26,7 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.RemoveCountryView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class RemoveCountryController @Inject() (override val messagesApi: MessagesApi,
                                          removeCountryService: RemoveCountryService,
@@ -34,24 +35,29 @@ class RemoveCountryController @Inject() (override val messagesApi: MessagesApi,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: RemoveCountryView
+                                         view: RemoveCountryView,
+                                         standardErrorHandler: ErrorHandler
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
+    (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers.get(SelectCountryPage)
-        .flatMap(countries => countries.toList.lift(index.positionZeroIndexed)) match {
+        .flatMap(countries => countries.lift(index.positionZeroIndexed)) match {
         case Some(country) =>
-          Ok(view(taxYear, mode, index, country))
+          Future.successful(Ok(view(taxYear, mode, index, country)))
         case _ =>
-          NotFound("Country not found")
+          standardErrorHandler.notFound()
       }
     }
 
   def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      removeCountryService.removeCountry(index).map { _ =>
-        Redirect(routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode))
+      removeCountryService.removeCountry(index)
+        .map { _ =>
+          Redirect(routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode))
+      }.recoverWith {
+        case _: IndexOutOfBoundsException =>
+          standardErrorHandler.notFound()
       }
     }
 

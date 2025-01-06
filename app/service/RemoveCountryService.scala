@@ -29,8 +29,8 @@ class RemoveCountryService @Inject()(sessionRepository: SessionRepository)
 
   def removeCountry(index: Index)(implicit request: DataRequest[_]): Future[UserAnswers] =
     for {
-      countries               <- Future { request.userAnswers.get(SelectCountryPage).getOrElse(Set.empty) }
-      countryToRemove         = countries.toList.lift(index.positionZeroIndexed)
+      countries               <- Future { request.userAnswers.get(SelectCountryPage).getOrElse(Nil) }
+      countryToRemove         = countries.lift(index.positionZeroIndexed)
                                   .getOrElse(throw new IndexOutOfBoundsException(s"No country exists for position index: ${index.position}"))
       updatedCountries        = countries.filterNot(_ == countryToRemove)
       updatedUserAnswers      <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountries))

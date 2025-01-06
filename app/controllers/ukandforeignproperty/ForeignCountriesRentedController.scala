@@ -75,7 +75,7 @@ class ForeignCountriesRentedController @Inject()(
           addAnotherCountry =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCountriesRentedPage, addAnotherCountry))
-              countries      <- Future(request.userAnswers.get(SelectCountryPage).getOrElse(Set.empty))
+              countries      <- Future(request.userAnswers.get(SelectCountryPage).getOrElse(List.empty))
               nextIndex      =  countries.size
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
@@ -93,6 +93,6 @@ class ForeignCountriesRentedController @Inject()(
       case None => Nil
     }
 
-    SummaryListViewModel(rows.toSeq)
+    SummaryListViewModel(rows)
   }
 }

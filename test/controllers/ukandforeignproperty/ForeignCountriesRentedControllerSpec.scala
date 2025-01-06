@@ -55,7 +55,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
   val isAgentMessageKey: String = "individual"
   val index: Int = 0
   val testCountry: Country = Country("Greece", "GRC")
-  val testUserAnswersWith1Country: UserAnswers = emptyUserAnswers.set(SelectCountryPage, Set(testCountry)).success.value
+  val testUserAnswersWith1Country: UserAnswers = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
 
   def onwardRoute: Call =
     Call("GET", "/")

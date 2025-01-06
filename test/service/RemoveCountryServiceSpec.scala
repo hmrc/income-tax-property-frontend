@@ -37,21 +37,21 @@ class RemoveCountryServiceSpec extends SpecBase with FutureAwaits with DefaultAw
 
   val france: Country = Country("France", "FR")
   val spain: Country = Country("Spain", "ES")
-  val testCountries: Set[Country] = Set(france, spain)
+  val testCountries: List[Country] = List(france, spain)
   val user: User = User("mtditid", "nino", "group", None)
 
-  private def buildUserAnswers(countries: Set[Country]): UserAnswers =
+  private def buildUserAnswers(countries: List[Country]): UserAnswers =
     emptyUserAnswers.set(SelectCountryPage, countries).success.value
 
-  private def buildDataRequest(countries: Set[Country]): DataRequest[AnyContent] =
+  private def buildDataRequest(countries: List[Country]): DataRequest[AnyContent] =
     DataRequest(FakeRequest(), userAnswersId, user, buildUserAnswers(countries))
 
-  private def mockSessionSet(mockSessionRepository: SessionRepository, countries:Set[Country]): OngoingStubbing[Future[Boolean]] =
+  private def mockSessionSet(mockSessionRepository: SessionRepository, countries: List[Country]): OngoingStubbing[Future[Boolean]] =
     when(
       mockSessionRepository.set(
         argThat {
           answers: UserAnswers =>
-            (answers.data \ "countries").as[Set[Country]] == countries
+            (answers.data \ "countries").as[List[Country]] == countries
         }
       )
     ).thenReturn(Future.successful(true))
@@ -63,22 +63,22 @@ class RemoveCountryServiceSpec extends SpecBase with FutureAwaits with DefaultAw
 
       val service = new RemoveCountryService(mockSessionRepository)
 
-      mockSessionSet(mockSessionRepository, Set(spain))
+      mockSessionSet(mockSessionRepository, List(spain))
 
       val result    = await(service.removeCountry(Index(1))(buildDataRequest(testCountries)))
       val countries = result.get(SelectCountryPage)
-      countries mustBe Some(Set(spain))
+      countries mustBe Some(List(spain))
     }
 
     "should remove the 2nd country from list when called with Index(2)" in {
       val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
       val service = new RemoveCountryService(mockSessionRepository)
-      mockSessionSet(mockSessionRepository, Set(france))
+      mockSessionSet(mockSessionRepository, List(france))
 
       val result    = await(service.removeCountry(Index(2))(buildDataRequest(testCountries)))
       val countries = result.get(SelectCountryPage)
-      countries mustBe Some(Set(france))
+      countries mustBe Some(List(france))
     }
 
     "should throw an IndexOutOfBoundsException when called with Index(3)" in {

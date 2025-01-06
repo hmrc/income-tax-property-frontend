@@ -16,6 +16,7 @@
 
 package models
 
+import play.api.libs.json.{Format, Json}
 import play.api.mvc.PathBindable
 
 case class Index(position: Int) {
@@ -25,6 +26,8 @@ case class Index(position: Int) {
 }
 
 object Index {
+
+  implicit val format: Format[Index] = Json.format[Index]
 
   private val totalCountriesInWorld: Int = 195
 

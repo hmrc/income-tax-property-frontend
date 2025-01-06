@@ -16,12 +16,11 @@
 
 package pages.ukandforeignproperty
 
-import models.Index
 import pages.QuestionPage
 import pages.foreign.Country
 import play.api.libs.json.JsPath
 
-case object SelectCountryPage extends QuestionPage[Set[Country]] {
+case object SelectCountryPage extends QuestionPage[List[Country]] {
 
   override def path: JsPath = JsPath \ toString
 

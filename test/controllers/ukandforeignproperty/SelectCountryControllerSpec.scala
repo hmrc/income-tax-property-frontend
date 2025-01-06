@@ -71,10 +71,11 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
         }
 
         s"must populate the view correctly on a GET when the question has previously been answered for $userType" in {
-          val userAnswers = UserAnswers(userAnswersId).set(SelectCountryPage, Set(country)).success.value
+          val userAnswers = UserAnswers(userAnswersId).set(SelectCountryPage, List(country)).success.value
           val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
           running(application) {
+            val countries = countrySelectItems.filterNot(_.value.contains("FRA"))
             val controller = application.injector.instanceOf[SelectCountryController]
             val request = FakeRequest(GET, selectCountryRoute)
             val view = application.injector.instanceOf[SelectCountryView]
@@ -83,12 +84,12 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
             status(result) mustEqual OK
             contentAsString(result) mustEqual view(
-              form.fill("France"),
+              form.fill("FRA"),
               taxYear,
               index,
               userType,
               NormalMode,
-              countrySelectItems
+              countries.filterNot(_.text == "France")
             )(
               request,
               messages(application)

@@ -17,7 +17,7 @@
 package handlers
 
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results.InternalServerError
+import play.api.mvc.Results.{InternalServerError, NotFound}
 import play.api.mvc.{Request, RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
@@ -40,4 +40,8 @@ class ErrorHandler @Inject() (
 
   def internalServerError()(implicit request: Request[_]): Future[Result] =
     internalServerErrorTemplate.map(InternalServerError(_))
+
+  def notFound()(implicit request: Request[_]): Future[Result] =
+    notFoundTemplate.map(NotFound(_))
+
 }
