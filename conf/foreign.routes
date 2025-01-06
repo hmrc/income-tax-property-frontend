@@ -250,6 +250,12 @@ POST        /:taxYear/foreign-property/adjustments/:countryCode/balancing-charge
 GET         /:taxYear/foreign-property/adjustments/:countryCode/change-balancing-charge                                 controllers.foreign.adjustments.ForeignBalancingChargeController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST        /:taxYear/foreign-property/adjustments/:countryCode/change-balancing-charge                                 controllers.foreign.adjustments.ForeignBalancingChargeController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
+GET        /:taxYear/foreign-property/adjustments/:countryCode/property-income-allowance-claim                          controllers.foreign.adjustments.PropertyIncomeAllowanceClaimController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/adjustments/:countryCode/property-income-allowance-claim                          controllers.foreign.adjustments.PropertyIncomeAllowanceClaimController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-property/adjustments/:countryCode/change-property-income-allowance-claim                   controllers.foreign.adjustments.PropertyIncomeAllowanceClaimController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-property/adjustments/:countryCode/change-property-income-allowance-claim                   controllers.foreign.adjustments.PropertyIncomeAllowanceClaimController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+
 GET        /:taxYear/foreign-property/adjustments/:countryCode/unused-losses-previous-years                        controllers.foreign.adjustments.ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/adjustments/:countryCode/unused-losses-previous-years                        controllers.foreign.adjustments.ForeignUnusedLossesPreviousYearsController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/adjustments/:countryCode/change-unused-losses-previous-years                 controllers.foreign.adjustments.ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
