@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package models
 
 import audit._
+import models.ukAndForeign.UkAndForeignAbout
 import pages.PageConstants.{eSbaPath, esbas, foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
@@ -139,7 +140,7 @@ final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
 final case class JourneyWithStatus(journeyName: String, journeyStatus: String)
 
 object JourneyWithStatus {
-  implicit val format = Json.format[JourneyWithStatus]
+  implicit val format: OFormat[JourneyWithStatus] = Json.format[JourneyWithStatus]
 }
 
 final case class FetchedBackendData(

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package models.ukAndForeign
+package pages.ukandforeignproperty
 
-import models.{ReportIncome, TotalPropertyIncome}
-import play.api.libs.json.{Format, Json}
+import pages.{PageConstants, QuestionPage}
+import play.api.libs.json.JsPath
 
-final case class UkAndForeignAbout(
-  totalPropertyIncome: TotalPropertyIncome,
-  reportIncome: Option[ReportIncome]
-)
+case object UkForeignPropertyAboutPage extends QuestionPage[Boolean] {
 
-object UkAndForeignAbout {
-  implicit val format: Format[UkAndForeignAbout] = Json.format
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "ukForeignPropertyAbout"
 }

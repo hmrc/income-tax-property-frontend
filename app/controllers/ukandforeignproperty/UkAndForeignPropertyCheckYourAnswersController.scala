@@ -18,13 +18,12 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
-import models.JourneyPath.{ForeignSelectCountry, UkAndForeignPropertyAbout}
+import models.JourneyPath.UkAndForeignPropertyAbout
 import models.ukAndForeign.UkAndForeignAbout
-import models.{ForeignPropertySelectCountry, JourneyContext, Mode, ReportIncome, TotalPropertyIncome}
-import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
+import models.{JourneyContext, Mode, ReportIncome, TotalPropertyIncome}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsSuccess, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 
@@ -63,22 +62,28 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers
-        .get(UkAndForeignAbout)
-        .map { ukAndForeignAbout =>
-          val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, UkAndForeignPropertyAbout)
+      val totalPropertyIncome = (request.userAnswers.data \ "totalPropertyIncome").validate[TotalPropertyIncome]
+      val reportIncome = (request.userAnswers.data \ "reportIncome").validate[ReportIncome]
 
+      (totalPropertyIncome, reportIncome) match {
+        case (JsSuccess(totalIncome, _), JsSuccess(report, _)) =>
+          val ukAndForeignAbout = UkAndForeignAbout(totalIncome, Some(report))
+          val context = JourneyContext(
+            taxYear = taxYear,
+            mtditid = request.user.mtditid,
+            nino = request.user.nino,
+            journeyPath = UkAndForeignPropertyAbout
+          )
           propertySubmissionService.saveJourneyAnswers(context, ukAndForeignAbout).flatMap {
             case Right(_) =>
               // TODO redirect to a 'are you finished' page / completion controller
               Future.successful(Redirect(controllers.routes.IndexController.onPageLoad.url))
 
             case Left(error) =>
-              logger.error(s"\n Failed to save UK and foreign property income details section: ${error.toString}")
+              logger.error(s"Failed to save UK and foreign property income details section: ${error.toString}")
               Future.failed(SaveJourneyAnswersFailed("Failed to save UK and foreign property income details"))
           }
-        }
-        .getOrElse {
+        case _ =>
           logger.error(
             s"Uk and foreign about section is not present in userAnswers for userId: ${request.userId} in UK and foreign section."
           )
@@ -87,38 +92,6 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
               "Uk and foreign about section is not present in UK and foreign property answers"
             )
           )
-        }
+      }
   }
-
-//  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-//    implicit request =>
-//      request.userAnswers
-//        .get(ForeignPropertySelectCountry)
-//        .map { foreignPropertySelectCountry =>
-//          val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignSelectCountry)
-//
-//          propertySubmissionService.saveJourneyAnswers(context, foreignPropertySelectCountry).flatMap {
-//            case Right(_) =>
-//              Future.successful(Redirect(controllers.routes.IndexController.onPageLoad.url))
-//
-//              // TODO redirect to a 'are you finished' page / completion controller
-//              Future.successful(Redirect(controllers.routes.IndexController.onPageLoad.url))
-//
-//            case Left(error) =>
-//              logger.error(s"\n Failed to save UK and Foreign Property income details section: ${error.toString}")
-//              Future.failed(SaveJourneyAnswersFailed("Failed to save UK and Foreign Property income details"))
-//          }
-//        }
-//        .getOrElse {
-//          logger.error(
-//            s"Foreign property select country section is not present in userAnswers for userId: ${request.userId} in UK and foreign section."
-//          )
-//          Future.failed(
-//            NotFoundException(
-//              "Foreign property select country section is not present in UK and foreign property answers"
-//            )
-//          )
-//        }
-//  }
-
 }

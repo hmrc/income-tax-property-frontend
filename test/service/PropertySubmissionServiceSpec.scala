@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.TotalIncome.Under
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{FetchedBackendData, FetchedForeignPropertyData, FetchedPropertyData, JourneyContext, JourneyPath, UKPropertySelect, User}
+import models._
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -65,8 +65,9 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         List(),
         None
       )
-      val foreignPropertyData = FetchedForeignPropertyData(None, None, None, None,None)
-      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData)
+      val foreignPropertyData = FetchedForeignPropertyData(None, None, None, None, None)
+      val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(None)
+      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
       val incomeSourceId = "incomeSourceId"
       val details =
         PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
