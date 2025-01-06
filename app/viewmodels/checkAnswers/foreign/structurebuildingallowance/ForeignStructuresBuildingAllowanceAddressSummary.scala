@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
 import controllers.foreign.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
