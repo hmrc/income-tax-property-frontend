@@ -17,10 +17,10 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UserAnswers}
+import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UkAndForeignPropertyClaimExpensesOrRelief, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UserAnswers}
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage}
 
 import java.time.LocalDate
 
@@ -139,6 +139,73 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           UserAnswers("id"),
           userAnswersWithAddCountry
         ) mustBe ???
+      }
+    }
+
+    "Claim expenses or rent a room relief in Normal mode" - {
+      "must go to Claim property income allowance or expenses Page" - {
+        "when the option selected is 'Rent a room relief'" in {
+          navigator.nextIndex(
+            UkAndForeignPropertyClaimExpensesOrReliefPage,
+            taxYear,
+            NormalMode,
+            emptyUserAnswers,
+            emptyUserAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(true)).get,
+            0
+          ) mustBe controllers.ukandforeignproperty.routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear,NormalMode)
+        }
+        "when the option selected is 'Expenses'" in {
+          navigator.nextIndex(
+            UkAndForeignPropertyClaimExpensesOrReliefPage,
+            taxYear,
+            NormalMode,
+            emptyUserAnswers,
+            emptyUserAnswers.set(
+              UkAndForeignPropertyClaimExpensesOrReliefPage,
+              UkAndForeignPropertyClaimExpensesOrRelief(false)
+            ).get,
+            0
+          ) mustBe controllers.ukandforeignproperty.routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear,NormalMode)
+        }
+      }
+    }
+
+    "Claim property income allowance or expenses in Normal mode" - {
+      "must go to 'How much income did you get from your foreign property rentals'" - {
+        "when the option selected is 'Use the property income allowance' " in {
+          assertThrows[Throwable] {
+            navigator.nextIndex(
+              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+              taxYear,
+              NormalMode,
+              emptyUserAnswers,
+              emptyUserAnswers
+                .set(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
+                )
+                .get,
+              0
+            ) mustBe ???  //TODO
+          }
+        }
+        "when the option selected is 'Expenses' " in {
+          assertThrows[Throwable] {
+            navigator.nextIndex(
+              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+              taxYear,
+              NormalMode,
+              emptyUserAnswers,
+              emptyUserAnswers
+                .set(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
+                )
+                .get,
+              0
+            ) mustBe ???  //TODO
+          }
+        }
       }
     }
   }

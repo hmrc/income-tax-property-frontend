@@ -24,3 +24,13 @@ POST       /:taxYear/uk-foreign-property/countries                              
 
 GET        /:taxYear/uk-foreign-property/countries/:index/remove                           controllers.ukandforeignproperty.RemoveCountryController.onPageLoad(taxYear: Int,  index: Index, mode: Mode ?= NormalMode)
 POST       /:taxYear/uk-foreign-property/countries/:index/remove                           controllers.ukandforeignproperty.RemoveCountryController.onSubmit(taxYear: Int,  index: Index, mode: Mode ?= NormalMode)
+
+GET         /:taxYear/uk-foreign-property/claim-expenses-or-relief                         controllers.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/claim-expenses-or-relief                         controllers.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-claim-expenses-or-relief                  controllers.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-claim-expenses-or-relief                  controllers.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/uk-foreign-property/claim-property-income-allowance-or-expenses              controllers.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/claim-property-income-allowance-or-expenses              controllers.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-claim-property-income-allowance-or-expenses       controllers.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-claim-property-income-allowance-or-expenses       controllers.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

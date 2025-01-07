@@ -18,12 +18,13 @@ package controllers.ukandforeignproperty
 
 import base.SpecBase
 import forms.ukandforeignproperty.ForeignCountriesRentedFormProvider
-import models.{Index, NormalMode, UserAnswers}
+import models.{Index, NormalMode, UkAndForeignPropertyRentalTypeUk, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.UkAndForeignPropertyRentalTypeUkPage
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.Application
@@ -55,7 +56,9 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
   val isAgentMessageKey: String = "individual"
   val index: Int = 0
   val testCountry: Country = Country("Greece", "GRC")
-  val testUserAnswersWith1Country: UserAnswers = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
+  val _testUserAnswersWith1Country: UserAnswers = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
+  val testUserAnswersWithRentARoom = _testUserAnswersWith1Country.set(UkAndForeignPropertyRentalTypeUkPage,Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)).toOption
+  val testUserAnswersPropertyRentals = _testUserAnswersWith1Country.set(UkAndForeignPropertyRentalTypeUkPage,Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)).toOption
 
   def onwardRoute: Call =
     Call("GET", "/")
@@ -68,7 +71,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
     "GET" - {
 
       "must return OK and the list should display the country" in {
-        val application: Application = applicationBuilder(userAnswers = Some(testUserAnswersWith1Country), isAgent = false).build()
+        val application: Application = applicationBuilder(userAnswers = testUserAnswersWithRentARoom, isAgent = false).build()
 
         running(application) {
           val controller = application.injector.instanceOf[ForeignCountriesRentedController]
@@ -103,7 +106,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
 
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-        val application = applicationBuilder(userAnswers = Some(testUserAnswersWith1Country), isAgent = true)
+        val application = applicationBuilder(userAnswers = testUserAnswersWithRentARoom, isAgent = true)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(addCountryRoute())),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -123,13 +126,13 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
         }
       }
 
-      "must redirect to the next page when 'no' is selected" in {
+      "must redirect to the next page when 'no' is selected With RentARoom" in {
         val mockSessionRepository = mock[SessionRepository]
 
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
         val application =
-          applicationBuilder(userAnswers = Some(testUserAnswersWith1Country), isAgent = true)
+          applicationBuilder(userAnswers = testUserAnswersWithRentARoom, isAgent = true)
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
@@ -146,7 +149,34 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
           val result = controller.onSubmit(taxYear, NormalMode)(request)
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual onwardRoute.url // TODO: Update once page exists
+          redirectLocation(result).value mustEqual routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode).url
+        }
+      }
+
+      "must redirect to the next page when 'no' is selected With PropertyRentals" in {
+        val mockSessionRepository = mock[SessionRepository]
+
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+        val application =
+          applicationBuilder(userAnswers = testUserAnswersPropertyRentals, isAgent = true)
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
+
+        val request =
+          FakeRequest(POST, foreignCountriesRentedRoute)
+            .withFormUrlEncodedBody(("addAnother", "false"))
+
+        running(application) {
+          val controller = application.injector.instanceOf[ForeignCountriesRentedController]
+
+          val result = controller.onSubmit(taxYear, NormalMode)(request)
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode).url
         }
       }
 
