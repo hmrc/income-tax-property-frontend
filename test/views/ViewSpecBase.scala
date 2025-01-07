@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package pages.ukandforeignproperty
+package views
 
-import pages.QuestionPage
-import pages.foreign.Country
-import play.api.libs.json.JsPath
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.i18n.{Lang, Messages, MessagesApi}
+import play.api.mvc.{AnyContent, Request}
+import play.api.test.FakeRequest
 
-case object SelectCountryPage extends QuestionPage[List[Country]] {
+class ViewSpecBase extends AnyWordSpec with GuiceOneAppPerSuite with Matchers {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "countries"
+  implicit val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq(Lang("en")))
+  implicit val request: Request[AnyContent] = FakeRequest("GET", "/")
 
 }

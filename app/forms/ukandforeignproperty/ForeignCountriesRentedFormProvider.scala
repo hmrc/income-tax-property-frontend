@@ -27,4 +27,5 @@ class ForeignCountriesRentedFormProvider @Inject() extends Mappings {
     Form(
       "addAnother" -> boolean("selectIncomeCountry.error.required.individual")
     )
+
 }

@@ -36,7 +36,7 @@ object SelectCountrySummary  {
           "site.change",
           routes.SelectCountryController.onPageLoad(taxYear, Index(index.position), CheckMode).url
         ).withVisuallyHiddenText(messages("selectCountry.change.hidden")),
-        ActionItemViewModel("site.remove", "/")
+        ActionItemViewModel("site.remove", routes.RemoveCountryController.onPageLoad(taxYear, index, CheckMode).url)
       ),
       actionsCss = "w-25"
     )
