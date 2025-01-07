@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,10 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import models.JourneyPath.UkAndForeignPropertyAbout
-import models.ukAndForeign.UkAndForeignAbout
-import models.{JourneyContext, Mode, ReportIncome, TotalPropertyIncome}
+import models.{JourneyContext, Mode}
+import pages.ukandforeignproperty.UkForeignPropertyAboutPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsSuccess, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
 
@@ -62,12 +61,8 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val totalPropertyIncome = (request.userAnswers.data \ "totalPropertyIncome").validate[TotalPropertyIncome]
-      val reportIncome = (request.userAnswers.data \ "reportIncome").validate[ReportIncome]
-
-      (totalPropertyIncome, reportIncome) match {
-        case (JsSuccess(totalIncome, _), JsSuccess(report, _)) =>
-          val ukAndForeignAbout = UkAndForeignAbout(totalIncome, Some(report))
+      request.userAnswers.get(UkForeignPropertyAboutPage) match {
+        case Some(ukAndForeignAbout) =>
           val context = JourneyContext(
             taxYear = taxYear,
             mtditid = request.user.mtditid,
@@ -76,14 +71,14 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
           )
           propertySubmissionService.saveJourneyAnswers(context, ukAndForeignAbout).flatMap {
             case Right(_) =>
-              // TODO redirect to a 'are you finished' page / completion controller
-              Future.successful(Redirect(controllers.routes.IndexController.onPageLoad.url))
+              // TODO redirect to a 'Have you finished this section' page / completion controller
+              Future.successful(Redirect(controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)))
 
             case Left(error) =>
               logger.error(s"Failed to save UK and foreign property income details section: ${error.toString}")
               Future.failed(SaveJourneyAnswersFailed("Failed to save UK and foreign property income details"))
           }
-        case _ =>
+        case None =>
           logger.error(
             s"Uk and foreign about section is not present in userAnswers for userId: ${request.userId} in UK and foreign section."
           )
@@ -94,4 +89,5 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
           )
       }
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ package controllers.ukandforeignproperty
 
 import base.SpecBase
 import models.JourneyPath.UkAndForeignPropertyAbout
+import models.ukAndForeign.UkAndForeignAbout
 import models.{JourneyContext, NormalMode, ReportIncome, TotalPropertyIncome, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.UkForeignPropertyAboutPage
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.inject
 import play.api.mvc.Call
@@ -79,11 +80,15 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
       }
     }
 
-    "must return OK and the POST for onSubmit and save ReportIncome and TotalPropertyIncome" in {
+    "must return OK and the POST for onSubmit and save UkAndForeignAbout" in {
+
+      val ukAndForeignAbout = UkAndForeignAbout(
+        totalPropertyIncome = TotalPropertyIncome.values.head,
+        reportIncome = Some(ReportIncome.values.head)
+      )
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(ReportIncomePage, ReportIncome.values.head).success.value
-        .set(TotalPropertyIncomePage, TotalPropertyIncome.values.head).success.value
+        .set(UkForeignPropertyAboutPage, ukAndForeignAbout).success.value
 
       val context = JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = UkAndForeignPropertyAbout)
 
@@ -107,13 +112,11 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
         val result = controller.onSubmit(taxYear, NormalMode)(request)
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.IndexController.onPageLoad.url
+        redirectLocation(result).value mustEqual controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int).url
 
-        userAnswers.get(ReportIncomePage) mustBe Some(ReportIncome.values.head)
-        userAnswers.get(TotalPropertyIncomePage) mustBe Some(TotalPropertyIncome.values.head)
+        userAnswers.get(UkForeignPropertyAboutPage) mustBe Some(ukAndForeignAbout)
       }
     }
-
   }
 
 }
