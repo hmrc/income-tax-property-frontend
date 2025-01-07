@@ -100,4 +100,6 @@ object JourneyPath {
 
   case object ForeignStructureBuildingAllowance extends WithName("foreign-property-sba") with JourneyPath
 
+  case object ForeignPropertyAdjustments extends WithName("foreign-property-adjustments") with JourneyPath
+
 }
