@@ -23,7 +23,7 @@ import queries.Gettable
 
 case class PropertyAbout(
   totalIncome: TotalIncome,
-  ukProperty: Seq[UKPropertySelect],
+  ukProperty: Option[Seq[UKPropertySelect]],
   reportPropertyIncome: Option[Boolean]
 )
 

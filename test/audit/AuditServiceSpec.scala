@@ -36,7 +36,7 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
 
   "trigger audit event" in {
     val hc = HeaderCarrier()
-    val propertyAbout = PropertyAbout(TotalIncome.Under, UKPropertySelect.values, Some(true))
+    val propertyAbout = PropertyAbout(TotalIncome.Under, Some(UKPropertySelect.values), Some(true))
     val auditModel = AuditModel(
       "NINO",
       "Agent",

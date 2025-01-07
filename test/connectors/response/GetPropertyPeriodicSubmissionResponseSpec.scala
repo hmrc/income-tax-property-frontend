@@ -41,11 +41,11 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
 
         val ukPropertyData =
           FetchedBackendData(
-            Some(CapitalAllowancesForACar(true, Some(3.2))),
+            Some(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(3.2))),
             Some(
               PropertyAbout(
                 TotalIncome.Between,
-                Seq(UKPropertySelect.PropertyRentals),
+                Some(Seq(UKPropertySelect.PropertyRentals)),
                 Some(true)
               )
             ),
@@ -53,10 +53,10 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             None,
             Some(
               Adjustments(
-                BalancingCharge(true, Some(4.2)),
+                BalancingCharge(balancingChargeYesNo = true, Some(4.2)),
                 PrivateUseAdjustment(4.5),
                 45,
-                RenovationAllowanceBalancingCharge(true, Some(4.2)),
+                RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(4.2)),
                 4.2,
                 4.2
               )

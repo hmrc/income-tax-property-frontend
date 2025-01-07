@@ -170,7 +170,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(propertyAbout) =>
           for {
-            ua1 <- userAnswers.set(UKPropertyPage, propertyAbout.ukProperty.toSet)
+            ua1 <- propertyAbout.ukProperty.fold(Try(userAnswers))(ukps => userAnswers.set(UKPropertyPage,ukps.toSet))
             ua2 <- ua1.set(TotalIncomePage, propertyAbout.totalIncome)
             ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
           } yield ua3
