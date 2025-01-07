@@ -31,7 +31,7 @@ class ForeignBalancingChargeFormProvider @Inject() extends Mappings {
       mapping(
         "balancingChargeYesNo" -> boolean(s"foreignBalancingCharge.error.required.$individualOrAgent"),
         "balancingChargeAmount" -> {
-          mandatoryIfTrue("foreignBalancingChargeYesNo",
+          mandatoryIfTrue("balancingChargeYesNo",
             currency(
               s"foreignBalancingCharge.amount.error.required.$individualOrAgent",
               s"foreignBalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",

@@ -18,8 +18,8 @@ package controllers.foreign.adjustments
 
 import controllers.actions._
 import forms.foreign.adjustments.ForeignBalancingChargeFormProvider
-import models.{Mode, PropertyType}
-import navigation.{ForeignPropertyNavigator, Navigator}
+import models.Mode
+import navigation.ForeignPropertyNavigator
 import pages.foreign.adjustments.ForeignBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,13 +33,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignBalancingChargeController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         foreignNavigator: ForeignPropertyNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: BalancingChargeFormProvider,
+                                         formProvider: ForeignBalancingChargeFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: BalancingChargeView
+                                         view: ForeignBalancingChargeView
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -50,7 +50,7 @@ class ForeignBalancingChargeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+      Ok(view(preparedForm, taxYear, countryCode, mode, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -58,13 +58,13 @@ class ForeignBalancingChargeController @Inject()(
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignBalancingChargePage(countryCode), value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignBalancingChargePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(foreignNavigator.nextPage(ForeignBalancingChargePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
