@@ -46,8 +46,8 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
   "PropertyPeriodSessionRecovery" - {
     "call the connector and set repository" in {
       val fakeRequest = FakeRequest()
-      implicit val odr = OptionalDataRequest[AnyContent](fakeRequest, "", user, None)
-      implicit val hc = HeaderCarrier()
+      implicit val odr: OptionalDataRequest[AnyContent] = OptionalDataRequest[AnyContent](fakeRequest, "", user, None)
+      implicit val hc: HeaderCarrier = HeaderCarrier()
 
       when(propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)).thenReturn(
         Future.successful(
@@ -55,8 +55,6 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
         )
       )
       when(sessionRepository.get(any())).thenReturn(Future.successful(Some(emptyUserAnswers)))
-
-//      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val expectedCall = Redirect(controllers.routes.IndexController.onPageLoad)
       val result = propertyPeriodSessionRecovery.withUpdatedData(taxYear) { _ =>
@@ -66,7 +64,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
       whenReady(result) { r =>
         r mustEqual expectedCall
         verify(propertyPeriodSubmissionService, times(1)).getPropertySubmission(taxYear, user)
-        //verify(sessionRepository, times(1)).set(any())
+
       }
     }
   }
