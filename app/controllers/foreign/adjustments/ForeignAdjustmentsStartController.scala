@@ -39,7 +39,7 @@ class ForeignAdjustmentsStartController @Inject()(
       val maybeCountryName =
         request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code == countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
-      Ok(view(taxYear, countryName, isPIA))
+      Ok(view(taxYear, countryName, countryCode, isPIA))
 
     }
 }
