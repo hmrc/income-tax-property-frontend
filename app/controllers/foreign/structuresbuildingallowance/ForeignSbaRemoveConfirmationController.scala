@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.structurebuildingallowance.ForeignSbaRemoveConfirmationFormProvider
 import models.{Mode, UserAnswers}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.structurebuildingallowance.{ForeignSbaRemoveConfirmationPage, ForeignStructureBuildingAllowanceClaimPage}
+import pages.foreign.structurebuildingallowance.{ForeignSbaRemoveConfirmationPage, ForeignStructureBuildingAllowanceClaimPage, ForeignStructureBuildingAllowanceWithIndex}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -73,7 +73,7 @@ class ForeignSbaRemoveConfirmationController @Inject() (
               updatedAnswers <-
                 Future.fromTry {
                   if (value) {
-                    updatedAnswers.remove(ForeignStructureBuildingAllowanceClaimPage(countryCode, index))
+                    updatedAnswers.remove(ForeignStructureBuildingAllowanceWithIndex(index, countryCode))
                   } else {
                     Success(updatedAnswers)
                   }

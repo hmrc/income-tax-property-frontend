@@ -21,7 +21,7 @@ import controllers.foreign.structuresbuildingallowance.routes.ForeignStructuresB
 import controllers.routes
 import forms.foreign.structurebuildingallowance.ForeignStructuresBuildingAllowanceAddressFormProvider
 import models.{ForeignStructuresBuildingAllowanceAddress, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -109,7 +109,7 @@ class ForeignStructuresBuildingAllowanceAddressControllerSpec extends SpecBase w
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

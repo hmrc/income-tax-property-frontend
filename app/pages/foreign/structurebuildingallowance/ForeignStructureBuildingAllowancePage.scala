@@ -19,5 +19,6 @@ package pages.foreign.structurebuildingallowance
 case class ForeignStructureBuildingAllowancePage(
                                                   taxYear: Int,
                                                   countryCode: String,
+                                                  nextIndex: Int,
                                                   individualOrAgent: String
                                                 )

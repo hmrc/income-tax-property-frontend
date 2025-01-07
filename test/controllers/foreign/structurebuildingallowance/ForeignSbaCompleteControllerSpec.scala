@@ -19,9 +19,9 @@ package controllers.foreign.structurebuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.foreign.structurebuildingallowance.ForeignSbaCompleteFormProvider
-import models.JourneyPath.ForeignStructureBuildingAllowance
+import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode, User, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -107,7 +107,7 @@ class ForeignSbaCompleteControllerSpec extends SpecBase with MockitoSugar {
       when(
         mockJourneyAnswersService.setStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignStructureBuildingAllowance)
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowances)
           ),
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user)
@@ -117,7 +117,7 @@ class ForeignSbaCompleteControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
