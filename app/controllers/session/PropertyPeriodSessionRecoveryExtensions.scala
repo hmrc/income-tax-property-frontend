@@ -96,8 +96,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua22 <- updateForeignPropertyIncome(ua21, fetchedData.foreignPropertyData.foreignPropertyIncome)
         ua23 <- updateForeignPropertyExpenses(ua22, fetchedData.foreignPropertyData.foreignPropertyExpenses)
         ua24 <- updateForeignPropertyTax(ua23, fetchedData.foreignPropertyData.foreignPropertyTax)
-        ua25 <- updateForeignJourneyStatuses(ua24, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-      } yield ua25
+        ua25 <- updateForeignPropertyAllowances(ua24, fetchedData.foreignPropertyData.foreignPropertyAllowances)
+        ua26 <- updateForeignJourneyStatuses(ua25, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+      } yield ua26
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(

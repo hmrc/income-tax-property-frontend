@@ -232,6 +232,14 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "foreignTaxCreditRelief": true
        |      }
        |    },
+       |    "foreignPropertyAllowances": {
+       |          "$countryCode1": {
+       |          "costOfReplacingDomesticItems": 35.60,
+       |          "zeroEmissionsGoodsVehicleAllowance": 99.67,
+       |          "zeroEmissionsCarAllowance": 45.45,
+       |          "otherCapitalAllowance": 45.15
+       |         }
+       |         },
        |    "foreignJourneyStatuses": {
        |      "$countryCode1": [
        |        {
@@ -241,7 +249,11 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        {
        |          "journeyName": "foreign-property-tax",
        |          "journeyStatus": "completed"
-       |        }
+       |        },
+       |         {
+       |           "journeyName": "foreign-property-allowances",
+       |           "journeyStatus": "completed"
+       |       }
        |      ],
        |      "$countryCode2": [
        |        {
