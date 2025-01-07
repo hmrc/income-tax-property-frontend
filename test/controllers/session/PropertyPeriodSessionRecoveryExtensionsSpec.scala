@@ -24,6 +24,7 @@ import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
 import pages.foreign.expenses.{ConsolidatedOrIndividualExpensesPage, ForeignCostsOfServicesProvidedPage, ForeignExpensesSectionCompletePage, ForeignNonResidentialPropertyFinanceCostsPage, ForeignOtherAllowablePropertyExpensesPage, ForeignProfessionalFeesPage, ForeignPropertyRepairsAndMaintenancePage, ForeignRentsRatesAndInsurancePage}
 import pages.foreign._
+import pages.foreign.allowances._
 import pages.foreign.income._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
@@ -384,6 +385,11 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignProfessionalFeesPage(countryCode1)) mustBe Some(45.15)
       updated.get(ForeignCostsOfServicesProvidedPage(countryCode1)) mustBe Some(65.15)
       updated.get(ForeignOtherAllowablePropertyExpensesPage(countryCode1)) mustBe Some(95.15)
+      updated.get(ForeignZeroEmissionCarAllowancePage(countryCode1)) mustBe Some(45.45)
+      updated.get(ForeignReplacementOfDomesticGoodsPage(countryCode1)) mustBe Some(35.60)
+      updated.get(ForeignZeroEmissionCarAllowancePage(countryCode1)) mustBe Some(45.45)
+      updated.get(ForeignOtherCapitalAllowancesPage(countryCode1)) mustBe Some(45.15)
+      updated.get(ForeignAllowancesCompletePage(countryCode1)) mustBe Some(true)
     }
   }
 }
