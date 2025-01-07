@@ -2591,7 +2591,6 @@ foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = *Missing Welsh
 foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
 
-
 nonResidentLandlordUK.title = *Missing Welsh*
 nonResidentLandlordUK.heading = *Missing Welsh*
 nonResidentLandlordUK.error.required.agent = *Missing Welsh*
@@ -2604,3 +2603,21 @@ nonResidentLandlordUK.legend.agent = *Missing Welsh*
 nonResidentLandlordUK.legend.individual = *Missing Welsh*
 nonResidentLandlordUK.checkYourAnswersLabel = *Missing Welsh*
 nonResidentLandlordUK.change.hidden = *Missing Welsh*
+
+foreignUnusedLossesPreviousYears.title.individual = *Missing Welsh*
+foreignUnusedLossesPreviousYears.title.agent = *Missing Welsh*
+foreignUnusedLossesPreviousYears.heading.individual = *Missing Welsh*
+foreignUnusedLossesPreviousYears.heading.agent = *Missing Welsh*
+foreignUnusedLossesPreviousYears.p1.individual = *Missing Welsh*
+foreignUnusedLossesPreviousYears.p1.agent = *Missing Welsh*
+foreignUnusedLossesPreviousYears.checkYourAnswersLabel = *Missing Welsh*
+foreignUnusedLossesPreviousYears.radio.question.label = *Missing Welsh*
+foreignUnusedLossesPreviousYears.radio.question.hint = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.required.individual = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.required.agent = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.required.amount.individual = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.required.amount.agent = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.twoDecimalPlaces = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.nonNumeric = *Missing Welsh*
+foreignUnusedLossesPreviousYears.error.outOfRange = *Missing Welsh*
+foreignUnusedLossesPreviousYears.change.hidden = *Missing Welsh*
