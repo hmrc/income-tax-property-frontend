@@ -42,6 +42,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ForeignStructureBuildingAllowanceClaimsFormProvider()
+  private val isAgentMessageKey = "individual"
   val form = formProvider()
   val taxYear = 2024
   val countryCode = "AUS"
@@ -64,7 +65,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
         val view = application.injector.instanceOf[ForeignStructureBuildingAllowanceClaimsView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, list, taxYear, countryCode)(
+        contentAsString(result) mustEqual view(form, list, taxYear, countryCode, isAgentMessageKey)(
           request,
           messages(application)
         ).toString
@@ -106,7 +107,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, list, taxYear, countryCode)(
+        contentAsString(result) mustEqual view(boundForm, list, taxYear, countryCode, isAgentMessageKey)(
           request,
           messages(application)
         ).toString

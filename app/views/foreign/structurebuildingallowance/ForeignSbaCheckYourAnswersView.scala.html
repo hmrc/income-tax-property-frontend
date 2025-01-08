@@ -34,7 +34,7 @@
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("site.saveAndContinue"))
-            .asLink(routes.ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode).url)
+            .asLink(routes.ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode).url)
             .withId("continue")
         )
     </p>
@@ -43,8 +43,6 @@
 @{
 // $COVERAGE-OFF$
 }
-
-<!--TODO - redirect to routes.ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode).url -->
 
 
 
