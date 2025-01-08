@@ -18,9 +18,10 @@ package controllers.foreign.allowances
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.statusError
 import forms.foreign.allowances.ForeignAllowancesCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAllowances
-import models.{JourneyContext, NormalMode}
+import models.{ForeignProperty, JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.allowances.ForeignAllowancesCompletePage
 import play.api.data.Form
@@ -85,8 +86,12 @@ class ForeignAllowancesCompleteController @Inject() (
                           )
             } yield status.fold(
               _ =>
-                // TODO: When we implement navigation story, update the route to show message from backend or error
-                Redirect(controllers.routes.SummaryController.show(taxYear)),
+                statusError(
+                  journeyName = "foreign-property-allowances",
+                  propertyType = ForeignProperty,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
               _ =>
                 Redirect(
                   foreignPropertyNavigator
