@@ -30,7 +30,7 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, maxIncome: BigDecimal)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = title(form, messages("claimExpensesOrRelief.title"))) {
 
@@ -45,6 +45,7 @@
 
             <h1 class="govuk-heading-l">@messages(s"claimExpensesOrRelief.heading.${individualOrAgent}")</h1>
 
+            <p class="govuk-body">@messages(s"ukAndForeignPropertyClaimExpensesOrRelief.para1.$individualOrAgent", maxIncome)</p>
 
             @govukRadios(
                 RadiosViewModel.yesNoWithOtherNames(

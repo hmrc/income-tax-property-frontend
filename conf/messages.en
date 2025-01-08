@@ -1788,6 +1788,9 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
+ukAndForeignPropertyClaimExpensesOrRelief.para1.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same property.
+ukAndForeignPropertyClaimExpensesOrRelief.para1.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same property.
+
 
 ###################### Foreign Property ######################
 

@@ -18,7 +18,7 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefFormProvider
-import models.{Mode, UkAndForeignPropertyClaimExpensesOrRelief}
+import models.{BusinessConstants, Mode, UkAndForeignPropertyClaimExpensesOrRelief}
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -53,7 +53,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
           form.fill(value)
       }
       Future.successful(
-        Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+        Ok(view(preparedForm, taxYear, mode,  request.user.isAgentMessageKey, BusinessConstants.expensesOrRentAroomReliefMaxAmount))
       )
     }
 
@@ -64,7 +64,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
           .bindFromRequest()
           .fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, BusinessConstants.expensesOrRentAroomReliefMaxAmount))),
             (value: UkAndForeignPropertyClaimExpensesOrRelief) =>
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, value))

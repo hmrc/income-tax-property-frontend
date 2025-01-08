@@ -19,4 +19,5 @@ package models
 object BusinessConstants {
   val jointlyLetTaxFreeAmount: BigDecimal = BigDecimal(3750)
   val notJointlyLetTaxFreeAmount: BigDecimal = BigDecimal(7500)
+  val expensesOrRentAroomReliefMaxAmount: BigDecimal = BigDecimal(7500)
 }
