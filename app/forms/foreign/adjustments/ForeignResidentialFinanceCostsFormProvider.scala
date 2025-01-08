@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package forms.foreign.structurebuildingallowance
+package forms.foreign.adjustments
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class ForeignStructureBuildingAllowanceClaimFormProvider @Inject() extends Mappings {
+class ForeignResidentialFinanceCostsFormProvider @Inject() extends Mappings {
 
-  val minimum = 0
-  val maximum = 100000000
-
+  val minimum = 0;
+  val maximum = 100000000;
   def apply(individualOrAgent: String): Form[BigDecimal] =
     Form(
-      "foreignStructureBuildingAllowanceClaim" -> currency(
-        s"foreignStructureBuildingAllowanceClaim.error.required.$individualOrAgent",
-        s"foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.$individualOrAgent",
-        "foreignStructureBuildingAllowanceClaim.error.nonNumeric")
-        .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "foreignStructureBuildingAllowanceClaim.error.outOfRange"))
+      "residentialFinanceCostsAmount" -> currency(
+        s"foreignResidentialFinanceCosts.error.required.${individualOrAgent}",
+        s"foreignResidentialFinanceCosts.error.twoDecimalPlaces.${individualOrAgent}",
+        s"foreignResidentialFinanceCosts.error.nonNumeric.${individualOrAgent}")
+          .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "foreignResidentialFinanceCosts.error.outOfRange"))
     )
 }

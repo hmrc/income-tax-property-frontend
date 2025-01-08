@@ -2389,18 +2389,21 @@ foreignOtherCapitalAllowances.change.hidden = *Missing Welsh*
 foreignStructureBuildingAllowance.title.individual = *Missing Welsh*
 foreignStructureBuildingAllowance.title.agent = *Missing Welsh*
 foreignStructureBuildingAllowance.heading = *Missing Welsh*
-foreignStructureBuildingAllowance.para1 = *Missing Welsh*
+foreignStructureBuildingAllowance.para1.individual = *Missing Welsh*
+foreignStructureBuildingAllowance.para1.agent = *Missing Welsh*
 foreignStructureBuildingAllowance.button = *Missing Welsh*
 foreignStructureBuildingAllowanceAddress.hint = *Missing Welsh*
 
-foreignClaimStructureBuildingAllowance.title = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.title.individual = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.title.agent = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.heading = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.legend.individual = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.legend.agent = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.details.summary = *Missing Welsh*
-foreignClaimStructureBuildingAllowance.details.content = *Missing Welsh*
-foreignClaimStructureBuildingAllowance.details.p1 = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.details.content.individual = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.details.content.agent = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.details.p1.individual = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.details.p1.agent = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.details.l1 = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.details.l2 = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.details.l3 = *Missing Welsh*
@@ -2411,10 +2414,12 @@ foreignClaimStructureBuildingAllowance.details.content.link.href = *Missing Wels
 foreignClaimStructureBuildingAllowance.details.content.link.text = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.yes = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.no = *Missing Welsh*
-foreignClaimStructureBuildingAllowance.checkYourAnswersLabel = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.checkYourAnswersLabel.individual = *Missing Welsh*
+foreignClaimStructureBuildingAllowance.checkYourAnswersLabel.agent = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.error.required.agent = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.error.required.individual = *Missing Welsh*
 foreignClaimStructureBuildingAllowance.change.hidden = *Missing Welsh*
+
 
 foreignStructureBuildingAllowanceClaim.title = *Missing Welsh*
 foreignStructureBuildingAllowanceClaim.heading.individual = *Missing Welsh*
@@ -2481,14 +2486,14 @@ foreignStructureBuildingQualifyingDate.error.maxDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.error.minDate = *Missing Welsh*
 foreignStructureBuildingQualifyingDate.change.hidden = *Missing Welsh*
 
-
 foreignSbaRemoveConfirmation.title = *Missing Welsh*
 foreignSbaRemoveConfirmation.heading = *Missing Welsh*
 foreignSbaRemoveConfirmation.error.required = *Missing Welsh*
 foreignSbaRemoveConfirmation.change.hidden = *Missing Welsh*
 
 foreignStructureBuildingAllowanceClaims.title = *Missing Welsh*
-foreignStructureBuildingAllowanceClaims.heading = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.heading.individual = *Missing Welsh*
+foreignStructureBuildingAllowanceClaims.heading.agent = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.legend = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.error.required = *Missing Welsh*
 foreignStructureBuildingAllowanceClaims.change.hidden = *Missing Welsh*
@@ -2537,6 +2542,24 @@ foreignUnusedResidentialFinanceCost.error.amount.required.individual = *Missing 
 foreignUnusedResidentialFinanceCost.error.amount.required.agent = *Missing Welsh*
 foreignUnusedResidentialFinanceCost.error.amount.outOfRange = *Missing Welsh*
 foreignUnusedResidentialFinanceCost.change.hidden = *Missing Welsh*
+
+foreignResidentialFinanceCosts.title = *Missing Welsh*
+foreignResidentialFinanceCosts.heading = *Missing Welsh*
+foreignResidentialFinanceCosts.p1 = *Missing Welsh*
+foreignResidentialFinanceCosts.l1 = *Missing Welsh*
+foreignResidentialFinanceCosts.l2 = *Missing Welsh*
+foreignResidentialFinanceCosts.l3 = *Missing Welsh*
+foreignResidentialFinanceCosts.label.individual = *Missing Welsh*
+foreignResidentialFinanceCosts.label.agent = *Missing Welsh*
+foreignResidentialFinanceCosts.checkYourAnswersLabel = *Missing Welsh*
+foreignResidentialFinanceCosts.error.nonNumeric.individual = *Missing Welsh*
+foreignResidentialFinanceCosts.error.nonNumeric.agent = *Missing Welsh*
+foreignResidentialFinanceCosts.error.required.individual = *Missing Welsh*
+foreignResidentialFinanceCosts.error.required.agent = *Missing Welsh*
+foreignResidentialFinanceCosts.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignResidentialFinanceCosts.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignResidentialFinanceCosts.error.outOfRange = *Missing Welsh*
+foreignResidentialFinanceCosts.change.hidden = *Missing Welsh*
 
 foreignBalancingCharge.title.agent = *Missing Welsh*
 foreignBalancingCharge.title.individual = *Missing Welsh*

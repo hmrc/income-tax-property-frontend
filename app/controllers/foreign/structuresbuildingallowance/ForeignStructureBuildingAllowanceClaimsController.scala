@@ -23,8 +23,7 @@ import forms.ForeignStructureBuildingAllowanceClaimsFormProvider
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, NormalMode, SectionName, UserAnswers}
-import org.apache.pekko.actor.FSM.Normal
-import pages.foreign.structurebuildingallowance.{ForeignSbaInfo, ForeignStructureBuildingAllowanceClaimsPage, ForeignStructureBuildingAllowanceGroup, SaveForeignSba}
+import pages.foreign.structurebuildingallowance.{ForeignSbaInfo, ForeignStructureBuildingAllowanceClaimsPage, ForeignStructureBuildingAllowanceGroup}
 import play.api.data.Form
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -61,7 +60,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       val form: Form[Boolean] = formProvider()
       val list: SummaryList = summaryList(taxYear, request.userAnswers, countryCode)
 
-      Ok(view(form, list, taxYear, countryCode))
+      Ok(view(form, list, taxYear, countryCode, request.user.isAgentMessageKey))
     }
 
   private def summaryList(taxYear: Int, userAnswers: UserAnswers, countryCode: String)(implicit
@@ -81,7 +80,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, list, taxYear, countryCode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, list, taxYear, countryCode, request.user.isAgentMessageKey))),
           value => handleValidForm(value, taxYear, request, countryCode)
         )
     }
@@ -178,6 +177,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
         Future.failed(InternalErrorFailure("Foreign Structure and Building Allowance not found in userAnswers"))
       }
 
+//  TODO - revise audit model/method for Foreign Property
   private def auditSBAClaims(
     taxYear: Int,
     request: DataRequest[AnyContent],

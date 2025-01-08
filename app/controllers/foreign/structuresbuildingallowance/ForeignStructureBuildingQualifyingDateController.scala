@@ -73,7 +73,7 @@ class ForeignStructureBuildingQualifyingDateController @Inject()(
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               foreignNavigator.nextPage(
-                ForeignStructureBuildingAllowanceClaimPage(countryCode, index),
+                ForeignStructureBuildingQualifyingDatePage(countryCode, index),
                 taxYear,
                 mode,
                 request.userAnswers,

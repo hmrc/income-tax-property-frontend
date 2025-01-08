@@ -18,10 +18,11 @@ package controllers.foreign.structuresbuildingallowance
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.exceptions.InternalErrorFailure
 import forms.foreign.structurebuildingallowance.ForeignSbaCompleteFormProvider
-import models.JourneyPath.ForeignStructureBuildingAllowance
-import navigation.ForeignPropertyNavigator
+import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode}
+import navigation.ForeignPropertyNavigator
 import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -76,28 +77,29 @@ class ForeignSbaCompleteController @Inject()(
                     taxYear = taxYear,
                     mtditid = request.user.mtditid,
                     nino = request.user.nino,
-                    journeyPath = ForeignStructureBuildingAllowance
+                    journeyPath = ForeignPropertyAllowances
                   ),
                   status = statusForPage(value),
                   request.user
-                )
-            } yield status.fold(
-              _ =>
-                //TODO: When we implement navigation story, update the route to show message from backend or error
-                Redirect(controllers.routes.SummaryController.show(taxYear)
-                ),
-              _ =>
-                Redirect(
-                  foreignPropertyNavigator
-                    .nextPage(
-                      ForeignSbaCompletePage(countryCode),
-                      taxYear,
-                      NormalMode,
-                      request.userAnswers,
-                      updatedAnswers
+                ).flatMap {
+                  case Right(_) =>
+                    Future.successful(Redirect(
+                      foreignPropertyNavigator
+                        .nextPage(
+                        ForeignSbaCompletePage(countryCode),
+                        taxYear,
+                        NormalMode,
+                        request.userAnswers,
+                        updatedAnswers
+                        )
+                    ))
+                  case Left(_) =>
+                    Future.failed(
+                      InternalErrorFailure(s"Failed to save the status for SBA section in tax year: $taxYear")
                     )
-                )
-            )
+                }
+            } yield status
         )
     }
 }
+
