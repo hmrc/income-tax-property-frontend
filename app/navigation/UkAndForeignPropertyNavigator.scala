@@ -52,8 +52,14 @@ class UkAndForeignPropertyNavigator {
 
   }
 
-  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call =
-    _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad //TODO CYA page
+  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
+    case SelectCountryPage =>
+      taxYear => _ => _ =>
+      controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+    case _ => _ => _ => _ =>
+      //TODO CYA page
+      controllers.routes.IndexController.onPageLoad
+  }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = {
     mode match {

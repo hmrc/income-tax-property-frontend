@@ -17,15 +17,27 @@
 package forms.ukandforeignproperty
 
 import forms.mappings.Mappings
+import models.Index
+import pages.foreign.Country
 import play.api.data.Form
+import play.api.data.validation.Constraints.nonEmpty
 
 import javax.inject.Inject
 
 class SelectCountryFormProvider @Inject() extends Mappings {
 
-  def apply(userType: String): Form[String] =
+  def apply(userType: String, previouslyAddedCountries: List[Country], index: Index): Form[String] =
     Form(
       "country" -> text(s"selectCountry.error.required.$userType")
+        .verifying(nonEmpty(errorMessage = s"selectCountry.error.required.$userType"))
         .verifying(validCountry("error.select.validCountry"))
+        .verifying("selectCountry.error.duplicate", answer => {
+          val indexedCountries = previouslyAddedCountries.zipWithIndex
+          val hasCountryAlready = previouslyAddedCountries.exists(_.code == answer)
+          val prevIndex = indexedCountries.find(_._1.code == answer).map(_._2)
+          val hasSameIndex = prevIndex.contains(index.positionZeroIndexed)
+
+          !hasCountryAlready || hasSameIndex
+        })
     )
 }

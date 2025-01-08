@@ -18,7 +18,7 @@ package controllers.ukandforeignproperty
 
 import base.SpecBase
 import forms.ukandforeignproperty.SelectCountryFormProvider
-import models.{Index, NormalMode, UserAnswers}
+import models.{CheckMode, Index, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -32,6 +32,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.CountryNamesDataSource.countrySelectItems
+import service.SessionService
 import views.html.ukandforeignproperty.SelectCountryView
 
 import scala.concurrent.Future
@@ -50,7 +51,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
     "GET" - {
       Seq(("individual", false), ("agent", true)) foreach { case (userType, isAgent) =>
-        val form: Form[String] = formProvider(userType)
+        val form: Form[String] = formProvider(userType, Nil, Index(1))
         s"must return OK and the correct view for a GET for $userType" in {
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
@@ -75,7 +76,6 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
           val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
           running(application) {
-            val countries = countrySelectItems.filterNot(_.value.contains("FRA"))
             val controller = application.injector.instanceOf[SelectCountryController]
             val request = FakeRequest(GET, selectCountryRoute)
             val view = application.injector.instanceOf[SelectCountryView]
@@ -84,12 +84,12 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
 
             status(result) mustEqual OK
             contentAsString(result) mustEqual view(
-              form.fill("FRA"),
+              form.fill("France"),
               taxYear,
               index,
               userType,
               NormalMode,
-              countries.filterNot(_.text == "France")
+              countrySelectItems
             )(
               request,
               messages(application)
@@ -142,7 +142,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
       }
 
       Seq(("individual", false), ("agent", true)) foreach { case (userType, isAgent) =>
-        val form: Form[String] = formProvider(userType)
+        val form: Form[String] = formProvider(userType, Nil, Index(1))
         s"must return a Bad Request and errors when invalid data is submitted for $userType" in {
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = isAgent).build()
 
@@ -159,6 +159,25 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
               request,
               messages(application)
             ).toString
+          }
+        }
+
+        s"must update the $userType's answer and redirect to ForeignPropertiesRentedController in CheckMode" in {
+          val userAnswers = emptyUserAnswers.set(SelectCountryPage, List(Country("Spain", "ESP"))).success.value
+          val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
+
+          running(application) {
+            val controller = application.injector.instanceOf[SelectCountryController]
+            val sessionService = application.injector.instanceOf[SessionService]
+            val request = FakeRequest(POST, selectCountryRoute).withFormUrlEncodedBody(("country", "FRA"))
+
+            val result = controller.onSubmit(taxYear, Index(1), CheckMode)(request)
+
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result).value mustEqual controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode).url
+            val userAnswers = await(sessionService.get(userAnswersId))
+
+            userAnswers.flatMap(_.get(SelectCountryPage)) mustBe Some(List(Country("France", "FRA")))
           }
         }
       }
