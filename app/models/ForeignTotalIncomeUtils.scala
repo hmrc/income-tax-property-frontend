@@ -16,11 +16,9 @@
 
 package models
 
-import models.TotalIncome.{Under, Between}
-import pages.propertyrentals.income.{OtherIncomeFromPropertyPage, ReversePremiumsReceivedPage, PropertyRentalIncomePage}
-import pages.adjustments.BalancingChargePage
-import pages.premiumlease.{PremiumsGrantLeasePage, CalculatedFigureYourselfPage}
+import models.TotalIncome.{Between, Under}
 import pages.TotalIncomePage
+import pages.foreign.adjustments.ForeignBalancingChargePage
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage}
 import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
 
@@ -51,7 +49,7 @@ object ForeignTotalIncomeUtils {
   }
 
   def incomeAndBalancingChargeCombined(userAnswers: UserAnswers, countryCode: String): BigDecimal = {
-    val balancingCharge = userAnswers.get(BalancingChargePage(countryCode)).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
+    val balancingCharge = userAnswers.get(ForeignBalancingChargePage(countryCode)).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
     totalIncome(userAnswers, countryCode) + balancingCharge
   }
 
