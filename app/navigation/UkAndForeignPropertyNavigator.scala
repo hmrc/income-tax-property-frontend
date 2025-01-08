@@ -108,13 +108,13 @@ class UkAndForeignPropertyNavigator {
     }
 
   private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+
     (userAnswers.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage), userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).map(_.toSeq)) match {
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)), Some(Seq(UkAndForeignPropertyRentalTypeUk.RentARoom))) =>
         //TODO replace 'How much income did you get from your foreign property rentals' Controller
         ???
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)), Some(_)) =>
-        //TODO replace 'Non-UK resident landlord' Controller
-        ???
+        routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)), _) =>
         //TODO replace 'How much income did you get from your foreign property rentals' Controller
         ???

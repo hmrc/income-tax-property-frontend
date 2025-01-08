@@ -31,4 +31,14 @@ class FakeUKAndForeignPropertyNavigator(desiredRoute: Call) extends UkAndForeign
   ): Call =
     desiredRoute
 
+  override def nextIndex(
+    page: Page,
+    taxYear: Int,
+    mode: Mode,
+    previousUserAnswers: UserAnswers,
+    userAnswers: UserAnswers,
+    index: Int
+  ): Call =
+    desiredRoute
+
 }
