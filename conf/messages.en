@@ -2462,6 +2462,7 @@ foreignStructureBuildingAllowance.heading = Structures and buildings allowance c
 foreignStructureBuildingAllowance.para1.individual = Tell HMRC if you''ve paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be able to claim tax relief.
 foreignStructureBuildingAllowance.para1.agent = Tell HMRC if your client paid some, or all, of the costs towards the purchase, construction or renovation of a building. You may be be able to claim tax relief.
 foreignStructureBuildingAllowance.button = Add a claim
+foreignStructureBuildingAllowanceAddress.hint = You can only add one address per claim
 
 
 foreignStructureBuildingQualifyingAmount.title = Structures and buildings allowance qualifying amount
@@ -2589,3 +2590,33 @@ foreignResidentialFinanceCosts.error.twoDecimalPlaces.individual = The amount yo
 foreignResidentialFinanceCosts.error.twoDecimalPlaces.agent = The amount your client spent on residential property finance costs can only include pounds and pence, for example £600 or £600.20
 foreignResidentialFinanceCosts.error.outOfRange = Enter an amount between {0} and {1}
 foreignResidentialFinanceCosts.change.hidden = Residential property finance costs
+
+foreignBalancingCharge.title.agent = Balancing charge
+foreignBalancingCharge.title.individual = Balancing charge
+foreignBalancingCharge.heading.agent = Balancing charge
+foreignBalancingCharge.heading.individual = Balancing charge
+foreignBalancingCharge.para.individual = Understanding balancing charge
+foreignBalancingCharge.para.agent = Understanding balancing charge
+
+foreignBalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
+
+foreignBalancingCharge.checkYourAnswersLabel = Balancing charge
+foreignBalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
+foreignBalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
+foreignBalancingCharge.change.hidden = Balancing charge
+foreignBalancingCharge.details.line1.individual = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+foreignBalancingCharge.details.line1.agent = If your client sold, gave away or stopped using an item in the running of their property rental that they claimed capital allowances for, they may have to include a balancing charge.
+foreignBalancingCharge.details.line2.individual = Any balancing charges are regarded as income if you’re claiming property income allowance.
+foreignBalancingCharge.details.line2.agent = Any balancing charges are regarded as income if your client is claiming property income allowance.
+foreignBalancingCharge.details.line2.link.text = Not Required, will default to some value
+foreignBalancingCharge.radio.legend.individual = Do you have to report a balancing charge?
+foreignBalancingCharge.radio.legend.agent = Does your client have to report a balancing charge?
+foreignBalancingCharge.radio.question.label = How much is the balancing charge?
+foreignBalancingCharge.label = Enter the figure
+foreignBalancingCharge.amount.error.required.individual = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.required.agent = Enter the amount for the balancing charge
+foreignBalancingCharge.amount.error.nonNumeric.individual = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.nonNumeric.agent = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = Amount can only include pounds and pence, for example £600 or £600.20
+foreignBalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
