@@ -21,7 +21,7 @@ import controllers.routes
 import forms.foreign.allowances.ForeignAllowancesCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode, User, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -118,7 +118,7 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignPropertyNavigator].toInstance(new FakeForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository),
             bind[JourneyAnswersService].toInstance(mockJourneyAnswersService)
           )
