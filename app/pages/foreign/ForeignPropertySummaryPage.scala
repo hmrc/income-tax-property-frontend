@@ -16,11 +16,13 @@
 
 package pages.foreign
 
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
-import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
+import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage, ForeignStructureBuildingAllowanceGroup}
+import play.api.mvc.Call
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
@@ -99,7 +101,14 @@ object ForeignPropertySummaryPage {
           }
         }
         .getOrElse(TaskListTag.NotStarted)
-
+    val taskListTagForAdjustments =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignAdjustmentsCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
     val taskList = {
       Seq(
         TaskListItem(
@@ -118,30 +127,77 @@ object ForeignPropertySummaryPage {
     }
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
-      //TODO add a case for PIA once adjustments section is created
+      case Some(true) => taskList.appendedAll(
+        Seq(
+          TaskListItem(
+            "summary.adjustments",
+            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(true)),
+            taskListTagForAdjustments,
+            s"foreign_property_adjustments_$countryCode"
+          )
+        )
+      )
       case Some(false) => taskList.appendedAll(
         Seq(
           TaskListItem(
-            "foreign.allowances",
+            "summary.adjustments",
+            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(false)),
+            taskListTagForAllowances,
+            s"foreign_property_adjustments_$countryCode"
+          ),
+          TaskListItem(
+            "summary.allowances",
             controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
             taskListTagForAllowances,
             s"foreign_property_allowances_$countryCode"
           ),
           TaskListItem(
-            "foreign.expenses",
+            "summary.expenses",
             controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
             taskListTagForExpenses,
             s"foreign_property_expenses_$countryCode"
           ),
           TaskListItem(
             "summary.structuresAndBuildingAllowance",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
+            getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
             taskListTagForSba,
             s"foreign_structure_and_building_allowance_$countryCode"
           )
         )
       )
-      case _ => taskList // TODO revert back to none once we have a case for PIA
+      case None => taskList
+    }
+  }
+
+  private def getSbaRouteDestination(
+    taxYear: Int,
+    countryCode: String,
+    userAnswers: Option[UserAnswers],
+    taskListTag: TaskListTag.TaskListTag
+  ): Call = {
+    taskListTag match {
+      case TaskListTag.InProgress | TaskListTag.Completed =>
+        val answers = userAnswers.get
+        (
+          answers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)),
+          answers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
+        )
+        match {
+          case (Some(true), Some(sbaForm)) if sbaForm.nonEmpty =>
+            controllers.foreign.structuresbuildingallowance.routes
+              .ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+
+          case (Some(false), _) =>
+            controllers.foreign.structuresbuildingallowance.routes
+              // TODO - Redirect to CYA for No Journey
+              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+
+          case (_, _) =>
+            controllers.foreign.structuresbuildingallowance.routes
+              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+      case _ =>
+        controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
     }
   }
 }

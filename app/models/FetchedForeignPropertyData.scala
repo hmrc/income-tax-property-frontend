@@ -21,6 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 final case class FetchedForeignPropertyData(
   foreignPropertyTax: Option[Map[String, ForeignPropertyTax]],
   foreignPropertyIncome: Option[Map[String, ForeignIncomeAnswers]],
+  foreignPropertyExpenses: Option[Map[String, ForeignExpensesAnswers]],
   foreignJourneyStatuses: Option[Map[String, List[JourneyWithStatus]]]
 )
 

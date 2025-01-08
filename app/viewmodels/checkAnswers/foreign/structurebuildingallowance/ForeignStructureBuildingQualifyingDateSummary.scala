@@ -16,11 +16,12 @@
 
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
+import controllers.foreign.structuresbuildingallowance.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.keyCssClass
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -36,12 +37,13 @@ object ForeignStructureBuildingQualifyingDateSummary {
 
       SummaryListRowViewModel(
         key = KeyViewModel("foreignStructureBuildingQualifyingDate.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(answer.format(dateFormatter))
-          .withCssClass(valueCssClass),
+        value = ValueViewModel(answer.format(dateFormatter)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, index, CheckMode).url
+            routes.ForeignStructureBuildingQualifyingDateController
+              .onPageLoad(taxYear, countryCode, index, CheckMode)
+              .url
           )
             .withVisuallyHiddenText(messages("foreignStructureBuildingQualifyingDate.change.hidden"))
         )

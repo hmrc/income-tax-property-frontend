@@ -29,6 +29,7 @@ class ForeignAddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
 
   val taxYear = 2024
   val isAgent = true
+  val nextIndex = 0
   val countryCode = "AUS"
 
   s"must return OK and the correct view for a GET" in {
@@ -59,6 +60,7 @@ class ForeignAddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
         ForeignStructureBuildingAllowancePage(
           taxYear = taxYear,
           countryCode = countryCode,
+          nextIndex = nextIndex,
           individualOrAgent = "agent"
         )
       )(

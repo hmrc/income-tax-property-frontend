@@ -30,7 +30,7 @@ class ForeignStructureBuildingAllowanceClaimFormProvider @Inject() extends Mappi
     Form(
       "foreignStructureBuildingAllowanceClaim" -> currency(
         s"foreignStructureBuildingAllowanceClaim.error.required.$individualOrAgent",
-        s"foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.${individualOrAgent}",
+        s"foreignStructureBuildingAllowanceClaim.error.twoDecimalPlaces.$individualOrAgent",
         "foreignStructureBuildingAllowanceClaim.error.nonNumeric")
         .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "foreignStructureBuildingAllowanceClaim.error.outOfRange"))
     )

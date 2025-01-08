@@ -20,7 +20,7 @@ import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage
+import pages.foreign.structurebuildingallowance.{ForeignStructureBuildingAllowanceGroup, ForeignStructureBuildingAllowancePage}
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceView
 
 import javax.inject.Inject
@@ -38,6 +38,7 @@ class ForeignAddClaimStructureBuildingAllowanceController @Inject()(
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(ForeignStructureBuildingAllowancePage(taxYear, countryCode, request.user.isAgentMessageKey)))
+      val nextIndex = request.userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)).map(_.length).getOrElse(0)
+      Ok(view(ForeignStructureBuildingAllowancePage(taxYear, countryCode, nextIndex, request.user.isAgentMessageKey)))
     }
 }
