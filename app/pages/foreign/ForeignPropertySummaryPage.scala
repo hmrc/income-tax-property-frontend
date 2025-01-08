@@ -18,6 +18,7 @@ package pages.foreign
 
 import models.{NormalMode, UserAnswers}
 import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage, ForeignStructureBuildingAllowanceGroup}
@@ -100,7 +101,14 @@ object ForeignPropertySummaryPage {
           }
         }
         .getOrElse(TaskListTag.NotStarted)
-
+    val taskListTagForAdjustments =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignAdjustmentsCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
     val taskList = {
       Seq(
         TaskListItem(
@@ -124,7 +132,7 @@ object ForeignPropertySummaryPage {
           TaskListItem(
             "summary.adjustments",
             controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(true)),
-            taskListTagForAllowances,
+            taskListTagForAdjustments,
             s"foreign_property_adjustments_$countryCode"
           )
         )
