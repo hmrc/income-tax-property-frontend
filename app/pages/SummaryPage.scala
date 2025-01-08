@@ -341,7 +341,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     TaskListItem(
       "summary.income",
       cyaDiversionService
-        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "indome", Rentals, NormalMode) {
+        .redirectToCYAIfFinished[Call](taxYear, userAnswers, "income", Rentals, NormalMode) {
 
           controllers.propertyrentals.income.routes.PropertyIncomeStartController.onPageLoad(taxYear)
         }(identity),

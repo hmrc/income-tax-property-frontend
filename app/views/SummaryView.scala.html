@@ -106,7 +106,7 @@
     @if(foreignProperty.foreignIncomeCountries.nonEmpty) {
         @for(country <- foreignProperty.foreignIncomeCountries){
             <h2 class="govuk-heading-m">@messages(s"foreign.heading", country.name) </h2>
-            @taskListSection(ForeignPropertySummaryPage.foreignPropertyItems(foreignProperty.taxYear, country.code, foreignProperty.userAnswers))
+            @taskListSection(foreignProperty.foreignPropertyItems(country.code))
         }
     }
 }
