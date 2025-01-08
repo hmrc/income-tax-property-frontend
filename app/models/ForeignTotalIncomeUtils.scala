@@ -51,7 +51,7 @@ object ForeignTotalIncomeUtils {
   }
 
   def incomeAndBalancingChargeCombined(userAnswers: UserAnswers, countryCode: String): BigDecimal = {
-    val balancingCharge = userAnswers.get(BalancingChargePage(propertyType)).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
+    val balancingCharge = userAnswers.get(BalancingChargePage(countryCode)).flatMap(_.balancingChargeAmount).getOrElse(BigDecimal(0))
     totalIncome(userAnswers, countryCode) + balancingCharge
   }
 

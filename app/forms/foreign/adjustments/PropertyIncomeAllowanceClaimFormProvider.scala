@@ -23,15 +23,24 @@ import play.api.data.Form
 
 class PropertyIncomeAllowanceClaimFormProvider @Inject() extends Mappings {
 
-  val minimum = 0
-  val maximum = 100000000
+  def apply(individualOrAgent: String, totalIncomeAndBalancingCharge: BigDecimal): Form[BigDecimal] = {
+    val minimum = BigDecimal(0)
+    val maxCappedAllowance = BigDecimal(1000)
 
-  def apply(individualOrAgent: String): Form[BigDecimal] =
+    val errorKey = if (totalIncomeAndBalancingCharge > maxCappedAllowance) {
+      s"propertyIncomeAllowanceClaim.error.maxCapped.${individualOrAgent}"
+    } else {
+      s"propertyIncomeAllowanceClaim.error.maxAllowanceCombined.${individualOrAgent}"
+    }
+    val maximumAllowance = if (totalIncomeAndBalancingCharge > maxCappedAllowance) maxCappedAllowance else totalIncomeAndBalancingCharge
+
     Form(
       "propertyIncomeAllowanceClaimAmount" -> currency(
         s"propertyIncomeAllowanceClaim.error.required.$individualOrAgent",
         s"propertyIncomeAllowanceClaim.error.twoDecimalPlaces.$individualOrAgent",
         s"propertyIncomeAllowanceClaim.error.nonNumeric.$individualOrAgent")
-          .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "propertyIncomeAllowanceClaim.error.outOfRange"))
+        .verifying(minimumValueWithCustomArgument(minimum, s"propertyIncomeAllowanceClaim.error.outOfRange.$individualOrAgent", maximumAllowance))
+        .verifying(maximumValue(maximumAllowance, errorKey))
     )
+  }
 }

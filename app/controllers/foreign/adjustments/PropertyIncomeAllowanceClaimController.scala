@@ -19,6 +19,7 @@ package controllers.foreign.adjustments
 import controllers.actions._
 import forms.foreign.adjustments.PropertyIncomeAllowanceClaimFormProvider
 import views.html.foreign.adjustments.PropertyIncomeAllowanceClaimView
+import models.ForeignTotalIncomeUtils.{incomeAndBalancingChargeCombined, maxAllowedPIA}
 import javax.inject.Inject
 import models.Mode
 import navigation.ForeignPropertyNavigator
@@ -44,23 +45,23 @@ class PropertyIncomeAllowanceClaimController @Inject()(
 
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val form = formProvider(request.user.isAgentMessageKey)
+      val combinedAmount = incomeAndBalancingChargeCombined(request.userAnswers, countryCode)
+      val form = formProvider(request.user.isAgentMessageKey, combinedAmount)
       val preparedForm = request.userAnswers.get(PropertyIncomeAllowanceClaimPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, maxAllowedPIA(combinedAmount), mode))
   }
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      val form = formProvider(request.user.isAgentMessageKey)
+      val combinedAllowance = incomeAndBalancingChargeCombined(request.userAnswers, countryCode)
+      val form = formProvider(request.user.isAgentMessageKey, combinedAllowance)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, maxAllowedPIA(combinedAllowance), mode))),
 
         value =>
           for {
