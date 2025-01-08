@@ -2593,7 +2593,7 @@ foreignResidentialFinanceCosts.change.hidden = Residential property finance cost
 
 foreignBalancingCharge.title.agent = Balancing charge
 foreignBalancingCharge.title.individual = Balancing charge
-foreignBalancingCharge.heading.agent = How much was your client’s balancing charge?
+foreignBalancingCharge.heading.agent = Balancing charge
 foreignBalancingCharge.heading.individual = Balancing charge
 foreignBalancingCharge.para.individual = Understanding balancing charge
 foreignBalancingCharge.para.agent = Understanding balancing charge
