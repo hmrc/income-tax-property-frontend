@@ -115,7 +115,7 @@ object ForeignPropertySummaryPage {
           "foreign.tax",
           controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
           taskListTagForForeignTax,
-          "foreign_property_income_tax"
+          s"foreign_property_income_tax_$countryCode"
         ),
         TaskListItem(
           "foreign.income",

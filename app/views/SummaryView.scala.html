@@ -48,11 +48,11 @@
                     item.id
                 }" href="@{
                     item.call
-                }">@messages(s"${item.content}")</a>
-            </div>
-            <div class="govuk-task-list__status" id="@{
+                }"  id="@{
                 item.id
-            }">
+            }">@messages(s"${item.content}")</a>
+            </div>
+            <div class="govuk-task-list__status">
                 @if(!item.taskListTag.cssClass.isBlank) {
                 @govukTag(Tag(content = Text(messages(s"common.${item.taskListTag.message}")), classes = s"${item.taskListTag.cssClass}"))
                 } else {
