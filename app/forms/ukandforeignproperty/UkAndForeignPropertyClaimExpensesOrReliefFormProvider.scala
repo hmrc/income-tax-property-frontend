@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package forms
+package forms.ukandforeignproperty
+
+import forms.mappings.Mappings
+import models.UkAndForeignPropertyClaimExpensesOrRelief
+import play.api.data.Form
+import play.api.data.Forms._
 
 import javax.inject.Inject
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import play.api.data.Forms.set
-import models.UkAndForeignPropertyRentalTypeUk
+class UkAndForeignPropertyClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
 
-class UkAndForeignPropertyRentalTypeUkFormProvider @Inject() extends Mappings {
-
-  def apply(individualOrAgent: String): Form[Set[UkAndForeignPropertyRentalTypeUk]] =
-    Form(
-      "value" -> set(
-        enumerable[UkAndForeignPropertyRentalTypeUk](s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent")
-      ).verifying(nonEmptySet(s"ukAndForeignPropertyRentalTypeUk.error.required.$individualOrAgent"))
+  def apply(individualOrAgent: String): Form[UkAndForeignPropertyClaimExpensesOrRelief] =
+    Form[UkAndForeignPropertyClaimExpensesOrRelief](
+      mapping(
+        "ukAndForeignPropertyClaimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent")
+      )(UkAndForeignPropertyClaimExpensesOrRelief.apply)(UkAndForeignPropertyClaimExpensesOrRelief.unapply)
     )
 }

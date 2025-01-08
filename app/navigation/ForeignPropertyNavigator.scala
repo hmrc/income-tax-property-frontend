@@ -21,12 +21,14 @@ import controllers.foreign.allowances.routes._
 import controllers.foreign.expenses.routes._
 import controllers.foreign.income.routes._
 import controllers.foreign.routes._
+import controllers.foreign.structuresbuildingallowance.routes._
 import controllers.routes.{IndexController, SummaryController}
 import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
 import models._
 import pages.Page
 import pages.foreign._
 import pages.foreign.allowances._
+import pages.foreign.structurebuildingallowance._
 import pages.foreign.expenses._
 import pages.foreign.income._
 import play.api.mvc.Call
@@ -94,6 +96,7 @@ class ForeignPropertyNavigator {
       taxYear => _ => userAnswers => consolidatedExpensesNavigation(taxYear, userAnswers, countryCode)
     case ForeignExpensesSectionCompletePage(_) =>
       taxYear => _ => _ => SummaryController.show(taxYear)
+
     //Allowances
     case ForeignZeroEmissionCarAllowancePage(countryCode) =>
       taxYear => _ => _ => ForeignZeroEmissionGoodsVehiclesController.onPageLoad(taxYear, countryCode, NormalMode)
@@ -103,7 +106,38 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignOtherCapitalAllowancesController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignOtherCapitalAllowancesPage(countryCode) => // TODO route to CYA page once created
       taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        // Allowances // Structure Building Allowance
+    case ForeignClaimStructureBuildingAllowancePage(countryCode) =>
+      taxYear => _ => userAnswers => foreignSbaNavigation(taxYear, userAnswers, countryCode)
+    case ForeignStructureBuildingQualifyingDatePage(countryCode, index) =>
+      taxYear => _ => _ => ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear, countryCode, index, NormalMode)
+    case ForeignStructureBuildingQualifyingAmountPage(countryCode, index) =>
+      taxYear => _ => _ => ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, index, NormalMode)
+    case ForeignStructureBuildingAllowanceClaimPage(countryCode, index) =>
+      taxYear => _ => _ => ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear, index, countryCode, NormalMode)
+    case ForeignStructuresBuildingAllowanceAddressPage(index, countryCode) =>
+      taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear,countryCode, index)
+    case ForeignSbaRemoveConfirmationPage(countryCode) =>
+      taxYear => _ => userAnswers => foreignSbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, countryCode)
+    case ForeignSbaCompletePage(_) =>
+      taxYear => _ => _ => SummaryController.show(taxYear)
+
+
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
+  }
+
+  private def foreignSbaRemoveConfirmationNavigationNormalMode(
+    taxYear: Int,
+    userAnswers: UserAnswers,
+    countryCode: String
+  ): Call = (
+    userAnswers.get(ForeignSbaRemoveConfirmationPage(countryCode)),
+    userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
+  ) match {
+    case (Some(true), Some(sbaForm)) if sbaForm.isEmpty =>
+      ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
+    case (_, Some(sbaForm)) if sbaForm.nonEmpty => ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+    case (_, _)                                 => SummaryController.show(taxYear)
   }
 
   private def consolidatedExpensesNavigation(taxYear: Int, userAnswers: UserAnswers, countryCode: String): Call =
@@ -184,6 +218,17 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignOtherCapitalAllowancesPage(countryCode) =>
       taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    // Allowances // Structure Building Allowance
+    case ForeignStructureBuildingQualifyingDatePage(countryCode, index) =>
+      taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear,countryCode, index)
+    case ForeignStructureBuildingQualifyingAmountPage(countryCode, index) =>
+      taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear,countryCode, index)
+    case ForeignStructureBuildingAllowanceClaimPage(countryCode, index) =>
+      taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear,countryCode, index)
+    case ForeignStructuresBuildingAllowanceAddressPage(index, countryCode) =>
+      taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear,countryCode, index)
+
+
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -308,5 +353,16 @@ class ForeignPropertyNavigator {
         ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, mode)
       case _ =>
         ForeignTaxCheckYourAnswersController.onSubmit(taxYear, countryCode)
+    }
+
+  private def foreignSbaNavigation(
+    taxYear: Int,
+    userAnswers: UserAnswers,
+    countryCode: String
+  ): Call =
+    userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)) match {
+      case Some(true) => ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
+      // TODO - redirect to CYA for No Journey
+      case _          => SummaryController.show(taxYear)
     }
 }

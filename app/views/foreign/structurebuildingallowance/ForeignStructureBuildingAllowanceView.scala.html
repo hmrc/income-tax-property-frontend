@@ -26,15 +26,14 @@
 
 @layout(pageTitle = titleNoForm(messages(s"foreignStructureBuildingAllowance.title.${page.individualOrAgent}"))) {
 
-    <h1 class="govuk-heading-l">@messages("foreignStructureBuildingAllowance.heading")</h1>
-    <div class="govuk-hint"> @messages("foreignStructureBuildingAllowanceAddress.hint") </div>
+<h1 class="govuk-heading-l">@messages("foreignStructureBuildingAllowance.heading")</h1>
 
-    <p class="govuk-body">@messages("foreignStructureBuildingAllowance.para1")</p>
+    <p class="govuk-body">@messages(s"foreignStructureBuildingAllowance.para1.${page.individualOrAgent}")</p>
 
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("foreignStructureBuildingAllowance.button"))
-                .asLink(routes.ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(page.taxYear, page.countryCode).url)
+                .asLink(routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(page.taxYear, page.countryCode, page.nextIndex, NormalMode).url)
                 .withId("continue")
         )
     </p>

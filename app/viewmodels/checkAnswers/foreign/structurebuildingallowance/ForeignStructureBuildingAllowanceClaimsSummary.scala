@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.foreign.structurebuildingallowance
 
 import controllers.foreign.structuresbuildingallowance.routes
-import models.{CheckMode, ForeignSbaOnIndex, UserAnswers}
+import models.{ForeignSbaOnIndex, UserAnswers}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
@@ -44,9 +44,8 @@ object ForeignStructureBuildingAllowanceClaimsSummary {
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            // TODO - change to CYA page load
-            routes.ForeignStructureBuildingAllowanceClaimController
-              .onPageLoad(taxYear, countryCode, index, CheckMode)
+            routes.ForeignSbaCheckYourAnswersController
+              .onPageLoad(taxYear, countryCode, index)
               .url
           ).withVisuallyHiddenText(messages("foreignStructureBuildingAllowanceClaims.change.hidden")),
 
@@ -57,6 +56,5 @@ object ForeignStructureBuildingAllowanceClaimsSummary {
         ),
         actionsCss = "w-25"
       )
-
     }.orElse(Option.empty[SummaryListRow])
 }

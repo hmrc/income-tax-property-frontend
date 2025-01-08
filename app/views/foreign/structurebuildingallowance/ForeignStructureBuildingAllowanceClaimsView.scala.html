@@ -26,7 +26,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], list: SummaryList, taxYear: Int, countryCode: String, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("foreignStructureBuildingAllowanceClaims.title"))) {
 
@@ -36,7 +36,7 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages("foreignStructureBuildingAllowanceClaims.heading")</h1>
+        <h1 class="govuk-heading-l">@messages(s"foreignStructureBuildingAllowanceClaims.heading.$individualOrAgent")</h1>
 
         @govukSummaryList(list)
 

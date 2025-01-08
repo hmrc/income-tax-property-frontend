@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package pages.foreign.structurebuildingallowance
+package models
 
-case class ForeignStructureBuildingAllowancePage(
-                                                  taxYear: Int,
-                                                  countryCode: String,
-                                                  nextIndex: Int,
-                                                  individualOrAgent: String
-                                                )
+import play.api.libs.json.{Format, Json}
+
+final case class UkAndForeignPropertyClaimExpensesOrRelief(claimExpensesOrReliefYesNo: Boolean)
+
+object UkAndForeignPropertyClaimExpensesOrRelief {
+  implicit val format: Format[UkAndForeignPropertyClaimExpensesOrRelief] = Json.format
+}

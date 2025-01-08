@@ -16,12 +16,13 @@
 
 package pages.foreign
 
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import pages.foreign.allowances.ForeignAllowancesCompletePage
 import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
-import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
+import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage, ForeignStructureBuildingAllowanceGroup}
+import play.api.mvc.Call
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
@@ -158,13 +159,45 @@ object ForeignPropertySummaryPage {
           ),
           TaskListItem(
             "summary.structuresAndBuildingAllowance",
-            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, CheckMode),
+            getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
             taskListTagForSba,
             s"foreign_structure_and_building_allowance_$countryCode"
           )
         )
       )
       case None => taskList
+    }
+  }
+
+  private def getSbaRouteDestination(
+    taxYear: Int,
+    countryCode: String,
+    userAnswers: Option[UserAnswers],
+    taskListTag: TaskListTag.TaskListTag
+  ): Call = {
+    taskListTag match {
+      case TaskListTag.InProgress | TaskListTag.Completed =>
+        val answers = userAnswers.get
+        (
+          answers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)),
+          answers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
+        )
+        match {
+          case (Some(true), Some(sbaForm)) if sbaForm.nonEmpty =>
+            controllers.foreign.structuresbuildingallowance.routes
+              .ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+
+          case (Some(false), _) =>
+            controllers.foreign.structuresbuildingallowance.routes
+              // TODO - Redirect to CYA for No Journey
+              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+
+          case (_, _) =>
+            controllers.foreign.structuresbuildingallowance.routes
+              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+      case _ =>
+        controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
     }
   }
 }

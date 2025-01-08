@@ -27,7 +27,7 @@
 
 @(form: Form[_], taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = title(form, messages("foreignClaimStructureBuildingAllowance.title"))) {
+    @layout(pageTitle = title(form, messages(s"foreignClaimStructureBuildingAllowance.title.$individualOrAgent"))) {
 
         @formHelper(action = controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
@@ -38,8 +38,8 @@
             <h1 class="govuk-heading-l">@messages("foreignClaimStructureBuildingAllowance.heading")</h1>
 
 
-            <p class="govuk-body">@messages("foreignClaimStructureBuildingAllowance.details.content")</p>
-            <p class="govuk-body">@messages(s"foreignClaimStructureBuildingAllowance.details.p1")</p>
+            <p class="govuk-body">@messages(s"foreignClaimStructureBuildingAllowance.details.content.$individualOrAgent")</p>
+            <p class="govuk-body">@messages(s"foreignClaimStructureBuildingAllowance.details.p1.$individualOrAgent")</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>@messages("foreignClaimStructureBuildingAllowance.details.l1")</li>
                 <li>@messages("foreignClaimStructureBuildingAllowance.details.l2")</li>

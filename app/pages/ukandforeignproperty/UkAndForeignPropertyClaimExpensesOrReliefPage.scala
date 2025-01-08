@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package pages.foreign.structurebuildingallowance
+package pages.ukandforeignproperty
 
-case class ForeignStructureBuildingAllowancePage(
-                                                  taxYear: Int,
-                                                  countryCode: String,
-                                                  nextIndex: Int,
-                                                  individualOrAgent: String
-                                                )
+import models.UkAndForeignPropertyClaimExpensesOrRelief
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+
+case object UkAndForeignPropertyClaimExpensesOrReliefPage extends QuestionPage[UkAndForeignPropertyClaimExpensesOrRelief] {
+
+  override def path: JsPath = JsPath  \ toString
+
+  override def toString: String = "ukAndForeignPropertyClaimExpensesOrRelief"
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package pages.foreign.structurebuildingallowance
+package controllers.ukandforeignproperty
 
-case class ForeignStructureBuildingAllowancePage(
-                                                  taxYear: Int,
-                                                  countryCode: String,
-                                                  nextIndex: Int,
-                                                  individualOrAgent: String
-                                                )
+object UkAndForeignPropertyHelper {
+  val individual: String = "individual"
+  val agent: String = "agent"
+  val userTypes: Seq[(String, Boolean)] = Seq(
+    (individual, false),
+    (agent, true)
+  )
+}
