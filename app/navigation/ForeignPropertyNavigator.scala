@@ -77,11 +77,8 @@ class ForeignPropertyNavigator {
     case ForeignOtherIncomeFromPropertyPage(countryCode) =>
       taxYear => _ => _ => ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignIncomeSectionCompletePage(_) =>
-      taxYear =>
-        _ =>
-          _ =>
-            SummaryController.show(taxYear)
-        // Expenses
+      taxYear => _ => _ => SummaryController.show(taxYear)
+    //Expenses
     case ForeignRentsRatesAndInsurancePage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignPropertyRepairsAndMaintenancePage(countryCode) =>
@@ -149,7 +146,7 @@ class ForeignPropertyNavigator {
     userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
   ) match {
     case (Some(true), Some(sbaForm)) if sbaForm.isEmpty =>
-      ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
+      ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
     case (_, Some(sbaForm)) if sbaForm.nonEmpty =>
       ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
     case (_, _) => SummaryController.show(taxYear)
@@ -240,6 +237,8 @@ class ForeignPropertyNavigator {
           _ =>
             ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         // Allowances // Structure Building Allowance
+    case ForeignClaimStructureBuildingAllowancePage(countryCode) =>
+      taxYear => _ => userAnswers => foreignSbaNavigation(taxYear, userAnswers, countryCode)
     case ForeignStructureBuildingQualifyingDatePage(countryCode, index) =>
       taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, index)
     case ForeignStructureBuildingQualifyingAmountPage(countryCode, index) =>
@@ -382,7 +381,6 @@ class ForeignPropertyNavigator {
   ): Call =
     userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)) match {
       case Some(true) => ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
-      // TODO - redirect to CYA for No Journey
-      case _ => SummaryController.show(taxYear)
+      case _          => ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     }
 }

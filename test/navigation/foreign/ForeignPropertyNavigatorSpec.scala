@@ -21,16 +21,18 @@ import controllers.foreign.expenses.routes._
 import controllers.foreign.allowances.routes._
 import controllers.foreign.income.routes._
 import controllers.foreign.routes._
+import controllers.foreign.structuresbuildingallowance.routes._
 import controllers.routes.SummaryController
 import models.ForeignTotalIncome._
 import models.JourneyName.{reads, writes}
-import models.{CheckMode, ConsolidatedOrIndividualExpenses, NormalMode, PremiumCalculated, UserAnswers}
+import models.{CheckMode, ConsolidatedOrIndividualExpenses, ForeignStructuresBuildingAllowanceAddress, NormalMode, PremiumCalculated, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
 import pages.foreign._
 import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.income._
+import pages.foreign.structurebuildingallowance._
 import play.api.libs.json.Format.GenericFormat
 
 import java.time.LocalDate
@@ -40,6 +42,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
   private val navigator = new ForeignPropertyNavigator
   private val taxYear = LocalDate.now.getYear
   private val countryCode = "BRA"
+  private val sbaClaimIndex = 0
 
   "ForeignPropertyNavigator" - {
 
@@ -535,6 +538,176 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         }
 
+        "must go from ForeignClaimStructureBuildingAllowancePage to ForeignAddClaimStructureBuildingAllowanceController if I want to claim Sba" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignClaimStructureBuildingAllowancePage(countryCode), true)
+            .get
+
+          navigator.nextPage(
+            ForeignClaimStructureBuildingAllowancePage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignClaimStructureBuildingAllowancePage to ForeignClaimSbaCheckYourAnswersController if I don't want to claim Sba" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
+            .get
+
+          navigator.nextPage(
+            ForeignClaimStructureBuildingAllowancePage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignStructureBuildingQualifyingDatePage to ForeignStructureBuildingQualifyingAmountController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingQualifyingDatePage(countryCode, sbaClaimIndex), LocalDate.of(2024, 1, 1))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingQualifyingDatePage(countryCode, sbaClaimIndex),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear, countryCode, sbaClaimIndex, NormalMode)
+        }
+
+        "must go from ForeignStructureBuildingQualifyingAmountPage to ForeignStructureBuildingAllowanceClaimController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingQualifyingAmountPage(countryCode, sbaClaimIndex), BigDecimal(657.00))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingQualifyingAmountPage(countryCode, sbaClaimIndex),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, sbaClaimIndex, NormalMode)
+        }
+
+        "must go from ForeignStructureBuildingAllowanceClaimPage to ForeignStructuresBuildingAllowanceAddressController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingAllowanceClaimPage(countryCode, sbaClaimIndex), BigDecimal(657.00))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingAllowanceClaimPage(countryCode, sbaClaimIndex),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear, sbaClaimIndex, countryCode, NormalMode)
+        }
+
+        "must go from ForeignStructuresBuildingAllowanceAddressPage to ForeignSbaCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignStructuresBuildingAllowanceAddressPage(sbaClaimIndex, countryCode),
+              ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode")
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignStructuresBuildingAllowanceAddressPage(sbaClaimIndex, countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
+        }
+
+        "must go from ForeignSbaRemoveConfirmationPage to ForeignClaimStructureBuildingAllowanceController when I want to remove my only claim" in {
+          val sbaClaim = ForeignStructureBuildingAllowance(
+            foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
+            foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
+            foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
+            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+
+          val prevAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingAllowanceWithIndex(sbaClaimIndex, countryCode), Array(sbaClaim))
+            .get
+
+          val userAnswers = prevAnswers
+            .set(ForeignSbaRemoveConfirmationPage(countryCode), true).get
+            .remove(ForeignStructureBuildingAllowanceWithIndex(sbaClaimIndex, countryCode))
+            .get
+
+          navigator.nextPage(
+            ForeignSbaRemoveConfirmationPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignSbaRemoveConfirmationPage to ForeignStructureBuildingAllowanceClaimsController when I want to remove my claim and have others" in {
+          val sbaClaim = ForeignStructureBuildingAllowance(
+            foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
+            foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
+            foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
+            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim)).get
+            .set(ForeignSbaRemoveConfirmationPage(countryCode), true)
+            .get
+
+          navigator.nextPage(
+            ForeignSbaRemoveConfirmationPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignSbaRemoveConfirmationPage to ForeignStructureBuildingAllowanceClaimsController when I don't want to remove my claim" in {
+          val sbaClaim = ForeignStructureBuildingAllowance(
+            foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
+            foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
+            foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
+            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim)).get
+            .set(ForeignSbaRemoveConfirmationPage(countryCode), false)
+            .get
+
+          navigator.nextPage(
+            ForeignSbaRemoveConfirmationPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignSbaCompletePage to SummaryController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignSbaCompletePage(countryCode),
+              true
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignSbaCompletePage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe SummaryController.show(taxYear)
+        }
       }
 
       "must go from ForeignAllowancesCompletePage to the Summary Page" in {
@@ -548,6 +721,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe SummaryController.show(taxYear)
       }
     }
+
 
     "in Check mode" - {
 
@@ -946,6 +1120,93 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             UserAnswers("test"),
             userAnswers
           ) mustBe ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignClaimStructureBuildingAllowancePage to ForeignAddClaimStructureBuildingAllowanceController if I want to claim Sba" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignClaimStructureBuildingAllowancePage(countryCode), true)
+            .get
+
+          navigator.nextPage(
+            ForeignClaimStructureBuildingAllowancePage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignClaimStructureBuildingAllowancePage to ForeignClaimSbaCheckYourAnswersController if I don't want to claim Sba" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
+            .get
+
+          navigator.nextPage(
+            ForeignClaimStructureBuildingAllowancePage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignStructureBuildingQualifyingDatePage to ForeignSbaCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingQualifyingDatePage(countryCode, sbaClaimIndex), LocalDate.of(2024, 1, 1))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingQualifyingDatePage(countryCode, sbaClaimIndex),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
+        }
+
+        "must go from ForeignStructureBuildingQualifyingAmountPage to ForeignSbaCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingQualifyingAmountPage(countryCode, sbaClaimIndex), BigDecimal(657.00))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingQualifyingAmountPage(countryCode, sbaClaimIndex),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
+        }
+
+        "must go from ForeignStructureBuildingAllowanceClaimPage to ForeignSbaCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignStructureBuildingAllowanceClaimPage(countryCode, sbaClaimIndex), BigDecimal(657.00))
+            .get
+
+          navigator.nextPage(
+            ForeignStructureBuildingAllowanceClaimPage(countryCode, sbaClaimIndex),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
+        }
+
+        "must go from ForeignStructuresBuildingAllowanceAddressPage to ForeignSbaCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignStructuresBuildingAllowanceAddressPage(sbaClaimIndex, countryCode),
+              ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode")
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignStructuresBuildingAllowanceAddressPage(sbaClaimIndex, countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
         }
 
       }
