@@ -86,19 +86,57 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           )
 
         val foreignPropertyData = FetchedForeignPropertyData(
-          foreignPropertyTax = Some(Map("ESP" -> ForeignPropertyTax(Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(456.00)))), Some(false)))),
-          foreignPropertyIncome = Some(Map("ESP" -> ForeignIncomeAnswers(Some(123.45), premiumsGrantLeaseReceived = false,
-            reversePremiumsReceived = Some(ReversePremiumsReceived(reversePremiumsReceived = true, reversePremiums = Some(123.5))),
-            otherPropertyIncome = Some(456.7),
-            calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
-            receivedGrantLeaseAmount = None, twelveMonthPeriodsInLease = None, premiumsOfLeaseGrantAgreed = None))
+          foreignPropertyTax = Some(
+            Map(
+              "ESP" -> ForeignPropertyTax(
+                Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(456.00)))),
+                Some(false)
+              )
+            )
           ),
-          foreignPropertyExpenses = Some(Map("ESP" -> ForeignExpensesAnswers(
-            Some(ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(456))), premisesRunningCosts = Some(11),
-            repairsAndMaintenance = Some(22.30), financialCosts = Some(44), professionalFees = Some(56),
-            costOfServices = Some(78), other = Some(90)))
+          foreignPropertyIncome = Some(
+            Map(
+              "ESP" -> ForeignIncomeAnswers(
+                Some(123.45),
+                premiumsGrantLeaseReceived = false,
+                reversePremiumsReceived =
+                  Some(ReversePremiumsReceived(reversePremiumsReceived = true, reversePremiums = Some(123.5))),
+                otherPropertyIncome = Some(456.7),
+                calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
+                receivedGrantLeaseAmount = None,
+                twelveMonthPeriodsInLease = None,
+                premiumsOfLeaseGrantAgreed = None
+              )
+            )
+          ),
+          foreignPropertyExpenses = Some(
+            Map(
+              "ESP" -> ForeignExpensesAnswers(
+                Some(ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(456))),
+                premisesRunningCosts = Some(11),
+                repairsAndMaintenance = Some(22.30),
+                financialCosts = Some(44),
+                professionalFees = Some(56),
+                costOfServices = Some(78),
+                other = Some(90)
+              )
+            )
           ),
           foreignJourneyStatuses = Some(Map("ESP" -> List(JourneyWithStatus("foreign-property-tax", "completed")))),
+          foreignPropertyAllowances = Some(
+            Map(
+              "ESP" -> ForeignPropertyAllowances(
+                annualInvestmentAllowance = Some(15.15),
+                costOfReplacingDomesticItems = Some(25.25),
+                zeroEmissionsGoodsVehicleAllowance = Some(35.35),
+                otherCapitalAllowance = Some(45.45),
+                electricChargePointAllowance = Some(55.55),
+                structuredBuildingAllowance = Some(65.65),
+                zeroEmissionsCarAllowance = Some(75.75),
+                propertyAllowance = Some(85.85)
+              )
+            )
+          )
         )
         val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData)
 

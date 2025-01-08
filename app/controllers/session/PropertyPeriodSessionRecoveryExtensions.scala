@@ -22,7 +22,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
@@ -96,8 +96,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua22 <- updateForeignPropertyIncome(ua21, fetchedData.foreignPropertyData.foreignPropertyIncome)
         ua23 <- updateForeignPropertyExpenses(ua22, fetchedData.foreignPropertyData.foreignPropertyExpenses)
         ua24 <- updateForeignPropertyTax(ua23, fetchedData.foreignPropertyData.foreignPropertyTax)
-        ua25 <- updateForeignJourneyStatuses(ua24, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-      } yield ua25
+        ua25 <- updateForeignPropertyAllowances(ua24, fetchedData.foreignPropertyData.foreignPropertyAllowances)
+        ua26 <- updateForeignJourneyStatuses(ua25, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+      } yield ua26
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -325,6 +326,37 @@ object PropertyPeriodSessionRecoveryExtensions {
                        ua6.set(ForeignOtherAllowablePropertyExpensesPage(countryCode), other)
                      )
             } yield ua7
+        }
+    }
+
+    private def updateForeignPropertyAllowances(
+      userAnswers: UserAnswers,
+      maybeForeignPropertyAllowances: Option[Map[String, models.ForeignPropertyAllowances]]
+    ): Try[UserAnswers] = maybeForeignPropertyAllowances match {
+      case None => Success(userAnswers)
+      case Some(foreignAllowancesMap) =>
+        foreignAllowancesMap.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+          case (
+                userAnswers: Try[UserAnswers],
+                (countryCode: String, foreignPropertyAllowances: models.ForeignPropertyAllowances)
+              ) =>
+            for {
+              ua <- userAnswers
+              ua1 <-
+                foreignPropertyAllowances.zeroEmissionsCarAllowance.fold[Try[UserAnswers]](Success(ua))(zeroEmissions =>
+                  ua.set(ForeignZeroEmissionCarAllowancePage(countryCode), zeroEmissions)
+                )
+              ua2 <- foreignPropertyAllowances.zeroEmissionsGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua1))(
+                       goodsVehicleAllowance =>
+                         ua1.set(ForeignZeroEmissionGoodsVehiclesPage(countryCode), goodsVehicleAllowance)
+                     )
+              ua3 <- foreignPropertyAllowances.costOfReplacingDomesticItems.fold[Try[UserAnswers]](Success(ua2))(
+                       domesticItems => ua2.set(ForeignReplacementOfDomesticGoodsPage(countryCode), domesticItems)
+                     )
+              ua4 <- foreignPropertyAllowances.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua3))(
+                       capitalAllowances => ua3.set(ForeignOtherCapitalAllowancesPage(countryCode), capitalAllowances)
+                     )
+            } yield ua4
         }
     }
 
