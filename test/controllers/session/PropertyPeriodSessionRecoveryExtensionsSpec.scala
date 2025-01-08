@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -285,9 +285,9 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(IsNonUKLandlordPage(Rentals)).get mustBe false
       updated.get(PropertyRentalIncomePage(Rentals)).get mustBe 45
       updated.get(ReceivedGrantLeaseAmountPage(Rentals)) mustBe None // Lease clean up test
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
-//Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
+      //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(YearLeaseAmountPage).get mustBe 5
+      //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(ConsolidatedExpensesPage).get mustBe ConsolidatedExpenses(false, None)
+      //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
       // Todo: do we need this? updated.get(PremiumForLeasePage).get mustBe true
       updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(
         calculatedFigureYourself = true,
@@ -340,7 +340,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(EsbaQualifyingAmountPage(1, Rentals)).get mustBe 4
       updated.get(EsbaClaimPage(1, Rentals)).get mustBe 5
 
-// Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
+      // Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(CapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(false, None)
       updated.get(StructureBuildingQualifyingDatePage(0, Rentals)).get mustBe LocalDate.parse("2022-04-03")
       updated.get(StructureBuildingQualifyingAmountPage(0, Rentals)).get mustBe 3
       updated.get(StructureBuildingAllowanceClaimPage(0, Rentals)).get mustBe 4
@@ -370,7 +370,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(RaROtherCapitalAllowancesPage).get mustBe 20
       updated.get(pages.foreign.TotalIncomePage).get mustBe ForeignTotalIncome.LessThanOneThousand
       updated.get(pages.foreign.PropertyIncomeReportPage).get mustBe false
-
       updated.get(ForeignPropertyRentalIncomePage(countryCode1)).get mustBe 12345.75
       updated.get(PremiumsGrantLeaseYNPage(countryCode1)).get mustBe true
       updated.get(CalculatedPremiumLeaseTaxablePage(countryCode1)).get mustBe PremiumCalculated(
@@ -396,7 +395,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         Some(590.55)
       )
       updated.get(ClaimForeignTaxCreditReliefPage(countryCode1)).get mustBe true
-
       updated.get(ConsolidatedOrIndividualExpensesPage(countryCode1)) mustBe None
       updated.get(ForeignRentsRatesAndInsurancePage(countryCode1)) mustBe Some(15.15)
       updated.get(ForeignPropertyRepairsAndMaintenancePage(countryCode1)) mustBe Some(25.15)
