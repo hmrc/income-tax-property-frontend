@@ -142,7 +142,7 @@ object ForeignPropertySummaryPage {
           TaskListItem(
             "summary.adjustments",
             controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(false)),
-            taskListTagForAllowances,
+            taskListTagForAdjustments,
             s"foreign_property_adjustments_$countryCode"
           ),
           TaskListItem(
