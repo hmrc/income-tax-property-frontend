@@ -1903,6 +1903,28 @@ claimPropertyIncomeAllowanceOrExpenses.content.l4 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.PIA = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.expenses = *Missing Welsh*
 
+ukAndForeignPropertyClaimExpensesOrRelief.para1.individual = *Missing Welsh*
+ukAndForeignPropertyClaimExpensesOrRelief.para1.agent = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.heading                  = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.individual = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.agent      = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para2.individual = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para2.agent      = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para3.individual = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para3.agent      = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l1               = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l2               = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para4            = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.text1       = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.text2       = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.link        = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l3               = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l4               = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.individual        = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.agent             = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.yesText    = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.noText     = *Missing Welsh*
+
 doYouWantToRemoveCountry.title = *Missing Welsh*
 doYouWantToRemoveCountry.heading = *Missing Welsh*
 doYouWantToRemoveCountry.heading2 = *Missing Welsh*

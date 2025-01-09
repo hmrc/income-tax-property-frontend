@@ -54,7 +54,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefControllerSpec extends SpecBase w
             val form       = userAnswer.get(UkAndForeignPropertyClaimExpensesOrReliefPage).fold(formProvider(userType))(formProvider(userType).fill)
             val result     = controller.onPageLoad(testTaxYear, NormalMode)(FakeRequest())
             status(result) mustBe OK
-            contentAsString(result) mustBe view(form, testTaxYear, NormalMode, userType)(FakeRequest(), messages(application)).toString
+            contentAsString(result) mustBe view(form, testTaxYear, NormalMode, userType,BigDecimal(7500))(FakeRequest(), messages(application)).toString
           }
         }
     }
