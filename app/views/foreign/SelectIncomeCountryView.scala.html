@@ -14,8 +14,9 @@
  * limitations under the License.
  *@
 
-@import controllers.foreign.routes
+@import controllers.foreign.routes.SelectIncomeCountryController
 @import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
+@import play.api.libs.json.Json
 
 @this(
         layout: templates.Layout,
@@ -28,36 +29,41 @@
 
 @(form: Form[_], taxYear: Int, index: Int, userType: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = title(form, messages(s"selectIncomeCountry.title.$userType"))) {
+@layout(pageTitle = title(form, messages(s"selectIncomeCountry.title.$userType"))) {
 
-        <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
+    <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
 
-        <div class="govuk-inset-text">
-            <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
+    <div class="govuk-inset-text">
+        <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
+    </div>
+
+    @formHelper(action = SelectIncomeCountryController.onSubmit(taxYear, index, mode)) {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <h1 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h1>
+        <div class="govuk-hint"> @messages("selectIncomeCountry.hint") </div>
+
+        <div class="govuk-!-width-one-half">
+        @govukSelect(Select(
+            id = "country-autocomplete",
+            items = countries
+        ).asAccessibleAutocomplete().withFormField(form("incomeCountry")))
+
         </div>
 
-        @formHelper(action = routes.SelectIncomeCountryController.onSubmit(taxYear, index, mode)) {
-
-            @if(form.errors.nonEmpty) {
-                @govukErrorSummary(ErrorSummaryViewModel(form))
-            }
-
-            <h1 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h1>
-            <div class="govuk-hint"> @messages("selectIncomeCountry.hint") </div>
-
-            <div class="govuk-!-width-one-half">
-            @govukSelect(Select(
-                id = "country-autocomplete",
-                items = countries
-            ).asAccessibleAutocomplete().withFormField(form("incomeCountry")))
-
-            </div>
-
-            @govukButton(
-                ButtonViewModel(messages("site.continue")).withId("continue")
-            )
-        }
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
     }
+    <!-- Load external JS file -->
+    <script src="@routes.Assets.versioned("javascripts/countryAutoComplete.js")"></script>
+}
+
+
 @{
     // $COVERAGE-OFF$
 }
+
