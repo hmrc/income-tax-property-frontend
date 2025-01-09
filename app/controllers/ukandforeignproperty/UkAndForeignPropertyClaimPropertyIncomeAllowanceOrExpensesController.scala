@@ -71,7 +71,7 @@ extends FrontendBaseController with I18nSupport {
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextIndex(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers,0)
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers,0) //TODO resolve hardcoded index
             )
           }
         )

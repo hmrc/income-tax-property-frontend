@@ -76,7 +76,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
                   mode,
                   request.userAnswers,
                   updatedAnswers,
-                  0
+                  0 //TODO resolve hardcoded index
                 )
               )
           )

@@ -2590,3 +2590,17 @@ foreignBalancingCharge.amount.error.nonNumeric.agent = *Missing Welsh*
 foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
 foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
+
+
+nonResidentLandlordUK.title = *Missing Welsh*
+nonResidentLandlordUK.heading = *Missing Welsh*
+nonResidentLandlordUK.error.required.agent = *Missing Welsh*
+nonResidentLandlordUK.error.required.individual = *Missing Welsh*
+nonResidentLandlordUK.p = *Missing Welsh*
+nonResidentLandlordUK.b1 = *Missing Welsh*
+nonResidentLandlordUK.b2 = *Missing Welsh*
+nonResidentLandlordUK.b3 = *Missing Welsh*
+nonResidentLandlordUK.legend.agent = *Missing Welsh*
+nonResidentLandlordUK.legend.individual = *Missing Welsh*
+nonResidentLandlordUK.checkYourAnswersLabel = *Missing Welsh*
+nonResidentLandlordUK.change.hidden = *Missing Welsh*

@@ -17,10 +17,10 @@
 package navigation
 
 import base.SpecBase
-import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UkAndForeignPropertyClaimExpensesOrRelief, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UserAnswers}
-import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import controllers.ukandforeignproperty.routes
-import pages.ukandforeignproperty.{ForeignCountriesRentedPage, TotalPropertyIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage}
+import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UkAndForeignPropertyClaimExpensesOrRelief, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UkAndForeignPropertyRentalTypeUk, UserAnswers}
+import pages.ukandforeignproperty._
+import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 
 import java.time.LocalDate
 
@@ -31,19 +31,19 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
   "UkAndForeignPropertyNavigator" - {
 
+    "must go from a page that doesn't exist in the route map to Index" in {
+      case object UnknownPage extends Page
+
+      navigator.nextPage(
+        UnknownPage,
+        taxYear,
+        NormalMode,
+        UserAnswers("id"),
+        UserAnswers("id")
+      ) mustBe controllers.routes.IndexController.onPageLoad
+    }
+
     "Total Property Income in Normal mode" - {
-
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
 
       "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is 'less then £1000'" in {
 
@@ -59,7 +59,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
         ) mustBe routes.ReportIncomeController.onPageLoad(taxYear, NormalMode)
       }
 
-      "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is '£1000 or more'" ignore {
+      "must go from a TotalPropertyIncomePage to UkAndForeignPropertyRentalTypeUkPage when the option selected is '£1000 or more'" in {
 
         val ua = UserAnswers("id")
           .set(TotalPropertyIncomePage, TotalPropertyIncome.Maximum).success.value
@@ -70,7 +70,7 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           NormalMode,
           UserAnswers("id"),
           ua
-        ) mustBe ???
+        ) mustBe routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear = taxYear, mode = NormalMode)
       }
     }
 
@@ -102,18 +102,6 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
     }
 
     "Foreign Countries Rented in Normal mode" - {
-
-      "must go from a page that doesn't exist in the route map to Index" in {
-        case object UnknownPage extends Page
-
-        navigator.nextPage(
-          UnknownPage,
-          taxYear,
-          NormalMode,
-          UserAnswers("id"),
-          UserAnswers("id")
-        ) mustBe controllers.routes.IndexController.onPageLoad
-      }
 
       "must go from AddCountriesRentedPage to  if AddCountriesRentedPage is true" in {
         val userAnswersWithAddCountry = UserAnswers("id").set(ForeignCountriesRentedPage, true).get
@@ -172,40 +160,97 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
 
     "Claim property income allowance or expenses in Normal mode" - {
       "must go to 'How much income did you get from your foreign property rentals'" - {
-        "when the option selected is 'Use the property income allowance' " in {
-          assertThrows[Throwable] {
-            navigator.nextIndex(
-              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-              taxYear,
-              NormalMode,
-              emptyUserAnswers,
-              emptyUserAnswers
-                .set(
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                )
-                .get,
-              0
-            ) mustBe ???  //TODO
-          }
+        "when the option selected is 'Use the property income allowance' " ignore {
+          navigator.nextIndex(
+            UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+            taxYear,
+            NormalMode,
+            emptyUserAnswers,
+            emptyUserAnswers
+              .set(
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
+              )
+              .get,
+            0
+          ) mustBe ??? //TODO
         }
-        "when the option selected is 'Expenses' " in {
-          assertThrows[Throwable] {
-            navigator.nextIndex(
-              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-              taxYear,
-              NormalMode,
-              emptyUserAnswers,
-              emptyUserAnswers
-                .set(
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
-                )
-                .get,
-              0
-            ) mustBe ???  //TODO
-          }
+
+        "when the option selected is 'Expenses' " ignore {
+          navigator.nextIndex(
+            UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+            taxYear,
+            NormalMode,
+            emptyUserAnswers,
+            emptyUserAnswers
+              .set(
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
+              )
+              .get,
+            0
+          ) mustBe ??? //TODO
         }
+      }
+
+      "must go to 'Non-UK resident landlord'" - {
+        "when the option selected is 'Use the property income allowance' and UkAndForeignPropertyRentalTypeUkPage option is'Property rentals'" in {
+          val userAnswers = UserAnswers("id")
+            .set(UkAndForeignPropertyRentalTypeUkPage, Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)).success.value
+            .set(
+              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+              UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
+            ).success.value
+
+          navigator.nextIndex(
+            UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+            taxYear,
+            NormalMode,
+            emptyUserAnswers,
+            userAnswers,
+            0
+          ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
+        }
+      }
+    }
+
+    "Non-UK resident landlord" - {
+
+      "must go from NonResidentLandlordUKPage to 'Deducting tax from non-UK resident landlord' when the option 'true' is selected" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, true).get
+
+        navigator.nextIndex(
+          NonResidentLandlordUKPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage,
+          1
+        ) mustBe ???
+      }
+
+      "must go from NonResidentLandlordUKPage to 'How much income did you get from your foreign property rentals?' when the option 'false' is selected" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, false).get
+
+        navigator.nextPage(
+          NonResidentLandlordUKPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage
+        ) mustBe ???
+      }
+
+      "must go from NonResidentLandlordUKPage to 'CYA page' when in CheckMode" ignore {
+        val nonResidentLandlordUKPage = UserAnswers("id").set(NonResidentLandlordUKPage, false).get
+
+        navigator.nextPage(
+          NonResidentLandlordUKPage,
+          taxYear,
+          CheckMode,
+          UserAnswers("id"),
+          nonResidentLandlordUKPage
+        ) mustBe ???
       }
     }
   }
