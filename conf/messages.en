@@ -2301,12 +2301,12 @@ ukAndForeignPropertyRentalTypeUk.change.hidden.individual = which rental propert
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = which rental property does your client have in the UK?
 
 selectCountry.title.individual = From which country did you receive your foreign property rental income?
-selectCountry.title.agent  = From which country did your client receive their foreign property rental income?
+selectCountry.title.agent  = From which countries did your client receive their foreign property rental income?
 selectCountry.heading.individual  = From which country did you receive your foreign property rental income?
 selectCountry.heading.agent  = From which country did your client receive their foreign property rental income?
 selectCountry.checkYourAnswersLabel = From which country did you receive your foreign property rental income?
-selectCountry.error.required.individual = Select which country you received this income from
-selectCountry.error.required.agent = Select which country your client received this income from
+selectCountry.error.required.individual = Enter the country where you received your foreign property rental income from
+selectCountry.error.required.agent = Enter the country where your client received their foreign property rental income from
 selectCountry.change.hidden = From which country you received your foreign property rental income?
 
 foreignZeroEmissionCarAllowance.title = Zero-emission car allowance
