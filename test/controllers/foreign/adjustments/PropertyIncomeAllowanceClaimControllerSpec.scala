@@ -40,13 +40,12 @@ class PropertyIncomeAllowanceClaimControllerSpec extends SpecBase with MockitoSu
 
   val formProvider = new PropertyIncomeAllowanceClaimFormProvider()
   private val individual = "individual"
-  val form: Form[BigDecimal] = formProvider(individual)
+  val form: Form[BigDecimal] = formProvider(individual, BigDecimal(1000))
   val taxYear = 2023
   val countryCode = "GRC"
-
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer: BigDecimal = 100
+  val validAnswer: BigDecimal = BigDecimal(0)
 
   lazy val propertyIncomeAllowanceClaimRoute = PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, countryCode, NormalMode).url
 
@@ -64,7 +63,7 @@ class PropertyIncomeAllowanceClaimControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[PropertyIncomeAllowanceClaimView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, individual, 0, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -82,7 +81,7 @@ class PropertyIncomeAllowanceClaimControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, individual, 0, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -128,7 +127,7 @@ class PropertyIncomeAllowanceClaimControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, individual, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, individual, 0, NormalMode)(request, messages(application)).toString
       }
     }
 

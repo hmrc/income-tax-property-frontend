@@ -21,14 +21,13 @@ import play.api.data.FormError
 
 class PropertyIncomeAllowanceClaimFormProviderSpec extends CurrencyFieldBehaviours {
 
-  val form = new PropertyIncomeAllowanceClaimFormProvider()("individual")
+  val fieldName = "propertyIncomeAllowanceClaimAmount"
 
   ".propertyIncomeAllowanceClaimAmount" - {
 
-    val fieldName = "propertyIncomeAllowanceClaimAmount"
-
     val minimum = 0
-    val maximum = 100000000
+    val maximum = 1000
+    val form = new PropertyIncomeAllowanceClaimFormProvider()("individual", BigDecimal(maximum))
 
     val validDataGenerator = intsInRangeWithCommas(minimum, maximum)
 
@@ -45,18 +44,49 @@ class PropertyIncomeAllowanceClaimFormProviderSpec extends CurrencyFieldBehaviou
       twoDecimalPlacesError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.twoDecimalPlaces.individual")
     )
 
-    behave like currencyFieldWithRange(
-      form,
-      fieldName,
-      minimum       = minimum,
-      maximum       = maximum,
-      expectedError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.outOfRange", Seq(minimum, maximum))
-    )
-
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.required.individual")
+    )
+
+    behave like currencyFieldWithMaximum(
+      form,
+      fieldName,
+      maximum,
+      expectedError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.maxAllowanceCombined.individual", List(maximum))
+    )
+
+    behave like currencyFieldWithMinimum(
+      form,
+      fieldName,
+      0,
+      expectedError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.outOfRange.individual", List(0, 1000))
+    )
+  }
+
+  "should set maxAllowanceCombined error if propertyIncomeAllowance is above combined allowance" - {
+    val maxAllowanceCombined = 800
+    val form = new PropertyIncomeAllowanceClaimFormProvider()("individual", BigDecimal(maxAllowanceCombined))
+
+    behave like currencyFieldWithMaximum(
+      form,
+      fieldName,
+      maxAllowanceCombined,
+      expectedError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.maxAllowanceCombined.individual", List(maxAllowanceCombined))
+    )
+  }
+
+  "should set maxCapped error if propertyIncomeAllowance is above 1000" - {
+    val maxAllowanceCombined = 1200
+    val maximum = 1000
+    val form = new PropertyIncomeAllowanceClaimFormProvider()("individual", BigDecimal(maxAllowanceCombined))
+
+    behave like currencyFieldWithMaximum(
+      form,
+      fieldName,
+      maximum,
+      expectedError = FormError(fieldName, "propertyIncomeAllowanceClaim.error.maxCapped.individual", List(maximum))
     )
   }
 }
