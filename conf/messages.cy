@@ -2561,6 +2561,37 @@ foreignResidentialFinanceCosts.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignResidentialFinanceCosts.error.outOfRange = *Missing Welsh*
 foreignResidentialFinanceCosts.change.hidden = *Missing Welsh*
 
+foreignBalancingCharge.title.agent = *Missing Welsh*
+foreignBalancingCharge.title.individual = *Missing Welsh*
+foreignBalancingCharge.heading.agent = *Missing Welsh*
+foreignBalancingCharge.heading.individual = *Missing Welsh*
+foreignBalancingCharge.para.individual = *Missing Welsh*
+foreignBalancingCharge.para.agent = *Missing Welsh*
+
+foreignBalancingCharge.checkYourAnswersAmountLabel = *Missing Welsh*
+
+foreignBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
+foreignBalancingCharge.error.required.agent = *Missing Welsh*
+foreignBalancingCharge.error.required.individual = *Missing Welsh*
+foreignBalancingCharge.change.hidden = *Missing Welsh*
+foreignBalancingCharge.details.line1.individual = *Missing Welsh*
+foreignBalancingCharge.details.line1.agent = *Missing Welsh*
+foreignBalancingCharge.details.line2.individual = *Missing Welsh*
+foreignBalancingCharge.details.line2.agent = *Missing Welsh*
+foreignBalancingCharge.details.line2.link.text = *Missing Welsh*
+foreignBalancingCharge.radio.legend.individual = *Missing Welsh*
+foreignBalancingCharge.radio.legend.agent = *Missing Welsh*
+foreignBalancingCharge.radio.question.label = *Missing Welsh*
+foreignBalancingCharge.label = *Missing Welsh*
+foreignBalancingCharge.amount.error.required.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.required.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.nonNumeric.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.nonNumeric.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
+foreignBalancingCharge.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
+foreignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
+
+
 nonResidentLandlordUK.title = *Missing Welsh*
 nonResidentLandlordUK.heading = *Missing Welsh*
 nonResidentLandlordUK.error.required.agent = *Missing Welsh*

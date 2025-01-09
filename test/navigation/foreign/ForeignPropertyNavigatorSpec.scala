@@ -536,6 +536,17 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         }
 
       }
+
+      "must go from ForeignAllowancesCompletePage to the Summary Page" in {
+        val userAnswersWithData = UserAnswers("test").set(ForeignAllowancesCompletePage("ESP"), true).get
+        navigator.nextPage(
+          ForeignAllowancesCompletePage("ESP"),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswersWithData
+        ) mustBe SummaryController.show(taxYear)
+      }
     }
 
     "in Check mode" - {
