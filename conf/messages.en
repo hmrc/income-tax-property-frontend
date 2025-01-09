@@ -1787,10 +1787,28 @@ ukAndForeignPropertyDetails.para2.part1 = If these details are wrong you can
 ukAndForeignPropertyDetails.para2.part2.individual = go back to your online account
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
-
 ukAndForeignPropertyClaimExpensesOrRelief.para1.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same property.
 ukAndForeignPropertyClaimExpensesOrRelief.para1.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same property.
 
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.heading                  = Claim property income allowance or expenses
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.individual = The property income allowance is a tax relief of up to £1,000 per year which you can use against your combined UK and foreign property rentals income.
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.agent      = The property income allowance is a tax relief of up to £1,000 per year which your client can use against their combined UK and foreign property rentals income.
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para2.individual = For example, if your total property rental income is £750, the property income allowance would be capped at £750.
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para2.agent      = For example, if your client''s total property rental income is £750, the property income allowance would be capped at £750.
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para3.individual = If you use the property income allowance, of up to £1,000, you cannot:
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para3.agent      = If your client uses the property income allowance, of up to £1,000, they cannot:
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l1               = deduct any expenses
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l2               = claim any other allowances
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para4            = Some examples of expenses include:
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.text1       = Read more about
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.text2       = tax-free allowances on property and trading income (opens in new tab)
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.href.link        = https://www.gov.uk/guidance/tax-free-allowances-on-property-and-trading-income#:~:text=a%20partnership.-,Property%20allowance,-The%20property%20allowance
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l3               = rents, rates and insurance
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.l4               = property repairs and maintenance
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.individual        = What do you want to do?
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.agent             = What does your client want to do?
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.yesText    = Use the property income allowance
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.noText     = Declare expenses
 
 ###################### Foreign Property ######################
 
