@@ -1924,6 +1924,7 @@ ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.individual    
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.legend.agent             = *Missing Welsh*
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.yesText    = *Missing Welsh*
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.details.input.noText     = *Missing Welsh*
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.title                   = *Missing Welsh*
 
 doYouWantToRemoveCountry.title = *Missing Welsh*
 doYouWantToRemoveCountry.heading = *Missing Welsh*

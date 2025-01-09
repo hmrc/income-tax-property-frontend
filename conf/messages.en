@@ -1791,6 +1791,7 @@ ukAndForeignPropertyClaimExpensesOrRelief.para1.individual = You can earn up to 
 ukAndForeignPropertyClaimExpensesOrRelief.para1.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same property.
 
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.heading                  = Claim property income allowance or expenses
+ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.title                    = Claim property income allowance or expenses
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.individual = The property income allowance is a tax relief of up to £1,000 per year which you can use against your combined UK and foreign property rentals income.
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para1.agent      = The property income allowance is a tax relief of up to £1,000 per year which your client can use against their combined UK and foreign property rentals income.
 ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.content.para2.individual = For example, if your total property rental income is £750, the property income allowance would be capped at £750.
