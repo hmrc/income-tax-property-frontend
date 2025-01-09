@@ -85,7 +85,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
 
       val context =
         JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.PropertyAbout)
-      val propertyAbout = PropertyAbout(Under, ukProperty = UKPropertySelect.values, reportPropertyIncome = Some(true))
+      val propertyAbout = PropertyAbout(Under, ukProperty = Some(UKPropertySelect.values), reportPropertyIncome = Some(true))
 
       when(
         propertySubmissionService
