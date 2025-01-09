@@ -18,13 +18,15 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
-import models.JourneyPath.UkAndForeignPropertyAbout
-import models.{JourneyContext, Mode}
+import models.requests.DataRequest
+import models.ukAndForeign.UkAndForeignAbout
+import models.{JourneyContext, JourneyPath}
 import pages.ukandforeignproperty.UkForeignPropertyAboutPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -47,7 +49,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
+  def onPageLoad(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
@@ -55,39 +57,36 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
           ReportIncomeSummary.row(taxYear = taxYear, request.user.isAgentMessageKey, answers = request.userAnswers)
         ).flatten
       )
-
-      Ok(view(list, taxYear, mode))
+      Ok(view(list, taxYear))
     }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(UkForeignPropertyAboutPage) match {
-        case Some(ukAndForeignAbout) =>
-          val context = JourneyContext(
-            taxYear = taxYear,
-            mtditid = request.user.mtditid,
-            nino = request.user.nino,
-            journeyPath = UkAndForeignPropertyAbout
-          )
-          propertySubmissionService.saveJourneyAnswers(context, ukAndForeignAbout).flatMap {
-            case Right(_) =>
-              // TODO redirect to a 'Have you finished this section' page / completion controller
-              Future.successful(Redirect(controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)))
 
-            case Left(error) =>
-              logger.error(s"Failed to save UK and foreign property income details section: ${error.toString}")
-              Future.failed(SaveJourneyAnswersFailed("Failed to save UK and foreign property income details"))
-          }
-        case None =>
-          logger.error(
-            s"Uk and foreign about section is not present in userAnswers for userId: ${request.userId} in UK and foreign section."
-          )
-          Future.failed(
-            NotFoundException(
-              "Uk and foreign about section is not present in UK and foreign property answers"
-            )
-          )
-      }
+      request.userAnswers
+        .get(UkForeignPropertyAboutPage)
+        .map { ukAndForeignAbout =>
+          savePropertyAbout(taxYear, request, ukAndForeignAbout)
+        }
+        .getOrElse {
+          logger.error(s"Uk and foreign property about section is not present in userAnswers for userId: ${request.userId}")
+          Future.failed(NotFoundException("Uk and foreign property about section is not present in userAnswers"))
+        }
   }
 
+  private def savePropertyAbout(taxYear: Int, request: DataRequest[AnyContent], ukAndForeignAbout: UkAndForeignAbout)(implicit
+                                                                                                                  hc: HeaderCarrier
+  ): Future[Result] = {
+
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.UkAndForeignPropertyAbout)
+
+    propertySubmissionService.saveJourneyAnswers(context, ukAndForeignAbout).flatMap {
+      case Right(_) =>
+      //TODO redirect to a 'Have you finished this section' page / completion controller
+      Future.successful(Redirect(controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int)))
+      case Left(error) =>
+        logger.error(s"Failed to save uk and foreign property about section: ${error.toString}")
+        Future.failed(SaveJourneyAnswersFailed("Failed to save uk and foreign property about section"))
+    }
+  }
 }

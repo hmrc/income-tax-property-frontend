@@ -25,5 +25,5 @@ final case class UkAndForeignAbout(
 )
 
 object UkAndForeignAbout {
-  implicit val format: Format[UkAndForeignAbout] = Json.format
+  implicit val format: Format[UkAndForeignAbout] = Json.format[UkAndForeignAbout]
 }

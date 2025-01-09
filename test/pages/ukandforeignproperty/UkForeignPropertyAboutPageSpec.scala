@@ -26,11 +26,11 @@ class UkForeignPropertyAboutPageSpec extends AnyFreeSpec with Matchers with Opti
 
   "UkForeignPropertyAboutPage" - {
     "have the correct path" in {
-      UkForeignPropertyAboutPage.path mustEqual JsPath \ "ukForeignPropertyAbout"
+      UkForeignPropertyAboutPage.path mustEqual JsPath \ "ukAndForeignAbout"
     }
 
     "have the correct toString value" in {
-      UkForeignPropertyAboutPage.toString shouldEqual "ukForeignPropertyAbout"
+      UkForeignPropertyAboutPage.toString shouldEqual "ukAndForeignAbout"
     }
   }
 }

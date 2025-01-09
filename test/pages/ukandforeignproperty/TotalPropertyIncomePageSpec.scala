@@ -16,13 +16,20 @@
 
 package pages.ukandforeignproperty
 
-import models.ukAndForeign.UkAndForeignAbout
-import pages.{PageConstants, QuestionPage}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.JsPath
 
-case object UkForeignPropertyAboutPage extends QuestionPage[UkAndForeignAbout] {
+class TotalPropertyIncomePageSpec extends AnyFreeSpec with Matchers {
 
-  override def path: JsPath = JsPath \ toString
+  "TotalPropertyIncomePage" - {
 
-  override def toString: String = PageConstants.ukAndForeignAbout
+    "must have the correct path" in {
+      TotalPropertyIncomePage.path mustEqual JsPath \ "ukAndForeignAbout" \ "totalPropertyIncome"
+    }
+
+    "must have the correct toString" in {
+      TotalPropertyIncomePage.toString mustEqual "totalPropertyIncome"
+    }
+  }
 }

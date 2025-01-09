@@ -19,6 +19,7 @@ package controllers.session
 import base.SpecBase
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models._
+import models.ukAndForeign.UkAndForeignAbout
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
@@ -31,7 +32,7 @@ import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IsNonUKLandlordPage, PropertyRentalIncomePage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
-import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
+import pages.ukandforeignproperty.UkForeignPropertyAboutPage
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
@@ -407,9 +408,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignZeroEmissionCarAllowancePage(countryCode1)) mustBe Some(45.45)
       updated.get(ForeignOtherCapitalAllowancesPage(countryCode1)) mustBe Some(45.15)
       updated.get(ForeignAllowancesCompletePage(countryCode1)) mustBe Some(true)
-      updated.get(TotalPropertyIncomePage).get mustBe TotalPropertyIncome.Maximum
-      updated.get(ReportIncomePage).get mustBe ReportIncome.WantToReport
-      //HERE
+      updated.get(UkForeignPropertyAboutPage).get mustBe UkAndForeignAbout(
+        totalPropertyIncome = TotalPropertyIncome.Maximum,
+        reportIncome = Some(ReportIncome.WantToReport)
+      )
     }
   }
 }

@@ -97,7 +97,7 @@ class UkAndForeignPropertyNavigator {
   private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
     userAnswers.get(ReportIncomePage) match {
       case Some(ReportIncome.WantToReport) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
-      case Some(ReportIncome.DoNoWantToReport) => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear, mode)
+      case Some(ReportIncome.DoNoWantToReport) => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     }
   }
 

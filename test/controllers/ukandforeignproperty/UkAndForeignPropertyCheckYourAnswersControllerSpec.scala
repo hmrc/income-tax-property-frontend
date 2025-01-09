@@ -17,19 +17,20 @@
 package controllers.ukandforeignproperty
 
 import base.SpecBase
-import models.JourneyPath.UkAndForeignPropertyAbout
+import controllers.exceptions.NotFoundException
+import models.ReportIncome.DoNoWantToReport
+import models.TotalPropertyIncome.LessThan
 import models.ukAndForeign.UkAndForeignAbout
-import models.{JourneyContext, NormalMode, ReportIncome, TotalPropertyIncome, UserAnswers}
+import models.{JourneyContext, JourneyPath, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkForeignPropertyAboutPage
+import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.inject
-import play.api.mvc.Call
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, running, status}
+import play.api.test.Helpers._
 import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
 import views.html.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersView
@@ -44,8 +45,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
 
   val taxYear: Int = LocalDate.now.getYear
   lazy val UkAndForeignPropertyCheckYourAnswersRoute: String =
-    controllers.ukandforeignproperty.routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear = taxYear, mode = NormalMode).url
-  def onwardRoute: Call = Call("GET", "/")
+    controllers.ukandforeignproperty.routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear = taxYear).url
 
   "UkAndForeignPropertyCheckYourAnswers Controller" - {
     "must return OK and the correct view for a GET" in {
@@ -58,10 +58,10 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
         val view = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersView]
         val list = SummaryListViewModel(Seq.empty)
 
-        val result = controller.onPageLoad(taxYear, NormalMode)(request)
+        val result = controller.onPageLoad(taxYear)(request)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -73,34 +73,31 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
         val request = FakeRequest(GET, UkAndForeignPropertyCheckYourAnswersRoute)
         val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
 
-        val result = controller.onPageLoad(taxYear, NormalMode)(request)
+        val result = controller.onPageLoad(taxYear)(request)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
-    "must return OK and the POST for onSubmit and save UkAndForeignAbout" in {
+    "must return OK and the correct view for a POST (onSubmit)" in {
 
-      val ukAndForeignAbout = UkAndForeignAbout(
-        totalPropertyIncome = TotalPropertyIncome.values.head,
-        reportIncome = Some(ReportIncome.values.head)
-      )
+      val userAnswers = UserAnswers("test").set(TotalPropertyIncomePage, LessThan).get
+      val updated = userAnswers.set(ReportIncomePage, DoNoWantToReport).get
 
-      val userAnswers = UserAnswers(userAnswersId)
-        .set(UkForeignPropertyAboutPage, ukAndForeignAbout).success.value
-
-      val context = JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = UkAndForeignPropertyAbout)
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.UkAndForeignPropertyAbout)
+      val ukAndForeignAbout = UkAndForeignAbout(totalPropertyIncome = LessThan, reportIncome = Some(DoNoWantToReport))
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
             any(),
             any()
           )
       ) thenReturn Future(Right())
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
+      val application = applicationBuilder(userAnswers = Some(updated), isAgent = false)
         .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
         .build()
 
@@ -109,14 +106,45 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
           FakeRequest(POST, UkAndForeignPropertyCheckYourAnswersRoute)
         val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
 
-        val result = controller.onSubmit(taxYear, NormalMode)(request)
+        val result = controller.onSubmit(taxYear)(request)
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear: Int).url
+      }
+    }
 
-        userAnswers.get(UkForeignPropertyAboutPage) mustBe Some(ukAndForeignAbout)
+    "must return NotFoundException when UkAndForeignAbout section is missing in userAnswers" in {
+
+      val userAnswers = UserAnswers("test")
+
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.UkAndForeignPropertyAbout)
+      val ukAndForeignAbout = UkAndForeignAbout(totalPropertyIncome = LessThan, reportIncome = Some(DoNoWantToReport))
+
+      when(
+        propertySubmissionService
+          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
+        .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, UkAndForeignPropertyCheckYourAnswersRoute)
+        val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
+
+        val result = controller.onSubmit(taxYear)(request)
+
+        val thrown = intercept[NotFoundException] {
+          await(result)
+        }
+        thrown.getMessage mustEqual "Uk and foreign property about section is not present in userAnswers"
       }
     }
   }
-
 }

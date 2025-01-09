@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package views
 
 import base.SpecBase
-import models.{Mode, NormalMode, ReportIncome, TotalPropertyIncome, UserAnswers}
+import models.{ReportIncome, TotalPropertyIncome, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
 import play.api.Application
@@ -42,19 +42,18 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
 
   val view: UkAndForeignPropertyCheckYourAnswersView = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersView]
 
-  def createView(list: SummaryList,  taxYear: Int, mode: Mode)(implicit request: Request[_]): Html = {
-    view(list, taxYear, mode)(request, messages)
+  def createView(list: SummaryList,  taxYear: Int)(implicit request: Request[_]): Html = {
+    view(list, taxYear)(request, messages)
   }
 
   "UkAndForeignPropertyCheckYourAnswersView" - {
 
     "render correctly" in {
       val list = SummaryList(Seq.empty)
-      val mode = NormalMode
       val taxYear: Int = LocalDate.now.getYear
 
       val request = FakeRequest(GET, "/")
-      val result = createView(list, taxYear, mode)(request)
+      val result = createView(list, taxYear)(request)
 
       contentAsString(result) must include(messages("checkYourAnswers.title"))
       contentAsString(result) must include(messages("checkYourAnswers.heading"))
@@ -73,10 +72,9 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
         ReportIncomeSummary.row(taxYear, individualOrAgent, userAnswers).get
       )
       val list = SummaryList(rows)
-      val mode = NormalMode
 
       val request = FakeRequest(GET, "/")
-      val result = createView(list, taxYear, mode)(request)
+      val result = createView(list, taxYear)(request)
 
       contentAsString(result) must include(messages("site.change"))
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance._
-import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage, UkForeignPropertyAboutPage}
+import pages.ukandforeignproperty._
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
@@ -218,9 +218,11 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(ukAndForeignAbout) =>
           for {
-            ua1 <- userAnswers.set(TotalPropertyIncomePage, ukAndForeignAbout.totalPropertyIncome)
-            ua2 <- updatePart(ua1, ReportIncomePage, ukAndForeignAbout.reportIncome)
-          } yield ua2
+            ua1 <- userAnswers.set(UkForeignPropertyAboutPage,
+              UkAndForeignAbout(ukAndForeignAbout.totalPropertyIncome, ukAndForeignAbout.reportIncome))
+            ua2 <- ua1.set(TotalPropertyIncomePage, ukAndForeignAbout.totalPropertyIncome)
+            ua3 <- updatePart(ua2, ReportIncomePage, ukAndForeignAbout.reportIncome)
+          } yield ua3
       }
 
     private def updateForeignPropertyIncome(
