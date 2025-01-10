@@ -17,15 +17,38 @@
 package service
 
 import jakarta.inject.Inject
-import models.{Index, UserAnswers}
 import models.requests.DataRequest
+import models.{CheckMode, Index, Mode, NormalMode, UserAnswers}
+import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import repositories.SessionRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RemoveCountryService @Inject()(sessionRepository: SessionRepository)
-                                    (implicit ec: ExecutionContext) {
+class UkAndForeignPropertyCountryService @Inject()(sessionRepository: SessionRepository)
+                                                  (implicit ec: ExecutionContext) {
+
+  def upsertCountry(optCountry: Option[Country], index: Index)(implicit request: DataRequest[_]): Future[UserAnswers] = {
+    val countries = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
+
+    val updatedCountries = optCountry match {
+      case Some(country) if index.position > 0 && index.position <= countries.size =>
+        countries.updated(index.positionZeroIndexed, country)
+      case _ if index.position == 0 =>
+        countries
+      case _ =>
+        countries ++ optCountry
+    }
+
+    if (updatedCountries.equals(countries)) {
+      Future.successful(request.userAnswers)
+    } else {
+      for {
+        updatedUserAnswers <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountries))
+        _ <- sessionRepository.set(updatedUserAnswers)
+      } yield updatedUserAnswers
+    }
+  }
 
   def removeCountry(index: Index)(implicit request: DataRequest[_]): Future[UserAnswers] =
     for {

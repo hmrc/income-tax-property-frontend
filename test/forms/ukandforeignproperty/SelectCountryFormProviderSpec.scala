@@ -17,7 +17,9 @@
 package forms.ukandforeignproperty
 
 import forms.behaviours.StringFieldBehaviours
+import models.Index
 import org.scalacheck.Gen
+import pages.foreign.Country
 import play.api.data.FormError
 import service.CountryNamesDataSource
 
@@ -25,7 +27,7 @@ class SelectCountryFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "selectCountry.error.required.agent"
 
-  val form = new SelectCountryFormProvider()("agent")
+  val form = new SelectCountryFormProvider()("agent", Nil, Index(1))
 
   ".value" - {
 
@@ -42,5 +44,27 @@ class SelectCountryFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       Gen.oneOf(CountryNamesDataSource.loadCountries.map(_.code))
     )
+
+    "should return the 'duplicate' error when the user has already added a country, then tries to add it again" in {
+      val countryCode = "ESP"
+      val countries = List(Country("Spain", countryCode))
+      val form = new SelectCountryFormProvider().apply("agent", countries, Index(2))
+
+      val result = form.fillAndValidate(countryCode).errors
+
+      result.size mustBe 1
+      result.headOption must contain(FormError(fieldName, "selectCountry.error.duplicate"))
+    }
+
+    "should not return the 'duplicate' error when the user has already added Spain, and amends it without changing their answer " in {
+      val countryCode = "ESP"
+      val countries = List(Country("Spain", countryCode))
+      val form = new SelectCountryFormProvider().apply("agent", countries, Index(1))
+
+      val result = form.fillAndValidate(countryCode).errors
+
+      result mustBe Nil
+    }
+
   }
 }

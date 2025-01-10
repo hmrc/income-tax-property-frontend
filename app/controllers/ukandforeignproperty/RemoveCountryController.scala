@@ -22,7 +22,7 @@ import models.{Index, Mode}
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.RemoveCountryService
+import service.UkAndForeignPropertyCountryService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.RemoveCountryView
 
@@ -30,7 +30,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RemoveCountryController @Inject() (override val messagesApi: MessagesApi,
-                                         removeCountryService: RemoveCountryService,
+                                         removeCountryService: UkAndForeignPropertyCountryService,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
