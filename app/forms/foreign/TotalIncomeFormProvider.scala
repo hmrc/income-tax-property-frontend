@@ -17,15 +17,15 @@
 package forms.foreign
 
 import forms.mappings.Mappings
-import models.ForeignTotalIncome
+import models.TotalIncome
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class TotalIncomeFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[ForeignTotalIncome] =
+  def apply(individualOrAgent: String): Form[TotalIncome] =
     Form(
-      "foreignTotalIncome" -> enumerable[ForeignTotalIncome](s"foreignTotalIncome.error.required.${individualOrAgent}")
+      "foreignTotalIncome" -> enumerable[TotalIncome](s"foreignTotalIncome.error.required.${individualOrAgent}")
     )
 }

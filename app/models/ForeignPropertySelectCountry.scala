@@ -22,7 +22,7 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class ForeignPropertySelectCountry(
-  totalIncome: ForeignTotalIncome,
+  totalIncome: TotalIncome,
   reportPropertyIncome: Option[Boolean],
   incomeCountries: Option[Array[Country]],
   addAnotherCountry: Option[Boolean],

@@ -17,7 +17,7 @@
 package forms.foreign
 
 import forms.behaviours.OptionFieldBehaviours
-import models.ForeignTotalIncome
+import models.TotalIncome
 import org.scalatest.prop.TableFor1
 import play.api.data.FormError
 
@@ -33,10 +33,10 @@ class TotalIncomeFormProviderSpec extends OptionFieldBehaviours {
       val fieldName = "foreignTotalIncome"
       val requiredKey = s"foreignTotalIncome.error.required.$individualOrAgent"
 
-      behave like optionsField[ForeignTotalIncome](
+      behave like optionsField[TotalIncome](
         form,
         fieldName,
-        validValues  = ForeignTotalIncome.values,
+        validValues  = TotalIncome.values,
         invalidError = FormError(fieldName, "error.invalid")
       )
 

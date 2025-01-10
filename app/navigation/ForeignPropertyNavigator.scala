@@ -23,7 +23,7 @@ import controllers.foreign.income.routes._
 import controllers.foreign.routes._
 import controllers.foreign.structuresbuildingallowance.routes._
 import controllers.routes.{IndexController, SummaryController}
-import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
+import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages.Page
 import pages.foreign._
@@ -262,8 +262,8 @@ class ForeignPropertyNavigator {
 
   private def foreignTotalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(TotalIncomePage) match {
-      case Some(LessThanOneThousand) => PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
-      case _                         => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      case Some(Under) => PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
+      case _           => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
     }
 
   private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
@@ -355,9 +355,9 @@ class ForeignPropertyNavigator {
     userAnswers: UserAnswers
   ): Call =
     (previousAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(LessThanOneThousand), Some(OneThousandAndMore)) =>
+      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) =>
         SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
-      case (Some(OneThousandAndMore), Some(LessThanOneThousand)) =>
+      case (Some(Between), Some(Under)) | (Some(Over), Some(Under)) =>
         PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
       case _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     }

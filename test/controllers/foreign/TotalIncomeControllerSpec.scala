@@ -19,7 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import controllers.routes
 import forms.foreign.TotalIncomeFormProvider
-import models.{ForeignTotalIncome, NormalMode, UserAnswers}
+import models.{TotalIncome, NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -50,7 +50,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
 
   forAll(scenarios) { (individualOrAgent: String) =>
-    val form: Form[ForeignTotalIncome] = formProvider(individualOrAgent)
+    val form: Form[TotalIncome] = formProvider(individualOrAgent)
     val isAgent = individualOrAgent == "agent"
     s"TotalIncome Controller for an $individualOrAgent" - {
 
@@ -72,7 +72,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(TotalIncomePage, ForeignTotalIncome.values.head).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(TotalIncomePage, TotalIncome.values.head).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 
@@ -84,7 +84,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) mustEqual view(form.fill(ForeignTotalIncome.values.head),
+          contentAsString(result) mustEqual view(form.fill(TotalIncome.values.head),
             taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
         }
       }
@@ -106,7 +106,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, totalIncomeRoute)
-              .withFormUrlEncodedBody(("foreignTotalIncome", ForeignTotalIncome.values.head.toString))
+              .withFormUrlEncodedBody(("foreignTotalIncome", TotalIncome.values.head.toString))
 
           val result = route(application, request).value
 
@@ -156,7 +156,7 @@ class TotalIncomeControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, totalIncomeRoute)
-              .withFormUrlEncodedBody(("foreignTotalIncome", ForeignTotalIncome.values.head.toString))
+              .withFormUrlEncodedBody(("foreignTotalIncome", TotalIncome.values.head.toString))
 
           val result = route(application, request).value
 
