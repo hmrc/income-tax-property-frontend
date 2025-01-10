@@ -18,7 +18,7 @@ package service
 
 import connectors.JourneyAnswersConnector
 import connectors.error.ApiError
-import models.backend.{ConnectorError, HttpParserError, ServiceError, UKPropertyDetailsError}
+import models.backend.{ConnectorError, ForeignPropertyDetailsError, HttpParserError, ServiceError, UKPropertyDetailsError}
 import models.{JourneyContext, User}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
@@ -57,13 +57,13 @@ class JourneyAnswersService @Inject() (
   def setForeignStatus(ctx: JourneyContext, status: String, user: User, countryCode: String)(implicit
     hc: HeaderCarrier
   ): Future[Either[ServiceError, String]] =
-    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+    businessService.getForeignPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
       case Right(propertyDetails) =>
         propertyDetails
-          .map { ukProperty =>
+          .map { foreignProperty =>
             journeyAnswersConnector
-              .setForeignStatus(ctx.taxYear, ukProperty.incomeSourceId, ctx.journeyPath, status, user, countryCode)
+              .setForeignStatus(ctx.taxYear, foreignProperty.incomeSourceId, ctx.journeyPath, status, user, countryCode)
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
@@ -71,7 +71,7 @@ class JourneyAnswersService @Inject() (
                 case Right(r) => Right(r)
               }
           }
-          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
+          .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
 
     }
 }
