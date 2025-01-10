@@ -17,7 +17,6 @@
 package models
 
 import audit._
-import models.ukAndForeign.UkAndForeignAbout
 import pages.PageConstants.{eSbaPath, esbas, foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
 import pages.enhancedstructuresbuildingallowance.Esba
 import play.api.libs.json.{JsPath, Json, OFormat}
