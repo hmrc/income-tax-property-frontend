@@ -32,7 +32,7 @@ class UkAndForeignPropertyNavigator {
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers, NormalMode)
     case UkAndForeignPropertyRentalTypeUkPage =>
-      taxYear => _ => _ => routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+      taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
     case NonResidentLandlordUKPage =>
@@ -72,6 +72,14 @@ class UkAndForeignPropertyNavigator {
         checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
     }
   }
+
+  private def propertyRentalTypeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    userAnswers.get(SelectCountryPage) match {
+      case Some(countries) if countries.nonEmpty =>
+        routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode)
+      case _        =>
+        routes.SelectCountryController.onPageLoad(taxYear, Index(1), mode)
+    }
 
   private def totalIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
     userAnswers.get(TotalPropertyIncomePage) match {
