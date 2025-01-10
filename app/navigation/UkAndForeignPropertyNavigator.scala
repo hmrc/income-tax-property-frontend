@@ -20,6 +20,7 @@ import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
 import models._
 import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage}
+import pages.ukandforeignproperty._
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -34,6 +35,8 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+    case NonResidentLandlordUKPage =>
+      taxYear => _ => userAnswers => nonResidentLandlordNavigation(taxYear, userAnswers, NormalMode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
 
@@ -105,13 +108,13 @@ class UkAndForeignPropertyNavigator {
     }
 
   private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+
     (userAnswers.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage), userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).map(_.toSeq)) match {
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)), Some(Seq(UkAndForeignPropertyRentalTypeUk.RentARoom))) =>
         //TODO replace 'How much income did you get from your foreign property rentals' Controller
         ???
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)), Some(_)) =>
-        //TODO replace 'Non-UK resident landlord' Controller
-        ???
+        routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)), _) =>
         //TODO replace 'How much income did you get from your foreign property rentals' Controller
         ???
@@ -121,5 +124,14 @@ class UkAndForeignPropertyNavigator {
     }
   }
 
+
+  //TODO add the next pages to navigate when they are available
+  private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    (userAnswers.get(NonResidentLandlordUKPage), mode) match {
+      case (Some(true), NormalMode) => ???
+      case (Some(false), NormalMode) => ???
+      case (_, CheckMode) => ??? //TODO CYA page
+      case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
+    }
 
 }

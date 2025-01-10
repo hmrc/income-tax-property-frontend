@@ -189,8 +189,7 @@ object ForeignPropertySummaryPage {
 
           case (Some(false), _) =>
             controllers.foreign.structuresbuildingallowance.routes
-              // TODO - Redirect to CYA for No Journey
-              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+              .ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
 
           case (_, _) =>
             controllers.foreign.structuresbuildingallowance.routes
