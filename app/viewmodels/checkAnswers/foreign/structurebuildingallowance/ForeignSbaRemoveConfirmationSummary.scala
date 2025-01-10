@@ -21,7 +21,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -30,8 +30,8 @@ object ForeignSbaRemoveConfirmationSummary {
   def row(taxYear: Int, index: Int, answers: UserAnswers, countryCode: String)(implicit messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ForeignSbaOnIndex(index, countryCode)).map { answer =>
-      val value = s"""${HtmlFormat.escape(answer.foreignStructureBuildingAddress.buildingName)},
-        ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.buildingNumber)} <br>
+      val value = s"""${HtmlFormat.escape(answer.foreignStructureBuildingAddress.name)},
+        ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.number)} <br>
         ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.postCode)}"""
 
       SummaryListRowViewModel(
