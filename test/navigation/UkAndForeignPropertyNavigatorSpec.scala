@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UkAndForeignPropertyClaimExpensesOrRelief, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UkAndForeignPropertyRentalTypeUk, UserAnswers}
 import pages.ukandforeignproperty._
+import pages.foreign.Country
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 
 import java.time.LocalDate
@@ -75,6 +76,10 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
     }
 
     "Uk And Foreign Property Rental Type Uk" - {
+      val testCountry: Country = Country("Greece", "GRC")
+      val userAnswersWith0Country = emptyUserAnswers
+      val userAnswersWith1Country = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
+
       "in Normal mode" - {
         "must go to SelectCountryPage" in {
           navigator.nextPage(
@@ -82,8 +87,17 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
             taxYear,
             NormalMode,
             UserAnswers("id"),
-            UserAnswers("id")
+            userAnswersWith0Country
           ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+        }
+        "must go to ForeignCountriesRented when at least one counter" in {
+          navigator.nextPage(
+            UkAndForeignPropertyRentalTypeUkPage,
+            taxYear,
+            NormalMode,
+            UserAnswers("id"),
+            userAnswersWith1Country
+          ) mustBe routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
         }
       }
 
