@@ -2561,12 +2561,8 @@ foreignResidentialFinanceCosts.error.twoDecimalPlaces.agent = *Missing Welsh*
 foreignResidentialFinanceCosts.error.outOfRange = *Missing Welsh*
 foreignResidentialFinanceCosts.change.hidden = *Missing Welsh*
 
-foreignBalancingCharge.title.agent = *Missing Welsh*
-foreignBalancingCharge.title.individual = *Missing Welsh*
-foreignBalancingCharge.heading.agent = *Missing Welsh*
-foreignBalancingCharge.heading.individual = *Missing Welsh*
-foreignBalancingCharge.para.individual = *Missing Welsh*
-foreignBalancingCharge.para.agent = *Missing Welsh*
+foreignBalancingCharge.title = *Missing Welsh*
+foreignBalancingCharge.heading = *Missing Welsh*
 
 foreignBalancingCharge.checkYourAnswersAmountLabel = *Missing Welsh*
 
