@@ -27,7 +27,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignSelectCountriesCompletePage
 import pages.{AboutPropertyCompletePage, ReportPropertyIncomePage, SummaryPage, UKPropertyPage}
-import service.{BusinessService, CYADiversionService}
+import service.{BusinessService, CYADiversionService, ForeignCYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 import java.time.LocalDate
@@ -36,6 +36,7 @@ import scala.concurrent.Future
 class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with MockitoSugar with ScalaFutures {
 
   val cyaDiversionService: CYADiversionService = mock[CYADiversionService]
+  val foreignCYADiversionService: ForeignCYADiversionService = mock[ForeignCYADiversionService]
   val mockUkSummaryPage: SummaryPage = mock[SummaryPage]
   val mockBusinessService: BusinessService = mock[BusinessService]
 
@@ -160,14 +161,15 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
           taxYear,
           combinedUserAnswers,
-          cyaDiversionService
+          cyaDiversionService,
+          foreignCYADiversionService
         )
 
       result shouldBe notStartUkAndForeignPropertyItems
     }
 
     "return TaskListTag.CanNotStart when no properties are selected" in {
-      val result = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, None, cyaDiversionService)
+      val result = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, None, cyaDiversionService, foreignCYADiversionService)
 
       result shouldBe canNotStartUkAndForeignPropertyItems
     }
@@ -179,7 +181,8 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
           taxYear,
           ukPropertyUserAnswers,
-          cyaDiversionService
+          cyaDiversionService,
+          foreignCYADiversionService
         )
 
       result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems
@@ -199,7 +202,8 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
           taxYear,
           foreignPropertyUserAnswers,
-          cyaDiversionService
+          cyaDiversionService,
+          foreignCYADiversionService
         )
 
       result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems
@@ -215,7 +219,8 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
           taxYear,
           noPropertyUserAnswers,
-          cyaDiversionService
+          cyaDiversionService,
+          foreignCYADiversionService
         )
 
       result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems

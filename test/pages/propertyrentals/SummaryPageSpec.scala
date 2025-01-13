@@ -230,7 +230,14 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.Completed), adjustmentsListItem)
+      val res = Seq(
+        summaryItem,
+        incomeListItem.copy(
+          taskListTag = TaskListTag.Completed,
+          call = controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+        ),
+        adjustmentsListItem
+      )
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
@@ -266,7 +273,14 @@ class SummaryPageSpec extends SpecBase {
         .success
         .value
 
-      val res = Seq(summaryItem, incomeListItem.copy(taskListTag = TaskListTag.Completed), adjustmentsListItem)
+      val res = Seq(
+        summaryItem,
+        incomeListItem.copy(
+          taskListTag = TaskListTag.Completed,
+          call = controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+        ),
+        adjustmentsListItem
+      )
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
@@ -304,7 +318,10 @@ class SummaryPageSpec extends SpecBase {
 
       val res = Seq(
         summaryItem,
-        incomeListItem.copy(taskListTag = TaskListTag.Completed),
+        incomeListItem.copy(
+          taskListTag = TaskListTag.Completed,
+          call = controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+        ),
         adjustmentsListItem.copy(call =
           controllers.adjustments.routes.AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         )
