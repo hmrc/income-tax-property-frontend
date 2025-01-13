@@ -38,7 +38,7 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
       .getOrElse(super.cleanup(maybeTotalIncome, userAnswers))
 
     maybeTotalIncome match {
-      case Some(Over) =>
+      case Some(Over) | Some(Between) =>
         for {
           answers <- updatedAnswers
         } yield answers
