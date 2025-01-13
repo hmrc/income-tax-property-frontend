@@ -23,6 +23,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import controllers.foreign.adjustments.routes.PropertyIncomeAllowanceClaimController
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, bigDecimalCurrency, valueCssClass}
 
 object PropertyIncomeAllowanceClaimSummary  {
 
@@ -31,8 +32,8 @@ object PropertyIncomeAllowanceClaimSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "propertyIncomeAllowanceClaim.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = KeyViewModel("propertyIncomeAllowanceClaim.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("propertyIncomeAllowanceClaim.change.hidden"))
