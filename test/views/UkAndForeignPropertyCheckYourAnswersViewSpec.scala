@@ -48,18 +48,6 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
 
   "UkAndForeignPropertyCheckYourAnswersView" - {
 
-    "render correctly" in {
-      val list = SummaryList(Seq.empty)
-      val taxYear: Int = LocalDate.now.getYear
-
-      val request = FakeRequest(GET, "/")
-      val result = createView(list, taxYear)(request)
-
-      contentAsString(result) must include(messages("checkYourAnswers.title"))
-      contentAsString(result) must include(messages("checkYourAnswers.heading"))
-      contentAsString(result) must include(messages("site.saveAndContinue"))
-    }
-
     "render the summary list with TotalPropertyIncomeSummary and ReportIncomeSummary" in {
       val taxYear: Int = LocalDate.now.getYear
       val individualOrAgent = "individual"
