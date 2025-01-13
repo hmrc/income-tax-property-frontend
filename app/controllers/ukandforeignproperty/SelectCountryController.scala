@@ -26,9 +26,8 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CountryNamesDataSource
+import service.{CountryNamesDataSource, UkAndForeignPropertyCountryService}
 import service.CountryNamesDataSource.countrySelectItems
-import uk.gov.hmrc.govukfrontend.views.viewmodels.select.SelectItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.SelectCountryView
 
@@ -39,6 +38,7 @@ class SelectCountryController @Inject() (
                                           override val messagesApi: MessagesApi,
                                           sessionRepository: SessionRepository,
                                           navigator: UkAndForeignPropertyNavigator,
+                                          countryService: UkAndForeignPropertyCountryService,
                                           identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
@@ -50,9 +50,8 @@ class SelectCountryController @Inject() (
 
   def onPageLoad(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
-      val addedCountries = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
-      val selectItems = excludeCountries(countrySelectItems, addedCountries)
+      val addedCountries: List[Country] = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey, addedCountries, index)
 
       val preparedForm = addedCountries match {
         case Nil => form
@@ -63,36 +62,27 @@ class SelectCountryController @Inject() (
           }
       }
 
-      Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, selectItems))
+      Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
     }
 
   def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val addedCountries = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
-      val selectItems = excludeCountries(countrySelectItems, addedCountries)
+      val addedCountries: List[Country] = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
 
-      formProvider(request.user.isAgentMessageKey)
+      formProvider(request.user.isAgentMessageKey, addedCountries, index)
         .bindFromRequest()
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, selectItems))
+              BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
             ),
           countryCode =>
             for {
               country            <- Future(CountryNamesDataSource.getCountry(countryCode))
-              updatedCountryList = addedCountries ++ country.toList
-              updatedUserAnswers <- Future.fromTry(request.userAnswers.set(SelectCountryPage, updatedCountryList))
+              updatedUserAnswers <- countryService.upsertCountry(country, index)
               _                  <- sessionRepository.set(updatedUserAnswers)
-            } yield Redirect(
-                navigator.nextPage(SelectCountryPage, taxYear, mode, request.userAnswers, updatedUserAnswers)
-              )
+            } yield Redirect(navigator.nextPage(SelectCountryPage, taxYear, mode, request.userAnswers, updatedUserAnswers))
         )
     }
-
-  private def excludeCountries(fullList: Seq[SelectItem], exclude: List[Country]): List[SelectItem] = {
-    val countriesToExclude = exclude.map(_.name)
-    fullList.toList.filterNot(item => countriesToExclude.contains(item.text))
-  }
 
 }

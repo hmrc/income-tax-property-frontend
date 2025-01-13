@@ -205,7 +205,7 @@ class ForeignPropertyNavigator {
     case ForeignOtherIncomeFromPropertyPage(countryCode) =>
       taxYear => _ => _ => ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
-      taxYear => _ => _ => ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      taxYear => _ => _ => ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignRentsRatesAndInsurancePage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignPropertyRepairsAndMaintenancePage(countryCode) =>

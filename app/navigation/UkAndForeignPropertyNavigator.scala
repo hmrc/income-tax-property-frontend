@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package navigation
 
 import com.google.inject.Singleton
 import controllers.ukandforeignproperty.routes
+import models.TotalPropertyIncome.{LessThan, Maximum}
 import models._
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, ForeignCountriesRentedPage, ReportIncomePage, SelectCountryPage, TotalPropertyIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage}
 import pages.ukandforeignproperty._
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
@@ -32,7 +32,7 @@ class UkAndForeignPropertyNavigator {
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeNavigation(taxYear, userAnswers, NormalMode)
     case UkAndForeignPropertyRentalTypeUkPage =>
-      taxYear => _ => _ => routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+      taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
     case NonResidentLandlordUKPage =>
@@ -52,8 +52,15 @@ class UkAndForeignPropertyNavigator {
 
   }
 
-  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call =
-    _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad //TODO CYA page
+  private val checkRouteMap: Page => Int => UserAnswers => UserAnswers => Call = {
+    case TotalPropertyIncomePage =>
+      taxYear => previousAnswers => userAnswers => totalPropertyIncomeCheckModeNavigation(taxYear, previousAnswers, userAnswers)
+    case ReportIncomePage =>
+      taxYear => _ => userAnswers => reportIncomeCheckNavigation(taxYear, userAnswers)
+    case SelectCountryPage =>
+      taxYear => _ => _ =>
+        controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+  }
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = {
     mode match {
@@ -73,6 +80,14 @@ class UkAndForeignPropertyNavigator {
     }
   }
 
+  private def propertyRentalTypeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    userAnswers.get(SelectCountryPage) match {
+      case Some(countries) if countries.nonEmpty =>
+        routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode)
+      case _        =>
+        routes.SelectCountryController.onPageLoad(taxYear, Index(1), mode)
+    }
+
   private def totalIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
     userAnswers.get(TotalPropertyIncomePage) match {
       case Some(TotalPropertyIncome.Maximum) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
@@ -83,7 +98,7 @@ class UkAndForeignPropertyNavigator {
   private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
     userAnswers.get(ReportIncomePage) match {
       case Some(ReportIncome.WantToReport) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, mode)
-      case Some(ReportIncome.DoNoWantToReport) => controllers.routes.IndexController.onPageLoad // TODO: route to CYA page when created
+      case Some(ReportIncome.DoNoWantToReport) => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     }
   }
 
@@ -124,7 +139,6 @@ class UkAndForeignPropertyNavigator {
     }
   }
 
-
   //TODO add the next pages to navigate when they are available
   private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
     (userAnswers.get(NonResidentLandlordUKPage), mode) match {
@@ -133,5 +147,26 @@ class UkAndForeignPropertyNavigator {
       case (_, CheckMode) => ??? //TODO CYA page
       case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
     }
+
+
+  private def totalPropertyIncomeCheckModeNavigation(
+                                              taxYear: Int,
+                                              previousAnswers: UserAnswers,
+                                              userAnswers: UserAnswers
+                                            ): Call =
+    (previousAnswers.get(TotalPropertyIncomePage), userAnswers.get(TotalPropertyIncomePage)) match {
+      case (Some(LessThan), Some(Maximum)) =>
+        routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode)
+      case (Some(Maximum), Some(LessThan)) =>
+        routes.ReportIncomeController.onPageLoad(taxYear, CheckMode)
+      case _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def reportIncomeCheckNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
+    userAnswers.get(ReportIncomePage) match {
+      case Some(ReportIncome.WantToReport) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode)
+      case Some(ReportIncome.DoNoWantToReport) => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    }
+  }
 
 }

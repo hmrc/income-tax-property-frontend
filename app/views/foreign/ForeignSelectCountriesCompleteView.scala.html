@@ -38,7 +38,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("isForeignSelectCountriesComplete"),
-                legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading()
+                legend = LegendViewModel(messages("haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
             ).withHint(HintViewModel(messages("haveYouFinishedThisSection.hint")))
         )
 

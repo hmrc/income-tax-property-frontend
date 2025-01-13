@@ -17,9 +17,9 @@
 package pages.ukandforeignproperty
 
 import models.{UKPropertySelect, UserAnswers}
-import pages.foreign.ForeignPropertySummaryPage.foreignPropertyAboutItems
+import pages.foreign.ForeignSummaryPage
 import pages.{SummaryPage, isSelected}
-import service.CYADiversionService
+import service.{CYADiversionService, ForeignCYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 
@@ -30,9 +30,10 @@ case class UkAndForeignPropertySummaryPage(
 
 object UkAndForeignPropertySummaryPage {
 
-  def ukAndForeignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers], cyaDiversionService: CYADiversionService): Seq[TaskListItem] = {
+  def ukAndForeignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers], cyaDiversionService: CYADiversionService, foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
 
     val summaryPage = SummaryPage(cyaDiversionService)
+    val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
 
     val ukPropertyItems: Seq[TaskListItem] = if (isSelected(userAnswers, UKPropertySelect.PropertyRentals)) {
       summaryPage.propertyAboutItems(userAnswers, taxYear)
@@ -40,7 +41,7 @@ object UkAndForeignPropertySummaryPage {
       Seq.empty
     }
 
-    val foreignPropertyItems: Seq[TaskListItem] = foreignPropertyAboutItems(taxYear, userAnswers)
+    val foreignPropertyItems: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyAboutItems(taxYear, userAnswers)
 
     val ukPropertyComplete = ukPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
     val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)

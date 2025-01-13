@@ -1,5 +1,5 @@
 @*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 @import controllers.ukandforeignproperty.routes
 @import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.FormGroup
 
 @this(
     layout: templates.Layout,
@@ -25,33 +26,34 @@
     govukSelect: GovukSelect
 )
 
+
 @(form: Form[_], taxYear:Int, index: Index, userType: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"selectCountry.title.$userType"))) {
-    <h1 class="govuk-heading-l">@messages(s"selectCountry.title.$userType")</h1>
-
-    <div class="govuk-inset-text">
-        <p class="govuk-body">@messages("income.from.otherCountry.info")</p>
-    </div>
 
     @formHelper(action = routes.SelectCountryController.onSubmit(taxYear, index, mode)) {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
+          @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-    <h2 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h2>
-    <div class="govuk-hint"> @messages("start.typing.country.hint") </div>
+        <h1 class="govuk-heading-l">@messages(s"selectCountry.title.$userType")</h1>
 
-    <div class="govuk-!-width-one-half">
+        <div class="govuk-inset-text">
+          <p class="govuk-body">@messages("income.from.otherCountry.info")</p>
+        </div>
+
         @govukSelect(Select(
-            id = "country",
-            items = countries
+          id = "country",
+          name = "country",
+          label = Label(content = Text(messages("selectIncomeCountry.legend")), classes = "govuk-label--m"),
+          formGroup = FormGroup(classes = Some("govuk-input--width-20")),
+          items = countries
         ).asAccessibleAutocomplete().withFormField(form("country")))
-    </div>
 
         @govukButton(
             ButtonViewModel(messages("site.continue"))
         )
+
     }
 }

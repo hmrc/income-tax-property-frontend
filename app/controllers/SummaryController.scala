@@ -20,11 +20,11 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
 import models.requests.OptionalDataRequest
 import pages._
-import pages.foreign.{ForeignPropertySummaryPage, IncomeSourceCountries}
+import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{BusinessService, CYADiversionService}
+import service.{BusinessService, CYADiversionService, ForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SummaryView
@@ -38,39 +38,46 @@ class SummaryController @Inject() (
   getData: DataRetrievalAction,
   sessionRecovery: SessionRecovery,
   cyaDiversionService: CYADiversionService,
+  foreignCYADiversionService: ForeignCYADiversionService,
   view: SummaryView,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def show(taxYear: Int): Action[AnyContent] = (identify andThen getData).async { implicit requestBeforeUpdate =>
+    val summaryPage = SummaryPage(cyaDiversionService)
+    val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
     withUpdatedData(taxYear) { request =>
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
         case Right(Some(propertyData)) =>
           val propertyRentalsRows =
-            SummaryPage(cyaDiversionService)
+            summaryPage
               .createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
-          val ukRentARoomRows = SummaryPage(cyaDiversionService).createUkRentARoomRows(request.userAnswers, taxYear)
-          val startItems = SummaryPage(cyaDiversionService).propertyAboutItems(request.userAnswers, taxYear)
+          val ukRentARoomRows = summaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
+          val startItems = summaryPage.propertyAboutItems(request.userAnswers, taxYear)
           val combinedItems =
-            SummaryPage(cyaDiversionService)
+            summaryPage
               .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
 
           val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
           val maybeCountries = foreignCountries.getOrElse(List.empty)
+          val foreignPropertyItems = maybeCountries.map { country =>
+            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, country.code, request.userAnswers)
+          }.toMap
           Future.successful(
             Ok(
               view(
                 UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems),
                 ForeignPropertySummaryPage(
                   taxYear = taxYear,
-                  startItems = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, request.userAnswers),
+                  startItems = foreignSummaryPage.foreignPropertyAboutItems(taxYear, request.userAnswers),
+                  foreignPropertyItems = foreignPropertyItems,
                   foreignIncomeCountries = maybeCountries,
                   userAnswers = request.userAnswers
                 ),
                 UkAndForeignPropertySummaryPage(
                   taxYear = taxYear,
-                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, request.userAnswers, cyaDiversionService)
+                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, request.userAnswers, cyaDiversionService, foreignCYADiversionService)
                 )
               )
             )

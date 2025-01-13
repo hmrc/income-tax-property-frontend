@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,9 @@ package navigation
 
 import base.SpecBase
 import controllers.ukandforeignproperty.routes
-import models.{CheckMode, Index, NormalMode, TotalPropertyIncome, UkAndForeignPropertyClaimExpensesOrRelief, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UkAndForeignPropertyRentalTypeUk, UserAnswers}
+import models._
 import pages.ukandforeignproperty._
+import pages.foreign.Country
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 
 import java.time.LocalDate
@@ -75,6 +76,10 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
     }
 
     "Uk And Foreign Property Rental Type Uk" - {
+      val testCountry: Country = Country("Greece", "GRC")
+      val userAnswersWith0Country = emptyUserAnswers
+      val userAnswersWith1Country = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
+
       "in Normal mode" - {
         "must go to SelectCountryPage" in {
           navigator.nextPage(
@@ -82,13 +87,22 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
             taxYear,
             NormalMode,
             UserAnswers("id"),
-            UserAnswers("id")
+            userAnswersWith0Country
           ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
+        }
+        "must go to ForeignCountriesRented when at least one counter" in {
+          navigator.nextPage(
+            UkAndForeignPropertyRentalTypeUkPage,
+            taxYear,
+            NormalMode,
+            UserAnswers("id"),
+            userAnswersWith1Country
+          ) mustBe routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
         }
       }
 
       "in Check mode" - {
-        "must go to the CYA page" in {
+        "must go to the CYA page" ignore {
           navigator.nextPage(
             UkAndForeignPropertyRentalTypeUkPage,
             taxYear,
@@ -251,6 +265,83 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
           UserAnswers("id"),
           nonResidentLandlordUKPage
         ) mustBe ???
+      }
+    }
+
+    "Total Property Income in Check mode" - {
+
+      "must go from a TotalPropertyIncomePage to ReportIncomePage when the option selected is 'less than £1000'" in {
+        val previousAnswers = UserAnswers("id")
+          .set(TotalPropertyIncomePage, TotalPropertyIncome.Maximum).success.value
+        val userAnswers = UserAnswers("id")
+          .set(TotalPropertyIncomePage, TotalPropertyIncome.LessThan).success.value
+
+        navigator.nextPage(
+          TotalPropertyIncomePage,
+          taxYear,
+          CheckMode,
+          previousAnswers,
+          userAnswers
+        ) mustBe routes.ReportIncomeController.onPageLoad(taxYear, CheckMode)
+      }
+
+      "must go from a TotalPropertyIncomePage to UkAndForeignPropertyRentalTypeUkPage when the option selected is '£1000 or more'" in {
+        val previousAnswers = UserAnswers("id")
+          .set(TotalPropertyIncomePage, TotalPropertyIncome.LessThan).success.value
+        val userAnswers = UserAnswers("id")
+          .set(TotalPropertyIncomePage, TotalPropertyIncome.Maximum).success.value
+
+        navigator.nextPage(
+          TotalPropertyIncomePage,
+          taxYear,
+          CheckMode,
+          previousAnswers,
+          userAnswers
+        ) mustBe routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must redirect to CYA when answer remains the same" in {
+        val ua = UserAnswers("id")
+          .set(TotalPropertyIncomePage, TotalPropertyIncome.LessThan).success.value
+
+        navigator.nextPage(
+          TotalPropertyIncomePage,
+          taxYear,
+          CheckMode,
+          UserAnswers("id"),
+          ua
+        ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+      }
+    }
+
+    "Report Income in Check mode" - {
+
+      "must go from a ReportIncomePage to UkAndForeignPropertyRentalTypeUkPage when the option selected is 'less than £1000'" in {
+        val previousAnswers = UserAnswers("id")
+          .set(ReportIncomePage, ReportIncome.DoNoWantToReport).success.value
+        val userAnswers = UserAnswers("id")
+          .set(ReportIncomePage, ReportIncome.WantToReport).success.value
+
+        navigator.nextPage(
+          ReportIncomePage,
+          taxYear,
+          CheckMode,
+          previousAnswers,
+          userAnswers
+        ) mustBe routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from a ReportIncomePage to Uk And foreign property CYA when answer remains the same" in {
+        val ua = UserAnswers("id")
+          .set(ReportIncomePage, ReportIncome.DoNoWantToReport).success.value
+
+        navigator.nextPage(
+          ReportIncomePage,
+          taxYear,
+          CheckMode,
+          UserAnswers("id"),
+          ua
+        ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
   }

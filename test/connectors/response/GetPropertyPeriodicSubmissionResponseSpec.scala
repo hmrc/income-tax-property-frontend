@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
 import models.TotalIncome.Under
 import models._
+import models.ukAndForeign.UkAndForeignAbout
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
@@ -138,7 +139,13 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             )
           )
         )
-        val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData)
+        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(Some(
+          UkAndForeignAbout(
+            TotalPropertyIncome.Maximum,
+            Some(ReportIncome.WantToReport))
+          )
+        )
+        val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
 
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 

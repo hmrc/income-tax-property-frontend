@@ -77,6 +77,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
       val foreignProperty = ForeignPropertySummaryPage(
         taxYear = taxYear,
         startItems = Seq.empty,
+        foreignPropertyItems = Map.empty,
         foreignIncomeCountries = List.empty,
         userAnswers = None
       )
@@ -114,6 +115,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
             "foreign_property_select_country"
           )
         ),
+        foreignPropertyItems = Map.empty,
         foreignIncomeCountries = List.empty,
         userAnswers = None
       )
@@ -160,6 +162,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
           )
         ),
         foreignIncomeCountries = List.empty,
+        foreignPropertyItems = Map.empty,
         userAnswers = None
       )
 
@@ -223,6 +226,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
           )
         ),
         foreignIncomeCountries = List.empty,
+        foreignPropertyItems = Map.empty,
         userAnswers = None
       )
 
@@ -271,6 +275,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
           )
         ),
         foreignIncomeCountries = List.empty,
+        foreignPropertyItems = Map.empty,
         userAnswers = None
       )
 

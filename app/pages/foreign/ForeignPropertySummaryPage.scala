@@ -17,22 +17,24 @@
 package pages.foreign
 
 import models.{NormalMode, UserAnswers}
-import pages.foreign.allowances.ForeignAllowancesCompletePage
 import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
+import pages.foreign.allowances.ForeignAllowancesCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
 import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage, ForeignStructureBuildingAllowanceGroup}
 import play.api.mvc.Call
+import service.ForeignCYADiversionService
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class ForeignPropertySummaryPage(
   taxYear: Int,
   startItems: Seq[TaskListItem],
+  foreignPropertyItems: Map[String, Seq[TaskListItem]],
   foreignIncomeCountries: List[Country],
   userAnswers: Option[UserAnswers]
 )
 
-object ForeignPropertySummaryPage {
+case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionService) {
 
   def foreignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
     val isCompleteSection = userAnswers.flatMap(_.get(ForeignSelectCountriesCompletePage))
@@ -49,7 +51,10 @@ object ForeignPropertySummaryPage {
     Seq(
       TaskListItem(
         "foreign.selectCountry",
-        controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
+        foreignCYADiversionService
+          .redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.SELECT_COUNTRY, None) {
+            controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear)
+          },
         taskListTag,
         "foreign_property_select_country"
       )
@@ -113,13 +118,17 @@ object ForeignPropertySummaryPage {
       Seq(
         TaskListItem(
           "foreign.tax",
-          controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
+          foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.FOREIGN_TAX, Some(countryCode)) {
+            controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode)
+          },
           taskListTagForForeignTax,
-          "foreign_property_income_tax"
+          s"foreign_property_income_tax_$countryCode"
         ),
         TaskListItem(
           "foreign.income",
-          controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+          foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.INCOME, Some(countryCode)) {
+            controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode)
+          },
           taskListTagForIncome,
           s"foreign_property_income_$countryCode"
         )
@@ -131,7 +140,9 @@ object ForeignPropertySummaryPage {
         Seq(
           TaskListItem(
             "summary.adjustments",
-            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(true)),
+            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ADJUSTMENTS, Some(countryCode)) {
+              controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA = true)
+            },
             taskListTagForAdjustments,
             s"foreign_property_adjustments_$countryCode"
           )
@@ -141,19 +152,25 @@ object ForeignPropertySummaryPage {
         Seq(
           TaskListItem(
             "summary.adjustments",
-            controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isClaimingAllowances.getOrElse(false)),
+            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ADJUSTMENTS, Some(countryCode)) {
+              controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA = false)
+            },
             taskListTagForAdjustments,
             s"foreign_property_adjustments_$countryCode"
           ),
           TaskListItem(
             "summary.allowances",
-            controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
+            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ALLOWANCES, Some(countryCode)) {
+              controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode)
+            },
             taskListTagForAllowances,
             s"foreign_property_allowances_$countryCode"
           ),
           TaskListItem(
             "summary.expenses",
-            controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.EXPENSES, Some(countryCode)) {
+              controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode)
+            },
             taskListTagForExpenses,
             s"foreign_property_expenses_$countryCode"
           ),

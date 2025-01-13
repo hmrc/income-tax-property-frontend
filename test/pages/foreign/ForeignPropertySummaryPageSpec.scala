@@ -16,22 +16,73 @@
 
 package pages.foreign
 
-import models.UserAnswers
+import controllers.foreign.adjustments.routes._
+import controllers.foreign.allowances.routes._
+import controllers.foreign.expenses.routes._
+import controllers.foreign.income.routes._
+import controllers.foreign.routes._
+import controllers.foreign.structuresbuildingallowance.routes._
+import models.{ForeignStructuresBuildingAllowanceAddress, NormalMode, UserAnswers}
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.income.ForeignIncomeSectionCompletePage
+import pages.foreign.structurebuildingallowance._
 import play.api.libs.json.Json
+import service.ForeignCYADiversionService
+import viewmodels.summary.TaskListItem
 import viewmodels.summary.TaskListTag.{Completed, InProgress, NotStarted}
 
-import java.time.Instant
+import java.time.{Instant, LocalDate}
 
 class ForeignPropertySummaryPageSpec
     extends AnyFreeSpec with Matchers with ScalaFutures with IntegrationPatience with OptionValues with MockitoSugar {
 
   private val taxYear = 2024
+  private val foreignCYADiversionService: ForeignCYADiversionService = new ForeignCYADiversionService()
+  private val foreignSummaryPage: ForeignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
+  val countryCode = "ESP"
+  val foreignTaxItem: TaskListItem = TaskListItem(
+    content = "foreign.tax",
+    call = ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),
+    taskListTag = NotStarted,
+    id = s"foreign_property_income_tax_$countryCode"
+  )
+  val incomeItem: TaskListItem = TaskListItem(
+    content = "foreign.income",
+    call = ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+    taskListTag = NotStarted,
+    id =  s"foreign_property_income_$countryCode"
+  )
+  def adjustmentsItem(isPIA: Boolean): TaskListItem = TaskListItem(
+    content = "summary.adjustments",
+    call = ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA),
+    taskListTag = NotStarted,
+    id =  s"foreign_property_adjustments_$countryCode"
+  )
+  val allowancesItem: TaskListItem = TaskListItem(
+    content = "summary.allowances",
+    call = ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
+    taskListTag = NotStarted,
+    id =  s"foreign_property_allowances_$countryCode"
+  )
+  val expensesItem: TaskListItem = TaskListItem(
+    content = "summary.expenses",
+    call = ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
+    taskListTag = NotStarted,
+    id =  s"foreign_property_expenses_$countryCode"
+  )
+  val sbaItem :TaskListItem = TaskListItem(
+    content = "summary.structuresAndBuildingAllowance",
+    call = ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode),
+    taskListTag = NotStarted,
+    id =  s"foreign_structure_and_building_allowance_$countryCode"
+  )
 
   ".ForeignPropertySummaryPage for the Foreign property Select Country" - {
     "should show InProgress if the user selects false for Have you finished" in {
@@ -42,7 +93,7 @@ class ForeignPropertySummaryPageSpec
         ),
         Instant.ofEpochSecond(1)
       )
-      val taskList = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
+      val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
       taskList.head.taskListTag shouldBe InProgress
     }
 
@@ -54,7 +105,7 @@ class ForeignPropertySummaryPageSpec
         ),
         Instant.ofEpochSecond(1)
       )
-      val taskList = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
+      val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
       taskList.head.taskListTag shouldBe Completed
     }
 
@@ -66,9 +117,119 @@ class ForeignPropertySummaryPageSpec
         ),
         Instant.ofEpochSecond(1)
       )
-      val taskList = ForeignPropertySummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
+      val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
       taskList.head.taskListTag shouldBe NotStarted
     }
 
+    "should redirect to the CYA page when the task list tag is 'Completed'" in {
+      val userAnswers = UserAnswers(
+        id = "foreign-property-select",
+        data = Json.obj(
+          "selectCountrySectionComplete" -> true
+        ),
+        Instant.ofEpochSecond(1)
+      )
+      val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
+      taskList.head.call shouldBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    }
   }
+
+  "foreignPropertyItems" - {
+    "should show the correct items when claiming PIA" in {
+      val isClaimingPIA = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem,
+        incomeItem,
+        adjustmentsItem(isClaimingPIA)
+      )
+      taskList shouldBe res
+    }
+
+    "should show the correct items when not claiming PIA" in {
+      val isClaimingPIA = false
+      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem,
+        incomeItem,
+        adjustmentsItem(isClaimingPIA),
+        allowancesItem,
+        expensesItem,
+        sbaItem
+      )
+      taskList shouldBe res
+    }
+
+    "should not show adjustments when PIA has not been specified" in {
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, Some(userAnswers))
+      val res = Seq(
+        foreignTaxItem,
+        incomeItem
+      )
+      taskList shouldBe res
+    }
+
+    "should redirect to the CYA page when the task list tag is 'Completed' and SBA is not being claimed" in {
+      val isClaimingPIA = false
+      val userAnswers = (for {
+        ua <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
+        ua2 <- ua1.set(ForeignIncomeSectionCompletePage(countryCode), true)
+        ua3 <- ua2.set(ForeignAllowancesCompletePage(countryCode), true)
+        ua4 <- ua3.set(ForeignExpensesSectionCompletePage(countryCode), true)
+        ua5 <- ua4.set(ForeignSbaCompletePage(countryCode), true)
+        ua6 <- ua5.set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
+      } yield ua6).toOption
+
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem.copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        adjustmentsItem(isClaimingPIA),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        sbaItem.copy(taskListTag = Completed, call = ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+      )
+      taskList shouldBe res
+    }
+
+    "should redirect to the CYA page when the task list tag is 'Completed' and SBA is being claimed" in {
+      val isClaimingPIA = false
+      val sbaAddress: ForeignStructureBuildingAllowance = ForeignStructureBuildingAllowance(
+        foreignStructureBuildingAllowanceClaim = 1,
+        foreignStructureBuildingQualifyingDate = LocalDate.now(),
+        foreignStructureBuildingQualifyingAmount = 1,
+        foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress(
+          buildingName = "building-name",
+          buildingNumber = "1",
+          postCode = "FF4 4FF"
+        )
+      )
+      val userAnswers = (for {
+        ua <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
+        ua2 <- ua1.set(ForeignIncomeSectionCompletePage(countryCode), true)
+        ua3 <- ua2.set(ForeignAllowancesCompletePage(countryCode), true)
+        ua4 <- ua3.set(ForeignExpensesSectionCompletePage(countryCode), true)
+        ua5 <- ua4.set(ForeignSbaCompletePage(countryCode), true)
+        ua6 <- ua5.set(ForeignClaimStructureBuildingAllowancePage(countryCode), true)
+        ua7 <- ua6.set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaAddress))
+      } yield ua7).toOption
+
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem.copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        adjustmentsItem(isClaimingPIA),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        sbaItem.copy(taskListTag = Completed, call = ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)),
+      )
+      taskList shouldBe res
+    }
+  }
+
 }
