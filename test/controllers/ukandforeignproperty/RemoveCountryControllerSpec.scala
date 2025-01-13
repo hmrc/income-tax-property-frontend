@@ -17,11 +17,13 @@
 package controllers.ukandforeignproperty
 
 import base.SpecBase
+import forms.ukandforeignproperty.RemoveCountryFormProvider
 import models.{Index, NormalMode, UserAnswers}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.Application
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ukandforeignproperty.RemoveCountryView
@@ -31,6 +33,8 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
   val testTaxYear: Int = 2024
   val testIndex: Index = Index(1)
   val testCountry: Country = Country("France", "FR")
+  val formProvider = new RemoveCountryFormProvider()
+  val form: Form[Boolean] = formProvider()
   val testAnswers: UserAnswers = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
 
   "GET" - {
@@ -44,7 +48,7 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
         val result = controller.onPageLoad(testTaxYear, testIndex, NormalMode)(FakeRequest())
 
         status(result) mustBe OK
-        contentAsString(result) mustBe view(testTaxYear, NormalMode, testIndex, testCountry)(FakeRequest(), messages(application)).toString
+        contentAsString(result) mustBe view(form, testTaxYear, NormalMode, testIndex, testCountry)(FakeRequest(), messages(application)).toString
       }
     }
 
@@ -61,17 +65,33 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
     }
   }
 
-
   "POST" - {
     "onSubmit must redirect to ForeignCountriesRentedController when valid data is provided" in {
       val application: Application = applicationBuilder(userAnswers = Some(testAnswers), isAgent = false).build()
 
       running(application) {
         val controller = application.injector.instanceOf[RemoveCountryController]
-        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/"))
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("value", "true")))
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value must startWith(routes.ForeignCountriesRentedController.onPageLoad(taxYear = testTaxYear, mode = NormalMode).url)
+      }
+    }
+
+    s"must return a Bad Request and errors when no data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(testAnswers), isAgent = false).build()
+
+      running(application) {
+        val controller = application.injector.instanceOf[RemoveCountryController]
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("value", " ")))
+
+        val boundForm = form.bind(Map("value" -> " "))
+
+        val view = application.injector.instanceOf[RemoveCountryView]
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustBe view(boundForm, testTaxYear, NormalMode, testIndex, testCountry)(FakeRequest(), messages(application)).toString
       }
     }
 
