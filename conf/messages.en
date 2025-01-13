@@ -2590,12 +2590,8 @@ foreignResidentialFinanceCosts.error.twoDecimalPlaces.agent = The amount your cl
 foreignResidentialFinanceCosts.error.outOfRange = Enter an amount between {0} and {1}
 foreignResidentialFinanceCosts.change.hidden = Residential property finance costs
 
-foreignBalancingCharge.title.agent = Balancing charge
-foreignBalancingCharge.title.individual = Balancing charge
-foreignBalancingCharge.heading.agent = Balancing charge
-foreignBalancingCharge.heading.individual = Balancing charge
-foreignBalancingCharge.para.individual = Understanding balancing charge
-foreignBalancingCharge.para.agent = Understanding balancing charge
+foreignBalancingCharge.title = Balancing charge
+foreignBalancingCharge.heading = Balancing charge
 
 foreignBalancingCharge.checkYourAnswersAmountLabel = Self calculated figure
 

@@ -28,7 +28,7 @@
 
 @(form: Form[_], taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"foreignBalancingCharge.title.${individualOrAgent}"))) {
+@layout(pageTitle = title(form, messages("foreignBalancingCharge.title"))) {
 
     @formHelper(action = controllers.foreign.adjustments.routes.ForeignBalancingChargeController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
@@ -36,7 +36,7 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"foreignBalancingCharge.heading.${individualOrAgent}")</h1>
+        <h1 class="govuk-heading-l">@messages("foreignBalancingCharge.heading")</h1>
 
         <div class="govuk-body">
                 <p class="govuk-body">@messages(s"foreignBalancingCharge.details.line1.${individualOrAgent}") </p>
