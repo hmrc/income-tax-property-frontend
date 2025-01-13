@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package controllers.session
 
 import audit._
 import models._
+import models.ukAndForeign.UkAndForeignAbout
 import pages._
 import pages.adjustments._
 import pages.allowances._
@@ -39,6 +40,7 @@ import pages.rentalsandrentaroom.allowances.RentalsRaRAllowancesCompletePage
 import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance._
+import pages.ukandforeignproperty._
 import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses.ExpensesRRSectionCompletePage
@@ -65,28 +67,14 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
         ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
-        ua8 <-
-          updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
-        ua9 <-
-          updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
-
-        ua10 <-
-          updateEnhancedStructureBuildingPages(
-            ua9,
-            fetchedData.ukPropertyData.esbasWithSupportingQuestions,
-            Rentals
-          )
-        ua11 <-
-          updateEnhancedStructureBuildingPages(
-            ua10,
-            fetchedData.ukPropertyData.esbasWithSupportingQuestions,
-            RentalsRentARoom
-          )
+        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
+        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
+        ua10 <- updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
+        ua11 <- updateEnhancedStructureBuildingPages(ua10, fetchedData.ukPropertyData.esbasWithSupportingQuestions, RentalsRentARoom)
         ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.ukPropertyData.propertyRentalsIncome)
         ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.ukPropertyData.rentalsAndRaRIncome)
         ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.ukPropertyData.propertyRentalsExpenses, Rentals)
-        ua15 <-
-          updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
+        ua15 <- updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
         ua16 <- updateRentARoomAbout(ua15, fetchedData.ukPropertyData.raRAbout)
         ua17 <- updateRentARoomAllowance(ua16, fetchedData.ukPropertyData.rentARoomAllowances)
         ua18 <- updateRentARoomAdjustments(ua17, fetchedData.ukPropertyData.raRAdjustments)
@@ -98,7 +86,8 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua24 <- updateForeignPropertyTax(ua23, fetchedData.foreignPropertyData.foreignPropertyTax)
         ua25 <- updateForeignPropertyAllowances(ua24, fetchedData.foreignPropertyData.foreignPropertyAllowances)
         ua26 <- updateForeignJourneyStatuses(ua25, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-      } yield ua26
+        ua27 <- updateUkAndForeignPropertyAboutPages(ua26, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
+      } yield ua27
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -219,6 +208,21 @@ object PropertyPeriodSessionRecoveryExtensions {
               )
 
           } yield claimPIAUserAnswers
+      }
+
+    private def updateUkAndForeignPropertyAboutPages(
+                                          userAnswers: UserAnswers,
+                                          maybePropertyAbout: Option[UkAndForeignAbout]
+                                        ): Try[UserAnswers] =
+      maybePropertyAbout match {
+        case None => Success(userAnswers)
+        case Some(ukAndForeignAbout) =>
+          for {
+            ua1 <- userAnswers.set(UkForeignPropertyAboutPage,
+              UkAndForeignAbout(ukAndForeignAbout.totalPropertyIncome, ukAndForeignAbout.reportIncome))
+            ua2 <- ua1.set(TotalPropertyIncomePage, ukAndForeignAbout.totalPropertyIncome)
+            ua3 <- updatePart(ua2, ReportIncomePage, ukAndForeignAbout.reportIncome)
+          } yield ua3
       }
 
     private def updateForeignPropertyIncome(

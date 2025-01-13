@@ -16,13 +16,13 @@
 
 package pages.ukandforeignproperty
 
-import models.ReportIncome
+import models.ukAndForeign.UkAndForeignAbout
 import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object ReportIncomePage extends QuestionPage[ReportIncome] {
+case object UkForeignPropertyAboutPage extends QuestionPage[UkAndForeignAbout] {
 
-  override def path: JsPath = JsPath \ PageConstants.ukAndForeignAbout \toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "reportIncome"
+  override def toString: String = PageConstants.ukAndForeignAbout
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package pages.ukandforeignproperty
 
 import models.TotalPropertyIncome
-import pages.QuestionPage
+import pages.{PageConstants, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object TotalPropertyIncomePage extends QuestionPage[TotalPropertyIncome] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ PageConstants.ukAndForeignAbout \ toString
 
   override def toString: String = "totalPropertyIncome"
 }

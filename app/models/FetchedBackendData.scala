@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,7 +139,7 @@ final case class EsbasWithSupportingQuestionsPage(propertyType: PropertyType)
 final case class JourneyWithStatus(journeyName: String, journeyStatus: String)
 
 object JourneyWithStatus {
-  implicit val format = Json.format[JourneyWithStatus]
+  implicit val format: OFormat[JourneyWithStatus] = Json.format[JourneyWithStatus]
 }
 
 final case class FetchedBackendData(
