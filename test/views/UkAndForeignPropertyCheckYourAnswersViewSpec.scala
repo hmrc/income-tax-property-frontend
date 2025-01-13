@@ -76,15 +76,7 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
       val request = FakeRequest(GET, "/")
       val result = createView(list, taxYear)(request)
 
-      contentAsString(result) must include(messages("site.change"))
-
-      contentAsString(result) must include("Less than £1,000")
-      contentAsString(result) must include("No, I do not want to report my property income")
-
-      contentAsString(result) must include("Check your answers")
-      contentAsString(result) must include("How much total income did you get from all of your UK and foreign properties?")
-      contentAsString(result) must include("Do you want to report your property income?")
-      contentAsString(result) must include("Save and continue")
+      contentAsString(result) mustEqual view(SummaryList(rows), taxYear)(request, messages(application)).toString
     }
   }
 
