@@ -361,7 +361,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(RaRZeroEmissionGoodsVehicleAllowancePage).get mustBe 10
       updated.get(RaRReplacementsOfDomesticGoodsPage).get mustBe 25
       updated.get(RaROtherCapitalAllowancesPage).get mustBe 20
-//      updated.get(pages.foreign.TotalIncomePage).get mustBe TotalIncome.Under
+      updated.get(pages.foreign.TotalIncomePage).get mustBe TotalIncome.Under
       updated.get(pages.foreign.PropertyIncomeReportPage).get mustBe false
 
       updated.get(ForeignPropertyRentalIncomePage(countryCode1)).get mustBe 12345.75

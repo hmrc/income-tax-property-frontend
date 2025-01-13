@@ -354,7 +354,7 @@ class ForeignPropertyNavigator {
     userAnswers: UserAnswers
   ): Call =
     (previousAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) =>
+      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) | (Some(Between), Some(Over)) | (Some(Over), Some(Between)) =>
         SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       case (Some(Between), Some(Under)) | (Some(Over), Some(Under)) =>
         PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
