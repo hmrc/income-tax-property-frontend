@@ -20,10 +20,12 @@
 @this(
         layout: Layout,
         formWithCsrf: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukRadios: GovukRadios,
         govukButton: GovukButton
 )
 
-@(taxYear: Int, mode: Mode, index: Index, country: Country)(implicit request: Request[_], messages: Messages)
+@(form: Form[_],taxYear: Int, mode: Mode, index: Index, country: Country)(implicit request: Request[_], messages: Messages)
 
 @titleHtml = {
   @messages("doYouWantToRemoveCountry.heading") @country.name @messages("doYouWantToRemoveCountry.heading2")
@@ -34,21 +36,21 @@
   <h1 class="govuk-heading-l">@titleHtml</h1>
 
   @formWithCsrf(action = controllers.ukandforeignproperty.routes.RemoveCountryController.onSubmit(taxYear, index, NormalMode)) {
-    <div class="govuk-!-margin-bottom-9 govuk-!-display-inline">
-      @govukButton(
-        Button(
-          content = Text(messages("site.remove")),
-          classes = """govuk-button--warning govuk-!-display-inline-block"""
+
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form))
+    }
+
+    @govukRadios(
+        RadiosViewModel.yesNo(
+            field = form("value"),
+            legend = LegendViewModel("").asPageHeading()
         )
-      )
+    )
 
-      <div class="govuk-!-display-inline-block govuk-!-padding-left-2 govuk-!-padding-top-2">
-        <a class="govuk-link" href="@controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode).url">
-        @messages("dontRemove.link")
-        </a>
-      </div>
-
-    </div>
+    @govukButton(
+        ButtonViewModel(messages("site.continue"))
+    )
   }
 
 }

@@ -16,26 +16,30 @@
 
 package views.ukandforeignproperty
 
-import models.{Index, NormalMode}
+import forms.ukandforeignproperty.{RemoveCountryFormProvider, TotalPropertyIncomeFormProvider}
+import models.{Index, NormalMode, TotalPropertyIncome}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import pages.foreign.Country
+import play.api.data.Form
 import views.ViewSpecBase
 import views.html.ukandforeignproperty.RemoveCountryView
 
 class RemoveCountryViewSpec extends ViewSpecBase {
 
   val testTaxYear = 2024
+  val formProvider = new RemoveCountryFormProvider()
+  val form: Form[Boolean] = formProvider()
   val testIndex: Index = Index(1)
   val testCountry: Country = Country("France", "FR")
 
   val view: RemoveCountryView = app.injector.instanceOf[RemoveCountryView]
-  val doc: Document = Jsoup.parse(view(testTaxYear, NormalMode, testIndex, testCountry).body)
+  val doc: Document = Jsoup.parse(view(form, testTaxYear, NormalMode, testIndex, testCountry).body)
 
   object ExpectedMessages {
     val h1 = "Do you want to remove France country?"
     val backLink = "Back"
-    val removeButton = "Remove"
+    val continue = "Continue"
     val doNotRemoveButton = "Don’t remove"
   }
 
@@ -49,13 +53,8 @@ class RemoveCountryViewSpec extends ViewSpecBase {
       doc.select(".govuk-back-link").text mustBe ExpectedMessages.backLink
     }
 
-    "have a 'Remove' button" in {
-      doc.select("main .govuk-button").first().text() mustBe ExpectedMessages.removeButton
-    }
-
-    "have a 'Do not remove' button" in {
-      doc.select("main .govuk-link").get(0).text() mustBe ExpectedMessages.doNotRemoveButton
+    "have a 'continue' button" in {
+      doc.select("main .govuk-button").first().text() mustBe ExpectedMessages.continue
     }
   }
-
 }

@@ -17,11 +17,14 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
+import forms.ukandforeignproperty.RemoveCountryFormProvider
 import handlers.ErrorHandler
+import models.requests.DataRequest
 import models.{Index, Mode}
 import pages.ukandforeignproperty.SelectCountryPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.UkAndForeignPropertyCountryService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.RemoveCountryView
@@ -29,36 +32,58 @@ import views.html.ukandforeignproperty.RemoveCountryView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RemoveCountryController @Inject() (override val messagesApi: MessagesApi,
-                                         removeCountryService: UkAndForeignPropertyCountryService,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RemoveCountryView,
-                                         standardErrorHandler: ErrorHandler
-                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class RemoveCountryController @Inject() (
+  override val messagesApi: MessagesApi,
+  removeCountryService: UkAndForeignPropertyCountryService,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: RemoveCountryFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: RemoveCountryView,
+  standardErrorHandler: ErrorHandler
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
+
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      request.userAnswers.get(SelectCountryPage)
-        .flatMap(countries => countries.lift(index.positionZeroIndexed)) match {
-        case Some(country) =>
-          Future.successful(Ok(view(taxYear, mode, index, country)))
-        case _ =>
-          standardErrorHandler.notFound()
-      }
+      renderPage(taxYear, index, mode, form, Ok)
     }
 
   def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      removeCountryService.removeCountry(index)
-        .map { _ =>
-          Redirect(routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode))
-      }.recoverWith {
-        case _: IndexOutOfBoundsException =>
-          standardErrorHandler.notFound()
-      }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => renderPage(taxYear, index, mode, formWithErrors, BadRequest),
+          value =>
+            if (value) {
+              removeCountryService
+                .removeCountry(index)
+                .map { _ =>
+                  Redirect(routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode))
+                }
+                .recoverWith { case _: IndexOutOfBoundsException =>
+                  standardErrorHandler.notFound()
+                }
+            } else {
+              Future.successful(Redirect(routes.ForeignCountriesRentedController.onPageLoad(taxYear, mode)))
+            }
+        )
+
     }
 
+  private def renderPage(taxYear: Int, index: Index, mode: Mode, formWithErrors: Form[Boolean], status: Status)(implicit
+    request: DataRequest[AnyContent]
+  ): Future[Result] =
+    request.userAnswers
+      .get(SelectCountryPage)
+      .flatMap(countries => countries.lift(index.positionZeroIndexed)) match {
+      case Some(country) =>
+        Future.successful(status(view(formWithErrors, taxYear, mode, index, country)))
+      case _ =>
+        standardErrorHandler.notFound()
+    }
 }
