@@ -16,7 +16,7 @@
 
 package pages.foreign
 
-import models.TotalIncome.{Between, Over}
+import models.TotalIncome.{Between, Over, Under}
 import models.{ForeignProperty, TotalIncome, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
@@ -37,8 +37,8 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
       .map(_ => userAnswers.remove(PropertyIncomeReportPage))
       .getOrElse(super.cleanup(maybeTotalIncome, userAnswers))
 
-    maybeTotalIncome match {
-      case Some(Over) | Some(Between) =>
+    (maybeTotalIncome, userAnswers.get(TotalIncomePage)) match {
+      case (Some(Over), Some(Between)) | (Some(Between), Some(Over)) | (Some(Under), Some(Between)) | (Some(Under), Some(Over)) =>
         for {
           answers <- updatedAnswers
         } yield answers
