@@ -32,7 +32,7 @@ object TotalIncomeSummary {
     answers.get(TotalIncomePage).map { answer =>
       val value = ValueViewModel(
         HtmlContent(
-          HtmlFormat.escape(messages(s"foreignTotalIncome.$answer"))
+          HtmlFormat.escape(messages(s"totalIncome.$answer"))
         )
       )
 

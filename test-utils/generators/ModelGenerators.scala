@@ -36,11 +36,6 @@ trait ModelGenerators {
       Gen.oneOf(TotalPropertyIncome.values.toSeq)
     }
 
-  implicit lazy val arbitraryForeignTotalIncome: Arbitrary[ForeignTotalIncome] =
-    Arbitrary {
-      Gen.oneOf(ForeignTotalIncome.values)
-    }
-
   implicit lazy val arbitraryUKProperty: Arbitrary[UKPropertySelect] =
     Arbitrary {
       Gen.oneOf(UKPropertySelect.values)

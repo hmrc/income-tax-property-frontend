@@ -20,7 +20,7 @@ import audit.AuditService
 import base.SpecBase
 import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
 import models.JourneyPath.ForeignSelectCountry
-import models.{ForeignPropertySelectCountry, ForeignTotalIncome, JourneyContext, UserAnswers}
+import models.{ForeignPropertySelectCountry, TotalIncome, JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -91,7 +91,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
         userAnswers
           .set(
             ForeignPropertySelectCountry,
-            ForeignPropertySelectCountry(ForeignTotalIncome.LessThanOneThousand, Some(false), None, None, None)
+            ForeignPropertySelectCountry(TotalIncome.Under, Some(false), None, None, None)
           )
           .get
 

@@ -23,7 +23,7 @@ import controllers.foreign.income.routes._
 import controllers.foreign.routes._
 import controllers.foreign.structuresbuildingallowance.routes._
 import controllers.routes.SummaryController
-import models.ForeignTotalIncome._
+import models.TotalIncome._
 import models.JourneyName.{reads, writes}
 import models.{CheckMode, ConsolidatedOrIndividualExpenses, ForeignStructuresBuildingAllowanceAddress, NormalMode, PremiumCalculated, UserAnswers}
 import navigation.ForeignPropertyNavigator
@@ -61,7 +61,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
       }
 
       "must go from TotalIncomePage to PropertyIncomeReportPage if income is less than £1,000" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, LessThanOneThousand).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
 
         navigator.nextPage(
           TotalIncomePage,
@@ -73,7 +73,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
       }
 
       "must go from PropertyIncomeReportPage to ForeignCountriesCheckYourAnswersPage if I don't want to report my property income" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, LessThanOneThousand).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
         val updateAnswers = userAnswers.set(PropertyIncomeReportPage, false).get
 
         navigator.nextPage(
@@ -86,7 +86,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
       }
 
       "must go from PropertyIncomeReportPage to ForeignCountriesCheckYourAnswersPage if I  want to report my property income" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, LessThanOneThousand).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, Under).get
         val updateAnswers = userAnswers.set(PropertyIncomeReportPage, true).get
 
         navigator.nextPage(
@@ -99,7 +99,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
       }
 
       "must go from TotalIncomePage to SelectIncomeCountryPage if income is more than £1,000" in {
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, OneThousandAndMore).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
 
         navigator.nextPage(
           TotalIncomePage,
@@ -799,12 +799,12 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
 
       "must go from TotalIncomePage to SelectIncomeCountry if my previous answer was less than £1,000 and now £1,000 or more" in {
 
-        val userAnswers = UserAnswers("test").set(TotalIncomePage, OneThousandAndMore).get
+        val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
         navigator.nextPage(
           TotalIncomePage,
           taxYear,
           CheckMode,
-          UserAnswers("test").set(TotalIncomePage, LessThanOneThousand).get,
+          UserAnswers("test").set(TotalIncomePage, Under).get,
           userAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       }

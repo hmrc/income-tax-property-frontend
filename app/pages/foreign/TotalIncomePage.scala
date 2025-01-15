@@ -16,29 +16,29 @@
 
 package pages.foreign
 
-import models.ForeignTotalIncome.{LessThanOneThousand, OneThousandAndMore}
-import models.{ForeignProperty, ForeignTotalIncome, UserAnswers}
+import models.TotalIncome.{Between, Over, Under}
+import models.{ForeignProperty, TotalIncome, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object TotalIncomePage extends QuestionPage[ForeignTotalIncome] {
+case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "totalIncome"
 
-  override def cleanup(maybeTotalIncome: Option[ForeignTotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup(maybeTotalIncome: Option[TotalIncome], userAnswers: UserAnswers): Try[UserAnswers] = {
     val updatedAnswers = maybeTotalIncome
-      .filter(income => income == OneThousandAndMore)
+      .filter(income => income == Between || income == Over)
       .map(_ => userAnswers.remove(IncomeSourceCountries))
       .map(_ => userAnswers.remove(PropertyIncomeReportPage))
       .getOrElse(super.cleanup(maybeTotalIncome, userAnswers))
 
-    maybeTotalIncome match {
-      case Some(LessThanOneThousand) =>
+    (maybeTotalIncome, userAnswers.get(TotalIncomePage)) match {
+      case (Some(Over), Some(Between)) | (Some(Between), Some(Over)) | (Some(Under), Some(Between)) | (Some(Under), Some(Over)) =>
         for {
           answers <- updatedAnswers
         } yield answers

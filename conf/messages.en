@@ -1820,11 +1820,9 @@ foreignTotalIncome.heading.individual = How much total income did you get from a
 foreignTotalIncome.heading.agent = How much total income did your client get from all of their foreign properties?
 foreignTotalIncome.p.individual = This is the income before any deductions for agent fees or other charges. If any of your properties are let jointly, only enter your share of the income.
 foreignTotalIncome.p.agent = This is the income before any deductions for agent fees or other charges. If any of your client’s properties are let jointly, only enter their share of the income.
-foreignTotalIncome.lessThanOneThousand = Less than £1,000
-foreignTotalIncome.oneThousandAndMore = £1,000 or more
 foreignTotalIncome.checkYourAnswersLabel = How much total income did you get from all of your foreign properties?
-foreignTotalIncome.error.required.individual = Select either ‘Less than £1,000’ or ‘£1,000 or more’
-foreignTotalIncome.error.required.agent = Select either ‘Less than £1,000’ or ‘£1,000 or more’
+foreignTotalIncome.error.required.individual = Select how much total income you got from your foreign properties
+foreignTotalIncome.error.required.agent = Select how much total income you got from your client foreign properties
 foreignTotalIncome.change.hidden = How much total income did you get from all of your foreign properties?
 
 propertyIncomeReport.title = Do you want to report your property income?

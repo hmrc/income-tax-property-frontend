@@ -19,7 +19,7 @@ package connectors.response
 import audit.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
-import models.ForeignTotalIncome.LessThanOneThousand
+import models.TotalIncome.Under
 import models._
 import models.ukAndForeign.UkAndForeignAbout
 import org.scalatest.matchers.should.Matchers
@@ -77,7 +77,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             List(),
             foreignPropertySelectCountry = Some(
               ForeignPropertySelectCountry(
-                totalIncome = LessThanOneThousand,
+                totalIncome = Under,
                 reportPropertyIncome = Some(false),
                 incomeCountries = None,
                 addAnotherCountry = None,

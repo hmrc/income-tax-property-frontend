@@ -19,7 +19,7 @@ package models.foreign
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import play.api.libs.json._
-import models.{ForeignProperty, ForeignPropertySelectCountry, ForeignTotalIncome}
+import models.{ForeignProperty, ForeignPropertySelectCountry, TotalIncome}
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import pages.foreign.Country
 import pages.PageConstants.selectCountryPath
@@ -32,7 +32,7 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
 
       "must return a human-readable string" in {
         val instance = ForeignPropertySelectCountry(
-          totalIncome = ForeignTotalIncome.OneThousandAndMore,
+          totalIncome = TotalIncome.Over,
           reportPropertyIncome = Some(true),
           incomeCountries = Some(Array(Country("France", "FRA"), Country("Brazil", "BRA"))),
           addAnotherCountry = Some(false),
@@ -47,7 +47,7 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
 
       "must serialize and deserialize correctly" in {
         val instance = ForeignPropertySelectCountry(
-          totalIncome = ForeignTotalIncome.OneThousandAndMore,
+          totalIncome = TotalIncome.Over,
           reportPropertyIncome = Some(false),
           incomeCountries = None,
           addAnotherCountry = None,
@@ -62,7 +62,7 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
 
       "must handle optional fields correctly" in {
         val instance = ForeignPropertySelectCountry(
-          totalIncome = ForeignTotalIncome.LessThanOneThousand,
+          totalIncome = TotalIncome.Under,
           reportPropertyIncome = None,
           incomeCountries = None,
           addAnotherCountry = None,
