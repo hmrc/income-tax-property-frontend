@@ -21,7 +21,7 @@ import forms.ukandforeignproperty.UkRentalPropertyIncomeFormProvider
 
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.UkRentalPropertyIncomePage
 import play.api.data.Form
 import play.api.i18n.{MessagesApi, I18nSupport}
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class UkRentalPropertyIncomeController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
-                                        navigator: Navigator,
+                                        navigator: UkAndForeignPropertyNavigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
