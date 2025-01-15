@@ -2714,3 +2714,21 @@ ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = *Missing Welsh*
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = *Missing Welsh*
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = *Missing Welsh*
+
+uKRentalPropertyIncome.title = *Missing Welsh*
+uKRentalPropertyIncome.heading = *Missing Welsh*
+uKRentalPropertyIncome.checkYourAnswersLabel = *Missing Welsh*
+uKRentalPropertyIncome.p1.individual = *Missing Welsh*
+uKRentalPropertyIncome.p1.agent = *Missing Welsh*
+uKRentalPropertyIncome.bullet1 = *Missing Welsh*
+uKRentalPropertyIncome.bullet2 = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.intro = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.href = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.text = *Missing Welsh*
+uKRentalPropertyIncome.hint.individual = *Missing Welsh*
+uKRentalPropertyIncome.hint.agent = *Missing Welsh*
+uKRentalPropertyIncome.error.nonNumeric = *Missing Welsh*
+uKRentalPropertyIncome.error.required = *Missing Welsh*
+uKRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
+uKRentalPropertyIncome.error.outOfRange = *Missing Welsh*
+uKRentalPropertyIncome.change.hidden = *Missing Welsh*

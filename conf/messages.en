@@ -2740,3 +2740,21 @@ ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = Enter an amount between £{0} and £{1}
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = Deducting tax from non-UK resident landlord
+
+uKRentalPropertyIncome.title = How much income did you get from your UK property rentals?
+uKRentalPropertyIncome.heading = How much income did you get from your UK property rentals?
+uKRentalPropertyIncome.checkYourAnswersLabel = UK Rental Property Income
+uKRentalPropertyIncome.p1.individual = Rental income is the rent you get from your tenants. This is the gross amount before any deductions. This includes any payments for:
+uKRentalPropertyIncome.p1.agent = Rental income is the rent your client gets from their tenants. This is the gross amount before any deductions. This includes any payments for:
+uKRentalPropertyIncome.bullet1 = the use of furniture
+uKRentalPropertyIncome.bullet2 = charges for services you provide (such as cleaning of communal areas, hot water, heating and repairs)
+uKRentalPropertyIncome.details.content.link.intro = Read more about how to
+uKRentalPropertyIncome.details.content.link.href = https://www.gov.uk/guidance/income-tax-when-you-rent-out-a-property-working-out-your-rental-income
+uKRentalPropertyIncome.details.content.link.text = work out your rental income when you let property at GOV.UK (opens in new tab)
+uKRentalPropertyIncome.hint.individual = If any of your properties are let jointly, only enter your share of the income for these properties.
+uKRentalPropertyIncome.hint.agent = If any of your client's properties are let jointly, only enter their share of the income for these properties.
+uKRentalPropertyIncome.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+uKRentalPropertyIncome.error.required = Enter the amount of income earned from UK property rentals
+uKRentalPropertyIncome.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+uKRentalPropertyIncome.error.outOfRange = Enter an amount between £0 and £100,000,000,000
+uKRentalPropertyIncome.change.hidden = UK and Foreign property UK Rental Income Amount
