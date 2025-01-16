@@ -45,3 +45,9 @@ POST       /:taxYear/uk-foreign-property/change-non-resident-landlord-uk        
 
 GET        /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST       /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear: Int)
+
+
+GET         /:taxYear/uk-foreign-property/balancing-charge                                         controllers.ukandforeignproperty.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/balancing-charge                                         controllers.ukandforeignproperty.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode)
+POST        /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode)

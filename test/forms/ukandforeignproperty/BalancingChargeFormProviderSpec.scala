@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package forms.adjustments
+package forms.ukandforeignproperty
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.adjustments.BalancingChargeFormProvider
+import forms.ukandforeignproperty.BalancingChargeFormProvider
 import models.BalancingCharge
 import org.scalatest.OptionValues
 import play.api.data.FormError

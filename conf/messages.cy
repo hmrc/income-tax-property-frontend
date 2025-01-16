@@ -2646,3 +2646,8 @@ propertyIncomeAllowanceClaim.error.twoDecimalPlaces.individual = *Missing Welsh*
 propertyIncomeAllowanceClaim.error.twoDecimalPlaces.agent = *Missing Welsh*
 propertyIncomeAllowanceClaim.error.outOfRange = *Missing Welsh*
 propertyIncomeAllowanceClaim.change.hidden = *Missing Welsh*
+
+ukAndForeignPropertyBalancingCharge.title.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.title.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.heading.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.heading.agent =*Missing Welsh*
