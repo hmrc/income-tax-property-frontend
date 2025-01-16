@@ -1822,7 +1822,7 @@ foreignTotalIncome.p.individual = This is the income before any deductions for a
 foreignTotalIncome.p.agent = This is the income before any deductions for agent fees or other charges. If any of your client’s properties are let jointly, only enter their share of the income.
 foreignTotalIncome.checkYourAnswersLabel = How much total income did you get from all of your foreign properties?
 foreignTotalIncome.error.required.individual = Select how much total income you got from your foreign properties
-foreignTotalIncome.error.required.agent = Select how much total income you got from your client foreign properties
+foreignTotalIncome.error.required.agent = Select how much total income your client got from their foreign properties
 foreignTotalIncome.change.hidden = How much total income did you get from all of your foreign properties?
 
 propertyIncomeReport.title = Do you want to report your property income?
