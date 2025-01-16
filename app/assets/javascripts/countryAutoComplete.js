@@ -46,9 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       autoSelectMatchingCountry();
-
       e.preventDefault();
-      form.submit();
     }
   });
 });
