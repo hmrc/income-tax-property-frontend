@@ -1760,6 +1760,21 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
+ukAndForeignPropertyPremiumForLease.title = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.heading = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p1 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.l1 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.l2 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p2 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p3.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p3.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.input.heading.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.input.heading.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.change.hidden = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*

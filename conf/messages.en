@@ -1787,6 +1787,20 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
+ukAndForeignPropertyPremiumForLease.title = UK premiums for the grant of a lease
+ukAndForeignPropertyPremiumForLease.heading = UK premiums for the grant of a lease
+ukAndForeignPropertyPremiumForLease.p1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
+ukAndForeignPropertyPremiumForLease.l1 = a premium or lump sum
+ukAndForeignPropertyPremiumForLease.l2 = regular rent payments
+ukAndForeignPropertyPremiumForLease.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between two and 50 years in length.
+ukAndForeignPropertyPremiumForLease.p3.individual = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
+ukAndForeignPropertyPremiumForLease.p3.agent = Any premiums for the grant of a lease are regarded as income if your client is claiming property income allowance.
+ukAndForeignPropertyPremiumForLease.input.heading.individual = Did you receive a premium for granting a lease for UK property?
+ukAndForeignPropertyPremiumForLease.input.heading.agent = Did your client receive a premium for granting a lease for UK property?
+ukAndForeignPropertyPremiumForLease.checkYourAnswersLabel = UK premiums for the grant of a lease
+ukAndForeignPropertyPremiumForLease.error.required.individual = Select yes if you received a premium for granting a lease for UK property
+ukAndForeignPropertyPremiumForLease.error.required.agent = Select yes if your client received a premium for granting a lease for UK property
+ukAndForeignPropertyPremiumForLease.change.hidden = UK premiums for the grant of a lease
 
 ###################### Foreign Property ######################
 
