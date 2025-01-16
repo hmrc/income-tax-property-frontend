@@ -18,6 +18,8 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
+import java.time.LocalDate
+
 case class ForeignPropertyAllowances(
   zeroEmissionsCarAllowance: Option[BigDecimal],
   zeroEmissionsGoodsVehicleAllowance: Option[BigDecimal],
@@ -26,10 +28,31 @@ case class ForeignPropertyAllowances(
   annualInvestmentAllowance: Option[BigDecimal],
   propertyAllowance: Option[BigDecimal],
   electricChargePointAllowance: Option[BigDecimal],
-  structuredBuildingAllowance: Option[BigDecimal]
+  structuredBuildingAllowance: Option[Seq[StructuredBuildingAllowance]]
 )
 
 object ForeignPropertyAllowances {
   implicit val format: OFormat[ForeignPropertyAllowances] =
     Json.format[ForeignPropertyAllowances]
+}
+
+case class StructuredBuildingAllowance(
+  amount: BigDecimal,
+  firstYear: Option[StructuredBuildingAllowanceDate],
+  building: StructuredBuildingAllowanceBuilding
+)
+
+object StructuredBuildingAllowance {
+  implicit val format: OFormat[StructuredBuildingAllowance] = Json.format[StructuredBuildingAllowance]
+}
+case class StructuredBuildingAllowanceDate(qualifyingDate: LocalDate, qualifyingAmountExpenditure: BigDecimal)
+
+object StructuredBuildingAllowanceDate {
+  implicit val format: OFormat[StructuredBuildingAllowanceDate] = Json.format[StructuredBuildingAllowanceDate]
+}
+
+case class StructuredBuildingAllowanceBuilding(name: Option[String], number: Option[String], postCode: String)
+
+object StructuredBuildingAllowanceBuilding {
+  implicit val format: OFormat[StructuredBuildingAllowanceBuilding] = Json.format[StructuredBuildingAllowanceBuilding]
 }
