@@ -28,6 +28,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
 
+import java.time.LocalDate
+
 class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matchers {
 
   private val anyHeaders: Map[String, Seq[String]] = Map.empty
@@ -132,20 +134,37 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 zeroEmissionsGoodsVehicleAllowance = Some(35.35),
                 otherCapitalAllowance = Some(45.45),
                 electricChargePointAllowance = Some(55.55),
-                structuredBuildingAllowance = Some(65.65),
+                structuredBuildingAllowance = Some(
+                  Seq(
+                    StructuredBuildingAllowance(
+                      amount = 65.55,
+                      Some(
+                        StructuredBuildingAllowanceDate(
+                          qualifyingDate = LocalDate.now(),
+                          qualifyingAmountExpenditure = 50.00
+                        )
+                      ),
+                      building = StructuredBuildingAllowanceBuilding(
+                        name = Some("name"),
+                        number = Some("number"),
+                        postCode = "AB1 2XY"
+                      )
+                    )
+                  )
+                ),
                 zeroEmissionsCarAllowance = Some(75.75),
                 propertyAllowance = Some(85.85)
               )
             )
           )
         )
-        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(Some(
-          UkAndForeignAbout(
-            TotalPropertyIncome.Maximum,
-            Some(ReportIncome.WantToReport))
+        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(
+          Some(
+            UkAndForeignAbout(TotalPropertyIncome.Maximum, Some(ReportIncome.WantToReport))
           )
         )
-        val propertyPeriodicSubmissionResponse = FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
+        val propertyPeriodicSubmissionResponse =
+          FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
 
         val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 
