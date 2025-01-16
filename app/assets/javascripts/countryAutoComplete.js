@@ -30,23 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // On normal form submit, do a final match
   form.addEventListener('submit', function(e) {
     autoSelectMatchingCountry();
   });
 
-  // On Enter key, pick the first suggestion & submit
-  visibleInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      const firstSuggestion = suggestionMenu.querySelector(
-        'li.autocomplete__option[role="option"]'
-      );
-      if (firstSuggestion) {
-        visibleInput.value = firstSuggestion.textContent.trim();
-      }
-
-      autoSelectMatchingCountry();
-      e.preventDefault();
-    }
-  });
 });
