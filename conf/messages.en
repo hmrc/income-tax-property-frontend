@@ -2756,5 +2756,5 @@ uKRentalPropertyIncome.hint.agent = If any of your client's properties are let j
 uKRentalPropertyIncome.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 uKRentalPropertyIncome.error.required = Enter the amount of income earned from UK property rentals
 uKRentalPropertyIncome.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
-uKRentalPropertyIncome.error.outOfRange = Enter an amount between £0 and £100,000,000,000
+uKRentalPropertyIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 uKRentalPropertyIncome.change.hidden = UK and Foreign property UK Rental Income Amount
