@@ -2675,7 +2675,8 @@ propertyIncomeAllowanceClaim.error.outOfRange = Enter an amount between £0 and 
 propertyIncomeAllowanceClaim.change.hidden = Adjustments Property Income Allowance Claim
 
 
-ukAndForeignPropertyBalancingCharge.title.individual = Do you have to report a balancing charge for your UK property income?
-ukAndForeignPropertyBalancingCharge.title.agent = Do your client have to report a balancing charge for their UK property income?
-ukAndForeignPropertyBalancingCharge.heading.individual = Do you have to report a balancing charge for your UK property income?
-ukAndForeignPropertyBalancingCharge.heading.agent = Do your client have to report a balancing charge for their UK property income?
+ukAndForeignPropertyBalancingCharge.radio.question.label = Enter the amount
+ukAndForeignPropertyBalancingCharge.details.line1.individual = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line1.agent = If your client sold, gave away or stopped using an item in the running of their property rental that they claimed capital allowances for, they may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line2.individual = Any balancing charges are regarded as income if you’re claiming property income allowance.
+ukAndForeignPropertyBalancingCharge.details.line2.agent = Any balancing charges are regarded as income if your client is claiming property income allowance.
