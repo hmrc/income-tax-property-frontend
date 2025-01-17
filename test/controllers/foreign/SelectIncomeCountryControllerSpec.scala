@@ -30,7 +30,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import service.CountryNamesDataSource.{countrySelectItems, countrySelectItemsWithUSA}
+import service.CountryNamesDataSource.countrySelectItems
 import views.html.foreign.SelectIncomeCountryView
 
 import scala.concurrent.Future
@@ -63,7 +63,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SelectIncomeCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItemsWithUSA)(
+        contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItems)(
           request,
           messages(application)
         ).toString
@@ -90,7 +90,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
           index,
           userType,
           NormalMode,
-          countrySelectItemsWithUSA
+          countrySelectItems
         )(
           request,
           messages(application)
@@ -115,7 +115,7 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, selectIncomeCountryRoute)
-            .withFormUrlEncodedBody(("incomeCountry", "AUS"))
+            .withFormUrlEncodedBody(("incomeCountry", "USA"))
 
         val result = route(application, request).value
 
