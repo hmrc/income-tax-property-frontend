@@ -26,7 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
-import service.CountryNamesDataSource.countrySelectItems
+import service.CountryNamesDataSource.{countrySelectItems, countrySelectItemsWithUSA}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.SelectIncomeCountryView
 
@@ -54,7 +54,7 @@ class SelectIncomeCountryController @Inject() (
         case None        => form
         case Some(value) => form.fill(value.code)
       }
-      Ok(view(preparedForm, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItems))
+      Ok(view(preparedForm, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA))
     }
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =

@@ -35,7 +35,6 @@ object CountryNamesDataSource {
 
   private def selectItems: Seq[SelectItem] =
     loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
-
   lazy val loadCountries: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries.csv"), "UTF-8"))
@@ -43,5 +42,14 @@ object CountryNamesDataSource {
       ._2
       .sortBy(x => x("short_name"))
       .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))
+
+
+  // Adding a USA option as workaround for the `Select Auto-Complete` results to show United States of America
+  lazy val countrySelectItemsWithUSA: Seq[SelectItem] = {
+    val maybeUSA: Option[Country] = getCountry("USA")
+    maybeUSA
+      .map(usa => SelectItem(text = usa.code, value = Some(usa.code)))
+      .fold(countrySelectItems)(countrySelectItems :+ _)
+  }
 
 }
