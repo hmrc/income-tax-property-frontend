@@ -16,9 +16,12 @@
 
 package controllers.foreign.structuresbuildingallowance
 
+import audit.AuditService
 import controllers.actions._
-import play.api.i18n.{I18nSupport, MessagesApi}
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceGroup
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.PropertySubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.structurebuildingallowance.ForeignClaimSbaSummary
 import viewmodels.govuk.all.SummaryListViewModel
@@ -32,6 +35,8 @@ class ForeignClaimSbaCheckYourAnswersController @Inject()(
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
+                                       propertySubmissionService: PropertySubmissionService,
+                                       audit: AuditService,
                                        view: ForeignClaimSbaCheckYourAnswersView
                                      ) extends FrontendBaseController with I18nSupport {
 
@@ -44,5 +49,14 @@ class ForeignClaimSbaCheckYourAnswersController @Inject()(
         ).flatten
       )
       Ok(view(list, taxYear, countryCode))
+  }
+
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      request.userAnswers
+        .get(ForeignStructureBuildingAllowanceGroup(countryCode))
+        .map { foreignStructureBuildingAllowance =>
+
+        }
   }
 }
