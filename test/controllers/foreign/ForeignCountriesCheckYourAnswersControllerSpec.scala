@@ -97,7 +97,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
             any(),
             any()
           )

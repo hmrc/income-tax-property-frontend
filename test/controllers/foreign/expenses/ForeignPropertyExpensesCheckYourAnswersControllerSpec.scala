@@ -28,6 +28,7 @@ import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.expenses._
 import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.PropertySubmissionService
@@ -42,8 +43,8 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  def onwardRoute = ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)
-  val controller = ForeignPropertyExpensesCheckYourAnswersController
+  def onwardRoute: Call = ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)
+  val controller: ReverseForeignPropertyExpensesCheckYourAnswersController = ForeignPropertyExpensesCheckYourAnswersController
 
   private val propertySubmissionService = mock[PropertySubmissionService]
   val audit: AuditService = mock[AuditService]
@@ -83,7 +84,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
@@ -99,7 +100,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
       val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
-        .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(true, Some(BigDecimal(66))))
+        .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(BigDecimal(66))))
         .flatMap(_.set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67)))
         .flatMap(_.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
         .flatMap(_.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(68)))
@@ -114,7 +115,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
             any(),
             any()
           )
