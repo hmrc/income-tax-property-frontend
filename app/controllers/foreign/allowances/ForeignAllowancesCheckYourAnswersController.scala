@@ -86,7 +86,7 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
   )(implicit hc: HeaderCarrier): Future[Result] = {
     val context =
       JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAllowances)
-    propertySubmissionService.saveJourneyAnswers(context, foreignPropertyAllowances).flatMap {
+    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertyAllowances).flatMap {
       case Right(_) =>
         auditAllowanceCYA(taxYear, request, foreignPropertyAllowances, isFailed = false, AccountingMethod.Traditional)
         Future.successful(Redirect(ForeignAllowancesCompleteController.onPageLoad(taxYear, countryCode)))

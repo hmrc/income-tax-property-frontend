@@ -88,7 +88,7 @@ class ForeignTaxCheckYourAnswersController @Inject() (
     foreignPropertyTaxWithCountryCode: ForeignPropertyTaxWithCountryCode
   )(implicit hc: HeaderCarrier): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyTax)
-    propertySubmissionService.saveJourneyAnswers(context, foreignPropertyTaxWithCountryCode).flatMap {
+    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertyTaxWithCountryCode).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, foreignPropertyTaxWithCountryCode, isFailed = false, AccountingMethod.Traditional)
         Future.successful(
