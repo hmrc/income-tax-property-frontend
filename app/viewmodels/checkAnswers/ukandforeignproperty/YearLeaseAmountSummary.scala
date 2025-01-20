@@ -30,7 +30,7 @@ object YearLeaseAmountSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(UkandforeignpropertyYearLeaseAmountPage()).map { answer =>
+    answers.get(UkandforeignpropertyYearLeaseAmountPage).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(answer.toString).withCssClass(valueCssClass),

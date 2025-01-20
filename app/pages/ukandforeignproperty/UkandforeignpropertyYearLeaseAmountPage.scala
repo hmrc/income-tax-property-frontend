@@ -19,7 +19,7 @@ package pages.ukandforeignproperty
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class UkandforeignpropertyYearLeaseAmountPage() extends QuestionPage[Int] {
+object UkandforeignpropertyYearLeaseAmountPage extends QuestionPage[Int] {
 
   override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
 

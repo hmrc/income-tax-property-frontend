@@ -48,7 +48,7 @@ class YearLeaseAmountController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(UkandforeignpropertyYearLeaseAmountPage()) match {
+      val preparedForm = request.userAnswers.get(UkandforeignpropertyYearLeaseAmountPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class YearLeaseAmountController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkandforeignpropertyYearLeaseAmountPage(), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkandforeignpropertyYearLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkandforeignpropertyYearLeaseAmountPage(), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkandforeignpropertyYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
