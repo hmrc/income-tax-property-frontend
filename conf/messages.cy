@@ -2652,4 +2652,4 @@ ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
-
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*

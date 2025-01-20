@@ -17,6 +17,7 @@
 @import controllers.ukandforeignproperty.routes
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
+@import viewmodels.LegendSize.Medium
 
 @this(
     layout: templates.Layout,
@@ -34,7 +35,7 @@
     @formHelper(action = routes.BalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
         <h1 class="govuk-heading-l">@messages(s"balancingCharge.heading.${individualOrAgent}")</h1>
@@ -51,7 +52,7 @@
                     field = form("balancingChargeYesNo"),
                     legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                        field = form("balancingCharge"),
+                        field = form("balancingChargeYesNo"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(

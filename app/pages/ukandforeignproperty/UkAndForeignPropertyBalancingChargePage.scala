@@ -20,7 +20,7 @@ import models.BalancingCharge
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class UkAndForeignPropertyBalancingChargePage() extends QuestionPage[BalancingCharge] {
+object UkAndForeignPropertyBalancingChargePage extends QuestionPage[BalancingCharge] {
 
   override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
 

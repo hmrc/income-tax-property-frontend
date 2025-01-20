@@ -35,7 +35,7 @@ class BalancingChargeFormProvider @Inject() extends Mappings {
             currency(
               s"balancingCharge.amount.error.required.$individualOrAgent",
               s"balancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",
-              s"balancingCharge.amount.error.nonNumeric.$individualOrAgent")
+              s"ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric")
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
                 "balancingCharge.amount.error.outOfRange"))
           )

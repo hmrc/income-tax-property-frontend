@@ -68,7 +68,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(UkAndForeignPropertyBalancingChargePage(), BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .set(UkAndForeignPropertyBalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
         .success
         .value
 

@@ -45,7 +45,7 @@ class BalancingChargeController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyBalancingChargePage()) match {
+      val preparedForm = request.userAnswers.get(UkAndForeignPropertyBalancingChargePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -62,9 +62,9 @@ class BalancingChargeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyBalancingChargePage(), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyBalancingChargePage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyBalancingChargePage(), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkAndForeignPropertyBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

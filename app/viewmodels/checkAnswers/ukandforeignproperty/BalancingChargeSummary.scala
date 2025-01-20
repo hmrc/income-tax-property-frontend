@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object BalancingChargeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(UkAndForeignPropertyBalancingChargePage()).flatMap {
+    answers.get(UkAndForeignPropertyBalancingChargePage).flatMap {
       case BalancingCharge(true, amount) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
