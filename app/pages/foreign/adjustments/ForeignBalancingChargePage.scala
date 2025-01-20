@@ -25,5 +25,5 @@ case class ForeignBalancingChargePage(countryCode: String) extends QuestionPage[
 
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignBalancingCharge"
+  override def toString: String = "balancingCharge"
 }

@@ -19,8 +19,8 @@ package controllers.foreign.adjustments
 import controllers.actions._
 import forms.foreign.adjustments.ForeignPrivateUseAdjustmentFormProvider
 import models.Mode
-import navigation.{ForeignPropertyNavigator, Navigator}
-import pages.foreign.adjustments.ForeignPrivateUseAdjustmentPage
+import navigation.ForeignPropertyNavigator
+import pages.foreign.adjustments.{ForeignAdjustmentsSectionAddCountryCode, ForeignPrivateUseAdjustmentPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -65,7 +65,8 @@ class ForeignPrivateUseAdjustmentController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignPrivateUseAdjustmentPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswersWithCountryCode <- Future.fromTry(updatedAnswers.set(ForeignAdjustmentsSectionAddCountryCode(countryCode), countryCode))
+            _ <- sessionRepository.set(updatedAnswersWithCountryCode)
           } yield Redirect(foreignNavigator.nextPage(ForeignPrivateUseAdjustmentPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
