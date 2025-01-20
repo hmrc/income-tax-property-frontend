@@ -1802,6 +1802,16 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = Select yes if yo
 ukAndForeignPropertyPremiumForLease.error.required.agent = Select yes if your client received a premium for granting a lease for UK property
 ukAndForeignPropertyPremiumForLease.change.hidden = UK premiums for the grant of a lease
 
+ukAndForeignPropertyOtherIncomeFromProperty.error.nonNumeric = Amount can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyOtherIncomeFromProperty.title = Other income from UK property
+ukAndForeignPropertyOtherIncomeFromProperty.heading = Other income from UK property
+ukAndForeignPropertyOtherIncomeFromProperty.checkYourAnswersLabel = Other income from UK property
+ukAndForeignPropertyOtherIncomeFromProperty.change.hidden = Other income from UK property
+ukAndForeignPropertyOtherIncomeFromProperty.para2.individual = How much other income from UK property did you receive?
+ukAndForeignPropertyOtherIncomeFromProperty.para2.agent = How much other income from UK property did your client receive?
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.individual = Enter an amount for how much other income from UK property you received
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.agent = Enter an amount for how much other income from UK property your client received
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = Foreign property
