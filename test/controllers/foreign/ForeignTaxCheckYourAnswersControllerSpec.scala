@@ -92,7 +92,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(
+          .saveForeignPropertyJourneyAnswers(
             ArgumentMatchers.eq(context),
             any()
           )(

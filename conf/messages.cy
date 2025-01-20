@@ -1760,6 +1760,28 @@ ukAndForeignPropertyDetails.para2.part2.individual = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part2.agent = *Missing Welsh*
 ukAndForeignPropertyDetails.para2.part3 = *Missing Welsh*
 
+ukAndForeignPropertyPremiumForLease.title = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.heading = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p1 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.l1 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.l2 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p2 = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p3.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.p3.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.input.heading.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.input.heading.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyPremiumForLease.change.hidden = *Missing Welsh*
+
+ukAndForeignPropertyBalancingCharge.radio.question.label = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
@@ -2647,9 +2669,22 @@ propertyIncomeAllowanceClaim.error.twoDecimalPlaces.agent = *Missing Welsh*
 propertyIncomeAllowanceClaim.error.outOfRange = *Missing Welsh*
 propertyIncomeAllowanceClaim.change.hidden = *Missing Welsh*
 
-ukAndForeignPropertyBalancingCharge.radio.question.label = *Missing Welsh*
-ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
-ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
-ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
-ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
-ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
+foreignWhenYouReportedTheLoss.title.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.title.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.heading.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.heading.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.p1.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.p1.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.p2.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.p2.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.label.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.label.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.y2018to2019 = *Missing Welsh*
+foreignWhenYouReportedTheLoss.y2019to2020 = *Missing Welsh*
+foreignWhenYouReportedTheLoss.y2020to2021 = *Missing Welsh*
+foreignWhenYouReportedTheLoss.y2021to2022 = *Missing Welsh*
+foreignWhenYouReportedTheLoss.y2022to2023 = *Missing Welsh*
+foreignWhenYouReportedTheLoss.checkYourAnswersLabel = *Missing Welsh*
+foreignWhenYouReportedTheLoss.error.required.individual = *Missing Welsh*
+foreignWhenYouReportedTheLoss.error.required.agent = *Missing Welsh*
+foreignWhenYouReportedTheLoss.change.hidden = *Missing Welsh*

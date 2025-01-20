@@ -24,4 +24,8 @@ case class UKPropertyDetailsError(nino: String, mtditid: String) extends Service
   override def toString: String = s"Unable to fetch UK property details for user with nino: $nino and mtditid: $mtditid"
 }
 
+case class ForeignPropertyDetailsError(nino: String, mtditid: String) extends ServiceError {
+  override def toString: String = s"Unable to fetch Foreign property details for user with nino: $nino and mtditid: $mtditid"
+}
+
 case class ConnectorError(statusCode: Int, message: String) extends ServiceError

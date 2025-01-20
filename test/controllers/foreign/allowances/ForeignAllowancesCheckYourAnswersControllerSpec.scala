@@ -39,7 +39,7 @@ import scala.concurrent.Future
 
 class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
-  val taxYear = LocalDate.now.getYear
+  val taxYear: Int = LocalDate.now.getYear
   val countryCode = "AUS"
 
   val onwardRoute: Call = Call(
@@ -54,7 +54,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request =
@@ -72,7 +72,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
@@ -87,7 +87,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
@@ -123,7 +123,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
             any(),
             any()
           )
