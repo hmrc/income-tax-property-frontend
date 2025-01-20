@@ -468,7 +468,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua1.set(IsNonUKLandlordPage(Rentals), propertyRentalsIncome.isNonUKLandlord)
 
             ua3 <-
-              ua2.set(OtherIncomeFromPropertyPage(Rentals), propertyRentalsIncome.otherIncomeFromProperty)
+              ua2.set(UkAndForeignPropertyOtherIncomeFromPropertyPage(Rentals), propertyRentalsIncome.otherIncomeFromProperty)
 
             ua4 <-
               propertyRentalsIncome.deductingTax.fold(Try(ua3))(dt => ua3.set(DeductingTaxPage(Rentals), dt))
@@ -505,7 +505,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               userAnswers.set(IsNonUKLandlordPage(RentalsRentARoom), rentalsAndRaRIncome.isNonUKLandlord)
 
             ua2 <-
-              ua1.set(OtherIncomeFromPropertyPage(RentalsRentARoom), rentalsAndRaRIncome.otherIncomeFromProperty)
+              ua1.set(UkAndForeignPropertyOtherIncomeFromPropertyPage(RentalsRentARoom), rentalsAndRaRIncome.otherIncomeFromProperty)
 
             ua3 <-
               rentalsAndRaRIncome.deductingTax.fold(Try(ua2))(dt => ua2.set(DeductingTaxPage(RentalsRentARoom), dt))
