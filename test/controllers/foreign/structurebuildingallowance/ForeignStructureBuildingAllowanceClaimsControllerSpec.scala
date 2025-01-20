@@ -16,40 +16,54 @@
 
 package controllers.foreign.structurebuildingallowance
 
+import audit.AuditService
 import base.SpecBase
-import controllers.routes
+import connectors.error.ApiError
 import controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimsController
+import controllers.routes
 import forms.ForeignStructureBuildingAllowanceClaimsFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.backend.PropertyDetails
+import models.{ForeignStructuresBuildingAllowanceAddress, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimsPage
+import pages.foreign.structurebuildingallowance._
+import play.api.Application
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceClaimsView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new ForeignStructureBuildingAllowanceClaimsFormProvider()
   private val isAgentMessageKey = "individual"
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
   val taxYear = 2024
   val countryCode = "AUS"
   val list: SummaryList = SummaryListViewModel(Seq.empty)
+  val audit: AuditService = mock[AuditService]
+  val index = 1
 
-  lazy val foreignStructureBuildingAllowanceClaimsRoute =
+  lazy val foreignStructureBuildingAllowanceClaimsRoute: String =
     ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode).url
+  val onwardRoute: Call = Call(
+    "GET",
+    s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/structures-buildings-allowance/$countryCode/complete-yes-no"
+  )
+  val addAnotherClaimOnwardRoute: Call = Call(
+    "GET",
+    s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/structures-buildings-allowance/$countryCode/$index/qualifying-date"
+  )
 
   "ForeignStructureBuildingAllowanceClaims Controller" - {
 
@@ -116,7 +130,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignStructureBuildingAllowanceClaimsRoute)
@@ -130,7 +144,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =
@@ -143,5 +157,73 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+      val ua = UserAnswers("test")
+        .set(
+          page = ForeignStructureBuildingAllowanceGroup(countryCode),
+          value = Array(
+            ForeignStructureBuildingAllowance(
+              20.00,
+              LocalDate.now,
+              56.00,
+              ForeignStructuresBuildingAllowanceAddress("Building 1", "1", "BR1 1RR")
+            )
+          )
+        )
+        .get
+        .set(ForeignClaimStructureBuildingAllowancePage(countryCode), true)
+        .toOption
+
+      val mockPropertySubmissionService = mock[PropertySubmissionService]
+      val mockBusinessService = mock[BusinessService]
+
+      when(mockPropertySubmissionService.saveForeignPropertyJourneyAnswers(any(),any())(any(), any())) thenReturn Future
+        .successful(
+          Right(())
+        )
+      when(mockBusinessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future
+        .successful[Either[ApiError, Option[PropertyDetails]]](
+          Right(
+            Some(
+              PropertyDetails(
+                Some("incomeSourceType"),
+                Some(LocalDate.now()),
+                accrualsOrCash = Some(true),
+                incomeSourceId = "incomeSourceId"
+              )
+            )
+          )
+        )
+
+      val application: Application =
+        applicationBuilder(userAnswers = ua, isAgent = false)
+          .overrides(
+            bind[PropertySubmissionService].toInstance(mockPropertySubmissionService),
+            bind[BusinessService].toInstance(mockBusinessService)
+          )
+          .overrides(bind[AuditService].toInstance(audit))
+          .build()
+
+      running(application) {
+        val addOtherClaimRequest = FakeRequest(POST, foreignStructureBuildingAllowanceClaimsRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+        val addOtherClaimResult = route(application, addOtherClaimRequest).value
+
+        status(addOtherClaimResult) mustEqual SEE_OTHER
+        redirectLocation(addOtherClaimResult).value mustEqual addAnotherClaimOnwardRoute.url
+
+        val noOtherClaimRequest = FakeRequest(POST, foreignStructureBuildingAllowanceClaimsRoute)
+          .withFormUrlEncodedBody(("value", "false"))
+
+        val noOtherClaimResult = route(application, noOtherClaimRequest).value
+
+        status(noOtherClaimResult) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
+        redirectLocation(noOtherClaimResult).value mustEqual onwardRoute.url
+      }
+    }
+
   }
 }
