@@ -50,3 +50,8 @@ POST       /:taxYear/uk-foreign-property/change-lease-premium-payment           
 
 GET        /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST       /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear: Int)
+
+GET         /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
