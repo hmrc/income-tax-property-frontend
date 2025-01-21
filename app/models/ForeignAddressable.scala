@@ -67,12 +67,12 @@ object ForeignAddressable {
 
   implicit val foreignSbaAddressable: ForeignAddressable[ForeignStructuresBuildingAllowanceAddress] =
     new ForeignAddressable[ForeignStructuresBuildingAllowanceAddress] {
-      override def getBuildingName(address: ForeignStructuresBuildingAllowanceAddress): String = address.buildingName
+      override def getBuildingName(address: ForeignStructuresBuildingAllowanceAddress): String = address.name
 
       override def getPostcode(address: ForeignStructuresBuildingAllowanceAddress): String = address.postCode
 
       override def getBuildingNumber(address: ForeignStructuresBuildingAllowanceAddress): String =
-        address.buildingNumber
+        address.number
 
       override def get(index: Int, countryCode: String): Gettable[ForeignStructuresBuildingAllowanceAddress] =
         ForeignStructuresBuildingAllowanceAddressPage(index, countryCode)

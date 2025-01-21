@@ -40,29 +40,6 @@ case class ForeignStructureBuildingAllowanceGroup(countryCode: String)
   override def toString: String = foreignSbaFormGroup
 }
 
-case class SaveForeignSba(
-  amount: BigDecimal,
-  firstYear: Option[StructuredBuildingAllowanceDate],
-  building: StructuredBuildingAllowanceBuilding
-)
-
-object SaveForeignSba {
-
-  implicit val format: OFormat[SaveForeignSba] = Json.format[SaveForeignSba]
-
-  def apply(foreignSBA: ForeignStructureBuildingAllowance): SaveForeignSba = {
-    val amount = foreignSBA.foreignStructureBuildingAllowanceClaim
-    val firstYear = Some(
-      StructuredBuildingAllowanceDate(
-        foreignSBA.foreignStructureBuildingQualifyingDate,
-        foreignSBA.foreignStructureBuildingQualifyingAmount
-      )
-    )
-    val building = StructuredBuildingAllowanceBuilding(foreignSBA.foreignStructureBuildingAddress)
-    SaveForeignSba(amount, firstYear, building)
-  }
-}
-
 case class StructuredBuildingAllowanceDate(qualifyingDate: LocalDate, qualifyingAmountExpenditure: BigDecimal)
 
 object StructuredBuildingAllowanceDate {
@@ -74,12 +51,6 @@ case class StructuredBuildingAllowanceBuilding(name: Option[String], number: Opt
 object StructuredBuildingAllowanceBuilding {
   implicit val format: OFormat[StructuredBuildingAllowanceBuilding] = Json.format[StructuredBuildingAllowanceBuilding]
 
-  def apply(address: ForeignStructuresBuildingAllowanceAddress): StructuredBuildingAllowanceBuilding =
-    StructuredBuildingAllowanceBuilding(
-      Some(address.buildingName),
-      Some(address.buildingNumber),
-      address.postCode
-    )
 }
 
 case class ForeignStructureBuildingAllowanceWithIndex(index: Int, countryCode: String)

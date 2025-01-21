@@ -20,6 +20,8 @@
         layout: templates.Layout,
         govukButton: GovukButton,
         govukSummaryList: GovukSummaryList,
+        formHelper: FormWithCSRF,
+
 )
 
 @(list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
@@ -30,16 +32,11 @@
         </span>
         <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
+    @formHelper(action = routes.ForeignClaimSbaCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
         @govukSummaryList(list)
+        @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
+}
 
-        <p class="govuk-body">
-            @govukButton(
-                ButtonViewModel(messages("site.saveAndContinue"))
-                .asLink(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode).url)
-                .withId("continue")
-                .preventingDoubleClick()
-            )
-        </p>
 }
 
 @{

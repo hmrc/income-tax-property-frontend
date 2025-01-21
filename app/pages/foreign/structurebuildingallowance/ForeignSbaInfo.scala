@@ -19,12 +19,10 @@ package pages.foreign.structurebuildingallowance
 import play.api.libs.json.{Json, OFormat}
 
 final case class ForeignSbaInfo(
-  allowances: Array[SaveForeignSba]
+  countryCode:String,
+  claimStructureBuildingAllowance: Boolean,
+  allowances: Option[Array[ForeignStructureBuildingAllowance]]
 )
 object ForeignSbaInfo {
   implicit val format: OFormat[ForeignSbaInfo] = Json.format[ForeignSbaInfo]
-
-  def apply(allowances: Array[ForeignStructureBuildingAllowance]): ForeignSbaInfo = ForeignSbaInfo(
-    allowances.map(SaveForeignSba(_))
-  )
 }

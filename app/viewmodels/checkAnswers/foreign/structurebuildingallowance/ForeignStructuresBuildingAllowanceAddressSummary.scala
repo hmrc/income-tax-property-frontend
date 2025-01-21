@@ -32,8 +32,8 @@ object ForeignStructuresBuildingAllowanceAddressSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ForeignStructuresBuildingAllowanceAddressPage(index, countryCode)).map { answer =>
-      val value = HtmlFormat.escape(answer.buildingName).toString + "<br/>" + HtmlFormat
-        .escape(answer.buildingNumber)
+      val value = HtmlFormat.escape(answer.name).toString + "<br/>" + HtmlFormat
+        .escape(answer.number)
         .toString + "<br/>" + HtmlFormat.escape(answer.postCode).toString
 
       SummaryListRowViewModel(
