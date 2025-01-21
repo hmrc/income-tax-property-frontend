@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{ForeignProperty, PropertyType, RentARoom, Rentals, RentalsRentARoom}
+import models.{RentalsRentARoom, ForeignProperty, UKAndForeignProperty, Rentals, PropertyType, RentARoom}
 
 object PageConstants {
 
@@ -38,6 +38,7 @@ object PageConstants {
       case RentARoom        => s"rentARoom$suffix"
       case RentalsRentARoom => s"rentalsRentARoom$suffix"
       case ForeignProperty  => s"foreignProperty$suffix"
+      case UKAndForeignProperty => s"ukAndForeignProperty$suffix"
     }
 
   val countriesRentedPropertyGroup: String = "countriesRentedPropertyGroup"
