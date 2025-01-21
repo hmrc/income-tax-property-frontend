@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages.foreign.adjustments
+package pages.ukandforeignproperty
 
-import models.{ForeignProperty, UnusedLossesPreviousYears}
-import pages.PageConstants.adjustmentsPath
+import models.BalancingCharge
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignUnusedLossesPreviousYearsPage(countryCode: String) extends QuestionPage[UnusedLossesPreviousYears] {
+object UkAndForeignPropertyBalancingChargePage extends QuestionPage[BalancingCharge] {
 
-  override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
 
-  override def toString: String = "unusedLossesPreviousYears"
+  override def toString: String = "balancingCharge"
 }

@@ -64,7 +64,7 @@ amount.hint = *Missing Welsh*
 checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
 
-ukproperty.caption	= 6 Ebrill {0} i 5 Ebrill {1}
+property.caption	= 6 Ebrill {0} i 5 Ebrill {1}
 taxYear.caption = 6 Ebrill {0} i 5 Ebrill {1}
 
 journeyRecovery.continue.title	=	Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth
@@ -1774,6 +1774,13 @@ ukAndForeignPropertyPremiumForLease.checkYourAnswersLabel = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.error.required.individual = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.change.hidden = *Missing Welsh*
+
+ukAndForeignPropertyBalancingCharge.radio.question.label = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
 
 ###################### Foreign Property ######################
 

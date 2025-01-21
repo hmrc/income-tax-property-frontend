@@ -16,14 +16,14 @@
 
 package pages.foreign.adjustments
 
-import models.{ForeignProperty, UnusedLossesPreviousYears}
-import pages.PageConstants.adjustmentsPath
+import models.ForeignProperty
 import pages.QuestionPage
+import pages.PageConstants.{adjustmentsPath}
 import play.api.libs.json.JsPath
 
-case class ForeignUnusedLossesPreviousYearsPage(countryCode: String) extends QuestionPage[UnusedLossesPreviousYears] {
+case class ForeignAdjustmentsSectionAddCountryCode (countryCode: String) extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "unusedLossesPreviousYears"
+  override def toString: String = "countryCode"
 }

@@ -1,5 +1,5 @@
 @*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,31 @@
  * limitations under the License.
  *@
 
-@import controllers.rentalsandrentaroom.expenses.routes._
+@import controllers.foreign.adjustments.routes._
+
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton,
         formHelper: FormWithCSRF,
+        govukButton: GovukButton,
         govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
-        <span class="govuk-caption-l">@messages("property.caption", (taxYear - 1).toString, taxYear.toString)</span>
-        <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    <span class="govuk-caption-l">@messages("property.caption", (taxYear - 1).toString, taxYear.toString)</span>
+    <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
+    @formHelper(action = ForeignAdjustmentsCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
 
-        @formHelper(action = RentalsAndRaRExpensesCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
-                @govukSummaryList(list)
+        @govukSummaryList(list)
 
-                @govukButton(
-                        ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
-                )
-        }
+        @govukButton(
+            ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick()
+        )
+    }
+}
+
+@{
+  // $COVERAGE-OFF$
 }

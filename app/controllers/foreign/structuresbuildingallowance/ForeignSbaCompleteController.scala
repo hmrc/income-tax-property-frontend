@@ -20,7 +20,7 @@ import controllers.ControllerUtils.statusForPage
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.InternalErrorFailure
 import forms.foreign.structurebuildingallowance.ForeignSbaCompleteFormProvider
-import models.JourneyPath.ForeignPropertyAllowances
+import models.JourneyPath.ForeignStructureBuildingAllowance
 import models.{JourneyContext, NormalMode}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
@@ -35,19 +35,19 @@ import views.html.foreign.structurebuildingallowance.ForeignSbaCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignSbaCompleteController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              foreignPropertyNavigator: ForeignPropertyNavigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: ForeignSbaCompleteFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: ForeignSbaCompleteView,
-                                              journeyAnswersService: JourneyAnswersService
-                                                 )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport{
+class ForeignSbaCompleteController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignSbaCompleteFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignSbaCompleteView,
+  journeyAnswersService: JourneyAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
@@ -72,34 +72,37 @@ class ForeignSbaCompleteController @Inject()(
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSbaCompletePage(countryCode), value))
               _              <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                .setStatus(
-                  JourneyContext(
-                    taxYear = taxYear,
-                    mtditid = request.user.mtditid,
-                    nino = request.user.nino,
-                    journeyPath = ForeignPropertyAllowances
-                  ),
-                  status = statusForPage(value),
-                  request.user
-                ).flatMap {
-                  case Right(_) =>
-                    Future.successful(Redirect(
-                      foreignPropertyNavigator
-                        .nextPage(
-                        ForeignSbaCompletePage(countryCode),
-                        taxYear,
-                        NormalMode,
-                        request.userAnswers,
-                        updatedAnswers
-                        )
-                    ))
-                  case Left(_) =>
-                    Future.failed(
-                      InternalErrorFailure(s"Failed to save the status for SBA section in tax year: $taxYear")
-                    )
-                }
+                          .setForeignStatus(
+                            JourneyContext(
+                              taxYear = taxYear,
+                              mtditid = request.user.mtditid,
+                              nino = request.user.nino,
+                              journeyPath = ForeignStructureBuildingAllowance
+                            ),
+                            status = statusForPage(value),
+                            request.user,
+                            countryCode
+                          )
+                          .flatMap {
+                            case Right(_) =>
+                              Future.successful(
+                                Redirect(
+                                  foreignPropertyNavigator
+                                    .nextPage(
+                                      ForeignSbaCompletePage(countryCode),
+                                      taxYear,
+                                      NormalMode,
+                                      request.userAnswers,
+                                      updatedAnswers
+                                    )
+                                )
+                              )
+                            case Left(_) =>
+                              Future.failed(
+                                InternalErrorFailure(s"Failed to save the status for SBA section in tax year: $taxYear")
+                              )
+                          }
             } yield status
         )
     }
 }
-

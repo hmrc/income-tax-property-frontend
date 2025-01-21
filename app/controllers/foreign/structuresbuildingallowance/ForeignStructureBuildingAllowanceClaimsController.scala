@@ -16,14 +16,14 @@
 
 package controllers.foreign.structuresbuildingallowance
 
-import audit.{AuditModel, AuditService, ForeignPropertyAllowances}
+import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.ForeignStructureBuildingAllowanceClaimsFormProvider
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, NormalMode, SectionName, UserAnswers}
-import pages.foreign.structurebuildingallowance.{ForeignSbaInfo, ForeignStructureBuildingAllowanceClaimsPage, ForeignStructureBuildingAllowanceGroup}
+import pages.foreign.structurebuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -54,7 +54,6 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
   view: ForeignStructureBuildingAllowanceClaimsView
 )(implicit val ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
-
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[Boolean] = formProvider()
@@ -80,7 +79,9 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, list, taxYear, countryCode, request.user.isAgentMessageKey))),
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, list, taxYear, countryCode, request.user.isAgentMessageKey))),
           value => handleValidForm(value, taxYear, request, countryCode)
         )
     }
@@ -97,21 +98,26 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
         )
       _ <- sessionRepository.set(updatedAnswers)
       result <- if (addAnotherClaim) {
-        val nextIndex = request.userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)).map(_.length).getOrElse(0)
-        redirectToAddClaim(taxYear, countryCode, nextIndex)
-      } else { saveJourneyAnswers(taxYear, request, countryCode) }
+                  val nextIndex = request.userAnswers
+                    .get(ForeignStructureBuildingAllowanceGroup(countryCode))
+                    .map(_.length)
+                    .getOrElse(0)
+                  redirectToAddClaim(taxYear, countryCode, nextIndex)
+                } else { saveJourneyAnswers(taxYear, request, countryCode) }
     } yield result
 
   private def redirectToAddClaim(taxYear: Int, countryCode: String, nextIndex: Int): Future[Result] =
     Future.successful(
-      Redirect(routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, nextIndex, NormalMode))
+      Redirect(
+        routes.ForeignStructureBuildingQualifyingDateController.onPageLoad(taxYear, countryCode, nextIndex, NormalMode)
+      )
     )
 
   private def saveJourneyAnswers(taxYear: Int, request: DataRequest[AnyContent], countryCode: String)(implicit
     hc: HeaderCarrier
   ): Future[Result] = {
     val context =
-      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAllowances)
+      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignStructureBuildingAllowance)
     businessService
       .getForeignPropertyDetails(request.user.nino, request.user.mtditid)
       .flatMap {
@@ -125,8 +131,8 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
 
   private def getForeignSbaInfo(userAnswers: UserAnswers, countryCode: String): Option[ForeignSbaInfo] =
     for {
-      sbaGroups <- userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
-    } yield ForeignSbaInfo(sbaGroups)
+      claimPage <- userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode))
+    } yield ForeignSbaInfo(countryCode,claimPage, userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)))
 
   private def saveForeignSBAClaims(
     taxYear: Int,
@@ -139,34 +145,25 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
   ): Future[Result] =
     getForeignSbaInfo(request.userAnswers, countryCode)
       .map { foreignSbaInfo =>
-        val foreignAllowance = ForeignPropertyAllowances(
-          countryCode = countryCode,
-          zeroEmissionsCarAllowance = None,
-          zeroEmissionsGoodsVehicleAllowance = None,
-          costOfReplacingDomesticItems = None,
-          otherCapitalAllowance = None,
-          structuredBuildingAllowance = Some(foreignSbaInfo.allowances)
-
-        )
         propertySubmissionService
-          .saveJourneyAnswers[ForeignPropertyAllowances](context, foreignAllowance, propertyDetails.incomeSourceId)
+          .saveForeignPropertyJourneyAnswers[ForeignSbaInfo](context, foreignSbaInfo)
           .flatMap {
             case Right(_) =>
-              auditSBAClaims(
+              auditCYA(
                 taxYear,
                 request,
                 foreignSbaInfo,
                 isFailed = false,
-                accrualsOrCash = propertyDetails.accrualsOrCash.get
+                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
               )
               Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
             case Left(_) =>
-              auditSBAClaims(
+              auditCYA(
                 taxYear,
                 request,
                 foreignSbaInfo,
                 isFailed = true,
-                accrualsOrCash = propertyDetails.accrualsOrCash.get
+                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
               )
               logger.error("Error saving Foreign SBA Claims")
               Future.failed(InternalErrorFailure("Error saving Foreign SBA claims"))
@@ -176,9 +173,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
         logger.error("Foreign Structure and Building Allowance not found in userAnswers")
         Future.failed(InternalErrorFailure("Foreign Structure and Building Allowance not found in userAnswers"))
       }
-
-//  TODO - revise audit model/method for Foreign Property
-  private def auditSBAClaims(
+  private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignSba: ForeignSbaInfo,
@@ -188,19 +183,20 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      nino = request.user.nino,
-      userType = request.user.affinityGroup,
-      mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
-      taxYear = taxYear,
+      request.user.nino,
+      request.user.affinityGroup,
+      request.user.mtditid,
+      request.user.agentRef,
+      taxYear,
       isUpdate = false,
       sectionName = SectionName.SBA,
       propertyType = AuditPropertyType.ForeignProperty,
       journeyName = JourneyName.ForeignProperty,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-      userEnteredDetails = foreignSba,
-      isFailed = isFailed
+      isFailed = isFailed,
+      foreignSba
     )
+
     auditService.sendAuditEvent(auditModel)
   }
 }
