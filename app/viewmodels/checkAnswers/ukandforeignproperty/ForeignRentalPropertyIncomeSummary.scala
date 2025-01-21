@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.ukandforeignproperty
 
-import models.{CheckMode, UserAnswers}
+import models.{UserAnswers, CheckMode}
 import pages.ukandforeignproperty.ForeignRentalPropertyIncomePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import controllers.ukandforeignproperty.routes.ForeignRentalPropertyIncomeController
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
 object ForeignRentalPropertyIncomeSummary  {
 
@@ -31,8 +32,8 @@ object ForeignRentalPropertyIncomeSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = "foreignRentalPropertyIncome.checkYourAnswersLabel",
-          value   = ValueViewModel(answer.toString),
+          key     = KeyViewModel("foreignRentalPropertyIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", ForeignRentalPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("foreignRentalPropertyIncome.change.hidden"))
