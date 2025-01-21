@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package forms.adjustments
+package forms.ukandforeignproperty
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.adjustments.BalancingChargeFormProvider
+import forms.ukandforeignproperty.BalancingChargeFormProvider
 import models.BalancingCharge
 import org.scalatest.OptionValues
 import play.api.data.FormError
@@ -46,7 +46,7 @@ class BalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Option
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("balancingChargeAmount", "balancingCharge.amount.error.nonNumeric.individual"))
+        boundForm.errors must contain(FormError("balancingChargeAmount", "ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric"))
       }
 
 
