@@ -2767,3 +2767,23 @@ uKRentalPropertyIncome.error.required = Enter the amount of income earned from U
 uKRentalPropertyIncome.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 uKRentalPropertyIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 uKRentalPropertyIncome.change.hidden = UK and Foreign property UK Rental Income Amount
+
+ukAndForeignBalancingCharge.title = Balancing charge
+ukAndForeignBalancingCharge.heading = Balancing charge
+ukAndForeignBalancingCharge.checkYourAnswersLabel = Balancing charge
+ukAndForeignBalancingCharge.p1.individual = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+ukAndForeignBalancingCharge.p1.agent = If your client sold, gave away or stopped using an item in the running of their property rental that they claimed capital allowances for, they may have to include a balancing charge.
+ukAndForeignBalancingCharge.p2.individual = Any balancing charges are regarded as income if you’re claiming property income allowance.
+ukAndForeignBalancingCharge.p2.agent = Any balancing charges are regarded as income if your client is claiming property income allowance.
+ukAndForeignBalancingCharge.label.individual = Do you have to report a balancing charge for your foreign property income?
+ukAndForeignBalancingCharge.label.agent = Does your client have to report a balancing charge for their foreign property income?
+ukAndForeignBalancingCharge.label2 = Enter the amount
+ukAndForeignBalancingCharge.error.required.individual = Select yes if you have to report a balancing charge
+ukAndForeignBalancingCharge.error.required.agent = Select yes if your client has to report a balancing charge
+ukAndForeignBalancingCharge.error.required.amount = Enter the amount for the balancing charge
+ukAndForeignBalancingCharge.error.nonNumeric = Amount can only include pounds and pence, for example £600 or £600.20
+ukAndForeignBalancingCharge.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+ukAndForeignBalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+ukAndForeignBalancingCharge.change.hidden = Balancing charge
+
+
