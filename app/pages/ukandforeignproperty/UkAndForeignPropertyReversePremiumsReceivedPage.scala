@@ -19,9 +19,7 @@ package pages.ukandforeignproperty
 import models.ReversePremiumsReceived
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-//import models.TotalIncomeUtils.isTotalIncomeUnder85K
-//import pages.propertyrentals.expenses.ConsolidatedExpensesPage
-//import scala.util.Try
+
 
 case class UkAndForeignPropertyReversePremiumsReceivedPage() extends QuestionPage[ReversePremiumsReceived] {
 
@@ -29,15 +27,4 @@ case class UkAndForeignPropertyReversePremiumsReceivedPage() extends QuestionPag
 
   override def toString: String = "reversePremiumsReceived"
 
-//  Cleanup to be implemented when the navigation starts
-//  override def cleanup(value: Option[ReversePremiumsReceived], userAnswers: UserAnswers): Try[UserAnswers] =
-//    if (isTotalIncomeUnder85K(userAnswers)) {
-//      super.cleanup(value, userAnswers)
-//    } else if (
-//      userAnswers.get(ConsolidatedExpensesPage()).fold(false)(data => data.consolidatedExpensesYesOrNo)
-//    ) {
-//      userAnswers.remove(ConsolidatedExpensesPage())
-//    } else {
-//      super.cleanup(value, userAnswers)
-//    }
 }

@@ -1802,7 +1802,7 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = Select yes if yo
 ukAndForeignPropertyPremiumForLease.error.required.agent = Select yes if your client received a premium for granting a lease for UK property
 ukAndForeignPropertyPremiumForLease.change.hidden = UK premiums for the grant of a lease
 
-ukAndForeignPropertyReversePremiumsReceived.heading = UK Reverse premiums received
+ukAndForeignPropertyReversePremiumsReceived.heading = UK reverse premiums received
 ukAndForeignPropertyReversePremiumsReceived.hint.individual = If you paid a reverse premium to someone, you must enter this amount in other property expenses.
 ukAndForeignPropertyReversePremiumsReceived.hint.agent = If your client paid a reverse premium to someone, you must enter this amount in other property expenses.
 ukAndForeignPropertyReversePremiumsReceived.radio.legend.individual = Did you receive a reverse premium from UK property?
