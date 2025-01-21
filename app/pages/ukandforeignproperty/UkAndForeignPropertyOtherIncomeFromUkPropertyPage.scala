@@ -19,27 +19,10 @@ package pages.ukandforeignproperty
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-//import models.TotalIncomeUtils.isTotalIncomeUnder85K
-//import models.UserAnswers
-//import pages.PageConstants.incomePath
-//import scala.util.Try
-//import pages.propertyrentals.expenses.ConsolidatedExpensesPage
-
 object UkAndForeignPropertyOtherIncomeFromUkPropertyPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
 
   override def toString: String = "ukAndForeignPropertyOtherIncomeFromProperty"
 
-//  TODO cleanup
-//  override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
-//    if (isTotalIncomeUnder85K(userAnswers)) {
-//      super.cleanup(value, userAnswers)
-//    } else if (
-//      userAnswers.get(ConsolidatedExpensesPage()).fold(false)(data => data.consolidatedExpensesYesOrNo)
-//    ) {
-//      userAnswers.remove(ConsolidatedExpensesPage())
-//    } else {
-//      super.cleanup(value, userAnswers)
-//    }
 }
