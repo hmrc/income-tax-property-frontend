@@ -1,6 +1,7 @@
 package forms
 
 import forms.behaviours.IntFieldBehaviours
+import forms.ukandforeignproperty.ForeignRentalPropertyIncomeFormProvider
 import play.api.data.FormError
 
 class ForeignRentalPropertyIncomeFormProviderSpec extends IntFieldBehaviours {

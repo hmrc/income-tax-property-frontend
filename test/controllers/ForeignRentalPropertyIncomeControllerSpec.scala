@@ -1,13 +1,13 @@
 package controllers
 
 import base.SpecBase
-import forms.ForeignRentalPropertyIncomeFormProvider
+import forms.ukandforeignproperty.ForeignRentalPropertyIncomeFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ForeignRentalPropertyIncomePage
+import pages.ukandforeignproperty.ForeignRentalPropertyIncomePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
