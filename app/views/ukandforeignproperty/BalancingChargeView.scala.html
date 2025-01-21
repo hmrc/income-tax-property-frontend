@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  *@
 
-@import controllers.adjustments.routes
-@import models.PropertyType
+@import controllers.ukandforeignproperty.routes
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
+@import viewmodels.LegendSize.Medium
 
 @this(
     layout: templates.Layout,
@@ -28,21 +28,21 @@
     govukInput : GovukInput
 )
 
-@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"balancingCharge.title.${individualOrAgent}"))) {
 
-    @formHelper(action = routes.BalancingChargeController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.BalancingChargeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
         <h1 class="govuk-heading-l">@messages(s"balancingCharge.heading.${individualOrAgent}")</h1>
 
         <div class="govuk-body">
-                <p class="govuk-body">@messages("balancingCharge.details.line1") </p>
-                <p class="govuk-body">@messages("balancingCharge.details.line2") </p>
+                <p class="govuk-body">@messages(s"ukAndForeignPropertyBalancingCharge.details.line1.${individualOrAgent}") </p>
+                <p class="govuk-body">@messages(s"ukAndForeignPropertyBalancingCharge.details.line2.${individualOrAgent}") </p>
         </div>
 
 
@@ -50,14 +50,14 @@
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
                     field = form("balancingChargeYesNo"),
-                    legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                    legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withSize(Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("balancingChargeYesNo"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(
                                     field = form("balancingChargeAmount"),
-                                    label = LabelViewModel(messages("balancingCharge.radio.question.label"))
+                                    label = LabelViewModel(messages("ukAndForeignPropertyBalancingCharge.radio.question.label"))
                                 )
                                 .asNumeric()
                                 .withWidth(Fixed10)

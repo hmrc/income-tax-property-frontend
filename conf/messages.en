@@ -1802,6 +1802,13 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = Select yes if yo
 ukAndForeignPropertyPremiumForLease.error.required.agent = Select yes if your client received a premium for granting a lease for UK property
 ukAndForeignPropertyPremiumForLease.change.hidden = UK premiums for the grant of a lease
 
+ukAndForeignPropertyBalancingCharge.radio.question.label = Enter the amount
+ukAndForeignPropertyBalancingCharge.details.line1.individual = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line1.agent = If your client sold, gave away or stopped using an item in the running of their property rental that they claimed capital allowances for, they may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line2.individual = Any balancing charges are regarded as income if you’re claiming property income allowance.
+ukAndForeignPropertyBalancingCharge.details.line2.agent = Any balancing charges are regarded as income if your client is claiming property income allowance.
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = Amount can only include pounds and pence, for example £600 or £600.20
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = Foreign property

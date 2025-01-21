@@ -1775,6 +1775,13 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.change.hidden = *Missing Welsh*
 
+ukAndForeignPropertyBalancingCharge.radio.question.label = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
