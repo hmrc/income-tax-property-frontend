@@ -78,7 +78,7 @@ GET         /:taxYear/uk-foreign-property/change-reverse-premiums-received      
 POST        /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 
-GET         /:taxYear/uk-foreign-property/amount-received-for-grant-of-Lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-foreign-property/amount-received-for-grant-of-Lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/uk-foreign-property/amount-received-for-grant-of-Lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/uk-foreign-property/amount-received-for-grant-of-Lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-foreign-property/amount-received-for-grant-of-lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/amount-received-for-grant-of-lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/amount-received-for-grant-of-lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/amount-received-for-grant-of-lease                        controllers.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
