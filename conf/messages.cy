@@ -1783,8 +1783,6 @@ ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
 
 ukAndForeignPropertyReversePremiumsReceived.heading = *Missing Welsh*
-ukAndForeignPropertyReversePremiumsReceived.hint.individual = *Missing Welsh*
-ukAndForeignPropertyReversePremiumsReceived.hint.agent = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.radio.legend.individual = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.radio.legend.agent = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.error.nonNumeric= *Missing Welsh*

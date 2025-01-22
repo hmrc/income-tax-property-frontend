@@ -50,8 +50,6 @@
             </a>
         </p>
 
-        <p class="govuk-body">@messages(s"ukAndForeignPropertyReversePremiumsReceived.hint.$individualOrAgent")</p>
-
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("reversePremiumsReceived"),
