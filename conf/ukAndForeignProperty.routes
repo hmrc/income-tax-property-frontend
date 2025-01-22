@@ -70,3 +70,9 @@ GET         /:taxYear/uk-foreign-property/balancing-charge                      
 POST        /:taxYear/uk-foreign-property/balancing-charge                                         controllers.ukandforeignproperty.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode)
 POST        /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode)
+
+
+GET         /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
