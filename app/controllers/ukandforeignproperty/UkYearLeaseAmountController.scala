@@ -17,30 +17,30 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
-import forms.ukandforeignproperty.YearLeaseAmountFormProvider
+import forms.ukandforeignproperty.UkYearLeaseAmountFormProvider
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkandforeignpropertyYearLeaseAmountPage
+import pages.ukandforeignproperty.UkYearLeaseAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukandforeignproperty.YearLeaseAmountView
+import views.html.ukandforeignproperty.UkYearLeaseAmountView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class YearLeaseAmountController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: UkAndForeignPropertyNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: YearLeaseAmountFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: YearLeaseAmountView
+class UkYearLeaseAmountController @Inject()(
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: UkAndForeignPropertyNavigator,
+                                           identify: IdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           formProvider: UkYearLeaseAmountFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: UkYearLeaseAmountView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -48,7 +48,7 @@ class YearLeaseAmountController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(UkandforeignpropertyYearLeaseAmountPage) match {
+      val preparedForm = request.userAnswers.get(UkYearLeaseAmountPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -65,9 +65,9 @@ class YearLeaseAmountController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkandforeignpropertyYearLeaseAmountPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkYearLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkandforeignpropertyYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

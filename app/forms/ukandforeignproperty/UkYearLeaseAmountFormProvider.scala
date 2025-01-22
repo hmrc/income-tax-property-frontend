@@ -21,7 +21,7 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class YearLeaseAmountFormProvider @Inject() extends Mappings {
+class UkYearLeaseAmountFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Int] =
     Form(

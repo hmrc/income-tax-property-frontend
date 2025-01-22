@@ -2740,3 +2740,5 @@ ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = Enter an amount between £{0} and £{1}
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = Deducting tax from non-UK resident landlord
+
+ukAndForeignPropertyYearLeaseAmount.hint = You only need to tell us about leases between 2 and 50 years in length.
