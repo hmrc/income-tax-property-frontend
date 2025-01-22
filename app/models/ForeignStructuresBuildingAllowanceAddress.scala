@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json._
 
-case class ForeignStructuresBuildingAllowanceAddress(buildingName: String, buildingNumber: String, postCode: String)
+case class ForeignStructuresBuildingAllowanceAddress(name: String, number: String, postCode: String)
 
 object ForeignStructuresBuildingAllowanceAddress {
   implicit val format: Format[ForeignStructuresBuildingAllowanceAddress] = Json.format

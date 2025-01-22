@@ -71,7 +71,7 @@ class ForeignSelectCountriesCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSelectCountriesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                          .setStatus(
+                          .setForeignStatus(
                             JourneyContext(
                               taxYear = taxYear,
                               mtditid = request.user.mtditid,
@@ -79,7 +79,8 @@ class ForeignSelectCountriesCompleteController @Inject() (
                               journeyPath = ForeignSelectCountry
                             ),
                             status = statusForPage(value),
-                            request.user
+                            request.user,
+                            ""
                           )
             } yield status.fold(
               _ =>

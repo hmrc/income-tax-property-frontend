@@ -25,5 +25,5 @@ case class ForeignUnusedLossesPreviousYearsPage(countryCode: String) extends Que
 
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignUnusedLossesPreviousYears"
+  override def toString: String = "unusedLossesPreviousYears"
 }

@@ -17,6 +17,7 @@
 package service
 
 import controllers.foreign.allowances.routes._
+import controllers.foreign.adjustments.routes._
 import controllers.foreign.expenses.routes._
 import controllers.foreign.income.routes._
 import controllers.foreign.routes._
@@ -25,6 +26,7 @@ import pages.QuestionPage
 import pages.foreign.allowances.ForeignAllowancesCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.income.ForeignIncomeSectionCompletePage
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
 import pages.foreign.{ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage}
 import play.api.mvc.Call
 import queries.Gettable
@@ -103,6 +105,18 @@ class ForeignCYADiversionService @Inject() {
       )(transform)
   }
 
+  def adjustments[T](
+    taxYear: Int,
+    userAnswers: UserAnswers
+  )(
+    block: => T
+  )(transform: Call => T): PartialFunction[(Mode, String, Option[String]), T] = {
+    case (NormalMode, ForeignCYADiversionService.ADJUSTMENTS, Some(countryCode)) =>
+      divert(ForeignAdjustmentsCompletePage(countryCode), userAnswers, block)(
+        cyaDiversion = ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      )(transform)
+  }
+
   def forOther[T](block: => T): PartialFunction[(Mode, String, Option[String]), T] = { case _ =>
     block
   }
@@ -141,6 +155,9 @@ class ForeignCYADiversionService @Inject() {
       )
       .orElse(
         expenses(taxYear, userAnswers)(block)(transform)
+      )
+      .orElse(
+        adjustments(taxYear, userAnswers)(block)(transform)
       )
       .orElse(forOther(block))((mode, journeyName, maybeCountryCode))
 

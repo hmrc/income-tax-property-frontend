@@ -19,7 +19,7 @@ package controllers.foreign.structurebuildingallowance
 import base.SpecBase
 import controllers.routes
 import forms.foreign.structurebuildingallowance.ForeignSbaCompleteFormProvider
-import models.JourneyPath.ForeignPropertyAllowances
+import models.JourneyPath.ForeignStructureBuildingAllowance
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers
@@ -105,12 +105,13 @@ class ForeignSbaCompleteControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setForeignStatus(
           ArgumentMatchers.eq(
-            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowances)
+            JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignStructureBuildingAllowance)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(countryCode)
         )(any())
       ) thenReturn Future.successful(Right(""))
 
