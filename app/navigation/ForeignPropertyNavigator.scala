@@ -17,6 +17,7 @@
 package navigation
 
 import com.google.inject.Singleton
+import controllers.foreign.adjustments.routes._
 import controllers.foreign.allowances.routes._
 import controllers.foreign.expenses.routes._
 import controllers.foreign.income.routes._
@@ -27,10 +28,11 @@ import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages.Page
 import pages.foreign._
+import pages.foreign.adjustments._
 import pages.foreign.allowances._
-import pages.foreign.structurebuildingallowance._
 import pages.foreign.expenses._
 import pages.foreign.income._
+import pages.foreign.structurebuildingallowance._
 import play.api.mvc.Call
 
 @Singleton
@@ -77,8 +79,11 @@ class ForeignPropertyNavigator {
     case ForeignOtherIncomeFromPropertyPage(countryCode) =>
       taxYear => _ => _ => ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignIncomeSectionCompletePage(_) =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
-    //Expenses
+      taxYear =>
+        _ =>
+          _ =>
+            SummaryController.show(taxYear)
+        // Expenses
     case ForeignRentsRatesAndInsurancePage(countryCode) =>
       taxYear => _ => _ => ForeignPropertyRepairsAndMaintenanceController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignPropertyRepairsAndMaintenancePage(countryCode) =>
@@ -132,6 +137,34 @@ class ForeignPropertyNavigator {
     case ForeignSbaRemoveConfirmationPage(countryCode) =>
       taxYear => _ => userAnswers => foreignSbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, countryCode)
     case ForeignSbaCompletePage(_) =>
+      taxYear =>
+        _ =>
+          _ =>
+            SummaryController.show(taxYear)
+
+        // Adjustments
+    case ForeignPrivateUseAdjustmentPage(countryCode) =>
+      taxYear => _ => _ => ForeignBalancingChargeController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignBalancingChargePage(countryCode) =>
+      taxYear =>
+        _ =>
+          userAnswers =>
+            if (userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage).getOrElse(false)) {
+              PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, countryCode, NormalMode)
+            } else {
+              ForeignResidentialFinanceCostsController.onPageLoad(taxYear, countryCode, NormalMode)
+            }
+    case PropertyIncomeAllowanceClaimPage(countryCode) =>
+      taxYear => _ => _ => ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignResidentialFinanceCostsPage(countryCode) =>
+      taxYear => _ => _ => ForeignUnusedResidentialFinanceCostController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignUnusedResidentialFinanceCostPage(countryCode) =>
+      taxYear => _ => _ => ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear, countryCode, NormalMode)
+    case ForeignUnusedLossesPreviousYearsPage(countryCode) =>
+      taxYear => _ => userAnswers => unusedLossesNavigationNormalMode(taxYear, countryCode, userAnswers)
+    case ForeignWhenYouReportedTheLossPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignAdjustmentsCompletePage(_) =>
       taxYear => _ => _ => SummaryController.show(taxYear)
 
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
@@ -247,6 +280,21 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, index)
     case ForeignStructuresBuildingAllowanceAddressPage(index, countryCode) =>
       taxYear => _ => _ => ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, index)
+      // Adjustments
+    case ForeignPrivateUseAdjustmentPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignBalancingChargePage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case PropertyIncomeAllowanceClaimPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignResidentialFinanceCostsPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignUnusedResidentialFinanceCostPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignUnusedLossesPreviousYearsPage(countryCode) =>
+      taxYear => previousAnswers => userAnswers => unusedLossesNavigationCheckMode(taxYear, countryCode, previousAnswers, userAnswers)
+    case ForeignWhenYouReportedTheLossPage(countryCode) =>
+      taxYear => _ => _ => ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
 
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -257,6 +305,18 @@ class ForeignPropertyNavigator {
         normalRoutes(page)(taxYear)(previousUserAnswers)(userAnswers)
       case CheckMode =>
         checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
+    }
+
+  private def unusedLossesNavigationNormalMode(
+    taxYear: Int,
+    countryCode: String,
+    userAnswers: UserAnswers
+  ): Call =
+    userAnswers.get(ForeignUnusedLossesPreviousYearsPage(countryCode)) match {
+      case Some(UnusedLossesPreviousYears(true, _)) =>
+        ForeignWhenYouReportedTheLossController.onPageLoad(taxYear, countryCode, NormalMode)
+      case Some(UnusedLossesPreviousYears(false, _)) =>
+        ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     }
 
   private def foreignTotalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
@@ -354,7 +414,8 @@ class ForeignPropertyNavigator {
     userAnswers: UserAnswers
   ): Call =
     (previousAnswers.get(TotalIncomePage), userAnswers.get(TotalIncomePage)) match {
-      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) | (Some(Between), Some(Over)) | (Some(Over), Some(Between)) =>
+      case (Some(Under), Some(Between)) | (Some(Under), Some(Over)) | (Some(Between), Some(Over)) |
+          (Some(Over), Some(Between)) =>
         SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       case (Some(Between), Some(Under)) | (Some(Over), Some(Under)) =>
         PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
@@ -382,5 +443,21 @@ class ForeignPropertyNavigator {
     userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)) match {
       case Some(true) => ForeignAddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode)
       case _          => ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    }
+
+  private def unusedLossesNavigationCheckMode(
+                                                taxYear: Int,
+                                                countryCode: String,
+                                                previousAnswers: UserAnswers,
+                                                userAnswers: UserAnswers
+                                              ): Call =
+    (
+      previousAnswers.get(ForeignUnusedLossesPreviousYearsPage(countryCode)),
+      userAnswers.get(ForeignUnusedLossesPreviousYearsPage(countryCode))
+    ) match {
+      case (Some(UnusedLossesPreviousYears(false, _)), Some(UnusedLossesPreviousYears(true, _))) =>
+        ForeignWhenYouReportedTheLossController.onPageLoad(taxYear, countryCode, NormalMode)
+      case _ =>
+        ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     }
 }
