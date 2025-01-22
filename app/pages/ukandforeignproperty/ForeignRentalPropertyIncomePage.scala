@@ -19,9 +19,9 @@ package pages.ukandforeignproperty
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ForeignRentalPropertyIncomePage extends QuestionPage[BigDecimal] {
+case class ForeignRentalPropertyIncomePage(countryCode: String) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ countryCode.toUpperCase \ toString
 
   override def toString: String = "foreignRentalPropertyIncomeAmount"
 }
