@@ -47,7 +47,6 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage) match {
         case None =>
           form

@@ -1787,21 +1787,18 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title = How much did you receive for the grant of a lease?
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.agent = How much did you receive for the grant of a lease?
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title = How much received for the grant of a lease?
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.agent = How much did your client receive for the grant of a lease?
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.individual = How much did you receive for the grant of a lease?
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.legend.individual =
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.legend.agent =
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.error.required.individual = How much did you receive for the grant of a lease?
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.error.required.agent = How much did you receive for the grant of a lease?
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.individual =
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.agent =
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.error.required.agent = How much did your client receive for the grant of a lease?
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.individual = Enter the amount received for the grant of a lease
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.agent =  Enter the amount received for the grant of a lease
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonNumeric.individual = Grant of a lease amount can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonNumeric.agent = Grant of a lease amount can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.individual = Grant of a lease amount can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.agent = Grant of a lease amount can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.outOfRange = Enter an amount between £{0} and £{1}
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.change.hidden =
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.radio.question.label = Enter the amount
 
 ukAndForeignPropertyPremiumForLease.title = UK premiums for the grant of a lease

@@ -27,5 +27,5 @@ case object UkAndForeignPropertyAmountReceivedForGrantOfLeasePage extends Questi
   override def path: JsPath = JsPath \ toString
 
 
-  override def toString: String = "ukAndForeignPropertyAmountReceivedForGrantOfLease"
+  override def toString: String = "ukAndForeignProperty"
 }
