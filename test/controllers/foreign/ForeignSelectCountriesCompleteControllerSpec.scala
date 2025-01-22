@@ -101,12 +101,14 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
 
       val mockJourneyAnswersService = mock[JourneyAnswersService]
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq("")
+
         )(any())
       ) thenReturn Future.successful(
         Right("")

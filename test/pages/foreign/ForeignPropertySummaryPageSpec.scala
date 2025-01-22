@@ -203,8 +203,8 @@ class ForeignPropertySummaryPageSpec
         foreignStructureBuildingQualifyingDate = LocalDate.now(),
         foreignStructureBuildingQualifyingAmount = 1,
         foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress(
-          buildingName = "building-name",
-          buildingNumber = "1",
+          name = "building-name",
+          number = "1",
           postCode = "FF4 4FF"
         )
       )

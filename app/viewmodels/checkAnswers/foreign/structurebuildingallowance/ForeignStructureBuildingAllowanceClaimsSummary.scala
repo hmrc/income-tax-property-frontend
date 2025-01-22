@@ -32,8 +32,8 @@ object ForeignStructureBuildingAllowanceClaimsSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ForeignSbaOnIndex(index, countryCode)).map { answer =>
-      val value = s"""${HtmlFormat.escape(answer.foreignStructureBuildingAddress.buildingName)},
-        ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.buildingNumber)} <br>
+      val value = s"""${HtmlFormat.escape(answer.foreignStructureBuildingAddress.name)},
+        ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.number)} <br>
         ${HtmlFormat.escape(answer.foreignStructureBuildingAddress.postCode)}"""
 
       SummaryListRowViewModel(

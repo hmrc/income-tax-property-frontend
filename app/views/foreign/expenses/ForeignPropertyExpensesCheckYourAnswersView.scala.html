@@ -26,7 +26,7 @@
 @(list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
-    <span class="govuk-caption-l">@messages("ukproperty.caption", (taxYear - 1).toString, taxYear.toString)</span>
+    <span class="govuk-caption-l">@messages("property.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
     @formHelper(action = ForeignPropertyExpensesCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {

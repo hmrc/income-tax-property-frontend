@@ -74,7 +74,7 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 checkYourAnswers.title = Check your answers
 checkYourAnswers.heading = Check your answers
 
-ukproperty.caption = 6 April {0} to 5 April {1}
+property.caption = 6 April {0} to 5 April {1}
 taxYear.caption = 6 April {0} to 5 April {1}
 
 journeyRecovery.continue.title = Sorry, there is a problem with the service
@@ -1802,6 +1802,13 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = Select yes if yo
 ukAndForeignPropertyPremiumForLease.error.required.agent = Select yes if your client received a premium for granting a lease for UK property
 ukAndForeignPropertyPremiumForLease.change.hidden = UK premiums for the grant of a lease
 
+ukAndForeignPropertyBalancingCharge.radio.question.label = Enter the amount
+ukAndForeignPropertyBalancingCharge.details.line1.individual = If you sold, gave away or stopped using an item in your business that you claimed capital allowances for, you may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line1.agent = If your client sold, gave away or stopped using an item in the running of their property rental that they claimed capital allowances for, they may have to include a balancing charge.
+ukAndForeignPropertyBalancingCharge.details.line2.individual = Any balancing charges are regarded as income if you’re claiming property income allowance.
+ukAndForeignPropertyBalancingCharge.details.line2.agent = Any balancing charges are regarded as income if your client is claiming property income allowance.
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = Amount can only include pounds and pence, for example £600 or £600.20
+
 ukAndForeignPropertyReversePremiumsReceived.heading = UK reverse premiums received
 ukAndForeignPropertyReversePremiumsReceived.hint.individual = If you paid a reverse premium to someone, you must enter this amount in other property expenses.
 ukAndForeignPropertyReversePremiumsReceived.hint.agent = If your client paid a reverse premium to someone, you must enter this amount in other property expenses.
@@ -2714,3 +2721,29 @@ foreignWhenYouReportedTheLoss.checkYourAnswersLabel = When you reported the loss
 foreignWhenYouReportedTheLoss.error.required.individual = Select when you reported the loss
 foreignWhenYouReportedTheLoss.error.required.agent = Select when your client reported the loss
 foreignWhenYouReportedTheLoss.change.hidden = When you reported the loss
+
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.title = Deducting tax from non-UK resident landlord
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.heading = Deducting tax from non-UK resident landlord
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p1.individual = You need to pay tax on your rental income if you live abroad and rented out property in the UK.
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p1.agent = Your client will need to pay tax on their rental income if they live abroad and rented out property in the UK.
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p2.individual = You can get your rent either:
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p2.agent = They can get their rent either:
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l1.individual = in full and pay tax through Self Assessment - if HMRC allows you
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l1.agent = in full and pay tax through Self Assessment - if HMRC allows them
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l2.individual = with tax already deducted by your letting agent or tenant
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l2.agent = with tax already deducted by their letting agent or tenant
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.label.individual = Did you have tax deducted?
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.label.agent = Did your client have tax deducted?
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.amount.label = How much tax was deducted?
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.text.1 = Read more about
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.text.2 = tax on your UK income if you live abroad (opens in new tab)
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.checkYourAnswersLabel = Deducting tax from non-UK resident landlord
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.individual = Select yes if you had tax deducted
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.agent = Select yes if your client had tax deducted
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.individual = Enter the amount of tax you had deducted
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.agent = Enter the amount of tax your client had deducted
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = Enter an amount between £{0} and £{1}
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = Deducting tax from non-UK resident landlord

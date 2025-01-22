@@ -64,7 +64,7 @@ amount.hint = *Missing Welsh*
 checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
 
-ukproperty.caption	= 6 Ebrill {0} i 5 Ebrill {1}
+property.caption	= 6 Ebrill {0} i 5 Ebrill {1}
 taxYear.caption = 6 Ebrill {0} i 5 Ebrill {1}
 
 journeyRecovery.continue.title	=	Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth
@@ -1775,6 +1775,13 @@ ukAndForeignPropertyPremiumForLease.error.required.individual = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyPremiumForLease.change.hidden = *Missing Welsh*
 
+ukAndForeignPropertyBalancingCharge.radio.question.label = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line1.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
+ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
+
 ukAndForeignPropertyReversePremiumsReceived.heading = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.hint.individual = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.hint.agent = *Missing Welsh*
@@ -2688,3 +2695,29 @@ foreignWhenYouReportedTheLoss.checkYourAnswersLabel = *Missing Welsh*
 foreignWhenYouReportedTheLoss.error.required.individual = *Missing Welsh*
 foreignWhenYouReportedTheLoss.error.required.agent = *Missing Welsh*
 foreignWhenYouReportedTheLoss.change.hidden = *Missing Welsh*
+
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.title = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.heading = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p1.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p1.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p2.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.p2.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l1.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l1.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l2.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.l2.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.label.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.label.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.amount.label = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.text.1 = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.text.2 = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.hyperlink.href = https://www.gov.uk/tax-uk-income-live-abroad/rent
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.individual = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.agent = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = *Missing Welsh*
+ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = *Missing Welsh*

@@ -17,19 +17,19 @@
 package forms.adjustments
 
 import forms.behaviours.BooleanFieldBehaviours
-import forms.foreign.adjustments.ForeignBalancingChargeFormProvider
+import forms.adjustments.BalancingChargeFormProvider
 import models.BalancingCharge
 import org.scalatest.OptionValues
 import play.api.data.FormError
 
 import scala.collection.immutable.ArraySeq
 
-class ForeignBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
+class BalancingChargeFormProviderSpec extends BooleanFieldBehaviours with OptionValues {
 
-  val requiredKey = "foreignBalancingCharge.error.required.individual"
+  val requiredKey = "BalancingCharge.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ForeignBalancingChargeFormProvider()("individual")
+  val form = new BalancingChargeFormProvider()("individual")
 
   ".balancingChargeAmount" - {
     "when balancingChargeYesNo is true" - {
@@ -41,18 +41,18 @@ class ForeignBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with
 
       "and no amount is entered, should fail to bind" in {
         val boundForm = form.bind(Map("balancingChargeYesNo" -> "true"))
-        boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.required.individual"))
+        boundForm.errors must contain(FormError("balancingChargeAmount", "balancingCharge.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
         val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "non-numeric-value"))
-        boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.nonNumeric.individual"))
+        boundForm.errors must contain(FormError("balancingChargeAmount", "balancingCharge.amount.error.nonNumeric.individual"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "4534.6545"))
-        boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.twoDecimalPlaces.individual"))
+        boundForm.errors must contain(FormError("balancingChargeAmount", "balancingCharge.amount.error.twoDecimalPlaces.individual"))
       }
 
 
@@ -61,7 +61,7 @@ class ForeignBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with
         boundForm.errors must contain(
           FormError(
             "balancingChargeAmount",
-            "foreignBalancingCharge.amount.error.outOfRange",
+            "balancingCharge.amount.error.outOfRange",
             ArraySeq(0, 100000000)
           )
         )
