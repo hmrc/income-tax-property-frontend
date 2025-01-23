@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import viewmodels.govuk._
+@import viewmodels.LabelSize
 
 
 @this(
@@ -31,21 +32,14 @@
 
     @layout(pageTitle = title(form, messages("ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title"))) {
 
-        @formHelper(
-            action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear, mode),
-            Symbol("autoComplete") -> "off"
-        ) {
-
-            @if(form.errors.nonEmpty) {
-                @govukErrorSummary(ErrorSummaryViewModel(form))
-            }
-
-            <h1 class="govuk-heading-l">@messages(s"ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.${individualOrAgent}")</h1>
-
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+@formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
             @govukInput(
                 InputViewModel(
                     field = form("amountReceivedForGrantOfLease"),
-                    label = LabelViewModel("")
+label = LabelViewModel(messages(s"ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
                 )
                 .asNumeric()
                 .withWidth(Fixed5)
