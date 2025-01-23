@@ -2815,3 +2815,19 @@ foreignRentalPropertyIncome.error.required = Enter the amount of income earned f
 foreignRentalPropertyIncome.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 foreignRentalPropertyIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 foreignRentalPropertyIncome.change.hidden = Foreign property rental income
+
+leaseGrantAmountReceived.title.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.title.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.heading.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.heading.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.checkYourAnswersLabel = Lease Grant Amount Received
+leaseGrantAmountReceived.label.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.label.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.hint = Do not include income from reverse premiums.
+leaseGrantAmountReceived.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+leaseGrantAmountReceived.error.required = Enter the amount received for the grant of a lease
+leaseGrantAmountReceived.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+leaseGrantAmountReceived.error.outOfRange = Enter an amount between between £{0} and £{1}
+leaseGrantAmountReceived.change.hidden.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.change.hidden.agent = How much did your client receive for the grant of a lease?
+
