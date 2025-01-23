@@ -56,10 +56,10 @@ POST       /:taxYear/uk-foreign-property/change-lease-premium-payment           
 GET        /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST       /:taxYear/uk-foreign-property/check-your-answers                                        controllers.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear: Int)
 
-GET         /:taxYear/uk-foreign-property/year-lease-amount                                        controllers.ukandforeignproperty.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
-POST        /:taxYear/uk-foreign-property/year-lease-amount                                        controllers.ukandforeignproperty.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
-GET         /:taxYear/uk-foreign-property/change-year-lease-amount                                 controllers.ukandforeignproperty.YearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
-POST        /:taxYear/uk-foreign-property/change-year-lease-amount                                 controllers.ukandforeignproperty.YearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+GET         /:taxYear/uk-foreign-property/year-lease-amount                                        controllers.ukandforeignproperty.UkYearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/year-lease-amount                                        controllers.ukandforeignproperty.UkYearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-year-lease-amount                                 controllers.ukandforeignproperty.UkYearLeaseAmountController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-year-lease-amount                                 controllers.ukandforeignproperty.UkYearLeaseAmountController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
 GET        /:taxYear/uk-foreign-property/deducting-tax-from-non-uk-resident-landlord                        controllers.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST       /:taxYear/uk-foreign-property/deducting-tax-from-non-uk-resident-landlord                         controllers.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
