@@ -39,5 +39,5 @@ object LeaseGrantAmountReceivedSummary  {
               .withVisuallyHiddenText(messages(s"leaseGrantAmountReceived.change.hidden.$individualOrAgent"))
           )
         )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }
