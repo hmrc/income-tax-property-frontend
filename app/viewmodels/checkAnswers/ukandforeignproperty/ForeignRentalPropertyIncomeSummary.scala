@@ -23,7 +23,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import controllers.ukandforeignproperty.routes.ForeignRentalPropertyIncomeController
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass, bigDecimalCurrency}
 
 object ForeignRentalPropertyIncomeSummary  {
 
@@ -33,11 +33,11 @@ object ForeignRentalPropertyIncomeSummary  {
 
         SummaryListRowViewModel(
           key     = KeyViewModel("foreignRentalPropertyIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", ForeignRentalPropertyIncomeController.onPageLoad(taxYear, countryCode, CheckMode).url)
               .withVisuallyHiddenText(messages("foreignRentalPropertyIncome.change.hidden"))
           )
         )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }
