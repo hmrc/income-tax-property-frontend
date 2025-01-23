@@ -25,5 +25,5 @@ case class ForeignYearLeaseAmountPage(countryCode: String) extends QuestionPage[
 
   override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "yearLeaseAmount"
+  override def toString: String = "foreignYearLeaseAmount"
 }
