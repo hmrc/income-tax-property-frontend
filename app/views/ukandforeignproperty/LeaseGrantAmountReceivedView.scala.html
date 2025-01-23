@@ -16,6 +16,7 @@
 
 @import viewmodels.InputWidth._
 @import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedController
+@import viewmodels.LabelSize
 
 @this(
     layout: templates.Layout,
@@ -38,7 +39,7 @@
         @govukInput(
             InputViewModel(
                 field = form("leaseGrantReceivedAmount"),
-                label = LabelViewModel(messages("")).asPageHeading()
+                label = LabelViewModel(messages(s"leaseGrantAmountReceived.label.$individualOrAgent")).asPageHeading(LabelSize.Large)
             )
             .asNumeric()
             .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))

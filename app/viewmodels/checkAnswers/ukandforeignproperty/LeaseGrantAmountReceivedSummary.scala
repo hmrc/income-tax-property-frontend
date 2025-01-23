@@ -27,7 +27,7 @@ import viewmodels.implicits._
 
 object LeaseGrantAmountReceivedSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, countryCode: String, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(LeaseGrantAmountReceivedPage(countryCode)).map {
       answer =>
 
@@ -36,7 +36,7 @@ object LeaseGrantAmountReceivedSummary  {
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", LeaseGrantAmountReceivedController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("leaseGrantAmountReceived.change.hidden"))
+              .withVisuallyHiddenText(messages(s"leaseGrantAmountReceived.change.hidden.$individualOrAgent"))
           )
         )
     }
