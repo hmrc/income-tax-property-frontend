@@ -1787,6 +1787,8 @@ ukAndForeignPropertyReversePremiumsReceived.radio.legend.individual = *Missing W
 ukAndForeignPropertyReversePremiumsReceived.radio.legend.agent = *Missing Welsh*
 ukAndForeignPropertyReversePremiumsReceived.error.nonNumeric= *Missing Welsh*
 
+ukAndForeignPropertyYearLeaseAmount.hint = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
@@ -2608,6 +2610,7 @@ foreignBalancingCharge.details.line2.agent = *Missing Welsh*
 foreignBalancingCharge.details.line2.link.text = *Missing Welsh*
 foreignBalancingCharge.radio.legend.individual = *Missing Welsh*
 foreignBalancingCharge.radio.legend.agent = *Missing Welsh*
+foreignBalancingCharge.radio.question.label = *Missing Welsh*
 foreignBalancingCharge.label = *Missing Welsh*
 foreignBalancingCharge.amount.error.required.individual = *Missing Welsh*
 foreignBalancingCharge.amount.error.required.agent = *Missing Welsh*

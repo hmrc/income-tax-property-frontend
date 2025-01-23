@@ -2831,3 +2831,4 @@ leaseGrantAmountReceived.error.outOfRange = Enter an amount between between £{0
 leaseGrantAmountReceived.change.hidden.individual = How much did you receive for the grant of a lease?
 leaseGrantAmountReceived.change.hidden.agent = How much did your client receive for the grant of a lease?
 
+ukAndForeignPropertyYearLeaseAmount.hint = You only need to tell us about leases between 2 and 50 years in length.

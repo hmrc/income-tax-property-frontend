@@ -19,9 +19,9 @@ package forms.ukandforeignproperty
 import forms.behaviours.IntFieldBehaviours
 import play.api.data.FormError
 
-class YearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
+class UkYearLeaseAmountFormProviderSpec extends IntFieldBehaviours {
 
-  val form = new YearLeaseAmountFormProvider()()
+  val form = new UkYearLeaseAmountFormProvider()()
 
   ".yearLeaseAmount" - {
 
