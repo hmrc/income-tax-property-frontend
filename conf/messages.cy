@@ -2789,3 +2789,14 @@ foreignRentalPropertyIncome.error.required = *Missing Welsh*
 foreignRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
 foreignRentalPropertyIncome.error.outOfRange = *Missing Welsh*
 foreignRentalPropertyIncome.change.hidden = *Missing Welsh*
+
+leaseGrantAmountReceived.title.individual = *Missing Welsh*
+leaseGrantAmountReceived.title.agent = *Missing Welsh*
+leaseGrantAmountReceived.heading = *Missing Welsh*
+leaseGrantAmountReceived.checkYourAnswersLabel = *Missing Welsh*
+leaseGrantAmountReceived.hint = *Missing Welsh*
+leaseGrantAmountReceived.error.nonNumeric = *Missing Welsh*
+leaseGrantAmountReceived.error.required = *Missing Welsh*
+leaseGrantAmountReceived.error.twoDecimalPlaces = *Missing Welsh*
+leaseGrantAmountReceived.error.outOfRange = *Missing Welsh*
+leaseGrantAmountReceived.change.hidden = *Missing Welsh*
