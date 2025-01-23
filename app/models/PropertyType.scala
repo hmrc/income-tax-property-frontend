@@ -35,7 +35,6 @@ case object ForeignProperty extends PropertyType {
 case object UKAndForeignProperty extends PropertyType {
   override def toString: String = "uk and foreign property"
 }
-
 object PropertyType {
   def toPath(propertyType: PropertyType): String = propertyType match {
     case Rentals          => "rentals"
