@@ -42,5 +42,5 @@ object ForeignYearLeaseAmountSummary {
             .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
         )
       )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }
