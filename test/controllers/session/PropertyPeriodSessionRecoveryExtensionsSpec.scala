@@ -27,6 +27,7 @@ import pages.foreign.expenses._
 import pages.foreign._
 import pages.foreign.allowances._
 import pages.foreign.income._
+import pages.foreign.structurebuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
@@ -45,6 +46,7 @@ import java.time.LocalDate
 class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoSugar with Fixture {
   val countryCode1 = "ESP"
   val countryCode2 = "USA"
+  val index = 0
   val data: String =
     s"""{
        |  "ukPropertyData" : {
@@ -242,6 +244,24 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |          "otherCapitalAllowance": 45.15
        |         }
        |         },
+       |    "foreignPropertySba": {
+       |    "$countryCode1": {
+       |      "claimStructureBuildingAllowance": true,
+       |      "allowances": [{
+       |        "amount": 500,
+       |        "firstYear": {
+       |          "qualifyingDate": "2023-05-04",
+       |          "qualifyingAmountExpenditure": 100
+       |        },
+       |        "building": {
+       |          "name": "Building",
+       |          "number": "1",
+       |          "postCode": "AB2 7AA"
+       |        }
+       |        }
+       |      ]
+       |    }
+       |},
        |    "foreignJourneyStatuses": {
        |      "$countryCode1": [
        |        {
@@ -254,6 +274,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        },
        |         {
        |           "journeyName": "foreign-property-allowances",
+       |           "journeyStatus": "completed"
+       |       },
+       |       {
+       |           "journeyName": "foreign-property-sba",
        |           "journeyStatus": "completed"
        |       }
        |      ],
@@ -412,6 +436,17 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         totalPropertyIncome = TotalPropertyIncome.Maximum,
         reportIncome = Some(ReportIncome.WantToReport)
       )
+
+      updated.get(ForeignClaimStructureBuildingAllowancePage(countryCode1)).get mustBe true
+      updated.get(ForeignStructureBuildingQualifyingAmountPage(countryCode1, index)).get mustBe 100
+      updated.get(ForeignStructureBuildingQualifyingDatePage(countryCode1, index)).get mustBe LocalDate.parse(
+        "2023-05-04"
+      )
+      updated
+        .get(ForeignStructuresBuildingAllowanceAddressPage(index, countryCode1))
+        .get mustBe ForeignStructuresBuildingAllowanceAddress(name = "Building", number = "1", postCode = "AB2 7AA")
+      updated.get(ForeignStructureBuildingAllowanceClaimPage(countryCode1, index)).get mustBe 500
+      updated.get(ForeignSbaCompletePage(countryCode1)) mustBe Some(true)
     }
   }
 }
