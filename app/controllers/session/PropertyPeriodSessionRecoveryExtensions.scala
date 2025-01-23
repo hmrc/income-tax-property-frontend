@@ -33,6 +33,7 @@ import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
+import pages.foreign.structurebuildingallowance._
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
@@ -48,6 +49,7 @@ import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, J
 import play.api.libs.json.Writes
 import queries.Settable
 
+import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
 object PropertyPeriodSessionRecoveryExtensions {
@@ -85,9 +87,10 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua23 <- updateForeignPropertyExpenses(ua22, fetchedData.foreignPropertyData.foreignPropertyExpenses)
         ua24 <- updateForeignPropertyTax(ua23, fetchedData.foreignPropertyData.foreignPropertyTax)
         ua25 <- updateForeignPropertyAllowances(ua24, fetchedData.foreignPropertyData.foreignPropertyAllowances)
-        ua26 <- updateForeignJourneyStatuses(ua25, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-        ua27 <- updateUkAndForeignPropertyAboutPages(ua26, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
-      } yield ua27
+        ua26 <- updateforeignPropertySbaPage(ua25, fetchedData.foreignPropertyData.foreignPropertySba)
+        ua27 <- updateForeignJourneyStatuses(ua26, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+        ua28 <- updateUkAndForeignPropertyAboutPages(ua27, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
+      } yield ua28
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -363,6 +366,65 @@ object PropertyPeriodSessionRecoveryExtensions {
             } yield ua4
         }
     }
+
+    private def updateforeignPropertySbaPage(
+      userAnswers: UserAnswers,
+      maybeSba: Option[Map[String, ForeignSbaAnswers]]
+    ): Try[UserAnswers] =
+      maybeSba match {
+        case None => Success(userAnswers)
+        case Some(sbaMap) =>
+          sbaMap.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+            case (userAnswers: Try[UserAnswers], (countryCode, sba: ForeignSbaAnswers)) =>
+              for {
+                ua <- userAnswers
+                ua1 <-
+                  ua.set(ForeignClaimStructureBuildingAllowancePage(countryCode), sba.claimStructureBuildingAllowance)
+                ua2 <- sba.allowances.fold[Try[UserAnswers]](Success(ua1))(sbas =>
+                         updateAllForeignPropertySbas(ua1, sbas, countryCode)
+                       )
+              } yield ua2
+          }
+      }
+
+    private def updateAllForeignPropertySbas(
+      userAnswers: UserAnswers,
+      sbas: Seq[StructuredBuildingAllowance],
+      countryCode: String
+    ): Try[UserAnswers] =
+      sbas.zipWithIndex.foldLeft(Try(userAnswers)) { (acc, a) =>
+        val (sba, index) = a
+        acc.flatMap(ua => updateForeignSba(ua, index, sba, countryCode))
+      }
+
+    private def updateForeignSba(
+      userAnswers: UserAnswers,
+      index: Int,
+      sba: StructuredBuildingAllowance,
+      countryCode: String
+    ): Try[UserAnswers] =
+      for {
+        ua1 <- userAnswers.set(
+                 ForeignStructuresBuildingAllowanceAddressPage(index, countryCode),
+                 ForeignStructuresBuildingAllowanceAddress(
+                   sba.building.name.getOrElse(""),
+                   sba.building.number.getOrElse(""),
+                   sba.building.postCode
+                 )
+               )
+        ua2 <-
+          ua1.set(
+            ForeignStructureBuildingQualifyingDatePage(countryCode, index),
+            sba.firstYear.map(_.qualifyingDate).getOrElse(LocalDate.now())
+          )
+        ua3 <-
+          ua2.set(
+            ForeignStructureBuildingQualifyingAmountPage(countryCode, index),
+            sba.firstYear.map(_.qualifyingAmountExpenditure).getOrElse(BigDecimal(0))
+          )
+        ua4 <-
+          ua3.set(ForeignStructureBuildingAllowanceClaimPage(countryCode, index), sba.amount)
+      } yield ua4
 
     private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
       writes: Writes[T]

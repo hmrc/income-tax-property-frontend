@@ -156,6 +156,31 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 propertyAllowance = Some(85.85)
               )
             )
+          ),
+          foreignPropertySba = Some(
+            Map(
+              "ESP" -> ForeignSbaAnswers(
+                claimStructureBuildingAllowance = true,
+                allowances = Some(
+                  Seq(
+                    StructuredBuildingAllowance(
+                      amount = 65.55,
+                      Some(
+                        StructuredBuildingAllowanceDate(
+                          qualifyingDate = LocalDate.now(),
+                          qualifyingAmountExpenditure = 50.00
+                        )
+                      ),
+                      building = StructuredBuildingAllowanceBuilding(
+                        name = Some("name"),
+                        number = Some("number"),
+                        postCode = "AB1 2XY"
+                      )
+                    )
+                  )
+                )
+              )
+            )
           )
         )
         val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(

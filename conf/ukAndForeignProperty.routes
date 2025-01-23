@@ -71,11 +71,15 @@ POST        /:taxYear/uk-foreign-property/balancing-charge                      
 GET         /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onPageLoad(taxYear: Int, mode: Mode)
 POST        /:taxYear/uk-foreign-property/change-balancing-charge                                  controllers.ukandforeignproperty.BalancingChargeController.onSubmit(taxYear: Int, mode: Mode)
 
-
 GET         /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-foreign-property/reverse-premiums-received                                controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/uk-foreign-property/change-reverse-premiums-received                         controllers.ukandforeignproperty.ReversePremiumsReceivedController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET        /:taxYear/uk-foreign-property/:countryCode/uk-and-foreign-balancing-charge                        controllers.ukandforeignproperty.UkAndForeignBalancingChargeController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST       /:taxYear/uk-foreign-property/:countryCode/uk-and-foreign-balancing-charge                     controllers.ukandforeignproperty.UkAndForeignBalancingChargeController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET        /:taxYear/uk-foreign-property/:countryCode/change-uk-and-foreign-balancing-charge                 controllers.ukandforeignproperty.UkAndForeignBalancingChargeController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST       /:taxYear/uk-foreign-property/:countryCode/change-uk-and-foreign-balancing-charge                 controllers.ukandforeignproperty.UkAndForeignBalancingChargeController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
 GET         /:taxYear/uk-foreign-property/other-income-from-property                               controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/uk-foreign-property/other-income-from-property                               controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
