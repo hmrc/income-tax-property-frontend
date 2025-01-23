@@ -17,18 +17,21 @@
 package navigation.foreign
 
 import base.SpecBase
-import controllers.foreign.expenses.routes._
+import controllers.foreign.adjustments.routes._
 import controllers.foreign.allowances.routes._
+import controllers.foreign.expenses.routes._
 import controllers.foreign.income.routes._
 import controllers.foreign.routes._
 import controllers.foreign.structuresbuildingallowance.routes._
 import controllers.routes.SummaryController
-import models.TotalIncome._
+import models.ForeignWhenYouReportedTheLoss.y2022to2023
 import models.JourneyName.{reads, writes}
-import models.{CheckMode, ConsolidatedOrIndividualExpenses, ForeignStructuresBuildingAllowanceAddress, NormalMode, PremiumCalculated, UserAnswers}
+import models.TotalIncome._
+import models.{CheckMode, ConsolidatedOrIndividualExpenses, ForeignStructuresBuildingAllowanceAddress, ForeignUnusedResidentialFinanceCost, NormalMode, PremiumCalculated, UnusedLossesPreviousYears, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.Page
 import pages.foreign._
+import pages.foreign.adjustments._
 import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.income._
@@ -577,7 +580,12 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe ForeignStructureBuildingQualifyingAmountController.onPageLoad(taxYear, countryCode, sbaClaimIndex, NormalMode)
+          ) mustBe ForeignStructureBuildingQualifyingAmountController.onPageLoad(
+            taxYear,
+            countryCode,
+            sbaClaimIndex,
+            NormalMode
+          )
         }
 
         "must go from ForeignStructureBuildingQualifyingAmountPage to ForeignStructureBuildingAllowanceClaimController" in {
@@ -591,7 +599,12 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe ForeignStructureBuildingAllowanceClaimController.onPageLoad(taxYear, countryCode, sbaClaimIndex, NormalMode)
+          ) mustBe ForeignStructureBuildingAllowanceClaimController.onPageLoad(
+            taxYear,
+            countryCode,
+            sbaClaimIndex,
+            NormalMode
+          )
         }
 
         "must go from ForeignStructureBuildingAllowanceClaimPage to ForeignStructuresBuildingAllowanceAddressController" in {
@@ -605,7 +618,12 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             userAnswers
-          ) mustBe ForeignStructuresBuildingAllowanceAddressController.onPageLoad(taxYear, sbaClaimIndex, countryCode, NormalMode)
+          ) mustBe ForeignStructuresBuildingAllowanceAddressController.onPageLoad(
+            taxYear,
+            sbaClaimIndex,
+            countryCode,
+            NormalMode
+          )
         }
 
         "must go from ForeignStructuresBuildingAllowanceAddressPage to ForeignSbaCheckYourAnswersController" in {
@@ -630,14 +648,17 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
             foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
             foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
-            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+            foreignStructureBuildingAddress =
+              ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode")
+          )
 
           val prevAnswers = UserAnswers("test")
             .set(ForeignStructureBuildingAllowanceWithIndex(sbaClaimIndex, countryCode), Array(sbaClaim))
             .get
 
           val userAnswers = prevAnswers
-            .set(ForeignSbaRemoveConfirmationPage(countryCode), true).get
+            .set(ForeignSbaRemoveConfirmationPage(countryCode), true)
+            .get
             .remove(ForeignStructureBuildingAllowanceWithIndex(sbaClaimIndex, countryCode))
             .get
 
@@ -655,10 +676,13 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
             foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
             foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
-            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+            foreignStructureBuildingAddress =
+              ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode")
+          )
 
           val userAnswers = UserAnswers("test")
-            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim)).get
+            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim))
+            .get
             .set(ForeignSbaRemoveConfirmationPage(countryCode), true)
             .get
 
@@ -676,10 +700,13 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             foreignStructureBuildingAllowanceClaim = BigDecimal(657.00),
             foreignStructureBuildingQualifyingDate = LocalDate.of(2024, 1, 1),
             foreignStructureBuildingQualifyingAmount = BigDecimal(657.00),
-            foreignStructureBuildingAddress = ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode"))
+            foreignStructureBuildingAddress =
+              ForeignStructuresBuildingAllowanceAddress("building-name", "building-number", "postcode")
+          )
 
           val userAnswers = UserAnswers("test")
-            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim)).get
+            .set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaClaim))
+            .get
             .set(ForeignSbaRemoveConfirmationPage(countryCode), false)
             .get
 
@@ -720,8 +747,154 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           userAnswersWithData
         ) mustBe SummaryController.show(taxYear)
       }
-    }
 
+      "for Adjustments section" - {
+
+        "must go from ForeignPrivateUseAdjustmentPage to ForeignBalancingChargeController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(25.00))
+            .get
+          navigator.nextPage(
+            ForeignPrivateUseAdjustmentPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignBalancingChargeController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignBalancingChargePage to PropertyIncomeAllowanceClaimController if the user has selected Yes, claim property income allowance" +
+          "on the Claiming Property Income Allowance' page" in {
+            navigator.nextPage(
+              ForeignBalancingChargePage(countryCode),
+              taxYear,
+              NormalMode,
+              UserAnswers("test"),
+              UserAnswers("test").set(ClaimPropertyIncomeAllowanceOrExpensesPage, true).get
+            ) mustBe PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, countryCode, NormalMode)
+          }
+
+        "must go from ForeignBalancingChargePage to ForeignResidentialFinanceCostsController" in {
+          navigator.nextPage(
+            ForeignBalancingChargePage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ClaimPropertyIncomeAllowanceOrExpensesPage, false).get
+          ) mustBe ForeignResidentialFinanceCostsController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from PropertyIncomeAllowanceClaimPage to ForeignUnusedLossesPreviousYearsController" in {
+          val userAnswers = UserAnswers("test")
+            .set(PropertyIncomeAllowanceClaimPage(countryCode), BigDecimal(75.00))
+            .get
+
+          navigator.nextPage(
+            PropertyIncomeAllowanceClaimPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignResidentialFinanceCostsPage to ForeignUnusedResidentialFinanceCostController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignResidentialFinanceCostsPage(countryCode), BigDecimal(75.00))
+            .get
+
+          navigator.nextPage(
+            ForeignResidentialFinanceCostsPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignUnusedResidentialFinanceCostController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignUnusedResidentialFinanceCostPage to ForeignUnusedLossesPreviousYearsController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedResidentialFinanceCostPage(countryCode),
+              ForeignUnusedResidentialFinanceCost(
+                foreignUnusedResidentialFinanceCostYesNo = true,
+                foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedResidentialFinanceCostPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignUnusedLossesPreviousYearsPage to ForeignWhenYouReportedTheLossController when user has unused losses" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedLossesPreviousYearsPage(countryCode),
+              UnusedLossesPreviousYears(
+                unusedLossesPreviousYearsYesNo = true,
+                unusedLossesPreviousYearsAmount = Some(BigDecimal(125.25))
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedLossesPreviousYearsPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignWhenYouReportedTheLossController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignUnusedLossesPreviousYearsPage to ForeignAdjustmentsCheckYourAnswersController when user has no unused losses" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedLossesPreviousYearsPage(countryCode),
+              UnusedLossesPreviousYears(
+                unusedLossesPreviousYearsYesNo = false,
+                unusedLossesPreviousYearsAmount = None
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedLossesPreviousYearsPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignWhenYouReportedTheLossPage to ForeignAdjustmentsCheckYourAnswersController" in {
+          navigator.nextPage(
+            ForeignWhenYouReportedTheLossPage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ForeignWhenYouReportedTheLossPage(countryCode), y2022to2023).get
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignAdjustmentsCompletePage to SummaryController" in {
+          val userAnswersWithData = UserAnswers("test").set(ForeignAdjustmentsCompletePage(countryCode), true).get
+          navigator.nextPage(
+            ForeignAllowancesCompletePage(countryCode),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            userAnswersWithData
+          ) mustBe SummaryController.show(taxYear)
+        }
+      }
+
+    }
 
     "in Check mode" - {
 
@@ -1209,6 +1382,139 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           ) mustBe ForeignSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode, sbaClaimIndex)
         }
 
+      }
+
+      "for Adjustments section check mode" - {
+
+        "must go from ForeignPrivateUseAdjustmentPage to ForeignAdjustmentsCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(25.00))
+            .get
+          navigator.nextPage(
+            ForeignPrivateUseAdjustmentPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignBalancingChargePage to ForeignResidentialFinanceCostsController" in {
+          navigator.nextPage(
+            ForeignBalancingChargePage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ClaimPropertyIncomeAllowanceOrExpensesPage, false).get
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from PropertyIncomeAllowanceClaimPage to ForeignUnusedLossesPreviousYearsController" in {
+          val userAnswers = UserAnswers("test")
+            .set(PropertyIncomeAllowanceClaimPage(countryCode), BigDecimal(75.00))
+            .get
+
+          navigator.nextPage(
+            PropertyIncomeAllowanceClaimPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignResidentialFinanceCostsPage to ForeignUnusedResidentialFinanceCostController" in {
+          val userAnswers = UserAnswers("test")
+            .set(ForeignResidentialFinanceCostsPage(countryCode), BigDecimal(75.00))
+            .get
+
+          navigator.nextPage(
+            ForeignResidentialFinanceCostsPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignUnusedResidentialFinanceCostPage to ForeignUnusedLossesPreviousYearsController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedResidentialFinanceCostPage(countryCode),
+              ForeignUnusedResidentialFinanceCost(
+                foreignUnusedResidentialFinanceCostYesNo = true,
+                foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedResidentialFinanceCostPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignUnusedLossesPreviousYearsPage to ForeignWhenYouReportedTheLossController when they change their answer from no to yes" in {
+          val previousAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedLossesPreviousYearsPage(countryCode),
+              UnusedLossesPreviousYears(
+                unusedLossesPreviousYearsYesNo = false,
+                unusedLossesPreviousYearsAmount = None
+              )
+            )
+            .get
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedLossesPreviousYearsPage(countryCode),
+              UnusedLossesPreviousYears(
+                unusedLossesPreviousYearsYesNo = true,
+                unusedLossesPreviousYearsAmount = Some(BigDecimal(125.25))
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedLossesPreviousYearsPage(countryCode),
+            taxYear,
+            CheckMode,
+            previousAnswers,
+            userAnswers
+          ) mustBe ForeignWhenYouReportedTheLossController.onPageLoad(taxYear, countryCode, NormalMode)
+        }
+
+        "must go from ForeignUnusedLossesPreviousYearsPage to ForeignAdjustmentsCheckYourAnswersController" in {
+          val userAnswers = UserAnswers("test")
+            .set(
+              ForeignUnusedLossesPreviousYearsPage(countryCode),
+              UnusedLossesPreviousYears(
+                unusedLossesPreviousYearsYesNo = false,
+                unusedLossesPreviousYearsAmount = None
+              )
+            )
+            .get
+
+          navigator.nextPage(
+            ForeignUnusedLossesPreviousYearsPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            userAnswers
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
+
+        "must go from ForeignWhenYouReportedTheLossPage to ForeignAdjustmentsCheckYourAnswersController" in {
+          navigator.nextPage(
+            ForeignWhenYouReportedTheLossPage(countryCode),
+            taxYear,
+            CheckMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ForeignWhenYouReportedTheLossPage(countryCode), y2022to2023).get
+          ) mustBe ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+        }
       }
 
     }

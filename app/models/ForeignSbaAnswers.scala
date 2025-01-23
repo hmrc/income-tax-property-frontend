@@ -18,15 +18,11 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class FetchedForeignPropertyData(
-  foreignPropertyTax: Option[Map[String, ForeignPropertyTax]],
-  foreignPropertyIncome: Option[Map[String, ForeignIncomeAnswers]],
-  foreignPropertyExpenses: Option[Map[String, ForeignExpensesAnswers]],
-  foreignPropertyAllowances: Option[Map[String, ForeignPropertyAllowances]],
-  foreignPropertySba: Option[Map[String, ForeignSbaAnswers]],
-  foreignJourneyStatuses: Option[Map[String, List[JourneyWithStatus]]]
-)
 
-object FetchedForeignPropertyData {
-  implicit val format: OFormat[FetchedForeignPropertyData] = Json.format[FetchedForeignPropertyData]
+final case class ForeignSbaAnswers(
+  claimStructureBuildingAllowance: Boolean,
+  allowances: Option[Seq[StructuredBuildingAllowance]]
+)
+object ForeignSbaAnswers {
+  implicit val format: OFormat[ForeignSbaAnswers] = Json.format[ForeignSbaAnswers]
 }

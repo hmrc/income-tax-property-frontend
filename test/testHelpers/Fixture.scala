@@ -40,7 +40,7 @@ trait Fixture {
     List(),
     None
   )
-  val foreignPropertyData: FetchedForeignPropertyData = FetchedForeignPropertyData(None,None,None,None, None)
+  val foreignPropertyData: FetchedForeignPropertyData = FetchedForeignPropertyData(None,None,None,None, None,None)
   val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(None)
   val fetchedPropertyData: FetchedPropertyData = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
 }

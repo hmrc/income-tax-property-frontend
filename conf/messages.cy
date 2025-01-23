@@ -1782,6 +1782,11 @@ ukAndForeignPropertyBalancingCharge.details.line2.individual = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.details.line2.agent = *Missing Welsh*
 ukAndForeignPropertyBalancingCharge.amount.error.nonNumeric = *Missing Welsh*
 
+ukAndForeignPropertyReversePremiumsReceived.heading = *Missing Welsh*
+ukAndForeignPropertyReversePremiumsReceived.radio.legend.individual = *Missing Welsh*
+ukAndForeignPropertyReversePremiumsReceived.radio.legend.agent = *Missing Welsh*
+ukAndForeignPropertyReversePremiumsReceived.error.nonNumeric= *Missing Welsh*
+
 ukAndForeignPropertyYearLeaseAmount.hint = *Missing Welsh*
 
 ###################### Foreign Property ######################
@@ -2716,3 +2721,74 @@ ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric = *Missing Welsh*
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange = *Missing Welsh*
 ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.change.hidden = *Missing Welsh*
+
+uKRentalPropertyIncome.title = *Missing Welsh*
+uKRentalPropertyIncome.heading = *Missing Welsh*
+uKRentalPropertyIncome.checkYourAnswersLabel = *Missing Welsh*
+uKRentalPropertyIncome.p1.individual = *Missing Welsh*
+uKRentalPropertyIncome.p1.agent = *Missing Welsh*
+uKRentalPropertyIncome.bullet1 = *Missing Welsh*
+uKRentalPropertyIncome.bullet2.individual = *Missing Welsh*
+uKRentalPropertyIncome.bullet2.agent = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.intro = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.href = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.text = *Missing Welsh*
+uKRentalPropertyIncome.details.content.link.outro = *Missing Welsh*
+uKRentalPropertyIncome.label.individual = *Missing Welsh*
+uKRentalPropertyIncome.label.agent = *Missing Welsh*
+uKRentalPropertyIncome.hint1.individual = *Missing Welsh*
+uKRentalPropertyIncome.hint1.agent = *Missing Welsh*
+uKRentalPropertyIncome.hint2 = *Missing Welsh*
+uKRentalPropertyIncome.error.nonNumeric = *Missing Welsh*
+uKRentalPropertyIncome.error.required = *Missing Welsh*
+uKRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
+uKRentalPropertyIncome.error.outOfRange = *Missing Welsh*
+uKRentalPropertyIncome.change.hidden = *Missing Welsh*
+
+ukAndForeignBalancingCharge.title = *Missing Welsh*
+ukAndForeignBalancingCharge.heading = *Missing Welsh*
+ukAndForeignBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignBalancingCharge.p1.individual = *Missing Welsh*
+ukAndForeignBalancingCharge.p1.agent = *Missing Welsh*
+ukAndForeignBalancingCharge.p2.individual = *Missing Welsh*
+ukAndForeignBalancingCharge.p2.agent = *Missing Welsh*
+ukAndForeignBalancingCharge.label.individual = *Missing Welsh*
+ukAndForeignBalancingCharge.label.agent = *Missing Welsh*
+ukAndForeignBalancingCharge.label2 = *Missing Welsh*
+ukAndForeignBalancingCharge.error.required.individual = *Missing Welsh*
+ukAndForeignBalancingCharge.error.required.agent = *Missing Welsh*
+ukAndForeignBalancingCharge.error.required.amount = *Missing Welsh*
+ukAndForeignBalancingCharge.error.nonNumeric = *Missing Welsh*
+ukAndForeignBalancingCharge.error.twoDecimalPlaces = *Missing Welsh*
+ukAndForeignBalancingCharge.amount.error.outOfRange = *Missing Welsh*
+ukAndForeignBalancingCharge.change.hidden = *Missing Welsh*
+
+foreignRentalPropertyIncome.title = *Missing Welsh*
+foreignRentalPropertyIncome.heading = *Missing Welsh*
+foreignRentalPropertyIncome.p1.individual = *Missing Welsh*
+foreignRentalPropertyIncome.p1.agent = *Missing Welsh*
+foreignRentalPropertyIncome.bullet1 = *Missing Welsh*
+foreignRentalPropertyIncome.bullet2.individual = *Missing Welsh*
+foreignRentalPropertyIncome.bullet2.agent = *Missing Welsh*
+foreignRentalPropertyIncome.p2.intro = *Missing Welsh*
+foreignRentalPropertyIncome.p2.link.text = *Missing Welsh*
+foreignRentalPropertyIncome.p2.link.href = *Missing Welsh*
+foreignRentalPropertyIncome.p2.outro = *Missing Welsh*
+foreignRentalPropertyIncome.p3.intro = *Missing Welsh*
+foreignRentalPropertyIncome.p3.link1.text = *Missing Welsh*
+foreignRentalPropertyIncome.p3.link1.href = *Missing Welsh*
+foreignRentalPropertyIncome.p3.mid = *Missing Welsh*
+foreignRentalPropertyIncome.p3.link2.text = *Missing Welsh*
+foreignRentalPropertyIncome.p3.link2.href = *Missing Welsh*
+foreignRentalPropertyIncome.p3.outro = *Missing Welsh*
+foreignRentalPropertyIncome.p4 = *Missing Welsh*
+foreignRentalPropertyIncome.label.individual = *Missing Welsh*
+foreignRentalPropertyIncome.label.agent = *Missing Welsh*
+foreignRentalPropertyIncome.p5.individual = *Missing Welsh*
+foreignRentalPropertyIncome.p5.agent = *Missing Welsh*
+foreignRentalPropertyIncome.checkYourAnswersLabel = *Missing Welsh*
+foreignRentalPropertyIncome.error.nonNumeric = *Missing Welsh*
+foreignRentalPropertyIncome.error.required = *Missing Welsh*
+foreignRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
+foreignRentalPropertyIncome.error.outOfRange = *Missing Welsh*
+foreignRentalPropertyIncome.change.hidden = *Missing Welsh*

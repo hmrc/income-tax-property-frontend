@@ -32,13 +32,16 @@ case object RentalsRentARoom extends PropertyType {
 case object ForeignProperty extends PropertyType {
   override def toString: String = "foreign property"
 }
-
+case object UKAndForeignProperty extends PropertyType {
+  override def toString: String = "uk and foreign property"
+}
 object PropertyType {
   def toPath(propertyType: PropertyType): String = propertyType match {
     case Rentals          => "rentals"
     case RentARoom        => "rent-a-room"
     case RentalsRentARoom => "rentals-rent-a-room"
     case ForeignProperty  => "foreign-property"
+    case UKAndForeignProperty => "uk-and-foreign-property"
   }
 
   implicit val jsLiteral: JavascriptLiteral[PropertyType] = new JavascriptLiteral[PropertyType] {
@@ -47,6 +50,7 @@ object PropertyType {
       case RentARoom        => "RentARoom"
       case RentalsRentARoom => "RentalsRentARoom"
       case ForeignProperty  => "ForeignProperty"
+      case UKAndForeignProperty => "UKAndForeignProperty"
     }
   }
 }
