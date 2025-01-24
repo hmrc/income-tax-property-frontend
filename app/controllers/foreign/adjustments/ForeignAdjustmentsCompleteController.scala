@@ -70,7 +70,7 @@ class ForeignAdjustmentsCompleteController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignAdjustmentsCompletePage(countryCode), value))
               _              <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setForeignStatus(
                           ctx = JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,
@@ -78,7 +78,8 @@ class ForeignAdjustmentsCompleteController @Inject()(
                             journeyPath = ForeignPropertyAdjustments
                           ),
                           status = statusForPage(value),
-                          user = request.user
+                          user = request.user,
+                          countryCode = countryCode
                         )
             } yield status.fold(
               _ =>

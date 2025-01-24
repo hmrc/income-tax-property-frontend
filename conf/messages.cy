@@ -1789,6 +1789,16 @@ ukAndForeignPropertyReversePremiumsReceived.error.nonNumeric= *Missing Welsh*
 
 ukAndForeignPropertyYearLeaseAmount.hint = *Missing Welsh*
 
+ukAndForeignPropertyOtherIncomeFromProperty.error.nonNumeric = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.title = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.heading = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.change.hidden = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.para2.individual = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.para2.agent = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.agent = *Missing Welsh*
+
 ukAndForeignPropertyIncomeAllowanceClaim.error.outOfRange = *Missing Welsh*
 ukAndForeignPropertyIncomeAllowanceClaim.p1.individual = *Missing Welsh*
 ukAndForeignPropertyIncomeAllowanceClaim.p1.agent = *Missing Welsh*
@@ -2306,6 +2316,26 @@ ukAndForeignPropertyRentalTypeUk.error.required.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.change.hidden.agent = *Missing Welsh*
 
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.title = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.heading.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.heading.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.legend.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.legend.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.nonNumeric.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.nonNumeric.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.outOfRange = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.change.hidden = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.yes = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.no.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.no.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.radio.question.label = *Missing Welsh*
+
 selectCountry.title.individual = *Missing Welsh*
 selectCountry.title.agent = *Missing Welsh*
 selectCountry.heading.individual = *Missing Welsh*
@@ -2751,6 +2781,24 @@ uKRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
 uKRentalPropertyIncome.error.outOfRange = *Missing Welsh*
 uKRentalPropertyIncome.change.hidden = *Missing Welsh*
 
+
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.legend.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.legend.agent = *Missing Welsh*=
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.required.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonNumeric.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonNumeric.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.outOfRange = *Missing Welsh
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.change.hidden = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.radio.question.label = *Missing Welsh*
+
 ukAndForeignBalancingCharge.title = *Missing Welsh*
 ukAndForeignBalancingCharge.heading = *Missing Welsh*
 ukAndForeignBalancingCharge.checkYourAnswersLabel = *Missing Welsh*
@@ -2813,3 +2861,4 @@ leaseGrantAmountReceived.error.twoDecimalPlaces = *Missing Welsh*
 leaseGrantAmountReceived.error.outOfRange = *Missing Welsh*
 leaseGrantAmountReceived.change.hidden.individual = *Missing Welsh*
 leaseGrantAmountReceived.change.hidden.agent = *Missing Welsh*
+

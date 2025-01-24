@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package pages.foreign.adjustments
+package pages.ukandforeignproperty
 
-import models.ForeignProperty
-import pages.PageConstants.adjustmentsPath
+import pages.PageConstants.incomePath
+import models.UKAndForeignProperty
+import models.ukAndForeign.UkAndForeignPropertyPremiumGrantLeaseTax
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ForeignResidentialFinanceCostsPage(countryCode: String) extends QuestionPage[BigDecimal] {
+case object UkAndForeignPropertyPremiumGrantLeaseTaxPage extends QuestionPage[UkAndForeignPropertyPremiumGrantLeaseTax] {
 
-  override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "residentialFinanceCost"
+  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
+
+
+  override def toString: String = "ukAndForeignPropertyPremiumGrantLeaseTax"
 }

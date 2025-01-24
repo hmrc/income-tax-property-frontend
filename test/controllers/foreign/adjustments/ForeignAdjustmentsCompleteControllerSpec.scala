@@ -108,7 +108,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
         )
       )
         .when(mockJourneyAnswersService)
-        .setStatus(
+        .setForeignStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,
@@ -118,7 +118,8 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
             )
           ),
           ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          ArgumentMatchers.eq(user),
+          ArgumentMatchers.eq(countryCode)
         )(any())
 
       val application =
