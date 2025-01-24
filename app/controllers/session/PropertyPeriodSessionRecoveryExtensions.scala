@@ -23,6 +23,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
 import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
@@ -160,11 +161,13 @@ object PropertyPeriodSessionRecoveryExtensions {
       foreignJourneyWithStatus: JourneyWithStatus
     ): Settable[Boolean] =
       foreignJourneyWithStatus.journeyName match {
-        case "foreign-property-tax"        => ForeignTaxSectionCompletePage(countryCode)
-        case "foreign-property-income"     => ForeignIncomeSectionCompletePage(countryCode)
-        case "foreign-property-expenses"   => ForeignExpensesSectionCompletePage(countryCode)
-        case "foreign-property-allowances" => ForeignAllowancesCompletePage(countryCode)
-        case "foreign-property-sba"        => ForeignSbaCompletePage(countryCode)
+        case "foreign-property-tax"           => ForeignTaxSectionCompletePage(countryCode)
+        case "foreign-property-income"        => ForeignIncomeSectionCompletePage(countryCode)
+        case "foreign-property-expenses"      => ForeignExpensesSectionCompletePage(countryCode)
+        case "foreign-property-allowances"    => ForeignAllowancesCompletePage(countryCode)
+        case "foreign-property-sba"           => ForeignSbaCompletePage(countryCode)
+        case "foreign-property-adjustments"   => ForeignAdjustmentsCompletePage(countryCode)
+
       }
 
     private def updatePropertyAboutPages(
