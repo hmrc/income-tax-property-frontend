@@ -19,6 +19,7 @@ package connectors.response
 import audit.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
+import models.ForeignWhenYouReportedTheLoss.y2018to2019
 import models.TotalIncome.Under
 import models._
 import models.ukAndForeign.UkAndForeignAbout
@@ -179,6 +180,25 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                     )
                   )
                 )
+              )
+            )
+          ),
+          foreignPropertyAdjustments = Some(
+            Map(
+              "ESP" -> ForeignAdjustmentsAnswers(
+                privateUseAdjustment = Some(BigDecimal(54.00)),
+                balancingCharge = Some(BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(146.56)))),
+                residentialFinanceCost = Some(BigDecimal(99.00)),
+                unusedResidentialFinanceCost = Some(
+                  ForeignUnusedResidentialFinanceCost(
+                    foreignUnusedResidentialFinanceCostYesNo = true,
+                    Some(BigDecimal(56.77))
+                  )
+                ),
+                propertyIncomeAllowanceClaim = Some(BigDecimal(15.00)),
+                unusedLossesPreviousYears =
+                  Some(UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(45.00)))),
+                whenYouReportedTheLoss = Some(y2018to2019)
               )
             )
           )

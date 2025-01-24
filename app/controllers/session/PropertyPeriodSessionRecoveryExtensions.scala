@@ -23,7 +23,7 @@ import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
+import pages.foreign.adjustments._
 import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
@@ -89,9 +89,10 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua24 <- updateForeignPropertyTax(ua23, fetchedData.foreignPropertyData.foreignPropertyTax)
         ua25 <- updateForeignPropertyAllowances(ua24, fetchedData.foreignPropertyData.foreignPropertyAllowances)
         ua26 <- updateforeignPropertySbaPage(ua25, fetchedData.foreignPropertyData.foreignPropertySba)
-        ua27 <- updateForeignJourneyStatuses(ua26, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-        ua28 <- updateUkAndForeignPropertyAboutPages(ua27, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
-      } yield ua28
+        ua27 <- updateForeignPropertyAdjustments(ua26, fetchedData.foreignPropertyData.foreignPropertyAdjustments)
+        ua28 <- updateForeignJourneyStatuses(ua27, fetchedData.foreignPropertyData.foreignJourneyStatuses)
+        ua29 <- updateUkAndForeignPropertyAboutPages(ua28, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
+      } yield ua29
     }.getOrElse(userAnswersArg)
 
     private def updateJourneyStatuses(
@@ -429,6 +430,45 @@ object PropertyPeriodSessionRecoveryExtensions {
           ua3.set(ForeignStructureBuildingAllowanceClaimPage(countryCode, index), sba.amount)
       } yield ua4
 
+    private def updateForeignPropertyAdjustments(
+      userAnswers: UserAnswers,
+      maybeAdjustmentsAnswers: Option[Map[String, ForeignAdjustmentsAnswers]]
+    ): Try[UserAnswers] = maybeAdjustmentsAnswers match {
+      case Some(adjustmentsMap) =>
+        adjustmentsMap.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+          case (userAnswers: Try[UserAnswers], (countryCode, adjustmentsAnswers: ForeignAdjustmentsAnswers)) =>
+            for {
+              ua <- userAnswers
+              ua1 <- adjustmentsAnswers.privateUseAdjustment.fold[Try[UserAnswers]](Success(ua))(privateUseAdjustment =>
+                       ua.set(ForeignPrivateUseAdjustmentPage(countryCode), privateUseAdjustment)
+                     )
+              ua2 <- adjustmentsAnswers.balancingCharge.fold[Try[UserAnswers]](Success(ua1))(balancingCharge =>
+                       ua1.set(ForeignBalancingChargePage(countryCode), balancingCharge)
+                     )
+              ua3 <-
+                adjustmentsAnswers.residentialFinanceCost.fold[Try[UserAnswers]](Success(ua2))(residentialFinanceCost =>
+                  ua2.set(ForeignResidentialFinanceCostsPage(countryCode), residentialFinanceCost)
+                )
+              ua4 <- adjustmentsAnswers.unusedResidentialFinanceCost.fold[Try[UserAnswers]](Success(ua3))(
+                       unusedResidentialFinanceCost =>
+                         ua3.set(ForeignUnusedResidentialFinanceCostPage(countryCode), unusedResidentialFinanceCost)
+                     )
+              ua5 <- adjustmentsAnswers.propertyIncomeAllowanceClaim.fold[Try[UserAnswers]](Success(ua4))(
+                       propertyIncomeAllowanceClaim =>
+                         ua4.set(PropertyIncomeAllowanceClaimPage(countryCode), propertyIncomeAllowanceClaim)
+                     )
+              ua6 <- adjustmentsAnswers.unusedLossesPreviousYears.fold[Try[UserAnswers]](Success(ua5))(
+                       unusedLossesPreviousYears =>
+                         ua5.set(ForeignUnusedLossesPreviousYearsPage(countryCode), unusedLossesPreviousYears)
+                     )
+              ua7 <-
+                adjustmentsAnswers.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua6))(whenYouReportedTheLoss =>
+                  ua6.set(ForeignWhenYouReportedTheLossPage(countryCode), whenYouReportedTheLoss)
+                )
+            } yield ua7
+        }
+      case None => Success(userAnswers)
+    }
     private def updatePart[T](userAnswers: UserAnswers, page: Settable[T], value: Option[T])(implicit
       writes: Writes[T]
     ): Try[UserAnswers] =
