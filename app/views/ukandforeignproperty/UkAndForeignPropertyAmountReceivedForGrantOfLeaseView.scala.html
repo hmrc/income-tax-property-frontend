@@ -1,0 +1,57 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import viewmodels.govuk._
+@import viewmodels.LabelSize
+
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton,
+    govukInput : GovukInput
+)
+
+@(form: Form[_], taxYear: Int, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+    @layout(pageTitle = title(form, messages("ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title"))) {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+@formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+            @govukInput(
+                InputViewModel(
+                    field = form("amountReceivedForGrantOfLease"),
+label = LabelViewModel(messages(s"ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.${individualOrAgent}")).asPageHeading(LabelSize.Large)
+                )
+                .asNumeric()
+                .withWidth(Fixed5)
+                .withPrefix(PrefixOrSuffix(content = Text("£")))
+            )
+
+            @govukButton(
+                ButtonViewModel(messages("site.continue")).withId("continue")
+            )
+    }
+}
+
+@{
+// $COVERAGE-OFF$
+}
