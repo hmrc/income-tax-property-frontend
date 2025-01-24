@@ -38,5 +38,5 @@ object OtherIncomeFromUkPropertySummary {
               .withVisuallyHiddenText(messages("ukAndForeignPropertyOtherIncomeFromProperty.change.hidden"))
           )
         )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }
