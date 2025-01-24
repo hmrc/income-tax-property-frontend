@@ -17,57 +17,58 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
-import forms.ukandforeignproperty.YearLeaseAmountFormProvider
+import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
+
+import javax.inject.Inject
 import models.Mode
-import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkandforeignpropertyYearLeaseAmountPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import navigation.Navigator
+import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import play.api.data.Form
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ukandforeignproperty.YearLeaseAmountView
+import views.html.ukandforeignproperty.LeaseGrantAmountReceivedView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class YearLeaseAmountController @Inject()(
+class LeaseGrantAmountReceivedController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
-                                        navigator: UkAndForeignPropertyNavigator,
+                                        navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: YearLeaseAmountFormProvider,
+                                        formProvider: LeaseGrantAmountReceivedFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: YearLeaseAmountView
+                                        view: LeaseGrantAmountReceivedView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[BigDecimal] = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(UkandforeignpropertyYearLeaseAmountPage) match {
+      val preparedForm = request.userAnswers.get(LeaseGrantAmountReceivedPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, mode))
+      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkandforeignpropertyYearLeaseAmountPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(LeaseGrantAmountReceivedPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkandforeignpropertyYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(LeaseGrantAmountReceivedPage(countryCode), taxYear, mode, updatedAnswers, request.userAnswers))
       )
   }
 }

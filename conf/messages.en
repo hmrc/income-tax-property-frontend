@@ -1787,6 +1787,26 @@ ukAndForeignPropertyDetails.para2.part2.individual = go back to your online acco
 ukAndForeignPropertyDetails.para2.part2.agent = go back to your client's online account
 ukAndForeignPropertyDetails.para2.part3 = to change them.
 
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.title = Have you calculated the premium for the grant of a lease taxable amount?
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount?
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.heading.individual = Have you calculated the premium for the grant of a lease taxable amount?
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.legend.agent = Has your client calculated the premium for the grant of a lease taxable amount?
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.legend.individual = Have you calculated the premium for the grant of a lease taxable amount?
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.required.individual = Enter the amount you’ve calculated yourself
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.required.agent = Enter the amount your client have calculated yourself
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.nonNumeric.individual = The amount you’ve calculated yourself can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.nonNumeric.agent = The amount your client had calculated can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.twoDecimalPlaces.individual = The amount you’ve calculated yourself can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.twoDecimalPlaces.agent = The amount your client had calculated can only include pounds and pence, for example £600 or £600.20
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.change.hidden = Have you calculated the premium for the grant of a lease taxable amount
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.yes = Yes
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.no.individual = No, calculate it for me
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.no.agent = No, we'll calculate it for your client
+ukAndForeignPropertyRentalTypeUk.premiumGrantLease.radio.question.label = Enter the amount calculated
+
 ukAndForeignPropertyPremiumForLease.title = UK premiums for the grant of a lease
 ukAndForeignPropertyPremiumForLease.heading = UK premiums for the grant of a lease
 ukAndForeignPropertyPremiumForLease.p1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
@@ -2825,3 +2845,20 @@ foreignRentalPropertyIncome.error.required = Enter the amount of income earned f
 foreignRentalPropertyIncome.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 foreignRentalPropertyIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 foreignRentalPropertyIncome.change.hidden = Foreign property rental income
+
+leaseGrantAmountReceived.title.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.title.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.heading.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.heading.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.checkYourAnswersLabel = Lease Grant Amount Received
+leaseGrantAmountReceived.label.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.label.agent = How much did your client receive for the grant of a lease?
+leaseGrantAmountReceived.hint = Do not include income from reverse premiums.
+leaseGrantAmountReceived.error.nonNumeric = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+leaseGrantAmountReceived.error.required = Enter the amount received for the grant of a lease
+leaseGrantAmountReceived.error.twoDecimalPlaces = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
+leaseGrantAmountReceived.error.outOfRange = Enter an amount between between £{0} and £{1}
+leaseGrantAmountReceived.change.hidden.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.change.hidden.agent = How much did your client receive for the grant of a lease?
+
+ukAndForeignPropertyYearLeaseAmount.hint = You only need to tell us about leases between 2 and 50 years in length.

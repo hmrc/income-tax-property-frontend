@@ -17,74 +17,71 @@
 package controllers.ukandforeignproperty
 
 import base.SpecBase
-import forms.ukandforeignproperty.YearLeaseAmountFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
+import controllers.routes
+import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedController
+import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
+import views.html.ukandforeignproperty.LeaseGrantAmountReceivedView
+import models.{UserAnswers, NormalMode}
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkandforeignpropertyYearLeaseAmountPage
+import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukandforeignproperty.YearLeaseAmountView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
-class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
+class LeaseGrantAmountReceivedControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new YearLeaseAmountFormProvider()
-  val form = formProvider()
-  private val taxYear = 2024
+  val formProvider = new LeaseGrantAmountReceivedFormProvider()
+  val form: Form[BigDecimal] = formProvider()
+  val taxYear = 2024
+  val countryCode = "GRC"
 
-  def onwardRoute = Call("GET", "/premiums-grant-lease")
+  def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = 3
+  val validAnswer = BigDecimal(100)
 
-  lazy val yearLeaseAmountRoute = routes.YearLeaseAmountController.onPageLoad(taxYear, NormalMode).url
+  lazy val leaseGrantAmountReceivedRoute = LeaseGrantAmountReceivedController.onPageLoad(taxYear, countryCode, NormalMode).url
 
-  "YearLeaseAmount Controller" - {
+  "LeaseGrantAmountReceived Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, yearLeaseAmountRoute)
+        val request = FakeRequest(GET, leaseGrantAmountReceivedRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[YearLeaseAmountView]
+        val view = application.injector.instanceOf[LeaseGrantAmountReceivedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(form, taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkandforeignpropertyYearLeaseAmountPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(LeaseGrantAmountReceivedPage(countryCode), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
       running(application) {
-        val request = FakeRequest(GET, yearLeaseAmountRoute)
+        val request = FakeRequest(GET, leaseGrantAmountReceivedRoute)
 
-        val view = application.injector.instanceOf[YearLeaseAmountView]
+        val view = application.injector.instanceOf[LeaseGrantAmountReceivedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -97,15 +94,15 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("yearLeaseAmount", validAnswer.toString))
+          FakeRequest(POST, leaseGrantAmountReceivedRoute)
+            .withFormUrlEncodedBody(("leaseGrantReceivedAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
@@ -120,17 +117,17 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("yearLeaseAmount", "invalid value"))
+          FakeRequest(POST, leaseGrantAmountReceivedRoute)
+            .withFormUrlEncodedBody(("leaseGrantReceivedAmount", "invalid value"))
 
-        val boundForm = form.bind(Map("yearLeaseAmount" -> "invalid value"))
+        val boundForm = form.bind(Map("leaseGrantReceivedAmount" -> "invalid value"))
 
-        val view = application.injector.instanceOf[YearLeaseAmountView]
+        val view = application.injector.instanceOf[LeaseGrantAmountReceivedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -139,12 +136,12 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, yearLeaseAmountRoute)
+        val request = FakeRequest(GET, leaseGrantAmountReceivedRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -154,14 +151,14 @@ class YearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, yearLeaseAmountRoute)
-            .withFormUrlEncodedBody(("yearLeaseAmount", validAnswer.toString))
+          FakeRequest(POST, leaseGrantAmountReceivedRoute)
+            .withFormUrlEncodedBody(("leaseGrantReceivedAmount", validAnswer.toString))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }

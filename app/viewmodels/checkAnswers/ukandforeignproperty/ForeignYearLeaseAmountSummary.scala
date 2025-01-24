@@ -18,29 +18,29 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkandforeignpropertyYearLeaseAmountPage
+import pages.ukandforeignproperty.ForeignYearLeaseAmountPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object YearLeaseAmountSummary {
+object ForeignYearLeaseAmountSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(UkandforeignpropertyYearLeaseAmountPage).map { answer =>
+    answers.get(ForeignYearLeaseAmountPage(countryCode)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.YearLeaseAmountController.onPageLoad(taxYear, CheckMode).url
+            routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode).url
           )
             .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
         )
       )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }

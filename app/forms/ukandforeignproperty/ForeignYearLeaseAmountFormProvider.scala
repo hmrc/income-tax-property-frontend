@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package pages.ukandforeignproperty
+package forms.ukandforeignproperty
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-object UkandforeignpropertyYearLeaseAmountPage extends QuestionPage[Int] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
+class ForeignYearLeaseAmountFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "yearLeaseAmount"
+  def apply(): Form[Int] =
+    Form(
+      "yearLeaseAmount" -> int(
+        "yearLeaseAmount.error.required",
+        "yearLeaseAmount.error.wholeNumber",
+        "yearLeaseAmount.error.nonNumeric", Seq(2.toString, 50.toString))
+          .verifying(inRange(2, 50, "yearLeaseAmount.error.outOfRange"))
+    )
 }
