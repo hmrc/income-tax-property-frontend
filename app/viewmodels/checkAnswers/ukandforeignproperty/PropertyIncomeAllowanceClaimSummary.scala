@@ -39,5 +39,5 @@ object PropertyIncomeAllowanceClaimSummary  {
               .withVisuallyHiddenText(messages("propertyIncomeAllowanceClaim.change.hidden"))
           )
         )
-    }
+    }.orElse(Option.empty[SummaryListRow])
 }

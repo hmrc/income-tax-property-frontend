@@ -25,5 +25,5 @@ object PropertyIncomeAllowanceClaimPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
 
-  override def toString: String = "ukAndForeignPropertyIncomeAllowanceClaim"
+  override def toString: String = "propertyIncomeAllowanceClaim"
 }
