@@ -2876,3 +2876,19 @@ leaseGrantAmountReceived.change.hidden.individual = How much did you receive for
 leaseGrantAmountReceived.change.hidden.agent = How much did your client receive for the grant of a lease?
 
 ukAndForeignPropertyYearLeaseAmount.hint = You only need to tell us about leases between 2 and 50 years in length.
+
+ukAndForeignForeignPremiumsForTheGrantOfALease.title = Foreign premiums for the grant of a lease
+ukAndForeignForeignPremiumsForTheGrantOfALease.heading = Foreign premiums for the grant of a lease
+ukAndForeignForeignPremiumsForTheGrantOfALease.p1 = A freeholder sometimes grants a lease to a tenant that requires the payment of both:
+ukAndForeignForeignPremiumsForTheGrantOfALease.l1 = a premium or lump sum
+ukAndForeignForeignPremiumsForTheGrantOfALease.l2 = regular rent payments
+ukAndForeignForeignPremiumsForTheGrantOfALease.p2 = If the lease is up to 50 years, the premium is treated as part capital and part income. Only tell us about the income part. We only need to know about leases between 2 and 50 years in length.
+ukAndForeignForeignPremiumsForTheGrantOfALease.p3.individual = Any premiums for the grant of a lease are regarded as income if you’re claiming property income allowance.
+ukAndForeignForeignPremiumsForTheGrantOfALease.p3.agent = Any premiums for the grant of a lease are regarded as income if your client is claiming property income allowance.
+ukAndForeignForeignPremiumsForTheGrantOfALease.p4 = Do not include reverse premiums, you can add this in Other income from property.
+ukAndForeignForeignPremiumsForTheGrantOfALease.label.individual = Did you receive a foreign premium for granting a lease?
+ukAndForeignForeignPremiumsForTheGrantOfALease.label.agent = Did your client receive a foreign premium for granting a lease?
+ukAndForeignForeignPremiumsForTheGrantOfALease.checkYourAnswersLabel = Foreign premiums for the grant of a lease
+ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.individual = Select yes if you received a premium for granting a lease
+ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.agent = Select yes if your client received a premium for granting a lease
+ukAndForeignForeignPremiumsForTheGrantOfALease.change.hidden = Foreign premiums for the grant of a lease
