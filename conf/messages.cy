@@ -2781,7 +2781,6 @@ uKRentalPropertyIncome.error.twoDecimalPlaces = *Missing Welsh*
 uKRentalPropertyIncome.error.outOfRange = *Missing Welsh*
 uKRentalPropertyIncome.change.hidden = *Missing Welsh*
 
-
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.title = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.heading.individual = *Missing Welsh*
@@ -2912,7 +2911,6 @@ ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.individual = *Miss
 ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.agent = *Missing Welsh*
 ukAndForeignForeignPremiumsForTheGrantOfALease.change.hidden = *Missing Welsh*
 
-
 ukPremiumsGrantLease.title = *Missing Welsh*
 ukPremiumsGrantLease.heading = *Missing Welsh*
 ukPremiumsGrantLease.calculation.subHeading = *Missing Welsh*
@@ -2945,3 +2943,15 @@ ukPremiumsGrantLease.error.amount.nonNumeric.individual = *Missing Welsh*
 ukPremiumsGrantLease.error.amount.nonNumeric.agent = *Missing Welsh*
 ukPremiumsGrantLease.error.outOfRange = *Missing Welsh*
 ukPremiumsGrantLease.change.hidden = *Missing Welsh*
+
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.title.individual = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.title.agent = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.p1 = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.noText.individual = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.noText.agent = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.individual = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.agent = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden = *Missing Welsh*
