@@ -107,3 +107,9 @@ GET         /:taxYear/uk-foreign-property/premium-grant-lease                   
 POST        /:taxYear/uk-foreign-property/premium-grant-lease                                      controllers.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 GET         /:taxYear/uk-foreign-property/premium-grant-lease                                      controllers.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST        /:taxYear/uk-foreign-property/premium-grant-lease                                      controllers.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+
+GET         /:taxYear/uk-foreign-property/other-income-from-property                               controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/uk-foreign-property/other-income-from-property                               controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/uk-foreign-property/change-other-income-from-property                        controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/uk-foreign-property/change-other-income-from-property                        controllers.ukandforeignproperty.OtherUkPropertyIncomeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)

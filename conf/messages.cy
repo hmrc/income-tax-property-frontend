@@ -1789,6 +1789,16 @@ ukAndForeignPropertyReversePremiumsReceived.error.nonNumeric= *Missing Welsh*
 
 ukAndForeignPropertyYearLeaseAmount.hint = *Missing Welsh*
 
+ukAndForeignPropertyOtherIncomeFromProperty.error.nonNumeric = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.title = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.heading = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.change.hidden = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.para2.individual = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.para2.agent = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.individual = *Missing Welsh*
+ukAndForeignPropertyOtherIncomeFromProperty.error.required.agent = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*
