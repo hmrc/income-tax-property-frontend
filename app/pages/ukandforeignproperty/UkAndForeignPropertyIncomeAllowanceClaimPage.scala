@@ -21,7 +21,7 @@ import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-object PropertyIncomeAllowanceClaimPage extends QuestionPage[BigDecimal] {
+object UkAndForeignPropertyIncomeAllowanceClaimPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
 
