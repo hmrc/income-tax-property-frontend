@@ -2977,3 +2977,36 @@ ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.in
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.agent = The amount you''ve calculated yourself can only include pounds and pence, for example £600 or £600.20
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel = Have you calculated the premium for the grant of a lease taxable amount?
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden = Have you calculated the premium for the grant of a lease taxable amount?
+
+ukAndForeignProperty.foreignPremiumsGrantLease.title = Premiums for the grant of a lease
+ukAndForeignProperty.foreignPremiumsGrantLease.heading = Premiums for the grant of a lease
+ukAndForeignProperty.foreignPremiumsGrantLease.calculation.subHeading = Your calculation:
+ukAndForeignProperty.foreignPremiumsGrantLease.calculation.premium = Premium: £{0}
+ukAndForeignProperty.foreignPremiumsGrantLease.calculation.years = Years: {0} - {1} = {2}
+ukAndForeignProperty.foreignPremiumsGrantLease.calculation.formula = £{0} x ((50 - {1}) / 50)
+ukAndForeignProperty.foreignPremiumsGrantLease.calculation.taxableAmount = Taxable amount:
+ukAndForeignProperty.foreignPremiumsGrantLease.line1.individual = You can work out your taxable amount as follows:
+ukAndForeignProperty.foreignPremiumsGrantLease.line1.agent = You can work out your client’s taxable amount as follows:
+ukAndForeignProperty.foreignPremiumsGrantLease.line2.part1 = Taxable amount =
+ukAndForeignProperty.foreignPremiumsGrantLease.line2.part2 = P
+ukAndForeignProperty.foreignPremiumsGrantLease.line2.part3 = x ((50 -
+ukAndForeignProperty.foreignPremiumsGrantLease.line2.part4 = Y
+ukAndForeignProperty.foreignPremiumsGrantLease.line2.part5 = ) / 50)
+ukAndForeignProperty.foreignPremiumsGrantLease.line3.part1 = P
+ukAndForeignProperty.foreignPremiumsGrantLease.line3.part2 = is the amount of the premium.
+ukAndForeignProperty.foreignPremiumsGrantLease.line4.part1 = Y
+ukAndForeignProperty.foreignPremiumsGrantLease.line4.part2 = is the number of complete periods of 12 months (other than the first) for the length of the lease.
+ukAndForeignProperty.foreignPremiumsGrantLease.line5.part1 = 50
+ukAndForeignProperty.foreignPremiumsGrantLease.line5.part2 = is for short leases with 50 years or less to go on them
+ukAndForeignProperty.foreignPremiumsGrantLease.amount.label = Do you agree with this taxable amount?
+ukAndForeignProperty.foreignPremiumsGrantLease.input.label = Enter the amount calculated
+ukAndForeignProperty.foreignPremiumsGrantLease.checkYourAnswersLabel = Premium for the grant of a lease taxable amount
+ukAndForeignProperty.foreignPremiumsGrantLease.error.required.individual = Select yes if you’ve calculated the amount yourself
+ukAndForeignProperty.foreignPremiumsGrantLease.error.required.agent = Select yes if your client agrees with this taxable amount
+ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.required.individual = Enter the amount you’ve calculated yourself
+ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.required.agent = Enter the amount that your client calculated
+ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
+ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.individual = The amount you’ve calculated yourself can only include pounds and pence, for example £600 or £600.20
+ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.agent = The amount your client calculated can only include pounds and pence, for example £600 or £600.20
+ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange = Enter an amount between £{0} and £{1}
+ukAndForeignProperty.foreignPremiumsGrantLease.change.hidden = Premiums for the grant of a lease

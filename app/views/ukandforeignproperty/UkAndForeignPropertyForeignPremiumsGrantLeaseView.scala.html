@@ -1,0 +1,111 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth.Fixed10
+@import viewmodels.LegendSize
+@import viewmodels.govuk.radios
+@import models.ukAndForeign.UkAndForeignPropertyForeignPremiumsGrantLease
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton,
+    govukRadios: GovukRadios
+)
+
+@(form: Form[_], taxYear: Int, periods: Int, premiumAmount: BigDecimal, individualOrAgent: String, countryCode: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("ukAndForeignProperty.foreignPremiumsGrantLease.title"))) {
+
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("premiumsOfLeaseGrantAgreed" -> "foreignPremiumsGrantLeaseForm")))
+    }
+
+    <h1 class="govuk-heading-l">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.heading")</h1>
+
+    <p class="govuk-heading-m">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.subHeading")</p>
+
+    <p class="govuk-body">
+        @messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.premium", premiumAmount.toString)
+        <br>
+        @messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.years", periods.toString, "1" ,(periods - 1).toString)
+    </p>
+
+    <p class="govuk-body">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.formula", premiumAmount.toString, (periods - 1).toString)</p>
+<h3>Foo</h3>
+    <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.taxableAmount")</span>
+        <span>£@{models.ukAndForeign.UkAndForeignPropertyForeignPremiumsGrantLease.calculateTaxableAmount(premiumAmount, periods)}</span>
+    </p>
+
+    <p class="govuk-body govuk-!-margin-top-6">@messages(s"ukAndForeignProperty.foreignPremiumsGrantLease.line1.$individualOrAgent")</p>
+
+    <p class="govuk-body">
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line2.part1")</span>
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line2.part2")</span>
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line2.part3")</span>
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line2.part4")</span>
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line2.part5")</span>
+    </p>
+
+    <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line3.part1")</span>
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line3.part2")</span>
+    </p>
+
+    <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line4.part1")</span>
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line4.part2")</span>
+    </p>
+
+    <p class="govuk-body">
+        <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line5.part1")</span>
+        <span>@messages("ukAndForeignProperty.foreignPremiumsGrantLease.line5.part2")</span>
+    </p>
+
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+    @formHelper(
+        action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onSubmit(taxYear, countryCode, mode),
+        Symbol("autoComplete") -> "off") {
+
+        @govukRadios(
+            radios.RadiosViewModel.yesNoWithConditionalHtml(
+                field = form("premiumsOfLeaseGrantAgreed"),
+                legend = LegendViewModel(messages(s"ukAndForeignProperty.foreignPremiumsGrantLease.amount.label")).asPageHeading(LegendSize.Medium),
+                items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
+                    field = form("foreignPremiumsGrantLeaseForm"),
+                    conditionalNoHtml = Some(
+                        govukInput(InputViewModel(
+                            field = form("premiumsOfLeaseGrant"),
+                            label = LabelViewModel(messages("ukAndForeignProperty.foreignPremiumsGrantLease.input.label"))
+                        )
+                        .asNumeric()
+                        .withWidth(Fixed10)
+                        .withPrefix(PrefixOrSuffix(content = Text("£")))
+                        )
+                    )
+                )
+            )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
