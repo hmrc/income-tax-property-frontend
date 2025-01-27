@@ -18,6 +18,7 @@ package controllers.session
 
 import base.SpecBase
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
+import models.ForeignWhenYouReportedTheLoss.y2021to2022
 import models._
 import models.ukAndForeign.UkAndForeignAbout
 import org.scalatestplus.mockito.MockitoSugar
@@ -25,6 +26,7 @@ import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
 import pages.foreign.expenses._
 import pages.foreign._
+import pages.foreign.adjustments._
 import pages.foreign.allowances._
 import pages.foreign.income._
 import pages.foreign.structurebuildingallowance._
@@ -262,6 +264,26 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      ]
        |    }
        |},
+       |  "foreignPropertyAdjustments": {
+       |    "$countryCode1": {
+       |      "privateUseAdjustment": 50,
+       |      "balancingCharge": {
+       |        "balancingChargeYesNo": true,
+       |        "balancingChargeAmount": 56.60
+       |      },
+       |      "residentialFinanceCost": 67.90,
+       |      "unusedResidentialFinanceCost": {
+       |        "foreignUnusedResidentialFinanceCostYesNo": true,
+       |        "foreignUnusedResidentialFinanceCostAmount": 50
+       |      },
+       |      "propertyIncomeAllowanceClaim": 50,
+       |      "unusedLossesPreviousYears": {
+       |        "unusedLossesPreviousYearsYesNo": true,
+       |        "unusedLossesPreviousYearsAmount": 500
+       |      },
+       |      "whenYouReportedTheLoss": "y2021to2022"
+       |    }
+       |  },
        |    "foreignJourneyStatuses": {
        |      "$countryCode1": [
        |        {
@@ -278,6 +300,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |       },
        |       {
        |           "journeyName": "foreign-property-sba",
+       |           "journeyStatus": "completed"
+       |       },
+       |       {
+       |           "journeyName": "foreign-property-adjustments",
        |           "journeyStatus": "completed"
        |       }
        |      ],
@@ -447,6 +473,21 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         .get mustBe ForeignStructuresBuildingAllowanceAddress(name = "Building", number = "1", postCode = "AB2 7AA")
       updated.get(ForeignStructureBuildingAllowanceClaimPage(countryCode1, index)).get mustBe 500
       updated.get(ForeignSbaCompletePage(countryCode1)) mustBe Some(true)
+
+      updated.get(ForeignPrivateUseAdjustmentPage(countryCode1)) mustBe Some(50)
+      updated.get(ForeignBalancingChargePage(countryCode1)) mustBe Some(
+        BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(56.60)))
+      )
+      updated.get(ForeignResidentialFinanceCostsPage(countryCode1)) mustBe Some(67.90)
+      updated.get(ForeignUnusedResidentialFinanceCostPage(countryCode1)) mustBe Some(
+        ForeignUnusedResidentialFinanceCost(foreignUnusedResidentialFinanceCostYesNo = true, Some(BigDecimal(50)))
+      )
+      updated.get(PropertyIncomeAllowanceClaimPage(countryCode1)) mustBe Some(50)
+      updated.get(ForeignUnusedLossesPreviousYearsPage(countryCode1)) mustBe Some(
+        UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(500)))
+      )
+      updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(y2021to2022)
+      updated.get(ForeignAdjustmentsCompletePage(countryCode1)) mustBe Some(true)
     }
   }
 }

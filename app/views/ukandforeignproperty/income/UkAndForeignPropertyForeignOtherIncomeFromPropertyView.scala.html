@@ -1,0 +1,67 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.InputWidth._
+@import viewmodels.LabelSize.Medium
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[_],taxYear: Int, countryCode: String, mode: Mode, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("ukAndForeignProperty.otherIncomeFromForeignProperty.title"))) {
+
+    @formHelper(action = controllers.ukandforeignproperty.income.routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <h1 class="govuk-heading-l">@messages("ukAndForeignProperty.otherIncomeFromForeignProperty.heading")</h1>
+
+        <p class="govuk-body">@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.para1.${individualOrAgent}")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet1.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet2.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet3.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet4.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet5.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet6.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet7.${individualOrAgent}")</li>
+            <li>@messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.bullet8.${individualOrAgent}")</li>
+        </ul>
+
+        @govukInput(
+            InputViewModel(
+                field = form("otherPropertyIncome"),
+                label = LabelViewModel(messages(s"ukAndForeignProperty.otherIncomeFromForeignProperty.para2.${individualOrAgent}")).asPageHeading(Medium)
+            )
+            .asNumeric()
+            .withWidth(Fixed10)
+            .withPrefix(PrefixOrSuffix(content = Text("£")))
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
+}
