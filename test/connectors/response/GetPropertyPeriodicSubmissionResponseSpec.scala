@@ -103,8 +103,6 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               "ESP" -> ForeignIncomeAnswers(
                 Some(123.45),
                 premiumsGrantLeaseReceived = false,
-                reversePremiumsReceived =
-                  Some(ReversePremiumsReceived(reversePremiumsReceived = true, reversePremiums = Some(123.5))),
                 otherPropertyIncome = Some(456.7),
                 calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
                 receivedGrantLeaseAmount = None,

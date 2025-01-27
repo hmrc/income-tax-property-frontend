@@ -39,7 +39,7 @@ class ForeignReversePremiumsReceivedControllerSpec extends SpecBase with Mockito
 
   private val taxYear = LocalDate.now.getYear
   val countryCode = "BRA"
-  def onwardRoute: Call = Call("GET", foreignOtherIncomeFromPropertyRoute)
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property")
   val formProvider = new ForeignReversePremiumsReceivedFormProvider()
   val form: Form[ReversePremiumsReceived] = formProvider("individual")
 
