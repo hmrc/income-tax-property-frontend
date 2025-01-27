@@ -1799,6 +1799,12 @@ ukAndForeignPropertyOtherIncomeFromProperty.para2.agent = *Missing Welsh*
 ukAndForeignPropertyOtherIncomeFromProperty.error.required.individual = *Missing Welsh*
 ukAndForeignPropertyOtherIncomeFromProperty.error.required.agent = *Missing Welsh*
 
+ukAndForeignPropertyIncomeAllowanceClaim.error.outOfRange = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.p1.individual = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.p1.agent = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.p2.individual = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.p2.agent = *Missing Welsh*
+
 ###################### Foreign Property ######################
 
 foreign.summary.title = *Missing Welsh*

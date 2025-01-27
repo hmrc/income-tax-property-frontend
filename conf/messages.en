@@ -2732,7 +2732,7 @@ propertyIncomeAllowanceClaim.error.maxAllowanceCombined.agent = Amount of proper
 propertyIncomeAllowanceClaim.error.maxCapped.individual = The amount of property income allowance you claim must not be more than £1,000
 propertyIncomeAllowanceClaim.error.maxCapped.agent = The amount of property income allowance your client claims must not be more than £1,000
 propertyIncomeAllowanceClaim.legend.individual = How much Property Income Allowance do you want to claim?
-propertyIncomeAllowanceClaim.legend.agent = How much Property Income Allowance do your client want to claim?
+propertyIncomeAllowanceClaim.legend.agent = How much Property Income Allowance does your client want to claim?
 propertyIncomeAllowanceClaim.checkYourAnswersLabel = Property Income Allowance Claim
 propertyIncomeAllowanceClaim.error.nonNumeric.individual = The amount for your property income allowance can only include pounds and pence, for example £600 or £600.20
 propertyIncomeAllowanceClaim.error.nonNumeric.agent = The amount for your client property income allowance can only include pounds and pence, for example £600 or £600.20
@@ -2829,6 +2829,12 @@ ukAndForeignBalancingCharge.error.nonNumeric = Amount can only include pounds an
 ukAndForeignBalancingCharge.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
 ukAndForeignBalancingCharge.amount.error.outOfRange = Enter an amount between £{0} and £{1}
 ukAndForeignBalancingCharge.change.hidden = Balancing charge
+
+ukAndForeignPropertyIncomeAllowanceClaim.error.outOfRange = Enter an amount between £0 and £1000
+ukAndForeignPropertyIncomeAllowanceClaim.p1.individual = You can claim up to £1000 property income allowance across all of your properties. If you own a property with someone else you can each claim the allowance.
+ukAndForeignPropertyIncomeAllowanceClaim.p1.agent = Your client can claim up to £1000 (Income plus balancing charge) all property income allowance across all of their properties. If they own a property with someone else they can each claim the £1000 (Income plus balancing charge) allowance.
+ukAndForeignPropertyIncomeAllowanceClaim.p2.individual = If you have to report a balancing charge you must add this figure to the amount that you are claiming for property income allowance. The combined figure must not exceed £1,000.
+ukAndForeignPropertyIncomeAllowanceClaim.p2.agent = If they have to report a balancing charge you must add this figure to the amount that you are claiming for property income allowance. The combined figure must not exceed £1,000 (Income plus balancing charge) all.
 
 foreignRentalPropertyIncome.title = Foreign property rental income
 foreignRentalPropertyIncome.heading = Foreign property rental income
