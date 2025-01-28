@@ -21,8 +21,8 @@ import controllers.routes
 import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedController
 import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
 import views.html.ukandforeignproperty.LeaseGrantAmountReceivedView
-import models.{UserAnswers, NormalMode}
-import navigation.{Navigator, FakeNavigator}
+import models.{NormalMode, UserAnswers}
+import navigation.{FakeNavigator, FakeUKAndForeignPropertyNavigator, Navigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -94,7 +94,7 @@ class LeaseGrantAmountReceivedControllerSpec extends SpecBase with MockitoSugar 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
