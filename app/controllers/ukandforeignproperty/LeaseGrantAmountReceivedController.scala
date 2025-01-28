@@ -18,30 +18,29 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
-
-import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.LeaseGrantAmountReceivedView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class LeaseGrantAmountReceivedController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: LeaseGrantAmountReceivedFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: LeaseGrantAmountReceivedView
+                                                    override val messagesApi: MessagesApi,
+                                                    sessionRepository: SessionRepository,
+                                                    navigator: UkAndForeignPropertyNavigator,
+                                                    identify: IdentifierAction,
+                                                    getData: DataRetrievalAction,
+                                                    requireData: DataRequiredAction,
+                                                    formProvider: LeaseGrantAmountReceivedFormProvider,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    view: LeaseGrantAmountReceivedView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[BigDecimal] = formProvider()
