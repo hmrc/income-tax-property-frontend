@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.NonResidentLandlordUKPage
+import pages.ukandforeignproperty.UkNonResidentLandlordPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -65,7 +65,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
 
       s"must populate the view correctly on a GET when the question has previously been answered for the userType $userType" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(NonResidentLandlordUKPage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(UkNonResidentLandlordPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
 

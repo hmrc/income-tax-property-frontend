@@ -16,13 +16,14 @@
 
 package pages.ukandforeignproperty
 
-import models.BalancingCharge
+import models.{BalancingCharge, UKAndForeignProperty}
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 object UkAndForeignPropertyBalancingChargePage extends QuestionPage[BalancingCharge] {
 
-  override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "balancingCharge"
 }

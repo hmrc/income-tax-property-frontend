@@ -22,7 +22,7 @@ import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import pages.ukandforeignproperty.ForeignLeaseGrantAmountReceivedPage
 import play.api.data.Form
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -49,7 +49,7 @@ class LeaseGrantAmountReceivedController @Inject()(
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(LeaseGrantAmountReceivedPage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +66,9 @@ class LeaseGrantAmountReceivedController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(LeaseGrantAmountReceivedPage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignLeaseGrantAmountReceivedPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(LeaseGrantAmountReceivedPage(countryCode), taxYear, mode, updatedAnswers, request.userAnswers))
+          } yield Redirect(navigator.nextPage(ForeignLeaseGrantAmountReceivedPage(countryCode), taxYear, mode, updatedAnswers, request.userAnswers))
       )
   }
 }

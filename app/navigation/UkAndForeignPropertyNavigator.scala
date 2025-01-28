@@ -35,7 +35,7 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
-    case NonResidentLandlordUKPage =>
+    case UkNonResidentLandlordPage =>
       taxYear => _ => userAnswers => nonResidentLandlordNavigation(taxYear, userAnswers, NormalMode)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -141,7 +141,7 @@ class UkAndForeignPropertyNavigator {
 
   //TODO add the next pages to navigate when they are available
   private def nonResidentLandlordNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
-    (userAnswers.get(NonResidentLandlordUKPage), mode) match {
+    (userAnswers.get(UkNonResidentLandlordPage), mode) match {
       case (Some(true), NormalMode) => ???
       case (Some(false), NormalMode) => ???
       case (_, CheckMode) => ??? //TODO CYA page

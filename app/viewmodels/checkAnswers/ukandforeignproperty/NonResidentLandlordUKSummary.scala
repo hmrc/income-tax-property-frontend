@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.NonResidentLandlordUKPage
+import pages.ukandforeignproperty.UkNonResidentLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
@@ -27,7 +27,7 @@ import viewmodels.implicits._
 object NonResidentLandlordUKSummary  {
 
   def row(taxYear:Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(NonResidentLandlordUKPage).map {
+    answers.get(UkNonResidentLandlordPage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"

@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignForeignPremiumsForTheGrantOfALeaseFormProvider
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignForeignPremiumsForTheGrantOfALeasePage
+import pages.ukandforeignproperty.ForeignPremiumsForTheGrantOfALeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,7 +47,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseController @Inject()(
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignPremiumsForTheGrantOfALeasePage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignPremiumsForTheGrantOfALeasePage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignPremiumsForTheGrantOfALeasePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

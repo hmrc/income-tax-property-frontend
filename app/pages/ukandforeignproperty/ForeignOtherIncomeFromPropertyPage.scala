@@ -16,14 +16,14 @@
 
 package pages.ukandforeignproperty
 
-import models.UKAndForeignProperty
-import pages.PageConstants.incomePath
+import models.ForeignProperty
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode: String) extends QuestionPage[Boolean] {
+case object ForeignOtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
 
-  override def toString: String = "foreignPremiumsForTheGrantOfALease"
+  override def toString: String = "foreignOtherForeignPropertyIncome"
 }

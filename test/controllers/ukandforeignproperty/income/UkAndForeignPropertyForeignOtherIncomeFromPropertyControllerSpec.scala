@@ -23,7 +23,7 @@ import models.{NormalMode, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyPage
+import pages.ukandforeignproperty.ForeignOtherIncomeFromPropertyPage
 import play.api.Application
 import play.api.data.Form
 import play.api.mvc.Call
@@ -68,7 +68,7 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignPropertyForeignOtherIncomeFromPropertyPage(countryCode), otherIncomeFromProperty).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignOtherIncomeFromPropertyPage(countryCode), otherIncomeFromProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 

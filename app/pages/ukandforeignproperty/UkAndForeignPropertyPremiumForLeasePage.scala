@@ -16,12 +16,14 @@
 
 package pages.ukandforeignproperty
 
+import models.UKAndForeignProperty
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object UkAndForeignPropertyPremiumForLeasePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "ukAndForeignPropertyPremiumForLease"
 }

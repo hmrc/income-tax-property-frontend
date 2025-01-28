@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedController
 import models.{UserAnswers, CheckMode}
-import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import pages.ukandforeignproperty.ForeignLeaseGrantAmountReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, bigDecimalCurrency, valueCssClass}
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object LeaseGrantAmountReceivedSummary  {
 
   def row(taxYear: Int, countryCode: String, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LeaseGrantAmountReceivedPage(countryCode)).map {
+    answers.get(ForeignLeaseGrantAmountReceivedPage(countryCode)).map {
       answer =>
 
         SummaryListRowViewModel(

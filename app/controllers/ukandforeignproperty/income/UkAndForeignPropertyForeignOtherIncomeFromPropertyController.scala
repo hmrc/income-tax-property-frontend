@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyFormProvider
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyPage
+import pages.ukandforeignproperty.ForeignOtherIncomeFromPropertyPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -49,7 +49,7 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyController @Inject()(
     implicit request =>
       val isAgent = request.user.isAgentMessageKey
       val form: Form[BigDecimal] = formProvider(isAgent)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyForeignOtherIncomeFromPropertyPage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignOtherIncomeFromPropertyPage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +66,9 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, isAgent))),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyForeignOtherIncomeFromPropertyPage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignOtherIncomeFromPropertyPage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyForeignOtherIncomeFromPropertyPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignOtherIncomeFromPropertyPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

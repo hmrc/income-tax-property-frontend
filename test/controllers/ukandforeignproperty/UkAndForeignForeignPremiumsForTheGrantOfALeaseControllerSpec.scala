@@ -24,7 +24,7 @@ import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNaviga
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignForeignPremiumsForTheGrantOfALeasePage
+import pages.ukandforeignproperty.ForeignPremiumsForTheGrantOfALeasePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -66,7 +66,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode), true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignPremiumsForTheGrantOfALeasePage(countryCode), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 

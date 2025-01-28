@@ -26,7 +26,7 @@ import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import pages.ukandforeignproperty.ForeignLeaseGrantAmountReceivedPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -69,7 +69,7 @@ class LeaseGrantAmountReceivedControllerSpec extends SpecBase with MockitoSugar 
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(LeaseGrantAmountReceivedPage(countryCode), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignLeaseGrantAmountReceivedPage(countryCode), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,18 @@
 
 package pages.ukandforeignproperty
 
-import pages.PageConstants.incomePath
+
 import models.UKAndForeignProperty
+import models.ukAndForeign.UkAndForeignPropertyAmountReceivedForGrantOfLease
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class LeaseGrantAmountReceivedPage(countryCode: String) extends QuestionPage[BigDecimal] {
+case object UkPropertyAmountReceivedForGrantOfLeasePage extends QuestionPage[UkAndForeignPropertyAmountReceivedForGrantOfLease] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "leaseGrantReceivedAmount"
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+
+
+  override def toString: String = "propertyAmountReceivedForGrantOfLeasePage"
 }

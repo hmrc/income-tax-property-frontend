@@ -22,7 +22,7 @@ import forms.ukandforeignproperty.NonResidentLandlordUKFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ukandforeignproperty.NonResidentLandlordUKPage
+import pages.ukandforeignproperty.UkNonResidentLandlordPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -49,7 +49,7 @@ class NonResidentLandlordUKController @Inject()(
 
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val preparedForm = request.userAnswers.get(NonResidentLandlordUKPage) match {
+      val preparedForm = request.userAnswers.get(UkNonResidentLandlordPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -68,9 +68,9 @@ class NonResidentLandlordUKController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(NonResidentLandlordUKPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkNonResidentLandlordPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(NonResidentLandlordUKPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkNonResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
