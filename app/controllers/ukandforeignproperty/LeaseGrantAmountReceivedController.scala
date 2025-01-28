@@ -46,29 +46,29 @@ class LeaseGrantAmountReceivedController @Inject()(
 
   val form: Form[BigDecimal] = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignLeaseGrantAmountReceivedPage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignLeaseGrantAmountReceivedPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignLeaseGrantAmountReceivedPage(countryCode), taxYear, mode, updatedAnswers, request.userAnswers))
+          } yield Redirect(navigator.nextPage(ForeignLeaseGrantAmountReceivedPage, taxYear, mode, updatedAnswers, request.userAnswers))
       )
   }
 }

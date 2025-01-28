@@ -26,7 +26,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UkAndForeignPropertyRentalTypeUkPage
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkAndForeignPropertyPremiumGrantLeaseTaxPage}
+import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkPremiumGrantLeaseTaxPage}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -50,7 +50,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
       (
         emptyUserAnswers
           .set(
-            UkAndForeignPropertyPremiumGrantLeaseTaxPage,
+            UkPremiumGrantLeaseTaxPage,
             UkAndForeignPropertyPremiumGrantLeaseTax(premiumGrantLeaseYesNo = true,Some(34.56))
           )
           .toOption,
@@ -59,7 +59,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
       (
         emptyUserAnswers
           .set(
-            UkAndForeignPropertyPremiumGrantLeaseTaxPage,
+            UkPremiumGrantLeaseTaxPage,
             UkAndForeignPropertyPremiumGrantLeaseTax(premiumGrantLeaseYesNo = false,None)
           )
           .toOption,
@@ -73,14 +73,14 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
     } yield (userType, agent, answer)
 
     userTypeAndAnswerCombinations.foreach { case (userType, agent, (Some(userAnswer), value)) =>
-      s"Return OK for user type $userType and userAnswer is ${userAnswer.get(UkAndForeignPropertyPremiumGrantLeaseTaxPage)}" in {
+      s"Return OK for user type $userType and userAnswer is ${userAnswer.get(UkPremiumGrantLeaseTaxPage)}" in {
         val application: Application = applicationBuilder(Some(userAnswer), agent).build()
         running(application) {
           val controller =
             application.injector.instanceOf[UkAndForeignPropertyPremiumGrantLeaseTaxController]
           val view = application.injector.instanceOf[UkAndForeignPropertyPremiumGrantLeaseTaxView]
           val form = userAnswer
-            .get(UkAndForeignPropertyPremiumGrantLeaseTaxPage)
+            .get(UkPremiumGrantLeaseTaxPage)
             .fold(formProvider(userType))(formProvider(userType).fill)
           val result = controller.onPageLoad(testTaxYear, NormalMode)(FakeRequest())
           status(result) mustBe OK

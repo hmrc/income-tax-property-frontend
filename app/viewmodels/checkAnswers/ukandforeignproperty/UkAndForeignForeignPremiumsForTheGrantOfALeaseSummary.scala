@@ -27,8 +27,8 @@ import viewmodels.implicits._
 
 object UkAndForeignForeignPremiumsForTheGrantOfALeaseSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignPremiumsForTheGrantOfALeasePage(countryCode)).map {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ForeignPremiumsForTheGrantOfALeasePage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
@@ -37,7 +37,7 @@ object UkAndForeignForeignPremiumsForTheGrantOfALeaseSummary  {
           key     = KeyViewModel("ukAndForeignForeignPremiumsForTheGrantOfALease.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("ukAndForeignForeignPremiumsForTheGrantOfALease.change.hidden"))
           )
         )

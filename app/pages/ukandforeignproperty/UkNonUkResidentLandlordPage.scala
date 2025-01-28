@@ -21,9 +21,9 @@ import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object UkAndForeignPropertyPremiumForLeasePage extends QuestionPage[Boolean] {
+case object UkNonUkResidentLandlordPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
-  override def toString: String = "ukAndForeignPropertyPremiumForLease"
+  override def toString: String = "nonUkResidentLandlord"
 }

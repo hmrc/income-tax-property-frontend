@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{BalancingCharge, CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkAndForeignPropertyBalancingChargePage
+import pages.ukandforeignproperty.UkBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object BalancingChargeSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(UkAndForeignPropertyBalancingChargePage).flatMap {
+    answers.get(UkBalancingChargePage).flatMap {
       case BalancingCharge(true, amount) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),

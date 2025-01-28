@@ -27,17 +27,17 @@ import viewmodels.implicits._
 
 object ForeignYearLeaseAmountSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit
+  def row(taxYear: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignYearLeaseAmountPage(countryCode)).map { answer =>
+    answers.get(ForeignYearLeaseAmountPage).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, CheckMode).url
+            routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, CheckMode).url
           )
             .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
         )

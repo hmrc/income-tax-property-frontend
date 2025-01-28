@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxFormProvider
 import models.{Mode, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxPage
+import pages.ukandforeignproperty.UkPremiumGrantLeaseTaxPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +46,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkAndForeignPropertyPremiumGrantLeaseTaxPage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkPremiumGrantLeaseTaxPage) match {
         case None =>
           form
         case Some(value) =>
@@ -64,9 +64,9 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyPremiumGrantLeaseTaxPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkPremiumGrantLeaseTaxPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyPremiumGrantLeaseTaxPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkPremiumGrantLeaseTaxPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

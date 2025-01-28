@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkAndForeignPropertyOtherIncomeFromUkPropertyPage
+import pages.ukandforeignproperty.UkOtherIncomeFromUkPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -28,7 +28,7 @@ import viewmodels.implicits._
 object OtherIncomeFromUkPropertySummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkAndForeignPropertyOtherIncomeFromUkPropertyPage).map {
+    answers.get(UkOtherIncomeFromUkPropertyPage).map {
       answer =>
         SummaryListRowViewModel(
           key = KeyViewModel("ukAndForeignPropertyOtherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),

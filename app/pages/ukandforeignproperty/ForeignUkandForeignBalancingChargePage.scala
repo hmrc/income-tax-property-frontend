@@ -16,15 +16,14 @@
 
 package pages.ukandforeignproperty
 
-import models.UKAndForeignProperty
-import pages.PageConstants.aboutPath
+import models.{BalancingCharge, UKAndForeignProperty}
+import pages.PageConstants.{aboutPath, adjustmentsPath}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-object UkAndForeignPropertyOtherIncomeFromUkPropertyPage extends QuestionPage[BigDecimal] {
+case object ForeignUkandForeignBalancingChargePage extends QuestionPage[BalancingCharge] {
 
-  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \toString
 
-  override def toString: String = "ukAndForeignPropertyOtherIncomeFromProperty"
-
+  override def toString: String = "foreignBalancingCharge"
 }

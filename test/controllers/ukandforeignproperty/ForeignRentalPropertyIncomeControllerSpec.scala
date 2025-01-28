@@ -41,13 +41,12 @@ class ForeignRentalPropertyIncomeControllerSpec extends SpecBase with MockitoSug
   val formProvider = new ForeignRentalPropertyIncomeFormProvider()
   val form: Form[BigDecimal] = formProvider()
   val taxYear = 2024
-  val countryCode = "GRC"
 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = BigDecimal(100)
 
-  lazy val foreignRentalPropertyIncomeRoute = ForeignRentalPropertyIncomeController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val foreignRentalPropertyIncomeRoute = ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode).url
 
   "ForeignRentalPropertyIncome Controller" - {
 
@@ -63,13 +62,13 @@ class ForeignRentalPropertyIncomeControllerSpec extends SpecBase with MockitoSug
         val view = application.injector.instanceOf[ForeignRentalPropertyIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignRentalPropertyIncomePage(countryCode), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignRentalPropertyIncomePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -81,7 +80,7 @@ class ForeignRentalPropertyIncomeControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -127,7 +126,7 @@ class ForeignRentalPropertyIncomeControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, "individual", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, "individual", NormalMode)(request, messages(application)).toString
       }
     }
 

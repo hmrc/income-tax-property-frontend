@@ -231,10 +231,10 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
     "Non-UK resident landlord" - {
 
       "must go from NonResidentLandlordUKPage to 'Deducting tax from non-UK resident landlord' when the option 'true' is selected" ignore {
-        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonResidentLandlordPage, true).get
+        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, true).get
 
         navigator.nextIndex(
-          UkNonResidentLandlordPage,
+          UkNonUkResidentLandlordPage,
           taxYear,
           NormalMode,
           UserAnswers("id"),
@@ -244,10 +244,10 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
       }
 
       "must go from NonResidentLandlordUKPage to 'How much income did you get from your foreign property rentals?' when the option 'false' is selected" ignore {
-        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonResidentLandlordPage, false).get
+        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, false).get
 
         navigator.nextPage(
-          UkNonResidentLandlordPage,
+          UkNonUkResidentLandlordPage,
           taxYear,
           NormalMode,
           UserAnswers("id"),
@@ -256,10 +256,10 @@ class UkAndForeignPropertyNavigatorSpec  extends SpecBase {
       }
 
       "must go from NonResidentLandlordUKPage to 'CYA page' when in CheckMode" ignore {
-        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonResidentLandlordPage, false).get
+        val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, false).get
 
         navigator.nextPage(
-          UkNonResidentLandlordPage,
+          UkNonUkResidentLandlordPage,
           taxYear,
           CheckMode,
           UserAnswers("id"),

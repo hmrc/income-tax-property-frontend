@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignBalancingChargeFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.ukandforeignproperty.UkAndForeignBalancingChargePage
+import pages.ukandforeignproperty.ForeignUkandForeignBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -43,30 +43,30 @@ class UkAndForeignBalancingChargeController @Inject()(
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val preparedForm = request.userAnswers.get(UkAndForeignBalancingChargePage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignUkandForeignBalancingChargePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignBalancingChargePage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignUkandForeignBalancingChargePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignBalancingChargePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignUkandForeignBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

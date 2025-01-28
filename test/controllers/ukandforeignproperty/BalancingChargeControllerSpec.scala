@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignPropertyBalancingChargePage
+import pages.ukandforeignproperty.UkBalancingChargePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -68,7 +68,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(UkAndForeignPropertyBalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .set(UkBalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
         .success
         .value
 
