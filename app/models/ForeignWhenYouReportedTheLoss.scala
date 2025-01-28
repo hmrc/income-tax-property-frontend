@@ -24,11 +24,11 @@ sealed trait ForeignWhenYouReportedTheLoss
 
 object ForeignWhenYouReportedTheLoss extends Enumerable.Implicits {
 
-  case object y2018to2019 extends WithName("y2018to2019") with ForeignWhenYouReportedTheLoss
-  case object y2019to2020 extends WithName("y2019to2020") with ForeignWhenYouReportedTheLoss
-  case object y2020to2021 extends WithName("y2020to2021") with ForeignWhenYouReportedTheLoss
-  case object y2021to2022 extends WithName("y2021to2022") with ForeignWhenYouReportedTheLoss
-  case object y2022to2023 extends WithName("y2022to2023") with ForeignWhenYouReportedTheLoss
+  case object y2018to2019 extends WithName("2018-19") with ForeignWhenYouReportedTheLoss
+  case object y2019to2020 extends WithName("2019-20") with ForeignWhenYouReportedTheLoss
+  case object y2020to2021 extends WithName("2020-21") with ForeignWhenYouReportedTheLoss
+  case object y2021to2022 extends WithName("2021-22") with ForeignWhenYouReportedTheLoss
+  case object y2022to2023 extends WithName("2022-23") with ForeignWhenYouReportedTheLoss
 
   val values: Seq[ForeignWhenYouReportedTheLoss] = Seq(
     y2018to2019, y2019to2020, y2020to2021, y2021to2022, y2022to2023

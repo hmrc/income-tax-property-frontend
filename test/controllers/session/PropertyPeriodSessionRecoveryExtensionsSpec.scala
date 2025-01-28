@@ -278,7 +278,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        "unusedLossesPreviousYearsYesNo": true,
        |        "unusedLossesPreviousYearsAmount": 500
        |      },
-       |      "whenYouReportedTheLoss": "y2021to2022"
+       |      "whenYouReportedTheLoss": "2021-22"
        |    }
        |  },
        |    "foreignJourneyStatuses": {
