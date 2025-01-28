@@ -2955,6 +2955,7 @@ ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.in
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.agent = *Missing Welsh*
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
 ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden = *Missing Welsh*
+
 ukAndForeignProperty.foreignPremiumsGrantLease.title = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.heading = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.calculation.subHeading = *Missing Welsh*
