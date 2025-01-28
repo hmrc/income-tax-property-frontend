@@ -21,7 +21,7 @@ import models.{PropertyType, RentalsAndRentARoomAdjustment, RentalsRentARoom, Us
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.adjustments._
-import pages.allowances.{AnnualInvestmentAllowancePage, BusinessPremisesRenovationPage, OtherCapitalAllowancePage, ReplacementOfDomesticGoodsPage, ZeroEmissionCarAllowancePage, ZeroEmissionGoodsVehicleAllowancePage}
+import pages.allowances._
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
 import play.api.libs.json.JsPath
 
