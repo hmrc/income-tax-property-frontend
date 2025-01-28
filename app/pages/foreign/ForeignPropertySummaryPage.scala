@@ -91,12 +91,12 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
 
     val taskListTagForSba =
       userAnswers
-      .flatMap { answers =>
-        answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
-          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        .flatMap { answers =>
+          answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
         }
-      }
-      .getOrElse(TaskListTag.NotStarted)
+        .getOrElse(TaskListTag.NotStarted)
 
     val taskListTagForAllowances =
       userAnswers
@@ -106,19 +106,37 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
           }
         }
         .getOrElse(TaskListTag.NotStarted)
-    val taskListTagForAdjustments =
-      userAnswers
-        .flatMap { answers =>
-          answers.get(ForeignAdjustmentsCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+
+    val taskListTagForAdjustments = {
+      val isAdjustmentsComplete = userAnswers.flatMap(_.get(ForeignAdjustmentsCompletePage(countryCode)))
+      isAdjustmentsComplete
+        .map { finishedYesOrNo =>
+          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        }
+        .getOrElse {
+          val isPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage)).getOrElse(false)
+          if (isPIA) {
+            if (taskListTagForIncome == TaskListTag.Completed) {
+              TaskListTag.NotStarted
+            } else {
+              TaskListTag.CanNotStart
+            }
+          } else {
+            TaskListTag.NotStarted
           }
         }
-        .getOrElse(TaskListTag.NotStarted)
-    val taskList = {
+    }
+
+    val taskList =
       Seq(
         TaskListItem(
           "foreign.tax",
-          foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.FOREIGN_TAX, Some(countryCode)) {
+          foreignCYADiversionService.redirectCallToCYAIfFinished(
+            taxYear,
+            userAnswers,
+            ForeignCYADiversionService.FOREIGN_TAX,
+            Some(countryCode)
+          ) {
             controllers.foreign.routes.ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode)
           },
           taskListTagForForeignTax,
@@ -126,62 +144,88 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
         ),
         TaskListItem(
           "foreign.income",
-          foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.INCOME, Some(countryCode)) {
-            controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode)
-          },
+          foreignCYADiversionService
+            .redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.INCOME, Some(countryCode)) {
+              controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode)
+            },
           taskListTagForIncome,
           s"foreign_property_income_$countryCode"
         )
       )
-    }
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
-      case Some(true) => taskList.appendedAll(
-        Seq(
-          TaskListItem(
-            "summary.adjustments",
-            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ADJUSTMENTS, Some(countryCode)) {
-              controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA = true)
-            },
-            taskListTagForAdjustments,
-            s"foreign_property_adjustments_$countryCode"
+      case Some(true) =>
+        taskList.appendedAll(
+          Seq(
+            TaskListItem(
+              "summary.adjustments",
+              foreignCYADiversionService.redirectCallToCYAIfFinished(
+                taxYear,
+                userAnswers,
+                ForeignCYADiversionService.ADJUSTMENTS,
+                Some(countryCode)
+              ) {
+                controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController
+                  .onPageLoad(taxYear, countryCode, isPIA = true)
+              },
+              taskListTagForAdjustments,
+              s"foreign_property_adjustments_$countryCode"
+            )
           )
         )
-      )
-      case Some(false) => taskList.appendedAll(
-        Seq(
-          TaskListItem(
-            "summary.adjustments",
-            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ADJUSTMENTS, Some(countryCode)) {
-              controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA = false)
-            },
-            taskListTagForAdjustments,
-            s"foreign_property_adjustments_$countryCode"
-          ),
-          TaskListItem(
-            "summary.allowances",
-            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.ALLOWANCES, Some(countryCode)) {
-              controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode)
-            },
-            taskListTagForAllowances,
-            s"foreign_property_allowances_$countryCode"
-          ),
-          TaskListItem(
-            "summary.expenses",
-            foreignCYADiversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.EXPENSES, Some(countryCode)) {
-              controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode)
-            },
-            taskListTagForExpenses,
-            s"foreign_property_expenses_$countryCode"
-          ),
-          TaskListItem(
-            "summary.structuresAndBuildingAllowance",
-            getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
-            taskListTagForSba,
-            s"foreign_structure_and_building_allowance_$countryCode"
+      case Some(false) =>
+        taskList.appendedAll(
+          Seq(
+            TaskListItem(
+              "summary.adjustments",
+              foreignCYADiversionService.redirectCallToCYAIfFinished(
+                taxYear,
+                userAnswers,
+                ForeignCYADiversionService.ADJUSTMENTS,
+                Some(countryCode)
+              ) {
+                controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController
+                  .onPageLoad(taxYear, countryCode, isPIA = false)
+              },
+              taskListTagForAdjustments,
+              s"foreign_property_adjustments_$countryCode"
+            ),
+            TaskListItem(
+              "summary.allowances",
+              foreignCYADiversionService.redirectCallToCYAIfFinished(
+                taxYear,
+                userAnswers,
+                ForeignCYADiversionService.ALLOWANCES,
+                Some(countryCode)
+              ) {
+                controllers.foreign.allowances.routes.ForeignPropertyAllowancesStartController
+                  .onPageLoad(taxYear, countryCode)
+              },
+              taskListTagForAllowances,
+              s"foreign_property_allowances_$countryCode"
+            ),
+            TaskListItem(
+              "summary.expenses",
+              foreignCYADiversionService.redirectCallToCYAIfFinished(
+                taxYear,
+                userAnswers,
+                ForeignCYADiversionService.EXPENSES,
+                Some(countryCode)
+              ) {
+                controllers.foreign.expenses.routes.ForeignPropertyExpensesStartController
+                  .onPageLoad(taxYear, countryCode)
+              },
+              taskListTagForExpenses,
+              s"foreign_property_expenses_$countryCode"
+            ),
+            TaskListItem(
+              "summary.structuresAndBuildingAllowance",
+              getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
+              taskListTagForSba,
+              s"foreign_structure_and_building_allowance_$countryCode"
+            )
           )
         )
-      )
       case None => taskList
     }
   }
@@ -191,29 +235,28 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     countryCode: String,
     userAnswers: Option[UserAnswers],
     taskListTag: TaskListTag.TaskListTag
-  ): Call = {
+  ): Call =
     taskListTag match {
       case TaskListTag.InProgress | TaskListTag.Completed =>
         val answers = userAnswers.get
         (
           answers.get(ForeignClaimStructureBuildingAllowancePage(countryCode)),
           answers.get(ForeignStructureBuildingAllowanceGroup(countryCode))
-        )
-        match {
+        ) match {
           case (Some(true), Some(sbaForm)) if sbaForm.nonEmpty =>
-            controllers.foreign.structuresbuildingallowance.routes
-              .ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
+            controllers.foreign.structuresbuildingallowance.routes.ForeignStructureBuildingAllowanceClaimsController
+              .onPageLoad(taxYear, countryCode)
 
           case (Some(false), _) =>
-            controllers.foreign.structuresbuildingallowance.routes
-              .ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimSbaCheckYourAnswersController
+              .onPageLoad(taxYear, countryCode)
 
           case (_, _) =>
-            controllers.foreign.structuresbuildingallowance.routes
-              .ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+            controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController
+              .onPageLoad(taxYear, countryCode, NormalMode)
         }
       case _ =>
-        controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode)
+        controllers.foreign.structuresbuildingallowance.routes.ForeignClaimStructureBuildingAllowanceController
+          .onPageLoad(taxYear, countryCode, NormalMode)
     }
-  }
 }
