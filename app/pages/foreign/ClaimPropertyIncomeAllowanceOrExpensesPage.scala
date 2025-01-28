@@ -16,14 +16,39 @@
 
 package pages.foreign
 
-import models.ForeignProperty
+import models.{ForeignProperty, ForeignPropertySelectCountry, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
+import pages.foreign.adjustments._
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
   override def toString: String = "claimPropertyIncomeAllowance"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    val countryCodes: Array[String] =
+      userAnswers
+        .get(ForeignPropertySelectCountry)
+        .flatMap(_.incomeCountries.map(_.map(_.code)))
+        .getOrElse(Array.empty)
+
+    countryCodes.foldLeft(Try(userAnswers)) { (acc, countryCode) =>
+      acc.flatMap { ua =>
+        ua.remove(ForeignPrivateUseAdjustmentPage(countryCode))
+          .flatMap(_.remove(ForeignAdjustmentsSectionAddCountryCode(countryCode)))
+          .flatMap(_.remove(ForeignBalancingChargePage(countryCode)))
+          .flatMap(_.remove(PropertyIncomeAllowanceClaimPage(countryCode)))
+          .flatMap(_.remove(ForeignResidentialFinanceCostsPage(countryCode)))
+          .flatMap(_.remove(ForeignUnusedResidentialFinanceCostPage(countryCode)))
+          .flatMap(_.remove(ForeignUnusedLossesPreviousYearsPage(countryCode)))
+          .flatMap(_.remove(ForeignWhenYouReportedTheLossPage(countryCode)))
+          .flatMap(_.remove(ForeignAdjustmentsCompletePage(countryCode)))
+      }
+    }
+  }
 }

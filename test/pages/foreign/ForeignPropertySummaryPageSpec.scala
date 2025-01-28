@@ -36,7 +36,7 @@ import pages.foreign.structurebuildingallowance._
 import play.api.libs.json.Json
 import service.ForeignCYADiversionService
 import viewmodels.summary.TaskListItem
-import viewmodels.summary.TaskListTag.{Completed, InProgress, NotStarted}
+import viewmodels.summary.TaskListTag.{CanNotStart, Completed, InProgress, NotStarted}
 
 import java.time.{Instant, LocalDate}
 
@@ -53,16 +53,19 @@ class ForeignPropertySummaryPageSpec
     taskListTag = NotStarted,
     id = s"foreign_property_income_tax_$countryCode"
   )
-  val incomeItem: TaskListItem = TaskListItem(
+  def incomeItem(isComplete: Boolean = false): TaskListItem = TaskListItem(
     content = "foreign.income",
-    call = ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
-    taskListTag = NotStarted,
+    call = if(isComplete) ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode) else ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+    taskListTag = if(isComplete) Completed else NotStarted,
     id =  s"foreign_property_income_$countryCode"
   )
-  def adjustmentsItem(isPIA: Boolean): TaskListItem = TaskListItem(
+  def adjustmentsItem(isPIA: Boolean, isIncomeSectionComplete: Boolean = false): TaskListItem = TaskListItem(
     content = "summary.adjustments",
     call = ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA),
-    taskListTag = NotStarted,
+    taskListTag = (isPIA, isIncomeSectionComplete) match {
+      case (true, false) => CanNotStart
+      case (_, _) => NotStarted
+    },
     id =  s"foreign_property_adjustments_$countryCode"
   )
   val allowancesItem: TaskListItem = TaskListItem(
@@ -135,13 +138,32 @@ class ForeignPropertySummaryPageSpec
   }
 
   "foreignPropertyItems" - {
-    "should show the correct items when claiming PIA" in {
+    "should show the correct items when claiming PIA and Income section is completed" in {
       val isClaimingPIA = true
-      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
+        .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        .flatMap(_.set(ForeignIncomeSectionCompletePage(countryCode), true))
+        .toOption
+
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
-        incomeItem,
+        incomeItem(isComplete = true),
+        adjustmentsItem(isClaimingPIA, isIncomeSectionComplete = true)
+      )
+      taskList shouldBe res
+    }
+
+    "should show the correct items when claiming PIA and Income section is incomplete" in {
+      val isClaimingPIA = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
+        .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        .toOption
+
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem,
+        incomeItem(),
         adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res
@@ -153,7 +175,7 @@ class ForeignPropertySummaryPageSpec
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
-        incomeItem,
+        incomeItem(),
         adjustmentsItem(isClaimingPIA),
         allowancesItem,
         expensesItem,
@@ -167,7 +189,7 @@ class ForeignPropertySummaryPageSpec
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, Some(userAnswers))
       val res = Seq(
         foreignTaxItem,
-        incomeItem
+        incomeItem()
       )
       taskList shouldBe res
     }
@@ -187,7 +209,7 @@ class ForeignPropertySummaryPageSpec
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        incomeItem.copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA),
         allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
@@ -222,7 +244,7 @@ class ForeignPropertySummaryPageSpec
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        incomeItem.copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA),
         allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
