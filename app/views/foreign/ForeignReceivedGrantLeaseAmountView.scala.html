@@ -32,11 +32,13 @@
     @if(form.errors.nonEmpty) {
         @govukErrorSummary(ErrorSummaryViewModel(form))
     }
+    <h1 class="govuk-heading-l">@messages(s"foreignReceivedGrantLeaseAmount.heading.$individualOrAgent")</h1>
+    <p class="govuk-body">@messages("foreignReceivedGrantLeaseAmount.p1")</p>
     @formHelper(action = controllers.foreign.routes.ForeignReceivedGrantLeaseAmountController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
         @govukInput(
             InputViewModel(
                 field = form("receivedGrantLeaseAmount"),
-                label = LabelViewModel(messages(s"foreignReceivedGrantLeaseAmount.heading.$individualOrAgent")).asPageHeading(LabelSize.Large)
+                label = LabelViewModel("")
             )
             .asNumeric()
             .withWidth(Fixed10)

@@ -36,11 +36,12 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-
+        <h1 class="govuk-heading-l">@messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")</h1>
+        <p class="govuk-body">@messages("calculatedPremiumLeaseTaxable.p1")</p>
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("calculatedPremiumLeaseTaxable"),
-                legend = LegendViewModel(messages(s"calculatedPremiumLeaseTaxable.heading.$individualOrAgent")).asPageHeading(Large),
+                legend = LegendViewModel(""),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("calculatedPremiumLeaseTaxable"),
                     conditionalYesHtml = Some(
