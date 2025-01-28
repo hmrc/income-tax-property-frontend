@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,14 @@
 
 package pages.ukandforeignproperty
 
-import models.UKAndForeignProperty
+import models.ForeignProperty
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
-import pages.foreign.Country
 import play.api.libs.json.JsPath
 
-case object SelectCountryPage extends QuestionPage[List[Country]] {
+case object ForeignOtherIncomeFromPropertyPage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+  override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
 
-  override def toString: String = "countries"
-
+  override def toString: String = "foreignOtherForeignPropertyIncome"
 }

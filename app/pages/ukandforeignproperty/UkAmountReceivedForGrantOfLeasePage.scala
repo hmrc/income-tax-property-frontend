@@ -25,9 +25,7 @@ import play.api.libs.json.JsPath
 
 case object UkAmountReceivedForGrantOfLeasePage extends QuestionPage[UkAndForeignPropertyAmountReceivedForGrantOfLease] {
 
-
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
-
 
   override def toString: String = "amountReceivedForGrantOfLeasePage"
 }

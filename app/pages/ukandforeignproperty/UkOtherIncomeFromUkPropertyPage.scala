@@ -21,10 +21,10 @@ import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
+
 object UkOtherIncomeFromUkPropertyPage extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "otherIncomeFromProperty"
-
 }
