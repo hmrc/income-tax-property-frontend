@@ -47,7 +47,7 @@
     </p>
 
     <p class="govuk-body">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.formula", premiumAmount.toString, (periods - 1).toString)</p>
-<h3>Foo</h3>
+
     <p class="govuk-body">
         <span class="govuk-!-font-weight-bold">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.calculation.taxableAmount")</span>
         <span>£@{models.ukAndForeign.UkAndForeignPropertyForeignPremiumsGrantLease.calculateTaxableAmount(premiumAmount, periods)}</span>
