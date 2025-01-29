@@ -21,7 +21,7 @@ import forms.ukandforeignproperty.UkAndForeignPropertyForeignPremiumsGrantLeaseF
 import models.Mode
 import models.ukAndForeign.UkAndForeignPropertyForeignPremiumsGrantLease
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.{ForeignYearLeaseAmountPage, LeaseGrantAmountReceivedPage, UkAndForeignPropertyForeignPremiumsGrantLeasePage}
+import pages.ukandforeignproperty.{ForeignLeaseGrantAmountReceivedPage, ForeignYearLeaseAmountPage, UkAndForeignPropertyForeignPremiumsGrantLeasePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,41 +44,41 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(LeaseGrantAmountReceivedPage(countryCode))
-      val foreignTotalYearPeriods: Option[Int]         =  request.userAnswers.get(ForeignYearLeaseAmountPage(countryCode))
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage)
+      val foreignTotalYearPeriods: Option[Int]         =  request.userAnswers.get(ForeignYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) =>
-          Redirect(routes.LeaseGrantAmountReceivedController.onPageLoad(taxYear, countryCode, mode))
+          Redirect(routes.LeaseGrantAmountReceivedController.onPageLoad(taxYear, mode))
         case (_, None) =>
-          Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, mode))
+          Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, mode))
         case (Some(amount), Some(period)) =>
-          val preparedForm = request.userAnswers.get(UkAndForeignPropertyForeignPremiumsGrantLeasePage(countryCode)) match {
+          val preparedForm = request.userAnswers.get(UkAndForeignPropertyForeignPremiumsGrantLeasePage) match {
             case None        => form
             case Some(value) => form.fill(value)
           }
-          Ok(view(preparedForm, taxYear, period, amount, request.user.isAgentMessageKey, countryCode, mode))
+          Ok(view(preparedForm, taxYear, period, amount, request.user.isAgentMessageKey, mode))
       }
     }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val receivedGrantLeaseAmount: Option[BigDecimal] =  request.userAnswers.get(LeaseGrantAmountReceivedPage(countryCode))
-      val foreignTotalYearPeriods: Option[Int] =  request.userAnswers.get(ForeignYearLeaseAmountPage(countryCode))
+      val receivedGrantLeaseAmount: Option[BigDecimal] =  request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage)
+      val foreignTotalYearPeriods: Option[Int] =  request.userAnswers.get(ForeignYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) =>
           Future.successful(
-            Redirect(routes.LeaseGrantAmountReceivedController.onPageLoad(taxYear, countryCode, mode))
+            Redirect(routes.LeaseGrantAmountReceivedController.onPageLoad(taxYear, mode))
           )
         case (_, None) =>
           Future.successful(
-            Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, mode))
+            Redirect(routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, mode))
           )
         case (Some(amount), Some(period)) =>
           form
@@ -87,14 +87,14 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
               formWithErrors =>
                 Future.successful(
                   BadRequest(
-                    view(formWithErrors, taxYear, period, amount, request.user.isAgentMessageKey, countryCode, mode)
+                    view(formWithErrors, taxYear, period, amount, request.user.isAgentMessageKey, mode)
                   )
                 ),
               value =>
                 for {
                   updatedAnswers <- Future.fromTry(
                                       request.userAnswers.set(
-                                        UkAndForeignPropertyForeignPremiumsGrantLeasePage(countryCode),
+                                        UkAndForeignPropertyForeignPremiumsGrantLeasePage,
                                         UkAndForeignPropertyForeignPremiumsGrantLease(
                                           value.premiumsOfLeaseGrantAgreed,
                                           Option(
@@ -108,7 +108,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
                   navigator.nextPage(
-                    UkAndForeignPropertyForeignPremiumsGrantLeasePage(countryCode),
+                    UkAndForeignPropertyForeignPremiumsGrantLeasePage,
                     taxYear,
                     mode,
                     request.userAnswers,

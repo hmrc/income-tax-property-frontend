@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukandforeignproperty
 
-import controllers.routes
 import models.{CheckMode, PremiumCalculated, UserAnswers}
 import pages.ukandforeignproperty.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage
 import play.api.i18n.Messages
@@ -27,15 +26,15 @@ import viewmodels.implicits._
 
 object UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-  answers.get(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage(countryCode)).flatMap {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  answers.get(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage).flatMap {
     case PremiumCalculated(true, _) =>
       Some(SummaryListRowViewModel(
         key = KeyViewModel("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = ValueViewModel("site.yes").withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel("site.change",
-            controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, CheckMode).url)
             .withVisuallyHiddenText(messages("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden"))
         )))
     case PremiumCalculated(false, _) =>
@@ -44,7 +43,7 @@ object UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableSummary  {
         value = ValueViewModel("site.no").withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel("site.change",
-            controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, CheckMode).url)
             .withVisuallyHiddenText(messages("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden"))
         )
       ))

@@ -43,14 +43,14 @@
 @ukPropertySection = {
     @if(ukPropertyList.isDefined){
         <h1 class="govuk-heading-m">UK property</h1>
-        @govukSummaryList(ukPropertyList)
+        @govukSummaryList(ukPropertyList.get)
     }
 }
 
 @foreignPropertySection = {
     @if(foreignPropertyList.isDefined){
         <h1 class="govuk-heading-m">Foreign property</h1>
-        @govukSummaryList(foreignPropertyList)
+        @govukSummaryList(foreignPropertyList.get)
     }
 }
 

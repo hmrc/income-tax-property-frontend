@@ -22,9 +22,9 @@ import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class UkAndForeignPropertyForeignPremiumsGrantLeasePage(countryCode: String) extends QuestionPage[UkAndForeignPropertyForeignPremiumsGrantLease] {
+object UkAndForeignPropertyForeignPremiumsGrantLeasePage extends QuestionPage[UkAndForeignPropertyForeignPremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
 
   override def toString: String = "premiumsOfLeaseGrantAgreed"
 
