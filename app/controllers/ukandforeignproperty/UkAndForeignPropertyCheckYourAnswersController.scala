@@ -21,7 +21,7 @@ import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import models.requests.DataRequest
 import models.ukAndForeign.UkAndForeignAbout
 import models.{JourneyContext, JourneyPath, UKAndForeignProperty, UkAndForeignPropertyClaimExpensesOrRelief}
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkAndForeignPropertyIncomeAllowanceClaimPage, UkForeignPropertyAboutPage}
+import pages.ukandforeignproperty.{ForeignYearLeaseAmountPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkAndForeignPropertyIncomeAllowanceClaimPage, UkForeignPropertyAboutPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -31,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.{ReportIncomeSummary, UkAndForeignPropertyRentalTypeUkSummary}
+import viewmodels.checkAnswers.{ReportIncomeSummary, UkAndForeignPropertyRentalTypeUkSummary, ukandforeignproperty}
 import viewmodels.checkAnswers.ukandforeignproperty._
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.ukandforeignproperty.UkAndForeignPropertyCheckYourAnswersView
@@ -103,16 +103,16 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
       val foreignPropertyList =
         SummaryListViewModel(
           rows = Seq(
-            // how much income from foreign rentals
-            // foreign balancing charge
-            // foreign premiums for grant of lease
+            ForeignRentalPropertyIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers),
+            UkAndForeignBalancingChargeSummary.row(taxYear = taxYear, answers = request.userAnswers),
+            UkAndForeignForeignPremiumsForTheGrantOfALeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
             // have you calc the premium
-            // how much did you recieve
-            // how many complete 12 month periods
-            // premimums for grant of lease
+            ForeignLeaseGrantAmountRecievedSummary.row(taxYear = taxYear, answers = request.userAnswers),
+            ForeignYearLeaseAmountSummary.row(taxYear = taxYear, answers = request.userAnswers),
+            UkAndForeignPropertyPremiumForLeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
             // foreign reveresed preiums recieved
-            // foreign property other income
-            // your property income allowance claim
+            ForeignOtherIncomeFromForeignPropertySummary.row(taxYear = taxYear, answers = request.userAnswers),
+            UkAndForeignPropertyIncomeAllowanceClaimSummary.row(taxYear = taxYear, answers = request.userAnswers),
           ).flatten
         )
 
