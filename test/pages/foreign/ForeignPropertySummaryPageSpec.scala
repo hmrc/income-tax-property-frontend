@@ -176,10 +176,10 @@ class ForeignPropertySummaryPageSpec
       val res = Seq(
         foreignTaxItem,
         incomeItem(),
-        adjustmentsItem(isClaimingPIA),
-        allowancesItem,
         expensesItem,
-        sbaItem
+        allowancesItem,
+        sbaItem,
+        adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res
     }
@@ -210,10 +210,10 @@ class ForeignPropertySummaryPageSpec
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        adjustmentsItem(isClaimingPIA),
-        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         sbaItem.copy(taskListTag = Completed, call = ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res
     }
@@ -245,10 +245,10 @@ class ForeignPropertySummaryPageSpec
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        adjustmentsItem(isClaimingPIA),
-        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         sbaItem.copy(taskListTag = Completed, call = ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)),
+        adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res
     }
