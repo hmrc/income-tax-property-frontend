@@ -20,7 +20,7 @@ import models.TotalIncome.{Between, Under}
 import pages.TotalIncomePage
 import pages.foreign.adjustments.ForeignBalancingChargePage
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage}
-import pages.foreign.income.{ForeignReversePremiumsReceivedPage, ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
+import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}
 
 object ForeignTotalIncomeUtils {
 
@@ -28,13 +28,11 @@ object ForeignTotalIncomeUtils {
     val propertyRentalIncome = userAnswers.get(ForeignPropertyRentalIncomePage(countryCode)).getOrElse(BigDecimal(0))
     val leasePremiumCalculated =
       userAnswers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap(_.premiumsOfLeaseGrant).getOrElse(BigDecimal(0))
-    val reversePremiumsReceived =
-      userAnswers.get(ForeignReversePremiumsReceivedPage(countryCode)).flatMap(_.reversePremiums).getOrElse(BigDecimal(0))
     val premiumsGrantLease =
       userAnswers.get(ForeignPremiumsGrantLeasePage(countryCode)).flatMap(_.premiumsOfLeaseGrant).getOrElse(BigDecimal(0))
     val otherIncome = userAnswers.get(ForeignOtherIncomeFromPropertyPage(countryCode)).getOrElse(BigDecimal(0))
 
-    propertyRentalIncome + leasePremiumCalculated + premiumsGrantLease + reversePremiumsReceived + otherIncome
+    propertyRentalIncome + leasePremiumCalculated + premiumsGrantLease + otherIncome
   }
 
   def isTotalIncomeUnder85K(userAnswers: UserAnswers, countryCode: String): Boolean = {

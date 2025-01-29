@@ -90,11 +90,6 @@ POST       /:taxYear/foreign-property/income/:countryCode/premiums-grant-lease  
 GET        /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/income/:countryCode/change-premiums-grant-lease                         controllers.foreign.ForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, countryCode:String, mode: Mode = NormalMode)
-POST       /:taxYear/foreign-property/income/:countryCode/reverse-premiums-received                           controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, countryCode:String, mode: Mode = NormalMode)
-GET        /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onPageLoad(taxYear: Int, countryCode:String, mode: Mode = CheckMode)
-POST       /:taxYear/foreign-property/income/:countryCode/check-reverse-premiums-received                     controllers.foreign.income.ForeignReversePremiumsReceivedController.onSubmit(taxYear: Int, countryCode:String, mode: Mode = CheckMode)
-
 GET        /:taxYear/foreign-property/income/:countryCode/other-income-from-property                          controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 POST       /:taxYear/foreign-property/income/:countryCode/other-income-from-property                          controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-property/income/:countryCode/change-other-income-from-property                   controllers.foreign.income.ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)

@@ -2032,7 +2032,6 @@ foreignPropertyIncomeStart.p1.agent = *Missing Welsh*
 foreignPropertyIncomeStart.l1 = *Missing Welsh*
 foreignPropertyIncomeStart.l2 = *Missing Welsh*
 foreignPropertyIncomeStart.l3 = *Missing Welsh*
-foreignPropertyIncomeStart.l4 = *Missing Welsh*
 foreignPropertyIncomeStart.p2.individual = *Missing Welsh*
 foreignPropertyIncomeStart.p2.agent = *Missing Welsh*
 

@@ -2083,8 +2083,7 @@ foreignPropertyIncomeStart.p1.individual = In this section you’ll need to have
 foreignPropertyIncomeStart.p1.agent = In this section you’ll need to have these figures for all of your client’s properties:
 foreignPropertyIncomeStart.l1 = rental income
 foreignPropertyIncomeStart.l2 = premiums for the grant of a lease
-foreignPropertyIncomeStart.l3 = reverse premiums
-foreignPropertyIncomeStart.l4 = other income from property
+foreignPropertyIncomeStart.l3 = other income from property
 foreignPropertyIncomeStart.p2.individual = If your properties are jointly owned, only tell us about your share of the income.
 foreignPropertyIncomeStart.p2.agent = If your client’s properties are jointly owned, only tell us about their share of the income.
 

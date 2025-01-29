@@ -24,7 +24,6 @@ case class ForeignPropertyIncome(
   countryCode: String,
   rentIncome: BigDecimal,
   premiumsGrantLeaseReceived: Boolean,
-  reversePremiumsReceived: ReversePremiumsReceived,
   otherPropertyIncome: BigDecimal,
   calculatedPremiumLeaseTaxable: Option[CalculatedPremiumLeaseTaxable],
   receivedGrantLeaseAmount: Option[BigDecimal],

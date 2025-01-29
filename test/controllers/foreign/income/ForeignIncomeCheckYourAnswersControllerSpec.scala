@@ -116,12 +116,6 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         .flatMap(
           _.set(ForeignReceivedGrantLeaseAmountPage(countryCode), BigDecimal(25.50))
             .flatMap(_.set(TwelveMonthPeriodsInLeasePage(countryCode), 24))
-            .flatMap(
-              _.set(
-                ForeignReversePremiumsReceivedPage(countryCode),
-                ReversePremiumsReceived(reversePremiumsReceived = true, Some(BigDecimal(121)))
-              )
-            )
             .flatMap(_.set(ForeignOtherIncomeFromPropertyPage(countryCode), BigDecimal(12)))
         )
         .toOption

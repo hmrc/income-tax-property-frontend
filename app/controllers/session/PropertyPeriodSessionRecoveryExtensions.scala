@@ -29,7 +29,7 @@ import pages.foreign.expenses._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
 import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
-import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, ForeignReversePremiumsReceivedPage, PremiumsGrantLeaseYNPage}
+import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, PremiumsGrantLeaseYNPage}
 import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
@@ -261,15 +261,11 @@ object PropertyPeriodSessionRecoveryExtensions {
                        premiumsOfLeaseGrantAgreed =>
                          ua5.set(ForeignPremiumsGrantLeasePage(countryCode), premiumsOfLeaseGrantAgreed)
                      )
-              ua7 <- foreignPropertyIncome.reversePremiumsReceived.fold[Try[UserAnswers]](Success(ua6))(
-                       reversePremiumsReceived =>
-                         ua6.set(ForeignReversePremiumsReceivedPage(countryCode), reversePremiumsReceived)
-                     )
-              ua8 <-
-                foreignPropertyIncome.otherPropertyIncome.fold[Try[UserAnswers]](Success(ua7))(otherPropertyIncome =>
-                  ua7.set(ForeignOtherIncomeFromPropertyPage(countryCode), otherPropertyIncome)
+              ua7 <-
+                foreignPropertyIncome.otherPropertyIncome.fold[Try[UserAnswers]](Success(ua6))(otherPropertyIncome =>
+                  ua6.set(ForeignOtherIncomeFromPropertyPage(countryCode), otherPropertyIncome)
                 )
-            } yield ua8
+            } yield ua7
         }
     }
 
