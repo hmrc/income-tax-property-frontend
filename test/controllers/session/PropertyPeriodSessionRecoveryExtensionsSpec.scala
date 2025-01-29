@@ -204,9 +204,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "$countryCode1": {
        |        "rentIncome": 12345.75,
        |        "premiumsGrantLeaseReceived": true,
-       |        "reversePremiumsReceived": {
-       |          "reversePremiumsReceived": true
-       |        },
        |        "otherPropertyIncome": 345.65,
        |        "calculatedPremiumLeaseTaxable": {
        |          "calculatedPremiumLeaseTaxable": true
@@ -432,10 +429,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignPremiumsGrantLeasePage(countryCode1)).get mustBe ForeignPremiumsGrantLease(
         premiumsOfLeaseGrantAgreed = true,
         premiumsOfLeaseGrant = Some(234.5)
-      )
-      updated.get(ForeignReversePremiumsReceivedPage(countryCode1)).get mustBe ReversePremiumsReceived(
-        reversePremiumsReceived = true,
-        reversePremiums = None
       )
       updated.get(ForeignOtherIncomeFromPropertyPage(countryCode1)).get mustBe 345.65
       updated.get(ForeignIncomeSectionCompletePage(countryCode1)).get mustBe true

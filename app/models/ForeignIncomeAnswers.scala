@@ -22,7 +22,6 @@ import play.api.libs.json.{Format, Json}
 case class ForeignIncomeAnswers(
   rentIncome: Option[BigDecimal],
   premiumsGrantLeaseReceived: Boolean,
-  reversePremiumsReceived: Option[ReversePremiumsReceived],
   otherPropertyIncome: Option[BigDecimal],
   calculatedPremiumLeaseTaxable: Option[PremiumCalculated],
   receivedGrantLeaseAmount: Option[BigDecimal],

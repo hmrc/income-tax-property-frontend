@@ -187,7 +187,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             userAnswersWithData
           ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "ESP", NormalMode)
         }
-        "should go from CalculatedPremiumLeaseTaxablePage to Reverse premiums received" in {
+        "should go from CalculatedPremiumLeaseTaxablePage to Other income from property" in {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
@@ -200,7 +200,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             NormalMode,
             UserAnswers("test"),
             userAnswersWithData
-          ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, "ESP", NormalMode)
+          ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, "ESP", NormalMode)
         }
       }
 
@@ -237,7 +237,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
-      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true" in {
+      "must go from CalculatedPremiumLeaseTaxablePage to OtherIncomeFromProperty if true" in {
         val countryCode = "BRA"
         navigator.nextPage(
           CalculatedPremiumLeaseTaxablePage(countryCode),
@@ -250,7 +250,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
-        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+        ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
       "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false" in {
@@ -280,7 +280,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe CalculatedPremiumLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
-      "must go from PremiumsGrantLeaseYNPage to Reverse Premium Page if false" in {
+      "must go from PremiumsGrantLeaseYNPage to Other Income From property Page if false" in {
         val countryCode = "BRA"
         navigator.nextPage(
           PremiumsGrantLeaseYNPage(countryCode),
@@ -288,10 +288,10 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test").set(PremiumsGrantLeaseYNPage(countryCode), value = false).get
-        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+        ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
-      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in NormalMode" in {
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignOtherIncomeFromProperty if true in NormalMode" in {
         val countryCode = "BRA"
         navigator.nextPage(
           CalculatedPremiumLeaseTaxablePage(countryCode),
@@ -304,7 +304,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
-        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, NormalMode)
+        ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode)
       }
 
       "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false in Normal Mode" in {
@@ -1010,7 +1010,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             userAnswersWithData
           ) mustBe ForeignReceivedGrantLeaseAmountController.onPageLoad(taxYear, "ESP", CheckMode)
         }
-        "should go from CalculatedPremiumLeaseTaxablePage to Reverse premiums received" in {
+        "should go from CalculatedPremiumLeaseTaxablePage to Other income from property" in {
           val userAnswersWithData = UserAnswers("test")
             .set(
               CalculatedPremiumLeaseTaxablePage("ESP"),
@@ -1023,7 +1023,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             CheckMode,
             UserAnswers("test"),
             userAnswersWithData
-          ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, "ESP", CheckMode)
+          ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, "ESP", CheckMode)
         }
       }
 
@@ -1060,7 +1060,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
       }
 
-      "must go from CalculatedPremiumLeaseTaxablePage to ForeignReversePremiumsReceived if true in CheckMode" in {
+      "must go from CalculatedPremiumLeaseTaxablePage to ForeignOtherIncomeFromProperty if true in CheckMode" in {
         val countryCode = "BRA"
         navigator.nextPage(
           CalculatedPremiumLeaseTaxablePage(countryCode),
@@ -1073,7 +1073,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
               PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(10.00))
             )
             .get
-        ) mustBe ForeignReversePremiumsReceivedController.onPageLoad(taxYear, countryCode, CheckMode)
+        ) mustBe ForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, CheckMode)
       }
 
       "must go from CalculatedPremiumLeaseTaxablePage to ForeignReceivedGrantLease if false in CheckMode" in {

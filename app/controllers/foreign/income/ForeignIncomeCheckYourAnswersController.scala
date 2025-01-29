@@ -29,7 +29,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign._
-import viewmodels.checkAnswers.foreign.income.{ForeignPropertyRentalIncomeSummary, ForeignReversePremiumsReceivedSummary}
+import viewmodels.checkAnswers.foreign.income.ForeignPropertyRentalIncomeSummary
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
@@ -59,7 +59,6 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
           ForeignReceivedGrantLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
           TwelveMonthPeriodsInLeaseSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignPremiumsGrantLeaseSummary.row(taxYear, countryCode, request.userAnswers),
-          ForeignReversePremiumsReceivedSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignOtherIncomeFromPropertySummary.row(taxYear, countryCode, request.userAnswers)
         ).flatten
       )
