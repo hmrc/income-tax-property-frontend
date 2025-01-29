@@ -30,7 +30,7 @@ object ReversePremiumsReceivedSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(UkReversePremiumsReceivedPage()).flatMap {
+    answers.get(UkReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
         Some(
           SummaryListRowViewModel(

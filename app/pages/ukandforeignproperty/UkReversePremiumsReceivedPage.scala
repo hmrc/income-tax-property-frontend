@@ -22,7 +22,7 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 
-case class UkReversePremiumsReceivedPage() extends QuestionPage[ReversePremiumsReceived] {
+object UkReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsReceived] {
 
   override def path: JsPath =JsPath \ aboutPath(UKAndForeignProperty) \ toString
 

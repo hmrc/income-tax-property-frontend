@@ -67,7 +67,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(UkReversePremiumsReceivedPage(), ReversePremiumsReceived(true, Some(12.34)))
+        .set(UkReversePremiumsReceivedPage, ReversePremiumsReceived(true, Some(12.34)))
         .success
         .value
 
