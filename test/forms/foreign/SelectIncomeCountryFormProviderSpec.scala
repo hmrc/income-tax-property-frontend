@@ -16,17 +16,25 @@
 
 package forms.foreign
 
+import base.SpecBase
 import forms.behaviours.StringFieldBehaviours
+import models.UserAnswers
 import org.scalacheck.Gen
+import pages.foreign.{Country, SelectIncomeCountryPage}
 import play.api.data.FormError
 import service.CountryNamesDataSource
 
-class SelectIncomeCountryFormProviderSpec extends StringFieldBehaviours {
+class SelectIncomeCountryFormProviderSpec extends StringFieldBehaviours with SpecBase {
 
   val requiredKey = "selectIncomeCountry.error.required.agent"
   val lengthKey = "selectIncomeCountry.error.validCountry"
 
-  val form = new SelectIncomeCountryFormProvider()("agent")
+  val country: Country = Country(name = "India", code = "IND")
+  val index = 0
+  val userType = "agent"
+  val userAnswers: UserAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage(index), country).success.value
+
+  val form = new SelectIncomeCountryFormProvider()("agent", userAnswers)
 
   ".incomeCountry" - {
 

@@ -39,12 +39,13 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call =
     Call("GET", "/update-and-submit-income-tax-return/property/2024/foreign-property/countries-rented-property")
-  val userType = "agent"
-  val formProvider = new SelectIncomeCountryFormProvider()
-  val form: Form[String] = formProvider(userType)
   val taxYear = 2024
   val country: Country = Country(name = "India", code = "IND")
   val index = 0
+  val userType = "agent"
+  val userAnswers: UserAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage(index), country).success.value
+  val formProvider = new SelectIncomeCountryFormProvider()
+  val form: Form[String] = formProvider(userType, userAnswers)
 
   lazy val selectIncomeCountryRoute: String =
     routes.SelectIncomeCountryController.onPageLoad(taxYear, index, NormalMode).url
@@ -71,8 +72,6 @@ class SelectIncomeCountryControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(SelectIncomeCountryPage(index), country).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true).build()
 
