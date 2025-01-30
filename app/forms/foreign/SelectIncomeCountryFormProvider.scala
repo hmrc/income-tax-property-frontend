@@ -17,15 +17,17 @@
 package forms.foreign
 
 import forms.mappings.Mappings
+import models.UserAnswers
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class SelectIncomeCountryFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[String] =
+  def apply(individualOrAgent: String, userAnswers: UserAnswers): Form[String] =
     Form(
       "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
         .verifying(validCountry("selectIncomeCountry.error.validCountry"))
+        .verifying(countryAlreadySelected("", userAnswers))
     )
 }
