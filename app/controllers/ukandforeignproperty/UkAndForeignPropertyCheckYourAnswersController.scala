@@ -18,12 +18,15 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import models.ReportIncome.WantToReport
+import models.UkAndForeignPropertyRentalTypeUk.PropertyRentals
 import models.requests.DataRequest
 import models.ukAndForeign.UkAndForeignAbout
-import models.{JourneyContext, JourneyPath}
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkForeignPropertyAboutPage}
+import models.{JourneyContext, JourneyPath, UserAnswers}
+import pages.UkAndForeignPropertyRentalTypeUkPage
+import pages.ukandforeignproperty.{ReportIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkForeignPropertyAboutPage}
 import play.api.Logging
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
@@ -50,68 +53,32 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
+      val reportIncome: Boolean = request.userAnswers.get(ReportIncomePage).forall(_ == WantToReport)
       val ukAndForeignPropertyList =
-        SummaryListViewModel(
-          rows = Seq(
-            TotalPropertyIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-            ReportIncomeSummary.row(taxYear = taxYear, request.user.isAgentMessageKey, answers = request.userAnswers),
-            UkAndForeignPropertyRentalTypeUkSummary.row(taxYear = taxYear, answers = request.userAnswers),
-            ForeignCountriesRentedPropertySummary.rowList(taxYear = taxYear, answers = request.userAnswers),
-            UKAndForeignClaimExpensesOrReliefSummary.row(taxYear = taxYear, answers = request.userAnswers),
-            ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear = taxYear, answers = request.userAnswers)
-          ).flatten
-        )
+        getUkAndForeignSummaryList(taxYear, reportIncome, request.user.isAgentMessageKey, request.userAnswers)
 
-      val isPIA =
-        request.userAnswers
-          .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
-          .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+      val claimRentARoomRelief: Boolean =
+        request.userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage).exists(_.claimExpensesOrReliefYesNo)
+      val hasPropertyRentals: Boolean =
+        request.userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).forall(_.contains(PropertyRentals))
+      val isPIA: Boolean = request.userAnswers
+        .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
+        .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
 
-      val ukPropertyList: Option[SummaryList] =
-        if (isPIA) {
-          Some(
-            SummaryListViewModel(
-              rows = Seq(
-                NonResidentLandlordUKSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkRentalPropertyIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                BalancingChargeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignPropertyPremiumForLeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
+      val ukPropertyList: Option[SummaryList] = (reportIncome, isPIA) match {
+        case (true, true) =>
+          if (claimRentARoomRelief && hasPropertyRentals) {
+            Some(getUkSummaryList(taxYear, request.user.isAgentMessageKey, request.userAnswers))
+          } else {
+            None
+          }
+        case (_, _) => None
+      }
 
-
-                // have you calc the premium
-                LeaseGrantAmountReceivedSummary.row(taxYear = taxYear, individualOrAgent = request.user.isAgentMessageKey, answers = request.userAnswers),
-                UkYearLeaseAmountSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UKPremiumsGrantLeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                ReversePremiumsReceivedSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                OtherIncomeFromUkPropertySummary.row(taxYear = taxYear, answers = request.userAnswers)
-              ).flatten
-            )
-          )
-        } else {
-          None
-        }
-
-      val foreignPropertyList: Option[SummaryList] =
-        if (isPIA) {
-          Some(
-            SummaryListViewModel(
-              rows = Seq(
-                ForeignRentalPropertyIncomeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignBalancingChargeSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignForeignPremiumsForTheGrantOfALeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                ForeignLeaseGrantAmountRecievedSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                ForeignYearLeaseAmountSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignPropertyPremiumForLeaseSummary.row(taxYear = taxYear, answers = request.userAnswers),
-                ForeignOtherIncomeFromForeignPropertySummary.row(taxYear = taxYear, answers = request.userAnswers),
-                UkAndForeignPropertyIncomeAllowanceClaimSummary.row(taxYear = taxYear, answers = request.userAnswers)
-              ).flatten
-            )
-          )
-        } else {
-          None
-        }
+      val foreignPropertyList: Option[SummaryList] = (reportIncome, isPIA) match {
+        case (true, true) => Some(getForeignSummaryList(taxYear, request.user.isAgentMessageKey, request.userAnswers))
+        case (_, _)       => None
+      }
 
       Ok(view(ukAndForeignPropertyList, ukPropertyList, foreignPropertyList, taxYear))
     }
@@ -151,4 +118,69 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
         Future.failed(SaveJourneyAnswersFailed("Failed to save uk and foreign property about section"))
     }
   }
+
+  private def getUkAndForeignSummaryList(
+    taxYear: Int,
+    reportIncome: Boolean,
+    individualOrAgent: String,
+    userAnswers: UserAnswers
+  )(implicit messages: Messages): SummaryList =
+    if (reportIncome) {
+      SummaryListViewModel(
+        rows = Seq(
+          TotalPropertyIncomeSummary.row(taxYear, userAnswers),
+          UkAndForeignPropertyRentalTypeUkSummary.row(taxYear, userAnswers, individualOrAgent),
+          ForeignCountriesRentedPropertySummary.rowList(taxYear, userAnswers, individualOrAgent),
+          UKAndForeignClaimExpensesOrReliefSummary.row(taxYear, userAnswers),
+          ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, userAnswers)
+        ).flatten
+      )
+    } else {
+      SummaryListViewModel(
+        rows = Seq(
+          TotalPropertyIncomeSummary.row(taxYear, userAnswers),
+          ReportIncomeSummary.row(taxYear, individualOrAgent, userAnswers)
+        ).flatten
+      )
+    }
+
+  private def getUkSummaryList(
+    taxYear: Int,
+    individualOrAgent: String,
+    userAnswers: UserAnswers
+  )(implicit messages: Messages): SummaryList =
+    SummaryListViewModel(
+      rows = Seq(
+        NonResidentLandlordUKSummary.row(taxYear, userAnswers),
+        UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordSummary.row(taxYear, userAnswers),
+        UkRentalPropertyIncomeSummary.row(taxYear, userAnswers),
+        BalancingChargeSummary.row(taxYear, userAnswers),
+        UkPremiumForLeaseSummary.row(taxYear, userAnswers),
+        UkPremiumGrantLeaseTaxSummary.row(taxYear, userAnswers),
+        UKLeaseGrantAmountReceivedSummary.row(taxYear, userAnswers, individualOrAgent),
+        UkYearLeaseAmountSummary.row(taxYear, userAnswers),
+        UKPremiumsGrantLeaseSummary.row(taxYear, userAnswers),
+        ReversePremiumsReceivedSummary.row(taxYear, userAnswers),
+        OtherIncomeFromUkPropertySummary.row(taxYear, userAnswers)
+      ).flatten
+    )
+
+  private def getForeignSummaryList(
+    taxYear: Int,
+    individualOrAgent: String,
+    userAnswers: UserAnswers
+  )(implicit messages: Messages): SummaryList =
+    SummaryListViewModel(
+      rows = Seq(
+        ForeignRentalPropertyIncomeSummary.row(taxYear, userAnswers),
+        UkAndForeignBalancingChargeSummary.row(userAnswers, taxYear),
+        UkAndForeignForeignPremiumsForTheGrantOfALeaseSummary.row(taxYear, userAnswers),
+        UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableSummary.row(taxYear, userAnswers),
+        LeaseGrantAmountReceivedSummary.row(taxYear, individualOrAgent, userAnswers),
+        ForeignYearLeaseAmountSummary.row(taxYear, userAnswers),
+        ForeignPremiumsGrantLeaseSummary.row(taxYear, userAnswers),
+        ForeignOtherIncomeFromForeignPropertySummary.row(taxYear, userAnswers),
+        UkAndForeignPropertyIncomeAllowanceClaimSummary.row(taxYear, userAnswers)
+      ).flatten
+    )
 }

@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignBalancingChargeFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ForeignUkandForeignBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class UkAndForeignBalancingChargeController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         navigator: UkAndForeignPropertyNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,

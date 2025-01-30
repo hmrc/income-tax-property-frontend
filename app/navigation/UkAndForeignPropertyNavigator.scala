@@ -36,9 +36,11 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, NormalMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+    case UkAndForeignPropertyClaimExpensesOrReliefPage =>
+      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers)
     case UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => userAnswers => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers)
-    // Long Journey - UK
+      // Long Journey - UK
     case UkNonUkResidentLandlordPage =>
       taxYear => _ => userAnswers => nonResidentLandlordNavigation(taxYear, userAnswers, NormalMode)
     case UkDeductingTaxFromNonUkResidentLandlordPage =>
@@ -60,8 +62,26 @@ class UkAndForeignPropertyNavigator {
     case UkReversePremiumsReceivedPage =>
       taxYear => _ => _ => routes.OtherUkPropertyIncomeController.onPageLoad(taxYear, NormalMode)
     case UkOtherIncomeFromUkPropertyPage =>
+      taxYear => _ => _ => routes.ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+      // Long Journey - Foreign
+    case ForeignRentalPropertyIncomePage =>
+      taxYear => _ => _ => routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, NormalMode)
+    case ForeignUkandForeignBalancingChargePage =>
+      taxYear => _ => _ => routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onPageLoad(taxYear, NormalMode)
+    case ForeignPremiumsForTheGrantOfALeasePage =>
+      taxYear => _ => userAnswers => foreignPremiumsForLeaseNavigation(taxYear, userAnswers, NormalMode)
+    case UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage =>
+      taxYear => _ => userAnswers => calculateForeignPremiumForLeaseNavigation(taxYear, userAnswers, NormalMode)
+    case ForeignLeaseGrantAmountReceivedPage =>
+      taxYear => _ => _ => routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, NormalMode)
+    case ForeignYearLeaseAmountPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode)
+    case UkAndForeignPropertyForeignPremiumsGrantLeasePage =>
       taxYear => _ => _ => routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
-
+    case ForeignOtherIncomeFromForeignPropertyPage =>
+      taxYear => _ => _ => routes.PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, NormalMode)
+    case UkAndForeignPropertyIncomeAllowanceClaimPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
 
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -79,10 +99,70 @@ class UkAndForeignPropertyNavigator {
       taxYear => previousAnswers => userAnswers => totalPropertyIncomeCheckModeNavigation(taxYear, previousAnswers, userAnswers)
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeCheckNavigation(taxYear, userAnswers)
+    case UkAndForeignPropertyRentalTypeUkPage =>
+      taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, CheckMode)
     case SelectCountryPage =>
       taxYear => _ => _ =>
-        controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
+        controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode)
+    case UkAndForeignPropertyClaimExpensesOrReliefPage =>
+      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers)
+    case UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage =>
+      taxYear => _ => userAnswers => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers)
+    // Long Journey - UK
+    case UkNonUkResidentLandlordPage =>
+      taxYear => _ => userAnswers => nonResidentLandlordNavigation(taxYear, userAnswers, CheckMode)
+    case UkDeductingTaxFromNonUkResidentLandlordPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case UkRentalPropertyIncomePage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case UkBalancingChargePage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case UkPremiumForLeasePage =>
+      taxYear => _ => userAnswers => ukPremiumForLeaseNavigation(taxYear, userAnswers, CheckMode)
+    case UkPremiumGrantLeaseTaxPage =>
+      taxYear => _ => userAnswers => calculateUkPremiumForLeaseNavigation(taxYear, userAnswers, CheckMode)
+    case UkAmountReceivedForGrantOfLeasePage =>
+      taxYear => _ => _ => routes.UkYearLeaseAmountController.onPageLoad(taxYear, CheckMode)
+    case UkYearLeaseAmountPage =>
+      taxYear => _ => _ => routes.UKPremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+    case UKPremiumsGrantLeasePage =>
+      taxYear => _ => _ => routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode)
+    case UkReversePremiumsReceivedPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case UkOtherIncomeFromUkPropertyPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    // Long Journey - Foreign
+    case ForeignRentalPropertyIncomePage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case ForeignUkandForeignBalancingChargePage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case ForeignPremiumsForTheGrantOfALeasePage =>
+      taxYear => _ => userAnswers => foreignPremiumsForLeaseNavigation(taxYear, userAnswers, CheckMode)
+    case UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage =>
+      taxYear => _ => userAnswers => calculateForeignPremiumForLeaseNavigation(taxYear, userAnswers, CheckMode)
+    case ForeignLeaseGrantAmountReceivedPage =>
+      taxYear => _ => _ => routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, CheckMode)
+    case ForeignYearLeaseAmountPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear, CheckMode)
+    case UkAndForeignPropertyForeignPremiumsGrantLeasePage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case ForeignOtherIncomeFromForeignPropertyPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    case UkAndForeignPropertyIncomeAllowanceClaimPage =>
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+
+    case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
+
+
+  private val indexableCheckRoutes: Page => Int => UserAnswers => UserAnswers => Int => Call = {
+    case ForeignCountriesRentedPage =>
+      taxYear => _ => userAnswers => index => foreignCountriesRentedNavigationCheckMode(taxYear, userAnswers, index)
+    case _ =>
+      _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
+
+  }
+
 
   def nextPage(page: Page, taxYear: Int, mode: Mode, previousUserAnswers: UserAnswers, userAnswers: UserAnswers): Call = {
     mode match {
@@ -98,7 +178,7 @@ class UkAndForeignPropertyNavigator {
       case NormalMode =>
         indexableRoutes(page)(taxYear)(previousUserAnswers)(userAnswers)(index)
       case CheckMode =>
-        checkRouteMap(page)(taxYear)(previousUserAnswers)(userAnswers)
+        indexableCheckRoutes(page)(taxYear)(previousUserAnswers)(userAnswers)(index)
     }
   }
 
@@ -138,6 +218,19 @@ class UkAndForeignPropertyNavigator {
     }
   }
 
+  private def foreignCountriesRentedNavigationCheckMode(taxYear: Int, userAnswers: UserAnswers, index: Int): Call = {
+    ( userAnswers.get(ForeignCountriesRentedPage), userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).map(_.toSeq)) match {
+      case (Some(true),_) =>
+        routes.SelectCountryController.onPageLoad(taxYear, Index(index + 1), CheckMode)
+      case (Some(false), None) =>
+        throw new RuntimeException("No rental type selected")  // should never happen
+      case (Some(false), Some(Seq(UkAndForeignPropertyRentalTypeUk.PropertyRentals))) =>
+        routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+      case _ =>
+        routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    }
+  }
+
   private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
       case Some(UkAndForeignPropertyClaimExpensesOrRelief(_)) =>
@@ -165,10 +258,10 @@ class UkAndForeignPropertyNavigator {
         routes.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController.onPageLoad(taxYear, NormalMode)
       case (Some(false), NormalMode) =>
         routes.UkRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
-      case (_, CheckMode) =>
-        // TODO
-        ???
-      case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
+      case (Some(true), CheckMode) =>
+        routes.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController.onPageLoad(taxYear, CheckMode)
+      case (Some(false), CheckMode) =>
+        routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     }
 
   private def ukPremiumForLeaseNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
@@ -177,9 +270,12 @@ class UkAndForeignPropertyNavigator {
         routes.UkAndForeignPropertyPremiumGrantLeaseTaxController.onPageLoad(taxYear, NormalMode)
       case (Some(false), NormalMode) =>
         routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
-      case (_, CheckMode) =>
-        // TODO
-        ???
+      case (Some(false), CheckMode) =>
+        routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode)
+      case (Some(true), CheckMode) =>
+        routes.UkAndForeignPropertyPremiumGrantLeaseTaxController.onPageLoad(taxYear, CheckMode)
+
+
       case _ => controllers.routes.JourneyRecoveryController.onPageLoad()
     }
 
@@ -189,6 +285,30 @@ class UkAndForeignPropertyNavigator {
         routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode)
       case (Some(UkAndForeignPropertyPremiumGrantLeaseTax(false, _)), NormalMode) =>
         routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, NormalMode)
+      case (Some(UkAndForeignPropertyPremiumGrantLeaseTax(false, _)), CheckMode) =>
+        routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, CheckMode)
+      case (Some(UkAndForeignPropertyPremiumGrantLeaseTax(true, _)), CheckMode) =>
+        routes.ReversePremiumsReceivedController.onPageLoad(taxYear, CheckMode)
+    }
+
+  private def foreignPremiumsForLeaseNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+      (userAnswers.get(ForeignPremiumsForTheGrantOfALeasePage), mode) match {
+        case (Some(true), NormalMode) =>
+          routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, NormalMode)
+        case (Some(false), NormalMode) =>
+          routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+        case (Some(true), CheckMode) =>
+          routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, CheckMode)
+        case (Some(false), CheckMode) =>
+          routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, CheckMode)
+      }
+
+  private def calculateForeignPremiumForLeaseNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
+    (userAnswers.get(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage), mode) match {
+      case (Some(PremiumCalculated(true, _)), NormalMode) =>
+        routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode)
+      case (Some(PremiumCalculated(false, _)), NormalMode) =>
+        routes.LeaseGrantAmountReceivedController.onPageLoad(taxYear, NormalMode)
       case (_, CheckMode) =>
         // TODO
         ???

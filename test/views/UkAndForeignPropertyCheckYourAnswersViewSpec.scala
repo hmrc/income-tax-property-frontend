@@ -42,8 +42,8 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
 
   val view: UkAndForeignPropertyCheckYourAnswersView = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersView]
 
-  def createView(list: SummaryList,  taxYear: Int)(implicit request: Request[_]): Html = {
-    view(list, taxYear)(request, messages)
+  def createView(list: SummaryList, ukList: Option[SummaryList], foreignList:Option[SummaryList], taxYear: Int)(implicit request: Request[_]): Html = {
+    view(list, ukList, foreignList, taxYear)(request, messages)
   }
 
   "UkAndForeignPropertyCheckYourAnswersView" - {
@@ -60,11 +60,13 @@ class UkAndForeignPropertyCheckYourAnswersViewSpec extends SpecBase with Matcher
         ReportIncomeSummary.row(taxYear, individualOrAgent, userAnswers).get
       )
       val list = SummaryList(rows)
+      val ukList = None
+      val foreignList = None
 
       val request = FakeRequest(GET, "/")
-      val result = createView(list, taxYear)(request)
+      val result = createView(list, ukList, foreignList, taxYear)(request)
 
-      contentAsString(result) mustEqual view(SummaryList(rows), taxYear)(request, messages(application)).toString
+      contentAsString(result) mustEqual view(SummaryList(rows), None, None, taxYear)(request, messages(application)).toString
     }
   }
 

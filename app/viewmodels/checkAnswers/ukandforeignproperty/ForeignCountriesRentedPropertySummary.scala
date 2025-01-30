@@ -29,42 +29,19 @@ import viewmodels.implicits._
 
 object ForeignCountriesRentedPropertySummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(SelectCountryPage).map { countries =>
-      val country = countries(index)
-      val value = s"${country.name}"
-      SummaryListRowViewModel(
-        key = KeyViewModel(HtmlContent(value)),
-        value = ValueViewModel(HtmlContent(messages("countriesRentedProperty.staticContent"))),
-        actions = Seq(
-          ActionItemViewModel(
-            "site.change",
-            routes.SelectCountryController.onPageLoad(taxYear, Index(index), CheckMode).url
-          )
-            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden")),
-          ActionItemViewModel(
-            "site.remove",
-            controllers.foreign.routes.DoYouWantToRemoveCountryController.onPageLoad(taxYear, index, CheckMode).url
-          )
-            .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
-        ),
-        actionsCss = "w-25"
-      )
-    }
-
-  def rowList(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def rowList(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(SelectCountryPage).map { country: List[Country] =>
       val value: Seq[String] = country.map { c: Country =>
         s"${c.name}"
       }
       val countryList: String = value.mkString("<br>")
       SummaryListRowViewModel(
-        key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
+        key = KeyViewModel(s"foreignCountriesRentList.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
         value = ValueViewModel(HtmlContent(countryList)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            controllers.foreign.routes.CountriesRentedPropertyController.onPageLoad(taxYear, CheckMode).url
+            routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode).url
           )
             .withVisuallyHiddenText(messages("countriesRentedProperty.change.hidden"))
         ),

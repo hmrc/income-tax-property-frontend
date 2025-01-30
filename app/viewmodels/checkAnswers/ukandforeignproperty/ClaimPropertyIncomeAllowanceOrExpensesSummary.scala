@@ -34,7 +34,7 @@ object ClaimPropertyIncomeAllowanceOrExpensesSummary {
         val value = if (answer.claimPropertyIncomeAllowanceOrExpensesYesNo) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key = KeyViewModel("ukAndForeignForeignPremiumsForTheGrantOfALease.checkYourAnswersLabel")
+          key = KeyViewModel("ukAndForeignPropertyIncomeAllowanceClaim.checkYourAnswersLabel")
             .withCssClass(keyCssClass),
           value = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
@@ -44,7 +44,7 @@ object ClaimPropertyIncomeAllowanceOrExpensesSummary {
                 .onPageLoad(taxYear, CheckMode)
                 .url
             )
-              .withVisuallyHiddenText(messages("ukAndForeignForeignPremiumsForTheGrantOfALease.change.hidden"))
+              .withVisuallyHiddenText(messages("ukAndForeignPropertyIncomeAllowanceClaim.change.hidden"))
           )
         )
       }

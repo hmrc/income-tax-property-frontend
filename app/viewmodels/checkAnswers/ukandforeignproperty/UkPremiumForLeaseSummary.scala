@@ -25,7 +25,7 @@ import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object UkAndForeignPropertyPremiumForLeaseSummary {
+object UkPremiumForLeaseSummary {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UkPremiumForLeasePage).map {

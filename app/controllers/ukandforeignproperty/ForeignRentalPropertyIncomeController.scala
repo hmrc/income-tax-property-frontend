@@ -22,7 +22,7 @@ import views.html.ukandforeignproperty.ForeignRentalPropertyIncomeView
 
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ForeignRentalPropertyIncomePage
 import play.api.data.Form
 import play.api.i18n.{MessagesApi, I18nSupport}
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignRentalPropertyIncomeController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
-                                        navigator: Navigator,
+                                        navigator: UkAndForeignPropertyNavigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,

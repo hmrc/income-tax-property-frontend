@@ -32,7 +32,7 @@ object LeaseGrantAmountReceivedSummary  {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("leaseGrantAmountReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key     = KeyViewModel(s"leaseGrantAmountReceived.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", LeaseGrantAmountReceivedController.onPageLoad(taxYear, CheckMode).url)

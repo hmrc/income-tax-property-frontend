@@ -57,11 +57,13 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
         val controller = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersController]
         val view = application.injector.instanceOf[UkAndForeignPropertyCheckYourAnswersView]
         val list = SummaryListViewModel(Seq.empty)
+        val ukList = None
+        val foreignList = None
 
         val result = controller.onPageLoad(taxYear)(request)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, ukList, foreignList, taxYear)(request, messages(application)).toString
       }
     }
 

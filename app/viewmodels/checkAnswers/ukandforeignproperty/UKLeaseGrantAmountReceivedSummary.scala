@@ -17,30 +17,33 @@
 package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
+import models.ukAndForeign.UkAndForeignPropertyAmountReceivedForGrantOfLease
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.ForeignLeaseGrantAmountReceivedPage
+import pages.ukandforeignproperty.UkAmountReceivedForGrantOfLeasePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.all.{ActionItemViewModel, FluentActionItem, FluentKey, FluentValue, KeyViewModel, SummaryListRowViewModel, ValueViewModel}
 import viewmodels.implicits._
 
-object ForeignLeaseGrantAmountRecievedSummary {
+object UKLeaseGrantAmountReceivedSummary {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignLeaseGrantAmountReceivedPage).map { answer =>
-      SummaryListRowViewModel(
-        key = KeyViewModel("receivedGrantLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
-        actions = Seq(
-          ActionItemViewModel(
-            "site.change",
-            routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, CheckMode).url
+    answers.get(UkAmountReceivedForGrantOfLeasePage).flatMap {
+      case UkAndForeignPropertyAmountReceivedForGrantOfLease(amount) =>
+        Some(
+          SummaryListRowViewModel(
+            key = KeyViewModel(s"ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.checkYourAnswersLabel.$individualOrAgent")
+              .withCssClass(keyCssClass),
+            value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
+            actions = Seq(
+              ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.change.hidden"))
+            )
           )
-            .withVisuallyHiddenText(messages("receivedGrantLeaseAmount.change.hidden"))
         )
-      )
+      case _ => Option.empty[SummaryListRow]
     }
 }

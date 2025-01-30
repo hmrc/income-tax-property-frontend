@@ -46,7 +46,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
   val countryCode: String = "AUS"
 
 
-  lazy val ukAndForeignCalculatedForeignPremiumGrantLeaseTaxableRoute = controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val ukAndForeignCalculatedForeignPremiumGrantLeaseTaxableRoute = controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onPageLoad(taxYear, NormalMode).url
 
   "UkAndForeignCalculatedForeignPremiumGrantLeaseTaxable Controller" - {
 
@@ -62,7 +62,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
         val view = application.injector.instanceOf[UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form,taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form,taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -74,7 +74,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
         Some(amount)
       )
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage(countryCode), formAnswers).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage, formAnswers).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -86,7 +86,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(formAnswers), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(formAnswers), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -132,7 +132,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
