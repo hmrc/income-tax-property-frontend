@@ -28,6 +28,6 @@ class SelectIncomeCountryFormProvider @Inject() extends Mappings {
     Form(
       "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
         .verifying(validCountry("selectIncomeCountry.error.validCountry"))
-        .verifying(countryAlreadySelected("", userAnswers))
+        .verifying(countryAlreadySelected("selectIncomeCountry.error.countryAlreadySelected", userAnswers))
     )
 }

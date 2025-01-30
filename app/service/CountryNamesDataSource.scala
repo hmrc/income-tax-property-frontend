@@ -33,6 +33,11 @@ object CountryNamesDataSource {
 
   def getCountry(code: String): Option[Country] = loadedCountries.find(item => item.code == code)
 
+  def getCountryName(code: String): String = loadedCountries.find(item => item.code == code) match {
+    case Some(country) => country.name
+    case _ => ""
+  }
+
   private def selectItems: Seq[SelectItem] =
     loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
   lazy val loadCountries: Seq[Country] =

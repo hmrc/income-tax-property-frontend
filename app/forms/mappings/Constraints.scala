@@ -16,9 +16,10 @@
 
 package forms.mappings
 
-import models.{ForeignAddressable, Addressable, UserAnswers}
-import pages.foreign.IncomeSourceCountries
+import models.{UserAnswers, ForeignAddressable, Addressable}
+import pages.foreign.{IncomeSourceCountries, Country}
 import play.api.data.validation.{Valid, Constraint, Invalid}
+import service.CountryNamesDataSource
 import service.CountryNamesDataSource.loadCountries
 
 import java.time.LocalDate
@@ -160,7 +161,8 @@ trait Constraints {
 
   def countryAlreadySelected(errorMsg: String, userAnswers: UserAnswers): Constraint[String] =
     Constraint {
-      case countryCode if !userAnswers.get(IncomeSourceCountries).toList.contains(Array(_, countryCode)) =>
+      case countryCode
+        if !userAnswers.get(IncomeSourceCountries).toSeq.flatten.contains(Country(CountryNamesDataSource.getCountryName(countryCode), countryCode)) =>
         Valid
       case _ =>
         Invalid(errorMsg)
