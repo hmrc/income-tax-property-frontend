@@ -1868,6 +1868,7 @@ selectIncomeCountry.hint = *Missing Welsh*
 selectIncomeCountry.error.required.individual = *Missing Welsh*
 selectIncomeCountry.error.required.agent = *Missing Welsh*
 selectIncomeCountry.error.validCountry = *Missing Welsh*
+selectIncomeCountry.error.countryAlreadySelected = *Missing Welsh*
 selectIncomeCountry.checkYourAnswersLabel = *Missing Welsh*
 selectIncomeCountry.change.hidden = *Missing Welsh*
 

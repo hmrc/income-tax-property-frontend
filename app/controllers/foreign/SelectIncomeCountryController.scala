@@ -49,7 +49,7 @@ class SelectIncomeCountryController @Inject() (
 
   def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey, request.userAnswers)
       val preparedForm = request.userAnswers.get(SelectIncomeCountryPage(index)) match {
         case None        => form
         case Some(value) => form.fill(value.code)
@@ -59,7 +59,7 @@ class SelectIncomeCountryController @Inject() (
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey, request.userAnswers)
       form
         .bindFromRequest()
         .fold(

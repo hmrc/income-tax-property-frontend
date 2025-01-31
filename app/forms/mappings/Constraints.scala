@@ -16,8 +16,9 @@
 
 package forms.mappings
 
-import models.{Addressable, ForeignAddressable}
-import play.api.data.validation.{Constraint, Invalid, Valid}
+import models.{UserAnswers, ForeignAddressable, Addressable}
+import pages.foreign.IncomeSourceCountries
+import play.api.data.validation.{Valid, Constraint, Invalid}
 import service.CountryNamesDataSource.loadCountries
 
 import java.time.LocalDate
@@ -152,6 +153,15 @@ trait Constraints {
    def validCountry(errorMsg: String): Constraint[String] =
     Constraint {
       case countryCode if loadCountries.map(_.code).contains(countryCode) =>
+        Valid
+      case _ =>
+        Invalid(errorMsg)
+    }
+
+  def countryAlreadySelected(errorMsg: String, userAnswers: UserAnswers): Constraint[String] =
+    Constraint {
+      case countryCode
+        if !userAnswers.get(IncomeSourceCountries).toSeq.flatten.map(_.code).contains(countryCode) =>
         Valid
       case _ =>
         Invalid(errorMsg)

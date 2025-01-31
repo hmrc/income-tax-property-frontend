@@ -1920,6 +1920,7 @@ selectIncomeCountry.hint = Start typing in the box to find the country name
 selectIncomeCountry.error.required.individual = Select which country you received this income from
 selectIncomeCountry.error.required.agent = Select which country your client received this income from
 selectIncomeCountry.error.validCountry = Select country from the list
+selectIncomeCountry.error.countryAlreadySelected = Select a country you have not already selected
 selectIncomeCountry.checkYourAnswersLabel = Which country did you receive this income from?
 selectIncomeCountry.change.hidden = Income country
 
