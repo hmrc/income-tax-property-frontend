@@ -174,7 +174,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
             val result = controller.onSubmit(taxYear, Index(1), CheckMode)(request)
 
             status(result) mustEqual SEE_OTHER
-            redirectLocation(result).value mustEqual controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode).url
+            redirectLocation(result).value mustEqual controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode).url
             val userAnswers = await(sessionService.get(userAnswersId))
 
             userAnswers.flatMap(_.get(SelectCountryPage)) mustBe Some(List(Country("France", "FRA")))

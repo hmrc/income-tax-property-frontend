@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukandforeignproperty.UkAndForeignBalancingChargeFormProvider
 import models.{BalancingCharge, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -91,7 +91,7 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

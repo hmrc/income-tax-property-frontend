@@ -105,7 +105,7 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
 
         status(result) mustEqual SEE_OTHER
         val redirect = redirectLocation(result)
-        redirect.value mustEqual controllers.routes.IndexController.onPageLoad.url //TODO update when Navigation is integrated
+        redirect.value mustEqual controllers.ukandforeignproperty.routes.PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, NormalMode).url
       }
     }
 

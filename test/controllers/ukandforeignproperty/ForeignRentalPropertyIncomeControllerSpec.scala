@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukandforeignproperty.ForeignRentalPropertyIncomeFormProvider
 import models.{UserAnswers, NormalMode}
-import navigation.{Navigator, FakeNavigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -93,7 +93,7 @@ class ForeignRentalPropertyIncomeControllerSpec extends SpecBase with MockitoSug
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

@@ -19,7 +19,7 @@ package controllers.ukandforeignproperty
 import base.SpecBase
 import forms.ukandforeignproperty.NonResidentLandlordUKFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -90,7 +90,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

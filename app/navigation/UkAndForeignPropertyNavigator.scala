@@ -100,10 +100,9 @@ class UkAndForeignPropertyNavigator {
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeCheckNavigation(taxYear, userAnswers)
     case UkAndForeignPropertyRentalTypeUkPage =>
-      taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, CheckMode)
+      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     case SelectCountryPage =>
-      taxYear => _ => _ =>
-        controllers.ukandforeignproperty.routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode)
+      taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode)
     case UkAndForeignPropertyClaimExpensesOrReliefPage =>
       taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers)
     case UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage =>
@@ -247,8 +246,6 @@ class UkAndForeignPropertyNavigator {
         routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
       case (Some(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)), _) =>
         routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
-      case _ =>
-        controllers.routes.JourneyRecoveryController.onPageLoad()
     }
   }
 
