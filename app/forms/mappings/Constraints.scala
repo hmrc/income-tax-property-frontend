@@ -162,7 +162,7 @@ trait Constraints {
   def countryAlreadySelected(errorMsg: String, userAnswers: UserAnswers): Constraint[String] =
     Constraint {
       case countryCode
-        if !userAnswers.get(IncomeSourceCountries).toSeq.flatten.contains(Country(CountryNamesDataSource.getCountryName(countryCode), countryCode)) =>
+        if !userAnswers.get(IncomeSourceCountries).toSeq.flatten.map(_.code).contains(countryCode) =>
         Valid
       case _ =>
         Invalid(errorMsg)

@@ -31,23 +31,23 @@
 
 @layout(pageTitle = title(form, messages(s"selectIncomeCountry.title.$userType"))) {
 
-    <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
-
-    <div class="govuk-inset-text">
-        <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
-    </div>
-
     @formHelper(action = SelectIncomeCountryController.onSubmit(taxYear, index, mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
+
+        <div class="govuk-inset-text">
+            <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
+        </div>
+
         <h1 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h1>
 
         <div class="govuk-!-width-one-half">
         @govukSelect(Select(
-            id = "country-autocomplete",
+            id = "incomeCountry",
             items = countries
         ).asAccessibleAutocomplete().withFormField(form("incomeCountry")))
 
