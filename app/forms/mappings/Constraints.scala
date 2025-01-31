@@ -17,9 +17,8 @@
 package forms.mappings
 
 import models.{UserAnswers, ForeignAddressable, Addressable}
-import pages.foreign.{IncomeSourceCountries, Country}
+import pages.foreign.IncomeSourceCountries
 import play.api.data.validation.{Valid, Constraint, Invalid}
-import service.CountryNamesDataSource
 import service.CountryNamesDataSource.loadCountries
 
 import java.time.LocalDate
