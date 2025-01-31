@@ -158,7 +158,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         .thenReturn(Future.successful(Right(Some(foreignPropertyDetails))))
 
       val result =
-        UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
+        UkAndForeignPropertySummaryPage.aboutItems(
           taxYear,
           combinedUserAnswers,
           cyaDiversionService,
@@ -169,7 +169,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     }
 
     "return TaskListTag.CanNotStart when no properties are selected" in {
-      val result = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, None, cyaDiversionService, foreignCYADiversionService)
+      val result = UkAndForeignPropertySummaryPage.aboutItems(taxYear, None, cyaDiversionService, foreignCYADiversionService)
 
       result shouldBe canNotStartUkAndForeignPropertyItems
     }
@@ -178,7 +178,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
       when(mockUkSummaryPage.propertyAboutItems(ukPropertyUserAnswers, taxYear)).thenReturn(completedPropertyAboutItems)
 
       val result =
-        UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
+        UkAndForeignPropertySummaryPage.aboutItems(
           taxYear,
           ukPropertyUserAnswers,
           cyaDiversionService,
@@ -199,7 +199,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         .thenReturn(Future.successful(Right(Some(foreignPropertyDetails))))
 
       val result =
-        UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
+        UkAndForeignPropertySummaryPage.aboutItems(
           taxYear,
           foreignPropertyUserAnswers,
           cyaDiversionService,
@@ -216,7 +216,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         .thenReturn(Future.successful(Right(None)))
 
       val result =
-        UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
+        UkAndForeignPropertySummaryPage.aboutItems(
           taxYear,
           noPropertyUserAnswers,
           cyaDiversionService,

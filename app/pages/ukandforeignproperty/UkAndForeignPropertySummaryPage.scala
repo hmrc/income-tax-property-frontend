@@ -16,21 +16,43 @@
 
 package pages.ukandforeignproperty
 
-import models.{UKPropertySelect, UserAnswers}
+import models.{UKPropertySelect, UkAndForeignPropertyRentalTypeUk, UserAnswers}
 import pages.foreign.ForeignSummaryPage
-import pages.{SummaryPage, isSelected}
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage._
+import pages.{SummaryPage, UkAndForeignPropertyRentalTypeUkPage, foreign, isSelected}
 import service.{CYADiversionService, ForeignCYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
-
 case class UkAndForeignPropertySummaryPage(
                                             taxYear: Int,
-                                            startItems: Seq[TaskListItem]
+                                            startItems: Seq[TaskListItem],
+                                            ukPropertyRentalListItems:Seq[TaskListItem],
+                                            ukPropertyRentAroomListItems:Seq[TaskListItem],
+                                            ukPropertyRentalAndRentARoomListItems:Seq[TaskListItem],
+                                            foreignListItems:Seq[(CountryName, Seq[TaskListItem])]
                                           )
-
+//ToDo this is a dummy implementation
 object UkAndForeignPropertySummaryPage {
+  type CountryName = String
 
-  def ukAndForeignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers], cyaDiversionService: CYADiversionService, foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
+  def apply(taxYear: Int,
+            userAnswers: Option[UserAnswers],
+            cyaDiversionService: CYADiversionService,
+            foreignCYADiversionService: ForeignCYADiversionService
+           ):UkAndForeignPropertySummaryPage =
+    UkAndForeignPropertySummaryPage(
+      taxYear,
+      aboutItems(taxYear, userAnswers, cyaDiversionService, foreignCYADiversionService),
+      ukPropertyRentalTaskList(taxYear, userAnswers, cyaDiversionService, foreignCYADiversionService),
+      ukRentARoomTaskList(taxYear, userAnswers, cyaDiversionService, foreignCYADiversionService),
+      ukPropertyREntalAndRentARoomTaskList(taxYear, userAnswers, cyaDiversionService, foreignCYADiversionService),
+      foreignTaskList(taxYear, userAnswers, cyaDiversionService, foreignCYADiversionService)
+    )
+
+  def aboutItems(taxYear: Int,
+                 userAnswers: Option[UserAnswers],
+                 cyaDiversionService: CYADiversionService,
+                 foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
 
     val summaryPage = SummaryPage(cyaDiversionService)
     val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
@@ -46,8 +68,11 @@ object UkAndForeignPropertySummaryPage {
     val ukPropertyComplete = ukPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
     val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
 
-    val combinedTaskListTag = (ukPropertyComplete, foreignPropertyComplete) match {
-      case (true, true) => TaskListTag.NotStarted
+    val res = userAnswers.flatMap(_.get(UkAndForeignPropertyRentalTypeUkPage)).getOrElse(Set.empty).nonEmpty
+
+    val combinedTaskListTag = (ukPropertyComplete, foreignPropertyComplete, res) match {
+      case (true, true,true) => TaskListTag.Completed
+      case (true, true,_) => TaskListTag.NotStarted
       case _ => TaskListTag.CanNotStart
     }
 
@@ -60,4 +85,214 @@ object UkAndForeignPropertySummaryPage {
       )
     )
   }
+
+
+  def ukPropertyRentalTaskList(taxYear: Int,
+                 userAnswers: Option[UserAnswers],
+                 cyaDiversionService: CYADiversionService,
+                 foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
+
+    import UkAndForeignPropertyRentalTypeUk._
+    val res = userAnswers.flatMap(_.get(UkAndForeignPropertyRentalTypeUkPage)).getOrElse(Set.empty).toSeq
+    if(res.isEmpty || res.size == 2)
+      Seq.empty
+    else{
+      val filtered  = res.filter(_ == UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+
+      if(filtered.nonEmpty)
+      Seq(
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.about",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_about_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.expenses",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_expenses_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.allowances",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_allowances_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.structuresAndBuildingAllowance",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.propertyRental.enhancedStructuresAndBuildingAllowance",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.adjustments",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_adjustments_link"
+        )
+      )
+    else
+      Seq.empty
+      }
+  }
+
+  def ukRentARoomTaskList(taxYear: Int,
+                 userAnswers: Option[UserAnswers],
+                 cyaDiversionService: CYADiversionService,
+                 foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
+
+    import UkAndForeignPropertyRentalTypeUk._
+    val res = userAnswers.flatMap(_.get(UkAndForeignPropertyRentalTypeUkPage)).getOrElse(Set.empty).toSeq
+    if(res.isEmpty || res.size == 2)
+      Seq.empty
+    else {
+      val filtered  = res.filter(_ == UkAndForeignPropertyRentalTypeUk.RentARoom)
+
+      if(filtered.nonEmpty)
+        Seq(
+          TaskListItem(
+            "ukAndForeign.ukList.rentAroom.about",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_about_link"
+          ),
+          TaskListItem(
+            "ukAndForeign.ukList.rentAroom.expenses",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_expenses_link"
+          ),
+          TaskListItem(
+            "ukAndForeign.ukList.rentAroom.allowances",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_allowances_link"
+          ),
+          TaskListItem(
+            "ukAndForeign.foreignList.structuresAndBuildingAllowance",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_tax_link"
+          ),
+          TaskListItem(
+            "ukAndForeign.ukList.propertyRental.enhancedStructuresAndBuildingAllowance",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_tax_link"
+          ),
+          TaskListItem(
+            "ukAndForeign.ukList.rentAroom.adjustments",
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+            TaskListTag.NotStarted,
+            "uk_and_foreign_property_adjustments_link"
+          )
+        )
+      else
+        Seq.empty
+    }
+  }
+
+  def ukPropertyREntalAndRentARoomTaskList(taxYear: Int,
+                               userAnswers: Option[UserAnswers],
+                               cyaDiversionService: CYADiversionService,
+                               foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
+
+    import UkAndForeignPropertyRentalTypeUk._
+    val res = userAnswers.flatMap(_.get(UkAndForeignPropertyRentalTypeUkPage)).filter(_.contains(UkAndForeignPropertyRentalTypeUk.RentARoom)).getOrElse(List.empty)
+    if(res.size == 2)
+      Seq(
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.about",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_about_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.expenses",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_expenses_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.allowances",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_allowances_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.ukList.rentAroom.adjustments",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_adjustments_link"
+        )
+      )
+    else
+      Seq.empty
+  }
+
+  def foreignTaskList(
+                       taxYear: Int,
+                       userAnswers: Option[UserAnswers],
+                       cyaDiversionService: CYADiversionService,
+                       foreignCYADiversionService: ForeignCYADiversionService
+                     ): Seq[(CountryName, Seq[TaskListItem])] = {
+
+    val res = for {
+      foreignCountries <- userAnswers.flatMap(_.get(SelectCountryPage)) //TODO  check if this stil ojk fopr UKandForeoign
+      list =  foreignCountries.map(c => (c.name,  getTasklistForForeignCountry(taxYear,c, userAnswers, foreignCYADiversionService))).toList
+    } yield list
+    res.getOrElse(Seq.empty)
+  }
+
+  private def getTasklistForForeignCountry(
+    taxYear: Int,
+    country: foreign.Country,
+    userAnswers: Option[UserAnswers],
+    foreignCYADiversionService: ForeignCYADiversionService
+  ): Seq[TaskListItem] =
+      Seq(
+        TaskListItem(
+          "ukAndForeign.foreignList.tax",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.income",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.expenses",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.allowances",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.structuresAndBuildingAllowance",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        ),
+        TaskListItem(
+          "ukAndForeign.foreignList.adjustments",
+          controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+          TaskListTag.NotStarted,
+          "uk_and_foreign_property_tax_link"
+        )
+      )
 }
