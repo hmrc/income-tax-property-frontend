@@ -81,8 +81,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
   def ukAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
-      controllers.routes.SummaryController.show(taxYear),
-      TaskListTag.CanNotStart,
+      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
       "uk_and_foreign_property_about_link"
     )
   )
