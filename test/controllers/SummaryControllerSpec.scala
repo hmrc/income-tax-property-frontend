@@ -26,6 +26,7 @@ import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage.CountryName
 import pages.{UKPropertyPage, UKPropertySummaryPage}
 import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}
@@ -123,7 +124,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem]
           ),
           ForeignPropertySummaryPage(taxYear, foreignStartItems, foreignPropertyItems, countries, userAnswers),
-          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+          UkAndForeignPropertySummaryPage(
+            taxYear = taxYear,
+            startItems = ukAndForeignPropertyItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[(CountryName, Seq[TaskListItem])]
+          )
         )(request, messages(application)).toString
       }
     }
@@ -178,7 +186,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem]
           ),
           ForeignPropertySummaryPage(taxYear, foreignStartItems, foreignPropertyItems, countries, userAnswers),
-          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+          UkAndForeignPropertySummaryPage(
+            taxYear = taxYear,
+            startItems = ukAndForeignPropertyItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[(CountryName, Seq[TaskListItem])]
+          )
         )(request, messages(application)).toString
       }
     }
@@ -222,7 +237,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem]
           ),
           ForeignPropertySummaryPage(taxYear, foreignStartItems, foreignPropertyItems, countries, userAnswers),
-          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+          UkAndForeignPropertySummaryPage(
+            taxYear = taxYear,
+            startItems = ukAndForeignPropertyItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[(CountryName, Seq[TaskListItem])]
+          )
         )(request, messages(application)).toString
       }
     }
@@ -278,7 +300,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem]
           ),
           ForeignPropertySummaryPage(taxYear, foreignStartItems, foreignPropertyItems, countries, userAnswers),
-          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+          UkAndForeignPropertySummaryPage(
+            taxYear = taxYear,
+            startItems = ukAndForeignPropertyItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[(CountryName, Seq[TaskListItem])]
+          )
         )(request, messages(application)).toString
       }
     }
@@ -334,7 +363,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             combinedItems
           ),
           ForeignPropertySummaryPage(taxYear, foreignStartItems, foreignPropertyItems, countries, userAnswers),
-          UkAndForeignPropertySummaryPage(taxYear = taxYear, startItems = ukAndForeignPropertyItems)
+          UkAndForeignPropertySummaryPage(
+            taxYear = taxYear,
+            startItems = ukAndForeignPropertyItems,
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[TaskListItem],
+            Seq.empty[(CountryName, Seq[TaskListItem])]
+          )
         )(request, messages(application)).toString
       }
     }

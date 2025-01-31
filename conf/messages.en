@@ -3013,3 +3013,34 @@ ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.individua
 ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.agent = The amount your client calculated can only include pounds and pence, for example £600 or £600.20
 ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange = Enter an amount between £{0} and £{1}
 ukAndForeignProperty.foreignPremiumsGrantLease.change.hidden = Premiums for the grant of a lease
+
+
+
+ukAndForeign.ukList.propertyRental.title = UK property rental
+ukAndForeign.ukList.rentAroom.title = UK rent a room
+ukAndForeign.ukList.propertyRentalAndRentAroom.title = UK property rentals and rent a room
+
+
+
+
+
+
+ukAndForeign.ukList.propertyRental.enhancedStructuresAndBuildingAllowance = Enhanced Structures and buildings allowance
+
+
+ukAndForeign.ukList.rentAroom.about = About
+ukAndForeign.ukList.rentAroom.expenses = Expenses
+ukAndForeign.ukList.rentAroom.allowances = Allowances
+ukAndForeign.ukList.rentAroom.adjustments = Adjustments
+
+
+ukAndForeign.foreignList.title = Foreign properties
+ukAndForeign.foreignList.heading = {0} all properties
+
+ukAndForeign.foreignList.tax = Foreign tax
+ukAndForeign.foreignList.income = Income
+ukAndForeign.foreignList.expenses = Expenses
+ukAndForeign.foreignList.allowances = Allowances
+ukAndForeign.foreignList.structuresAndBuildingAllowance = Structures and buildings allowance
+
+ukAndForeign.foreignList.adjustments = Adjustments

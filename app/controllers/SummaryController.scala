@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
+import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
 import pages._
 import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
@@ -27,6 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService, ForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.summary.TaskListItem
 import views.html.SummaryView
 
 import javax.inject.Inject
@@ -49,19 +51,19 @@ class SummaryController @Inject() (
     val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
     withUpdatedData(taxYear) { request =>
       businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
-        case Right(Some(propertyData)) =>
+        case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
           val propertyRentalsRows =
             summaryPage
-              .createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
-          val ukRentARoomRows = summaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
-          val startItems = summaryPage.propertyAboutItems(request.userAnswers, taxYear)
-          val combinedItems =
+              .createUkPropertyRows(request.userAnswers, taxYear, accrualsOrCash)
+          val ukRentARoomRows: Seq[TaskListItem] = summaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
+          val startItems: Seq[TaskListItem] = summaryPage.propertyAboutItems(request.userAnswers, taxYear)
+          val combinedItems: Seq[TaskListItem] =
             summaryPage
-              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, accrualsOrCash)
 
           val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
           val maybeCountries = foreignCountries.getOrElse(List.empty)
-          val foreignPropertyItems = maybeCountries.map { country =>
+          val foreignPropertyItems: Map[String, Seq[TaskListItem]] = maybeCountries.map { country =>
             country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, country.code, request.userAnswers)
           }.toMap
           Future.successful(
@@ -76,8 +78,10 @@ class SummaryController @Inject() (
                   userAnswers = request.userAnswers
                 ),
                 UkAndForeignPropertySummaryPage(
-                  taxYear = taxYear,
-                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, request.userAnswers, cyaDiversionService, foreignCYADiversionService)
+                  taxYear,
+                  request.userAnswers,
+                  cyaDiversionService,
+                  foreignCYADiversionService
                 )
               )
             )
