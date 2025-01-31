@@ -37,7 +37,7 @@ class UkAndForeignPropertyNavigator {
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, NormalMode)
     case UkAndForeignPropertyClaimExpensesOrReliefPage =>
-      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers)
+      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, NormalMode)
     case UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => userAnswers => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers)
       // Long Journey - UK
@@ -100,11 +100,11 @@ class UkAndForeignPropertyNavigator {
     case ReportIncomePage =>
       taxYear => _ => userAnswers => reportIncomeCheckNavigation(taxYear, userAnswers)
     case UkAndForeignPropertyRentalTypeUkPage =>
-      taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => userAnswers => propertyRentalTypeNavigation(taxYear, userAnswers, CheckMode)
     case SelectCountryPage =>
       taxYear => _ => _ => routes.ForeignCountriesRentedController.onPageLoad(taxYear, CheckMode)
     case UkAndForeignPropertyClaimExpensesOrReliefPage =>
-      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers)
+      taxYear => _ => userAnswers => claimExpensesOrReliefPageNavigation(taxYear, userAnswers, CheckMode)
     case UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => userAnswers => claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear, userAnswers)
     // Long Journey - UK
@@ -224,16 +224,16 @@ class UkAndForeignPropertyNavigator {
       case (Some(false), None) =>
         throw new RuntimeException("No rental type selected")  // should never happen
       case (Some(false), Some(Seq(UkAndForeignPropertyRentalTypeUk.PropertyRentals))) =>
-        routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+        routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, CheckMode)
       case _ =>
-        routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+        routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, CheckMode)
     }
   }
 
-  private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
+  private def claimExpensesOrReliefPageNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call =
     userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
       case Some(UkAndForeignPropertyClaimExpensesOrRelief(_)) =>
-        routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
+        routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, mode)
     }
 
   private def claimPropertyIncomeAllowanceOrExpensesPageNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {

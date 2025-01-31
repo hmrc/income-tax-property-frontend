@@ -22,7 +22,7 @@ import models.ReportIncome.WantToReport
 import models.UkAndForeignPropertyRentalTypeUk.PropertyRentals
 import models.requests.DataRequest
 import models.ukAndForeign.UkAndForeignAbout
-import models.{JourneyContext, JourneyPath, UserAnswers}
+import models.{JourneyContext, JourneyPath, ReportIncome, UserAnswers}
 import pages.UkAndForeignPropertyRentalTypeUkPage
 import pages.ukandforeignproperty.{ReportIncomePage, UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkForeignPropertyAboutPage}
 import play.api.Logging
@@ -53,7 +53,10 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val reportIncome: Boolean = request.userAnswers.get(ReportIncomePage).forall(_ == WantToReport)
+      val reportIncome: Boolean = request.userAnswers.get(ReportIncomePage) match {
+        case Some(reportIncome) => reportIncome == WantToReport
+        case None => true
+      }
       val ukAndForeignPropertyList =
         getUkAndForeignSummaryList(taxYear, reportIncome, request.user.isAgentMessageKey, request.userAnswers)
 

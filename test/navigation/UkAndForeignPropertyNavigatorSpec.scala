@@ -20,7 +20,8 @@ import base.SpecBase
 import controllers.ukandforeignproperty.routes
 import models.JourneyName.{reads, writes}
 import models._
-import pages.ukandforeignproperty._
+import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyPremiumGrantLeaseTax}
+import pages.ukandforeignproperty.{UkDeductingTaxFromNonUkResidentLandlordPage, _}
 import pages.foreign.Country
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.libs.json.Format.GenericFormat
@@ -183,7 +184,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
       "Uk And Foreign Property Rental Type Uk" - {
         val testCountry: Country = Country("Greece", "GRC")
         val userAnswersWith0Country = emptyUserAnswers
-        val userAnswersWith1Country = emptyUserAnswers.set(SelectCountryPage, List(testCountry)).success.value
+        val userAnswersWith1Country = emptyUserAnswers.set(SelectCountryPage, List[Country](testCountry)).success.value
         "in Normal mode" - {
           "must go to SelectCountryPage" in {
             navigator.nextPage(
@@ -443,7 +444,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
 
       "Non-UK resident landlord" - {
         "in Normal mode" - {
-          "must go from NonResidentLandlordUKPage to 'Deducting tax from non-UK resident landlord' when the option 'true' is selected" in {
+          "must go to 'Deducting tax from non-UK resident landlord' when the option 'true' is selected" in {
             val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, true).get
 
             navigator.nextPage(
@@ -456,7 +457,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               .onPageLoad(taxYear, NormalMode)
           }
 
-          "must go from NonResidentLandlordUKPage to 'How much income did you get from your foreign property rentals?' when the option 'false' is selected" in {
+          "must go to 'How much income did you get from your foreign property rentals?' when the option 'false' is selected" in {
             val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, false).get
 
             navigator.nextPage(
@@ -469,7 +470,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
           }
         }
         "in Check mode" - {
-          "must go from NonResidentLandlordUKPage to 'Deducting tax from non-UK resident landlord' page in Check Mode when the option 'true' is selected" in {
+          "must go to 'Deducting tax from non-UK resident landlord' page in Check Mode when the option 'true' is selected" in {
             val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, true).get
 
             navigator.nextPage(
@@ -482,7 +483,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               .onPageLoad(taxYear, CheckMode)
           }
 
-          "must go from NonResidentLandlordUKPage to 'CYA page' when the option 'false' is selected" in {
+          "must go to 'CYA page' when the option 'false' is selected" in {
             val nonResidentLandlordUKPage = UserAnswers("id").set(UkNonUkResidentLandlordPage, false).get
 
             navigator.nextPage(
@@ -497,58 +498,424 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
       }
 
       "Deducting tax from non-UK resident landlord" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to 'How much income from UK property rentals' page" in {
+            navigator.nextPage(
+              UkDeductingTaxFromNonUkResidentLandlordPage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              UkDeductingTaxFromNonUkResidentLandlordPage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
 
       "How much income from UK property rentals" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to 'Report balancing charge for UK property rentals' page" in {
+            navigator.nextPage(
+              UkRentalPropertyIncomePage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.BalancingChargeController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              UkRentalPropertyIncomePage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
 
       "Report balancing charge for UK property rentals" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to 'Did you receive a premium for granting a lease for UK property' page" in {
+            navigator.nextPage(
+              UkBalancingChargePage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyPremiumForLeaseController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              UkBalancingChargePage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
 
       "Did you receive a premium for granting a lease for UK property" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'Have you calculated the premium for the grant of a lease taxable amount' page" - {
+            "when the option 'Yes' is selected" in {
+              val ua = UserAnswers("id")
+                .set(UkPremiumForLeasePage, true)
+                .get
+
+              navigator.nextPage(
+                UkPremiumForLeasePage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyPremiumGrantLeaseTaxController
+                .onPageLoad(taxYear, NormalMode)
+            }
+          }
+          "must go to the 'UK reverse premiums received' page" - {
+            "when the option 'No' is selected" in {
+              val ua = UserAnswers("id")
+                .set(UkPremiumForLeasePage, false)
+                .get
+
+              navigator.nextPage(
+                UkPremiumForLeasePage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.ReversePremiumsReceivedController
+                .onPageLoad(taxYear, NormalMode)
+            }
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'Have you calculated the premium for the grant of a lease taxable amount' in check mode page" - {
+            "when the option 'Yes' is selected" in {
+              val ua = UserAnswers("id")
+                .set(UkPremiumForLeasePage, true)
+                .get
+
+              navigator.nextPage(
+                UkPremiumForLeasePage,
+                taxYear,
+                CheckMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyPremiumGrantLeaseTaxController
+                .onPageLoad(taxYear, CheckMode)
+            }
+          }
+          "must go to the 'CYA' page" - {
+            "when the option 'No' is selected" in {
+              val ua = UserAnswers("id")
+                .set(UkPremiumForLeasePage, false)
+                .get
+
+              navigator.nextPage(
+                UkPremiumForLeasePage,
+                taxYear,
+                CheckMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+                .onPageLoad(taxYear)
+            }
+          }
+        }
       }
 
       "Have you calculated the premium for the grant of a lease taxable amount" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'How much did you receive for the grant of a lease' page" - {
+            "when the option 'No' is selected" in {
+              val ua = UserAnswers("id")
+                .set(
+                  UkPremiumGrantLeaseTaxPage,
+                  UkAndForeignPropertyPremiumGrantLeaseTax(
+                    premiumGrantLeaseYesNo = false,
+                    premiumGrantLeaseAmount = None)
+                )
+                .get
+
+              navigator.nextPage(
+                UkPremiumGrantLeaseTaxPage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController
+                .onPageLoad(taxYear, NormalMode)
+            }
+          }
+          "must go to the 'UK reverse premiums received' page" - {
+            "when the option 'Yes' is selected" in {
+              val ua = UserAnswers("id")
+                .set(
+                  UkPremiumGrantLeaseTaxPage,
+                  UkAndForeignPropertyPremiumGrantLeaseTax(
+                    premiumGrantLeaseYesNo = true,
+                    premiumGrantLeaseAmount = Some(BigDecimal(123.45)))
+                )
+                .get
+
+              navigator.nextPage(
+                UkPremiumGrantLeaseTaxPage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController
+                .onPageLoad(taxYear, NormalMode)
+            }
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'How much did you receive for the grant of a lease' mode page" - {
+            "when the option 'No' is selected" in {
+              val ua = UserAnswers("id")
+                .set(
+                  UkPremiumGrantLeaseTaxPage,
+                  UkAndForeignPropertyPremiumGrantLeaseTax(
+                    premiumGrantLeaseYesNo = false,
+                    premiumGrantLeaseAmount = None)
+                )
+                .get
+
+              navigator.nextPage(
+                UkPremiumGrantLeaseTaxPage,
+                taxYear,
+                CheckMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController
+                .onPageLoad(taxYear, CheckMode)
+            }
+          }
+          "must go to the 'CYA' page" - {
+            "when the option 'Yes' is selected" in {
+              val ua = UserAnswers("id")
+                .set(
+                  UkPremiumGrantLeaseTaxPage,
+                  UkAndForeignPropertyPremiumGrantLeaseTax(
+                    premiumGrantLeaseYesNo = true,
+                    premiumGrantLeaseAmount = Some(BigDecimal(123.45)))
+                )
+                .get
+
+              navigator.nextPage(
+                UkPremiumGrantLeaseTaxPage,
+                taxYear,
+                CheckMode,
+                UserAnswers("id"),
+                ua
+              ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+                .onPageLoad(taxYear)
+            }
+          }
+        }
       }
 
       "How much did you receive for the grant of a lease" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'How many complete 12 month periods were in the term of the lease' page" in {
+            val ua = UserAnswers("id")
+              .set(
+                UkAmountReceivedForGrantOfLeasePage,
+                UkAndForeignPropertyAmountReceivedForGrantOfLease(BigDecimal(123.45))
+              )
+              .get
+
+            navigator.nextPage(
+              UkAmountReceivedForGrantOfLeasePage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe routes.UkYearLeaseAmountController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+
+        "in Check mode" - {
+          "must go to the 'How many complete 12 month periods were in the term of the lease' page in check mode" in {
+            val ua = UserAnswers("id")
+              .set(
+                UkAmountReceivedForGrantOfLeasePage,
+                UkAndForeignPropertyAmountReceivedForGrantOfLease(BigDecimal(123.45))
+              )
+              .get
+
+            navigator.nextPage(
+              UkAmountReceivedForGrantOfLeasePage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe routes.UkYearLeaseAmountController
+              .onPageLoad(taxYear, CheckMode)
+          }
+        }
       }
 
       "How many complete 12 month periods were in the term of the lease" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'Premiums for the grant of a lease' page" in {
+            val ua = UserAnswers("id")
+              .set(UkYearLeaseAmountPage, 2)
+              .get
+
+            navigator.nextPage(
+              UkYearLeaseAmountPage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe routes.UKPremiumsGrantLeaseController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'Premiums for the grant of a lease' page in check mode" in {
+            val ua = UserAnswers("id")
+              .set(UkYearLeaseAmountPage, 2)
+              .get
+
+            navigator.nextPage(
+              UkYearLeaseAmountPage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe routes.UKPremiumsGrantLeaseController
+              .onPageLoad(taxYear, CheckMode)
+          }
+        }
       }
 
       "Premiums for the grant of a lease" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'Other income from UK property' page" in {
+            val ua = UserAnswers("id")
+              .set(
+                UKPremiumsGrantLeasePage,
+                UKPremiumsGrantLease(
+                  premiumsGrantLeaseReceived = true,
+                  premiumsGrantLease = Some(BigDecimal(123.45))
+                )
+              )
+              .get
+
+            navigator.nextPage(
+              UKPremiumsGrantLeasePage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.ReversePremiumsReceivedController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'CYA' page" in {
+            val ua = UserAnswers("id")
+              .set(
+                UKPremiumsGrantLeasePage,
+                UKPremiumsGrantLease(
+                  premiumsGrantLeaseReceived = true,
+                  premiumsGrantLease = Some(BigDecimal(123.45))
+                )
+              )
+              .get
+
+            navigator.nextPage(
+              UKPremiumsGrantLeasePage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
 
       "UK reverse premiums received" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'Other income from UK property' page" in {
+            navigator.nextPage(
+              UkReversePremiumsReceivedPage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.OtherUkPropertyIncomeController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'CYA' page" in {
+            navigator.nextPage(
+              UkReversePremiumsReceivedPage,
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
 
       "Other income from UK property" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
-      }
-
-      "UK reverse premiums received" - {
-        "in Normal mode" - {}
-        "in Check mode" - {}
+        "in Normal mode" - {
+          "must go to the 'UK reverse premiums received' page" in {
+            navigator.nextPage(
+              UkOtherIncomeFromUkPropertyPage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.ForeignRentalPropertyIncomeController
+              .onPageLoad(taxYear, NormalMode)
+          }
+        }
+        "in Check mode" - {
+          "must go to the 'CYA' page" in {
+            navigator.nextPage(
+              UkOtherIncomeFromUkPropertyPage,
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+              .onPageLoad(taxYear)
+          }
+        }
       }
     }
 
