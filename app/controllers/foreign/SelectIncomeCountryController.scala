@@ -18,15 +18,16 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.foreign.SelectIncomeCountryFormProvider
-import models.Mode
+import models.{Mode, Index}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.SelectIncomeCountryPage
+import pages.foreign.{IncomeSourceCountries, Country, SelectIncomeCountryPage}
+import pages.ukandforeignproperty.SelectCountryPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
-import service.CountryNamesDataSource.{countrySelectItems, countrySelectItemsWithUSA}
+import service.CountryNamesDataSource.{countrySelectItemsWithUSA, countrySelectItems}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.SelectIncomeCountryView
 
@@ -49,7 +50,10 @@ class SelectIncomeCountryController @Inject() (
 
   def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
+      val addedCountries: List[Country] = arrayConversion(request.userAnswers.get(IncomeSourceCountries))
+      val indexPlusOne = index + 1
+      println(s"\n\n\nAdded countries: $addedCountries, index: $index\n\n\n")
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey, addedCountries, Index(indexPlusOne))
       val preparedForm = request.userAnswers.get(SelectIncomeCountryPage(index)) match {
         case None        => form
         case Some(value) => form.fill(value.code)
@@ -59,7 +63,8 @@ class SelectIncomeCountryController @Inject() (
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val form: Form[String] = formProvider(request.user.isAgentMessageKey)
+      val addedCountries: List[Country] = arrayConversion(request.userAnswers.get(IncomeSourceCountries))
+      val form: Form[String] = formProvider(request.user.isAgentMessageKey, addedCountries, Index(index))
       form
         .bindFromRequest()
         .fold(
@@ -80,4 +85,11 @@ class SelectIncomeCountryController @Inject() (
             )
         )
     }
+
+  def arrayConversion(array: Option[Array[Country]]): List[Country] = {
+    array match {
+      case Some(array) => array.toList
+      case _ => Nil
+    }
+  }
 }

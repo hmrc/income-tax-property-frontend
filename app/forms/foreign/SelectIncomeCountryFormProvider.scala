@@ -17,15 +17,25 @@
 package forms.foreign
 
 import forms.mappings.Mappings
+import models.Index
+import pages.foreign.Country
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class SelectIncomeCountryFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[String] =
+  def apply(individualOrAgent: String, previouslyAddedCountries: List[Country], index: Index): Form[String] =
     Form(
       "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
         .verifying(validCountry("selectIncomeCountry.error.validCountry"))
+        .verifying("selectIncomeCountry.error.duplicate", answer => {
+          val indexedCountries = previouslyAddedCountries.zipWithIndex
+          val hasCountryAlready = previouslyAddedCountries.exists(_.code == answer)
+          val prevIndex = indexedCountries.find(_._1.code == answer).map(_._2)
+          val hasSameIndex = prevIndex.contains(index.positionZeroIndexed)
+
+          !hasCountryAlready || hasSameIndex
+        })
     )
 }

@@ -53,6 +53,8 @@ class SelectCountryController @Inject() (
       val addedCountries: List[Country] = request.userAnswers.get(SelectCountryPage).getOrElse(Nil)
       val form: Form[String] = formProvider(request.user.isAgentMessageKey, addedCountries, index)
 
+      println(s"\n\n\nAdded countries: $addedCountries, index: $index\n\n\n")
+
       val preparedForm = addedCountries match {
         case Nil => form
         case countryList =>
