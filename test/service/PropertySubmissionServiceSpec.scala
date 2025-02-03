@@ -27,13 +27,15 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
+import testHelpers.Fixture
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with DefaultAwaitTimeout {
+class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with DefaultAwaitTimeout with Fixture {
+
   val propertyPeriodicSubmissionConnector: PropertySubmissionConnector = mock[PropertySubmissionConnector]
   val mockBusinessConnector: BusinessService = mock[BusinessService]
   val taxYear = 2024
@@ -42,31 +44,8 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   val propertyPeriodSubmissionService =
     new PropertySubmissionService(propertyPeriodicSubmissionConnector, mockBusinessConnector)
 
-  "getPropertyPeriodicSubmission" - {
+  "getUKPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val ukPropertyData = FetchedBackendData(
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        List(),
-        None
-      )
-      val foreignPropertyData = FetchedForeignPropertyData(None, None, None, None, None,None,None)
-      val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(None)
       val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
       val incomeSourceId = "incomeSourceId"
       val details =
@@ -77,7 +56,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, incomeSourceId, user)
       ) thenReturn Future.successful(Right(resultFromConnector))
 
-      val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)
+      val resultFromService = propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, user)
 
       whenReady(resultFromService) {
         case Right(r) => r mustBe resultFromConnector
@@ -97,7 +76,52 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, incomeSourceId, user)
       ).thenReturn(Future.successful(Left(resultFromConnector)))
 
-      val resultFromService = propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)
+      val resultFromService = propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, user)
+
+      whenReady(resultFromService) {
+
+        case Right(_) =>
+          fail("Service should return Left")
+        case Left(_) =>
+          succeed
+      }
+    }
+  }
+
+  "getForeignPropertyPeriodicSubmission" - {
+    "return success when connector returns success" in {
+      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
+      val foreignIncomeSourceId = "foreignIncomeSourceId"
+      val details =
+        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), foreignIncomeSourceId)
+
+      when(mockBusinessConnector.getForeignPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
+      when(
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, foreignIncomeSourceId, user)
+      ) thenReturn Future.successful(Right(resultFromConnector))
+
+      val resultFromService = propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, user)
+
+      whenReady(resultFromService) {
+        case Right(r) => r mustBe resultFromConnector
+        case Left(_)  => fail("Service should return success when connector returns success")
+      }
+    }
+
+    "return FetchedPropertyData with empty JsObject when connector returns failure" in {
+      val resultFromConnector = ApiError(status = 500, SingleErrorBody("500", "Some error"))
+      val foreignIncomeSourceId = "foreignIncomeSourceId"
+
+      val details =
+        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), foreignIncomeSourceId)
+
+      when(mockBusinessConnector.getForeignPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
+
+      when(
+        propertyPeriodicSubmissionConnector.getPropertySubmission(taxYear, foreignIncomeSourceId, user)
+      ).thenReturn(Future.successful(Left(resultFromConnector)))
+
+      val resultFromService = propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, user)
 
       whenReady(resultFromService) {
 

@@ -50,7 +50,7 @@ class ForeignPropertyAllowancesStartController @Inject() (
       val countryName = maybeCountryName.getOrElse("")
 
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
+      withForeignPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyData: PropertyDetails) =>
           propertyData.accrualsOrCash match {
             case Some(true) =>
