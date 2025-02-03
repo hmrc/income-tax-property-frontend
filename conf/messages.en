@@ -1452,7 +1452,8 @@ raRUnusedLossesBroughtForward.heading.individual = Did you have any unused losse
 raRUnusedLossesBroughtForward.heading.agent = Did your client have any unused losses for their rent a room in previous years?
 raRUnusedLossesBroughtForward.p1.individual = These are unused losses that you have told us about in previous tax returns and chose to carry forward.
 raRUnusedLossesBroughtForward.p1.agent = These are unused losses that your client has told us about in previous tax returns and chose to carry forward.
-raRUnusedLossesBroughtForward.checkYourAnswersLabel = Unused Losses Brought Forward
+raRUnusedLossesBroughtForward.checkYourAnswersLabel.individual = Did you have any unused losses for your rent a room in previous years?
+raRUnusedLossesBroughtForward.checkYourAnswersLabel.agent = Did your client have any unused losses for their rent a room in previous years?
 raRUnusedLossesBroughtForward.radio.question.label = Enter the amount
 raRUnusedLossesBroughtForward.error.required.individual = Select yes if you have any unused losses for your rent a room in previous years.
 raRUnusedLossesBroughtForward.error.required.agent = Select yes if your client has any unused losses for your rent a room in previous years.
@@ -1709,6 +1710,7 @@ raRAdjustmentsIntro.heading = Adjustments
 raRAdjustmentsStart.para1 = In this section we’re going to ask you about the following adjustments:
 raRAdjustmentsIntro.bullet.content.l1 = balancing charge
 raRAdjustmentsIntro.bullet.content.l2 = unused residential property finance costs brought forward
+raRAdjustmentsIntro.bullet.content.l3 = loss brought forward
 
 raRbalancingCharge.title.agent = Balancing charge
 raRbalancingCharge.title.individual = Balancing charge

@@ -1463,7 +1463,8 @@ raRUnusedLossesBroughtForward.heading.individual = *Missing Welsh*
 raRUnusedLossesBroughtForward.heading.agent = *Missing Welsh*
 raRUnusedLossesBroughtForward.p1.individual = *Missing Welsh*
 raRUnusedLossesBroughtForward.p1.agent = *Missing Welsh*
-raRUnusedLossesBroughtForward.checkYourAnswersLabel = *Missing Welsh*
+raRUnusedLossesBroughtForward.checkYourAnswersLabel.individual = *Missing Welsh*
+raRUnusedLossesBroughtForward.checkYourAnswersLabel.agent = *Missing Welsh*
 raRUnusedLossesBroughtForward.radio.question.label = *Missing Welsh*
 raRUnusedLossesBroughtForward.error.required.individual = *Missing Welsh*
 raRUnusedLossesBroughtForward.error.required.agent = *Missing Welsh*
@@ -1728,6 +1729,7 @@ raRAdjustmentsIntro.heading = Addasiadau
 raRAdjustmentsStart.para1 = Yn yr adran hon, byddwn yn gofyn i chi am yr addasiadau canlynol:
 raRAdjustmentsIntro.bullet.content.l1 = tâl mantoli
 raRAdjustmentsIntro.bullet.content.l2 = costau ariannol eiddo preswyl sydd heb eu defnyddio a ddygwyd ymlaen
+raRAdjustmentsIntro.bullet.content.l3 = *Missing Welsh*
 
 raRbalancingCharge.title.agent = Tâl mantoli
 raRbalancingCharge.title.individual = Tâl mantoli
