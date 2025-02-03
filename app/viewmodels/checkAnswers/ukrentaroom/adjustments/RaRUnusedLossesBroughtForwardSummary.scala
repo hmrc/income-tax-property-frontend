@@ -28,12 +28,12 @@ import viewmodels.implicits._
 
 object RaRUnusedLossesBroughtForwardSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RaRUnusedLossesBroughtForwardPage).flatMap {
       answer =>
         val row: Content => Option[SummaryListRow] = content => Some(
           SummaryListRowViewModel(
-            key     = KeyViewModel("raRUnusedLossesBroughtForward.checkYourAnswersLabel").withCssClass(keyCssClass),
+            key     = KeyViewModel(s"raRUnusedLossesBroughtForward.checkYourAnswersLabel.${individualOrAgent}").withCssClass(keyCssClass),
             value   = ValueViewModel(content).withCssClass(valueCssClass),
             actions = Seq(
               ActionItemViewModel("site.change", routes.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode).url)

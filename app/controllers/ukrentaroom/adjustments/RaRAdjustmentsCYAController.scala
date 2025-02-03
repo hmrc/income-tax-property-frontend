@@ -16,20 +16,20 @@
 
 package controllers.ukrentaroom.adjustments
 
-import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
+import audit.{RentARoomAuditModel, RentARoomAdjustments, AuditService}
 import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.{IdentifierAction, DataRetrievalAction, DataRequiredAction}
 import models.JourneyContext
 import models.JourneyPath
 import models.requests.DataRequest
 import play.api.Logging
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
+import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary, RaRUnusedLossesBroughtForwardSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
@@ -53,7 +53,8 @@ class RaRAdjustmentsCYAController @Inject() (
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
-            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+          RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
       val list = SummaryListViewModel(rows = rows)
 
