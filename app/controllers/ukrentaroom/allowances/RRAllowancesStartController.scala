@@ -18,6 +18,7 @@ package controllers.ukrentaroom.allowances
 
 import controllers.actions._
 import controllers.routes
+import models.IncomeSourcePropertyType.UKProperty
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -55,6 +56,6 @@ class RRAllowancesStartController @Inject() (
 
   private def existsUkProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
-      "uk-property"
+      UKProperty.toString
     ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
 }

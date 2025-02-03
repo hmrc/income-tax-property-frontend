@@ -19,6 +19,7 @@ package controllers.allowances
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
+import models.IncomeSourcePropertyType.UKProperty
 import models.backend.PropertyDetails
 import models.{ClaimExpensesOrRelief, NormalMode, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
@@ -46,7 +47,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -79,7 +80,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = true" in {
 
         val propertyDetails =
-          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -127,7 +128,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = true" in {
 
         val propertyDetails =
-          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -175,7 +176,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = false" in {
 
         val propertyDetails =
-          PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -222,7 +223,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -274,7 +275,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       val accrualsOrCash = None
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
 
       val businessService = mock[BusinessService]
 

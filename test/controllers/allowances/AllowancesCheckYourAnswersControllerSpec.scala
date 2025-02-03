@@ -18,6 +18,7 @@ package controllers.allowances
 
 import audit.{AuditService, RentalsAllowance}
 import base.SpecBase
+import models.IncomeSourcePropertyType.UKProperty
 import models.backend.PropertyDetails
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.{any, anyString}
@@ -113,7 +114,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
         .toOption
 
       val propertyDetails = PropertyDetails(
-        Some("uk-property"),
+        Some(UKProperty.toString),
         Some(LocalDate.of(taxYear, 1, 2)),
         accrualsOrCash = Some(false),
         "incomeSourceId"

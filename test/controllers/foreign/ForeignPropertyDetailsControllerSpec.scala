@@ -19,6 +19,7 @@ package controllers.foreign
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
+import models.IncomeSourcePropertyType.ForeignProperty
 import models.authorisation.Enrolment.Nino
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
@@ -62,7 +63,7 @@ class ForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
         new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val propertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(
         businessService.getForeignPropertyDetails(
@@ -99,7 +100,7 @@ class ForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val propertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(
         businessService.getForeignPropertyDetails(
