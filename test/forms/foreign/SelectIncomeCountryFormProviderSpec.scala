@@ -38,7 +38,7 @@ class SelectIncomeCountryFormProviderSpec extends StringFieldBehaviours with Spe
 
   ".incomeCountry" - {
 
-    val fieldName = "incomeCountry"
+    val fieldName = "country-autocomplete"
 
     behave like mandatoryField(
       form,

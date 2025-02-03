@@ -26,7 +26,7 @@ class SelectIncomeCountryFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String, userAnswers: UserAnswers): Form[String] =
     Form(
-      "incomeCountry" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
+      "country-autocomplete" -> text(s"selectIncomeCountry.error.required.$individualOrAgent")
         .verifying(validCountry("selectIncomeCountry.error.validCountry"))
         .verifying(countryAlreadySelected("selectIncomeCountry.error.countryAlreadySelected", userAnswers))
     )
