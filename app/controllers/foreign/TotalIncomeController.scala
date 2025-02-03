@@ -18,12 +18,13 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.foreign.TotalIncomeFormProvider
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.ForeignPropertyNavigator
 import pages.foreign.TotalIncomePage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.TotalIncomeView
 
@@ -39,14 +40,15 @@ class TotalIncomeController @Inject()(
                                        requireData: DataRequiredAction,
                                        formProvider: TotalIncomeFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
+                                       sessionService: SessionService,
                                        view: TotalIncomeView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val form = formProvider(request.user.isAgentMessageKey)
-
-      val preparedForm = request.userAnswers.get(TotalIncomePage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
