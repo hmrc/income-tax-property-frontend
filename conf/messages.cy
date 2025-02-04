@@ -2991,3 +2991,23 @@ ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.individua
 ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.agent = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.change.hidden = *Missing Welsh*
+
+rarWhenYouReportedTheLoss.title.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.title.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.heading.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.heading.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.p1.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.p1.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.p2.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.p2.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.label.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.label.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.y2018to2019 = *Missing Welsh*
+rarWhenYouReportedTheLoss.y2019to2020 = *Missing Welsh*
+rarWhenYouReportedTheLoss.y2020to2021 = *Missing Welsh*
+rarWhenYouReportedTheLoss.y2021to2022 = *Missing Welsh*
+rarWhenYouReportedTheLoss.y2022to2023 = *Missing Welsh*
+rarWhenYouReportedTheLoss.checkYourAnswersLabel = *Missing Welsh*
+rarWhenYouReportedTheLoss.error.required.individual = *Missing Welsh*
+rarWhenYouReportedTheLoss.error.required.agent = *Missing Welsh*
+rarWhenYouReportedTheLoss.change.hidden = *Missing Welsh*
