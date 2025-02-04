@@ -128,16 +128,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
       )
     )
 
-  def canNotStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
-    TaskListItem(
-      "summary.aboutUKAndForeignProperties",
-      controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
-      TaskListTag.CanNotStart,
-      "uk_and_foreign_property_about_link"
-    )
-  )
-
-  def notStartUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
+  def notStartedUkAndForeignPropertyItems: Seq[TaskListItem] = Seq(
     TaskListItem(
       "summary.aboutUKAndForeignProperties",
       controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
@@ -165,13 +156,13 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
           foreignCYADiversionService
         )
 
-      result shouldBe notStartUkAndForeignPropertyItems
+      result shouldBe notStartedUkAndForeignPropertyItems
     }
 
     "return TaskListTag.CanNotStart when no properties are selected" in {
       val result = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, None, cyaDiversionService, foreignCYADiversionService)
 
-      result shouldBe canNotStartUkAndForeignPropertyItems
+      result shouldBe notStartedUkAndForeignPropertyItems
     }
 
     "return Seq with TaskListTag.CanNotStart when only UK property is selected and completed" in {
@@ -185,7 +176,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
           foreignCYADiversionService
         )
 
-      result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems
+      result should contain theSameElementsAs notStartedUkAndForeignPropertyItems
     }
 
     "return Seq with TaskListTag.CanNotStart when only foreign property is selected and completed" in {
@@ -206,7 +197,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
           foreignCYADiversionService
         )
 
-      result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems
+      result should contain theSameElementsAs notStartedUkAndForeignPropertyItems
     }
 
     "return Seq with TaskListTag.CanNotStart tag when no properties are completed" in {
@@ -223,7 +214,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
           foreignCYADiversionService
         )
 
-      result should contain theSameElementsAs canNotStartUkAndForeignPropertyItems
+      result should contain theSameElementsAs notStartedUkAndForeignPropertyItems
     }
   }
 }

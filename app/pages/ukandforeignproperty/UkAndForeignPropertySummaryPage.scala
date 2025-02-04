@@ -46,16 +46,11 @@ object UkAndForeignPropertySummaryPage {
     val ukPropertyComplete = ukPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
     val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
 
-    val combinedTaskListTag = (ukPropertyComplete, foreignPropertyComplete) match {
-      case (true, true) => TaskListTag.NotStarted
-      case _ => TaskListTag.CanNotStart
-    }
-
     Seq(
       TaskListItem(
         "summary.aboutUKAndForeignProperties",
         controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
-        combinedTaskListTag, //TODO complete logic to make the status work correctly
+        TaskListTag.NotStarted, //TODO complete logic to make the status work correctly
         "uk_and_foreign_property_about_link"
       )
     )
