@@ -24,12 +24,14 @@ object JourneyName extends Enumerable.Implicits {
   case object Rentals extends WithName("Rentals") with JourneyName
   case object RentARoom extends WithName("RentARoom") with JourneyName
   case object RentalsRentARoom extends WithName("RentalsRentARoom") with JourneyName
+  case object UkAndForeignProperty extends WithName("UkAndForeignProperty") with JourneyName
 
   val values: Seq[JourneyName] = Seq(
     Rentals,
     RentARoom,
     RentalsRentARoom,
-    ForeignProperty
+    ForeignProperty,
+    UkAndForeignProperty
   )
   implicit val enumerable: Enumerable[JourneyName] =
     Enumerable(values.map(v => v.toString -> v): _*)

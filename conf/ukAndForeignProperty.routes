@@ -142,3 +142,7 @@ GET        /:taxYear/uk-foreign-property/:countryCode/premiums-grant-lease      
 POST       /:taxYear/uk-foreign-property/:countryCode/premiums-grant-lease                         controllers.ukandforeignproperty.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/uk-foreign-property/:countryCode/change-premiums-grant-lease                  controllers.ukandforeignproperty.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/uk-foreign-property/:countryCode/change-premiums-grant-lease                  controllers.ukandforeignproperty.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+
+GET        /:taxYear/uk-foreign-property/complete-yes-no                                                                controllers.ukandforeignproperty.SectionCompleteController.onPageLoad(taxYear: Int)
+POST       /:taxYear/uk-foreign-property/complete-yes-no                                                                controllers.ukandforeignproperty.SectionCompleteController.onSubmit(taxYear: Int)
