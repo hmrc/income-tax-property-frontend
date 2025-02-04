@@ -2992,3 +2992,20 @@ ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.individua
 ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.agent = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.change.hidden = *Missing Welsh*
+
+ukAndForeign.ukList.propertyRentalAndRentAroom.title = *Missing Welsh*
+ukAndForeign.ukList.rentAroom.title = *Missing Welsh*
+ukAndForeign.ukList.propertyRental.title = *Missing Welsh*
+ukAndForeign.ukList.propertyRental.enhancedStructuresAndBuildingAllowance = *Missing Welsh*
+ukAndForeign.ukList.rentAroom.about = *Missing Welsh*
+ukAndForeign.ukList.rentAroom.expenses = *Missing Welsh*
+ukAndForeign.ukList.rentAroom.allowances = *Missing Welsh*
+ukAndForeign.ukList.rentAroom.adjustments = *Missing Welsh*
+ukAndForeign.foreignList.title = *Missing Welsh*
+ukAndForeign.foreignList.heading = *Missing Welsh*
+ukAndForeign.foreignList.tax = *Missing Welsh*
+ukAndForeign.foreignList.income = *Missing Welsh*
+ukAndForeign.foreignList.expenses = *Missing Welsh*
+ukAndForeign.foreignList.allowances = *Missing Welsh*
+ukAndForeign.foreignList.structuresAndBuildingAllowance = *Missing Welsh*
+ukAndForeign.foreignList.adjustments = *Missing Welsh*

@@ -96,6 +96,32 @@
     @if(ukproperty.startItems.nonEmpty && foreignProperty.startItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("ukAndForeign.summary.title")</h2>
         @taskListSection(ukAndForeignProperty.startItems)
+
+        @if(ukAndForeignProperty.startItems.nonEmpty) {
+
+            @if(ukAndForeignProperty.ukPropertyRentalListItems.nonEmpty) {
+                <h2 class="govuk-heading-m">@messages("ukAndForeign.ukList.propertyRental.title")</h2>
+                @taskListSection(ukAndForeignProperty.ukPropertyRentalListItems)
+            }
+
+            @if(ukAndForeignProperty.ukPropertyRentAroomListItems.nonEmpty) {
+                <h2 class="govuk-heading-m">@messages("ukAndForeign.ukList.rentAroom.title")</h2>
+                @taskListSection(ukAndForeignProperty.ukPropertyRentAroomListItems)
+            }
+
+            @if(ukAndForeignProperty.ukPropertyRentalAndRentARoomListItems.nonEmpty) {
+                <h2 class="govuk-heading-m">@messages("ukAndForeign.ukList.propertyRentalAndRentAroom.title")</h2>
+                @taskListSection(ukAndForeignProperty.ukPropertyRentalAndRentARoomListItems)
+            }
+
+            @if(ukAndForeignProperty.foreignListItems.nonEmpty) {
+                <h2 class="govuk-heading-m">@messages("ukAndForeign.foreignList.title")</h2>
+                @for((countryName, listItems) <- ukAndForeignProperty.foreignListItems) {
+                    <h2 class="govuk-heading-m">@messages(s"ukAndForeign.foreignList.heading", countryName) </h2>
+                    @taskListSection(listItems)
+                }
+            }
+        }
     }
 
     @if(foreignProperty.startItems.nonEmpty) {
