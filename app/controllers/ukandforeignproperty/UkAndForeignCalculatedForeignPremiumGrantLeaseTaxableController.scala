@@ -44,29 +44,29 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController @Inject()(
 
 
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage(countryCode),taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

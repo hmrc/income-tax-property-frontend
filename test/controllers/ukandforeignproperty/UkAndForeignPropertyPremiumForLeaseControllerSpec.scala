@@ -26,7 +26,7 @@ import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
-import pages.ukandforeignproperty.UkAndForeignPropertyPremiumForLeasePage
+import pages.ukandforeignproperty.UkPremiumForLeasePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -69,7 +69,7 @@ class UkAndForeignPropertyPremiumForLeaseControllerSpec extends SpecBase with Mo
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignPropertyPremiumForLeasePage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(UkPremiumForLeasePage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = isAgent).build()
 

@@ -17,13 +17,13 @@
 package pages.ukandforeignproperty
 
 import pages.QuestionPage
-import pages.PageConstants.incomePath
+import pages.PageConstants.aboutPath
 import models.UKAndForeignProperty
 import play.api.libs.json.JsPath
 
 case object UkRentalPropertyIncomePage extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "ukRentalPropertyIncomeAmount"
 }

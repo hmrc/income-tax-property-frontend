@@ -22,7 +22,6 @@ import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeri
 import models.ForeignWhenYouReportedTheLoss.y2018to2019
 import models.TotalIncome.Under
 import models._
-import models.ukAndForeign.UkAndForeignAbout
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
@@ -201,23 +200,20 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             )
           )
         )
-//        TODO-TBG
-//        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(
-//          Some(
-//            UkAndForeignAbout(TotalPropertyIncome.Maximum, Some(ReportIncome.WantToReport))
-//          )
-//        )
-//        val propertyPeriodicSubmissionResponse =
-//          FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
+        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(
+          None
+        )
+        val propertyPeriodicSubmissionResponse =
+          FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
 
-//        val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
+        val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
 
-//        val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)
+        val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)
 
-//        underTest.read(anyMethod, anyUrl, httpResponse) shouldBe GetPropertyPeriodicSubmissionResponse(
-//          httpResponse,
-//          Right(propertyPeriodicSubmissionResponse)
-//        )
+        underTest.read(anyMethod, anyUrl, httpResponse) shouldBe GetPropertyPeriodicSubmissionResponse(
+          httpResponse,
+          Right(propertyPeriodicSubmissionResponse)
+        )
       }
 
       "status is OK and invalid jsValue" in {

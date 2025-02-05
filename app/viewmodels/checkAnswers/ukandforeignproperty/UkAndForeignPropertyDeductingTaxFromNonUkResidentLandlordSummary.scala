@@ -19,7 +19,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 import controllers.routes
 import models.ukAndForeign.DeductingTaxFromNonUkResidentLandlord
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage
+import pages.ukandforeignproperty.UkDeductingTaxFromNonUkResidentLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -29,7 +29,7 @@ import viewmodels.implicits._
 object UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage).flatMap {
+    answers.get(UkDeductingTaxFromNonUkResidentLandlordPage).flatMap {
         case DeductingTaxFromNonUkResidentLandlord(true, amount) =>
         Some(SummaryListRowViewModel(
           key     = KeyViewModel("ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.checkYourAnswersLabel").withCssClass(keyCssClass),

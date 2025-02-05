@@ -19,33 +19,34 @@ package models.ukAndForeign
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsSuccess, Json}
 import models.{ReportIncome, TotalPropertyIncome}
+import pages.ukandforeignproperty.UkRentalPropertyIncomePage
 
 class UkAndForeignAboutSpec extends PlaySpec {
 
   "UkAndForeignAbout" should {
 
-//    TODO-TBG
-//    "write and read correctly" in {
-//      val totalPropertyIncome = TotalPropertyIncome.LessThan
-//      val reportIncome = Some(ReportIncome.WantToReport)
-//      val ukAndForeignAbout = UkAndForeignAbout(totalPropertyIncome, reportIncome)
-//
-//      val json = Json.toJson(ukAndForeignAbout)
-//      json.validate[UkAndForeignAbout] mustEqual JsSuccess(ukAndForeignAbout)
-//    }
-//
-//    "handle missing optional fields" in {
-//      val totalPropertyIncome = TotalPropertyIncome.Maximum
-//      val ukAndForeignAbout = UkAndForeignAbout(totalPropertyIncome, None)
-//
-//      val json = Json.toJson(ukAndForeignAbout)
-//      json.validate[UkAndForeignAbout] mustEqual JsSuccess(ukAndForeignAbout)
-//    }
-//
-//    "fail to read invalid JSON" in {
-//      val invalidJson = Json.parse("""{"totalPropertyIncome": "invalid"}""")
-//
-//      invalidJson.validate[UkAndForeignAbout].isError mustBe true
-//    }
+    "write and read correctly" in {
+      val totalPropertyIncome = TotalPropertyIncome.LessThan
+      val reportIncome = Some(ReportIncome.WantToReport)
+
+      val aboutUkAndForeign = AboutUkAndForeign(
+        totalPropertyIncome = totalPropertyIncome,
+        reportIncome = reportIncome,
+        ukPropertyRentalType = None,
+        countries = None,
+        claimExpensesOrRelief = None,
+        claimPropertyIncomeAllowanceOrExpenses = None
+      )
+
+      val ukAndForeignAbout = UkAndForeignAbout(aboutUkAndForeign, None, None)
+      val json = Json.toJson(ukAndForeignAbout)
+      json.validate[UkAndForeignAbout] mustEqual JsSuccess(ukAndForeignAbout)
+    }
+
+    "fail to read invalid JSON" in {
+      val invalidJson = Json.parse("""{"totalPropertyIncome": "invalid"}""")
+
+      invalidJson.validate[UkAndForeignAbout].isError mustBe true
+    }
   }
 }

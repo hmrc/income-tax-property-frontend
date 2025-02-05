@@ -18,11 +18,12 @@ package service
 
 import base.SpecBase
 import models.requests.DataRequest
-import models.{Index, User, UserAnswers}
+import models.{Index, UKAndForeignProperty, User, UserAnswers}
 import org.mockito.ArgumentMatchers.argThat
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.PageConstants.{aboutPath, selectCountryPath}
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.mvc.AnyContent
@@ -51,7 +52,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
       mockSessionRepository.set(
         argThat {
           answers: UserAnswers =>
-            (answers.data \ "countries").as[List[Country]] == countries
+            (answers.data \ aboutPath(UKAndForeignProperty) \ "countries").as[List[Country]] == countries
         }
       )
     ).thenReturn(Future.successful(true))

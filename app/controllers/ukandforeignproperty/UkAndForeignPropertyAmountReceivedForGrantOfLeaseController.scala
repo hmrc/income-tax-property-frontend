@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseFormProvider
 import models.{Mode, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeasePage
+import pages.ukandforeignproperty.UkAmountReceivedForGrantOfLeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,7 +47,7 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkAmountReceivedForGrantOfLeasePage) match {
         case None =>
           form
         case Some(value) =>
@@ -65,9 +65,9 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAmountReceivedForGrantOfLeasePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkAmountReceivedForGrantOfLeasePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

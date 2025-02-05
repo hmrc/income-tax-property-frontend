@@ -22,7 +22,7 @@ import views.html.ukandforeignproperty.ForeignRentalPropertyIncomeView
 
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ForeignRentalPropertyIncomePage
 import play.api.data.Form
 import play.api.i18n.{MessagesApi, I18nSupport}
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignRentalPropertyIncomeController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
-                                        navigator: Navigator,
+                                        navigator: UkAndForeignPropertyNavigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
@@ -46,29 +46,29 @@ class ForeignRentalPropertyIncomeController @Inject()(
 
   val form: Form[BigDecimal] = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ForeignRentalPropertyIncomePage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignRentalPropertyIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
+      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentalPropertyIncomePage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentalPropertyIncomePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignRentalPropertyIncomePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignRentalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

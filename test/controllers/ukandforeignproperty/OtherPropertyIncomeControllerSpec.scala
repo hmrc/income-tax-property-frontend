@@ -24,7 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignPropertyOtherIncomeFromUkPropertyPage
+import pages.ukandforeignproperty.UkOtherIncomeFromUkPropertyPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -63,7 +63,7 @@ class OtherPropertyIncomeControllerSpec extends SpecBase with MockitoSugar with 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(UkAndForeignPropertyOtherIncomeFromUkPropertyPage, otherIncomeFromUkProperty).success.value
+        UserAnswers(userAnswersId).set(UkOtherIncomeFromUkPropertyPage, otherIncomeFromUkProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 

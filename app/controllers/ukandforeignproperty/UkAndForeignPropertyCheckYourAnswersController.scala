@@ -17,7 +17,7 @@
 package controllers.ukandforeignproperty
 
 import controllers.actions._
-import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.exceptions.NotFoundException
 import models.ReportIncome.WantToReport
 import models.UkAndForeignPropertyRentalTypeUk.PropertyRentals
 import models.requests.DataRequest
@@ -119,7 +119,8 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
         )
       case Left(error) =>
         logger.error(s"Failed to save uk and foreign property about section: ${error.toString}")
-//        Future.failed(SaveJourneyAnswersFailed("Failed to save uk and foreign property about section"))
+        // TODO : Update logic once backend endpoint has been created - throw error
+        //  Future.failed(SaveJourneyAnswersFailed("Failed to save uk and foreign property about section"))
         Future.successful(
           Redirect(
             routes.SectionCompleteController.onPageLoad(taxYear: Int)

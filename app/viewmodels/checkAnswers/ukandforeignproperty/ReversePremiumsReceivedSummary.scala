@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, ReversePremiumsReceived, UserAnswers}
-import pages.ukandforeignproperty.UkAndForeignPropertyReversePremiumsReceivedPage
+import pages.ukandforeignproperty.UkReversePremiumsReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -30,7 +30,7 @@ object ReversePremiumsReceivedSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(UkAndForeignPropertyReversePremiumsReceivedPage()).flatMap {
+    answers.get(UkReversePremiumsReceivedPage).flatMap {
       case ReversePremiumsReceived(true, Some(amount)) =>
         Some(
           SummaryListRowViewModel(

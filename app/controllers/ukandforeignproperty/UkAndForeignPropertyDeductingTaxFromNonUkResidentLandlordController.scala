@@ -21,7 +21,7 @@ import forms.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResid
 import models.Mode
 import models.ukAndForeign.DeductingTaxFromNonUkResidentLandlord
 import navigation.{Navigator, UkAndForeignPropertyNavigator}
-import pages.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage
+import pages.ukandforeignproperty.UkDeductingTaxFromNonUkResidentLandlordPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -47,7 +47,7 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController @Injec
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[DeductingTaxFromNonUkResidentLandlord] = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage) match {
+      val preparedForm = request.userAnswers.get(UkDeductingTaxFromNonUkResidentLandlordPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController @Injec
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkDeductingTaxFromNonUkResidentLandlordPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkDeductingTaxFromNonUkResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

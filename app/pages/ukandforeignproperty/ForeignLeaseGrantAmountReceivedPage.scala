@@ -16,21 +16,14 @@
 
 package pages.ukandforeignproperty
 
-import org.scalatest.OptionValues
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import pages.PageConstants.aboutPath
+import models.UKAndForeignProperty
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-class UkForeignPropertyAboutPageSpec extends AnyFreeSpec with Matchers with OptionValues {
+case object ForeignLeaseGrantAmountReceivedPage extends QuestionPage[BigDecimal] {
 
-  "UkForeignPropertyAboutPage" - {
-    "have the correct path" in {
-      UkForeignPropertyAboutPage.path mustEqual JsPath \ "ukAndForeignAbout"
-    }
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
-    "have the correct toString value" in {
-      UkForeignPropertyAboutPage.toString shouldEqual "ukAndForeignAbout"
-    }
-  }
+  override def toString: String = "foreignLeaseGrantReceivedAmount"
 }

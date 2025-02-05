@@ -25,7 +25,7 @@ import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNaviga
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage
+import pages.ukandforeignproperty.UkDeductingTaxFromNonUkResidentLandlordPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -68,7 +68,7 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordControllerSpec ex
       val amount = 100
       val formAnswers = DeductingTaxFromNonUkResidentLandlord(deductingTaxFromNonUkResidentLandlordYesNo = true, Some(amount))
       val userAnswers = UserAnswers(userAnswersId).set(
-        UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordPage,
+        UkDeductingTaxFromNonUkResidentLandlordPage,
         formAnswers
       ).success.value
 

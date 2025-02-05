@@ -38,13 +38,12 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new ForeignYearLeaseAmountFormProvider()
   val form = formProvider()
   private val taxYear = 2024
-  private val countryCode = "AUS"
 
   def onwardRoute = Call("GET", "/premiums-grant-lease")
 
   val validAnswer = 3
 
-  lazy val yearLeaseAmountRoute = routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val yearLeaseAmountRoute = routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, NormalMode).url
 
   "YearLeaseAmount Controller" - {
 
@@ -60,7 +59,7 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ForeignYearLeaseAmountView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode)(
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -69,7 +68,7 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignYearLeaseAmountPage(countryCode), validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignYearLeaseAmountPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), false).build()
 
@@ -81,7 +80,7 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, countryCode, NormalMode)(
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, NormalMode)(
           request,
           messages(application)
         ).toString
@@ -130,7 +129,7 @@ class ForeignYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 

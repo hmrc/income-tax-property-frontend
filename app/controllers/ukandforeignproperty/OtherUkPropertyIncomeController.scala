@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyOtherIncomeFromUkPropertyFormProvider
 import models.{Mode, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignPropertyOtherIncomeFromUkPropertyPage
+import pages.ukandforeignproperty.UkOtherIncomeFromUkPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -49,7 +49,7 @@ class OtherUkPropertyIncomeController @Inject()(
     val form = formProvider(request.user.isAgentMessageKey)
 
     val preparedForm =
-      request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkAndForeignPropertyOtherIncomeFromUkPropertyPage) match {
+      request.userAnswers.getOrElse(UserAnswers(request.userId)).get(UkOtherIncomeFromUkPropertyPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,11 +66,11 @@ class OtherUkPropertyIncomeController @Inject()(
             Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyOtherIncomeFromUkPropertyPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkOtherIncomeFromUkPropertyPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(UkAndForeignPropertyOtherIncomeFromUkPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(UkOtherIncomeFromUkPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
   }

@@ -16,12 +16,24 @@
 
 package pages.ukandforeignproperty
 
+import models.{UKAndForeignProperty, UserAnswers}
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object NonResidentLandlordUKPage extends QuestionPage[Boolean] {
+import scala.util.Try
 
-  override def path: JsPath = JsPath \ toString
+case object UkNonUkResidentLandlordPage extends QuestionPage[Boolean] {
 
-  override def toString: String = "nonResidentLandlordUK"
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+
+  override def toString: String = "nonUkResidentLandlord"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case true  => super.cleanup(value, userAnswers)
+        case false => userAnswers.remove(UkDeductingTaxFromNonUkResidentLandlordPage)
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }
