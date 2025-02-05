@@ -17,19 +17,40 @@
 @import controllers.ukandforeignproperty.routes._
 
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukButton: GovukButton,
-        govukSummaryList: GovukSummaryList,
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
+    govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, ukPropertyList:Option[SummaryList], foreignPropertyList: Option[SummaryList], taxYear: Int)(implicit request: Request[_], messages: Messages)
 @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
     <span class="govuk-caption-l">@messages("taxYear.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
     @formHelper(action = UkAndForeignPropertyCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+
         @govukSummaryList(list)
+
+        @ukPropertySection
+
+        @foreignPropertySection
+
         @govukButton(ButtonViewModel(messages("site.saveAndContinue")).withId("continue").preventingDoubleClick())
     }
 }
+
+@ukPropertySection = {
+    @if(ukPropertyList.isDefined){
+        <h1 class="govuk-heading-m">UK property</h1>
+        @govukSummaryList(ukPropertyList.get)
+    }
+}
+
+@foreignPropertySection = {
+    @if(foreignPropertyList.isDefined){
+        <h1 class="govuk-heading-m">Foreign property</h1>
+        @govukSummaryList(foreignPropertyList.get)
+    }
+}
+
