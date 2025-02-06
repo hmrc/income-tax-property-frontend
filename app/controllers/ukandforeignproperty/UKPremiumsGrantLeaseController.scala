@@ -21,7 +21,7 @@ import forms.ukandforeignproperty.UKPremiumsGrantLeaseFormProvider
 import models.Mode
 import models.ukAndForeign.UKPremiumsGrantLease
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.{UKPremiumsGrantLeasePage, UkAndForeignPropertyAmountReceivedForGrantOfLeasePage, UkYearLeaseAmountPage}
+import pages.ukandforeignproperty.{UKPremiumsGrantLeasePage, UkAmountReceivedForGrantOfLeasePage, UkYearLeaseAmountPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,7 +47,7 @@ class UKPremiumsGrantLeaseController @Inject() (
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(UkYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
@@ -65,7 +65,7 @@ class UKPremiumsGrantLeaseController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(UkYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {

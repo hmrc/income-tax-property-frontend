@@ -16,10 +16,10 @@
 
 package models.ukAndForeign
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 
 final case class UkAndForeignPropertyAmountReceivedForGrantOfLease(amountReceivedForGrantOfLease: BigDecimal)
 
 object UkAndForeignPropertyAmountReceivedForGrantOfLease {
-  implicit val format: Format[UkAndForeignPropertyAmountReceivedForGrantOfLease] = Json.format
+  implicit val format: OFormat[UkAndForeignPropertyAmountReceivedForGrantOfLease] = Json.format
 }

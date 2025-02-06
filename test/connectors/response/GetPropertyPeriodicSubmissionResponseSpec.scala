@@ -22,7 +22,6 @@ import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeri
 import models.ForeignWhenYouReportedTheLoss.y2018to2019
 import models.TotalIncome.Under
 import models._
-import models.ukAndForeign.UkAndForeignAbout
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
@@ -202,9 +201,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           )
         )
         val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(
-          Some(
-            UkAndForeignAbout(TotalPropertyIncome.Maximum, Some(ReportIncome.WantToReport))
-          )
+          None
         )
         val propertyPeriodicSubmissionResponse =
           FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)

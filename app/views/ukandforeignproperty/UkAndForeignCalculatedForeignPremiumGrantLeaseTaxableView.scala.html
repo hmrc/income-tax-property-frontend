@@ -27,11 +27,11 @@
     govukInput : GovukInput
 )
 
-@(form: Form[_], taxYear: Int, countryCode: String, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.title.${individualOrAgent}"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

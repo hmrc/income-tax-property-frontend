@@ -18,29 +18,30 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.ForeignYearLeaseAmountPage
+import pages.ukandforeignproperty.ForeignOtherIncomeFromForeignPropertyPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
-import viewmodels.govuk.summarylist._
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
+import viewmodels.govuk.all.{ActionItemViewModel, FluentActionItem, FluentKey, FluentValue, KeyViewModel, SummaryListRowViewModel, ValueViewModel}
 import viewmodels.implicits._
 
-object ForeignYearLeaseAmountSummary {
-
+object ForeignOtherIncomeFromForeignPropertySummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit
-    messages: Messages
+                                                                   messages: Messages
   ): Option[SummaryListRow] =
-    answers.get(ForeignYearLeaseAmountPage).map { answer =>
+    answers.get(ForeignOtherIncomeFromForeignPropertyPage).map { answer =>
       SummaryListRowViewModel(
-        key = KeyViewModel("yearLeaseAmount.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+        key = KeyViewModel("otherIncomeFromProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
+        value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
-            routes.ForeignYearLeaseAmountController.onPageLoad(taxYear, CheckMode).url
+            routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController
+              .onPageLoad(taxYear, CheckMode)
+              .url
           )
-            .withVisuallyHiddenText(messages("yearLeaseAmount.change.hidden"))
+            .withVisuallyHiddenText(messages("otherIncomeFromProperty.change.hidden"))
         )
       )
-    }.orElse(Option.empty[SummaryListRow])
+    }
 }

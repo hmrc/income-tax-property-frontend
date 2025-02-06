@@ -19,11 +19,11 @@ package pages.ukandforeignproperty
 import models.UKAndForeignProperty
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import pages.PageConstants.incomePath
+import pages.PageConstants.aboutPath
 
-case class ForeignYearLeaseAmountPage(countryCode: String) extends QuestionPage[Int] {
+case object ForeignYearLeaseAmountPage extends QuestionPage[Int] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "foreignYearLeaseAmount"
 }

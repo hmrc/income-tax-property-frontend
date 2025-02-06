@@ -1806,6 +1806,8 @@ ukAndForeignPropertyIncomeAllowanceClaim.p1.individual = *Missing Welsh*
 ukAndForeignPropertyIncomeAllowanceClaim.p1.agent = *Missing Welsh*
 ukAndForeignPropertyIncomeAllowanceClaim.p2.individual = *Missing Welsh*
 ukAndForeignPropertyIncomeAllowanceClaim.p2.agent = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.checkYourAnswersLabel = *Missing Welsh*
+ukAndForeignPropertyIncomeAllowanceClaim.change.hidden = *Missing Welsh*
 
 ###################### Foreign Property ######################
 
@@ -1821,6 +1823,8 @@ foreignCountriesRentList.title.individual = *Missing Welsh*
 foreignCountriesRentList.title.agent = *Missing Welsh*
 foreignCountriesRentList.heading.individual = *Missing Welsh*
 foreignCountriesRentList.heading.agent = *Missing Welsh*
+foreignCountriesRentList.checkYourAnswersLabel.individual = *Missing Welsh*
+foreignCountriesRentList.checkYourAnswersLabel.agent = *Missing Welsh*
 
 foreignPropertyDetails.title = *Missing Welsh*
 foreignPropertyDetails.para1 = *Missing Welsh*
@@ -2798,7 +2802,9 @@ ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonN
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonNumeric.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.individual = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.agent = *Missing Welsh*
-ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.outOfRange = *Missing Welsh
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.outOfRange = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.checkYourAnswersLabel.individual = *Missing Welsh*
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.checkYourAnswersLabel.agent = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.change.hidden = *Missing Welsh*
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.radio.question.label = *Missing Welsh*
 
@@ -2854,7 +2860,8 @@ leaseGrantAmountReceived.title.individual = *Missing Welsh*
 leaseGrantAmountReceived.title.agent = *Missing Welsh*
 leaseGrantAmountReceived.heading.individual = *Missing Welsh*
 leaseGrantAmountReceived.heading.agent = *Missing Welsh*
-leaseGrantAmountReceived.checkYourAnswersLabel = *Missing Welsh*
+leaseGrantAmountReceived.checkYourAnswersLabel.individual = *Missing Welsh*
+leaseGrantAmountReceived.checkYourAnswersLabel.agent = *Missing Welsh*
 leaseGrantAmountReceived.label.individual = *Missing Welsh*
 leaseGrantAmountReceived.label.agent = *Missing Welsh*
 leaseGrantAmountReceived.hint = *Missing Welsh*

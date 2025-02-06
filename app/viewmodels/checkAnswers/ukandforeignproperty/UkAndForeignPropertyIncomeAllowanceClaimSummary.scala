@@ -22,22 +22,20 @@ import pages.ukandforeignproperty.UkAndForeignPropertyIncomeAllowanceClaimPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.all.{ActionItemViewModel, FluentActionItem, FluentKey, FluentValue, KeyViewModel, SummaryListRowViewModel, ValueViewModel}
 import viewmodels.implicits._
 
-object PropertyIncomeAllowanceClaimSummary  {
-
-  def row(answers: UserAnswers, taxYear: Int)(implicit messages: Messages): Option[SummaryListRow] =
+object UkAndForeignPropertyIncomeAllowanceClaimSummary {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UkAndForeignPropertyIncomeAllowanceClaimPage).map {
       answer =>
-
         SummaryListRowViewModel(
-          key     = KeyViewModel("propertyIncomeAllowanceClaim.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("propertyIncomeAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("propertyIncomeAllowanceClaim.change.hidden"))
+              .withVisuallyHiddenText(messages("propertyIncomeAllowance.change.hidden"))
           )
         )
-    }.orElse(Option.empty[SummaryListRow])
+    }
 }

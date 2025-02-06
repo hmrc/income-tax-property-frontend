@@ -16,21 +16,24 @@
 
 package pages.ukandforeignproperty
 
-import org.scalatest.OptionValues
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import models.{UKAndForeignProperty, UserAnswers}
+import pages.PageConstants.aboutPath
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-class UkForeignPropertyAboutPageSpec extends AnyFreeSpec with Matchers with OptionValues {
+import scala.util.Try
 
-  "UkForeignPropertyAboutPage" - {
-    "have the correct path" in {
-      UkForeignPropertyAboutPage.path mustEqual JsPath \ "ukAndForeignAbout"
-    }
+case object UkNonUkResidentLandlordPage extends QuestionPage[Boolean] {
 
-    "have the correct toString value" in {
-      UkForeignPropertyAboutPage.toString shouldEqual "ukAndForeignAbout"
-    }
-  }
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+
+  override def toString: String = "nonUkResidentLandlord"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case true  => super.cleanup(value, userAnswers)
+        case false => userAnswers.remove(UkDeductingTaxFromNonUkResidentLandlordPage)
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }

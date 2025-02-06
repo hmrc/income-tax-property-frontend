@@ -1821,6 +1821,9 @@ ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.nonN
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.individual = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.twoDecimalPlaces.agent = The amount of tax deducted can only include pounds and pence, for example £600 or £600.20
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.amount.error.outOfRange = Enter an amount between £{0} and £{1}
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.checkYourAnswersLabel.individual = How much did you receive for the grant of a lease?
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.checkYourAnswersLabel.agent = How much did your client receive for the grant of a lease?
+ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.change.hidden = How much did you receive for the grant of a lease?
 ukAndForeignPropertyRentalTypeUk.amountReceivedForGrantOfLease.radio.question.label = Enter the amount
 
 ukAndForeignPropertyPremiumForLease.title = UK premiums for the grant of a lease
@@ -1874,6 +1877,8 @@ foreignCountriesRentList.title.individual = Foreign countries where you rented o
 foreignCountriesRentList.title.agent = Foreign countries where your client rented out property
 foreignCountriesRentList.heading.individual = Foreign countries where you rented out property
 foreignCountriesRentList.heading.agent = Foreign countries where your client rented out property
+foreignCountriesRentList.checkYourAnswersLabel.individual = Foreign countries where you rented out property
+foreignCountriesRentList.checkYourAnswersLabel.agent = Foreign countries where your client rented out property
 
 foreignPropertyDetails.title = Foreign property details
 foreignPropertyDetails.para1 = You previously told us:
@@ -2839,6 +2844,8 @@ ukAndForeignPropertyIncomeAllowanceClaim.p1.individual = You can claim up to £1
 ukAndForeignPropertyIncomeAllowanceClaim.p1.agent = Your client can claim up to £1000 (Income plus balancing charge) all property income allowance across all of their properties. If they own a property with someone else they can each claim the £1000 (Income plus balancing charge) allowance.
 ukAndForeignPropertyIncomeAllowanceClaim.p2.individual = If you have to report a balancing charge you must add this figure to the amount that you are claiming for property income allowance. The combined figure must not exceed £1,000.
 ukAndForeignPropertyIncomeAllowanceClaim.p2.agent = If they have to report a balancing charge you must add this figure to the amount that you are claiming for property income allowance. The combined figure must not exceed £1,000 (Income plus balancing charge) all.
+ukAndForeignPropertyIncomeAllowanceClaim.checkYourAnswersLabel = Do you want to claim property income allowance or expenses?
+ukAndForeignPropertyIncomeAllowanceClaim.change.hidden = If they have to report a balancing charge you must add this figure to the amount that you are claiming for property income allowance. The combined figure must not exceed £1,000 (Income plus balancing charge) all.
 
 foreignRentalPropertyIncome.title = Foreign property rental income
 foreignRentalPropertyIncome.heading = Foreign property rental income
@@ -2907,7 +2914,8 @@ leaseGrantAmountReceived.title.individual = How much did you receive for the gra
 leaseGrantAmountReceived.title.agent = How much did your client receive for the grant of a lease?
 leaseGrantAmountReceived.heading.individual = How much did you receive for the grant of a lease?
 leaseGrantAmountReceived.heading.agent = How much did your client receive for the grant of a lease?
-leaseGrantAmountReceived.checkYourAnswersLabel = Lease Grant Amount Received
+leaseGrantAmountReceived.checkYourAnswersLabel.individual = How much did you receive for the grant of a lease?
+leaseGrantAmountReceived.checkYourAnswersLabel.agent = How much did your client receive for the grant of a lease?
 leaseGrantAmountReceived.label.individual = How much did you receive for the grant of a lease?
 leaseGrantAmountReceived.label.agent = How much did your client receive for the grant of a lease?
 leaseGrantAmountReceived.hint = Do not include income from reverse premiums.

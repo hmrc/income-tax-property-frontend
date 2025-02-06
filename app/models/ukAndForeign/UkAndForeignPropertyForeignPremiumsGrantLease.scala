@@ -16,12 +16,12 @@
 
 package models.ukAndForeign
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Json, OFormat}
 
 case class UkAndForeignPropertyForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed: Boolean, premiumsOfLeaseGrant: Option[BigDecimal])
 
 object UkAndForeignPropertyForeignPremiumsGrantLease {
-  implicit val format: Format[UkAndForeignPropertyForeignPremiumsGrantLease] = Json.format
+  implicit val format: OFormat[UkAndForeignPropertyForeignPremiumsGrantLease] = Json.format
 
   def calculateTaxableAmount(premiumAmount: BigDecimal, periods: Int): BigDecimal =
     (premiumAmount * (BigDecimal(50 - minusOne(periods)) / 50)).setScale(2, BigDecimal.RoundingMode.HALF_UP)

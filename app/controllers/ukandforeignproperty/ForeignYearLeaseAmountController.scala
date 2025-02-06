@@ -45,29 +45,29 @@ class ForeignYearLeaseAmountController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ForeignYearLeaseAmountPage(countryCode)) match {
+      val preparedForm = request.userAnswers.get(ForeignYearLeaseAmountPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, countryCode, mode))
+      Ok(view(preparedForm, taxYear, mode))
   }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode: String, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignYearLeaseAmountPage(countryCode), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignYearLeaseAmountPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignYearLeaseAmountPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

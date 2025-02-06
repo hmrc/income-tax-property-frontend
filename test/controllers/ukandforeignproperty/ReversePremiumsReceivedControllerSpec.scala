@@ -23,7 +23,7 @@ import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNaviga
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignPropertyReversePremiumsReceivedPage
+import pages.ukandforeignproperty.UkReversePremiumsReceivedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -67,7 +67,7 @@ class ReversePremiumsReceivedControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(UkAndForeignPropertyReversePremiumsReceivedPage(), ReversePremiumsReceived(true, Some(12.34)))
+        .set(UkReversePremiumsReceivedPage, ReversePremiumsReceived(true, Some(12.34)))
         .success
         .value
 

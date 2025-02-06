@@ -16,14 +16,69 @@
 
 package models.ukAndForeign
 
-import models.{ReportIncome, TotalPropertyIncome}
-import play.api.libs.json.{Format, Json}
+import models._
+import pages.PageConstants
+import pages.foreign.Country
+import play.api.libs.json.{Format, JsPath, Json}
+import queries.Gettable
 
-final case class UkAndForeignAbout(
+final case class UkAndForeignAbout(aboutUkAndForeign: AboutUkAndForeign, aboutUk: Option[AboutUk], aboutForeign: Option[AboutForeign])
+
+case object UkAndForeignAbout {
+  implicit val formats: Format[UkAndForeignAbout] = Json.format[UkAndForeignAbout]
+}
+
+final case class AboutUkAndForeign(
   totalPropertyIncome: TotalPropertyIncome,
-  reportIncome: Option[ReportIncome]
+  reportIncome: Option[ReportIncome],
+  ukPropertyRentalType: Option[Seq[UkAndForeignPropertyRentalTypeUk]],
+  countries: Option[List[Country]],
+  claimExpensesOrRelief: Option[UkAndForeignPropertyClaimExpensesOrRelief],
+  claimPropertyIncomeAllowanceOrExpenses: Option[UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses]
 )
+case object AboutUkAndForeign extends Gettable[AboutUkAndForeign] {
+  implicit val formats: Format[AboutUkAndForeign] = Json.format[AboutUkAndForeign]
 
-object UkAndForeignAbout {
-  implicit val format: Format[UkAndForeignAbout] = Json.format[UkAndForeignAbout]
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.aboutPath(UKAndForeignProperty)
+}
+
+final case class AboutUk(
+  nonUkResidentLandlord: Option[Boolean],
+  deductingTaxFromNonUkResidentLandlord: Option[DeductingTaxFromNonUkResidentLandlord],
+  ukRentalPropertyIncomeAmount: Option[BigDecimal],
+  balancingCharge: Option[BalancingCharge],
+  premiumForLease: Option[Boolean],
+  premiumGrantLeaseTax: Option[UkAndForeignPropertyPremiumGrantLeaseTax],
+  amountReceivedForGrantOfLeasePage: Option[UkAndForeignPropertyAmountReceivedForGrantOfLease],
+  yearLeaseAmount: Option[Int],
+  premiumsGrantLease: Option[UKPremiumsGrantLease],
+  reversePremiumsReceived: Option[ReversePremiumsReceived],
+  otherIncomeFromProperty: Option[BigDecimal]
+)
+case object AboutUk extends Gettable[AboutUk] {
+  implicit val formats: Format[AboutUk] = Json.format[AboutUk]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.aboutPath(UKAndForeignProperty)
+}
+final case class AboutForeign(
+  foreignRentalPropertyIncomeAmount: Option[BigDecimal],
+  foreignBalancingCharge: Option[BalancingCharge],
+  foreignPremiumsForTheGrantOfALease: Option[Boolean],
+  foreignCalculatedPremiumGrantLeaseTaxable: Option[PremiumCalculated],
+  foreignLeaseGrantReceivedAmount: Option[BigDecimal],
+  foreignYearLeaseAmount: Option[Int],
+  foreignPremiumsGrantLease: Option[UkAndForeignPropertyForeignPremiumsGrantLease],
+  foreignOtherIncomeFromProperty: Option[BigDecimal],
+  propertyIncomeAllowanceClaim: Option[BigDecimal]
+)
+case object AboutForeign extends Gettable[AboutForeign] {
+  implicit val formats: Format[AboutForeign] = Json.format[AboutForeign]
+
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = PageConstants.aboutPath(UKAndForeignProperty)
 }

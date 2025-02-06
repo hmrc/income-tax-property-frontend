@@ -27,7 +27,7 @@ class ForeignCountriesRentedPageSpec extends AnyFreeSpec with Matchers with Opti
 
   "ForeignCountriesRentedPage" - {
     "have the correct path" in {
-      ForeignCountriesRentedPage.path mustEqual JsPath \ "ukandforeignSelectCountry" \ "addAnotherCountry"
+      ForeignCountriesRentedPage.path mustEqual JsPath \ "ukAndForeignPropertyAbout" \ "addAnotherCountry"
     }
 
     "have the correct toString value" in {

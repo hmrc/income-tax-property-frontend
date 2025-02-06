@@ -20,11 +20,11 @@ import base.SpecBase
 import controllers.routes
 import forms.ukandforeignproperty.UkAndForeignBalancingChargeFormProvider
 import models.{BalancingCharge, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignBalancingChargePage
+import pages.ukandforeignproperty.ForeignUkandForeignBalancingChargePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -41,11 +41,10 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
 
   val taxYear: Int = 2024
   val isAgentMessageKey: String = "individual"
-  val countryCode: String = "AUS"
   val formProvider: UkAndForeignBalancingChargeFormProvider = new UkAndForeignBalancingChargeFormProvider()
   val form: Form[BalancingCharge] = formProvider(isAgentMessageKey)
 
-  lazy val ukAndForeignBalancingChargeRoute: String = controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val ukAndForeignBalancingChargeRoute: String = controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, NormalMode).url
 
   "UkAndForeignBalancingCharge Controller" - {
 
@@ -61,13 +60,13 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
         val view = application.injector.instanceOf[UkAndForeignBalancingChargeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignBalancingChargePage(countryCode), BalancingCharge(true, Some(BigDecimal(123.23)))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignUkandForeignBalancingChargePage, BalancingCharge(true, Some(BigDecimal(123.23)))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -79,7 +78,7 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(BalancingCharge(true, Some(BigDecimal(123.23)))),taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(BalancingCharge(true, Some(BigDecimal(123.23)))),taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -92,7 +91,7 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -125,7 +124,7 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 

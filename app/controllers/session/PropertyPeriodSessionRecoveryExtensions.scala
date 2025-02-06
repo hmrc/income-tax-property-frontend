@@ -225,11 +225,9 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(ukAndForeignAbout) =>
           for {
-            ua1 <- userAnswers.set(UkForeignPropertyAboutPage,
-              UkAndForeignAbout(ukAndForeignAbout.totalPropertyIncome, ukAndForeignAbout.reportIncome))
-            ua2 <- ua1.set(TotalPropertyIncomePage, ukAndForeignAbout.totalPropertyIncome)
-            ua3 <- updatePart(ua2, ReportIncomePage, ukAndForeignAbout.reportIncome)
-          } yield ua3
+            ua1 <- userAnswers.set(TotalPropertyIncomePage, ukAndForeignAbout.aboutUkAndForeign.totalPropertyIncome)
+            ua2 <- updatePart(ua1, ReportIncomePage, ukAndForeignAbout.aboutUkAndForeign.reportIncome)
+          } yield ua2
       }
 
     private def updateForeignPropertyIncome(

@@ -24,7 +24,7 @@ import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNaviga
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignForeignPremiumsForTheGrantOfALeasePage
+import pages.ukandforeignproperty.ForeignPremiumsForTheGrantOfALeasePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -40,11 +40,10 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
 
   val formProvider = new UkAndForeignForeignPremiumsForTheGrantOfALeaseFormProvider()
   val isAgentMessageKey: String = "individual"
-  val countryCode: String = "AUS"
   val taxYear: Int = 2024
   val form = formProvider(isAgentMessageKey)
 
-  lazy val ukAndForeignForeignPremiumsForTheGrantOfALeaseRoute = controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
+  lazy val ukAndForeignForeignPremiumsForTheGrantOfALeaseRoute = controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onPageLoad(taxYear, NormalMode).url
 
   "UkAndForeignForeignPremiumsForTheGrantOfALease Controller" - {
 
@@ -60,13 +59,13 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
         val view = application.injector.instanceOf[UkAndForeignForeignPremiumsForTheGrantOfALeaseView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignForeignPremiumsForTheGrantOfALeasePage(countryCode), true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignPremiumsForTheGrantOfALeasePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -78,7 +77,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -124,7 +123,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, isAgentMessageKey, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageKey, NormalMode)(request, messages(application)).toString
       }
     }
 

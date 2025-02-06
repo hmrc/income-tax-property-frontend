@@ -40,8 +40,8 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
   val premiumAmount: BigDecimal = 2345
 
   override def emptyUserAnswers: UserAnswers = (for {
-    ua1 <- UserAnswers(userAnswersId).set(LeaseGrantAmountReceivedPage(countryCode), premiumAmount)
-    ua2 <- ua1.set(ForeignYearLeaseAmountPage(countryCode), periods)
+    ua1 <- UserAnswers(userAnswersId).set(ForeignLeaseGrantAmountReceivedPage, premiumAmount)
+    ua2 <- ua1.set(ForeignYearLeaseAmountPage, periods)
   } yield ua2).success.value
 
   val scenarios: TableFor1[String] = Table[String]( "individual", "agent")
@@ -51,7 +51,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
     UkAndForeignPropertyForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed = true, Some(123.45))
 
   lazy val foreignPremiumsGrantLeaseRoute: String =
-    routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
+    routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
@@ -77,7 +77,6 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
             periods,
             premiumAmount,
             individualOrAgent,
-            countryCode,
             NormalMode
           )(request, messages(application)).toString
         }
@@ -87,7 +86,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
 
         val userAnswers = emptyUserAnswers
           .set(
-            UkAndForeignPropertyForeignPremiumsGrantLeasePage(countryCode),
+            UkAndForeignPropertyForeignPremiumsGrantLeasePage,
             foreignPremiumsGrantLeaseAnswers
           )
           .success
@@ -109,7 +108,6 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
             periods,
             premiumAmount,
             individualOrAgent,
-            countryCode,
             NormalMode
           )(request, messages(application)).toString
         }
@@ -167,7 +165,6 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
             periods,
             premiumAmount,
             individualOrAgent,
-            countryCode,
             NormalMode
           )(request, messages(application)).toString
         }

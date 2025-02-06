@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -36,10 +37,10 @@ object ReportIncomeSummary {
         HtmlContent(
           HtmlFormat.escape(messages(s"reportIncome.$answer.$individualOrAgent"))
         )
-      )
+      ).withCssClass(valueCssClass)
 
       SummaryListRowViewModel(
-        key = "reportIncome.checkYourAnswersLabel",
+        key = KeyViewModel("reportIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
         value = value,
         actions = Seq(
           ActionItemViewModel("site.change", routes.ReportIncomeController.onPageLoad(taxYear, CheckMode).url)

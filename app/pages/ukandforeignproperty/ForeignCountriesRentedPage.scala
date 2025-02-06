@@ -16,12 +16,14 @@
 
 package pages.ukandforeignproperty
 
+import pages.PageConstants.aboutPath
+import models.UKAndForeignProperty
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ForeignCountriesRentedPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ "ukandforeignSelectCountry" \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "addAnotherCountry"
 }

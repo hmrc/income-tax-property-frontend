@@ -19,11 +19,11 @@ package controllers.ukandforeignproperty
 import base.SpecBase
 import forms.ukandforeignproperty.NonResidentLandlordUKFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.NonResidentLandlordUKPage
+import pages.ukandforeignproperty.UkNonUkResidentLandlordPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -65,7 +65,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
 
       s"must populate the view correctly on a GET when the question has previously been answered for the userType $userType" in {
 
-        val userAnswers = UserAnswers(userAnswersId).set(NonResidentLandlordUKPage, true).success.value
+        val userAnswers = UserAnswers(userAnswersId).set(UkNonUkResidentLandlordPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent).build()
 
@@ -90,7 +90,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent)
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[UkAndForeignPropertyNavigator].toInstance(new FakeUKAndForeignPropertyNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
             .build()

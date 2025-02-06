@@ -16,26 +16,27 @@
 
 package pages.ukandforeignproperty
 
-import models.{PremiumCalculated, UKAndForeignProperty, UserAnswers}
+import models.{UKAndForeignProperty, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-object UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage extends QuestionPage[PremiumCalculated] {
+case object ForeignPremiumsForTheGrantOfALeasePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
-  override def toString: String = "foreignCalculatedPremiumGrantLeaseTaxable"
+  override def toString: String = "foreignPremiumsForTheGrantOfALease"
 
-  override def cleanup(value: Option[PremiumCalculated], userAnswers: UserAnswers): Try[UserAnswers] =
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value
       .map {
-        case PremiumCalculated(false, _) => super.cleanup(value, userAnswers)
-        case PremiumCalculated(true, _) =>
+        case true => super.cleanup(value, userAnswers)
+        case false =>
           for {
-            leaseAmount  <- userAnswers.remove(ForeignLeaseGrantAmountReceivedPage)
+            calcPremiums <- userAnswers.remove(UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage)
+            leaseAmount  <- calcPremiums.remove(ForeignLeaseGrantAmountReceivedPage)
             leaseYears   <- leaseAmount.remove(ForeignYearLeaseAmountPage)
             premiums     <- leaseYears.remove(UkAndForeignPropertyForeignPremiumsGrantLeasePage)
           } yield premiums

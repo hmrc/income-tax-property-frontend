@@ -19,7 +19,7 @@ package pages.ukandforeignproperty
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.ukAndForeign.UKPremiumsGrantLease
 import models.{UKAndForeignProperty, UserAnswers}
-import pages.PageConstants.incomePath
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.libs.json.JsPath
@@ -28,7 +28,7 @@ import scala.util.Try
 
 object UKPremiumsGrantLeasePage extends QuestionPage[UKPremiumsGrantLease] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ toString
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "premiumsGrantLease"
 

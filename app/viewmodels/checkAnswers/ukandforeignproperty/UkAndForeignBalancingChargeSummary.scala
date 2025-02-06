@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.routes
 import models.{BalancingCharge, CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkAndForeignBalancingChargePage
+import pages.ukandforeignproperty.ForeignUkandForeignBalancingChargePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
@@ -27,14 +27,14 @@ import viewmodels.implicits._
 
 object UkAndForeignBalancingChargeSummary  {
 
-  def row(answers: UserAnswers, taxYear: Int, countryCode: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UkAndForeignBalancingChargePage(countryCode)).flatMap {
+  def row(answers: UserAnswers, taxYear: Int)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ForeignUkandForeignBalancingChargePage).flatMap {
       case BalancingCharge(true, Some(amount)) =>
         Some(SummaryListRowViewModel(
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
           )))
       case BalancingCharge(false, _) =>
@@ -42,7 +42,7 @@ object UkAndForeignBalancingChargeSummary  {
           key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", controllers.ukandforeignproperty.routes.UkAndForeignBalancingChargeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("balancingCharge.change.hidden"))
           )
         ))

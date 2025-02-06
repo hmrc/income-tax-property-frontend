@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.ReversePremiumsReceivedFormProvider
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignPropertyReversePremiumsReceivedPage
+import pages.ukandforeignproperty.UkReversePremiumsReceivedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +46,7 @@ class ReversePremiumsReceivedController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyReversePremiumsReceivedPage()) match {
+      val preparedForm = request.userAnswers.get(UkReversePremiumsReceivedPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -67,11 +67,11 @@ class ReversePremiumsReceivedController @Inject()(
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(UkAndForeignPropertyReversePremiumsReceivedPage(), value))
+                Future.fromTry(request.userAnswers.set(UkReversePremiumsReceivedPage, value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(UkAndForeignPropertyReversePremiumsReceivedPage(), taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(UkReversePremiumsReceivedPage, taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
     }
