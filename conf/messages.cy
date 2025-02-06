@@ -2992,3 +2992,6 @@ ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.individua
 ukAndForeignProperty.foreignPremiumsGrantLease.error.amount.nonNumeric.agent = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange = *Missing Welsh*
 ukAndForeignProperty.foreignPremiumsGrantLease.change.hidden = *Missing Welsh*
+
+foreignCapitalAllowancesForACar.checkYourAnswersLabel = *Missing Welsh*
+foreignCapitalAllowancesForACar.change.hidden = *Missing Welsh*
