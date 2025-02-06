@@ -54,10 +54,12 @@ class ForeignPropertyAllowancesStartController @Inject() (
         (propertyData: PropertyDetails) =>
           propertyData.accrualsOrCash match {
             case Some(true) =>
+              logger.info("Accounting method: Accruals")
               Future.successful(
-                Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
-              )
+                  Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
+          )
             case Some(false) =>
+              logger.info("Accounting method: Cash")
               Future.successful(
                 Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = false))
               )

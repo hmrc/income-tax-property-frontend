@@ -60,12 +60,14 @@ class AuthenticatedIdentifierAction @Inject()(
         logger.warn("[AuthenticatedIdentifierAction][invokeBlock] - No internal Id retrieved from auth")
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     } recoverWith {
-      case _: NoActiveSession =>
+      case e: NoActiveSession =>
+        logger.error(s"[NoActiveSession][invokeBlock] - Exception of type '$e' was caught.")
         Future(Redirect(config.loginUrl))
-      case _: AuthorisationException =>
+      case e: AuthorisationException =>
+        logger.error(s"[AuthorisationException][invokeBlock] - Exception of type '$e' was caught.")
         Future(Redirect(routes.UnauthorisedController.onPageLoad))
       case e =>
-        logger.error(s"[AuthorisedAction][invokeBlock] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+        logger.error(s"[AuthorisedAction][invokeBlock] - Unexpected exception of type '$e' was caught.")
         errorHandler.internalServerError()(request)
     }
   }

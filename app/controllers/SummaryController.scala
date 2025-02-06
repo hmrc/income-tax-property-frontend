@@ -23,6 +23,7 @@ import pages._
 import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
+import play.api.i18n.Lang.logger
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService, ForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -77,12 +78,21 @@ class SummaryController @Inject() (
                 ),
                 UkAndForeignPropertySummaryPage(
                   taxYear = taxYear,
-                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(taxYear, request.userAnswers, cyaDiversionService, foreignCYADiversionService)
+                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
+                    taxYear,
+                    request.userAnswers,
+                    cyaDiversionService,
+                    foreignCYADiversionService
+                  )
                 )
               )
             )
           )
-        case _ =>
+        case Right(None) =>
+          logger.warn("No UK property data received from downstream")
+          Future.failed(PropertyDataError)
+        case x =>
+          logger.error(s"Unexpected scenario when retrieving data: $x")
           Future.failed(PropertyDataError)
       }
     }(requestBeforeUpdate, controllerComponents.executionContext, hc)
