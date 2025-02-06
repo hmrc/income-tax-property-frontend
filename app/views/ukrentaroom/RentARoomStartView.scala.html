@@ -41,10 +41,11 @@
         @messages("ukRentARoom.about.start.linkText")
         </a>
     </p>
-
+    <div>
     @govukButton(
         ButtonViewModel(messages("site.continue"))
         .asLink(routes.JointlyLetController.onPageLoad(taxYear, NormalMode, RentARoom).url)
         .withId("continue")
     )
+    </div>
 }

@@ -658,7 +658,15 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             }
     case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode)
+    case RaRUnusedLossesBroughtForwardPage =>
+      taxYear => _ => userAnswers =>
+        userAnswers.get(RaRUnusedLossesBroughtForwardPage) match {
+          case Some(RaRUnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
+          case _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+        }
 
+    case RarWhenYouReportedTheLossPage =>
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage     => taxYear => _ => _ => SummaryController.show(taxYear)
     case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case AboutPropertyCompletePage      => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -1015,8 +1023,9 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode)
-
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+    case RaRUnusedLossesBroughtForwardPage =>
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // Rentals and Rent a Room
     case JointlyLetPage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
