@@ -85,7 +85,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     foreignPropertySelectCountry: ForeignPropertySelectCountry
   )(implicit hc: HeaderCarrier): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignSelectCountry)
-    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertySelectCountry).flatMap {
+    propertySubmissionService.saveJourneyAnswers(context, foreignPropertySelectCountry).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, foreignPropertySelectCountry, isFailed = false, AccountingMethod.Traditional)
         Future.successful(Redirect(ForeignSelectCountriesCompleteController.onPageLoad(taxYear)))

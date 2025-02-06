@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import controllers.session.SessionRecovery
 import models.{UKPropertySelect, UserAnswers}
-import models.backend.PropertyDetails
+import models.backend.{ForeignPropertyDetailsError, PropertyDetails}
 import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
@@ -54,8 +54,12 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
   }
 
   when(
-    propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
+    propertyPeriodSubmissionService.getUKPropertySubmission(any(), any())(any())
   ) thenReturn Future.successful(Right(fetchedPropertyData))
+
+  when(
+    propertyPeriodSubmissionService.getForeignPropertySubmission(any(), any())(any())
+  ) thenReturn Future.successful(Left(ForeignPropertyDetailsError("AA000000A", "1234567890")))
 
   def propertyAboutItems: Seq[TaskListItem] =
     Seq(

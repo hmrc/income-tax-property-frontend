@@ -49,11 +49,11 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
+        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
 
@@ -79,11 +79,11 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
+        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
 
@@ -108,7 +108,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
     "must redirect to the overview if there is no result" in {
       val businessService = mock[BusinessService]
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Left(ApiError(NOT_FOUND, SingleErrorBody(NOT_FOUND.toString, "No data found")))
       )
 
@@ -129,11 +129,11 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
+        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
 
