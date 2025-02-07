@@ -28,7 +28,7 @@ import viewmodels.implicits._
 
 object RarWhenYouReportedTheLossSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, previousLoss: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RarWhenYouReportedTheLossPage).map {
       answer =>
 
@@ -39,7 +39,7 @@ object RarWhenYouReportedTheLossSummary  {
         ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key     = KeyViewModel(s"rarWhenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}").withCssClass(keyCssClass),
+          key     = KeyViewModel(messages(s"rarWhenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", previousLoss)).withCssClass(keyCssClass),
           value   = value,
           actions = Seq(
             ActionItemViewModel("site.change", controllers.ukrentaroom.adjustments.routes.RarWhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode).url)
