@@ -70,13 +70,12 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, value))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
-                navigator.nextIndex(
+                navigator.nextPage(
                   UkAndForeignPropertyClaimExpensesOrReliefPage,
                   taxYear,
                   mode,
                   request.userAnswers,
-                  updatedAnswers,
-                  0 //TODO resolve hardcoded index
+                  updatedAnswers
                 )
               )
           )

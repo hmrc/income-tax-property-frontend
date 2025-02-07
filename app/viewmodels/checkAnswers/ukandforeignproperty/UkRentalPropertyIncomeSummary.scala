@@ -30,7 +30,6 @@ object UkRentalPropertyIncomeSummary  {
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UkRentalPropertyIncomePage).map {
       answer =>
-
         SummaryListRowViewModel(
           key     = KeyViewModel("uKRentalPropertyIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),

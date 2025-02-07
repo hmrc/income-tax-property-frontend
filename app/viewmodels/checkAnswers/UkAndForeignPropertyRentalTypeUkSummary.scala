@@ -23,12 +23,13 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object UkAndForeignPropertyRentalTypeUkSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UkAndForeignPropertyRentalTypeUkPage).map {
       answers =>
 
@@ -39,10 +40,10 @@ object UkAndForeignPropertyRentalTypeUkSummary  {
             }
             .mkString(",<br>")
           )
-        )
+        ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key     = "ukAndForeignPropertyRentalTypeUk.checkYourAnswersLabel",
+          key     = KeyViewModel(s"ukAndForeignPropertyRentalTypeUk.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value   = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, CheckMode).url)

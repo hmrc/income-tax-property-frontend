@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package forms.ukandforeignproperty.income
+package forms.ukandforeignproperty
 
 import forms.behaviours.CurrencyFieldBehaviours
+import forms.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyFormProvider
 import org.scalatest.prop.TableFor1
 import play.api.data.FormError
 

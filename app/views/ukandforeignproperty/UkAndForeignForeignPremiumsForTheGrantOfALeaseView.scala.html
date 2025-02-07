@@ -24,11 +24,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, countryCode: String, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("ukAndForeignForeignPremiumsForTheGrantOfALease.title"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.UkAndForeignForeignPremiumsForTheGrantOfALeaseController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

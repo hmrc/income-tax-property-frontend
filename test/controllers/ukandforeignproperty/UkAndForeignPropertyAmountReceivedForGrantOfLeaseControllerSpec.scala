@@ -24,7 +24,7 @@ import models.ukAndForeign.UkAndForeignPropertyAmountReceivedForGrantOfLease
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeasePage
+import pages.ukandforeignproperty.UkAmountReceivedForGrantOfLeasePage
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -47,7 +47,7 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseControllerSpec extends Sp
       emptyUserAnswers,
       emptyUserAnswers
         .set(
-          UkAndForeignPropertyAmountReceivedForGrantOfLeasePage,
+          UkAmountReceivedForGrantOfLeasePage,
           UkAndForeignPropertyAmountReceivedForGrantOfLease(34.56)
         ).get
     )
@@ -58,14 +58,14 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseControllerSpec extends Sp
     } yield (userType, agent, answer)
 
     userTypeAndAnswerCombinations.foreach { case (userType, agent, answer) =>
-      s"Return OK for user type $userType and userAnswer is ${answer.get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage)}" in {
+      s"Return OK for user type $userType and userAnswer is ${answer.get(UkAmountReceivedForGrantOfLeasePage)}" in {
         val application: Application = applicationBuilder(Some(answer), agent).build()
         running(application) {
           val controller =
             application.injector.instanceOf[UkAndForeignPropertyAmountReceivedForGrantOfLeaseController]
           val view = application.injector.instanceOf[UkAndForeignPropertyAmountReceivedForGrantOfLeaseView]
           val form = answer
-            .get(UkAndForeignPropertyAmountReceivedForGrantOfLeasePage)
+            .get(UkAmountReceivedForGrantOfLeasePage)
             .fold(formProvider(userType))(formProvider(userType).fill)
           val result = controller.onPageLoad(testTaxYear, NormalMode)(FakeRequest())
           status(result) mustBe OK

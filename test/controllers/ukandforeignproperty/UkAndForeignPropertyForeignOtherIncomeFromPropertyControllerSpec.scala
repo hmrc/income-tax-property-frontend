@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.ukandforeignproperty.income
+package controllers.ukandforeignproperty
 
 import base.SpecBase
 import controllers.routes
@@ -23,14 +23,14 @@ import models.{NormalMode, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyPage
+import pages.ukandforeignproperty.ForeignOtherIncomeFromForeignPropertyPage
 import play.api.Application
 import play.api.data.Form
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukandforeignproperty.income.UkAndForeignPropertyForeignOtherIncomeFromPropertyView
+import views.html.ukandforeignproperty.UkAndForeignPropertyForeignOtherIncomeFromPropertyView
 
 import scala.concurrent.Future
 
@@ -40,13 +40,12 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
 
   val individualOrAgent: String = "individual"
   val taxYear: Int = 2024
-  val countryCode: String = "AUS"
   val otherIncomeFromProperty: BigDecimal = BigDecimal(12345)
   val formProvider = new UkAndForeignPropertyForeignOtherIncomeFromPropertyFormProvider()
   val form: Form[BigDecimal] = formProvider(individualOrAgent)
 
   lazy val foreignOtherIncomeFromPropertyRoute =
-    controllers.ukandforeignproperty.income.routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, countryCode, NormalMode).url
+    controllers.ukandforeignproperty.routes.UkAndForeignPropertyForeignOtherIncomeFromPropertyController.onPageLoad(taxYear, NormalMode).url
 
   "UkAndForeignPropertyForeignOtherIncomeFromProperty Controller" - {
 
@@ -62,13 +61,13 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
         val view = application.injector.instanceOf[UkAndForeignPropertyForeignOtherIncomeFromPropertyView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode, individualOrAgent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UkAndForeignPropertyForeignOtherIncomeFromPropertyPage(countryCode), otherIncomeFromProperty).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignOtherIncomeFromForeignPropertyPage, otherIncomeFromProperty).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -83,7 +82,6 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
         contentAsString(result) mustEqual view(
           form.fill(otherIncomeFromProperty),
           taxYear,
-          countryCode,
           NormalMode,
           individualOrAgent)(request, messages(application)).toString
       }
@@ -107,7 +105,7 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
 
         status(result) mustEqual SEE_OTHER
         val redirect = redirectLocation(result)
-        redirect.value mustEqual controllers.routes.IndexController.onPageLoad.url //TODO update when Navigation is integrated
+        redirect.value mustEqual controllers.ukandforeignproperty.routes.PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, NormalMode).url
       }
     }
 
@@ -127,7 +125,7 @@ class UkAndForeignPropertyForeignOtherIncomeFromPropertyControllerSpec extends S
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode, individualOrAgent)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, NormalMode, individualOrAgent)(request, messages(application)).toString
       }
     }
 

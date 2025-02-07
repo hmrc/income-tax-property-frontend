@@ -17,33 +17,33 @@
 package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
-import models.{BalancingCharge, CheckMode, UserAnswers}
-import pages.ukandforeignproperty.UkBalancingChargePage
+import models.ukAndForeign.UkAndForeignPropertyPremiumGrantLeaseTax
+import models.{CheckMode, UserAnswers}
+import pages.ukandforeignproperty.UkPremiumGrantLeaseTaxPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.all.{ActionItemViewModel, FluentActionItem, FluentKey, FluentValue, KeyViewModel, SummaryListRowViewModel, ValueViewModel}
 import viewmodels.implicits._
 
-object BalancingChargeSummary {
-
+object UkPremiumGrantLeaseTaxSummary {
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(UkBalancingChargePage).flatMap {
-      case BalancingCharge(true, amount) =>
+    answers.get(UkPremiumGrantLeaseTaxPage).flatMap {
+      case UkAndForeignPropertyPremiumGrantLeaseTax(true, amount) =>
         Some(SummaryListRowViewModel(
-          key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(amount.get)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("privateUseAdjustment.change.hidden"))
+            ActionItemViewModel("site.change", routes.UkAndForeignPropertyPremiumGrantLeaseTaxController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden"))
           )))
-      case BalancingCharge(false, _) =>
+      case UkAndForeignPropertyPremiumGrantLeaseTax(false, _) =>
         Some(SummaryListRowViewModel(
-          key = KeyViewModel("balancingCharge.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.BalancingChargeController.onPageLoad(taxYear, CheckMode).url)
-              .withVisuallyHiddenText(messages("balancingCharge.change.hidden"))
+            ActionItemViewModel("site.change", routes.UkAndForeignPropertyPremiumGrantLeaseTaxController.onPageLoad(taxYear, CheckMode).url)
+              .withVisuallyHiddenText(messages("ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.change.hidden"))
           )
         ))
       case _ => Option.empty[SummaryListRow]

@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.BalancingChargeFormProvider
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
-import pages.ukandforeignproperty.UkAndForeignPropertyBalancingChargePage
+import pages.ukandforeignproperty.UkBalancingChargePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -45,7 +45,7 @@ class BalancingChargeController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(UkAndForeignPropertyBalancingChargePage) match {
+      val preparedForm = request.userAnswers.get(UkBalancingChargePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -62,9 +62,9 @@ class BalancingChargeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyBalancingChargePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkBalancingChargePage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(UkBalancingChargePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

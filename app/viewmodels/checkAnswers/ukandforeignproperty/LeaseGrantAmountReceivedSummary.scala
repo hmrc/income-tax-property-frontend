@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedController
 import models.{UserAnswers, CheckMode}
-import pages.ukandforeignproperty.LeaseGrantAmountReceivedPage
+import pages.ukandforeignproperty.ForeignLeaseGrantAmountReceivedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{keyCssClass, bigDecimalCurrency, valueCssClass}
@@ -27,15 +27,15 @@ import viewmodels.implicits._
 
 object LeaseGrantAmountReceivedSummary  {
 
-  def row(taxYear: Int, countryCode: String, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(LeaseGrantAmountReceivedPage(countryCode)).map {
+  def row(taxYear: Int, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ForeignLeaseGrantAmountReceivedPage).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("leaseGrantAmountReceived.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key     = KeyViewModel(s"leaseGrantAmountReceived.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", LeaseGrantAmountReceivedController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", LeaseGrantAmountReceivedController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages(s"leaseGrantAmountReceived.change.hidden.$individualOrAgent"))
           )
         )

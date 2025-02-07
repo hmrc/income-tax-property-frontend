@@ -25,7 +25,7 @@ class ReportIncomePageSpec extends AnyFreeSpec with Matchers {
   "ReportIncomePage" - {
 
     "must have the correct path" in {
-      ReportIncomePage.path mustEqual JsPath \ "ukAndForeignAbout" \ "reportIncome"
+      ReportIncomePage.path mustEqual JsPath \ "ukAndForeignPropertyAbout" \ "reportIncome"
     }
 
     "must have the correct toString" in {

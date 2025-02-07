@@ -27,15 +27,15 @@ import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass, bigDecim
 
 object ForeignRentalPropertyIncomeSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignRentalPropertyIncomePage(countryCode)).map {
+  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ForeignRentalPropertyIncomePage).map {
       answer =>
 
         SummaryListRowViewModel(
           key     = KeyViewModel("foreignRentalPropertyIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", ForeignRentalPropertyIncomeController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", ForeignRentalPropertyIncomeController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("foreignRentalPropertyIncome.change.hidden"))
           )
         )

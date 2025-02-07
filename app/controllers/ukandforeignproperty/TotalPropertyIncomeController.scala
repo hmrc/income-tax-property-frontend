@@ -18,13 +18,14 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.TotalPropertyIncomeFormProvider
-import models.{Mode, TotalPropertyIncome}
+import models.{Mode, TotalIncome, TotalPropertyIncome, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.TotalPropertyIncomePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.TotalPropertyIncomeView
 
@@ -40,15 +41,16 @@ class TotalPropertyIncomeController @Inject()(
                                        requireData: DataRequiredAction,
                                        formProvider: TotalPropertyIncomeFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
+                                       sessionService: SessionService,
                                        view: TotalPropertyIncomeView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[TotalPropertyIncome] = formProvider()
 
-  def onPageLoad(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.get(TotalPropertyIncomePage) match {
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalPropertyIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }

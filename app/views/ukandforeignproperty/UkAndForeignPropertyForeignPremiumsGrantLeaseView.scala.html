@@ -28,7 +28,7 @@
     govukRadios: GovukRadios
 )
 
-@(form: Form[_], taxYear: Int, periods: Int, premiumAmount: BigDecimal, individualOrAgent: String, countryCode: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, periods: Int, premiumAmount: BigDecimal, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("ukAndForeignProperty.foreignPremiumsGrantLease.title"))) {
 
@@ -81,7 +81,7 @@
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
     @formHelper(
-        action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onSubmit(taxYear, countryCode, mode),
+        action = controllers.ukandforeignproperty.routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onSubmit(taxYear, mode),
         Symbol("autoComplete") -> "off") {
 
         @govukRadios(

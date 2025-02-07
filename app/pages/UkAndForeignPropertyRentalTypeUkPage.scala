@@ -23,5 +23,5 @@ case object UkAndForeignPropertyRentalTypeUkPage extends QuestionPage[Set[UkAndF
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "ukAndForeignPropertyRentalTypeUk"
+  override def toString: String = "ukPropertyRentalType"
 }

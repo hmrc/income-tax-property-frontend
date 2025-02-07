@@ -18,23 +18,24 @@ package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
 import models.{CheckMode, UserAnswers}
-import pages.ukandforeignproperty.NonResidentLandlordUKPage
+import pages.ukandforeignproperty.UkNonUkResidentLandlordPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object NonResidentLandlordUKSummary  {
 
   def row(taxYear:Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(NonResidentLandlordUKPage).map {
+    answers.get(UkNonUkResidentLandlordPage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "nonResidentLandlordUK.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key = KeyViewModel("nonResidentLandlordUK.checkYourAnswersLabel").withCssClass(keyCssClass),
+          value = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.NonResidentLandlordUKController.onPageLoad(taxYear, CheckMode).url)
               .withVisuallyHiddenText(messages("nonResidentLandlordUK.change.hidden"))

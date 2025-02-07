@@ -16,14 +16,30 @@
 
 package pages.ukandforeignproperty
 
-import models.{ReportIncome, UKAndForeignProperty}
+import models.{UKAndForeignProperty, UserAnswers}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ReportIncomePage extends QuestionPage[ReportIncome] {
+import scala.util.Try
+
+case object UkPremiumForLeasePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
-  override def toString: String = "reportIncome"
+  override def toString: String = "premiumForLease"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value
+      .map {
+        case true => super.cleanup(value, userAnswers)
+        case false =>
+          for {
+            calcPremiums <- userAnswers.remove(UkPremiumGrantLeaseTaxPage)
+            leaseAmount  <- calcPremiums.remove(UkAmountReceivedForGrantOfLeasePage)
+            leaseYears   <- leaseAmount.remove(UkYearLeaseAmountPage)
+            premiums     <- leaseYears.remove(UKPremiumsGrantLeasePage)
+          } yield premiums
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
 }

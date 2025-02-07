@@ -35,7 +35,7 @@ import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IsNonUKLandlordPage, PropertyRentalIncomePage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
-import pages.ukandforeignproperty.UkForeignPropertyAboutPage
+import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
 import pages.ukrentaroom.adjustments.RaRBalancingChargePage
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
@@ -314,8 +314,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "ukAndForeignPropertyData" : {
        |    "ukAndForeignAbout" : {
-       |      "totalPropertyIncome" : "maximum",
-       |      "reportIncome" : "wantToReport"
+       |      "aboutUkAndForeign": {
+       |        "totalPropertyIncome" : "maximum",
+       |        "reportIncome" : "wantToReport"
+       |      }
        |    }
        |  }
        |}""".stripMargin
@@ -451,10 +453,9 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignZeroEmissionCarAllowancePage(countryCode1)) mustBe Some(45.45)
       updated.get(ForeignOtherCapitalAllowancesPage(countryCode1)) mustBe Some(45.15)
       updated.get(ForeignAllowancesCompletePage(countryCode1)) mustBe Some(true)
-      updated.get(UkForeignPropertyAboutPage).get mustBe UkAndForeignAbout(
-        totalPropertyIncome = TotalPropertyIncome.Maximum,
-        reportIncome = Some(ReportIncome.WantToReport)
-      )
+
+      updated.get(TotalPropertyIncomePage).get mustBe TotalPropertyIncome.Maximum
+      updated.get(ReportIncomePage).get mustBe ReportIncome.WantToReport
 
       updated.get(ForeignClaimStructureBuildingAllowancePage(countryCode1)).get mustBe true
       updated.get(ForeignStructureBuildingQualifyingAmountPage(countryCode1, index)).get mustBe 100

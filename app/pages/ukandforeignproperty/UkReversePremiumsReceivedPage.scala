@@ -16,14 +16,16 @@
 
 package pages.ukandforeignproperty
 
-import pages.PageConstants.incomePath
-import models.UKAndForeignProperty
+import models.{ReversePremiumsReceived, UKAndForeignProperty}
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class LeaseGrantAmountReceivedPage(countryCode: String) extends QuestionPage[BigDecimal] {
 
-  override def path: JsPath = JsPath \ incomePath(UKAndForeignProperty) \ countryCode.toUpperCase \ toString
+object UkReversePremiumsReceivedPage extends QuestionPage[ReversePremiumsReceived] {
 
-  override def toString: String = "leaseGrantReceivedAmount"
+  override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
+
+  override def toString: String = "reversePremiumsReceived"
+
 }
