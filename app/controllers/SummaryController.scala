@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
+import models.IncomeSourcePropertyType.UKProperty
+import models.backend.{NoPropertyDataError, UnexpectedPropertyDataError}
 import models.requests.OptionalDataRequest
 import pages._
 import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
@@ -49,16 +51,26 @@ class SummaryController @Inject() (
     val summaryPage = SummaryPage(cyaDiversionService)
     val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
     withUpdatedData(taxYear) { request =>
-      businessService.getUkPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
-        case Right(Some(propertyData)) =>
+      businessService.getAllPropertyDetails(request.user.nino, request.user.mtditid)(hc).flatMap {
+
+        case Right(data) if data.isEmpty =>
+          logger.warn(NoPropertyDataError(request.user.nino, request.user.mtditid).toString)
+          Future.failed(PropertyDataError)
+
+        case Right(propertyData) =>
+          val ukAccrualsOrCash: Boolean = propertyData
+            .find(_.incomeSourceType.contains(UKProperty.toString))
+            .flatMap(_.accrualsOrCash)
+            .getOrElse(true)
+
           val propertyRentalsRows =
             summaryPage
-              .createUkPropertyRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+              .createUkPropertyRows(request.userAnswers, taxYear, ukAccrualsOrCash)
           val ukRentARoomRows = summaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
           val startItems = summaryPage.propertyAboutItems(request.userAnswers, taxYear)
           val combinedItems =
             summaryPage
-              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, propertyData.accrualsOrCash.get)
+              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, ukAccrualsOrCash)
 
           val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
           val maybeCountries = foreignCountries.getOrElse(List.empty)
@@ -88,11 +100,8 @@ class SummaryController @Inject() (
               )
             )
           )
-        case Right(None) =>
-          logger.warn("No UK property data received from downstream")
-          Future.failed(PropertyDataError)
-        case x =>
-          logger.error(s"Unexpected scenario when retrieving data: $x")
+        case ex =>
+          logger.error(UnexpectedPropertyDataError(request.user.nino, request.user.mtditid, ex).toString)
           Future.failed(PropertyDataError)
       }
     }(requestBeforeUpdate, controllerComponents.executionContext, hc)

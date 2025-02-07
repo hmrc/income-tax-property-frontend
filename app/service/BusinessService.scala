@@ -18,6 +18,7 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.ApiError
+import models.IncomeSourcePropertyType._
 import models.User
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import play.api.Logging
@@ -45,6 +46,13 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
   ): Future[Either[ApiError, Option[PropertyDetails]]] =
     getPropertyDetails(nino, mtditid, isForeignProperty)
 
+  def getAllPropertyDetails(nino: String, mtditid: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Either[ApiError, Seq[PropertyDetails]]] =
+    getPropertyDetailsAll(nino, mtditid,isValidProperty)
+
+
+
   private def getPropertyDetails(
     nino: String,
     mtditid: String,
@@ -53,6 +61,16 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
     businessConnector.getBusinessDetails(nino, mtditid).map {
       case Left(error: ApiError)  => Left(error)
       case Right(businessDetails) => Right(businessDetails.propertyData.find(isPropertyType))
+    }
+
+  private def getPropertyDetailsAll(
+    nino: String,
+    mtditid: String,
+    isValidProperty: PropertyDetails => Boolean
+  )(implicit hc: HeaderCarrier): Future[Either[ApiError, Seq[PropertyDetails]]] =
+    businessConnector.getBusinessDetails(nino, mtditid).map {
+      case Left(error: ApiError)  => Left(error)
+      case Right(businessDetails) => Right(businessDetails.propertyData.filter(isValidProperty))
     }
 
   private def isUkProperty(property: PropertyDetails): Boolean =
@@ -64,4 +82,9 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
     property.incomeSourceType.contains(
       "foreign-property"
     ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
-}
+
+  private def isValidProperty(property: PropertyDetails): Boolean =
+    property.incomeSourceType.exists(str => str.contains(UKProperty.toString)  ||  str.contains(ForeignProperty.toString) ) &&
+      property.tradingStartDate.isDefined &&
+      property.accrualsOrCash.isDefined
+  }

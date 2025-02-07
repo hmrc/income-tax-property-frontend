@@ -17,16 +17,18 @@
 package controllers
 
 import base.SpecBase
+import connectors.error.{ApiError, SingleErrorBody}
 import controllers.session.SessionRecovery
-import models.{UKPropertySelect, UserAnswers}
 import models.backend.PropertyDetails
 import models.requests.OptionalDataRequest
+import models.{UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import pages.{UKPropertyPage, UKPropertySummaryPage}
+import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.inject.bind
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.FakeRequest
@@ -52,6 +54,10 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] =
       block(request)
   }
+  val propertyDetails: Seq[PropertyDetails] = Seq(
+    PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"),
+    PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId2")
+  )
 
   when(
     propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
@@ -92,12 +98,10 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     "must return OK and the correct view for a GET" in {
 
       val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(propertyDetails)
       )
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
@@ -128,10 +132,57 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       }
     }
 
+    "must fail with PropertyDataError when encountering an issue retrieving property data" in {
+
+      val year = LocalDate.now().getYear
+      val businessService = mock[BusinessService]
+
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn
+        Future.successful(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
+        .build()
+
+      running(application) {
+        val failure = intercept[Exception] {
+          val request = FakeRequest(GET, routes.SummaryController.show(year).url)
+          status(route(application, request).value)
+        }
+        failure.getMessage mustBe "Encountered an issue retrieving property data from the business API"
+      }
+    }
+
+    "must fail with PropertyDataError when no property data is found" in {
+
+      val year = LocalDate.now().getYear
+      val businessService = mock[BusinessService]
+
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(Seq.empty)
+      )
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[PropertySubmissionService].toInstance(propertyPeriodSubmissionService))
+        .build()
+
+      running(application) {
+        val failure = intercept[Exception] {
+          val request = FakeRequest(GET, routes.SummaryController.show(year).url)
+          status(route(application, request).value)
+        }
+        failure.getMessage mustBe "Encountered an issue retrieving property data from the business API"
+      }
+    }
+
+
+
+
     "must display the property rentals section if property rentals is selected in the about section" in {
       val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
       val propertyRentalsItems: Seq[TaskListItem] = Seq(
         TaskListItem(
@@ -150,8 +201,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         .success
         .value
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(propertyDetails)
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithPropertyRentals), isAgent = false)
@@ -185,8 +236,7 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
     "must NOT display the property rentals section if property rentals is not selected in the about section" in {
       val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+
       val businessService = mock[BusinessService]
       val userAnswersWithoutPropertyRentals = emptyUserAnswers
         .set(
@@ -195,8 +245,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
         )
         .success
         .value
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(propertyDetails)
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithoutPropertyRentals), isAgent = false)
@@ -229,12 +279,10 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
     "must display the UK rent a room section if rent a room is selected in the about section" in {
       val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(propertyDetails)
       )
 
       val ukRentARoomItems: Seq[TaskListItem] = Seq(
@@ -285,12 +333,10 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
     "must display the UK combined section if rent a room  & rentals are selected in the about section" in {
       val year = LocalDate.now().getYear
-      val propertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
       val businessService = mock[BusinessService]
 
-      when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
-        Right(Some(propertyDetails))
+      when(businessService.getAllPropertyDetails(any(), any())(any())) thenReturn Future.successful(
+        Right(propertyDetails)
       )
 
       val combinedItems: Seq[TaskListItem] = Seq(
@@ -341,3 +387,4 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
   }
 }
+
