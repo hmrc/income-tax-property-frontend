@@ -21,7 +21,10 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RaRAdjustments(
-  balancingCharge: BalancingCharge
+  balancingCharge: BalancingCharge,
+  unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal,
+  unusedLossesBroughtForward: RaRUnusedLossesBroughtForward,
+  whenYouReportedTheLoss: RarWhenYouReportedTheLoss
 )
 
 object RaRAdjustments extends Settable[RaRAdjustments] with Gettable[RaRAdjustments] {
