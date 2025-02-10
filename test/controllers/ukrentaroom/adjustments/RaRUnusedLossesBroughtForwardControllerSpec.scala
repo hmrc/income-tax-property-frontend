@@ -18,7 +18,7 @@ package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
 import forms.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardFormProvider
-import models.{NormalMode, RaRUnusedLossesBroughtForward, UserAnswers}
+import models.{NormalMode, UnusedLossesBroughtForward, UserAnswers}
 import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -44,8 +44,8 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new RaRUnusedLossesBroughtForwardFormProvider()
-  val validAnswer: RaRUnusedLossesBroughtForward = RaRUnusedLossesBroughtForward(
-    raRUnusedLossesBroughtForwardYesOrNo = true, raRUnusedLossesBroughtForwardAmount = Some(123.45))
+  val validAnswer: UnusedLossesBroughtForward = UnusedLossesBroughtForward(
+    unusedLossesBroughtForwardYesOrNo = true, unusedLossesBroughtForwardAmount = Some(123.45))
   lazy val raRUnusedLossesBroughtForwardRoute: String = routes.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
@@ -106,8 +106,8 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
           val request =
             FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
               .withFormUrlEncodedBody(
-                "raRUnusedLossesBroughtForwardYesOrNo" -> "true",
-                "raRUnusedLossesBroughtForwardAmount" -> "123.45"
+                "unusedLossesBroughtForwardYesOrNo" -> "true",
+                "unusedLossesBroughtForwardAmount" -> "123.45"
               )
 
           val result = route(application, request).value
@@ -159,8 +159,8 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
           val request =
             FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
               .withFormUrlEncodedBody(
-                "raRUnusedLossesBroughtForwardYesOrNo" -> validAnswer.raRUnusedLossesBroughtForwardYesOrNo.toString,
-                "raRUnusedLossesBroughtForwardAmount" -> validAnswer.raRUnusedLossesBroughtForwardAmount.toString
+                "rnusedLossesBroughtForwardYesOrNo" -> validAnswer.unusedLossesBroughtForwardYesOrNo.toString,
+                "unusedLossesBroughtForwardAmount" -> validAnswer.unusedLossesBroughtForwardAmount.toString
               )
 
           val result = route(application, request).value

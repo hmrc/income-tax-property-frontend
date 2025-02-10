@@ -17,7 +17,7 @@
 package forms.ukrentaroom.adjustments
 
 import forms.behaviours.BooleanFieldBehaviours
-import models.RaRUnusedLossesBroughtForward
+import models.UnusedLossesBroughtForward
 import org.scalatest.OptionValues
 import org.scalatest.prop.TableFor1
 import play.api.data.FormError
@@ -42,19 +42,19 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           val raRUnusedLossesBroughtForwardAmount: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
-              "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
-              "raRUnusedLossesBroughtForwardAmount" -> s"$raRUnusedLossesBroughtForwardAmount"
+              "unusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+              "unusedLossesBroughtForwardAmount" -> s"$raRUnusedLossesBroughtForwardAmount"
             )
           )
-          boundForm.value.value mustBe RaRUnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo, Some(raRUnusedLossesBroughtForwardAmount))
+          boundForm.value.value mustBe UnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo, Some(raRUnusedLossesBroughtForwardAmount))
           boundForm.errors mustBe empty
         }
 
         "and no amount is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo"))
+          val boundForm = form.bind(Map("unusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo"))
           boundForm.errors must contain(
             FormError(
-              "raRUnusedLossesBroughtForwardAmount",
+              "unusedLossesBroughtForwardAmount",
               s"raRUnusedLossesBroughtForward.error.amount.required.$individualOrAgent"
             )
           )
@@ -64,13 +64,13 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           val boundForm =
             form.bind(
               Map(
-                "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
-                "raRUnusedLossesBroughtForwardAmount" -> "non-numeric-value"
+                "unusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+                "unusedLossesBroughtForwardAmount" -> "non-numeric-value"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "raRUnusedLossesBroughtForwardAmount",
+              "unusedLossesBroughtForwardAmount",
               "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
             )
           )
@@ -80,13 +80,13 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
           val boundForm =
             form.bind(
               Map(
-                "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
-                "raRUnusedLossesBroughtForwardAmount" -> "4534.6545"
+                "unusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+                "unusedLossesBroughtForwardAmount" -> "4534.6545"
               )
             )
           boundForm.errors must contain(
             FormError(
-              "raRUnusedLossesBroughtForwardAmount",
+              "unusedLossesBroughtForwardAmount",
               "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
             )
           )
@@ -95,13 +95,13 @@ class RaRUnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviou
         "and an amount is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "raRUnusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
-              "raRUnusedLossesBroughtForwardAmount" -> "45334553534535345435345345434.65"
+              "unusedLossesBroughtForwardYesOrNo" -> s"$raRUnusedLossesBroughtForwardYesOrNo",
+              "unusedLossesBroughtForwardAmount" -> "45334553534535345435345345434.65"
             )
           )
           boundForm.errors must contain(
             FormError(
-              "raRUnusedLossesBroughtForwardAmount",
+              "unusedLossesBroughtForwardAmount",
               "raRUnusedLossesBroughtForward.error.amount.outOfRange",
               ArraySeq(formProvider.minimum, formProvider.maximum)
             )

@@ -55,7 +55,7 @@ class RarWhenYouReportedTheLossController @Inject()(
       }
       request.userAnswers
         .get(RaRUnusedLossesBroughtForwardPage)
-        .flatMap(_.raRUnusedLossesBroughtForwardAmount) match {
+        .flatMap(_.unusedLossesBroughtForwardAmount) match {
         case Some(amount) =>
           Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, amount.setScale(2, RoundingMode.DOWN).toString, mode))
         case None =>
@@ -68,7 +68,7 @@ class RarWhenYouReportedTheLossController @Inject()(
       val form = formProvider(request.user.isAgentMessageKey)
       request.userAnswers
         .get(RaRUnusedLossesBroughtForwardPage)
-        .flatMap(_.raRUnusedLossesBroughtForwardAmount) match {
+        .flatMap(_.unusedLossesBroughtForwardAmount) match {
         case Some(amount) =>
           form.bindFromRequest().fold(
             formWithErrors =>
