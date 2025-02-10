@@ -293,6 +293,7 @@ receivedGrantLeaseAmount.change.hidden	=	Premiymau am ganiatáu prydles
 
 yearLeaseAmount.title	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
 yearLeaseAmount.heading	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
+yearLeaseAmount.hint = *Missing Welsh*
 yearLeaseAmount.checkYourAnswersLabel	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
 yearLeaseAmount.change.hidden	=	Swm y Brydles am Flwyddyn
 
