@@ -18,6 +18,7 @@ package service
 
 import connectors.BusinessConnector
 import connectors.error.{ApiError, SingleErrorBody}
+import models.IncomeSourcePropertyType.UKProperty
 import models.User
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.Mockito.when
@@ -53,7 +54,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
 
     "return data" in {
       val businessDetails = BusinessDetails(
-        List(PropertyDetails(Some("property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"))
+        List(PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"))
       )
 
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(Right(businessDetails))
@@ -77,7 +78,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
 
     "return data" in {
       val details =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       val businessDetails = BusinessDetails(List(details))
 

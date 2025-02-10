@@ -17,10 +17,12 @@
 package controllers.session
 
 import base.SpecBase
-import models.User
+import models.backend.ForeignPropertyDetailsError
 import models.requests.OptionalDataRequest
+import models.{CapitalAllowancesForACar, ForeignIncomeTax, ForeignPropertyTax, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import play.api.mvc.Results.Redirect
@@ -33,7 +35,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with Fixture {
+class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with Fixture with Matchers {
   val propertyPeriodSubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
   val sessionRepository: SessionRepository = mock[SessionRepository]
 
@@ -49,9 +51,14 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
       implicit val odr: OptionalDataRequest[AnyContent] = OptionalDataRequest[AnyContent](fakeRequest, "", user, None)
       implicit val hc: HeaderCarrier = HeaderCarrier()
 
-      when(propertyPeriodSubmissionService.getPropertySubmission(taxYear, user)).thenReturn(
+      when(propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, user)).thenReturn(
         Future.successful(
           Right(fetchedPropertyData)
+        )
+      )
+      when(propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, user)).thenReturn(
+        Future.successful(
+          Left(ForeignPropertyDetailsError("AA000000A", "1234567890"))
         )
       )
       when(sessionRepository.get(any())).thenReturn(Future.successful(Some(emptyUserAnswers)))
@@ -63,9 +70,27 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
 
       whenReady(result) { r =>
         r mustEqual expectedCall
-        verify(propertyPeriodSubmissionService, times(1)).getPropertySubmission(taxYear, user)
-
+        verify(propertyPeriodSubmissionService, times(1)).getUKPropertySubmission(taxYear, user)
+        verify(propertyPeriodSubmissionService, times(1)).getForeignPropertySubmission(taxYear, user)
       }
+    }
+
+    "merged uk and foreign fetched data" in {
+      val expectedForeignPropertyData = foreignPropertyData.copy(
+        foreignPropertyTax = Some(Map("USA" ->
+          ForeignPropertyTax(Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(100))), Some(true))))
+      )
+
+      val expectedUkPropertyData = ukPropertyData.copy(
+        capitalAllowancesForACar = Some(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(3)))
+      )
+
+      val expectedForeignFetchedPropertyData = fetchedPropertyData.copy(foreignPropertyData = expectedForeignPropertyData)
+      val expectedUkFetchedPropertyData = fetchedPropertyData.copy(ukPropertyData = expectedUkPropertyData)
+      val expectedFetchedPropertyData = fetchedPropertyData.copy(ukPropertyData = expectedUkPropertyData, foreignPropertyData = expectedForeignPropertyData)
+
+      propertyPeriodSessionRecovery.mergeFetchedData(eitherUkFetchedData = Right(expectedUkFetchedPropertyData),
+          eitherForeignFetchedData = Right(expectedForeignFetchedPropertyData)) mustBe Right(expectedFetchedPropertyData)
     }
   }
 }

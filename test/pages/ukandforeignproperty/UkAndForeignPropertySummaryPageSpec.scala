@@ -16,6 +16,7 @@
 
 package pages.ukandforeignproperty
 
+import models.IncomeSourcePropertyType.ForeignProperty
 import models.backend.PropertyDetails
 import models.{UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
@@ -143,7 +144,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
       when(mockUkSummaryPage.propertyAboutItems(combinedUserAnswers, taxYear)).thenReturn(completedPropertyAboutItems)
 
       val foreignPropertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessService.getForeignPropertyDetails(any(), any())(any()))
         .thenReturn(Future.successful(Right(Some(foreignPropertyDetails))))
@@ -184,7 +185,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
         .thenReturn(notStartPropertyAboutItems)
 
       val foreignPropertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessService.getForeignPropertyDetails(any(), any())(any()))
         .thenReturn(Future.successful(Right(Some(foreignPropertyDetails))))

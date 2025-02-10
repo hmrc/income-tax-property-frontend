@@ -35,13 +35,13 @@ class PropertySubmissionService @Inject() (
   val ec: ExecutionContext
 ) extends Logging {
 
-  def getPropertySubmission(taxYear: Int, user: User)(implicit
+  def getUKPropertySubmission(taxYear: Int, user: User)(implicit
     hc: HeaderCarrier
   ): Future[Either[ServiceError, FetchedPropertyData]] =
     businessService.getUkPropertyDetails(user.nino, user.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
-      case Right(propertyDetails) =>
-        propertyDetails
+      case Right(ukPropertyDetails) =>
+        ukPropertyDetails
           .map { ukProperty =>
             propertyConnector.getPropertySubmission(taxYear, ukProperty.incomeSourceId, user).map {
               case Left(error) =>
@@ -51,6 +51,24 @@ class PropertySubmissionService @Inject() (
             }
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(user.nino, user.mtditid))))
+    }
+
+  def getForeignPropertySubmission(taxYear: Int, user: User)(implicit
+                                                      hc: HeaderCarrier
+  ): Future[Either[ServiceError, FetchedPropertyData]] =
+    businessService.getForeignPropertyDetails(user.nino, user.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(foreignPropertyDetails) =>
+        foreignPropertyDetails
+          .map { foreignProperty =>
+            propertyConnector.getPropertySubmission(taxYear, foreignProperty.incomeSourceId, user).map {
+              case Left(error) =>
+                Left(HttpParserError(error.status))
+              case Right(r) =>
+                Right(r)
+            }
+          }
+          .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(user.nino, user.mtditid))))
     }
 
   def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: RentalsIncome)(implicit
