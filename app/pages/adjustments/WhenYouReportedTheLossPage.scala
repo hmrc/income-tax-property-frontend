@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.adjustments
+package pages.adjustments
 
-import forms.mappings.Mappings
-import models.WhenYouReportedTheLoss
-import play.api.data.Form
+import models.{Rentals, WhenYouReportedTheLoss}
+import pages.PageConstants.adjustmentsPath
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case object WhenYouReportedTheLossPage extends QuestionPage[WhenYouReportedTheLoss] {
 
-class RarWhenYouReportedTheLossFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ adjustmentsPath(Rentals) \ toString
 
-  def apply(individualOrAgent: String): Form[WhenYouReportedTheLoss] =
-    Form(
-      "rarWhenYouReportedTheLoss" -> enumerable[WhenYouReportedTheLoss](s"rarWhenYouReportedTheLoss.error.required.${individualOrAgent}")
-    )
+  override def toString: String = "whenYouReportedTheLoss"
 }

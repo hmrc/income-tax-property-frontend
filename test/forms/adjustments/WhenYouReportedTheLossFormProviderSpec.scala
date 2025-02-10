@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.adjustments
+package forms.adjustments
 
 import forms.behaviours.OptionFieldBehaviours
 import models.WhenYouReportedTheLoss
 import play.api.data.FormError
 
-class RarWhenYouReportedTheLossFormProviderSpec extends OptionFieldBehaviours {
+class WhenYouReportedTheLossFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new RarWhenYouReportedTheLossFormProvider()("individual")
+  val form = new WhenYouReportedTheLossFormProvider()("individual")
 
-  ".rarWhenYouReportedTheLoss" - {
+  ".whenYouReportedTheLoss" - {
 
-    val fieldName = "rarWhenYouReportedTheLoss"
-    val requiredKey = "rarWhenYouReportedTheLoss.error.required.individual"
+    val fieldName = "whenYouReportedTheLoss"
+    val requiredKey = "whenYouReportedTheLoss.error.required.individual"
 
     behave like optionsField[WhenYouReportedTheLoss](
       form,
       fieldName,
-      validValues  = WhenYouReportedTheLoss.values,
+      validValues  =
+        WhenYouReportedTheLoss.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

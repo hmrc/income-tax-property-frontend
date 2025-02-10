@@ -14,38 +14,39 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.adjustments
+package controllers.adjustments
 
 import base.SpecBase
 import controllers.routes
-import forms.ukrentaroom.adjustments.RarWhenYouReportedTheLossFormProvider
-import models.{NormalMode, RaRUnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
+import forms.adjustments.WhenYouReportedTheLossFormProvider
+import models.{NormalMode, RaRUnusedLossesBroughtForward, UserAnswers, WhenYouReportedTheLoss}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.adjustments.{RaRUnusedLossesBroughtForwardPage, RarWhenYouReportedTheLossPage}
+import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
+import pages.adjustments.WhenYouReportedTheLossPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.adjustments.RarWhenYouReportedTheLossView
+import views.html.adjustments.WhenYouReportedTheLossView
 
 import scala.concurrent.Future
 import scala.math.BigDecimal.RoundingMode
 
-class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
+class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
   val taxYear: Int = 2024
   val isAgentMessageString: String = "individual"
-  lazy val rarWhenYouReportedTheLossRoute: String = controllers.ukrentaroom.adjustments.routes.RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode).url
+  lazy val whenYouReportedTheLossRoute: String = controllers.adjustments.routes.WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode).url
   val previousLoss: BigDecimal = 123
-  val formProvider = new RarWhenYouReportedTheLossFormProvider()
+  val formProvider = new WhenYouReportedTheLossFormProvider()
   val form = formProvider(isAgentMessageString)
 
-  "RarWhenYouReportedTheLoss Controller" - {
+  "WhenYouReportedTheLoss Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -57,11 +58,11 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, whenYouReportedTheLossRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
@@ -70,7 +71,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
         RaRUnusedLossesBroughtForward(
           raRUnusedLossesBroughtForwardYesOrNo = true,
@@ -80,9 +81,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = Some(userAnswersWithLoss), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, whenYouReportedTheLossRoute)
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
@@ -113,7 +114,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
+          FakeRequest(POST, whenYouReportedTheLossRoute)
             .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
@@ -135,12 +136,12 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
+          FakeRequest(POST, whenYouReportedTheLossRoute)
             .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", "invalid value"))
 
         val boundForm = form.bind(Map("rarWhenYouReportedTheLoss" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
@@ -154,7 +155,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, whenYouReportedTheLossRoute)
 
         val result = route(application, request).value
 
@@ -169,8 +170,8 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
+          FakeRequest(POST, whenYouReportedTheLossRoute)
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 
