@@ -18,8 +18,12 @@ package controllers.ukandforeignproperty
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider
-import models.Mode
+import models.UkAndForeignPropertyRentalTypeUk.{PropertyRentals, RentARoom}
+import models.{Mode, PropertyType, Rentals, RentalsRentARoom, UkAndForeignPropertyRentalTypeUk, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
+import pages.UkAndForeignPropertyRentalTypeUkPage
+import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -65,10 +69,19 @@ extends FrontendBaseController with I18nSupport {
         .fold(
           formWithErrors =>
             Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-          (value) => {
+          value => {
+            val propertyType: PropertyType = getPropertyType(request.userAnswers)
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswersUk <- Future.fromTry(updatedAnswers.set(
+                ClaimPropertyIncomeAllowancePage(propertyType),
+                value.claimPropertyIncomeAllowanceOrExpensesYesNo
+              ))
+              updatedAnswersForeign <- Future.fromTry(updatedAnswersUk.set(
+                ClaimPropertyIncomeAllowanceOrExpensesPage,
+                value.claimPropertyIncomeAllowanceOrExpensesYesNo
+              ))
+              _              <- sessionRepository.set(updatedAnswersForeign)
             } yield Redirect(
               navigator.nextPage(
                 UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
@@ -76,4 +89,13 @@ extends FrontendBaseController with I18nSupport {
           }
         )
     }
+
+  private def getPropertyType(userAnswers: UserAnswers ): PropertyType = {
+    val selectedRentalTypes: Set[UkAndForeignPropertyRentalTypeUk] = userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).getOrElse(Set.empty)
+    (selectedRentalTypes.contains(PropertyRentals), selectedRentalTypes.contains(RentARoom)) match {
+      case (true, false) => models.Rentals
+      case (false, true) => models.RentARoom
+      case (true, true) => models.RentalsRentARoom
+    }
+  }
 }
