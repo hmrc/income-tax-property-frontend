@@ -18,9 +18,9 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class RaRUnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo: Boolean,
-                                         raRUnusedLossesBroughtForwardAmount: Option[BigDecimal])
+case class UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo: Boolean,
+                                      unusedLossesBroughtForwardAmount: Option[BigDecimal])
 
-object RaRUnusedLossesBroughtForward {
-  implicit val format: Format[RaRUnusedLossesBroughtForward] = Json.format[RaRUnusedLossesBroughtForward]
+object UnusedLossesBroughtForward {
+  implicit val format: Format[UnusedLossesBroughtForward] = Json.format[UnusedLossesBroughtForward]
 }

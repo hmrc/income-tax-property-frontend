@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package pages.ukrentaroom.adjustments
+package pages.adjustments
 
-import models.{UnusedLossesBroughtForward, RentARoom}
+import models.{UnusedLossesBroughtForward, Rentals}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object RaRUnusedLossesBroughtForwardPage extends QuestionPage[UnusedLossesBroughtForward] {
+case object UnusedLossesBroughtForwardPage extends QuestionPage[UnusedLossesBroughtForward] {
 
-  override def path: JsPath = JsPath \ adjustmentsPath(RentARoom) \ toString
+  override def path: JsPath = JsPath \ adjustmentsPath(Rentals) \ toString
 
-  override def toString: String = "raRUnusedLossesBroughtForward"
+  override def toString: String = "unusedLossesBroughtForward"
 }
