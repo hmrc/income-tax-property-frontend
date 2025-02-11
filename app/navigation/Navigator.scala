@@ -661,7 +661,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case RaRUnusedLossesBroughtForwardPage =>
       taxYear => _ => userAnswers =>
         userAnswers.get(RaRUnusedLossesBroughtForwardPage) match {
-          case Some(RaRUnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
+          case Some(UnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
           case _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         }
 

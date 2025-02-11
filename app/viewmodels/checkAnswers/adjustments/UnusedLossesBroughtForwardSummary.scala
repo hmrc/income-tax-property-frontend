@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers.ukrentaroom.adjustments
+package viewmodels.checkAnswers.adjustments
 
-import controllers.ukrentaroom.adjustments.routes
+import controllers.adjustments.routes
 import models.{CheckMode, UnusedLossesBroughtForward, UserAnswers}
-import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -26,18 +26,18 @@ import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, val
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object RaRUnusedLossesBroughtForwardSummary  {
+object UnusedLossesBroughtForwardSummary  {
 
   def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(RaRUnusedLossesBroughtForwardPage).flatMap {
+    answers.get(UnusedLossesBroughtForwardPage).flatMap {
       answer =>
         val row: Content => Option[SummaryListRow] = content => Some(
           SummaryListRowViewModel(
-            key     = KeyViewModel("raRUnusedLossesBroughtForward.checkYourAnswersLabel").withCssClass(keyCssClass),
+            key     = KeyViewModel("unusedLossesBroughtForward.checkYourAnswersLabel").withCssClass(keyCssClass),
             value   = ValueViewModel(content).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", routes.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode).url)
-                .withVisuallyHiddenText(messages("raRUnusedLossesBroughtForward.change.hidden"))
+              ActionItemViewModel("site.change", routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode).url)
+                .withVisuallyHiddenText(messages("unusedLossesBroughtForward.change.hidden"))
             )
           )
         )
