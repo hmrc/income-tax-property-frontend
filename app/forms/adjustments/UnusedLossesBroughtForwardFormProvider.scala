@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.adjustments
+package forms.adjustments
 
 import forms.mappings.Mappings
 import models.UnusedLossesBroughtForward
@@ -24,7 +24,7 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import javax.inject.Inject
 
-class RaRUnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
+class UnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
 
   val minimum: BigDecimal = 0
   val maximum: BigDecimal = 100000000
@@ -32,15 +32,15 @@ class RaRUnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[UnusedLossesBroughtForward] =
     Form[UnusedLossesBroughtForward](
       mapping(
-        "unusedLossesBroughtForwardYesOrNo" -> boolean(s"raRUnusedLossesBroughtForward.error.required.$individualOrAgent"),
+        "unusedLossesBroughtForwardYesOrNo" -> boolean(s"unusedLossesBroughtForward.error.required.$individualOrAgent"),
         "unusedLossesBroughtForwardAmount" -> {
           mandatoryIfTrue(
             "unusedLossesBroughtForwardYesOrNo",
             currency(
-              s"raRUnusedLossesBroughtForward.error.amount.required.$individualOrAgent",
-              "raRUnusedLossesBroughtForward.error.amount.nonNumeric",
-              "raRUnusedLossesBroughtForward.error.amount.nonNumeric"
-            ).verifying(inRange(minimum, maximum, "raRUnusedLossesBroughtForward.error.amount.outOfRange"))
+              s"unusedLossesBroughtForward.error.amount.required.$individualOrAgent",
+              "unusedLossesBroughtForward.error.amount.nonNumeric",
+              "unusedLossesBroughtForward.error.amount.nonNumeric"
+            ).verifying(inRange(minimum, maximum, "unusedLossesBroughtForward.error.amount.outOfRange"))
           )
         }
       )(UnusedLossesBroughtForward.apply)(

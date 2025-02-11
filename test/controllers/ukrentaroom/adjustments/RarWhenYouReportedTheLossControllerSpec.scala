@@ -19,7 +19,7 @@ package controllers.ukrentaroom.adjustments
 import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.adjustments.RarWhenYouReportedTheLossFormProvider
-import models.{NormalMode, RaRUnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
+import models.{NormalMode, UnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -50,9 +50,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
     "must return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
-        RaRUnusedLossesBroughtForward(
-          raRUnusedLossesBroughtForwardYesOrNo = true,
-          raRUnusedLossesBroughtForwardAmount = Some(previousLoss)
+        UnusedLossesBroughtForward(
+          unusedLossesBroughtForwardYesOrNo = true,
+          unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -72,9 +72,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
-        RaRUnusedLossesBroughtForward(
-          raRUnusedLossesBroughtForwardYesOrNo = true,
-          raRUnusedLossesBroughtForwardAmount = Some(previousLoss)
+        UnusedLossesBroughtForward(
+          unusedLossesBroughtForwardYesOrNo = true,
+          unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithLoss), isAgent = false).build()
@@ -94,9 +94,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
     "must redirect to the next page when valid data is submitted" in {
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
-        RaRUnusedLossesBroughtForward(
-          raRUnusedLossesBroughtForwardYesOrNo = true,
-          raRUnusedLossesBroughtForwardAmount = Some(previousLoss)
+        UnusedLossesBroughtForward(
+          unusedLossesBroughtForwardYesOrNo = true,
+          unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
       val mockSessionRepository = mock[SessionRepository]
@@ -126,9 +126,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
-        RaRUnusedLossesBroughtForward(
-          raRUnusedLossesBroughtForwardYesOrNo = true,
-          raRUnusedLossesBroughtForwardAmount = Some(previousLoss)
+        UnusedLossesBroughtForward(
+          unusedLossesBroughtForwardYesOrNo = true,
+          unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()

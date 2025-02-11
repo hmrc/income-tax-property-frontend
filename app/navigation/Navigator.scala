@@ -35,7 +35,7 @@ import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
-import pages.adjustments._
+import pages.adjustments.{UnusedLossesBroughtForwardPage, _}
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumForLeasePage}
@@ -349,13 +349,31 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               }
             }
     case UnusedResidentialFinanceCostPage(Rentals) =>
-      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
     case UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
           _ =>
-            RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-        // Rentals-Expenses
+            UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case UnusedLossesBroughtForwardPage(Rentals) =>
+      taxYear => _ => userAnswers =>
+        userAnswers.get(UnusedLossesBroughtForwardPage(Rentals)) match {
+          case Some(UnusedLossesBroughtForward(true, _)) => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
+          case Some(UnusedLossesBroughtForward(false, _)) => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        }
+    case UnusedLossesBroughtForwardPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers =>
+        userAnswers.get(UnusedLossesBroughtForwardPage(RentalsRentARoom)) match {
+          case Some(UnusedLossesBroughtForward(true, _)) => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+          case Some(UnusedLossesBroughtForward(false, _)) => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        }
+    case WhenYouReportedTheLossPage(Rentals) =>
+      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+
+    case WhenYouReportedTheLossPage(RentalsRentARoom) =>
+      taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+
+    // Rentals-Expenses
     case ConsolidatedExpensesPage(Rentals) =>
       taxYear =>
         _ =>
@@ -661,11 +679,11 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case RaRUnusedLossesBroughtForwardPage =>
       taxYear => _ => userAnswers =>
         userAnswers.get(RaRUnusedLossesBroughtForwardPage) match {
-          case Some(RaRUnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
+          case Some(UnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
           case _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         }
 
-    case WhenYouReportedTheLossPage =>
+    case RarWhenYouReportedTheLossPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage     => taxYear => _ => _ => SummaryController.show(taxYear)
     case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -913,18 +931,22 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
               .onPageLoad(taxYear)
         // Adjustments
+    case UnusedLossesBroughtForwardPage(Rentals) =>
+      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, Rentals, previousAnswers, userAnswers)
     case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage(Rentals) |
         RenovationAllowanceBalancingChargePage(Rentals) | ResidentialFinanceCostPage(Rentals) |
-        UnusedResidentialFinanceCostPage(Rentals) =>
+        UnusedResidentialFinanceCostPage(Rentals) | WhenYouReportedTheLossPage(Rentals) =>
       taxYear =>
         _ =>
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
+    case UnusedLossesBroughtForwardPage(RentalsRentARoom) =>
+      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, RentalsRentARoom, previousAnswers, userAnswers)
     case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
-        UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
+        UnusedResidentialFinanceCostPage(RentalsRentARoom) | WhenYouReportedTheLossPage(RentalsRentARoom) =>
       taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage(Rentals) =>
       taxYear =>
@@ -1389,4 +1411,22 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     }
 
+  private def UnusedLossesBroughtForwardPNavigationCheckMode(
+       taxYear: Int,
+       propertyType: PropertyType,
+       previousAnswers: UserAnswers,
+       userAnswers: UserAnswers
+     ): Call =
+    (
+      previousAnswers.get(UnusedLossesBroughtForwardPage(propertyType)),
+      userAnswers.get(UnusedLossesBroughtForwardPage(propertyType))
+    ) match {
+      case (Some(UnusedLossesBroughtForward(false, _)), Some(UnusedLossesBroughtForward(true, _))) =>
+        WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
+      case _ => propertyType match {
+        case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+    }
 }
+

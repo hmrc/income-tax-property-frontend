@@ -19,9 +19,9 @@ package controllers.adjustments
 import controllers.actions._
 import controllers.routes
 import forms.adjustments.WhenYouReportedTheLossFormProvider
-import models.Mode
+import models.{Mode, PropertyType}
 import navigation.Navigator
-import pages.adjustments.WhenYouReportedTheLossPage
+import pages.adjustments.{UnusedLossesBroughtForwardPage, WhenYouReportedTheLossPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,28 +46,41 @@ class WhenYouReportedTheLossController @Inject()(
 
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(WhenYouReportedTheLossPage) match {
+      val preparedForm = request.userAnswers.get(WhenYouReportedTheLossPage(propertyType)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, "0.00", mode))
-
+      request.userAnswers
+        .get(UnusedLossesBroughtForwardPage(propertyType))
+        .flatMap(_.unusedLossesBroughtForwardAmount) match {
+        case Some(amount) =>
+          Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, amount.setScale(2, RoundingMode.DOWN).toString, mode, propertyType))
+        case None =>
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+      }
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
+      request.userAnswers
+        .get(UnusedLossesBroughtForwardPage(propertyType))
+        .flatMap(_.unusedLossesBroughtForwardAmount) match {
+        case Some(amount) =>
           form.bindFromRequest().fold(
             formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, "0.00", request.user.isAgentMessageKey, mode))),
+              Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, amount.setScale(2, RoundingMode.DOWN).toString, mode, propertyType))),
             value =>
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenYouReportedTheLossPage, value))
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenYouReportedTheLossPage(propertyType), value))
                 _ <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(WhenYouReportedTheLossPage, taxYear, mode, request.userAnswers, updatedAnswers)))
-
+              } yield Redirect(navigator.nextPage(WhenYouReportedTheLossPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
+          )
+        case None =>
+          Future(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+      }
   }
 }

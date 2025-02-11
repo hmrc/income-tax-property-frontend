@@ -32,8 +32,7 @@ class WhenYouReportedTheLossFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[WhenYouReportedTheLoss](
       form,
       fieldName,
-      validValues  =
-        WhenYouReportedTheLoss.values,
+      validValues  = WhenYouReportedTheLoss.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

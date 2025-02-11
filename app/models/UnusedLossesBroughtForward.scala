@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package pages.adjustments
+package models
 
-import models.{PropertyType, WhenYouReportedTheLoss}
-import pages.PageConstants.adjustmentsPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case class WhenYouReportedTheLossPage(propertyType: PropertyType) extends QuestionPage[WhenYouReportedTheLoss] {
+case class UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo: Boolean,
+                                      unusedLossesBroughtForwardAmount: Option[BigDecimal])
 
-  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
-
-  override def toString: String = "whenYouReportedTheLoss"
+object UnusedLossesBroughtForward {
+  implicit val format: Format[UnusedLossesBroughtForward] = Json.format[UnusedLossesBroughtForward]
 }

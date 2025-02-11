@@ -16,34 +16,36 @@
 
 package viewmodels.checkAnswers.adjustments
 
-import models.{CheckMode, UserAnswers}
-import pages.adjustments.WhenYouReportedTheLossPage
+import controllers.adjustments.routes
+import controllers.adjustments.routes.{AdjustmentsCheckYourAnswersController, WhenYouReportedTheLossController}
+import models.{CheckMode, PropertyType, Rentals, UnusedLossesBroughtForward, UserAnswers}
+import pages.adjustments.{UnusedLossesBroughtForwardPage, WhenYouReportedTheLossPage}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.valueCssClass
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object WhenYouReportedTheLossSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(WhenYouReportedTheLossPage).map {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(WhenYouReportedTheLossPage(propertyType)).map {
       answer =>
-
         val value = ValueViewModel(
           HtmlContent(
             HtmlFormat.escape(messages(s"whenYouReportedTheLoss.$answer"))
           )
-        )
+        ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key     = "whenYouReportedTheLoss.checkYourAnswersLabel",
-          value   = value,
+          key = "whenYouReportedTheLoss.checkYourAnswersLabel",
+          value = value,
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.adjustments.routes.WhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", routes.WhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode, propertyType).url)
               .withVisuallyHiddenText(messages("whenYouReportedTheLoss.change.hidden"))
           )
         )
-    }
+      }
 }

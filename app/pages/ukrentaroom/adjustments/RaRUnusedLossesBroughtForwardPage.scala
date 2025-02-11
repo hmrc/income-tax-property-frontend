@@ -16,12 +16,12 @@
 
 package pages.ukrentaroom.adjustments
 
-import models.{RaRUnusedLossesBroughtForward, RentARoom}
+import models.{UnusedLossesBroughtForward, RentARoom}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object RaRUnusedLossesBroughtForwardPage extends QuestionPage[RaRUnusedLossesBroughtForward] {
+case object RaRUnusedLossesBroughtForwardPage extends QuestionPage[UnusedLossesBroughtForward] {
 
   override def path: JsPath = JsPath \ adjustmentsPath(RentARoom) \ toString
 

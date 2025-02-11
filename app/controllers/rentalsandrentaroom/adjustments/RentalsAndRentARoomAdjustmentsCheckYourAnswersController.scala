@@ -24,6 +24,7 @@ import models.RentalsRentARoom
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models._
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -52,17 +53,32 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val list = SummaryListViewModel(
-        rows = Seq(
-          PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
-          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-        ).flatten
-      )
+      val hasUnusedLosses: Boolean = request.userAnswers
+        .get(UnusedLossesBroughtForwardPage(RentalsRentARoom))
+        .exists(_.unusedLossesBroughtForwardYesOrNo)
 
+      val summaryListRows = Seq(
+        PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+        BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+        BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
+        ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+        UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
+      ).flatten
+
+      val UnusedLossesBroughtForwardRows =
+        if (hasUnusedLosses) {
+          Seq(
+            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
+          ).flatten
+        } else {
+          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
+        }
+      val list = SummaryListViewModel(
+        rows = summaryListRows
+          .appendedAll(UnusedLossesBroughtForwardRows)
+      )
       Ok(view(list, taxYear))
   }
 

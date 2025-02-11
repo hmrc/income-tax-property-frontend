@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package pages.adjustments
 
-import play.api.libs.json.{Format, Json}
+import models.{PropertyType, UnusedLossesBroughtForward}
+import pages.PageConstants.adjustmentsPath
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-case class RaRUnusedLossesBroughtForward(raRUnusedLossesBroughtForwardYesOrNo: Boolean,
-                                         raRUnusedLossesBroughtForwardAmount: Option[BigDecimal])
+case class UnusedLossesBroughtForwardPage(propertyType: PropertyType) extends QuestionPage[UnusedLossesBroughtForward] {
 
-object RaRUnusedLossesBroughtForward {
-  implicit val format: Format[RaRUnusedLossesBroughtForward] = Json.format[RaRUnusedLossesBroughtForward]
+  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
+
+  override def toString: String = "unusedLossesBroughtForward"
 }
