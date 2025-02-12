@@ -23,5 +23,5 @@ case object AboutSectionCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "aboutSectionComplete"
+  override def toString: String = "rentARoomAboutSectionComplete"
 }
