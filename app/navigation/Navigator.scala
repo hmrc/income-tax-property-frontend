@@ -639,7 +639,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         userAnswers =>
           _ =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentARoom) {
               TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
             }
     case ClaimExpensesOrReliefPage(RentARoom) =>
@@ -851,12 +851,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
           _ =>
             controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
               .onPageLoad(taxYear)
-    case PropertyRentalIncomePage(RentalsRentARoom) =>
-      taxYear =>
-        _ =>
-          _ =>
-            controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController
-              .onPageLoad(taxYear)
     case premiumlease.PremiumForLeasePage(RentalsRentARoom) =>
       taxYear =>
         previousUserAnswers =>
@@ -1033,8 +1027,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case ClaimExpensesOrReliefPage(RentalsRentARoom) =>
       taxYear => _ => _ => ClaimPropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, RentalsRentARoom)
-    case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
-      taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    case PropertyRentalIncomePage(RentalsRentARoom) =>
+      taxYear =>_ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
     case ClaimPropertyIncomeAllowancePage(RentalsRentARoom) =>
       taxYear => _ => _ => routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
 

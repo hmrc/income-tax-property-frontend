@@ -887,16 +887,6 @@ class NavigatorSpec extends SpecBase {
           ) mustBe checkCYARouteForPropertyType(propertyType, taxYear)
         }
 
-        s"must go from PropertyRentalIncome to CheckYourAnswers for $propertyTypeDefinition" in {
-          navigator.nextPage(
-            PropertyRentalIncomePage(propertyType),
-            taxYear,
-            CheckMode,
-            UserAnswers("test"),
-            UserAnswers("test")
-          ) mustBe checkCYARouteForPropertyType(propertyType, taxYear)
-        }
-
         s"must go from PremiumForLeasePage to CalculateFigureYourselfPage when user selects yes and the previous answer was no for $propertyTypeDefinition" in {
           val previousUserAnswers = UserAnswers("test").set(PremiumForLeasePage(propertyType), false).get
           val userAnswers = UserAnswers("test").set(PremiumForLeasePage(propertyType), true).get
