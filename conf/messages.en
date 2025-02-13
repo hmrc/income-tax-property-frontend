@@ -362,6 +362,7 @@ receivedGrantLeaseAmount.change.hidden = Premiums for the grant of a lease
 
 yearLeaseAmount.title = How many complete 12 month periods were in the term of the lease?
 yearLeaseAmount.heading = How many complete 12 month periods were in the term of the lease?
+yearLeaseAmount.hint = You only need to tell us about leases between two and 50 years in length.
 yearLeaseAmount.checkYourAnswersLabel = How many complete 12 month periods were in the term of the lease?
 yearLeaseAmount.error.nonNumeric = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
 yearLeaseAmount.error.required = Enter a number between {0} and {1} for the number of complete 12 month periods in the term of the lease
