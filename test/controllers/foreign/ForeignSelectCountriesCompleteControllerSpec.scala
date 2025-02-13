@@ -108,7 +108,6 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
           ArgumentMatchers.eq("completed"),
           ArgumentMatchers.eq(user),
           ArgumentMatchers.eq("")
-
         )(any())
       ) thenReturn Future.successful(
         Right("")
