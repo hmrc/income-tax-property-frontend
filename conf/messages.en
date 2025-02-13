@@ -566,7 +566,8 @@ propertyIncomeAllowance.error.maxCapped.individual = The amount of property inco
 propertyIncomeAllowance.error.maxCapped.agent = The amount of property income allowance your client claims must not be more than £1,000
 propertyIncomeAllowance.error.outOfRange.individual = Enter an amount between £{0} and £{1}
 propertyIncomeAllowance.error.outOfRange.agent = Enter an amount between £{0} and £{1}
-propertyIncomeAllowance.checkYourAnswersLabel = Your Property Income Allowance claim
+propertyIncomeAllowance.checkYourAnswersLabel.individual = Your Property Income Allowance claim
+propertyIncomeAllowance.checkYourAnswersLabel.agent = Your client’s Property Income Allowance claim
 propertyIncomeAllowance.change.hidden = Your Property Income Allowance claim
 
 adjustmentsStart.title = Adjustments
@@ -587,7 +588,8 @@ rentalsAndRentARoomAdjustmentsStart.details.content.l2 = balancing charge
 rentalsAndRentARoomAdjustmentsStart.details.content.l3 = business premises renovation allowance balancing charge
 rentalsAndRentARoomAdjustmentsStart.details.content.l4 = residential financial costs
 rentalsAndRentARoomAdjustmentsStart.details.content.l5 = unused residential costs brought forward
-rentalsAndRentARoomAdjustmentsStart.details.content.l6 = your property income allowance claim
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.individual = your property income allowance claim
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.agent = your client’s property income allowance claim
 
 expensesStart.title = Expenses
 expensesStart.heading = Expenses

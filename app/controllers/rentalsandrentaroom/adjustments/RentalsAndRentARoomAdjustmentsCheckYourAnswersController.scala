@@ -56,7 +56,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
           BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
