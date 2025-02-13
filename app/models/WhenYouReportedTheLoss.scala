@@ -20,17 +20,17 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait RarWhenYouReportedTheLoss
+sealed trait WhenYouReportedTheLoss
 
-object RarWhenYouReportedTheLoss extends Enumerable.Implicits {
+object WhenYouReportedTheLoss extends Enumerable.Implicits {
 
-  case object y2018to2019 extends WithName("y2018to2019") with RarWhenYouReportedTheLoss
-  case object y2019to2020 extends WithName("y2019to2020") with RarWhenYouReportedTheLoss
-  case object y2020to2021 extends WithName("y2020to2021") with RarWhenYouReportedTheLoss
-  case object y2021to2022 extends WithName("y2021to2022") with RarWhenYouReportedTheLoss
-  case object y2022to2023 extends WithName("y2022to2023") with RarWhenYouReportedTheLoss
+  case object y2018to2019 extends WithName("y2018to2019") with WhenYouReportedTheLoss
+  case object y2019to2020 extends WithName("y2019to2020") with WhenYouReportedTheLoss
+  case object y2020to2021 extends WithName("y2020to2021") with WhenYouReportedTheLoss
+  case object y2021to2022 extends WithName("y2021to2022") with WhenYouReportedTheLoss
+  case object y2022to2023 extends WithName("y2022to2023") with WhenYouReportedTheLoss
 
-  val values: Seq[RarWhenYouReportedTheLoss] = Seq(
+  val values: Seq[WhenYouReportedTheLoss] = Seq(
       y2018to2019,
       y2019to2020,
       y2020to2021,
@@ -41,12 +41,12 @@ object RarWhenYouReportedTheLoss extends Enumerable.Implicits {
   def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
     case (value, index) =>
       RadioItem(
-        content = Text(messages(s"foreignWhenYouReportedTheLoss.${value.toString}")),
+        content = Text(messages(s"whenYouReportedTheLoss.${value.toString}")),
         value   = Some(value.toString),
         id      = Some(s"value_$index")
       )
   }
 
-  implicit val enumerable: Enumerable[RarWhenYouReportedTheLoss] =
+  implicit val enumerable: Enumerable[WhenYouReportedTheLoss] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
