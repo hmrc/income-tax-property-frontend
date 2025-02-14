@@ -3036,3 +3036,8 @@ rarWhenYouReportedTheLoss.checkYourAnswersLabel = *Missing Welsh*
 rarWhenYouReportedTheLoss.error.required.individual = *Missing Welsh*
 rarWhenYouReportedTheLoss.error.required.agent = *Missing Welsh*
 rarWhenYouReportedTheLoss.change.hidden = *Missing Welsh*
+
+foreignCapitalAllowancesForACar.checkYourAnswersLabel = *Missing Welsh*
+foreignCapitalAllowancesForACar.change.hidden = *Missing Welsh*
+foreignCapitalAllowancesForACar.inputLabel = *Missing Welsh*
+foreignCapitalAllowancesForACar.error.nonNumeric = *Missing Welsh*
