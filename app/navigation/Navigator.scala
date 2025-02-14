@@ -639,7 +639,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         userAnswers =>
           _ =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentalsRentARoom) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "about", RentARoom) {
               TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
             }
     case ClaimExpensesOrReliefPage(RentARoom) =>
