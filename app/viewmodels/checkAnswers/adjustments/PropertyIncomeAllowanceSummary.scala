@@ -27,12 +27,12 @@ import viewmodels.implicits._
 
 object PropertyIncomeAllowanceSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(PropertyIncomeAllowancePage(propertyType)).map {
       answer =>
 
         SummaryListRowViewModel(
-          key = KeyViewModel("propertyIncomeAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel(s"propertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", routes.PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType).url)

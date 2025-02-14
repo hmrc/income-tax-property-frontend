@@ -27,7 +27,23 @@ class AdjustmentsStartControllerSpec extends SpecBase {
 
   "AdjustmentsStart Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for an individual" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AdjustmentsStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(taxYear, true, "individual")(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for an agent" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
 
@@ -39,7 +55,7 @@ class AdjustmentsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, true)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, true, "agent")(request, messages(application)).toString
       }
     }
   }

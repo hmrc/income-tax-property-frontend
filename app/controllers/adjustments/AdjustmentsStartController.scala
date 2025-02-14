@@ -37,7 +37,6 @@ class AdjustmentsStartController @Inject() (
 
   def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(taxYear, expensesOrPIA))
-
+      Ok(view(taxYear, expensesOrPIA, request.user.isAgentMessageKey))
     }
 }

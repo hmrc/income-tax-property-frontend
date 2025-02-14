@@ -429,7 +429,8 @@ propertyIncomeAllowance.details.content2.agent	=	*Missing Welsh*
 propertyIncomeAllowance.details.content3	=	Darllenwch ragor am
 propertyIncomeAllowance.details.content3.link.text	=	lwfans incwm o eiddo, ar GOV.UK (yn agor tab newydd)
 
-propertyIncomeAllowance.checkYourAnswersLabel	=	Eich cyfran chi o lwfans incwm o eiddo
+propertyIncomeAllowance.checkYourAnswersLabel.individual	=	Eich cyfran chi o lwfans incwm o eiddo
+propertyIncomeAllowance.checkYourAnswersLabel.agent	=	*Missing Welsh*
 propertyIncomeAllowance.change.hidden	=	Eich cyfran chi o lwfans incwm o eiddo
 
 adjustmentsStart.title	=	Addasiadau
@@ -1287,7 +1288,8 @@ rentalsAndRentARoomAdjustmentsStart.details.content.l2 = tâl mantoli
 rentalsAndRentARoomAdjustmentsStart.details.content.l3 = tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
 rentalsAndRentARoomAdjustmentsStart.details.content.l4 = costau ariannol preswyl
 rentalsAndRentARoomAdjustmentsStart.details.content.l5 = costau preswyl sydd heb eu defnyddio a ddygwyd ymlaen
-rentalsAndRentARoomAdjustmentsStart.details.content.l6 = eich lwfans incwm o eiddo a wnaed cais amdano
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.individual = eich lwfans incwm o eiddo a wnaed cais amdano
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.agent = *Missing Welsh*
 
 ukrentaroom.income.totalIncomeAmount.title.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.heading.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
