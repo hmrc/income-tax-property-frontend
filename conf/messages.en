@@ -5,7 +5,7 @@ common.inProgress = In progress
 common.completed = Completed
 common.canNotStart = Cannot start yet
 
-summary.page.heading = Property
+summary.page.heading = Your Income Tax Return
 summary.heading = UK property
 summary.title = UK property
 summary.aboutUKProperties.heading = UK property
@@ -3059,3 +3059,28 @@ rarWhenYouReportedTheLoss.checkYourAnswersLabel = yes
 rarWhenYouReportedTheLoss.error.required.individual = Select when you reported the loss
 rarWhenYouReportedTheLoss.error.required.agent = Select when your client reported the loss
 rarWhenYouReportedTheLoss.change.hidden = When you reported the loss
+
+
+ukAndForeign.ukList.propertyRental.title = UK property rentals
+ukAndForeign.ukList.rentAroom.title = UK rent a room
+ukAndForeign.ukList.propertyRentalAndRentAroom.title = UK property rentals and rent a room
+
+
+ukAndForeign.ukList.propertyRental.enhancedStructuresAndBuildingAllowance = Enhanced Structures and buildings allowance
+
+ukAndForeign.ukList.rentAroom.about = About
+ukAndForeign.ukList.rentAroom.expenses = Expenses
+ukAndForeign.ukList.rentAroom.allowances = Allowances
+ukAndForeign.ukList.rentAroom.adjustments = Adjustments
+
+
+ukAndForeign.foreignList.title = Foreign properties
+ukAndForeign.foreignList.heading = {0} all properties
+
+ukAndForeign.foreignList.tax = Foreign tax
+ukAndForeign.foreignList.income = Income
+ukAndForeign.foreignList.expenses = Expenses
+ukAndForeign.foreignList.allowances = Allowances
+ukAndForeign.foreignList.structuresAndBuildingAllowance = Structures and buildings allowance
+
+ukAndForeign.foreignList.adjustments = Adjustments
