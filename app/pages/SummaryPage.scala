@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
+import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers, UKProperty}
 import pages.adjustments.RentalsAdjustmentsCompletePage
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
@@ -231,7 +231,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       TaskListItem(
         "summary.about",
         cyaDiversionService
-          .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", Rentals, NormalMode) {
+          .redirectToCYAIfFinished[Call](taxYear, userAnswers, "about", UKProperty, NormalMode) {
             controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear)
           }(identity), {
           val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyCompletePage))
