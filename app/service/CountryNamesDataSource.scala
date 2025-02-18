@@ -25,17 +25,30 @@ import scala.io.Source
 object CountryNamesDataSource {
 
   // Adding an empty option as a workaround for the Select component
-  lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems
+  def countrySelectItems(lang: String): Seq[SelectItem] = {
+      lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems(lang)
+    countrySelectItems
+  }
 
-  private lazy val loadedCountries: Seq[Country] = loadCountries
+  private lazy val loadedCountriesEn: Seq[Country] = loadCountriesEn
+  private lazy val loadedCountriesCy: Seq[Country] = loadCountriesCy
 
   private def emptyOption: SelectItem = SelectItem(text = "", value = Some(""))
 
-  def getCountry(code: String): Option[Country] = loadedCountries.find(item => item.code == code)
+  def getCountry(code: String, lang: String): Option[Country] = {
+    lang match {
+    case "en" => loadedCountriesEn.find(item => item.code == code)
+    case "cy" => loadedCountriesCy.find(item => item.code == code)
+  }
+  }
 
-  private def selectItems: Seq[SelectItem] =
-    loadCountries.map(country => SelectItem(text = country.name, value = Some(country.code)))
-  lazy val loadCountries: Seq[Country] =
+  private def selectItems(lang: String): Seq[SelectItem] = {
+  lang match {
+    case "en" => loadCountriesEn.map(country => SelectItem(text = country.name, value = Some(country.code)))
+    case "cy" => loadCountriesCy.map(country => SelectItem(text = country.name, value = Some(country.code)))
+  }}
+
+  lazy val loadCountriesEn: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries.csv"), "UTF-8"))
       .allWithOrderedHeaders
@@ -43,13 +56,21 @@ object CountryNamesDataSource {
       .sortBy(x => x("short_name"))
       .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))
 
+  lazy val loadCountriesCy: Seq[Country] =
+    CSVReader
+      .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries-cy.csv"), "UTF-8"))
+      .allWithOrderedHeaders
+      ._2
+      .sortBy(x => x("short_name"))
+      .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))
+
 
   // Adding a USA option as workaround for the `Select Auto-Complete` results to show United States of America
-  lazy val countrySelectItemsWithUSA: Seq[SelectItem] = {
-    val maybeUSA: Option[Country] = getCountry("USA")
+  def countrySelectItemsWithUSA(lang: String): Seq[SelectItem] = {
+    val maybeUSA: Option[Country] = getCountry("USA", lang)
     maybeUSA
       .map(usa => SelectItem(text = usa.code, value = Some(usa.code)))
-      .fold(countrySelectItems)(countrySelectItems :+ _)
+      .fold(countrySelectItems(lang))(countrySelectItems(lang) :+ _)
   }
 
 }

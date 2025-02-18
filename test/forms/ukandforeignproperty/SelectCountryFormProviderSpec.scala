@@ -42,7 +42,7 @@ class SelectCountryFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      Gen.oneOf(CountryNamesDataSource.loadCountries.map(_.code))
+      Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code))
     )
 
     "should return the 'duplicate' error when the user has already added a country, then tries to add it again" in {
