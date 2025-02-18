@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import models.{UKPropertySelect, UserAnswers}
+import models.{UKPropertySelect, UkAndForeignPropertyRentalTypeUk, UserAnswers}
 
 package object pages {
   def isSelected(userAnswers: Option[UserAnswers], select: UKPropertySelect): Boolean =
     userAnswers.exists(_.get(UKPropertyPage).exists(_.contains(select)))
+
+  def isSelected(userAnswers: Option[UserAnswers], select: UkAndForeignPropertyRentalTypeUk): Boolean =
+    userAnswers.exists(_.get(UkAndForeignPropertyRentalTypeUkPage).exists(_.contains(select)))
 }
