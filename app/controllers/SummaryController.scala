@@ -75,7 +75,7 @@ class SummaryController @Inject() (
           val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
           val maybeCountries = foreignCountries.getOrElse(List.empty)
           val foreignPropertyItems = maybeCountries.map { country =>
-            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, country.code, request.userAnswers)
+            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, ukAccrualsOrCash, country.code, request.userAnswers)
           }.toMap
           Future.successful(
             Ok(
