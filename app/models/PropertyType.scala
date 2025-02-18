@@ -29,6 +29,9 @@ case object RentARoom extends PropertyType {
 case object RentalsRentARoom extends PropertyType {
   override def toString: String = "rentals and rent a room"
 }
+case object UKProperty extends PropertyType {
+  override def toString: String = "uk property"
+}
 case object ForeignProperty extends PropertyType {
   override def toString: String = "foreign property"
 }
@@ -40,6 +43,7 @@ object PropertyType {
     case Rentals          => "rentals"
     case RentARoom        => "rent-a-room"
     case RentalsRentARoom => "rentals-rent-a-room"
+    case UKProperty       => "uk-property"
     case ForeignProperty  => "foreign-property"
     case UKAndForeignProperty => "uk-and-foreign-property"
   }
@@ -49,6 +53,7 @@ object PropertyType {
       case Rentals          => "Rentals"
       case RentARoom        => "RentARoom"
       case RentalsRentARoom => "RentalsRentARoom"
+      case UKProperty       => "uk-property"
       case ForeignProperty  => "ForeignProperty"
       case UKAndForeignProperty => "UKAndForeignProperty"
     }
