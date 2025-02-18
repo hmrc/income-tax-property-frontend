@@ -18,18 +18,19 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.SelectCountryFormProvider
-import models.{Index, Mode}
+import models.{Mode, Index}
 import navigation.UkAndForeignPropertyNavigator
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.{CountryNamesDataSource, UkAndForeignPropertyCountryService}
+import service.{UkAndForeignPropertyCountryService, CountryNamesDataSource}
 import service.CountryNamesDataSource.countrySelectItems
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.SelectCountryView
+import uk.gov.hmrc.play.language.LanguageUtils
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +45,8 @@ class SelectCountryController @Inject() (
                                           requireData: DataRequiredAction,
                                           formProvider: SelectCountryFormProvider,
                                           val controllerComponents: MessagesControllerComponents,
-                                          view: SelectCountryView
+                                          view: SelectCountryView,
+                                          languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -62,7 +64,7 @@ class SelectCountryController @Inject() (
           }
       }
 
-      Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
+      Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems(languageUtils.getCurrentLang.locale.toString)))
     }
 
   def onSubmit(taxYear: Int, index: Index, mode: Mode): Action[AnyContent] =
@@ -74,11 +76,11 @@ class SelectCountryController @Inject() (
         .fold(
           formWithErrors =>
             Future.successful(
-              BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems))
+              BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItems(languageUtils.getCurrentLang.locale.toString)))
             ),
           countryCode =>
             for {
-              country            <- Future(CountryNamesDataSource.getCountry(countryCode))
+              country            <- Future(CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString))
               updatedUserAnswers <- countryService.upsertCountry(country, index)
               _                  <- sessionRepository.set(updatedUserAnswers)
             } yield Redirect(navigator.nextPage(SelectCountryPage, taxYear, mode, request.userAnswers, updatedUserAnswers))
