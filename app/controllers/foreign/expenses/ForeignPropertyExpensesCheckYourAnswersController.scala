@@ -98,6 +98,8 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject()(
     }
   }
 
+  private def generateRows() = ???
+
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],

@@ -17,9 +17,9 @@
 package controllers.foreign.expenses
 
 import controllers.actions._
-import controllers.routes
-import pages.foreign.IncomeSourceCountries
-import pages.foreign.income.ForeignPropertyRentalIncomePage
+import models.NormalMode
+import models.TotalIncome.{Between, Under}
+import pages.foreign.{IncomeSourceCountries, TotalIncomePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -40,15 +40,20 @@ class ForeignPropertyExpensesStartController @Inject() (
     implicit request =>
       val maybeCountryName = request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code==countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
-      val income = request.userAnswers.get(ForeignPropertyRentalIncomePage(countryCode))
-
-      income match {
-        case Some(income) if income < 85000 =>
-          Ok(view(taxYear, countryName, isIncomeUnder85k = true, request.user.isAgentMessageKey,countryCode))
-        case Some(income) if income >= 85000 =>
-          Ok(view(taxYear, countryName, isIncomeUnder85k = false, request.user.isAgentMessageKey,countryCode))
-        case _ => Redirect(routes.JourneyRecoveryController.onPageLoad())
+      val incomeUnder85k = request.userAnswers.get(TotalIncomePage).exists(totalIncome =>
+        totalIncome == Under || totalIncome == Between)
+      val nextPageRedirectUrl = if (incomeUnder85k) {
+        routes.ConsolidatedOrIndividualExpensesController.onPageLoad(taxYear, countryCode, NormalMode).url
+      } else {
+        routes.ForeignRentsRatesAndInsuranceController.onPageLoad(taxYear, countryCode, NormalMode).url
       }
-
+      Ok(view(
+        taxYear = taxYear,
+        countryName = countryName,
+        isIncomeUnder85k = incomeUnder85k,
+        redirectUrl = nextPageRedirectUrl,
+        individualOrAgent = request.user.isAgentMessageKey,
+        countryCode = countryCode
+      ))
   }
 }

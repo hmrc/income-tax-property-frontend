@@ -17,7 +17,7 @@
 package models
 
 import models.TotalIncome.{Between, Under}
-import pages.TotalIncomePage
+import pages.foreign.TotalIncomePage
 import pages.foreign.adjustments.ForeignBalancingChargePage
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage}
 import pages.foreign.income.{ForeignPropertyRentalIncomePage, ForeignOtherIncomeFromPropertyPage}

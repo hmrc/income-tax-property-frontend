@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.expenses.ForeignRentsRatesAndInsuranceFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.expenses.ForeignRentsRatesAndInsurancePage
+import pages.foreign.expenses.{ForeignExpensesSectionAddCountryCode, ForeignRentsRatesAndInsurancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,7 +66,9 @@ class ForeignRentsRatesAndInsuranceController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentsRatesAndInsurancePage(countryCode), value))
-            _ <- sessionRepository.set(updatedAnswers)
+            updatedAnswersWithCountryCode <-
+              Future.fromTry(updatedAnswers.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
+            _ <- sessionRepository.set(updatedAnswersWithCountryCode)
           } yield Redirect(navigator.nextPage(ForeignRentsRatesAndInsurancePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
