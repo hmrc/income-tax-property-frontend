@@ -629,6 +629,11 @@ allowancesStart.details.content.l5	=	lwfans adnewyddu safleoedd busnes
 allowancesStart.details.content.l6	=	*Missing Welsh*
 allowancesStart.details.content.l7	=	*Missing Welsh*
 allowancesStart.details.content.l8	=	Lwfansau cyfalaf ar gyfer car
+allowancesStart.cash.p1.individual = *Missing Welsh*
+allowancesStart.cash.p1.agent = *Missing Welsh*
+allowancesStart.cash.p2.individual = *Missing Welsh*
+allowancesStart.cash.p2.agent = *Missing Welsh*
+allowancesStart.cash.p3 = *Missing Welsh*
 
 capitalAllowancesForACar.title	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.heading	=	Lwfansau cyfalaf ar gyfer car
@@ -2263,10 +2268,13 @@ foreignAllowancesStart.title.individual = *Missing Welsh*
 foreignAllowancesStart.title.agent = *Missing Welsh*
 foreignAllowancesStart.heading.individual = *Missing Welsh*
 foreignAllowancesStart.heading.agent = *Missing Welsh*
+foreignAllowancesStart.cash.p1.individual = *Missing Welsh*
+foreignAllowancesStart.cash.p1.agent = *Missing Welsh*
+foreignAllowancesStart.cash.p2.individual = *Missing Welsh*
+foreignAllowancesStart.cash.p2.agent = *Missing Welsh*
 foreignAllowancesStart.p2.traditional.individual = *Missing Welsh*
 foreignAllowancesStart.p2.traditional.agent = *Missing Welsh*
-foreignAllowancesStart.p2.cash.individual = *Missing Welsh*
-foreignAllowancesStart.p2.cash.agent = *Missing Welsh*
+
 
 consolidatedOrIndividualExpenses.title = *Missing Welsh*
 consolidatedOrIndividualExpenses.heading = *Missing Welsh*
