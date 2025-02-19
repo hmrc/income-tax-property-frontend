@@ -20,6 +20,7 @@ sealed trait JourneyName
 
 object JourneyName extends Enumerable.Implicits {
 
+  case object UKProperty extends WithName("UKProperty") with JourneyName
   case object ForeignProperty extends WithName("ForeignProperty") with JourneyName
   case object Rentals extends WithName("Rentals") with JourneyName
   case object RentARoom extends WithName("RentARoom") with JourneyName
@@ -30,6 +31,7 @@ object JourneyName extends Enumerable.Implicits {
     Rentals,
     RentARoom,
     RentalsRentARoom,
+    UKProperty,
     ForeignProperty,
     UkAndForeignProperty
   )
