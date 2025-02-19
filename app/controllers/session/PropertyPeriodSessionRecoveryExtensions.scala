@@ -361,7 +361,10 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua4 <- foreignPropertyAllowances.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua3))(
                        capitalAllowances => ua3.set(ForeignOtherCapitalAllowancesPage(countryCode), capitalAllowances)
                      )
-            } yield ua4
+              ua5 <- foreignPropertyAllowances.capitalAllowancesForACar.fold[Try[UserAnswers]](Success(ua4))(
+                capitalAllowancesForACar => ua4.set(ForeignCapitalAllowancesForACarPage(countryCode), capitalAllowancesForACar)
+              )
+            } yield ua5
         }
     }
 
