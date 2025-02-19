@@ -151,7 +151,8 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                   )
                 ),
                 zeroEmissionsCarAllowance = Some(75.75),
-                propertyAllowance = Some(85.85)
+                propertyAllowance = Some(85.85),
+                capitalAllowancesForACar = None
               )
             )
           ),

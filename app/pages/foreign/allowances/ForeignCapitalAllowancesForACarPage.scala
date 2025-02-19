@@ -25,5 +25,5 @@ case class ForeignCapitalAllowancesForACarPage(countryCode: String) extends Ques
 
   override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignCapitalAllowancesForACar"
+  override def toString: String = "capitalAllowancesForACar"
 }
