@@ -588,6 +588,7 @@ rentalsAndRentARoomAdjustmentsStart.details.content.l3 = business premises renov
 rentalsAndRentARoomAdjustmentsStart.details.content.l4 = residential financial costs
 rentalsAndRentARoomAdjustmentsStart.details.content.l5 = unused residential costs brought forward
 rentalsAndRentARoomAdjustmentsStart.details.content.l6 = your property income allowance claim
+rentalsAndRentARoomAdjustmentsStart.details.content.l7 = unused losses brought forward
 
 expensesStart.title = Expenses
 expensesStart.heading = Expenses
