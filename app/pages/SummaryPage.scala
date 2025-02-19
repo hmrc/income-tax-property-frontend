@@ -57,7 +57,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     val propertyRentalsExpenses: TaskListItem = propertyRentalsExpensesItem(userAnswers, taxYear)
     val propertyAllowances: TaskListItem = propertyAllowancesItem(taxYear, userAnswers)
     val structuresAndBuildingAllowance: TaskListItem = structuresAndBuildingAllowanceItem(userAnswers, taxYear)
-    val propertyRentalsAdjustments: TaskListItem = propertyRentalsAdjustmentsItem(userAnswers, taxYear)
+    val propertyRentalsAdjustments: TaskListItem =
+      propertyRentalsAdjustmentsItem(userAnswers, taxYear)
     val enhancedStructuresAndBuildingAllowance: TaskListItem = rentalsEsbaItem(userAnswers, taxYear)
 
     val claimPropertyIncomeAllowance = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
@@ -250,7 +251,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       )
     )
 
-  private def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def rentalsEsbaItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
       cyaDiversionService
@@ -268,7 +269,11 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_enhanced_structures_and_building_allowance_link"
     )
 
-  private def propertyRentalsAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def propertyRentalsAdjustmentsItem(
+    userAnswers: Option[UserAnswers],
+    taxYear: Int,
+    isUkAndForeignJourney: Boolean = false
+  ) =
     TaskListItem(
       "summary.adjustments",
       cyaDiversionService
@@ -280,11 +285,18 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
               .getOrElse(false)
           )
         }(identity),
-      getTaskListTagStatus(userAnswers, Rentals),
+      if (isUkAndForeignJourney) {
+        val sectionComplete = userAnswers.flatMap(_.get(RentalsAdjustmentsCompletePage))
+        sectionComplete
+          .map { isComplete =>
+            if (isComplete) TaskListTag.Completed else TaskListTag.InProgress
+          }
+          .getOrElse(TaskListTag.NotStarted)
+      } else { getTaskListTagStatus(userAnswers, Rentals) },
       "rentals_adjustments_link"
     )
 
-  private def structuresAndBuildingAllowanceItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def structuresAndBuildingAllowanceItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.structuresAndBuildingAllowance",
       cyaDiversionService
@@ -303,7 +315,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_structures_and_building_allowance_link"
     )
 
-  private def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def propertyAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
       cyaDiversionService
@@ -320,7 +332,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_allowances_link"
     )
 
-  private def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def propertyRentalsExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
       cyaDiversionService
@@ -337,7 +349,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_expenses_link"
     )
 
-  private def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def propertyRentalsIncomeItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.income",
       cyaDiversionService
@@ -375,7 +387,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_about_link"
     )
 
-  private def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def ukRentARoomAboutItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.about",
       cyaDiversionService
@@ -395,7 +407,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRAboutItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRAboutItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.about",
       cyaDiversionService
@@ -419,7 +431,11 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_about_link"
     )
 
-  private def rentalsAndRaRAdjustmentsItem(taxYear: Int, userAnswers: Option[UserAnswers]): TaskListItem =
+  def rentalsAndRaRAdjustmentsItem(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    isUkAndForeignJourney: Boolean = false
+  ): TaskListItem =
     TaskListItem(
       "summary.adjustments",
       cyaDiversionService
@@ -432,11 +448,18 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
                 .getOrElse(false)
             )
         }(identity),
-      getTaskListTagStatus(userAnswers, RentalsRentARoom),
+      if (isUkAndForeignJourney) {
+        val sectionComplete = userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
+        sectionComplete
+          .map { isComplete =>
+            if (isComplete) TaskListTag.Completed else TaskListTag.InProgress
+          }
+          .getOrElse(TaskListTag.NotStarted)
+      } else { getTaskListTagStatus(userAnswers, RentalsRentARoom) },
       "rentals_and_rent_a_room_adjustments_link"
     )
 
-  private def rentalsAndRaRIncomeItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRIncomeItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.income",
       cyaDiversionService
@@ -456,7 +479,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_income_link"
     )
 
-  private def rentalsAndRaRExpensesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRExpensesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.expenses",
       cyaDiversionService
@@ -480,7 +503,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_expenses_link"
     )
 
-  private def rentalsAndRaRAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRAllowancesItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.allowances",
       cyaDiversionService
@@ -503,7 +526,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_allowances_link"
     )
 
-  private def rentalsAndRaRSBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRSBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.structuresAndBuildingAllowance",
       cyaDiversionService
@@ -523,7 +546,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_structures_and_building_allowance_link"
     )
 
-  private def rentalsAndRaRESBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
+  def rentalsAndRaRESBAItem(taxYear: Int, userAnswers: Option[UserAnswers]) =
     TaskListItem(
       "summary.enhancedStructuresAndBuildingAllowance",
       cyaDiversionService
@@ -543,7 +566,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rentals_and_rent_a_room_enhanced_structures_and_building_allowance_link"
     )
 
-  private def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def ukRentARoomExpensesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.expenses",
       cyaDiversionService
@@ -567,7 +590,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rent_a_room_expenses_link"
     )
 
-  private def ukRentARoomAllowancesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def ukRentARoomAllowancesItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.allowances",
       cyaDiversionService
@@ -591,7 +614,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       "rent_a_room_allowances_link"
     )
 
-  private def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
+  def ukRentARoomAdjustmentsItem(userAnswers: Option[UserAnswers], taxYear: Int) =
     TaskListItem(
       "summary.adjustments",
       cyaDiversionService
