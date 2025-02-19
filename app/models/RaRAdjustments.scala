@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 final case class RaRAdjustments(
   balancingCharge: BalancingCharge,
   unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal,
-  unusedLossesBroughtForward: RaRUnusedLossesBroughtForward,
+  unusedLossesBroughtForward: UnusedLossesBroughtForward,
   whenYouReportedTheLoss: RarWhenYouReportedTheLoss
 )
 

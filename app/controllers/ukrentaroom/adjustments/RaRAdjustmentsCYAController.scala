@@ -58,7 +58,7 @@ class RaRAdjustmentsCYAController @Inject() (
           RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           RarWhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, request.userAnswers
             .get(RaRUnusedLossesBroughtForwardPage)
-            .flatMap(_.raRUnusedLossesBroughtForwardAmount)
+            .flatMap(_.unusedLossesBroughtForwardAmount)
             .getOrElse("0")
             .toString)
         ).flatten
