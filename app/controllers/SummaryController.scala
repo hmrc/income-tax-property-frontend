@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
-import models.IncomeSourcePropertyType.UKProperty
+import models.IncomeSourcePropertyType.{UKProperty, ForeignProperty}
 import models.backend.{NoPropertyDataError, UnexpectedPropertyDataError}
 import models.requests.OptionalDataRequest
 import pages._
@@ -62,6 +62,10 @@ class SummaryController @Inject() (
             .find(_.incomeSourceType.contains(UKProperty.toString))
             .flatMap(_.accrualsOrCash)
             .getOrElse(true)
+          val foreignAccrualsOrCash: Boolean = propertyData
+            .find(_.incomeSourceType.contains(ForeignProperty.toString))
+            .flatMap(_.accrualsOrCash)
+            .getOrElse(true)
 
           val propertyRentalsRows =
             summaryPage
@@ -75,7 +79,7 @@ class SummaryController @Inject() (
           val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList)
           val maybeCountries = foreignCountries.getOrElse(List.empty)
           val foreignPropertyItems = maybeCountries.map { country =>
-            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, country.code, request.userAnswers)
+            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
           }.toMap
           Future.successful(
             Ok(
