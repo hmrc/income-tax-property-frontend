@@ -18,15 +18,17 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.foreign.CountriesRentedPropertyFormProvider
-import models.{Mode, UserAnswers}
+import models.{UserAnswers, Mode}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{AddCountriesRentedPage, IncomeSourceCountries}
+import pages.foreign.{IncomeSourceCountries, AddCountriesRentedPage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{MessagesApi, Messages, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.CountryNamesDataSource
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.govuk.summarylist._
 import views.html.foreign.CountriesRentedPropertyView
@@ -43,7 +45,8 @@ class CountriesRentedPropertyController @Inject() (
   requireData: DataRequiredAction,
   formProvider: CountriesRentedPropertyFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: CountriesRentedPropertyView
+  view: CountriesRentedPropertyView,
+  languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -51,14 +54,16 @@ class CountriesRentedPropertyController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val list: SummaryList = summaryList(taxYear, request.userAnswers)
+      val currentLang = languageUtils.getCurrentLang.locale.toString
+      val list: SummaryList = summaryList(taxYear, request.userAnswers, currentLang)
 
       Ok(view(form, list, taxYear, request.user.isAgentMessageKey, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val list: SummaryList = summaryList(taxYear, request.userAnswers)
+      val currentLang = languageUtils.getCurrentLang.locale.toString
+      val list: SummaryList = summaryList(taxYear, request.userAnswers, currentLang)
       form
         .bindFromRequest()
         .fold(
@@ -74,10 +79,12 @@ class CountriesRentedPropertyController @Inject() (
         )
   }
 
-  private def summaryList(taxYear: Int, userAnswers: UserAnswers)(implicit messages: Messages) = {
-    val countries = userAnswers.get(IncomeSourceCountries).toSeq.flatten
+  private def summaryList(taxYear: Int, userAnswers: UserAnswers, currentLanguage: String)(implicit messages: Messages) = {
+    val countries = userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap {
+        country => CountryNamesDataSource.getCountry(country.code, currentLanguage)
+      }).toSeq.flatten
     val rows = countries.zipWithIndex.flatMap { case (_, idx) =>
-      CountriesRentedPropertySummary.row(taxYear, idx, userAnswers)
+      CountriesRentedPropertySummary.row(taxYear, idx, userAnswers, currentLanguage)
     }
     SummaryListViewModel(rows)
   }

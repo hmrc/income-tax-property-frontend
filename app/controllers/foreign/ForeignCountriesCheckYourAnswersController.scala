@@ -18,17 +18,18 @@ package controllers.foreign
 
 import audit.{AuditModel, AuditService}
 import controllers.actions._
-import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.exceptions.{SaveJourneyAnswersFailed, NotFoundException}
 import controllers.foreign.routes.ForeignSelectCountriesCompleteController
 import models.JourneyPath.ForeignSelectCountry
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, ForeignPropertySelectCountry, JourneyContext, JourneyName, SectionName}
+import models.{JourneyName, AuditPropertyType, JourneyContext, SectionName, ForeignPropertySelectCountry, AccountingMethod}
 import play.api.i18n.Lang.logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import viewmodels.checkAnswers.PropertyIncomeReportSummary
 import viewmodels.checkAnswers.foreign._
 import viewmodels.govuk.all.SummaryListViewModel
@@ -45,7 +46,8 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   propertySubmissionService: PropertySubmissionService,
   audit: AuditService,
-  view: ForeignCountriesCheckYourAnswersView
+  view: ForeignCountriesCheckYourAnswersView,
+  languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -55,7 +57,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
         rows = Seq(
           TotalIncomeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeReportSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
-          CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers),
+          CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
           ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten
       )

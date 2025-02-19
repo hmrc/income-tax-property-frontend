@@ -35,12 +35,12 @@ class ForeignPropertyIncomeStartController @Inject()(
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: ForeignPropertyIncomeStartView,
-                                       langUtils: LanguageUtils
+                                       languageUtils: LanguageUtils
                                      ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      CountryNamesDataSource.getCountry(countryCode, langUtils.getCurrentLang.locale.toString) match {
+      CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
         case Some(country) => Future.successful(Ok(view(taxYear, request.user.isAgentMessageKey, country)))
         case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
       }
