@@ -29,6 +29,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, PropertySubmissionService}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -66,15 +67,15 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
       ).flatten
 
-      val UnusedLossesBroughtForwardRows =
-        if (hasUnusedLosses) {
-          Seq(
+      val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
+        request.userAnswers.get(UnusedLossesBroughtForwardPage(RentalsRentARoom))
+          .filter(_.unusedLossesBroughtForwardYesOrNo)
+          .map(_ => Seq(
             UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
             WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-          ).flatten
-        } else {
-          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-        }
+          ).flatten)
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom)).flatten)
+
       val list = SummaryListViewModel(
         rows = summaryListRows
           .appendedAll(UnusedLossesBroughtForwardRows)

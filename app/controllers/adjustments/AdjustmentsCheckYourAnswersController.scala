@@ -28,6 +28,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -51,10 +52,6 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val hasUnusedLosses: Boolean = request.userAnswers
-        .get(UnusedLossesBroughtForwardPage(Rentals))
-        .exists(_.unusedLossesBroughtForwardYesOrNo)
-
       val summaryListRows = Seq(
         BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
@@ -64,16 +61,15 @@ class AdjustmentsCheckYourAnswersController @Inject() (
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
       ).flatten
 
-
-      val UnusedLossesBroughtForwardRows =
-        if (hasUnusedLosses) {
-          Seq(
+      val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
+        request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals))
+          .filter(_.unusedLossesBroughtForwardYesOrNo)
+          .map(_ => Seq(
             UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
             WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
-          ).flatten
-        } else {
-          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)
-        }
+          ).flatten)
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)).flatten)
+
       val list = SummaryListViewModel(
         rows = summaryListRows
           .appendedAll(UnusedLossesBroughtForwardRows)

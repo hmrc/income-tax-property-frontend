@@ -35,7 +35,7 @@ import controllers.ukrentaroom.routes._
 import models.TotalIncome.{Between, Over, Under}
 import models._
 import pages._
-import pages.adjustments.{UnusedLossesBroughtForwardPage, _}
+import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, PremiumForLeasePage}
@@ -355,24 +355,20 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           _ =>
             UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-    case UnusedLossesBroughtForwardPage(Rentals) =>
-      taxYear => _ => userAnswers =>
-        userAnswers.get(UnusedLossesBroughtForwardPage(Rentals)) match {
-          case Some(UnusedLossesBroughtForward(true, _)) => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
-          case Some(UnusedLossesBroughtForward(false, _)) => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-        }
-    case UnusedLossesBroughtForwardPage(RentalsRentARoom) =>
-      taxYear => _ => userAnswers =>
-        userAnswers.get(UnusedLossesBroughtForwardPage(RentalsRentARoom)) match {
-          case Some(UnusedLossesBroughtForward(true, _)) => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
-          case Some(UnusedLossesBroughtForward(false, _)) => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-        }
-    case WhenYouReportedTheLossPage(Rentals) =>
-      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-
-    case WhenYouReportedTheLossPage(RentalsRentARoom) =>
-      taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-
+    case UnusedLossesBroughtForwardPage(propertyType) => taxYear => _ => userAnswers =>
+      userAnswers.get(UnusedLossesBroughtForwardPage(propertyType)) match {
+        case Some(UnusedLossesBroughtForward(true, _))  => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
+        case Some(UnusedLossesBroughtForward(false, _)) =>
+          propertyType match {
+            case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          }
+      }
+    case WhenYouReportedTheLossPage(propertyType) => taxYear => _ => _ =>
+      propertyType match {
+        case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
     // Rentals-Expenses
     case ConsolidatedExpensesPage(Rentals) =>
       taxYear =>
@@ -931,8 +927,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
               .onPageLoad(taxYear)
         // Adjustments
-    case UnusedLossesBroughtForwardPage(Rentals) =>
-      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, Rentals, previousAnswers, userAnswers)
+    case UnusedLossesBroughtForwardPage(propertyType) =>
+      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, propertyType, previousAnswers, userAnswers)
     case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage(Rentals) |
         RenovationAllowanceBalancingChargePage(Rentals) | ResidentialFinanceCostPage(Rentals) |
         UnusedResidentialFinanceCostPage(Rentals) | WhenYouReportedTheLossPage(Rentals) =>
@@ -941,9 +937,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
-    case UnusedLossesBroughtForwardPage(RentalsRentARoom) =>
-      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, RentalsRentARoom, previousAnswers, userAnswers)
-    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
+      case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
         UnusedResidentialFinanceCostPage(RentalsRentARoom) | WhenYouReportedTheLossPage(RentalsRentARoom) =>
