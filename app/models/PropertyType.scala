@@ -53,7 +53,7 @@ object PropertyType {
       case Rentals          => "Rentals"
       case RentARoom        => "RentARoom"
       case RentalsRentARoom => "RentalsRentARoom"
-      case UKProperty       => "uk-property"
+      case UKProperty       => "UKProperty"
       case ForeignProperty  => "ForeignProperty"
       case UKAndForeignProperty => "UKAndForeignProperty"
     }
