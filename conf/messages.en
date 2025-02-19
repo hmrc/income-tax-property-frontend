@@ -837,6 +837,12 @@ allowancesStart.details.content.l5 = business premises renovation allowance
 allowancesStart.details.content.l6 = replacement of domestic goods
 allowancesStart.details.content.l7 = other capital allowances
 allowancesStart.details.content.l8 = capital allowances for a car
+allowancesStart.cash.p1.individual = You told us that your accounting method is cash basis.
+allowancesStart.cash.p1.agent = You told us that your client''s accounting method is cash basis.
+allowancesStart.cash.p2.individual = This means that the only capital allowance that you can claim is for a car that you use in the running of your property rental.
+allowancesStart.cash.p2.agent = This means that the only capital allowance that your client can claim is for a car that they use in the running of their property rental.
+allowancesStart.cash.p3 = In this section we''re going to ask you about:
+
 
 capitalAllowancesForACar.title = Capital allowances for a car
 capitalAllowancesForACar.heading = Capital allowances for a car
@@ -2315,10 +2321,13 @@ foreignAllowancesStart.title.individual = Allowances for your property in {0}
 foreignAllowancesStart.title.agent = Allowances for your client property in {0}
 foreignAllowancesStart.heading.individual = Allowances for your property in {0}
 foreignAllowancesStart.heading.agent = Allowances for your client property in {0}
+foreignAllowancesStart.cash.p1.individual = You told us that your accounting method is cash basis.
+foreignAllowancesStart.cash.p1.agent = You told us that your client''s accounting method is cash basis.
+foreignAllowancesStart.cash.p2.individual = This means that the only capital allowance that you can claim is for a car that you use in the running of your property rental.
+foreignAllowancesStart.cash.p2.agent = This means that the only capital allowance that your client can claim is for a car that they use in the running of their property rental.
 foreignAllowancesStart.p2.traditional.individual = You told us previously that your accounting method is: Traditional (accrual).
 foreignAllowancesStart.p2.traditional.agent = You told us previously that your client's accounting method is: Traditional (accrual).
-foreignAllowancesStart.p2.cash.individual = You told us previously that your accounting method is: cash basis
-foreignAllowancesStart.p2.cash.agent = You told us previously that your client's accounting method is: cash basis
+
 
 consolidatedOrIndividualExpenses.title = Consolidated or individual expenses
 consolidatedOrIndividualExpenses.heading = Consolidated or individual expenses
