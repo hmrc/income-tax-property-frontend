@@ -168,7 +168,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
 
         val result = CountriesRentedPropertySummary
-          .row(taxYear, index, userAnswers)(messages(application))
+          .row(taxYear, index, userAnswers, "en")(messages(application))
           .get
           .key
           .content
