@@ -32,16 +32,19 @@
     @formHelper(action = PropertyIncomeReportController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
+            @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <h1 class="govuk-heading-l">@messages("propertyIncomeReport.heading")</h1>
+        <p class="govuk-body">@messages(s"propertyIncomeReport.details.hint.$individualOrAgent")</p>
 
         @govukRadios(
             RadiosViewModel.yesNoWithOtherNames(
                 field  = form("value"),
-                legend = LegendViewModel(messages("propertyIncomeReport.heading")).asPageHeading(LegendSize.Large),
+                legend = LegendViewModel("").asPageHeading(LegendSize.Large),
                 yesText = messages(s"propertyIncomeReport.reportPropertyIncome.$individualOrAgent"),
                 noText = messages(s"propertyIncomeReport.doNotReportPropertyIncome.$individualOrAgent")
-            ).withHint(Hint(content = messages(s"propertyIncomeReport.details.hint.$individualOrAgent")))
+            )
         )
 
         @govukButton(

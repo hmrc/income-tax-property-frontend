@@ -18,13 +18,13 @@ package controllers.foreign
 
 import audit.{AuditModel, AuditService}
 import controllers.actions._
-import controllers.exceptions.{SaveJourneyAnswersFailed, NotFoundException}
+import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import controllers.foreign.routes.ForeignSelectCountriesCompleteController
 import models.JourneyPath.ForeignSelectCountry
 import models.requests.DataRequest
-import models.{JourneyName, AuditPropertyType, JourneyContext, SectionName, ForeignPropertySelectCountry, AccountingMethod}
+import models.{AccountingMethod, AuditPropertyType, ForeignPropertySelectCountry, JourneyContext, JourneyName, SectionName}
 import play.api.i18n.Lang.logger
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
 import uk.gov.hmrc.http.HeaderCarrier

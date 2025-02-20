@@ -20,6 +20,7 @@ object FormatUtils {
 
   val keyCssClass = "govuk-!-width-one-half"
   val valueCssClass = "govuk-!-text-align-right"
+  val selectCountriesValueCssClass = "govuk-!-padding-left-6"
 
   def bigDecimalCurrency(value: BigDecimal, currencySymbol: String = "£"): String =
     currencySymbol + f"$value%1.2f".replace(".00", "")
