@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.allowances.ForeignCapitalAllowancesForACarFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.allowances.ForeignCapitalAllowancesForACarPage
+import pages.foreign.allowances.{ForeignAllowancesSectionAddCountryCode, ForeignCapitalAllowancesForACarPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -63,7 +63,9 @@ class ForeignCapitalAllowancesForACarController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCapitalAllowancesForACarPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswersWithCountryCode <-
+              Future.fromTry(updatedAnswers.set(ForeignAllowancesSectionAddCountryCode(countryCode), countryCode))
+            _              <- sessionRepository.set(updatedAnswersWithCountryCode)
           } yield Redirect(foreignNavigator.nextPage(ForeignCapitalAllowancesForACarPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }

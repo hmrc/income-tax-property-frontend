@@ -20,14 +20,19 @@ import audit.{AuditModel, AuditService, ForeignPropertyAllowances, ReadForeignPr
 import controllers.actions._
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
 import controllers.foreign.allowances.routes.ForeignAllowancesCompleteController
+import controllers.{PropertyDetailsHandler, routes}
 import models._
+import models.backend.PropertyDetails
 import models.requests.DataRequest
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import viewmodels.checkAnswers.foreign.adjustments.ForeignCapitalAllowancesForACarSummary
 import viewmodels.checkAnswers.foreign.allowances._
 import viewmodels.govuk.summarylist._
 import views.html.foreign.allowances.ForeignAllowancesCheckYourAnswersView
@@ -43,22 +48,32 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ForeignAllowancesCheckYourAnswersView,
   auditService: AuditService,
-  propertySubmissionService: PropertySubmissionService
+  propertySubmissionService: PropertySubmissionService,
+  businessService: BusinessService
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Logging {
-
+    extends FrontendBaseController with I18nSupport  with PropertyDetailsHandler with Logging {
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      val list = SummaryListViewModel(
-        rows = Seq(
-          ForeignZeroEmissionCarAllowanceSummary.row(taxYear, countryCode, request.userAnswers),
-          ForeignZeroEmissionGoodsVehiclesSummary.row(taxYear, countryCode, request.userAnswers),
-          ForeignReplacementOfDomesticGoodsSummary.row(taxYear, countryCode, request.userAnswers),
-          ForeignOtherCapitalAllowancesSummary.row(taxYear, countryCode, request.userAnswers)
-        ).flatten
-      )
+    (identify andThen getData andThen requireData).async { implicit request =>
+      val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      withForeignPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
+        (propertyData: PropertyDetails) =>
 
-      Ok(view(list, taxYear, countryCode))
+          val rows = propertyData.accrualsOrCash match {
+            case Some(false) =>
+              Seq(ForeignCapitalAllowancesForACarSummary.row(taxYear, countryCode, request.userAnswers)).flatten
+            case _ =>
+              Seq(
+                ForeignZeroEmissionCarAllowanceSummary.row(taxYear, countryCode, request.userAnswers),
+                ForeignZeroEmissionGoodsVehiclesSummary.row(taxYear, countryCode, request.userAnswers),
+                ForeignReplacementOfDomesticGoodsSummary.row(taxYear, countryCode, request.userAnswers),
+                ForeignOtherCapitalAllowancesSummary.row(taxYear, countryCode, request.userAnswers)
+              ).flatten
+          }
+
+          val list = SummaryListViewModel(rows = rows)
+          Future.successful(Ok(view(list, taxYear, countryCode)))
+
+      }(hc, ec)
     }
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
@@ -120,7 +135,7 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
       isFailed = isFailed,
       allowances
     )
-
+  logger.error(s"auditModel: ${auditModel}")
     auditService.sendAuditEvent(auditModel)
   }
 }

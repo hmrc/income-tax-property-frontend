@@ -19,6 +19,7 @@ package controllers.foreign.allowances
 import audit.AuditService
 import base.SpecBase
 import models.JourneyPath.ForeignPropertyAllowances
+import models.backend.PropertyDetails
 import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -29,7 +30,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.allowances.ForeignAllowancesCheckYourAnswersView
 
@@ -54,7 +55,23 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
+      // Mock valid PropertyDetails
+      val mockPropertyDetails = PropertyDetails(
+        incomeSourceType = Some("ForeignProperty"),
+        tradingStartDate = Some(LocalDate.now()),
+        accrualsOrCash = Some(false), // Cash accounting method
+        incomeSourceId = "12345"
+      )
+
+      // Mock the businessService to return valid property details
+      val mockBusinessService = mock[BusinessService]
+      when(mockBusinessService.getForeignPropertyDetails(any(), any())(any()))
+        .thenReturn(Future.successful(Right(Some(mockPropertyDetails))))
+
+      // Inject the mocked service into the application
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(bind[BusinessService].toInstance(mockBusinessService))
+        .build()
 
       running(application) {
         val request =
