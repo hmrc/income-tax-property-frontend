@@ -700,12 +700,12 @@ class NavigatorSpec extends SpecBase {
           userAnswers
         ) mustBe WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
       }
-      "must go from UnusedLossesBroughtForwardPage to AdjustmentsCheckYourAnswersPage" in {
+      "must go from WhenYouReportedTheLossPage to AdjustmentsCheckYourAnswersPage" in {
         val userAnswers = UserAnswers("test")
-          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = false, Some(BigDecimal(0))))
+          .set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.y2018to2019)
           .get
         navigator.nextPage(
-          UnusedLossesBroughtForwardPage(Rentals),
+          WhenYouReportedTheLossPage(Rentals),
           taxYear,
           NormalMode,
           userAnswers,
