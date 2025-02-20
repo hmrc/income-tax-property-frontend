@@ -18,9 +18,11 @@ package controllers.foreign.adjustments
 
 import controllers.actions._
 import pages.foreign.IncomeSourceCountries
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.adjustments.ForeignAdjustmentsStartView
 
 import javax.inject.Inject
@@ -31,13 +33,16 @@ class ForeignAdjustmentsStartController @Inject()(
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ForeignAdjustmentsStartView
+  view: ForeignAdjustmentsStartView,
+  languageUtils: LanguageUtils
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, countryCode: String, isPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       val maybeCountryName =
-        request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code == countryCode)).map(_.name)
+        request.userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap {
+          country => CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+        }).flatMap(country => country.find(_.code == countryCode)).map(_.name)
       val countryName = maybeCountryName.getOrElse("")
       Ok(view(taxYear, countryName, countryCode, isPIA))
 
