@@ -21,7 +21,6 @@ import models.NormalMode
 import models.TotalIncome.{Between, Under}
 import pages.foreign.{IncomeSourceCountries, TotalIncomePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import controllers.routes
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
