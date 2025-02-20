@@ -16,7 +16,7 @@
 
 package audit
 
-import models.{ForeignProperty, ForeignStructuresBuildingAllowanceAddress}
+import models.ForeignProperty
 import pages.PageConstants.allowancesPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
@@ -26,8 +26,7 @@ case class ForeignPropertyAllowances(
   zeroEmissionsCarAllowance: Option[BigDecimal],
   zeroEmissionsGoodsVehicleAllowance: Option[BigDecimal],
   costOfReplacingDomesticItems: Option[BigDecimal],
-  otherCapitalAllowance: Option[BigDecimal],
-  structuredBuildingAllowance: Option[Array[ForeignStructuresBuildingAllowanceAddress]]
+  otherCapitalAllowance: Option[BigDecimal]
 )
 
 case object ForeignPropertyAllowances
