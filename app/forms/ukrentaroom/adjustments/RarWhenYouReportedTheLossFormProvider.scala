@@ -17,15 +17,15 @@
 package forms.ukrentaroom.adjustments
 
 import forms.mappings.Mappings
-import models.RarWhenYouReportedTheLoss
+import models.WhenYouReportedTheLoss
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class RarWhenYouReportedTheLossFormProvider @Inject() extends Mappings {
 
-  def apply(individualOrAgent: String): Form[RarWhenYouReportedTheLoss] =
+  def apply(individualOrAgent: String): Form[WhenYouReportedTheLoss] =
     Form(
-      "rarWhenYouReportedTheLoss" -> enumerable[RarWhenYouReportedTheLoss](s"rarWhenYouReportedTheLoss.error.required.${individualOrAgent}")
+      "rarWhenYouReportedTheLoss" -> enumerable[WhenYouReportedTheLoss](s"rarWhenYouReportedTheLoss.error.required.${individualOrAgent}")
     )
 }

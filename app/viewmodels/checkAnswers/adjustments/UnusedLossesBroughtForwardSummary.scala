@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{CheckMode, UnusedLossesBroughtForward, UserAnswers}
+import models.{CheckMode, PropertyType, UnusedLossesBroughtForward, UserAnswers}
 import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
@@ -28,15 +28,15 @@ import viewmodels.implicits._
 
 object UnusedLossesBroughtForwardSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(UnusedLossesBroughtForwardPage).flatMap {
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(UnusedLossesBroughtForwardPage(propertyType)).flatMap {
       answer =>
         val row: Content => Option[SummaryListRow] = content => Some(
           SummaryListRowViewModel(
             key     = KeyViewModel("unusedLossesBroughtForward.checkYourAnswersLabel").withCssClass(keyCssClass),
             value   = ValueViewModel(content).withCssClass(valueCssClass),
             actions = Seq(
-              ActionItemViewModel("site.change", routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode).url)
+              ActionItemViewModel("site.change", routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, CheckMode, propertyType).url)
                 .withVisuallyHiddenText(messages("unusedLossesBroughtForward.change.hidden"))
             )
           )

@@ -1,5 +1,6 @@
 # Add all the application routes to the app.routes file
 ->         /update-and-submit-income-tax-return/property            app.Routes
+->         /update-and-submit-income-tax-return/property            rarApp.Routes
 ->         /update-and-submit-income-tax-return/property            foreign.Routes
 ->         /update-and-submit-income-tax-return/property            ukAndForeignProperty.Routes
 ->         /                                                        health.Routes

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package pages.adjustments
+package forms.adjustments
 
-import models.{PropertyType, UnusedLossesBroughtForward}
-import pages.PageConstants.adjustmentsPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import models.WhenYouReportedTheLoss
+import play.api.data.Form
 
-case class UnusedLossesBroughtForwardPage(propertyType: PropertyType) extends QuestionPage[UnusedLossesBroughtForward] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
+class WhenYouReportedTheLossFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "unusedLossesBroughtForward"
+  def apply(individualOrAgent: String): Form[WhenYouReportedTheLoss] =
+    Form(
+      "whenYouReportedTheLoss" -> enumerable[WhenYouReportedTheLoss](s"whenYouReportedTheLoss.error.required.${individualOrAgent}")
+    )
 }

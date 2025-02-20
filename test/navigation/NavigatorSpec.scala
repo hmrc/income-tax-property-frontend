@@ -679,16 +679,39 @@ class NavigatorSpec extends SpecBase {
         ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
       }
 
-      "must go from UnusedResidentialFinanceCostPage to AdjustmentsCheckYourAnswersPage" in {
+      "must go from UnusedResidentialFinanceCostPage to UnusedLossesBroughtForwardPage" in {
         navigator.nextPage(
           UnusedResidentialFinanceCostPage(Rentals),
           taxYear,
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
+        ) mustBe UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
+      }
+      "must go from UnusedLossesBroughtForwardPage to WhenYouReportedTheLossPage" in {
+        val userAnswers = UserAnswers("test")
+          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(10))))
+          .get
+        navigator.nextPage(
+          UnusedLossesBroughtForwardPage(Rentals),
+          taxYear,
+          NormalMode,
+          userAnswers,
+          userAnswers
+        ) mustBe WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
+      }
+      "must go from UnusedLossesBroughtForwardPage to AdjustmentsCheckYourAnswersPage" in {
+        val userAnswers = UserAnswers("test")
+          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = false, Some(BigDecimal(0))))
+          .get
+        navigator.nextPage(
+          UnusedLossesBroughtForwardPage(Rentals),
+          taxYear,
+          NormalMode,
+          userAnswers,
+          userAnswers
         ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
-
       "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
         navigator.sbaNextPage(
           StructureBuildingQualifyingDatePage(index, Rentals),

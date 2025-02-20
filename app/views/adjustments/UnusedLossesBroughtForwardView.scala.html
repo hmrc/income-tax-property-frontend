@@ -26,11 +26,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages(s"unusedLossesBroughtForward.title.$individualOrAgent"))) {
 
-    @formHelper(action = routes.UnusedLossesBroughtForwardController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.UnusedLossesBroughtForwardController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
@@ -43,7 +43,7 @@
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
                 field = form("unusedLossesBroughtForwardYesOrNo"),
-                legend = LegendViewModel(messages(s"balancingCharge.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
+                legend = LegendViewModel(messages("")),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("unusedLossesBroughtForwardYesOrNo"),
                     conditionalYesHtml = Some(
