@@ -48,8 +48,9 @@ class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: Frontend
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
           logger.error(
-            "Error getting business details from the Integration Framework:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+            "[getBusinessDetails] Error getting business details from the backend: " +
+              s"correlationId: $correlationId; url: $propertyBEUrl " +
+              s"status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
           )
         }
         response.result
