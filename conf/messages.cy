@@ -293,6 +293,7 @@ receivedGrantLeaseAmount.change.hidden	=	Premiymau am ganiatáu prydles
 
 yearLeaseAmount.title	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
 yearLeaseAmount.heading	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
+yearLeaseAmount.hint = *Missing Welsh*
 yearLeaseAmount.checkYourAnswersLabel	=	Sawl cyfnod cyflawn o 12 mis a fu yn ystod cyfnod y brydles?
 yearLeaseAmount.change.hidden	=	Swm y Brydles am Flwyddyn
 
@@ -428,7 +429,8 @@ propertyIncomeAllowance.details.content2.agent	=	*Missing Welsh*
 propertyIncomeAllowance.details.content3	=	Darllenwch ragor am
 propertyIncomeAllowance.details.content3.link.text	=	lwfans incwm o eiddo, ar GOV.UK (yn agor tab newydd)
 
-propertyIncomeAllowance.checkYourAnswersLabel	=	Eich cyfran chi o lwfans incwm o eiddo
+propertyIncomeAllowance.checkYourAnswersLabel.individual	=	Eich cyfran chi o lwfans incwm o eiddo
+propertyIncomeAllowance.checkYourAnswersLabel.agent	=	*Missing Welsh*
 propertyIncomeAllowance.change.hidden	=	Eich cyfran chi o lwfans incwm o eiddo
 
 adjustmentsStart.title	=	Addasiadau
@@ -627,6 +629,11 @@ allowancesStart.details.content.l5	=	lwfans adnewyddu safleoedd busnes
 allowancesStart.details.content.l6	=	*Missing Welsh*
 allowancesStart.details.content.l7	=	*Missing Welsh*
 allowancesStart.details.content.l8	=	Lwfansau cyfalaf ar gyfer car
+allowancesStart.cash.p1.individual = *Missing Welsh*
+allowancesStart.cash.p1.agent = *Missing Welsh*
+allowancesStart.cash.p2.individual = *Missing Welsh*
+allowancesStart.cash.p2.agent = *Missing Welsh*
+allowancesStart.cash.p3 = *Missing Welsh*
 
 capitalAllowancesForACar.title	=	Lwfansau cyfalaf ar gyfer car
 capitalAllowancesForACar.heading	=	Lwfansau cyfalaf ar gyfer car
@@ -1286,7 +1293,8 @@ rentalsAndRentARoomAdjustmentsStart.details.content.l2 = tâl mantoli
 rentalsAndRentARoomAdjustmentsStart.details.content.l3 = tâl mantoli ar gyfer lwfans adnewyddu safleoedd busnes
 rentalsAndRentARoomAdjustmentsStart.details.content.l4 = costau ariannol preswyl
 rentalsAndRentARoomAdjustmentsStart.details.content.l5 = costau preswyl sydd heb eu defnyddio a ddygwyd ymlaen
-rentalsAndRentARoomAdjustmentsStart.details.content.l6 = eich lwfans incwm o eiddo a wnaed cais amdano
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.individual = eich lwfans incwm o eiddo a wnaed cais amdano
+rentalsAndRentARoomAdjustmentsStart.details.content.l6.agent = *Missing Welsh*
 
 ukrentaroom.income.totalIncomeAmount.title.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.heading.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
@@ -2260,10 +2268,13 @@ foreignAllowancesStart.title.individual = *Missing Welsh*
 foreignAllowancesStart.title.agent = *Missing Welsh*
 foreignAllowancesStart.heading.individual = *Missing Welsh*
 foreignAllowancesStart.heading.agent = *Missing Welsh*
+foreignAllowancesStart.cash.p1.individual = *Missing Welsh*
+foreignAllowancesStart.cash.p1.agent = *Missing Welsh*
+foreignAllowancesStart.cash.p2.individual = *Missing Welsh*
+foreignAllowancesStart.cash.p2.agent = *Missing Welsh*
 foreignAllowancesStart.p2.traditional.individual = *Missing Welsh*
 foreignAllowancesStart.p2.traditional.agent = *Missing Welsh*
-foreignAllowancesStart.p2.cash.individual = *Missing Welsh*
-foreignAllowancesStart.p2.cash.agent = *Missing Welsh*
+
 
 consolidatedOrIndividualExpenses.title = *Missing Welsh*
 consolidatedOrIndividualExpenses.heading = *Missing Welsh*
@@ -3035,6 +3046,11 @@ rarWhenYouReportedTheLoss.checkYourAnswersLabel = *Missing Welsh*
 rarWhenYouReportedTheLoss.error.required.individual = *Missing Welsh*
 rarWhenYouReportedTheLoss.error.required.agent = *Missing Welsh*
 rarWhenYouReportedTheLoss.change.hidden = *Missing Welsh*
+
+foreignCapitalAllowancesForACar.checkYourAnswersLabel = *Missing Welsh*
+foreignCapitalAllowancesForACar.change.hidden = *Missing Welsh*
+foreignCapitalAllowancesForACar.inputLabel = *Missing Welsh*
+foreignCapitalAllowancesForACar.error.nonNumeric = *Missing Welsh*
 
 whenYouReportedTheLoss.title.individual = *Missing Welsh*
 whenYouReportedTheLoss.title.agent = *Missing Welsh*

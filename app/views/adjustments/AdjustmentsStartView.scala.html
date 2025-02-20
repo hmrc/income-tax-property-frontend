@@ -22,7 +22,7 @@
         govukButton: GovukButton
 )
 
-@(taxYear: Int, expensesOrPIA: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, expensesOrPIA: Boolean, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("adjustmentsStart.title"))) {
 
@@ -32,7 +32,7 @@
         @if(expensesOrPIA){
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l1")</li>
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l2")</li>
-        <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l6")</li>
+        <li>@messages(s"rentalsAndRentARoomAdjustmentsStart.details.content.l6.$individualOrAgent")</li>
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l3")</li>
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l4")</li>
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l7")</li>

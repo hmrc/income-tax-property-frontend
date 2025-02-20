@@ -54,31 +54,15 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val hasUnusedLosses: Boolean = request.userAnswers
-        .get(UnusedLossesBroughtForwardPage(RentalsRentARoom))
-        .exists(_.unusedLossesBroughtForwardYesOrNo)
-
-      val summaryListRows = Seq(
-        PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-        BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-        BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
-        ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-        UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-      ).flatten
-
-      val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
-        request.userAnswers.get(UnusedLossesBroughtForwardPage(RentalsRentARoom))
-          .filter(_.unusedLossesBroughtForwardYesOrNo)
-          .map(_ => Seq(
-            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
-          ).flatten)
-          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom)).flatten)
-
       val list = SummaryListViewModel(
-        rows = summaryListRows
-          .appendedAll(UnusedLossesBroughtForwardRows)
+        rows = Seq(
+          PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
+          BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
+          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
+        ).flatten
       )
       Ok(view(list, taxYear))
   }

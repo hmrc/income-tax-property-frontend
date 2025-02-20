@@ -19,7 +19,8 @@ package controllers
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.session.SessionRecovery
-import models.backend.PropertyDetails
+import models.IncomeSourcePropertyType.{ForeignProperty, UKProperty}
+import models.backend.{ForeignPropertyDetailsError, PropertyDetails}
 import models.requests.OptionalDataRequest
 import models.{UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
@@ -55,13 +56,17 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       block(request)
   }
   val propertyDetails: Seq[PropertyDetails] = Seq(
-    PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"),
-    PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId2")
+    PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"),
+    PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId2")
   )
 
   when(
-    propertyPeriodSubmissionService.getPropertySubmission(any(), any())(any())
+    propertyPeriodSubmissionService.getUKPropertySubmission(any(), any())(any())
   ) thenReturn Future.successful(Right(fetchedPropertyData))
+
+  when(
+    propertyPeriodSubmissionService.getForeignPropertySubmission(any(), any())(any())
+  ) thenReturn Future.successful(Left(ForeignPropertyDetailsError("AA000000A", "1234567890")))
 
   def propertyAboutItems: Seq[TaskListItem] =
     Seq(

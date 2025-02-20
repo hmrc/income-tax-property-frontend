@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages.rentalsandrentaroom
+package pages.foreign.allowances
 
+import models.{CapitalAllowancesForACar, ForeignProperty}
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object RentalsRaRAboutCompletePage extends QuestionPage[Boolean] {
+case class ForeignCapitalAllowancesForACarPage(countryCode: String) extends QuestionPage[CapitalAllowancesForACar] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "rentalsRaRAboutSectionComplete"
+  override def toString: String = "foreignCapitalAllowancesForACar"
 }

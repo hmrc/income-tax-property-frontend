@@ -16,6 +16,7 @@
 
 package service
 
+import controllers.about.routes._
 import controllers.adjustments.routes._
 import controllers.allowances.routes._
 import controllers.enhancedstructuresbuildingallowance.routes._
@@ -27,10 +28,10 @@ import controllers.ukrentaroom.adjustments.routes._
 import controllers.ukrentaroom.allowances.routes._
 import controllers.ukrentaroom.expenses.routes._
 import models._
-import pages.QuestionPage
+import pages.{QuestionPage, AboutPropertyCompletePage}
 import pages.adjustments._
 import pages.allowances._
-import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaClaimPage, EsbaSectionFinishedPage}
+import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage, EsbaClaimPage}
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.IncomeSectionFinishedPage
@@ -121,6 +122,10 @@ class CYADiversionService @Inject() {
   )(
     block: => T
   )(transform: Call => T): PartialFunction[(Mode, String, PropertyType), T] = {
+    case (NormalMode, ABOUT, UKProperty) =>
+      divert(taxYear, AboutPropertyCompletePage, userAnswers, block)(
+        cyaDiversion = CheckYourAnswersController.onPageLoad(taxYear)
+      )(transform)
     case (NormalMode, ABOUT, Rentals) =>
       divert(taxYear, AboutPropertyRentalsSectionFinishedPage, userAnswers, block)(
         cyaDiversion = PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)

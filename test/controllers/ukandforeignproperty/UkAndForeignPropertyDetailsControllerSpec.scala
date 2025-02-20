@@ -19,6 +19,7 @@ package controllers.ukandforeignproperty
 import base.SpecBase
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
+import models.IncomeSourcePropertyType.{ForeignProperty, UKProperty}
 import models.authorisation.Enrolment.Nino
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
@@ -58,9 +59,9 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
         new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val ukPropertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
       val foreignPropertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
           org.mockito.ArgumentMatchers.eq("nino"),
@@ -99,9 +100,9 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val ukPropertyDetails =
-        PropertyDetails(Some("uk-property"), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
       val foreignPropertyDetails =
-        PropertyDetails(Some("foreign-property"), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
           org.mockito.ArgumentMatchers.eq("nino"),

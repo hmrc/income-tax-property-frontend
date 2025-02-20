@@ -32,15 +32,30 @@
 
 package pages.foreign.income
 
-import models.ForeignProperty
+import models.{ForeignProperty, UserAnswers}
+import models.ForeignTotalIncomeUtils.isTotalIncomeUnder85K
+import pages.foreign.expenses.ConsolidatedOrIndividualExpensesPage
 import pages.PageConstants.incomePath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case class ForeignPropertyRentalIncomePage(countryCode:String) extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "rentIncome"
+
+  override def cleanup(value: Option[BigDecimal], userAnswers: UserAnswers): Try[UserAnswers] =
+    if (isTotalIncomeUnder85K(userAnswers, countryCode)) {
+      super.cleanup(value, userAnswers)
+    } else if (
+      userAnswers.get(ConsolidatedOrIndividualExpensesPage(countryCode)).fold(false)(data => data.consolidatedOrIndividualExpensesYesNo)
+    ) {
+      userAnswers.remove(ConsolidatedOrIndividualExpensesPage(countryCode))
+    } else {
+      super.cleanup(value, userAnswers)
+    }
 }
 

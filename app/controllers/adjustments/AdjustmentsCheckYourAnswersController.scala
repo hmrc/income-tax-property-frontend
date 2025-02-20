@@ -55,7 +55,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
       val summaryListRows = Seq(
         BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
-        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals),
+        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
         RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)

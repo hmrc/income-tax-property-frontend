@@ -64,7 +64,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
             val view = application.injector.instanceOf[SelectCountryView]
 
             status(result) mustEqual OK
-            contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItems)(
+            contentAsString(result) mustEqual view(form, taxYear, index, userType, NormalMode, countrySelectItems("en"))(
               request,
               messages(application)
             ).toString
@@ -89,7 +89,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
               index,
               userType,
               NormalMode,
-              countrySelectItems
+              countrySelectItems("en")
             )(
               request,
               messages(application)
@@ -155,7 +155,7 @@ class SelectCountryControllerSpec extends SpecBase with MockitoSugar {
             val result = controller.onSubmit(taxYear, index, NormalMode)(request)
 
             status(result) mustEqual BAD_REQUEST
-            contentAsString(result) mustEqual view(boundForm, taxYear, index, userType, NormalMode, countrySelectItems)(
+            contentAsString(result) mustEqual view(boundForm, taxYear, index, userType, NormalMode, countrySelectItems("en"))(
               request,
               messages(application)
             ).toString

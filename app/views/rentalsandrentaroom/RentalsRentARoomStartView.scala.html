@@ -31,9 +31,11 @@
     <h1 class="govuk-heading-l">@messages(s"rentalsAndRentARoom.start.heading.${request.user.isAgentMessageKey}")</h1>
     <p class="govuk-body">@messages(s"rentalsAndRentARoom.start.p.${request.user.isAgentMessageKey}")</p>
 
-    @govukButton(
-     ButtonViewModel(messages("site.continue"))
-      .withId("continue")
-      .asLink(controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, mode, models.RentalsRentARoom).url)
-    )
+    <p class="govuk-body">
+        @govukButton(
+         ButtonViewModel(messages("site.continue"))
+          .withId("continue")
+          .asLink(controllers.ukrentaroom.routes.JointlyLetController.onPageLoad(taxYear, mode, models.RentalsRentARoom).url)
+        )
+    </p>
 }
