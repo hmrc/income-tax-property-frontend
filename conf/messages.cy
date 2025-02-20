@@ -1295,6 +1295,7 @@ rentalsAndRentARoomAdjustmentsStart.details.content.l4 = costau ariannol preswyl
 rentalsAndRentARoomAdjustmentsStart.details.content.l5 = costau preswyl sydd heb eu defnyddio a ddygwyd ymlaen
 rentalsAndRentARoomAdjustmentsStart.details.content.l6.individual = eich lwfans incwm o eiddo a wnaed cais amdano
 rentalsAndRentARoomAdjustmentsStart.details.content.l6.agent = *Missing Welsh*
+rentalsAndRentARoomAdjustmentsStart.details.content.l7 = *Missing Welsh*
 
 ukrentaroom.income.totalIncomeAmount.title.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.heading.individual = Beth oedd cyfanswm yr incwm a gawsoch drwy’r Cynllun Rhentu Ystafell?
