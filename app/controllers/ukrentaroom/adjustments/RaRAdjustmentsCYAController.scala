@@ -59,8 +59,7 @@ class RaRAdjustmentsCYAController @Inject() (
           RarWhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, request.userAnswers
             .get(RaRUnusedLossesBroughtForwardPage)
             .flatMap(_.unusedLossesBroughtForwardAmount)
-            .getOrElse("0")
-            .toString)
+            .getOrElse(BigDecimal(0)))
         ).flatten
       val list = SummaryListViewModel(rows = rows)
 

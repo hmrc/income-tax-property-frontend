@@ -22,13 +22,13 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass, bigDecimalCurrency}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object RarWhenYouReportedTheLossSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, previousLoss: String)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String, previousLoss: BigDecimal)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(RarWhenYouReportedTheLossPage).map {
       answer =>
 
@@ -39,7 +39,7 @@ object RarWhenYouReportedTheLossSummary  {
         ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key     = KeyViewModel(messages(s"rarWhenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", previousLoss)).withCssClass(keyCssClass),
+          key     = KeyViewModel(messages(s"rarWhenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(previousLoss))).withCssClass(keyCssClass),
           value   = value,
           actions = Seq(
             ActionItemViewModel("site.change", controllers.ukrentaroom.adjustments.routes.RarWhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode).url)
