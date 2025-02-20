@@ -17,22 +17,22 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import controllers.adjustments.routes.{AdjustmentsCheckYourAnswersController, WhenYouReportedTheLossController}
-import models.{CheckMode, PropertyType, Rentals, UnusedLossesBroughtForward, UserAnswers}
-import pages.adjustments.{UnusedLossesBroughtForwardPage, WhenYouReportedTheLossPage}
+import models.{CheckMode, PropertyType, UserAnswers}
+import pages.adjustments.WhenYouReportedTheLossPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object WhenYouReportedTheLossSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String, previousLoss: BigDecimal)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(WhenYouReportedTheLossPage(propertyType)).map {
       answer =>
+
         val value = ValueViewModel(
           HtmlContent(
             HtmlFormat.escape(messages(s"whenYouReportedTheLoss.$answer"))
@@ -40,7 +40,7 @@ object WhenYouReportedTheLossSummary  {
         ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key =  KeyViewModel("whenYouReportedTheLoss.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key =  KeyViewModel(messages(s"whenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(previousLoss))).withCssClass(keyCssClass),
           value = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.WhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode, propertyType).url)

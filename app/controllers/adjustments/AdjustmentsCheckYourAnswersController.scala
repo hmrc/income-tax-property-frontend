@@ -37,6 +37,7 @@ import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.math.BigDecimal.RoundingMode
 
 class AdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -60,15 +61,17 @@ class AdjustmentsCheckYourAnswersController @Inject() (
         ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
       ).flatten
-
       val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
         request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals))
           .filter(_.unusedLossesBroughtForwardYesOrNo)
           .map(_ => Seq(
-            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
-            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
+            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey, request.userAnswers
+              .get(UnusedLossesBroughtForwardPage(Rentals))
+              .flatMap(_.unusedLossesBroughtForwardAmount)
+              .getOrElse(BigDecimal(0)))
           ).flatten)
-          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)).flatten)
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)).flatten)
 
       val list = SummaryListViewModel(
         rows = summaryListRows
