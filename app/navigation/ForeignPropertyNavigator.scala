@@ -110,6 +110,8 @@ class ForeignPropertyNavigator {
       taxYear => _ => _ => ForeignOtherCapitalAllowancesController.onPageLoad(taxYear, countryCode, NormalMode)
     case ForeignOtherCapitalAllowancesPage(countryCode) => // TODO route to CYA page once created
       taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case ForeignCapitalAllowancesForACarPage(countryCode) =>
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     case ForeignAllowancesCompletePage(_) =>
       taxYear =>
         _ =>
@@ -263,6 +265,9 @@ class ForeignPropertyNavigator {
         _ =>
           _ =>
             ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+
+    case ForeignCapitalAllowancesForACarPage(countryCode) =>
+      taxYear => _ => _ => ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
         // Allowances // Structure Building Allowance
     case ForeignClaimStructureBuildingAllowancePage(countryCode) =>
       taxYear => _ => userAnswers => foreignSbaNavigation(taxYear, userAnswers, countryCode)

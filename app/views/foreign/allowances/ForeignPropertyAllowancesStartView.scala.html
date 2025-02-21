@@ -28,17 +28,26 @@
 
     @if(accrualsOrCash) {
         @accrualsContent
+
+        <p class="govuk-body">
+            @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear,countryCode, NormalMode).url)
+            .withId("continue")
+            )
+        </p>
     } else {
         @cashContent
+
+        <p class="govuk-body">
+            @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(controllers.foreign.allowances.routes.ForeignCapitalAllowancesForACarController.onPageLoad(taxYear,countryCode, NormalMode).url)
+            .withId("continue")
+            )
+        </p>
     }
 
-    <p class="govuk-body">
-        @govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .asLink(controllers.foreign.allowances.routes.ForeignZeroEmissionCarAllowanceController.onPageLoad(taxYear,countryCode, NormalMode).url)
-        .withId("continue")
-        )
-    </p>
 }
 
 
