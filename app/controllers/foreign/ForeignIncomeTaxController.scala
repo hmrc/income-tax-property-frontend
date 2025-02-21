@@ -22,12 +22,13 @@ import forms.foreign.ForeignIncomeTaxFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignIncomeTaxPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.ForeignIncomeTaxView
+import uk.gov.hmrc.play.language.LanguageUtils
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,7 +42,8 @@ class ForeignIncomeTaxController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: ForeignIncomeTaxFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignIncomeTaxView
+                                         view: ForeignIncomeTaxView,
+                                         languageUtils: LanguageUtils
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
@@ -54,7 +56,7 @@ class ForeignIncomeTaxController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      CountryNamesDataSource.getCountry(countryCode) match {
+      CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
         case Some(country) => Future.successful(Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, country, mode)))
         case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
       }
@@ -66,7 +68,7 @@ class ForeignIncomeTaxController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          CountryNamesDataSource.getCountry(countryCode) match {
+          CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
             case Some(country) => Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, country, mode)))
             case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
           },

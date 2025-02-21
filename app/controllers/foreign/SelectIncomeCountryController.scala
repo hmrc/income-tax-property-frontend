@@ -22,13 +22,14 @@ import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.SelectIncomeCountryPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
-import service.CountryNamesDataSource.{countrySelectItems, countrySelectItemsWithUSA}
+import service.CountryNamesDataSource.{countrySelectItemsWithUSA, countrySelectItems}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.SelectIncomeCountryView
+import uk.gov.hmrc.play.language.LanguageUtils
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,7 +44,8 @@ class SelectIncomeCountryController @Inject() (
   requireData: DataRequiredAction,
   formProvider: SelectIncomeCountryFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: SelectIncomeCountryView
+  view: SelectIncomeCountryView,
+  languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -54,7 +56,7 @@ class SelectIncomeCountryController @Inject() (
         case None        => form
         case Some(value) => form.fill(value.code)
       }
-      Ok(view(preparedForm, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA))
+      Ok(view(preparedForm, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))
     }
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] =
@@ -66,12 +68,12 @@ class SelectIncomeCountryController @Inject() (
           formWithErrors =>
             Future.successful(
               BadRequest(
-                view(formWithErrors, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItems)
+                view(formWithErrors, taxYear, index: Int, request.user.isAgentMessageKey, mode, countrySelectItems(languageUtils.getCurrentLang.locale.toString))
               )
             ),
           countryCode =>
             for {
-              updatedAnswers <- Future.fromTry(CountryNamesDataSource.getCountry(countryCode)
+              updatedAnswers <- Future.fromTry(CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString)
                                   .map(country => request.userAnswers.set(SelectIncomeCountryPage(index), country))
                                   .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognized"))))
               _ <- sessionRepository.set(updatedAnswers)
