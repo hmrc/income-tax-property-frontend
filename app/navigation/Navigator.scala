@@ -1025,7 +1025,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRUnusedLossesBroughtForwardPage =>
-      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+      taxYear => previousUserAnswers => userAnswers => raRUnusedLossesBroughtForwardNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
     case RarWhenYouReportedTheLossPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // Rentals and Rent a Room
@@ -1389,6 +1389,21 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case (Some(pre), Some(cur)) if pre != cur =>
         ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
       case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    }
+
+  private def raRUnusedLossesBroughtForwardNavigationCheckMode(
+                                                  taxYear: Int,
+                                                  previousUserAnswers: UserAnswers,
+                                                  userAnswers: UserAnswers
+                                                ): Call =
+    (
+      previousUserAnswers.get(RaRUnusedLossesBroughtForwardPage),
+      userAnswers.get(RaRUnusedLossesBroughtForwardPage)
+    ) match {
+      case (Some(UnusedLossesBroughtForward(false, _)), Some(UnusedLossesBroughtForward(true, _))) =>
+        RarWhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode)
+      case _ =>
+        controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
     }
 
 }
