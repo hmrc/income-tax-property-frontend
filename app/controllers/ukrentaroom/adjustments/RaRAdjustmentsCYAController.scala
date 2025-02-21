@@ -50,18 +50,31 @@ class RaRAdjustmentsCYAController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val hasLossesBroughtForward: Boolean = request.userAnswers
+        .get(RaRUnusedLossesBroughtForwardPage)
+        .exists(_.unusedLossesBroughtForwardYesOrNo)
       val rows: Seq[SummaryListRow] =
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
             .row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-          RarWhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, request.userAnswers
-            .get(RaRUnusedLossesBroughtForwardPage)
-            .flatMap(_.unusedLossesBroughtForwardAmount)
-            .getOrElse(BigDecimal(0)))
         ).flatten
-      val list = SummaryListViewModel(rows = rows)
+      val unusedLossesBroughtForwardRows =
+        if(hasLossesBroughtForward) {
+          Seq(
+            RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+            RarWhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, request.userAnswers
+              .get(RaRUnusedLossesBroughtForwardPage)
+              .flatMap(_.unusedLossesBroughtForwardAmount)
+              .getOrElse(BigDecimal(0)))
+          ).flatten
+        } else {
+          RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+        }
+      val list = SummaryListViewModel(
+        rows = rows
+          .appendedAll(unusedLossesBroughtForwardRows)
+      )
 
       Ok(view(list, taxYear))
   }
