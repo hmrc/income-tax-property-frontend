@@ -622,8 +622,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       case RentalsRentARoom => userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
     }
     (claimPIA, incomeSectionFinishedPage, sectionFinished) match {
-      case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
       case (Some(true), None, None)              => TaskListTag.CanNotStart
+      case (Some(true), Some(false), _)          => TaskListTag.CanNotStart
       case (Some(true), Some(true), None)        => TaskListTag.NotStarted
       case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
       case (Some(true), Some(true), Some(true))  => TaskListTag.Completed
