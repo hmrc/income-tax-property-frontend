@@ -36,7 +36,7 @@ govukButton: GovukButton
 <ul class="govuk-list govuk-list--bullet">
     <li>@messages(s"foreignPropertyDetails.bullet1.${page.individualOrAgent}", page.tradingStartDateFormatted)</li>
     <li>@messages(s"foreignPropertyDetails.bullet2.${page.individualOrAgent}")
-        @messages(s"${page.cashOrAccrualsMessageKey}")
+        @messages(s"${page.cashOrAccrualsMessageKey}").toLowerCase()
     </li>
 </ul>
 

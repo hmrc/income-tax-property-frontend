@@ -16,13 +16,13 @@
 
 package viewmodels.checkAnswers.foreign
 
-import models.{UserAnswers, CheckMode}
-import pages.foreign.{IncomeSourceCountries, Country, SelectIncomeCountryPage}
+import models.{CheckMode, UserAnswers}
+import pages.foreign.{Country, IncomeSourceCountries, SelectIncomeCountryPage}
 import play.api.i18n.Messages
 import service.CountryNamesDataSource
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, selectCountriesValueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -61,7 +61,7 @@ object CountriesRentedPropertySummary {
       val countryList: String = value.mkString("<br>")
       SummaryListRowViewModel(
         key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(HtmlContent(countryList)).withCssClass(valueCssClass),
+        value = ValueViewModel(HtmlContent(countryList)).withCssClass(selectCountriesValueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
