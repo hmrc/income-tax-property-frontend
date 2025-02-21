@@ -135,7 +135,6 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
       isFailed = isFailed,
       allowances
     )
-  logger.error(s"auditModel: ${auditModel}")
     auditService.sendAuditEvent(auditModel)
   }
 }
