@@ -57,7 +57,7 @@ class RaRAdjustmentsCYAController @Inject() (
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
-            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+            .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
       val unusedLossesBroughtForwardRows =
         if(hasLossesBroughtForward) {
