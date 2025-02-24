@@ -38,8 +38,6 @@ import scala.concurrent.Future
 
 class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
-  private val propertySubmissionService = mock[PropertySubmissionService]
-
   val taxYear = 2024
 
   def onwardRoute: Call =

@@ -22,13 +22,14 @@ import forms.foreign.ForeignIncomeTaxFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignIncomeTaxPage
-import play.api.i18n.{MessagesApi, I18nSupport}
+import pages.foreign.income.ForeignPropertyTaxSectionAddCountryCode
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.foreign.ForeignIncomeTaxView
 import uk.gov.hmrc.play.language.LanguageUtils
+import views.html.foreign.ForeignIncomeTaxView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -75,7 +76,9 @@ class ForeignIncomeTaxController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignIncomeTaxPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswersWithCountryCode <-
+              Future.fromTry(updatedAnswers.set(ForeignPropertyTaxSectionAddCountryCode(countryCode), countryCode))
+            _              <- sessionRepository.set(updatedAnswersWithCountryCode)
           } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }

@@ -16,23 +16,35 @@
 
 package base
 
+import audit.AuditService
 import controllers.actions._
 import models.UserAnswers
+import models.backend.PropertyDetails
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import service.{BusinessService, PropertySubmissionService}
+
+import java.time.LocalDate
 
 trait SpecBase
     extends AnyFreeSpec with Matchers with TryValues with OptionValues with ScalaFutures with IntegrationPatience {
 
   val userAnswersId: String = "id"
 
+  val foreignPropertyDetails: PropertyDetails =
+    PropertyDetails(Some("foreign-property"), Some(LocalDate.now()), Some(true), "some-id")
+
+  val propertySubmissionService: PropertySubmissionService = mock[PropertySubmissionService]
+  val businessService: BusinessService = mock[BusinessService]
+  val audit: AuditService = mock[AuditService]
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())

@@ -25,18 +25,17 @@ import models.{ConsolidatedOrIndividualExpenses, JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.expenses._
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.expenses.ForeignPropertyExpensesCheckYourAnswersView
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
@@ -46,8 +45,6 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
   def onwardRoute: Call = ForeignExpensesSectionCompleteController.onPageLoad(taxYear, countryCode)
   val controller: ReverseForeignPropertyExpensesCheckYourAnswersController = ForeignPropertyExpensesCheckYourAnswersController
 
-  private val propertySubmissionService = mock[PropertySubmissionService]
-  val audit: AuditService = mock[AuditService]
 
   "ForeignPropertyExpensesCheckYourAnswers Controller" - {
 
@@ -121,8 +118,13 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
           )
       ) thenReturn Future(Right())
 
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
+
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()
 

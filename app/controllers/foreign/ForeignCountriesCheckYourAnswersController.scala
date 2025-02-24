@@ -17,16 +17,15 @@
 package controllers.foreign
 
 import audit.{AuditModel, AuditService}
+import controllers.PropertyDetailsHandler
 import controllers.actions._
-import controllers.exceptions.{SaveJourneyAnswersFailed, NotFoundException}
+import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.routes.ForeignSelectCountriesCompleteController
-import models.JourneyPath.ForeignSelectCountry
 import models.requests.DataRequest
-import models.{JourneyName, AuditPropertyType, JourneyContext, SectionName, ForeignPropertySelectCountry, AccountingMethod}
-import play.api.i18n.Lang.logger
-import play.api.i18n.{MessagesApi, I18nSupport}
+import models.{AccountingMethod, AuditPropertyType, ForeignPropertySelectCountry, JourneyContext, JourneyName, JourneyPath, SectionName}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -37,6 +36,7 @@ import views.html.foreign.ForeignCountriesCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class ForeignCountriesCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -46,10 +46,11 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   propertySubmissionService: PropertySubmissionService,
   audit: AuditService,
+  businessService: BusinessService,
   view: ForeignCountriesCheckYourAnswersView,
   languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -57,7 +58,8 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
         rows = Seq(
           TotalIncomeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeReportSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
-          CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
+          CountriesRentedPropertySummary
+            .rowList(taxYear, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
           ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten
       )
@@ -68,16 +70,13 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     implicit request =>
       request.userAnswers
         .get(ForeignPropertySelectCountry)
-        .map(foreignPropertySelectCountry =>
+        .fold {
+          val errorMsg =
+            s"Foreign property select country section is missing for userId: ${request.userId}, taxYear: $taxYear"
+          logger.error(errorMsg)
+          Future.successful(NotFound(errorMsg))
+        } { foreignPropertySelectCountry =>
           saveForeignPropertySelectCountry(taxYear, request, foreignPropertySelectCountry)
-        )
-        .getOrElse {
-          logger.error(
-            s"Foreign property select country section is not present in userAnswers for userId: ${request.userId} "
-          )
-          Future.failed(
-            NotFoundException("Foreign property select country section is not present in userAnswers")
-          )
         }
   }
 
@@ -85,28 +84,34 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignPropertySelectCountry: ForeignPropertySelectCountry
-  )(implicit hc: HeaderCarrier): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, ForeignSelectCountry)
-    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertySelectCountry).flatMap {
-      case Right(_) =>
-        auditCYA(taxYear, request, foreignPropertySelectCountry, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(Redirect(ForeignSelectCountriesCompleteController.onPageLoad(taxYear)))
+  )(implicit hc: HeaderCarrier): Future[Result] =
+    withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
+      val context =
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignSelectCountry)
+      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
 
-      case Left(error) =>
-        logger.error(s"Failed to save Foreign Property Select Country section : ${error.toString}")
-        auditCYA(taxYear, request, foreignPropertySelectCountry, isFailed = true, AccountingMethod.Traditional)
-        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Property Select Country section"))
-
+      propertySubmissionService
+        .saveForeignPropertyJourneyAnswers(context, foreignPropertySelectCountry)
+        .map {
+          case Right(_) => Redirect(ForeignSelectCountriesCompleteController.onPageLoad(taxYear))
+          case Left(error) =>
+            logger.error(s"Failed to save Foreign Property Select Country section: ${error.toString}")
+            throw SaveJourneyAnswersFailed("Failed to save Foreign Property Select Country section")
+        }
+        .andThen {
+          case Success(_) =>
+            auditCYA(taxYear, request, foreignPropertySelectCountry, isFailed = false, accrualsOrCash)
+          case Failure(_) =>
+            auditCYA(taxYear, request, foreignPropertySelectCountry, isFailed = true, accrualsOrCash)
+        }
     }
-
-  }
 
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignPropertySelectCountry: ForeignPropertySelectCountry,
     isFailed: Boolean,
-    accountingMethod: AccountingMethod
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -120,7 +125,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
       sectionName = SectionName.ForeignPropertySelectCountry,
       propertyType = AuditPropertyType.ForeignProperty,
       journeyName = JourneyName.ForeignProperty,
-      accountingMethod = accountingMethod,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isFailed = isFailed,
       foreignPropertySelectCountry
     )
