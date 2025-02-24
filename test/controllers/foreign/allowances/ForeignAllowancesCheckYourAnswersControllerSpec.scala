@@ -24,7 +24,6 @@ import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.allowances._
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -48,8 +47,6 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
     s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/allowances/$countryCode/complete-yes-no"
   )
 
-  private val propertySubmissionService = mock[PropertySubmissionService]
-  val audit: AuditService = mock[AuditService]
 
   "Check Your Answers Controller" - {
 
@@ -64,13 +61,12 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
       )
 
       // Mock the businessService to return valid property details
-      val mockBusinessService = mock[BusinessService]
-      when(mockBusinessService.getForeignPropertyDetails(any(), any())(any()))
+      when(businessService.getForeignPropertyDetails(any(), any())(any()))
         .thenReturn(Future.successful(Right(Some(mockPropertyDetails))))
 
       // Inject the mocked service into the application
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
-        .overrides(bind[BusinessService].toInstance(mockBusinessService))
+        .overrides(bind[BusinessService].toInstance(businessService))
         .build()
 
       running(application) {
@@ -146,8 +142,13 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
           )
       ) thenReturn Future(Right())
 
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
+
       val application = applicationBuilder(userAnswers = userAnswersForeignPropertyAllowances, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()
 

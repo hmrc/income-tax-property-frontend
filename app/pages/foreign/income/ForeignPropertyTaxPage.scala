@@ -16,13 +16,38 @@
 
 package pages.foreign.income
 
-import models.{ForeignProperty, ForeignPropertyTax}
+import models.{ForeignIncomeTax, ForeignProperty}
 import pages.PageConstants.foreignTaxPath
 import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsPath, Json, OFormat}
+import queries.Gettable
+
+case class ForeignPropertyTax(
+  countryCode: String,
+  foreignIncomeTax: Option[ForeignIncomeTax],
+  foreignTaxCreditRelief: Option[Boolean]
+)
+object ForeignPropertyTax {
+  implicit val format: OFormat[ForeignPropertyTax] = Json.format[ForeignPropertyTax]
+}
 
 case class ForeignPropertyTaxPage(countryCode: String) extends QuestionPage[ForeignPropertyTax] {
 
   override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase
+
+}
+
+case class ForeignPropertyTaxSectionAddCountryCode(countryCode: String) extends QuestionPage[String] {
+
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ countryCode.toUpperCase \ toString
+
+  override def toString: String = "countryCode"
+}
+
+case class ReadForeignPropertyTax(countryCode: String) extends Gettable[ForeignPropertyTax] {
+
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ toString
+
+  override def toString: String = countryCode.toUpperCase
 
 }

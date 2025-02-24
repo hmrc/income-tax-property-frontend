@@ -17,15 +17,16 @@
 package controllers.foreign.structuresbuildingallowance
 
 import audit.{AuditModel, AuditService}
+import controllers.PropertyDetailsHandler
 import controllers.actions._
-import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.exceptions.SaveJourneyAnswersFailed
+import controllers.foreign.structuresbuildingallowance.routes.ForeignSbaCompleteController
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, SectionName}
 import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaInfo}
-import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.structurebuildingallowance.ForeignClaimSbaSummary
@@ -34,6 +35,7 @@ import views.html.foreign.structurebuildingallowance.ForeignClaimSbaCheckYourAns
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class ForeignClaimSbaCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -43,9 +45,10 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   propertySubmissionService: PropertySubmissionService,
   auditService: AuditService,
+  businessService: BusinessService,
   view: ForeignClaimSbaCheckYourAnswersView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
@@ -62,14 +65,13 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
         .get(ForeignClaimStructureBuildingAllowancePage(countryCode))
-        .map(claimSba => saveForeignPropertySba(taxYear, request, claimSba, countryCode))
-        .getOrElse {
-          logger.error(
-            s"Foreign property sba section is not present in userAnswers for userId: ${request.userId} "
-          )
-          Future.failed(
-            NotFoundException("Foreign property sba section is not present in userAnswers")
-          )
+        .fold {
+          val errorMsg =
+            s"Foreign property sba section is missing for userId: ${request.userId}, taxYear: $taxYear, countryCode: $countryCode"
+          logger.error(errorMsg)
+          Future.successful(NotFound(errorMsg))
+        } { claimSba =>
+          saveForeignPropertySba(taxYear, request, claimSba, countryCode)
         }
     }
 
@@ -78,28 +80,35 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     claimSba: Boolean,
     countryCode: String
-  )(implicit hc: HeaderCarrier): Future[Result] = {
-    val foreignSbaInfo = ForeignSbaInfo(countryCode, claimSba, None)
-    val context =
-      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignStructureBuildingAllowance)
-    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignSbaInfo).flatMap {
-      case Right(_) =>
-        auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
-      case Left(error) =>
-        logger.error(s"Failed to save Foreign sba section : ${error.toString}")
-        auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, AccountingMethod.Traditional)
-        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign sba section"))
-    }
+  )(implicit hc: HeaderCarrier): Future[Result] =
+    withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
+      val foreignSbaInfo = ForeignSbaInfo(countryCode, claimSba, None)
+      val context =
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignStructureBuildingAllowance)
+      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
 
-  }
+      propertySubmissionService
+        .saveForeignPropertyJourneyAnswers(context, foreignSbaInfo)
+        .map {
+          case Right(_) => Redirect(ForeignSbaCompleteController.onPageLoad(taxYear, countryCode))
+          case Left(error) =>
+            logger.error(s"Failed to save Foreign sba section: ${error.toString}")
+            throw SaveJourneyAnswersFailed("Failed to save Foreign sba section")
+        }
+        .andThen {
+          case Success(_) =>
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, accrualsOrCash)
+          case Failure(_) =>
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, accrualsOrCash)
+        }
+    }
 
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignSbaInfo: ForeignSbaInfo,
     isFailed: Boolean,
-    accountingMethod: AccountingMethod
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -113,7 +122,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
       sectionName = SectionName.ForeignStructureBuildingAllowance,
       propertyType = AuditPropertyType.ForeignProperty,
       journeyName = JourneyName.ForeignProperty,
-      accountingMethod = accountingMethod,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isFailed = isFailed,
       foreignSbaInfo
     )

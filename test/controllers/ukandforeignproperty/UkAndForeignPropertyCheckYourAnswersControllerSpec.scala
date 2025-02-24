@@ -41,8 +41,6 @@ import scala.concurrent.Future
 
 class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
 
-  private val propertySubmissionService = mock[PropertySubmissionService]
-
   val taxYear: Int = LocalDate.now.getYear
   lazy val UkAndForeignPropertyCheckYourAnswersRoute: String =
     controllers.ukandforeignproperty.routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear = taxYear).url
@@ -56,7 +54,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
     claimPropertyIncomeAllowanceOrExpenses = None
   )
 
-  val aboutUk = AboutUk(
+  val aboutUk: AboutUk = AboutUk(
     nonUkResidentLandlord = None,
     deductingTaxFromNonUkResidentLandlord = None,
     ukRentalPropertyIncomeAmount = None,
@@ -69,7 +67,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
     reversePremiumsReceived = None,
     otherIncomeFromProperty = None
   )
-  val aboutForeign = AboutForeign(
+  val aboutForeign: AboutForeign = AboutForeign(
     foreignRentalPropertyIncomeAmount = None,
     foreignBalancingCharge = None,
     foreignPremiumsForTheGrantOfALease = None,

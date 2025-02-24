@@ -39,9 +39,6 @@ import scala.concurrent.Future
 class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
   val taxYear: Int = 2024
-
-  private val propertySubmissionService = mock[PropertySubmissionService]
-
   def onwardRoute: Call =
     Call("GET", "/update-and-submit-income-tax-return/property/2024/rentals/about/complete-yes-no")
 
@@ -49,7 +46,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), true).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear).url)
@@ -66,7 +63,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear).url)
