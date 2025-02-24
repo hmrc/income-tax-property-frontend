@@ -24,40 +24,40 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.libs.json.{JsError, JsString, Json}
 
-class RarWhenYouReportedTheLossSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class WhenYouReportedTheLossSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "RarWhenYouReportedTheLoss" - {
+  "WhenYouReportedTheLoss" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(RarWhenYouReportedTheLoss.values.toSeq)
+      val gen = Gen.oneOf(WhenYouReportedTheLoss.values.toSeq)
 
       forAll(gen) {
-        rarWhenYouReportedTheLoss =>
+        whenYouReportedTheLoss =>
 
-          JsString(rarWhenYouReportedTheLoss.toString).validate[RarWhenYouReportedTheLoss].asOpt.value mustEqual rarWhenYouReportedTheLoss
+          JsString(whenYouReportedTheLoss.toString).validate[WhenYouReportedTheLoss].asOpt.value mustEqual whenYouReportedTheLoss
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!RarWhenYouReportedTheLoss.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!WhenYouReportedTheLoss.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[RarWhenYouReportedTheLoss] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[WhenYouReportedTheLoss] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(RarWhenYouReportedTheLoss.values.toSeq)
+      val gen = Gen.oneOf(WhenYouReportedTheLoss.values.toSeq)
 
       forAll(gen) {
-        rarWhenYouReportedTheLoss =>
+        whenYouReportedTheLoss =>
 
-          Json.toJson(rarWhenYouReportedTheLoss) mustEqual JsString(rarWhenYouReportedTheLoss.toString)
+          Json.toJson(whenYouReportedTheLoss) mustEqual JsString(whenYouReportedTheLoss.toString)
       }
     }
   }

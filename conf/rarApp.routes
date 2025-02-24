@@ -1,0 +1,61 @@
+
+#################### Allowances for Rent A Room  ##########################
+
+GET         /:taxYear/rent-a-room/allowances/start                                                                       controllers.ukrentaroom.allowances.RRAllowancesStartController.onPageLoad(taxYear: Int)
+
+GET         /:taxYear/rent-a-room/allowances/zero-emission-car-allowance                                                 controllers.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/allowances/zero-emission-car-allowance                                                 controllers.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/allowances/change-zero-emission-car-allowance                                          controllers.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/allowances/change-zero-emission-car-allowance                                          controllers.ukrentaroom.allowances.RaRZeroEmissionCarAllowanceController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/allowances/replacements-of-domestic-goods                                              controllers.ukrentaroom.allowances.RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/allowances/replacements-of-domestic-goods                                              controllers.ukrentaroom.allowances.RaRReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/allowances/change-replacements-of-domestic-goods                                       controllers.ukrentaroom.allowances.RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/allowances/change-replacements-of-domestic-goods                                       controllers.ukrentaroom.allowances.RaRReplacementsOfDomesticGoodsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/allowances/other-capital-allowances                                                    controllers.ukrentaroom.allowances.RaROtherCapitalAllowancesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/allowances/other-capital-allowances                                                    controllers.ukrentaroom.allowances.RaROtherCapitalAllowancesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/allowances/change-other-capital-allowances                                             controllers.ukrentaroom.allowances.RaROtherCapitalAllowancesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/allowances/change-other-capital-allowances                                             controllers.ukrentaroom.allowances.RaROtherCapitalAllowancesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/allowances/capital-allowances-for-a-car                                                controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/allowances/capital-allowances-for-a-car                                                controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/allowances/change-capital-allowances-for-a-car                                         controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/allowances/change-capital-allowances-for-a-car                                         controllers.ukrentaroom.allowances.RaRCapitalAllowancesForACarController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/allowances/check-your-answers                                                          controllers.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rent-a-room/allowances/check-your-answers                                                          controllers.ukrentaroom.allowances.RaRAllowancesCheckYourAnswersController.onSubmit(taxYear: Int)
+
+GET         /:taxYear/rent-a-room/allowances/complete-yes-no                                                             controllers.ukrentaroom.allowances.RaRAllowancesCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/allowances/complete-yes-no                                                             controllers.ukrentaroom.allowances.RaRAllowancesCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
+
+#################### Adjustments Rent A Room  ##########################
+
+GET         /:taxYear/rent-a-room/adjustments/adjustments-start                                                          controllers.ukrentaroom.adjustments.RaRAdjustmentsIntroController.onPageLoad(taxYear: Int)
+
+GET         /:taxYear/rent-a-room/adjustments/balancing-charge                                                           controllers.ukrentaroom.adjustments.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/balancing-charge                                                           controllers.ukrentaroom.adjustments.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/adjustments/change-balancing-charge                                                    controllers.ukrentaroom.adjustments.RaRBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/adjustments/change-balancing-charge                                                    controllers.ukrentaroom.adjustments.RaRBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/adjustments/unused-residential-finance-cost-brought-fwd                                controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/unused-residential-finance-cost-brought-fwd                                controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/adjustments/change-unused-residential-finance-cost-brought-fwd                         controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/adjustments/change-unused-residential-finance-cost-brought-fwd                         controllers.ukrentaroom.adjustments.RaRUnusedResidentialCostsController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/adjustments/unused-losses-brought-fwd                                                  controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/unused-losses-brought-fwd                                                  controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/adjustments/change-unused-losses-brought-fwd                                           controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/adjustments/change-unused-losses-brought-fwd                                           controllers.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/adjustments/when-you-reported-the-loss                        controllers.ukrentaroom.adjustments.RarWhenYouReportedTheLossController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/when-you-reported-the-loss                      controllers.ukrentaroom.adjustments.RarWhenYouReportedTheLossController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET         /:taxYear/rent-a-room/adjustments/change-when-you-reported-the-loss             controllers.ukrentaroom.adjustments.RarWhenYouReportedTheLossController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST        /:taxYear/rent-a-room/adjustments/change-when-you-reported-the-loss                  controllers.ukrentaroom.adjustments.RarWhenYouReportedTheLossController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
+GET         /:taxYear/rent-a-room/adjustments/check-your-answers                                                         controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onPageLoad(taxYear: Int)
+POST        /:taxYear/rent-a-room/adjustments/check-your-answers                                                         controllers.ukrentaroom.adjustments.RaRAdjustmentsCYAController.onSubmit(taxYear: Int)
+
+GET         /:taxYear/rent-a-room/adjustments/complete-yes-no                                                            controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST        /:taxYear/rent-a-room/adjustments/complete-yes-no                                                            controllers.ukrentaroom.adjustments.RaRAdjustmentsCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)

@@ -21,9 +21,9 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryRarWhenYouReportedTheLoss: Arbitrary[RarWhenYouReportedTheLoss] =
+  implicit lazy val arbitraryRarWhenYouReportedTheLoss: Arbitrary[WhenYouReportedTheLoss] =
     Arbitrary {
-      Gen.oneOf(RarWhenYouReportedTheLoss.values.toSeq)
+      Gen.oneOf(WhenYouReportedTheLoss.values.toSeq)
     }
 
   implicit lazy val arbitraryForeignWhenYouReportedTheLoss: Arbitrary[ForeignWhenYouReportedTheLoss] =

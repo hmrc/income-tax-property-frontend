@@ -14,42 +14,44 @@
  * limitations under the License.
  */
 
-package controllers.ukrentaroom.adjustments
+package controllers.adjustments
 
 import base.SpecBase
 import controllers.routes
-import forms.ukrentaroom.adjustments.RarWhenYouReportedTheLossFormProvider
-import models.{NormalMode, UnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
+import forms.adjustments.WhenYouReportedTheLossFormProvider
+import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UnusedLossesBroughtForward, UserAnswers, WhenYouReportedTheLoss}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.adjustments.{RaRUnusedLossesBroughtForwardPage, RarWhenYouReportedTheLossPage}
+import pages.adjustments.{UnusedLossesBroughtForwardPage, WhenYouReportedTheLossPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.adjustments.RarWhenYouReportedTheLossView
+import views.html.adjustments.WhenYouReportedTheLossView
 
 import scala.concurrent.Future
 import scala.math.BigDecimal.RoundingMode
 
-class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
+class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
   val taxYear: Int = 2024
   val isAgentMessageString: String = "individual"
-  lazy val rarWhenYouReportedTheLossRoute: String = controllers.ukrentaroom.adjustments.routes.RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode).url
   val previousLoss: BigDecimal = 123
-  val formProvider = new RarWhenYouReportedTheLossFormProvider()
+  val formProvider = new WhenYouReportedTheLossFormProvider()
   val form = formProvider(isAgentMessageString)
 
-  "RarWhenYouReportedTheLoss Controller" - {
+  lazy val rentalsRoute: String = controllers.adjustments.routes.WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val rentalsRentARoomRoute: String = controllers.adjustments.routes.WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+
+  "WhenYouReportedTheLoss Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
+      val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
           unusedLossesBroughtForwardYesOrNo = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
@@ -57,21 +59,21 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "Rentals only journey must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
-      val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
+      val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.values.head).success.value
+      val userAnswersWithLoss = userAnswers.set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
           unusedLossesBroughtForwardYesOrNo = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
@@ -80,20 +82,43 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = Some(userAnswersWithLoss), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode, Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "Rentals RaR journey must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.values.head).success.value
+      val userAnswersWithLoss = userAnswers.set(UnusedLossesBroughtForwardPage(Rentals),
+        UnusedLossesBroughtForward(
+          unusedLossesBroughtForwardYesOrNo = true,
+          unusedLossesBroughtForwardAmount = Some(previousLoss)
+        )).get
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithLoss), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRoute)
+
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
+      val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
           unusedLossesBroughtForwardYesOrNo = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
@@ -113,8 +138,8 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
+          FakeRequest(POST, rentalsRoute)
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 
@@ -125,7 +150,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
+      val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
           unusedLossesBroughtForwardYesOrNo = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
@@ -135,17 +160,17 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", "invalid value"))
+          FakeRequest(POST, rentalsRoute)
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", "invalid value"))
 
-        val boundForm = form.bind(Map("rarWhenYouReportedTheLoss" -> "invalid value"))
+        val boundForm = form.bind(Map("whenYouReportedTheLoss" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString,NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString,NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -154,7 +179,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val application = applicationBuilder(userAnswers = None, true).build()
 
       running(application) {
-        val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
@@ -169,8 +194,8 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       running(application) {
         val request =
-          FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
+          FakeRequest(POST, rentalsRoute)
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 

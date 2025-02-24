@@ -24,10 +24,12 @@ import models.RentalsRentARoom
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models._
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, PropertySubmissionService}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -62,7 +64,6 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
         ).flatten
       )
-
       Ok(view(list, taxYear))
   }
 

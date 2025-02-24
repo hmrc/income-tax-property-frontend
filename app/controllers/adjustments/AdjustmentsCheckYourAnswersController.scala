@@ -23,10 +23,12 @@ import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.JourneyPath.PropertyRentalAdjustments
 import models._
 import models.requests.DataRequest
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -50,17 +52,28 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val list = SummaryListViewModel(
-        rows = Seq(
-          BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
-          PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
-          RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
-          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
-          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
-        ).flatten
-      )
+      val summaryListRows = Seq(
+        BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
+        PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
+        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+        RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
+        ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
+        UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
+      ).flatten
 
+      val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
+        request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals))
+          .filter(_.unusedLossesBroughtForwardYesOrNo)
+          .map(_ => Seq(
+            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
+            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
+          ).flatten)
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)).flatten)
+
+      val list = SummaryListViewModel(
+        rows = summaryListRows
+          .appendedAll(UnusedLossesBroughtForwardRows)
+      )
       Ok(view(list, taxYear))
   }
 

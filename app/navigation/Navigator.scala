@@ -349,13 +349,27 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               }
             }
     case UnusedResidentialFinanceCostPage(Rentals) =>
-      taxYear => _ => _ => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => _ => _ => UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
     case UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
           _ =>
-            RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-        // Rentals-Expenses
+            UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+    case UnusedLossesBroughtForwardPage(propertyType) => taxYear => _ => userAnswers =>
+      userAnswers.get(UnusedLossesBroughtForwardPage(propertyType)) match {
+        case Some(UnusedLossesBroughtForward(true, _))  => WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
+        case Some(UnusedLossesBroughtForward(false, _)) =>
+          propertyType match {
+            case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          }
+      }
+    case WhenYouReportedTheLossPage(propertyType) => taxYear => _ => _ =>
+      propertyType match {
+        case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
+    // Rentals-Expenses
     case ConsolidatedExpensesPage(Rentals) =>
       taxYear =>
         _ =>
@@ -907,18 +921,20 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController
               .onPageLoad(taxYear)
         // Adjustments
+    case UnusedLossesBroughtForwardPage(propertyType) =>
+      taxYear => previousAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, propertyType, previousAnswers, userAnswers)
     case PrivateUseAdjustmentPage(Rentals) | PropertyIncomeAllowancePage(Rentals) |
         RenovationAllowanceBalancingChargePage(Rentals) | ResidentialFinanceCostPage(Rentals) |
-        UnusedResidentialFinanceCostPage(Rentals) =>
+        UnusedResidentialFinanceCostPage(Rentals) | WhenYouReportedTheLossPage(Rentals) =>
       taxYear =>
         _ =>
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
-    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
+      case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
-        UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
+        UnusedResidentialFinanceCostPage(RentalsRentARoom) | WhenYouReportedTheLossPage(RentalsRentARoom) =>
       taxYear => _ => _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case BalancingChargePage(Rentals) =>
       taxYear =>
@@ -1385,19 +1401,22 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
     }
 
-  private def raRUnusedLossesBroughtForwardNavigationCheckMode(
-                                                  taxYear: Int,
-                                                  previousUserAnswers: UserAnswers,
-                                                  userAnswers: UserAnswers
-                                                ): Call =
+  private def UnusedLossesBroughtForwardPNavigationCheckMode(
+       taxYear: Int,
+       propertyType: PropertyType,
+       previousAnswers: UserAnswers,
+       userAnswers: UserAnswers
+     ): Call =
     (
-      previousUserAnswers.get(RaRUnusedLossesBroughtForwardPage),
-      userAnswers.get(RaRUnusedLossesBroughtForwardPage)
+      previousAnswers.get(UnusedLossesBroughtForwardPage(propertyType)),
+      userAnswers.get(UnusedLossesBroughtForwardPage(propertyType))
     ) match {
       case (Some(UnusedLossesBroughtForward(false, _)), Some(UnusedLossesBroughtForward(true, _))) =>
-        RarWhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode)
-      case _ =>
-        controllers.ukrentaroom.adjustments.routes.RaRAdjustmentsCYAController.onPageLoad(taxYear)
+        WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
+      case _ => propertyType match {
+        case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+      }
     }
-
 }
+

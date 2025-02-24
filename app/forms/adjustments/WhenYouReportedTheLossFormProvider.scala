@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.ukrentaroom.adjustments
+package forms.adjustments
 
 import forms.mappings.Mappings
 import models.WhenYouReportedTheLoss
@@ -22,10 +22,10 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class RarWhenYouReportedTheLossFormProvider @Inject() extends Mappings {
+class WhenYouReportedTheLossFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[WhenYouReportedTheLoss] =
     Form(
-      "rarWhenYouReportedTheLoss" -> enumerable[WhenYouReportedTheLoss](s"rarWhenYouReportedTheLoss.error.required.${individualOrAgent}")
+      "whenYouReportedTheLoss" -> enumerable[WhenYouReportedTheLoss](s"whenYouReportedTheLoss.error.required.${individualOrAgent}")
     )
 }

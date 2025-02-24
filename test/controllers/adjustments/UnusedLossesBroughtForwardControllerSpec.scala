@@ -18,14 +18,11 @@ package controllers.adjustments
 
 import base.SpecBase
 import forms.adjustments.UnusedLossesBroughtForwardFormProvider
-import models.{NormalMode, UserAnswers, UnusedLossesBroughtForward}
+import models.{NormalMode, Rentals, RentalsRentARoom, UserAnswers, UnusedLossesBroughtForward}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.prop.TableFor1
-import org.scalatest.prop.Tables.Table
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks.forAll
 import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -43,8 +40,12 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
   val taxYear: Int = 2024
   val isAgentMessageString: String = "individual"
   val formProvider = new UnusedLossesBroughtForwardFormProvider()
-  lazy val unusedLossesBroughtForwardRoute: String = routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode).url
   val form = formProvider(isAgentMessageString)
+
+  lazy val rentalsRoute: String = routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals).url
+  lazy val rentalsRentARoomRoute: String = routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url
+
+
   val validAnswer: UnusedLossesBroughtForward = UnusedLossesBroughtForward(
     unusedLossesBroughtForwardYesOrNo = true, unusedLossesBroughtForwardAmount = Some(123.45))
 
@@ -55,32 +56,50 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedLossesBroughtForwardRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UnusedLossesBroughtForwardView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+    "Rentals only journey must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(UnusedLossesBroughtForwardPage, validAnswer).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(UnusedLossesBroughtForwardPage(Rentals), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedLossesBroughtForwardRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val view = application.injector.instanceOf[UnusedLossesBroughtForwardView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageString, NormalMode, Rentals)(request, messages(application)).toString
+      }
+    }
+
+    "Rentals RaR journey must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(UnusedLossesBroughtForwardPage(Rentals), validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
+
+      running(application) {
+        val request = FakeRequest(GET, rentalsRoute)
+
+        val view = application.injector.instanceOf[UnusedLossesBroughtForwardView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form.fill(validAnswer), taxYear, isAgentMessageString, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -100,7 +119,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedLossesBroughtForwardRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(
               "unusedLossesBroughtForwardYesOrNo" -> "true",
               "unusedLossesBroughtForwardAmount" -> "123.45"
@@ -119,7 +138,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedLossesBroughtForwardRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -129,7 +148,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, NormalMode, Rentals)(request, messages(application)).toString
       }
     }
 
@@ -138,7 +157,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, unusedLossesBroughtForwardRoute)
+        val request = FakeRequest(GET, rentalsRoute)
 
         val result = route(application, request).value
 
@@ -153,7 +172,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, unusedLossesBroughtForwardRoute)
+          FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(
               "unusedLossesBroughtForwardYesOrNo" -> validAnswer.unusedLossesBroughtForwardYesOrNo.toString,
               "unusedLossesBroughtForwardAmount" -> validAnswer.unusedLossesBroughtForwardAmount.toString
