@@ -17,15 +17,15 @@
 package controllers.foreign.income
 
 import audit.{AuditModel, AuditService}
+import controllers.PropertyDetailsHandler
 import controllers.actions._
-import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
-import models.requests.DataRequest
 import models._
-import play.api.i18n.Lang.logger
+import models.requests.DataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign._
@@ -35,6 +35,7 @@ import views.html.foreign.income.ForeignPropertyIncomeCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class ForeignIncomeCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -44,9 +45,10 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   propertySubmissionService: PropertySubmissionService,
   audit: AuditService,
+  businessService: BusinessService,
   view: ForeignPropertyIncomeCheckYourAnswersView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
@@ -70,42 +72,48 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
         .get(ReadForeignPropertyIncome(countryCode))
-        .map(foreignPropertyIncome => saveForeignPropertyIncome(taxYear, request, foreignPropertyIncome, countryCode))
-        .getOrElse {
-          logger.error(
-            s"Foreign property income section is not present in userAnswers for userId: ${request.userId} "
-          )
-          Future.failed(
-            NotFoundException("Foreign property income section is not present in userAnswers")
-          )
+        .fold {
+          val errorMsg =
+            s"Foreign property income section is missing for userId: ${request.userId}, taxYear: $taxYear, countryCode: $countryCode"
+          logger.error(errorMsg)
+          Future.successful(NotFound(errorMsg))
+        } { foreignPropertyIncome =>
+          saveForeignPropertyIncome(taxYear, request, foreignPropertyIncome, countryCode)
         }
     }
-
   private def saveForeignPropertyIncome(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignPropertyIncome: ForeignPropertyIncome,
     countryCode: String
-  )(implicit hc: HeaderCarrier): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
-    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertyIncome).flatMap {
-      case Right(_) =>
-        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode)))
-      case Left(error) =>
-        logger.error(s"Failed to save Foreign Income section : ${error.toString}")
-        auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, AccountingMethod.Traditional)
-        Future.failed(SaveJourneyAnswersFailed("Failed to Foreign Income section"))
-    }
+  )(implicit hc: HeaderCarrier): Future[Result] =
+    withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
+      val context =
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
+      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
 
-  }
+      propertySubmissionService
+        .saveForeignPropertyJourneyAnswers(context, foreignPropertyIncome)
+        .map {
+          case Right(_) => Redirect(ForeignIncomeCompleteController.onPageLoad(taxYear, countryCode))
+          case Left(error) =>
+            logger.error(s"Failed to save Foreign Income section: ${error.toString}")
+            throw SaveJourneyAnswersFailed("Failed to save Foreign Income section")
+        }
+        .andThen {
+          case Success(_) =>
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, accrualsOrCash)
+          case Failure(_) =>
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, accrualsOrCash)
+        }
+    }
 
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignPropertyIncome: ForeignPropertyIncome,
     isFailed: Boolean,
-    accountingMethod: AccountingMethod
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -119,7 +127,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
       sectionName = SectionName.ForeignPropertyIncome,
       propertyType = AuditPropertyType.ForeignProperty,
       journeyName = JourneyName.ForeignProperty,
-      accountingMethod = accountingMethod,
+      accountingMethod = if(accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isFailed = isFailed,
       foreignPropertyIncome
     )

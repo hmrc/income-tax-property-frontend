@@ -21,31 +21,29 @@ import base.SpecBase
 import controllers.foreign.adjustments.routes.{ForeignAdjustmentsCheckYourAnswersController, ForeignAdjustmentsCompleteController}
 import controllers.routes
 import models.JourneyPath.ForeignPropertyAdjustments
-import models.{BalancingCharge, ForeignUnusedResidentialFinanceCost, JourneyContext, UnusedLossesPreviousYears, UserAnswers}
+import models.{BalancingCharge, JourneyContext, UnusedLossesPreviousYears, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import pages.foreign.adjustments._
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.adjustments.ForeignAdjustmentsCheckYourAnswersView
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import java.time.LocalDate
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
-  private val propertySubmissionService = mock[PropertySubmissionService]
-  val audit: AuditService = mock[AuditService]
+
 
   "ForeignAdjustmentsCheckYourAnswers Controller" - {
 
@@ -54,7 +52,8 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request =
+          FakeRequest(GET, ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -71,7 +70,8 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
-        val request = FakeRequest(GET, ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request =
+          FakeRequest(GET, ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -97,48 +97,56 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
-        val userAnswers = UserAnswers("foreign-property-adjustments-user-answers")
-          .set(ClaimPropertyIncomeAllowanceOrExpensesPage, true)
-          .flatMap(_.set(ForeignPrivateUseAdjustmentPage(countryCode), BigDecimal(25)))
-          .flatMap(_.set(ForeignAdjustmentsSectionAddCountryCode(countryCode), countryCode))
-          .flatMap(_.set(
+      val userAnswers = UserAnswers("foreign-property-adjustments-user-answers")
+        .set(ClaimPropertyIncomeAllowanceOrExpensesPage, true)
+        .flatMap(_.set(ForeignPrivateUseAdjustmentPage(countryCode), BigDecimal(25)))
+        .flatMap(_.set(ForeignAdjustmentsSectionAddCountryCode(countryCode), countryCode))
+        .flatMap(
+          _.set(
             ForeignBalancingChargePage(countryCode),
             BalancingCharge(balancingChargeYesNo = true, balancingChargeAmount = Some(BigDecimal(50)))
-          ))
-          .flatMap(_.set(PropertyIncomeAllowanceClaimPage(countryCode), BigDecimal(75)))
-          .flatMap(_.set(
+          )
+        )
+        .flatMap(_.set(PropertyIncomeAllowanceClaimPage(countryCode), BigDecimal(75)))
+        .flatMap(
+          _.set(
             ForeignUnusedLossesPreviousYearsPage(countryCode),
             UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = false, unusedLossesPreviousYearsAmount = None)
-          ))
-          .toOption
-        val context =
-          JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAdjustments)
+          )
+        )
+        .toOption
+      val context =
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAdjustments)
 
-        when(
-          propertySubmissionService
-            .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
-              any(),
-              any()
-            )
-        ) thenReturn Future(Right())
+      when(
+        propertySubmissionService
+          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
 
-        val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
-          .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
-          .overrides(bind[AuditService].toInstance(audit))
-          .build()
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
 
-        def onwardRoute: Call = ForeignAdjustmentsCompleteController.onPageLoad(taxYear, countryCode)
+      val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[AuditService].toInstance(audit))
+        .build()
 
-        running(application) {
-          val request = FakeRequest(POST, ForeignAdjustmentsCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+      def onwardRoute: Call = ForeignAdjustmentsCompleteController.onPageLoad(taxYear, countryCode)
 
-          val result = route(application, request).value
+      running(application) {
+        val request = FakeRequest(POST, ForeignAdjustmentsCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
 
-          status(result) mustEqual SEE_OTHER
-          verify(audit, times(1)).sendAuditEvent(any())(any(), any())
-          redirectLocation(result).value mustEqual onwardRoute.url
-        }
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
+    }
   }
 }
-
