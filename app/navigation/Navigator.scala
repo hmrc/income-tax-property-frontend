@@ -1035,6 +1035,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case RaRUnusedResidentialCostsPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRUnusedLossesBroughtForwardPage =>
+      taxYear => previousUserAnswers => userAnswers => raRUnusedLossesBroughtForwardNavigationCheckMode(taxYear, previousUserAnswers, userAnswers)
+    case RarWhenYouReportedTheLossPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // Rentals and Rent a Room
     case JointlyLetPage(RentalsRentARoom) =>
