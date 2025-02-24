@@ -24,7 +24,7 @@ final case class RaRAdjustments(
   balancingCharge: BalancingCharge,
   unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal,
   unusedLossesBroughtForward: UnusedLossesBroughtForward,
-  whenYouReportedTheLoss: RarWhenYouReportedTheLoss
+  whenYouReportedTheLoss: WhenYouReportedTheLoss
 )
 
 object RaRAdjustments extends Settable[RaRAdjustments] with Gettable[RaRAdjustments] {
