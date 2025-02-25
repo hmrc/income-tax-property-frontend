@@ -45,12 +45,13 @@
         <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l7")</li>
         }
     </ul>
-
+    <div>
     @govukButton(
         ButtonViewModel(messages("propertyIncomeStart.button"))
         .asLink(routes.PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, Rentals).url)
         .withId("continue")
     )
+    </div>
 }
 
 @{
