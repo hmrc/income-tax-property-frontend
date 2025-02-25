@@ -20,7 +20,7 @@ import models.{CheckMode, UserAnswers}
 import pages.foreign.PropertyIncomeReportPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, selectCountriesValueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -37,7 +37,7 @@ object PropertyIncomeReportSummary {
       }
       SummaryListRowViewModel(
         key = KeyViewModel("propertyIncomeReport.checkYourAnswersLabel") withCssClass keyCssClass,
-        value = ValueViewModel(value).withCssClass(valueCssClass),
+        value = ValueViewModel(value).withCssClass(selectCountriesValueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

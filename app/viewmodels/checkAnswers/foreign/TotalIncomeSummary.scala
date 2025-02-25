@@ -22,7 +22,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, selectCountriesValueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -38,7 +38,7 @@ object TotalIncomeSummary {
 
       SummaryListRowViewModel(
         key = KeyViewModel("foreignTotalIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = value.withCssClass(valueCssClass),
+        value = value.withCssClass(selectCountriesValueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
