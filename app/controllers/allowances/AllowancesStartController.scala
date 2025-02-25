@@ -20,6 +20,7 @@ import controllers.{PropertyDetailsHandler, routes}
 import controllers.actions._
 import models.PropertyType
 import models.backend.PropertyDetails
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CYADiversionService}
@@ -48,6 +49,8 @@ class AllowancesStartController @Inject() (
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyDetails: PropertyDetails) =>
+          val isPIA: Boolean = request.userAnswers
+            .get(ClaimPropertyIncomeAllowancePage(propertyType)).getOrElse(false)
           propertyDetails.accrualsOrCash match {
             case Some(true) => Future(Ok(view(
               AllowancesStartPage(
@@ -55,7 +58,7 @@ class AllowancesStartController @Inject() (
                 request.user.isAgentMessageKey,
                 cashOrAccruals = true,
                 request.userAnswers, propertyType
-              )
+              ), isPIA
             )))
             case Some(false) => Future(Ok(view(
               AllowancesStartPage(
@@ -63,7 +66,7 @@ class AllowancesStartController @Inject() (
                 request.user.isAgentMessageKey,
                 cashOrAccruals = false,
                 request.userAnswers, propertyType
-              )
+              ), isPIA
             )))
             case _ => Future(
               Redirect(routes.JourneyRecoveryController.onPageLoad())
