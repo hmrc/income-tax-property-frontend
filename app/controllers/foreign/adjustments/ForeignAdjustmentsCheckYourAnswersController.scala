@@ -17,17 +17,18 @@
 package controllers.foreign.adjustments
 
 import audit.{AuditModel, AuditService}
+import controllers.PropertyDetailsHandler
 import controllers.actions._
-import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
+import controllers.exceptions.SaveJourneyAnswersFailed
 import models.AuditPropertyType.ForeignProperty
 import models.requests.DataRequest
+import controllers.foreign.adjustments.routes.ForeignAdjustmentsCompleteController
 import models.{AccountingMethod, ForeignPropertyAdjustments, JourneyContext, JourneyName, JourneyPath, ReadForeignPropertyAdjustments, SectionName}
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
-import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.foreign.adjustments._
@@ -36,6 +37,7 @@ import views.html.foreign.adjustments.ForeignAdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class ForeignAdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -43,11 +45,12 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   propertySubmissionService: PropertySubmissionService,
+  businessService: BusinessService,
   val controllerComponents: MessagesControllerComponents,
   audit: AuditService,
   view: ForeignAdjustmentsCheckYourAnswersView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
@@ -90,16 +93,13 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
         .get(ReadForeignPropertyAdjustments(countryCode))
-        .map(foreignPropertyAdjustments =>
+        .fold {
+          val errorMsg =
+            s"Foreign property adjustments section is missing for userId: ${request.userId}, taxYear: $taxYear, countryCode: $countryCode"
+          logger.error(errorMsg)
+          Future.successful(NotFound(errorMsg))
+        } { foreignPropertyAdjustments =>
           saveForeignPropertyAdjustments(taxYear, request, foreignPropertyAdjustments, countryCode)
-        )
-        .getOrElse {
-          logger.error(
-            s"Foreign property adjustments section is not present in userAnswers for userId: ${request.userId} "
-          )
-          Future.failed(
-            NotFoundException("Foreign property adjustments section is not present in userAnswers")
-          )
         }
     }
 
@@ -108,26 +108,32 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyAdjustments: ForeignPropertyAdjustments,
     countryCode: String
-  )(implicit hc: HeaderCarrier): Future[Result] = {
-    val context =
-      JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAdjustments)
-    propertySubmissionService.saveForeignPropertyJourneyAnswers(context, foreignPropertyAdjustments).flatMap {
-      case Right(_) =>
-        auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, AccountingMethod.Traditional)
-        Future.successful(Redirect(routes.ForeignAdjustmentsCompleteController.onPageLoad(taxYear, countryCode)))
-      case Left(error) =>
-        logger.error(s"Failed to save Foreign Adjustments section : ${error.toString}")
-        auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, AccountingMethod.Traditional)
-        Future.failed(SaveJourneyAnswersFailed("Failed to save Foreign Adjustments section"))
+  )(implicit hc: HeaderCarrier): Future[Result] =
+    withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
+      val context =
+        JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAdjustments)
+      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+
+      propertySubmissionService
+        .saveForeignPropertyJourneyAnswers(context, foreignPropertyAdjustments)
+        .map {
+          case Right(_) => Redirect(ForeignAdjustmentsCompleteController.onPageLoad(taxYear, countryCode))
+          case Left(error) =>
+            logger.error(s"Failed to save Foreign Adjustments section: ${error.toString}")
+            throw SaveJourneyAnswersFailed("Failed to save Foreign Adjustments section")
+        }
+        .andThen {
+          case Success(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, accrualsOrCash)
+          case Failure(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, accrualsOrCash)
+        }
     }
-  }
 
   private def auditCYA(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignPropertyAdjustments: ForeignPropertyAdjustments,
     isFailed: Boolean,
-    accountingMethod: AccountingMethod
+    accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -141,7 +147,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
       sectionName = SectionName.ForeignPropertyAdjustments,
       propertyType = ForeignProperty,
       journeyName = JourneyName.ForeignProperty,
-      accountingMethod = accountingMethod,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isFailed = isFailed,
       foreignPropertyAdjustments
     )

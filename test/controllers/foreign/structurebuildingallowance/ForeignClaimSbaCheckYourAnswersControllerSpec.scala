@@ -16,18 +16,35 @@
 
 package controllers.foreign.structurebuildingallowance
 
+import audit.AuditService
 import base.SpecBase
-import controllers.routes
 import controllers.foreign.structuresbuildingallowance.routes.ForeignClaimSbaCheckYourAnswersController
+import models.JourneyPath.ForeignStructureBuildingAllowance
+import models.{JourneyContext, UserAnswers}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage}
+import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreign.structurebuildingallowance.ForeignClaimSbaCheckYourAnswersView
+
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 class ForeignClaimSbaCheckYourAnswersControllerSpec extends SpecBase {
 
   val taxYear: Int = 2024
   val countryCode: String = "AUS"
+  val onwardRoute: Call = Call(
+    "GET",
+    s"/update-and-submit-income-tax-return/property/$taxYear/foreign-property/structures-buildings-allowance/$countryCode/complete-yes-no"
+  )
 
   "ForeignClaimSbaCheckYourAnswers Controller" - {
 
@@ -58,6 +75,52 @@ class ForeignClaimSbaCheckYourAnswersControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
+
+      val userAnswers = UserAnswers("test").set(ForeignSbaCompletePage(countryCode), value = true).get
+
+      val userAnswersSba = userAnswers
+        .set(ForeignClaimStructureBuildingAllowancePage(countryCode),false)
+        .toOption
+
+      val context =
+        JourneyContext(
+          taxYear = taxYear,
+          mtditid = "mtditid",
+          nino = "nino",
+          journeyPath = ForeignStructureBuildingAllowance
+        )
+
+      when(
+        propertySubmissionService
+          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+            any(),
+            any()
+          )
+      ) thenReturn Future(Right())
+
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
+
+      val application = applicationBuilder(userAnswers = userAnswersSba, isAgent = true)
+        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
+        .overrides(bind[AuditService].toInstance(audit))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, ForeignClaimSbaCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
   }

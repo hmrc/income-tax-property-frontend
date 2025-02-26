@@ -20,7 +20,7 @@ import audit.AuditService
 import base.SpecBase
 import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
 import models.JourneyPath.ForeignSelectCountry
-import models.{ForeignPropertySelectCountry, TotalIncome, JourneyContext, UserAnswers}
+import models.{ForeignPropertySelectCountry, JourneyContext, TotalIncome, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -30,7 +30,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.ForeignCountriesCheckYourAnswersView
 
@@ -40,9 +40,6 @@ import scala.concurrent.Future
 class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
   val taxYear = 2024
 
-  private val propertySubmissionService = mock[PropertySubmissionService]
-
-  val audit: AuditService = mock[AuditService]
 
   "ForeignPropertiesCheckYourAnswers Controller" - {
 
@@ -103,8 +100,13 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
           )
       ) thenReturn Future(Right())
 
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
+
       val application = applicationBuilder(userAnswers = Some(userAnswersForeignSelectCountry), isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()
 

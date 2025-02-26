@@ -25,12 +25,13 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.income.ForeignPropertyTaxSectionAddCountryCode
 import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.PropertySubmissionService
+import service.{BusinessService, PropertySubmissionService}
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreign.ForeignTaxCheckYourAnswersView
 
@@ -39,9 +40,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with MockitoSugar {
-
-  private val propertySubmissionService = mock[PropertySubmissionService]
-  val audit: AuditService = mock[AuditService]
 
   val countryCode: String = "USA"
   val taxYear: Int = LocalDate.now.getYear
@@ -85,6 +83,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
           ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(foreignTaxPaidOrDeducted))
         )
         .flatMap(_.set(ClaimForeignTaxCreditReliefPage(countryCode), true))
+        .flatMap(_.set(ForeignPropertyTaxSectionAddCountryCode(countryCode),countryCode))
         .toOption
 
       val context =
@@ -101,8 +100,13 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
           )
       ) thenReturn Future(Right())
 
+      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
+        Right(Some(foreignPropertyDetails))
+      )
+
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
+        .overrides(bind[BusinessService].toInstance(businessService))
         .overrides(bind[AuditService].toInstance(audit))
         .build()
 
