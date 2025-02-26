@@ -16,13 +16,13 @@
 
 package viewmodels.checkAnswers.foreign
 
-import models.{CheckMode, UserAnswers}
+import models.{UserAnswers, CheckMode}
 import pages.foreign.TotalIncomePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, selectCountriesValueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{selectCountriesValueAlignLeftCssClass, keyAlignLeftCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -37,14 +37,14 @@ object TotalIncomeSummary {
       )
 
       SummaryListRowViewModel(
-        key = KeyViewModel("foreignTotalIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = value.withCssClass(selectCountriesValueCssClass),
+        key = KeyViewModel("foreignTotalIncome.checkYourAnswersLabel").withCssClass(keyAlignLeftCssClass),
+        value = value.withCssClass(selectCountriesValueAlignLeftCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
             controllers.foreign.routes.TotalIncomeController.onPageLoad(taxYear, CheckMode).url
           )
-            .withVisuallyHiddenText(messages(s"foreignTotalIncome.change.hidden"))
+            .withVisuallyHiddenText(messages(s"foreignTotalIncome.change.hidden")).withCssClass(valueCssClass)
         )
       )
     }

@@ -19,8 +19,10 @@ package viewmodels.checkAnswers
 object FormatUtils {
 
   val keyCssClass = "govuk-!-width-one-half"
+  val keyAlignLeftCssClass = "govuk-!-width-one-half-text-align-left"
   val valueCssClass = "govuk-!-text-align-right"
   val selectCountriesValueCssClass = "govuk-!-padding-left-6"
+  val selectCountriesValueAlignLeftCssClass = "govuk-!-padding-left-6-text-align-left"
 
   def bigDecimalCurrency(value: BigDecimal, currencySymbol: String = "£"): String =
     currencySymbol + f"$value%1.2f".replace(".00", "")
