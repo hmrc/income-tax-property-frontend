@@ -25,5 +25,5 @@ case object RarWhenYouReportedTheLossPage extends QuestionPage[WhenYouReportedTh
 
   override def path: JsPath = JsPath \ adjustmentsPath(RentARoom) \ toString
 
-  override def toString: String = "rarWhenYouReportedTheLoss"
+  override def toString: String = "whenYouReportedTheLoss"
 }
