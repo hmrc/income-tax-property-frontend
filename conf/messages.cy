@@ -1984,7 +1984,6 @@ claimPropertyIncomeAllowanceOrExpenses.expenses = *Missing Welsh*
 
 doYouWantToRemoveCountry.title = *Missing Welsh*
 doYouWantToRemoveCountry.heading = *Missing Welsh*
-doYouWantToRemoveCountry.heading2 = *Missing Welsh*
 doYouWantToRemoveCountry.p.1 = *Missing Welsh*
 doYouWantToRemoveCountry.legend = *Missing Welsh*
 doYouWantToRemoveCountry.checkYourAnswersLabel = *Missing Welsh*
