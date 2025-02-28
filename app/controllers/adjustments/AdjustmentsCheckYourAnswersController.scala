@@ -53,6 +53,9 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val hasUnusedLossesBroughtForward: Boolean = request.userAnswers
+        .get(UnusedLossesBroughtForwardPage(Rentals))
+        .exists(_.unusedLossesBroughtForwardYesOrNo)
       val summaryListRows = Seq(
         BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
@@ -62,16 +65,14 @@ class AdjustmentsCheckYourAnswersController @Inject() (
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
       ).flatten
       val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
-        request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals))
-          .filter(_.unusedLossesBroughtForwardYesOrNo)
-          .map(_ => Seq(
-            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
-            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey, request.userAnswers
-              .get(UnusedLossesBroughtForwardPage(Rentals))
-              .flatMap(_.unusedLossesBroughtForwardAmount)
-              .getOrElse(BigDecimal(0)))
-          ).flatten)
-          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)).flatten)
+        if (hasUnusedLossesBroughtForward) {
+          Seq(
+          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+          WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)
+          ).flatten
+        } else {
+          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)
+        }
 
       val list = SummaryListViewModel(
         rows = summaryListRows

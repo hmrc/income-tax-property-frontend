@@ -17,22 +17,24 @@
 package viewmodels.checkAnswers.adjustments
 
 import controllers.adjustments.routes
-import models.{CheckMode, PropertyType, UserAnswers}
-import pages.adjustments.WhenYouReportedTheLossPage
+import models.{UserAnswers, CheckMode, PropertyType, Rentals}
+import pages.adjustments.{WhenYouReportedTheLossPage, UnusedLossesBroughtForwardPage}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass, bigDecimalCurrency}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object WhenYouReportedTheLossSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String, previousLoss: BigDecimal)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(WhenYouReportedTheLossPage(propertyType)).map {
       answer =>
-
+        val test = answers.get(UnusedLossesBroughtForwardPage(Rentals))
+          .flatMap(_.unusedLossesBroughtForwardAmount)
+          .getOrElse(BigDecimal(0))
         val value = ValueViewModel(
           HtmlContent(
             HtmlFormat.escape(messages(s"whenYouReportedTheLoss.$answer"))
@@ -40,7 +42,7 @@ object WhenYouReportedTheLossSummary  {
         ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key =  KeyViewModel(messages(s"whenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(previousLoss))).withCssClass(keyCssClass),
+          key =  KeyViewModel(messages(s"whenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(test))).withCssClass(keyCssClass),
           value = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.WhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode, propertyType).url)
