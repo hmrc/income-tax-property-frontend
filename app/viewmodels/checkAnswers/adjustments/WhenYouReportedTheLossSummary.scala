@@ -32,7 +32,7 @@ object WhenYouReportedTheLossSummary  {
   def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(WhenYouReportedTheLossPage(propertyType)).map {
       answer =>
-        val test = answers.get(UnusedLossesBroughtForwardPage(Rentals))
+        val previousLosses = answers.get(UnusedLossesBroughtForwardPage(Rentals))
           .flatMap(_.unusedLossesBroughtForwardAmount)
           .getOrElse(BigDecimal(0))
         val value = ValueViewModel(
@@ -42,7 +42,7 @@ object WhenYouReportedTheLossSummary  {
         ).withCssClass(valueCssClass)
 
         SummaryListRowViewModel(
-          key =  KeyViewModel(messages(s"whenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(test))).withCssClass(keyCssClass),
+          key =  KeyViewModel(messages(s"whenYouReportedTheLoss.checkYourAnswersLabel.${individualOrAgent}", bigDecimalCurrency(previousLosses))).withCssClass(keyCssClass),
           value = value,
           actions = Seq(
             ActionItemViewModel("site.change", routes.WhenYouReportedTheLossController.onPageLoad(taxYear, CheckMode, propertyType).url)
