@@ -16,14 +16,25 @@
 
 package pages.ukrentaroom.allowances
 
-import models.{CapitalAllowancesForACar, RentARoom}
+import models.{CapitalAllowancesForACar, RentARoom, UserAnswers}
 import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object RaRCapitalAllowancesForACarPage extends QuestionPage[CapitalAllowancesForACar] {
 
   override def path: JsPath = JsPath \ allowancesPath(RentARoom) \ toString
 
   override def toString: String = "capitalAllowancesForACar"
+
+  override def cleanup(value: Option[CapitalAllowancesForACar], userAnswers: UserAnswers): Try[UserAnswers] =
+    for {
+      ua  <- userAnswers.remove(RaRZeroEmissionCarAllowancePage)
+      ua1 <- ua.remove(RaRReplacementsOfDomesticGoodsPage)
+      ua2 <- ua1.remove(RaROtherCapitalAllowancesPage)
+      ua3 <- ua2.remove(RaRAnnualInvestmentAllowancePage)
+      ua4 <- ua3.remove(RaRZeroEmissionGoodsVehicleAllowancePage)
+    } yield ua4
 }
