@@ -504,7 +504,9 @@ object PropertyPeriodSessionRecoveryExtensions {
               )
             ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
             ua6 <- ua5.set(UnusedResidentialFinanceCostPage(Rentals), adjustments.unusedResidentialFinanceCost)
-          } yield ua6
+            ua7 <- ua6.set(UnusedLossesBroughtForwardPage(Rentals), adjustments.unusedLossesBroughtForward)
+            ua8 <- ua7.set(WhenYouReportedTheLossPage(Rentals), adjustments.whenYouReportedTheLoss)
+          } yield ua8
       }
 
     private def updateRentalsAndRaRAdjustmentsPages(
