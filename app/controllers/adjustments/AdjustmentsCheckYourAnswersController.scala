@@ -24,6 +24,7 @@ import models.JourneyPath.PropertyRentalAdjustments
 import models._
 import models.requests.DataRequest
 import pages.adjustments.UnusedLossesBroughtForwardPage
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -62,12 +63,15 @@ class AdjustmentsCheckYourAnswersController @Inject() (
       ).flatten
 
       val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
-        request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals))
+        request.userAnswers
+          .get(UnusedLossesBroughtForwardPage(Rentals))
           .filter(_.unusedLossesBroughtForwardYesOrNo)
-          .map(_ => Seq(
-            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
-            WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
-          ).flatten)
+          .map(_ =>
+            Seq(
+              UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
+              WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
+            ).flatten
+          )
           .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)).flatten)
 
       val list = SummaryListViewModel(
@@ -113,17 +117,18 @@ class AdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Adjustments,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.Adjustments,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       adjustments
     )
 

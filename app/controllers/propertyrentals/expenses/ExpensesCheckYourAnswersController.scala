@@ -19,8 +19,9 @@ package controllers.propertyrentals.expenses
 import audit.{AuditModel, AuditService, RentalsExpense}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.JourneyPath.PropertyRentalExpenses
-import models.requests.DataRequest
 import models._
+import models.requests.DataRequest
+import pages.foreign.Country
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -116,17 +117,18 @@ class ExpensesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Expenses,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.Expenses,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
       propertyRentalsExpense
     )
 

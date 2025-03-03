@@ -23,6 +23,7 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.routes.ForeignSelectCountriesCompleteController
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, ForeignPropertySelectCountry, JourneyContext, JourneyName, JourneyPath, SectionName}
+import pages.foreign.Country
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, PropertySubmissionService}
@@ -58,7 +59,8 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
         rows = Seq(
           TotalIncomeSummary.row(taxYear, request.userAnswers),
           PropertyIncomeReportSummary.row(taxYear, request.user.isAgentMessageKey, request.userAnswers),
-          CountriesRentedPropertySummary.rowList(taxYear, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
+          CountriesRentedPropertySummary
+            .rowList(taxYear, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
           ClaimPropertyIncomeAllowanceOrExpensesSummary.row(taxYear, request.userAnswers)
         ).flatten
       )
@@ -115,17 +117,18 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ForeignPropertySelectCountry,
       propertyType = AuditPropertyType.ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.ForeignPropertySelectCountry,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignPropertySelectCountry
     )
 

@@ -30,44 +30,44 @@ import views.html.premiumlease.YearLeaseAmountView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class YearLeaseAmountController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: YearLeaseAmountFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: YearLeaseAmountView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class YearLeaseAmountController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: YearLeaseAmountFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: YearLeaseAmountView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val preparedForm = request.userAnswers.get(YearLeaseAmountPage(propertyType)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, mode, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage(propertyType), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(YearLeaseAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode, propertyType))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(YearLeaseAmountPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(YearLeaseAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }

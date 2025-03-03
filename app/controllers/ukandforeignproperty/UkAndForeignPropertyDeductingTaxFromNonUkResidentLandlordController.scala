@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider
 import models.Mode
 import models.ukAndForeign.DeductingTaxFromNonUkResidentLandlord
-import navigation.{Navigator, UkAndForeignPropertyNavigator}
+import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.UkDeductingTaxFromNonUkResidentLandlordPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -32,23 +32,24 @@ import views.html.ukandforeignproperty.UkAndForeignPropertyDeductingTaxFromNonUk
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController @Inject()(
-                                                                                     override val messagesApi: MessagesApi,
-                                                                                     sessionRepository: SessionRepository,
-                                                                                     navigator: UkAndForeignPropertyNavigator,
-                                                                                     identify: IdentifierAction,
-                                                                                     getData: DataRetrievalAction,
-                                                                                     requireData: DataRequiredAction,
-                                                                                     formProvider: UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider,
-                                                                                     val controllerComponents: MessagesControllerComponents,
-                                                                                     view: UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[DeductingTaxFromNonUkResidentLandlord] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UkDeductingTaxFromNonUkResidentLandlordPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,15 +59,25 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordController @Injec
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form: Form[DeductingTaxFromNonUkResidentLandlord] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkDeductingTaxFromNonUkResidentLandlordPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkDeductingTaxFromNonUkResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(UkDeductingTaxFromNonUkResidentLandlordPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                UkDeductingTaxFromNonUkResidentLandlordPage,
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
   }
 }

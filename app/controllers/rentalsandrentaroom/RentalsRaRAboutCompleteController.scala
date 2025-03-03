@@ -83,7 +83,12 @@ class RentalsRaRAboutCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                statusError(journeyName = "about", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
+                statusError(
+                  journeyName = "about",
+                  propertyType = RentalsRentARoom,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
               _ =>
                 Redirect(navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers))
             )

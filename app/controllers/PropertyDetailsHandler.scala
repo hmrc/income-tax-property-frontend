@@ -44,18 +44,18 @@ trait PropertyDetailsHandler extends Logging {
     }
 
   def withForeignPropertyDetails[T](
-      businessService: BusinessService,
-      nino: String,
-      mtditid: String
-    )(block: PropertyDetails => Future[T])(implicit
-      hc: HeaderCarrier,
-      executor: ExecutionContext
-    ): Future[T] =
-      businessService.getForeignPropertyDetails(nino, mtditid)(hc).flatMap {
-        case Right(Some(propertyData)) =>
-          block(propertyData)
-        case Left(apiError: ApiError) =>
-          logger.error(s"Encountered an issue retrieving property data from the business API: ${apiError.toMessage}")
-          Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
+    businessService: BusinessService,
+    nino: String,
+    mtditid: String
+  )(block: PropertyDetails => Future[T])(implicit
+    hc: HeaderCarrier,
+    executor: ExecutionContext
+  ): Future[T] =
+    businessService.getForeignPropertyDetails(nino, mtditid)(hc).flatMap {
+      case Right(Some(propertyData)) =>
+        block(propertyData)
+      case Left(apiError: ApiError) =>
+        logger.error(s"Encountered an issue retrieving property data from the business API: ${apiError.toMessage}")
+        Future.failed(InternalErrorFailure("Encountered an issue retrieving property data from the business API"))
     }
 }

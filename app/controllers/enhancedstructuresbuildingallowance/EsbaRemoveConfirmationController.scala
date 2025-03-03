@@ -69,16 +69,18 @@ class EsbaRemoveConfirmationController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaRemoveConfirmationPage(propertyType), value))
-              updatedAnswers <- Future.fromTry {
-                                  if (value) {
-                                    updatedAnswers.remove(EnhancedStructuresBuildingAllowanceWithIndex(index, propertyType))
-                                  } else {
-                                    Success(updatedAnswers)
-                                  }
-                                }
+              updatedAnswers <-
+                Future.fromTry {
+                  if (value) {
+                    updatedAnswers.remove(EnhancedStructuresBuildingAllowanceWithIndex(index, propertyType))
+                  } else {
+                    Success(updatedAnswers)
+                  }
+                }
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(EsbaRemoveConfirmationPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator
+                .nextPage(EsbaRemoveConfirmationPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
     }

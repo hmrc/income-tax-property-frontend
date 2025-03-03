@@ -30,44 +30,55 @@ import views.html.foreign.adjustments.ForeignPrivateUseAdjustmentView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignPrivateUseAdjustmentController @Inject()(
-                                                       override val messagesApi: MessagesApi,
-                                                       sessionRepository: SessionRepository,
-                                                       foreignNavigator: ForeignPropertyNavigator,
-                                                       identify: IdentifierAction,
-                                                       getData: DataRetrievalAction,
-                                                       requireData: DataRequiredAction,
-                                                       formProvider: ForeignPrivateUseAdjustmentFormProvider,
-                                                       val controllerComponents: MessagesControllerComponents,
-                                                       view: ForeignPrivateUseAdjustmentView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignPrivateUseAdjustmentController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignPrivateUseAdjustmentFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignPrivateUseAdjustmentView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignPrivateUseAdjustmentPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignPrivateUseAdjustmentPage(countryCode), value))
-            updatedAnswersWithCountryCode <- Future.fromTry(updatedAnswers.set(ForeignAdjustmentsSectionAddCountryCode(countryCode), countryCode))
-            _ <- sessionRepository.set(updatedAnswersWithCountryCode)
-          } yield Redirect(foreignNavigator.nextPage(ForeignPrivateUseAdjustmentPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignPrivateUseAdjustmentPage(countryCode), value))
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignAdjustmentsSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
+            } yield Redirect(
+              foreignNavigator.nextPage(
+                ForeignPrivateUseAdjustmentPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

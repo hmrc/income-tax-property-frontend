@@ -16,23 +16,22 @@
 
 package controllers
 
-import controllers.actions.{IdentifierAction, DataRetrievalAction}
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import controllers.session.SessionRecovery
-import models.IncomeSourcePropertyType.{UKProperty, ForeignProperty}
+import models.IncomeSourcePropertyType.{ForeignProperty, UKProperty}
 import models.backend.{NoPropertyDataError, UnexpectedPropertyDataError}
 import models.requests.OptionalDataRequest
 import pages._
-import pages.foreign.{ForeignSummaryPage, IncomeSourceCountries, ForeignPropertySummaryPage}
+import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.i18n.Lang.logger
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{ForeignCYADiversionService, BusinessService, CYADiversionService}
+import service.{BusinessService, CYADiversionService, CountryNamesDataSource, ForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.SummaryView
-import service.CountryNamesDataSource
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -78,12 +77,15 @@ class SummaryController @Inject() (
           val combinedItems =
             summaryPage
               .createRentalsAndRentARoomRows(request.userAnswers, taxYear, ukAccrualsOrCash)
-          val foreignCountries = request.userAnswers.flatMap(_.get(IncomeSourceCountries)).map(_.array.toList.flatMap {
-            country => CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
-          })
+          val foreignCountries = request.userAnswers
+            .flatMap(_.get(IncomeSourceCountries))
+            .map(_.array.toList.flatMap { country =>
+              CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+            })
           val maybeCountries = foreignCountries.getOrElse(List.empty)
           val foreignPropertyItems = maybeCountries.map { country =>
-            country.code -> foreignSummaryPage.foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
+            country.code -> foreignSummaryPage
+              .foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
           }.toMap
           Future.successful(
             Ok(

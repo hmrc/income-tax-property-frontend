@@ -31,45 +31,53 @@ import views.html.foreign.income.ForeignOtherIncomeFromPropertyView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignOtherIncomeFromPropertyController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: ForeignPropertyNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ForeignOtherIncomeFromPropertyFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ForeignOtherIncomeFromPropertyView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignOtherIncomeFromPropertyController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignOtherIncomeFromPropertyFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignOtherIncomeFromPropertyView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val isAgent = request.user.isAgentMessageKey
       val form: Form[BigDecimal] = formProvider(isAgent)
       val preparedForm = request.userAnswers.get(ForeignOtherIncomeFromPropertyPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, mode, isAgent))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val isAgent = request.user.isAgentMessageKey
       val form: Form[BigDecimal] = formProvider(isAgent)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, isAgent))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignOtherIncomeFromPropertyPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignOtherIncomeFromPropertyPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, isAgent))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignOtherIncomeFromPropertyPage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                ForeignOtherIncomeFromPropertyPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

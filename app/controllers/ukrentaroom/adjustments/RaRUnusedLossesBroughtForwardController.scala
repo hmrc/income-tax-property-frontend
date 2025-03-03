@@ -30,25 +30,25 @@ import views.html.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRUnusedLossesBroughtForwardController @Inject()(
-                                                         override val messagesApi: MessagesApi,
-                                                         sessionRepository: SessionRepository,
-                                                         navigator: Navigator,
-                                                         identify: IdentifierAction,
-                                                         getData: DataRetrievalAction,
-                                                         requireData: DataRequiredAction,
-                                                         formProvider: RaRUnusedLossesBroughtForwardFormProvider,
-                                                         val controllerComponents: MessagesControllerComponents,
-                                                         view: RaRUnusedLossesBroughtForwardView
-                                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class RaRUnusedLossesBroughtForwardController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: RaRUnusedLossesBroughtForwardFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: RaRUnusedLossesBroughtForwardView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
       val preparedForm = request.userAnswers.get(RaRUnusedLossesBroughtForwardPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,15 +58,18 @@ class RaRUnusedLossesBroughtForwardController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRUnusedLossesBroughtForwardPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RaRUnusedLossesBroughtForwardPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRUnusedLossesBroughtForwardPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(RaRUnusedLossesBroughtForwardPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

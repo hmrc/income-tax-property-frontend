@@ -16,8 +16,8 @@
 
 package controllers.allowances
 
-import controllers.{PropertyDetailsHandler, routes}
 import controllers.actions._
+import controllers.{PropertyDetailsHandler, routes}
 import models.PropertyType
 import models.backend.PropertyDetails
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
@@ -50,27 +50,43 @@ class AllowancesStartController @Inject() (
       withUkPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyDetails: PropertyDetails) =>
           val isPIA: Boolean = request.userAnswers
-            .get(ClaimPropertyIncomeAllowancePage(propertyType)).getOrElse(false)
+            .get(ClaimPropertyIncomeAllowancePage(propertyType))
+            .getOrElse(false)
           propertyDetails.accrualsOrCash match {
-            case Some(true) => Future(Ok(view(
-              AllowancesStartPage(
-                taxYear,
-                request.user.isAgentMessageKey,
-                cashOrAccruals = true,
-                request.userAnswers, propertyType
-              ), isPIA
-            )))
-            case Some(false) => Future(Ok(view(
-              AllowancesStartPage(
-                taxYear,
-                request.user.isAgentMessageKey,
-                cashOrAccruals = false,
-                request.userAnswers, propertyType
-              ), isPIA
-            )))
-            case _ => Future(
-              Redirect(routes.JourneyRecoveryController.onPageLoad())
-            )
+            case Some(true) =>
+              Future(
+                Ok(
+                  view(
+                    AllowancesStartPage(
+                      taxYear,
+                      request.user.isAgentMessageKey,
+                      cashOrAccruals = true,
+                      request.userAnswers,
+                      propertyType
+                    ),
+                    isPIA
+                  )
+                )
+              )
+            case Some(false) =>
+              Future(
+                Ok(
+                  view(
+                    AllowancesStartPage(
+                      taxYear,
+                      request.user.isAgentMessageKey,
+                      cashOrAccruals = false,
+                      request.userAnswers,
+                      propertyType
+                    ),
+                    isPIA
+                  )
+                )
+              )
+            case _ =>
+              Future(
+                Redirect(routes.JourneyRecoveryController.onPageLoad())
+              )
           }
       }(hc, ec)
     }

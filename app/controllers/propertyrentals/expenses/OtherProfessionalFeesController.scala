@@ -43,8 +43,8 @@ class OtherProfessionalFeesController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(OtherProfessionalFeesPage(propertyType)) match {
         case None        => form
@@ -52,23 +52,26 @@ class OtherProfessionalFeesController @Inject() (
       }
 
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherProfessionalFeesPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(OtherProfessionalFeesPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+              navigator
+                .nextPage(OtherProfessionalFeesPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

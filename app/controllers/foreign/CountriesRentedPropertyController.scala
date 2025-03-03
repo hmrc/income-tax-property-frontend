@@ -18,11 +18,11 @@ package controllers.foreign
 
 import controllers.actions._
 import forms.foreign.CountriesRentedPropertyFormProvider
-import models.{UserAnswers, Mode}
+import models.{Mode, UserAnswers}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{IncomeSourceCountries, AddCountriesRentedPage}
+import pages.foreign.{AddCountriesRentedPage, IncomeSourceCountries}
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, Messages, I18nSupport}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
@@ -79,10 +79,16 @@ class CountriesRentedPropertyController @Inject() (
         )
   }
 
-  private def summaryList(taxYear: Int, userAnswers: UserAnswers, currentLanguage: String)(implicit messages: Messages) = {
-    val countries = userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap {
-        country => CountryNamesDataSource.getCountry(country.code, currentLanguage)
-      }).toSeq.flatten
+  private def summaryList(taxYear: Int, userAnswers: UserAnswers, currentLanguage: String)(implicit
+    messages: Messages
+  ) = {
+    val countries = userAnswers
+      .get(IncomeSourceCountries)
+      .map(_.array.toList.flatMap { country =>
+        CountryNamesDataSource.getCountry(country.code, currentLanguage)
+      })
+      .toSeq
+      .flatten
     val rows = countries.zipWithIndex.flatMap { case (_, idx) =>
       CountriesRentedPropertySummary.row(taxYear, idx, userAnswers, currentLanguage)
     }

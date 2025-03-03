@@ -21,7 +21,8 @@ import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName,JourneyPath}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, RentalsAndRentARoomIncome, RentalsRentARoom, SectionName}
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -117,18 +118,19 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
       .map {
         case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
           val auditModel = AuditModel(
-            nino = request.user.nino,
             userType = request.user.affinityGroup,
+            nino = request.user.nino,
             mtdItId = request.user.mtditid,
-            agentReferenceNumber = request.user.agentRef,
             taxYear = taxYear,
-            isUpdate = false,
-            sectionName = SectionName.Income,
             propertyType = AuditPropertyType.UKProperty,
+            countryCode = Country.UK.code,
             journeyName = JourneyName.RentalsRentARoom,
+            sectionName = SectionName.Income,
             accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-            userEnteredDetails = income,
-            isFailed = isFailed
+            isUpdate = false,
+            isFailed = isFailed,
+            agentReferenceNumber = request.user.agentRef,
+            userEnteredDetails = income
           )
           auditService.sendAuditEvent(auditModel)
         case Left(_) => logger.error("CashOrAccruals information could not be retrieved from downstream.")

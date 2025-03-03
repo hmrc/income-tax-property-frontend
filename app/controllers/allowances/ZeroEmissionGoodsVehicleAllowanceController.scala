@@ -18,8 +18,6 @@ package controllers.allowances
 
 import controllers.actions._
 import forms.allowances.ZeroEmissionGoodsVehicleAllowanceFormProvider
-
-import javax.inject.Inject
 import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.allowances.ZeroEmissionGoodsVehicleAllowancePage
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.allowances.ZeroEmissionGoodsVehicleAllowanceView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ZeroEmissionGoodsVehicleAllowanceController @Inject() (

@@ -22,6 +22,7 @@ import controllers.exceptions.InternalErrorFailure
 import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
+import pages.foreign.Country
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -145,18 +146,19 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      nino = request.user.nino,
       userType = request.user.affinityGroup,
+      nino = request.user.nino,
       mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Expenses,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.RentalsRentARoom,
+      sectionName = SectionName.Expenses,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-      userEnteredDetails = rentalsAndRentARoomExpenses,
-      isFailed = isFailed
+      isUpdate = false,
+      isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
+      userEnteredDetails = rentalsAndRentARoomExpenses
     )
     auditService.sendAuditEvent(auditModel)
   }

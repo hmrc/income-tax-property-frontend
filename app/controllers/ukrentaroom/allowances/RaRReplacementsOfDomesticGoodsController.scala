@@ -30,7 +30,7 @@ import views.html.ukrentaroom.allowances.ReplacementsOfDomesticGoodsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RaRReplacementsOfDomesticGoodsController @Inject()(
+class RaRReplacementsOfDomesticGoodsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,

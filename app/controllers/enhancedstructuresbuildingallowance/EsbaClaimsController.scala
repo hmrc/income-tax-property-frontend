@@ -25,6 +25,7 @@ import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import pages.enhancedstructuresbuildingallowance._
+import pages.foreign.Country
 import play.api.data.Form
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -200,21 +201,22 @@ class EsbaClaimsController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      nino = request.user.nino,
       userType = request.user.affinityGroup,
+      nino = request.user.nino,
       mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ESBA,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = propertyType match {
         case Rentals          => JourneyName.Rentals
         case RentalsRentARoom => JourneyName.RentalsRentARoom
       },
+      sectionName = SectionName.ESBA,
       accountingMethod = accountingMethod,
-      userEnteredDetails = esbasWithSupportingQuestions,
-      isFailed = isFailed
+      isUpdate = false,
+      isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
+      userEnteredDetails = esbasWithSupportingQuestions
     )
     auditService.sendAuditEvent(auditModel)
   }

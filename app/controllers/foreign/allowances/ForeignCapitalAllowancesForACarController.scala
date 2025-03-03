@@ -30,43 +30,55 @@ import views.html.foreign.allowances.ForeignCapitalAllowancesForACarView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignCapitalAllowancesForACarController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         foreignNavigator: ForeignPropertyNavigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ForeignCapitalAllowancesForACarFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignCapitalAllowancesForACarView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignCapitalAllowancesForACarController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignCapitalAllowancesForACarFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignCapitalAllowancesForACarView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignCapitalAllowancesForACarPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCapitalAllowancesForACarPage(countryCode), value))
-            updatedAnswersWithCountryCode <-
-              Future.fromTry(updatedAnswers.set(ForeignAllowancesSectionAddCountryCode(countryCode), countryCode))
-            _              <- sessionRepository.set(updatedAnswersWithCountryCode)
-          } yield Redirect(foreignNavigator.nextPage(ForeignCapitalAllowancesForACarPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignCapitalAllowancesForACarPage(countryCode), value))
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignAllowancesSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
+            } yield Redirect(
+              foreignNavigator.nextPage(
+                ForeignCapitalAllowancesForACarPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

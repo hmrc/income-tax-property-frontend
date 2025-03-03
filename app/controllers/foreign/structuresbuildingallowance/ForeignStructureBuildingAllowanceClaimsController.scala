@@ -23,6 +23,7 @@ import forms.ForeignStructureBuildingAllowanceClaimsFormProvider
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, NormalMode, SectionName, UserAnswers}
+import pages.foreign.Country
 import pages.foreign.structurebuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger
@@ -132,7 +133,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
   private def getForeignSbaInfo(userAnswers: UserAnswers, countryCode: String): Option[ForeignSbaInfo] =
     for {
       claimPage <- userAnswers.get(ForeignClaimStructureBuildingAllowancePage(countryCode))
-    } yield ForeignSbaInfo(countryCode,claimPage, userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)))
+    } yield ForeignSbaInfo(countryCode, claimPage, userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)))
 
   private def saveForeignSBAClaims(
     taxYear: Int,
@@ -183,17 +184,18 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.SBA,
       propertyType = AuditPropertyType.ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.SBA,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignSba
     )
 

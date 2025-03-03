@@ -23,6 +23,7 @@ import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.Country
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -38,17 +39,18 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
     val hc = HeaderCarrier()
     val propertyAbout = PropertyAbout(TotalIncome.Under, Some(UKPropertySelect.values), Some(true))
     val auditModel = AuditModel(
-      "NINO",
       "Agent",
+      "NINO",
       "mtdItId",
-      agentReferenceNumber = Some("agentReferenceNumber"),
       2024,
-      isUpdate = false,
-      sectionName = SectionName.About,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.About,
       accountingMethod = Traditional,
+      isUpdate = false,
       isFailed = false,
+      agentReferenceNumber = Some("agentReferenceNumber"),
       propertyAbout
     )
 

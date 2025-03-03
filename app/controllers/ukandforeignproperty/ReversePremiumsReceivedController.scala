@@ -30,7 +30,7 @@ import views.html.ukandforeignproperty.ReversePremiumsReceivedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReversePremiumsReceivedController @Inject()(
+class ReversePremiumsReceivedController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: UkAndForeignPropertyNavigator,

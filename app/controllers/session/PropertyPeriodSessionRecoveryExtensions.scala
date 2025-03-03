@@ -72,12 +72,18 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
         ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
         ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
-        ua10 <- updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
-        ua11 <- updateEnhancedStructureBuildingPages(ua10, fetchedData.ukPropertyData.esbasWithSupportingQuestions, RentalsRentARoom)
+        ua10 <-
+          updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
+        ua11 <- updateEnhancedStructureBuildingPages(
+                  ua10,
+                  fetchedData.ukPropertyData.esbasWithSupportingQuestions,
+                  RentalsRentARoom
+                )
         ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.ukPropertyData.propertyRentalsIncome)
         ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.ukPropertyData.rentalsAndRaRIncome)
         ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.ukPropertyData.propertyRentalsExpenses, Rentals)
-        ua15 <- updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
+        ua15 <-
+          updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
         ua16 <- updateRentARoomAbout(ua15, fetchedData.ukPropertyData.raRAbout)
         ua17 <- updateRentARoomAllowance(ua16, fetchedData.ukPropertyData.rentARoomAllowances)
         ua18 <- updateRentARoomAdjustments(ua17, fetchedData.ukPropertyData.raRAdjustments)
@@ -162,12 +168,12 @@ object PropertyPeriodSessionRecoveryExtensions {
       foreignJourneyWithStatus: JourneyWithStatus
     ): Settable[Boolean] =
       foreignJourneyWithStatus.journeyName match {
-        case "foreign-property-tax"           => ForeignTaxSectionCompletePage(countryCode)
-        case "foreign-property-income"        => ForeignIncomeSectionCompletePage(countryCode)
-        case "foreign-property-expenses"      => ForeignExpensesSectionCompletePage(countryCode)
-        case "foreign-property-allowances"    => ForeignAllowancesCompletePage(countryCode)
-        case "foreign-property-sba"           => ForeignSbaCompletePage(countryCode)
-        case "foreign-property-adjustments"   => ForeignAdjustmentsCompletePage(countryCode)
+        case "foreign-property-tax"         => ForeignTaxSectionCompletePage(countryCode)
+        case "foreign-property-income"      => ForeignIncomeSectionCompletePage(countryCode)
+        case "foreign-property-expenses"    => ForeignExpensesSectionCompletePage(countryCode)
+        case "foreign-property-allowances"  => ForeignAllowancesCompletePage(countryCode)
+        case "foreign-property-sba"         => ForeignSbaCompletePage(countryCode)
+        case "foreign-property-adjustments" => ForeignAdjustmentsCompletePage(countryCode)
 
       }
 
@@ -179,7 +185,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(propertyAbout) =>
           for {
-            ua1 <- propertyAbout.ukProperty.fold(Try(userAnswers))(ukps => userAnswers.set(UKPropertyPage,ukps.toSet))
+            ua1 <- propertyAbout.ukProperty.fold(Try(userAnswers))(ukps => userAnswers.set(UKPropertyPage, ukps.toSet))
             ua2 <- ua1.set(TotalIncomePage, propertyAbout.totalIncome)
             ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
           } yield ua3
@@ -218,9 +224,9 @@ object PropertyPeriodSessionRecoveryExtensions {
       }
 
     private def updateUkAndForeignPropertyAboutPages(
-                                          userAnswers: UserAnswers,
-                                          maybePropertyAbout: Option[UkAndForeignAbout]
-                                        ): Try[UserAnswers] =
+      userAnswers: UserAnswers,
+      maybePropertyAbout: Option[UkAndForeignAbout]
+    ): Try[UserAnswers] =
       maybePropertyAbout match {
         case None => Success(userAnswers)
         case Some(ukAndForeignAbout) =>
@@ -362,8 +368,9 @@ object PropertyPeriodSessionRecoveryExtensions {
                        capitalAllowances => ua3.set(ForeignOtherCapitalAllowancesPage(countryCode), capitalAllowances)
                      )
               ua5 <- foreignPropertyAllowances.capitalAllowancesForACar.fold[Try[UserAnswers]](Success(ua4))(
-                capitalAllowancesForACar => ua4.set(ForeignCapitalAllowancesForACarPage(countryCode), capitalAllowancesForACar)
-              )
+                       capitalAllowancesForACar =>
+                         ua4.set(ForeignCapitalAllowancesForACarPage(countryCode), capitalAllowancesForACar)
+                     )
             } yield ua5
         }
     }

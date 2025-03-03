@@ -46,12 +46,13 @@ class UKPremiumsGrantLeaseController @Inject() (
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
+      val receivedGrantLeaseAmount: Option[BigDecimal] =
+        request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(UkYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
-        case (None, _) => Redirect(routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, mode))
+        case (None, _) =>
+          Redirect(routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, mode))
         case (_, None) => Redirect(routes.UkYearLeaseAmountController.onPageLoad(taxYear, mode))
         case (Some(amount), Some(period)) =>
           val preparedForm = request.userAnswers.get(UKPremiumsGrantLeasePage) match {
@@ -65,11 +66,15 @@ class UKPremiumsGrantLeaseController @Inject() (
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
+      val receivedGrantLeaseAmount: Option[BigDecimal] =
+        request.userAnswers.get(UkAmountReceivedForGrantOfLeasePage).map(_.amountReceivedForGrantOfLease)
       val totalYearPeriods: Option[Int] = request.userAnswers.get(UkYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, totalYearPeriods) match {
-        case (None, _) => Future.successful(Redirect(routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, mode)))
+        case (None, _) =>
+          Future.successful(
+            Redirect(routes.UkAndForeignPropertyAmountReceivedForGrantOfLeaseController.onPageLoad(taxYear, mode))
+          )
         case (_, None) =>
           Future.successful(Redirect(routes.UkYearLeaseAmountController.onPageLoad(taxYear, mode)))
         case (Some(amount), Some(period)) =>
@@ -85,19 +90,19 @@ class UKPremiumsGrantLeaseController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future.fromTry(
-                    request.userAnswers.set(
-                      UKPremiumsGrantLeasePage,
-                      UKPremiumsGrantLease(
-                        value.premiumsGrantLeaseReceived,
-                        Some(
-                          value.premiumsGrantLease.getOrElse(
-                            UKPremiumsGrantLeasePage
-                              .calculateTaxableAmount(amount, period)
-                          )
-                        )
-                      )
-                    )
-                  )
+                                      request.userAnswers.set(
+                                        UKPremiumsGrantLeasePage,
+                                        UKPremiumsGrantLease(
+                                          value.premiumsGrantLeaseReceived,
+                                          Some(
+                                            value.premiumsGrantLease.getOrElse(
+                                              UKPremiumsGrantLeasePage
+                                                .calculateTaxableAmount(amount, period)
+                                            )
+                                          )
+                                        )
+                                      )
+                                    )
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
                   navigator

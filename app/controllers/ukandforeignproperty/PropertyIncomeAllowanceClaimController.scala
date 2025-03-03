@@ -30,23 +30,24 @@ import views.html.ukandforeignproperty.PropertyIncomeAllowanceClaimView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PropertyIncomeAllowanceClaimController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: UkAndForeignPropertyNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: PropertyIncomeAllowanceClaimFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: PropertyIncomeAllowanceClaimView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class PropertyIncomeAllowanceClaimController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: PropertyIncomeAllowanceClaimFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: PropertyIncomeAllowanceClaimView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UkAndForeignPropertyIncomeAllowanceClaimPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -56,15 +57,25 @@ class PropertyIncomeAllowanceClaimController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyIncomeAllowanceClaimPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkAndForeignPropertyIncomeAllowanceClaimPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(UkAndForeignPropertyIncomeAllowanceClaimPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                UkAndForeignPropertyIncomeAllowanceClaimPage,
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
   }
 }

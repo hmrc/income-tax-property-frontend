@@ -21,9 +21,10 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.JourneyPath.RentalIncome
-import models.requests.DataRequest
 import models._
+import models.requests.DataRequest
 import pages.PageConstants.incomePath
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -106,17 +107,18 @@ class PropertyIncomeCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Expenses,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.Expenses,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
       propertyRentalsIncome
     )
 

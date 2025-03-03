@@ -30,24 +30,24 @@ import views.html.ukandforeignproperty.UkAndForeignPropertyClaimPropertyIncomeAl
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController @Inject()(
-                                                                  override val messagesApi: MessagesApi,
-                                                                  sessionRepository: SessionRepository,
-                                                                  navigator: UkAndForeignPropertyNavigator,
-                                                                  identify: IdentifierAction,
-                                                                  getData: DataRetrievalAction,
-                                                                  requireData: DataRequiredAction,
-                                                                  formProvider: UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider,
-                                                                  val controllerComponents: MessagesControllerComponents,
-                                                                  view: UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesView
+class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesView
 )(implicit ec: ExecutionContext)
-extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
       val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage) match {
-        case None        =>
+        case None =>
           form
         case Some(value) =>
           form.fill(value)
@@ -65,15 +65,22 @@ extends FrontendBaseController with I18nSupport {
         .fold(
           formWithErrors =>
             Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-          (value) => {
+          value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(
+                  request.userAnswers.set(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, value)
+                )
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
-          }
         )
     }
 }
