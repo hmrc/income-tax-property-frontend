@@ -18,7 +18,7 @@
 @import pages.foreign.ForeignPropertySummaryPage
 @import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 @import viewmodels.summary.TaskListItem
-@import viewmodels.summary.TaskListTag.CanNotStart
+@import viewmodels.summary.TaskListTag.{CanNotStart, Completed}
 
 @this(
         layout: templates.Layout,
@@ -101,14 +101,18 @@
     @if(foreignProperty.startItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
         @taskListSection(foreignProperty.startItems)
-    }
 
-    @if(foreignProperty.foreignIncomeCountries.nonEmpty) {
-        @for(country <- foreignProperty.foreignIncomeCountries){
-            <h2 class="govuk-heading-m">@messages(s"foreign.heading", country.name) </h2>
-            @taskListSection(foreignProperty.foreignPropertyItems(country.code))
+        @for(item <- foreignProperty.startItems) {
+            @if(foreignProperty.foreignIncomeCountries.nonEmpty && item.id == "foreign_property_select_country" && item.taskListTag == Completed) {
+                @for(country <- foreignProperty.foreignIncomeCountries) {
+                    <h2 class="govuk-heading-m">@messages(s"foreign.heading", country.name) </h2>
+                    @taskListSection(foreignProperty.foreignPropertyItems(country.code))
+                }
+            }
         }
     }
+
+
 }
 
 @{
