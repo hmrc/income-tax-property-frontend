@@ -72,7 +72,7 @@ class BusinessPremisesRenovationBalancingChargeController @Inject() (
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator.nextPage(
-                BusinessPremisesRenovationAllowanceBalancingChargePage,
+                RenovationAllowanceBalancingChargePage(RentalsRentARoom),
                 taxYear,
                 mode,
                 request.userAnswers,
