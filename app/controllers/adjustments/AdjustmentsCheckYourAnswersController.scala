@@ -55,8 +55,8 @@ class AdjustmentsCheckYourAnswersController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val summaryListRows = Seq(
-        BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
+        BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
         RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
         ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
