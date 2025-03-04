@@ -25,9 +25,6 @@ trait MockAppConfig extends MockFactory {
 
   object MockAppConfig {
 
-    def emaSupportingAgentsEnabled(enabled: Boolean): CallHandler0[Boolean] =
-      (() => mockAppConfig.emaSupportingAgentsEnabled).expects().returns(enabled)
-
     def loginUrl(url: String): CallHandler0[String] =
       (() => mockAppConfig.loginUrl).expects().returns(url).anyNumberOfTimes()
 
