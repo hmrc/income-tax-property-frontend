@@ -1415,7 +1415,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
       case _ => propertyType match {
         case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-        case _ => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case RentARoom => RaRAdjustmentsCYAController.onPageLoad(taxYear)
+        case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
     }
 }

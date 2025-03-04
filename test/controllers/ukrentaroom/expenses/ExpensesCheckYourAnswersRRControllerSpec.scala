@@ -96,7 +96,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
             "repairsAndMaintenanceCosts"      -> JsNumber(repairsAndMaintenanceCosts),
             "legalManagementOtherFee"         -> JsNumber(legalManagementOtherFee),
             "residentialPropertyFinanceCosts" -> JsNumber(residentialPropertyFinanceCosts),
-            "costsOfServicesProvided"         -> JsNumber(costsOfServicesProvided),
+            "costOfServicesProvided"          -> JsNumber(costsOfServicesProvided),
             "unusedResidentialPropertyFinanceCostsBroughtFwd" -> JsNumber(
               unusedResidentialPropertyFinanceCostsBroughtFwd
             ),
@@ -118,7 +118,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
                 consolidatedExpenses = None,
                 rentsRatesAndInsurance = Some(rentsRatesAndInsurance),
                 repairsAndMaintenanceCosts = Some(repairsAndMaintenanceCosts),
-                costsOfServicesProvided = Some(costsOfServicesProvided),
+                costOfServicesProvided = Some(costsOfServicesProvided),
                 legalManagementOtherFee = Some(legalManagementOtherFee),
                 otherPropertyExpenses = Some(otherPropertyExpenses)
               )
