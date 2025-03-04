@@ -24,6 +24,7 @@ import models.JourneyPath.RentalsAndRentARoomAllowances
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, RentalsAndRentARoomAllowance, RentalsRentARoom, SectionName}
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -111,18 +112,19 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
           propertyDetails match {
             case PropertyDetails(_, _, Some(accrualsOrCash), _) =>
               val auditModel = AuditModel(
-                nino = request.user.nino,
                 userType = request.user.affinityGroup,
+                nino = request.user.nino,
                 mtdItId = request.user.mtditid,
-                agentReferenceNumber = request.user.agentRef,
                 taxYear = taxYear,
-                isUpdate = false,
-                sectionName = SectionName.Allowances,
                 propertyType = AuditPropertyType.UKProperty,
+                countryCode = Country.UK.code,
                 journeyName = JourneyName.RentalsRentARoom,
+                sectionName = SectionName.Allowances,
                 accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-                userEnteredDetails = allowances,
-                isFailed = isFailed
+                isUpdate = false,
+                isFailed = isFailed,
+                agentReferenceNumber = request.user.agentRef,
+                userEnteredDetails = allowances
               )
               auditService.sendAuditEvent(auditModel)
             case _ => logger.error("CashOrAccruals information could not be retrieved from downstream.")

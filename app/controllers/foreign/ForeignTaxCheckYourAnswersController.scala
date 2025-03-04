@@ -23,9 +23,9 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.routes.ForeignTaxSectionCompleteController
 import models._
-import pages.foreign.income.ForeignPropertyTax
 import models.requests.DataRequest
-import pages.foreign.income.ReadForeignPropertyTax
+import pages.foreign.Country
+import pages.foreign.income.{ForeignPropertyTax, ReadForeignPropertyTax}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -119,17 +119,18 @@ class ForeignTaxCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ForeignPropertyTax,
       propertyType = AuditPropertyType.ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.ForeignPropertyTax,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignPropertyTax: ForeignPropertyTax
     )
 

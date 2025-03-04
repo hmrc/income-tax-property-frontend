@@ -37,15 +37,15 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 trait IdentifierAction
-  extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+    extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
 
-class AuthenticatedIdentifierAction @Inject()(
-                                               override val authConnector: AuthConnector,
-                                               config: FrontendAppConfig,
-                                               val parser: BodyParsers.Default,
-                                               errorHandler: ErrorHandler
-                                             )(implicit val executionContext: ExecutionContext)
-  extends IdentifierAction with AuthorisedFunctions with Logging {
+class AuthenticatedIdentifierAction @Inject() (
+  override val authConnector: AuthConnector,
+  config: FrontendAppConfig,
+  val parser: BodyParsers.Default,
+  errorHandler: ErrorHandler
+)(implicit val executionContext: ExecutionContext)
+    extends IdentifierAction with AuthorisedFunctions with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
@@ -72,9 +72,11 @@ class AuthenticatedIdentifierAction @Inject()(
     }
   }
 
-  private[actions] def individualAuthentication[A](block: IdentifierRequest[A] => Future[Result],
-                                                   internalId: String,
-                                                   affinityGroup: AffinityGroup)(implicit request: Request[A], hc: HeaderCarrier): Future[Result] =
+  private[actions] def individualAuthentication[A](
+    block: IdentifierRequest[A] => Future[Result],
+    internalId: String,
+    affinityGroup: AffinityGroup
+  )(implicit request: Request[A], hc: HeaderCarrier): Future[Result] =
     authorised().retrieve(allEnrolments and Retrievals.confidenceLevel) {
       case enrolments ~ confidenceLevel if confidenceLevel >= L250 =>
         val optionalMtdItId: Option[String] =
@@ -92,24 +94,30 @@ class AuthenticatedIdentifierAction @Inject()(
 
         (optionalMtdItId, optionalNino) match {
           case (Some(mtdItId), Some(nino)) =>
-            block(IdentifierRequest(
-              request,
-              internalId,
-              models.User(
-                mtditid = mtdItId,
-                nino = nino,
-                affinityGroup = affinityGroup.toString,
-                agentRef = None
+            block(
+              IdentifierRequest(
+                request,
+                internalId,
+                models.User(
+                  mtditid = mtdItId,
+                  nino = nino,
+                  affinityGroup = affinityGroup.toString,
+                  agentRef = None
+                )
               )
-            ))
+            )
           case (mtditid, nino) =>
-            logger.warn(s"[AuthorisedAction][individualAuthentication] - User has missing MTDITID and/or NINO." +
-              s"Redirecting to ${config.loginUrl}. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}")
+            logger.warn(
+              s"[AuthorisedAction][individualAuthentication] - User has missing MTDITID and/or NINO." +
+                s"Redirecting to ${config.loginUrl}. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}"
+            )
             Future.successful(Redirect(config.loginUrl))
         }
       case _ ~ confidenceLevel =>
-        logger.warn(s"[AuthenticatedIdentifierAction][invokeBlock] - Insufficient confidence level of $confidenceLevel returned from auth." +
-          s" Redirecting to IV uplift.")
+        logger.warn(
+          s"[AuthenticatedIdentifierAction][invokeBlock] - Insufficient confidence level of $confidenceLevel returned from auth." +
+            s" Redirecting to IV uplift."
+        )
         upliftIv
     }
 
@@ -123,9 +131,10 @@ class AuthenticatedIdentifierAction @Inject()(
       .withIdentifier(EnrolmentKeys.SupportingAgent.value, mtdId)
       .withDelegatedAuthRule(DelegatedAuthRules.supportingAgentDelegatedAuthRule)
 
-  private[actions] def agentAuthentication[A](block: IdentifierRequest[A] => Future[Result], internalId: String)(implicit
-                                                                                                                 request: Request[A],
-                                                                                                                 hc: HeaderCarrier): Future[Result] =
+  private[actions] def agentAuthentication[A](
+    block: IdentifierRequest[A] => Future[Result],
+    internalId: String
+  )(implicit request: Request[A], hc: HeaderCarrier): Future[Result] =
     (request.session.get(SessionValues.ClientMtdid), request.session.get(SessionValues.ClientNino)) match {
       case (Some(mtdItId), Some(nino)) =>
         authorised(agentAuthPredicate(mtdItId))
@@ -136,12 +145,17 @@ class AuthenticatedIdentifierAction @Inject()(
       case (mtditid, nino) =>
         logger.info(
           s"[AuthenticatedIdentifierAction][agentAuthentication] - Agent does not have session key values." +
-            s"Redirecting to view & change. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}")
+            s"Redirecting to view & change. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}"
+        )
         Future.successful(Redirect(config.viewAndChangeEnterUtrUrl))
     }
 
-  private def agentRecovery[A](block: IdentifierRequest[A] => Future[Result], internalId: String, mtdItId: String, nino: String)(implicit
-                                                                                                                                 request: Request[A],hc: HeaderCarrier): PartialFunction[Throwable, Future[Result]] = {
+  private def agentRecovery[A](
+    block: IdentifierRequest[A] => Future[Result],
+    internalId: String,
+    mtdItId: String,
+    nino: String
+  )(implicit request: Request[A], hc: HeaderCarrier): PartialFunction[Throwable, Future[Result]] = {
     case _: AuthorisationException if config.emaSupportingAgentsEnabled =>
       authorised(secondaryAgentPredicate(mtdItId))
         .retrieve(allEnrolments) {
@@ -149,39 +163,55 @@ class AuthenticatedIdentifierAction @Inject()(
         }
         .recoverWith {
           case _: AuthorisationException =>
-            logger.warn(s"[AuthorisedAction][agentAuthentication] - Agent does not have secondary delegated authority for Client.")
+            logger.warn(
+              s"[AuthorisedAction][agentAuthentication] - Agent does not have secondary delegated authority for Client."
+            )
             Future(Redirect(routes.UnauthorisedController.onPageLoad))
           case e =>
-            logger.error(s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+            logger.error(
+              s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught."
+            )
             errorHandler.internalServerError()
         }
     case _: AuthorisationException =>
       logger.warn(s"[AuthorisedAction][agentAuthentication] - Agent does not have delegated authority for Client.")
       Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     case e =>
-      logger.error(s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
+      logger.error(
+        s"[AuthorisedAction][agentAuthentication] - Unexpected exception of type '${e.getClass.getSimpleName}' was caught."
+      )
       errorHandler.internalServerError()
   }
 
-  private def populateAgent[A](block: IdentifierRequest[A] => Future[Result],
-                               internalId: String,
-                               mtdItId: String,
-                               nino: String,
-                               enrolments: Enrolments,
-                               isSupportingAgent: Boolean)(implicit request: Request[A]): Future[Result] =
+  private def populateAgent[A](
+    block: IdentifierRequest[A] => Future[Result],
+    internalId: String,
+    mtdItId: String,
+    nino: String,
+    enrolments: Enrolments,
+    isSupportingAgent: Boolean
+  )(implicit request: Request[A]): Future[Result] =
     enrolmentGetIdentifierValue(EnrolmentKeys.Agent.key, EnrolmentKeys.Agent.value, enrolments) match {
       case Some(arn) =>
-        block(IdentifierRequest(request, internalId, models.User(mtdItId, nino, AffinityGroup.Agent.toString, Some(arn), isSupportingAgent)))
+        block(
+          IdentifierRequest(
+            request,
+            internalId,
+            models.User(mtdItId, nino, AffinityGroup.Agent.toString, Some(arn), isSupportingAgent)
+          )
+        )
       case None =>
-        logger.warn("[AuthorisedAction][agentAuthentication] Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
+        logger.warn(
+          "[AuthorisedAction][agentAuthentication] Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view."
+        )
         Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
     }
 
   private[actions] def enrolmentGetIdentifierValue(
-                                                    checkedKey: String,
-                                                    checkedIdentifier: String,
-                                                    enrolments: Enrolments
-                                                  ): Option[String] = enrolments.enrolments.collectFirst { case Enrolment(`checkedKey`, enrolmentIdentifiers, _, _) =>
+    checkedKey: String,
+    checkedIdentifier: String,
+    enrolments: Enrolments
+  ): Option[String] = enrolments.enrolments.collectFirst { case Enrolment(`checkedKey`, enrolmentIdentifiers, _, _) =>
     enrolmentIdentifiers.collectFirst { case EnrolmentIdentifier(`checkedIdentifier`, identifierValue) =>
       identifierValue
     }

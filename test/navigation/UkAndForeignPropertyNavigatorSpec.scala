@@ -20,9 +20,9 @@ import base.SpecBase
 import controllers.ukandforeignproperty.routes
 import models.JourneyName.{reads, writes}
 import models._
-import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyForeignPremiumsGrantLease, UkAndForeignPropertyPremiumGrantLeaseTax}
-import pages.ukandforeignproperty.{UkDeductingTaxFromNonUkResidentLandlordPage, _}
+import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyPremiumGrantLeaseTax}
 import pages.foreign.Country
+import pages.ukandforeignproperty._
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.libs.json.Format.GenericFormat
 
@@ -218,7 +218,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
             ) mustBe routes.SelectCountryController.onPageLoad(taxYear, Index(1), NormalMode)
           }
           "must go to ForeignCountriesRented when at least one country" in {
-            val userAnswersWith1Country = emptyUserAnswers.set(SelectCountryPage, List[Country](testCountry)).success.value
+            val userAnswersWith1Country =
+              emptyUserAnswers.set(SelectCountryPage, List[Country](testCountry)).success.value
             navigator.nextPage(
               UkAndForeignPropertyRentalTypeUkPage,
               taxYear,
@@ -284,47 +285,48 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
 
           "must go to next page(ClaimExpensesOrRelief) if AddCountriesRentedPage is false " +
             "and selected property type includes Rent A Room" in {
-            val userAnswersWithAddCountry = UserAnswers("id")
-              .set(ForeignCountriesRentedPage, false)
-              .flatMap(
-                _.set(
-                  UkAndForeignPropertyRentalTypeUkPage,
-                  Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+              val userAnswersWithAddCountry = UserAnswers("id")
+                .set(ForeignCountriesRentedPage, false)
+                .flatMap(
+                  _.set(
+                    UkAndForeignPropertyRentalTypeUkPage,
+                    Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+                  )
                 )
-              )
-              .get
+                .get
 
-            navigator.nextIndex(
-              ForeignCountriesRentedPage,
-              taxYear,
-              NormalMode,
-              UserAnswers("id"),
-              userAnswersWithAddCountry,
-              1
-            ) mustBe routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
-          }
+              navigator.nextIndex(
+                ForeignCountriesRentedPage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                userAnswersWithAddCountry,
+                1
+              ) mustBe routes.UkAndForeignPropertyClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode)
+            }
 
           "must go to next page(ClaimPropertyIncomeAllowanceOrExpenses) if AddCountriesRentedPage is false " +
             "and selected property type is Rentals" in {
-            val userAnswersWithAddCountry = UserAnswers("id")
-              .set(ForeignCountriesRentedPage, false)
-              .flatMap(
-                _.set(
-                  UkAndForeignPropertyRentalTypeUkPage,
-                  Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+              val userAnswersWithAddCountry = UserAnswers("id")
+                .set(ForeignCountriesRentedPage, false)
+                .flatMap(
+                  _.set(
+                    UkAndForeignPropertyRentalTypeUkPage,
+                    Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                  )
                 )
-              )
-              .get
+                .get
 
-            navigator.nextIndex(
-              ForeignCountriesRentedPage,
-              taxYear,
-              NormalMode,
-              UserAnswers("id"),
-              userAnswersWithAddCountry,
-              1
-            ) mustBe routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear, NormalMode)
-          }
+              navigator.nextIndex(
+                ForeignCountriesRentedPage,
+                taxYear,
+                NormalMode,
+                UserAnswers("id"),
+                userAnswersWithAddCountry,
+                1
+              ) mustBe routes.UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController
+                .onPageLoad(taxYear, NormalMode)
+            }
         }
         "in Check mode" - {
           "must go to 'Select country' page in check mode if AddCountriesRentedPage is true" in {
@@ -414,59 +416,59 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
             "when the option selected is 'Use the property income allowance' " +
               "and 'rent a room relief' was selected " +
               "and UkAndForeignPropertyRentalTypeUkPage option includes Property Rentals" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                NormalMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  NormalMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(true)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(true)
+                      )
+                    )
+                    .get
+                ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
+              }
 
             "when the option selected is 'Use the property income allowance' " +
               "and 'claim expenses' was selected" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                NormalMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(false)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  NormalMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(false)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                      )
+                    )
+                    .get
+                ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
+              }
           }
 
           "must go to 'How much income did you get from your foreign property rentals'" - {
@@ -474,31 +476,31 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
             "when the option selected is 'Use the property income allowance' " +
               "and 'rent a room relief' was selected " +
               "and UkAndForeignPropertyRentalTypeUkPage option is Rent a Room" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                NormalMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  NormalMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(true)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(true)
+                      )
+                    )
+                    .get
+                ) mustBe routes.ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+              }
           }
 
           "must go to 'Check your answers'" - {
@@ -508,10 +510,12 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkAndForeignPropertyRentalTypeUkPage,
                   Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
                 )
-                .flatMap(_.set(
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
-                ))
+                .flatMap(
+                  _.set(
+                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
+                  )
+                )
                 .get
 
               navigator.nextPage(
@@ -530,59 +534,59 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
             "when the option selected is 'Use the property income allowance' " +
               "and 'rent a room relief' was selected " +
               "and UkAndForeignPropertyRentalTypeUkPage option includes Property Rentals" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                CheckMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  CheckMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(true)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(true)
+                      )
+                    )
+                    .get
+                ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
+              }
 
             "when the option selected is 'Use the property income allowance' " +
               "and 'claim expenses' was selected" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                CheckMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(false)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  CheckMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(false)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+                      )
+                    )
+                    .get
+                ) mustBe routes.NonResidentLandlordUKController.onPageLoad(taxYear, NormalMode)
+              }
           }
 
           "must go to 'How much income did you get from your foreign property rentals'" - {
@@ -590,31 +594,31 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
             "when the option selected is 'Use the property income allowance' " +
               "and 'rent a room relief' was selected " +
               "and UkAndForeignPropertyRentalTypeUkPage option is Rent a Room" in {
-              navigator.nextPage(
-                UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                taxYear,
-                CheckMode,
-                emptyUserAnswers,
-                emptyUserAnswers
-                  .set(
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyRentalTypeUkPage,
-                      Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+                navigator.nextPage(
+                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                  taxYear,
+                  CheckMode,
+                  emptyUserAnswers,
+                  emptyUserAnswers
+                    .set(
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                      UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)
                     )
-                  )
-                  .flatMap(
-                    _.set(
-                      UkAndForeignPropertyClaimExpensesOrReliefPage,
-                      UkAndForeignPropertyClaimExpensesOrRelief(true)
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyRentalTypeUkPage,
+                        Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.RentARoom)
+                      )
                     )
-                  )
-                  .get
-              ) mustBe routes.ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
-            }
+                    .flatMap(
+                      _.set(
+                        UkAndForeignPropertyClaimExpensesOrReliefPage,
+                        UkAndForeignPropertyClaimExpensesOrRelief(true)
+                      )
+                    )
+                    .get
+                ) mustBe routes.ForeignRentalPropertyIncomeController.onPageLoad(taxYear, NormalMode)
+              }
           }
 
           "must go to 'Check your answers'" - {
@@ -624,10 +628,12 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkAndForeignPropertyRentalTypeUkPage,
                   Set[UkAndForeignPropertyRentalTypeUk](UkAndForeignPropertyRentalTypeUk.PropertyRentals)
                 )
-                .flatMap(_.set(
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
-                  UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
-                ))
+                .flatMap(
+                  _.set(
+                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
+                    UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(false)
+                  )
+                )
                 .get
 
               navigator.nextPage(
@@ -862,7 +868,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
                     premiumGrantLeaseYesNo = false,
-                    premiumGrantLeaseAmount = None)
+                    premiumGrantLeaseAmount = None
+                  )
                 )
                 .get
 
@@ -883,7 +890,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
                     premiumGrantLeaseYesNo = true,
-                    premiumGrantLeaseAmount = Some(BigDecimal(123.45)))
+                    premiumGrantLeaseAmount = Some(BigDecimal(123.45))
+                  )
                 )
                 .get
 
@@ -906,7 +914,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
                     premiumGrantLeaseYesNo = false,
-                    premiumGrantLeaseAmount = None)
+                    premiumGrantLeaseAmount = None
+                  )
                 )
                 .get
 
@@ -927,7 +936,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
                     premiumGrantLeaseYesNo = true,
-                    premiumGrantLeaseAmount = Some(BigDecimal(123.45)))
+                    premiumGrantLeaseAmount = Some(BigDecimal(123.45))
+                  )
                 )
                 .get
 
@@ -1257,9 +1267,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               val ua = UserAnswers("id")
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
-                  PremiumCalculated(
-                    calculatedPremiumLeaseTaxable = false,
-                    premiumsOfLeaseGrant = None)
+                  PremiumCalculated(calculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
                 )
                 .get
 
@@ -1280,7 +1288,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
                   PremiumCalculated(
                     calculatedPremiumLeaseTaxable = true,
-                    premiumsOfLeaseGrant = Some(BigDecimal(123.45)))
+                    premiumsOfLeaseGrant = Some(BigDecimal(123.45))
+                  )
                 )
                 .get
 
@@ -1301,9 +1310,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               val ua = UserAnswers("id")
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
-                  PremiumCalculated(
-                    calculatedPremiumLeaseTaxable = false,
-                    premiumsOfLeaseGrant = None)
+                  PremiumCalculated(calculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
                 )
                 .get
 
@@ -1324,7 +1331,8 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
                   PremiumCalculated(
                     calculatedPremiumLeaseTaxable = true,
-                    premiumsOfLeaseGrant = Some(BigDecimal(123.45)))
+                    premiumsOfLeaseGrant = Some(BigDecimal(123.45))
+                  )
                 )
                 .get
 
@@ -1480,7 +1488,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               NormalMode,
               UserAnswers("id"),
               UserAnswers("id")
-            )mustBe routes.UkAndForeignPropertyCheckYourAnswersController
+            ) mustBe routes.UkAndForeignPropertyCheckYourAnswersController
               .onPageLoad(taxYear)
           }
         }
@@ -1505,7 +1513,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
         taxYear,
         NormalMode,
         UserAnswers("id"),
-        UserAnswers("id"),
+        UserAnswers("id")
       ) mustBe controllers.routes.SummaryController.show(taxYear)
     }
 

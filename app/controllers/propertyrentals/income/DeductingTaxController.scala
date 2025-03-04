@@ -31,43 +31,50 @@ import views.html.propertyrentals.income.DeductingTaxView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeductingTaxController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: DeductingTaxFormProvider,
-                                         sessionService: SessionService,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: DeductingTaxView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class DeductingTaxController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: DeductingTaxFormProvider,
+  sessionService: SessionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: DeductingTaxView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage(propertyType)) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+      if (request.userAnswers.isEmpty) { sessionService.createNewEmptySession(request.userId) }
+      val preparedForm =
+        request.userAnswers.getOrElse(UserAnswers(request.userId)).get(DeductingTaxPage(propertyType)) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
 
       Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage(propertyType), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeductingTaxPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(DeductingTaxPage(propertyType), value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(DeductingTaxPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 }

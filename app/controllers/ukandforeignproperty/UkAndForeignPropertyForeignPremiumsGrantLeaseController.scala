@@ -31,16 +31,16 @@ import views.html.ukandforeignproperty.UkAndForeignPropertyForeignPremiumsGrantL
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
-                                                                         override val messagesApi: MessagesApi,
-                                                                         sessionRepository: SessionRepository,
-                                                                         navigator: UkAndForeignPropertyNavigator,
-                                                                         identify: IdentifierAction,
-                                                                         getData: DataRetrievalAction,
-                                                                         requireData: DataRequiredAction,
-                                                                         formProvider: UkAndForeignPropertyForeignPremiumsGrantLeaseFormProvider,
-                                                                         val controllerComponents: MessagesControllerComponents,
-                                                                         view: UkAndForeignPropertyForeignPremiumsGrantLeaseView
+class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkAndForeignPropertyForeignPremiumsGrantLeaseFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkAndForeignPropertyForeignPremiumsGrantLeaseView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -49,7 +49,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
       val form = formProvider(request.user.isAgentMessageKey)
 
       val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage)
-      val foreignTotalYearPeriods: Option[Int]         =  request.userAnswers.get(ForeignYearLeaseAmountPage)
+      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(ForeignYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) =>
@@ -68,8 +68,8 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val receivedGrantLeaseAmount: Option[BigDecimal] =  request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage)
-      val foreignTotalYearPeriods: Option[Int] =  request.userAnswers.get(ForeignYearLeaseAmountPage)
+      val receivedGrantLeaseAmount: Option[BigDecimal] = request.userAnswers.get(ForeignLeaseGrantAmountReceivedPage)
+      val foreignTotalYearPeriods: Option[Int] = request.userAnswers.get(ForeignYearLeaseAmountPage)
 
       (receivedGrantLeaseAmount, foreignTotalYearPeriods) match {
         case (None, _) =>
@@ -99,7 +99,8 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject()(
                                           value.premiumsOfLeaseGrantAgreed,
                                           Option(
                                             value.premiumsOfLeaseGrant.getOrElse(
-                                              UkAndForeignPropertyForeignPremiumsGrantLease.calculateTaxableAmount(amount, period)
+                                              UkAndForeignPropertyForeignPremiumsGrantLease
+                                                .calculateTaxableAmount(amount, period)
                                             )
                                           )
                                         )

@@ -31,16 +31,16 @@ import views.html.ukrentaroom.ClaimExpensesOrReliefView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimExpensesOrReliefController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: Navigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: ClaimExpensesOrReliefFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: ClaimExpensesOrReliefView
+class ClaimExpensesOrReliefController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ClaimExpensesOrReliefFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ClaimExpensesOrReliefView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -77,11 +77,18 @@ class ClaimExpensesOrReliefController @Inject()(
                   ),
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
-                  _              <- sessionRepository.set(updatedAnswers)
+                  updatedAnswers <-
+                    Future.fromTry(request.userAnswers.set(ClaimExpensesOrReliefPage(propertyType), value))
+                  _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
                   navigator
-                    .nextPage(ClaimExpensesOrReliefPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
+                    .nextPage(
+                      ClaimExpensesOrReliefPage(propertyType),
+                      taxYear,
+                      mode,
+                      request.userAnswers,
+                      updatedAnswers
+                    )
                 )
             )
         }

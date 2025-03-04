@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDateFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.structurebuildingallowance.{ForeignStructureBuildingAllowanceClaimPage, ForeignStructureBuildingQualifyingDatePage}
+import pages.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDatePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,7 +32,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignStructureBuildingQualifyingDateController @Inject()(
+class ForeignStructureBuildingQualifyingDateController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignNavigator: ForeignPropertyNavigator,
@@ -69,7 +69,9 @@ class ForeignStructureBuildingQualifyingDateController @Inject()(
           value =>
             for {
               updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignStructureBuildingQualifyingDatePage(countryCode, index), value))
+                Future.fromTry(
+                  request.userAnswers.set(ForeignStructureBuildingQualifyingDatePage(countryCode, index), value)
+                )
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               foreignNavigator.nextPage(

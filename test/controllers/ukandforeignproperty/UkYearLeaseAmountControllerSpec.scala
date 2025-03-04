@@ -31,7 +31,6 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.ukandforeignproperty.UkYearLeaseAmountView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class UkYearLeaseAmountControllerSpec extends SpecBase with MockitoSugar {

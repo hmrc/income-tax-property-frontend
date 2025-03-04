@@ -20,11 +20,11 @@ import audit.{AuditModel, AuditService}
 import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
+import controllers.foreign.adjustments.routes.ForeignAdjustmentsCompleteController
 import models.AuditPropertyType.ForeignProperty
 import models.requests.DataRequest
-import controllers.foreign.adjustments.routes.ForeignAdjustmentsCompleteController
 import models.{AccountingMethod, ForeignPropertyAdjustments, JourneyContext, JourneyName, JourneyPath, ReadForeignPropertyAdjustments, SectionName}
-import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
+import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country}
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -138,17 +138,18 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ForeignPropertyAdjustments,
       propertyType = ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.ForeignPropertyAdjustments,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignPropertyAdjustments
     )
     audit.sendAuditEvent(auditModel)

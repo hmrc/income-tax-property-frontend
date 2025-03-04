@@ -24,6 +24,7 @@ import controllers.foreign.expenses.routes.ForeignExpensesSectionCompleteControl
 import models.AuditPropertyType.ForeignProperty
 import models.requests.DataRequest
 import models.{AccountingMethod, ForeignPropertyExpenses, JourneyContext, JourneyName, JourneyPath, ReadForeignPropertyExpenses, SectionName}
+import pages.foreign.Country
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, PropertySubmissionService}
@@ -118,17 +119,18 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ForeignPropertyExpenses,
       propertyType = ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.ForeignPropertyExpenses,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignPropertyExpenses
     )
 

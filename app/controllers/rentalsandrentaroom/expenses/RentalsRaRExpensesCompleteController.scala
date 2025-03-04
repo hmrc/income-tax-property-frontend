@@ -80,7 +80,12 @@ class RentalsRaRExpensesCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                statusError(journeyName = "expenses", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
+                statusError(
+                  journeyName = "expenses",
+                  propertyType = RentalsRentARoom,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
               _ => Redirect(controllers.routes.SummaryController.show(taxYear))
             )
         )

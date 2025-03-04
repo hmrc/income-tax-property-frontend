@@ -17,11 +17,11 @@
 package controllers.foreign.allowances
 
 import controllers.actions._
-import controllers.{routes, PropertyDetailsHandler}
+import controllers.{PropertyDetailsHandler, routes}
 import models.backend.PropertyDetails
 import navigation.ForeignPropertyNavigator
 import pages.foreign.IncomeSourceCountries
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, CountryNamesDataSource}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -48,9 +48,13 @@ class ForeignPropertyAllowancesStartController @Inject() (
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val maybeCountryName =
-        request.userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap {
-            country => CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
-          }).flatMap(country => country.find(_.code == countryCode)).map(_.name)
+        request.userAnswers
+          .get(IncomeSourceCountries)
+          .map(_.array.toList.flatMap { country =>
+            CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+          })
+          .flatMap(country => country.find(_.code == countryCode))
+          .map(_.name)
       val countryName = maybeCountryName.getOrElse("")
 
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
@@ -60,8 +64,8 @@ class ForeignPropertyAllowancesStartController @Inject() (
             case Some(true) =>
               logger.info("Accounting method: Accruals")
               Future.successful(
-                  Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
-          )
+                Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
+              )
             case Some(false) =>
               logger.info("Accounting method: Cash")
               Future.successful(

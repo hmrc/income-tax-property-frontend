@@ -18,7 +18,6 @@ package controllers.foreign.adjustments
 
 import controllers.ControllerUtils.statusForPage
 import controllers.actions._
-import controllers.statusError
 import forms.foreign.adjustments.ForeignAdjustmentsCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAdjustments
 import models.{JourneyContext, NormalMode}
@@ -34,7 +33,7 @@ import views.html.foreign.adjustments.ForeignAdjustmentsCompleteView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignAdjustmentsCompleteController @Inject()(
+class ForeignAdjustmentsCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignPropertyNavigator: ForeignPropertyNavigator,
@@ -50,26 +49,27 @@ class ForeignAdjustmentsCompleteController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val preparedForm = request.userAnswers.get(ForeignAdjustmentsCompletePage(countryCode)) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, NormalMode, taxYear, countryCode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       form
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, NormalMode, taxYear, countryCode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignAdjustmentsCompletePage(countryCode), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignAdjustmentsCompletePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService.setForeignStatus(
                           ctx = JourneyContext(
                             taxYear = taxYear,
@@ -83,14 +83,19 @@ class ForeignAdjustmentsCompleteController @Inject()(
                         )
             } yield status.fold(
               _ =>
-                //TODO: When we implement navigation story, update the route to show message from backend or error
-                Redirect(controllers.routes.SummaryController.show(taxYear)
-                ),
+                // TODO: When we implement navigation story, update the route to show message from backend or error
+                Redirect(controllers.routes.SummaryController.show(taxYear)),
               _ =>
                 Redirect(
-                  foreignPropertyNavigator.nextPage(ForeignAdjustmentsCompletePage(countryCode), taxYear, NormalMode, request.userAnswers, updatedAnswers)
+                  foreignPropertyNavigator.nextPage(
+                    ForeignAdjustmentsCompletePage(countryCode),
+                    taxYear,
+                    NormalMode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
                 )
             )
         )
-  }
+    }
 }

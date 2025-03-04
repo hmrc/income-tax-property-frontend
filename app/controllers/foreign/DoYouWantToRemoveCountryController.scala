@@ -20,9 +20,9 @@ import controllers.actions._
 import forms.DoYouWantToRemoveCountryFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{Country, SelectIncomeCountryPage, DoYouWantToRemoveCountryPage}
+import pages.foreign.{Country, DoYouWantToRemoveCountryPage, SelectIncomeCountryPage}
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
@@ -55,13 +55,17 @@ class DoYouWantToRemoveCountryController @Inject() (
       request.userAnswers
         .get(SelectIncomeCountryPage(index))
         .map { country =>
-          CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString).getOrElse(Country("", "")).name
+          CountryNamesDataSource
+            .getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+            .getOrElse(Country("", ""))
+            .name
         }
-        .fold(Future.successful(InternalServerError("Country not found")))(name => //TODO we need to better handle this error we should not be displaying this to the user
-          request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
-            case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, index, mode, name)))
-            case _           => Future.successful(Ok(view(form, taxYear, index, mode, name)))
-          }
+        .fold(Future.successful(InternalServerError("Country not found")))(
+          name => // TODO we need to better handle this error we should not be displaying this to the user
+            request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
+              case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, index, mode, name)))
+              case _           => Future.successful(Ok(view(form, taxYear, index, mode, name)))
+            }
         )
 
     }
@@ -73,26 +77,27 @@ class DoYouWantToRemoveCountryController @Inject() (
         .map { country =>
           country.name
         }
-        .fold(Future.successful(InternalServerError("Country not found")))(name => //TODO we need to better handle this error we should not be displaying this to the user
-          form
-            .bindFromRequest()
-            .fold(
-              formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, name))),
-              value =>
-                for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(DoYouWantToRemoveCountryPage, value))
-                  updatedAnswers <- Future.fromTry {
-                                      if (value) {
-                                        updatedAnswers.remove(SelectIncomeCountryPage(index))
-                                      } else {
-                                        Success(updatedAnswers)
+        .fold(Future.successful(InternalServerError("Country not found")))(
+          name => // TODO we need to better handle this error we should not be displaying this to the user
+            form
+              .bindFromRequest()
+              .fold(
+                formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, name))),
+                value =>
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.set(DoYouWantToRemoveCountryPage, value))
+                    updatedAnswers <- Future.fromTry {
+                                        if (value) {
+                                          updatedAnswers.remove(SelectIncomeCountryPage(index))
+                                        } else {
+                                          Success(updatedAnswers)
+                                        }
                                       }
-                                    }
-                  _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(
-                  navigator.nextPage(DoYouWantToRemoveCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)
-                )
-            )
+                    _ <- sessionRepository.set(updatedAnswers)
+                  } yield Redirect(
+                    navigator.nextPage(DoYouWantToRemoveCountryPage, taxYear, mode, request.userAnswers, updatedAnswers)
+                  )
+              )
         )
     }
 }

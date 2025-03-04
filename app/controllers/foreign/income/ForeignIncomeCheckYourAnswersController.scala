@@ -23,6 +23,7 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
 import models._
 import models.requests.DataRequest
+import pages.foreign.Country
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, PropertySubmissionService}
@@ -118,17 +119,18 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.ForeignPropertyIncome,
       propertyType = AuditPropertyType.ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
-      accountingMethod = if(accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      sectionName = SectionName.ForeignPropertyIncome,
+      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       foreignPropertyIncome
     )
 

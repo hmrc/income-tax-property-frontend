@@ -18,31 +18,31 @@ package controllers.foreign.income
 
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.foreign.income.ForeignPropertyIncomeStartView
 import uk.gov.hmrc.play.language.LanguageUtils
+import views.html.foreign.income.ForeignPropertyIncomeStartView
 
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class ForeignPropertyIncomeStartController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ForeignPropertyIncomeStartView,
-                                       languageUtils: LanguageUtils
-                                     ) extends FrontendBaseController with I18nSupport {
+class ForeignPropertyIncomeStartController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignPropertyIncomeStartView,
+  languageUtils: LanguageUtils
+) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
         case Some(country) => Future.successful(Ok(view(taxYear, request.user.isAgentMessageKey, country)))
-        case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
+        case _             => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
       }
-  }
+    }
 }

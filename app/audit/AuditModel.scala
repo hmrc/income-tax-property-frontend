@@ -20,17 +20,18 @@ import models.{AccountingMethod, AuditPropertyType, JourneyName, SectionName}
 import play.api.libs.json.{Format, Json, OFormat}
 
 final case class AuditModel[T](
-  nino: String,
   userType: String,
+  nino: String,
   mtdItId: String,
-  agentReferenceNumber: Option[String],
   taxYear: Int,
-  isUpdate: Boolean,
-  sectionName: SectionName,
   propertyType: AuditPropertyType,
+  countryCode: String,
   journeyName: JourneyName,
+  sectionName: SectionName,
   accountingMethod: AccountingMethod,
+  isUpdate: Boolean,
   isFailed: Boolean,
+  agentReferenceNumber: Option[String],
   userEnteredDetails: T
 )
 

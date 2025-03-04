@@ -24,6 +24,7 @@ import controllers.foreign.allowances.routes.ForeignAllowancesCompleteController
 import models._
 import models.backend.PropertyDetails
 import models.requests.DataRequest
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -51,14 +52,12 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
   propertySubmissionService: PropertySubmissionService,
   businessService: BusinessService
 )(implicit ec: ExecutionContext)
-
-    extends FrontendBaseController with I18nSupport  with PropertyDetailsHandler with Logging {
+    extends FrontendBaseController with I18nSupport with PropertyDetailsHandler with Logging {
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withForeignPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyData: PropertyDetails) =>
-
           val rows = propertyData.accrualsOrCash match {
             case Some(false) =>
               Seq(ForeignCapitalAllowancesForACarSummary.row(taxYear, countryCode, request.userAnswers)).flatten
@@ -126,17 +125,18 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
   )(implicit hc: HeaderCarrier): Unit = {
 
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Allowances,
       propertyType = AuditPropertyType.ForeignProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
+      sectionName = SectionName.Allowances,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       allowances
     )
     auditService.sendAuditEvent(auditModel)

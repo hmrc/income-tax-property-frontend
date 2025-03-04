@@ -20,16 +20,14 @@ import audit.{AuditModel, AuditService}
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.JourneyPath.RentalsAndRentARoomAdjustments
-import models.RentalsRentARoom
+import models.{RentalsRentARoom, _}
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models._
-import pages.adjustments.UnusedLossesBroughtForwardPage
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, PropertySubmissionService}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -58,7 +56,8 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           BalancingChargeSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
+          PropertyIncomeAllowanceSummary
+            .row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
           BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
@@ -118,8 +117,12 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
               isFailed = false,
               accountingMethod
             )
-            Future.successful(Redirect(controllers.rentalsandrentaroom.adjustments.routes.RentalsRaRAdjustmentsCompleteController
-              .onPageLoad(taxYear)))
+            Future.successful(
+              Redirect(
+                controllers.rentalsandrentaroom.adjustments.routes.RentalsRaRAdjustmentsCompleteController
+                  .onPageLoad(taxYear)
+              )
+            )
           case Left(_) =>
             auditAdjustments(
               context.taxYear,
@@ -143,18 +146,19 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      nino = request.user.nino,
       userType = request.user.affinityGroup,
+      nino = request.user.nino,
       mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Adjustments,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.RentalsRentARoom,
+      sectionName = SectionName.Adjustments,
       accountingMethod = accountingMethod,
-      userEnteredDetails = adjustments,
-      isFailed = isFailed
+      isUpdate = false,
+      isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
+      userEnteredDetails = adjustments
     )
     auditService.sendAuditEvent(auditModel)
   }

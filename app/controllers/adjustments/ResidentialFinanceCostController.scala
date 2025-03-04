@@ -60,20 +60,29 @@ class ResidentialFinanceCostController @Inject() (
       Ok(view(preparedForm, mode, taxYear, request.user.isAgentMessageKey, propertyType))
     }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))),
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, mode, taxYear, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ResidentialFinanceCostPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(ResidentialFinanceCostPage(propertyType), taxYear: Int, mode, request.userAnswers, updatedAnswers)
+              navigator.nextPage(
+                ResidentialFinanceCostPage(propertyType),
+                taxYear: Int,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
         )
-  }
+    }
 }
