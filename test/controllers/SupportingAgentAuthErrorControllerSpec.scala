@@ -17,15 +17,17 @@
 package controllers
 
 import base.SpecBase
+import config.MockAppConfig
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.Fixture
 import views.html.SupportingAgentAuthErrorView
 
-class SupportingAgentAuthErrorControllerSpec extends SpecBase {
+class SupportingAgentAuthErrorControllerSpec extends SpecBase with MockAppConfig {
 
   "Unauthorised Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return UNAUTHORIZED and the correct view for a GET" in new Fixture {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
 
@@ -37,7 +39,7 @@ class SupportingAgentAuthErrorControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[SupportingAgentAuthErrorView]
 
         status(result) mustEqual UNAUTHORIZED
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view()(request, messages(application), config(application)).toString
       }
     }
   }
