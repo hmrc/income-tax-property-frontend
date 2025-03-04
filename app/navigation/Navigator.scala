@@ -344,13 +344,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
               UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
             }
-    case UnusedLossesBroughtForwardPage(Rentals) =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-              diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
-                WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
-              }
     case ResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
         _ =>
