@@ -63,17 +63,19 @@ class AdjustmentsCheckYourAnswersController @Inject() (
         UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
       ).flatten
 
+      val unusedLossesBroughtForwardAmount = request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals)).flatMap(_.unusedLossesBroughtForwardAmount).getOrElse(BigDecimal(0))
+
       val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
         request.userAnswers
           .get(UnusedLossesBroughtForwardPage(Rentals))
           .filter(_.unusedLossesBroughtForwardYesOrNo)
           .map(_ =>
             Seq(
-              UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals),
-              WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals)
+              UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+              WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey, unusedLossesBroughtForwardAmount)
             ).flatten
           )
-          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals)).flatten)
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)).flatten)
 
       val list = SummaryListViewModel(
         rows = summaryListRows
