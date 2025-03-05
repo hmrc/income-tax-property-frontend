@@ -13,6 +13,8 @@ GET         /refresh-session                                                    
 
 GET         /there-is-a-problem                                                                                          controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
+GET         /error/supporting-agent-not-authorised                                                                       controllers.SupportingAgentAuthErrorController.show
+
 GET         /account/sign-out-survey                                                                                     controllers.auth.AuthController.signOut
 GET         /account/sign-out                                                                                            controllers.auth.AuthController.signOutNoSurvey
 GET         /account/signed-out                                                                                          controllers.auth.SignedOutController.onPageLoad

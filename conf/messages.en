@@ -43,6 +43,10 @@ timeout.message = For security reasons, you will be signed out of this service i
 timeout.keepAlive = Stay signed in
 timeout.signOut = Sign out
 
+error.unauthorised.title = You are not authorised to use this service
+error.supp.agent.unauthorised.paragraph = You’re a supporting agent for this client. Only your client or their main agent, if they have one, can access and submit their tax return.
+error.supp.agent.unauthorised.link = Go back to account home
+
 error.prefix = Error:
 error.boolean = Please give an answer
 error.invalid_date = Give a correct date

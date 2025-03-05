@@ -17,6 +17,7 @@
 package base
 
 import audit.AuditService
+import config.FrontendAppConfig
 import controllers.actions._
 import models.UserAnswers
 import models.backend.PropertyDetails
@@ -48,6 +49,8 @@ trait SpecBase
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+
+  def config(app: Application): FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   def definedMessages(app: Application): Map[String, Map[String, String]] =
     app.injector.instanceOf[MessagesApi].messages

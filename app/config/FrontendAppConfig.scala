@@ -38,13 +38,13 @@ trait FrontendAppConfig {
   def incomeTaxSubmissionIvRedirect: String
   def propertyServiceBaseUrl: String
   def languageTranslationEnabled: Boolean
-  def emaSupportingAgentsEnabled: Boolean
   def languageMap: Map[String, Lang]
   def timeout: Int
   def countdown: Int
   def cacheTtl: Int
   def cacheTtlSecondsOrDays: String
   def viewAndChangeEnterUtrUrl: String
+  def viewAndChangeViewUrlAgent: String
 }
 
 @Singleton
@@ -77,7 +77,6 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   lazy val propertyServiceBaseUrl: String = s"${configuration.get[String](propertyUrlKey)}/income-tax-property"
 
   val languageTranslationEnabled: Boolean = configuration.get[Boolean]("feature-switch.welshToggleEnabled")
-  val emaSupportingAgentsEnabled: Boolean = configuration.get[Boolean]("feature-switch.ema-supporting-agents-enabled")
 
   def languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en"),
@@ -90,6 +89,9 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   val cacheTtl: Int = configuration.get[Int]("mongodb.timeToLive")
   val cacheTtlSecondsOrDays: String = configuration.get[String]("mongodb.timeToLiveDaysOrSeconds")
 
-  val viewAndChangeEnterUtrUrl: String = configuration.get[String]("microservice.services.view-and-change.url") +
-    "/report-quarterly/income-and-expenses/view/agents/client-utr"
+  val vcBaseUrl = configuration.get[String]("microservice.services.view-and-change.url")
+
+  val viewAndChangeEnterUtrUrl: String = s"$vcBaseUrl/report-quarterly/income-and-expenses/view/agents/client-utr"
+  def viewAndChangeViewUrlAgent: String = s"$vcBaseUrl/report-quarterly/income-and-expenses/view/agents"
+
 }
