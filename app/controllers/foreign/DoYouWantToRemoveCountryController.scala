@@ -60,12 +60,8 @@ class DoYouWantToRemoveCountryController @Inject() (
             .getOrElse(Country("", ""))
             .name
         }
-        .fold(Future.successful(InternalServerError("Country not found")))(
-          name => // TODO we need to better handle this error we should not be displaying this to the user
-            request.userAnswers.get(DoYouWantToRemoveCountryPage) match {
-              case Some(value) => Future.successful(Ok(view(form.fill(value), taxYear, index, mode, name)))
-              case _           => Future.successful(Ok(view(form, taxYear, index, mode, name)))
-            }
+        .fold(Future.successful(InternalServerError("Country not found")))(name => //TODO we need to better handle this error we should not be displaying this to the user
+          Future.successful(Ok(view(form, taxYear, index, mode, name)))
         )
 
     }

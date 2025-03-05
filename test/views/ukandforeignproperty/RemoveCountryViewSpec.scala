@@ -37,7 +37,7 @@ class RemoveCountryViewSpec extends ViewSpecBase {
   val doc: Document = Jsoup.parse(view(form, testTaxYear, NormalMode, testIndex, testCountry).body)
 
   object ExpectedMessages {
-    val h1 = "Do you want to remove France country?"
+    val h1 = "Do you want to remove France?"
     val backLink = "Back"
     val continue = "Continue"
     val doNotRemoveButton = "Don’t remove"
