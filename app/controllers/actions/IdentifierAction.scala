@@ -161,7 +161,7 @@ class AuthenticatedIdentifierAction @Inject() (
         }
         .recoverWith {
           case _: AuthorisationException =>
-            logger.warn(s"$agentAuthLogString - Agent does not have secondary delegated authority for Client.")
+            logger.warn(s"$agentAuthLogString - Agent does not have delegated authority for Client.")
             Future(Redirect(routes.UnauthorisedController.onPageLoad))
           case e =>
             logger.error(s"$agentAuthLogString - Unexpected exception of type '${e.getClass.getSimpleName}' was caught.")
