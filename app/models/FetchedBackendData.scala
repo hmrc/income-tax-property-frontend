@@ -88,7 +88,7 @@ final case class SbaOnIndex(index: Int, propertyType: PropertyType) extends Gett
 
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
-  sbaClaims: Option[Boolean],
+  structureBuildingAllowanceClaims: Option[Boolean],
   structureBuildingFormGroup: List[Sba]
 )
 
@@ -151,7 +151,7 @@ final case class FetchedBackendData(
   rentalsAndRaRAdjustments: Option[RentalsAndRentARoomAdjustment],
   allowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
-  rentalsSBA: Option[SbasWithSupportingQuestions],
+  rentalsStructureAndBuildingAllowance: Option[SbasWithSupportingQuestions],
   propertyRentals: Option[PropertyRentals],
   propertyRentalsIncome: Option[RentalsIncome],
   rentalsAndRaRIncome: Option[RentalsAndRentARoomIncome],
