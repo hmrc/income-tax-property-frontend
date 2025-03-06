@@ -144,7 +144,7 @@ object JourneyWithStatus {
 
 final case class FetchedBackendData(
   capitalAllowancesForACar: Option[CapitalAllowancesForACar],
-  propertyAbout: Option[PropertyAbout],
+  propertyAbout: Option[models.PropertyAbout],
   propertyRentalsAbout: Option[RentalsAbout],
   rentalsAndRaRAbout: Option[RentalsAndRaRAbout],
   adjustments: Option[Adjustments],
@@ -161,7 +161,7 @@ final case class FetchedBackendData(
   raRAdjustments: Option[RentARoomAdjustments],
   rentARoomAllowances: Option[RentARoomAllowance],
   journeyStatuses: List[JourneyWithStatus],
-  foreignPropertySelectCountry: Option[ForeignPropertySelectCountry]
+  foreignPropertySelectCountry: Option[models.ForeignPropertySelectCountry]
 )
 
 object FetchedBackendData {
