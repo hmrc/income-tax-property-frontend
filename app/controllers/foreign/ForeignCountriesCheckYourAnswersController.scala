@@ -16,7 +16,7 @@
 
 package controllers.foreign
 
-import audit.{AuditModel, AuditService}
+import audit.{AuditModel, AuditService, ForeignPropertySelectCountry => ForeignPropertySelectCountryAudit}
 import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
@@ -129,7 +129,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,
-      foreignPropertySelectCountry
+      ForeignPropertySelectCountryAudit(foreignPropertySelectCountry)
     )
 
     audit.sendAuditEvent(auditModel)

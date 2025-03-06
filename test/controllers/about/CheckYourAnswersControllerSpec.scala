@@ -16,10 +16,9 @@
 
 package controllers.about
 
-import audit.PropertyAbout
 import base.SpecBase
 import models.TotalIncome.Under
-import models.{JourneyContext, JourneyPath, UKPropertySelect, UserAnswers}
+import models.{JourneyContext, JourneyPath, PropertyAbout, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
