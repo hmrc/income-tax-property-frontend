@@ -16,33 +16,36 @@
 
 package audit
 
-import models.TotalIncome._
-import models.UKPropertySelect
+import models.TotalIncome.{Between, Over, Under}
+import pages.foreign.Country
 import play.api.libs.json.{Format, Json}
 
-case class PropertyAbout(
+final case class ForeignPropertySelectCountry(
   totalIncomeUnder1k: Boolean,
   totalIncomeBetween1kAnd85k: Boolean,
   totalIncomeOver85k: Boolean,
-  ukProperty: Option[Seq[UKPropertySelect]],
-  reportPropertyIncome: Option[Boolean]
+  reportPropertyIncome: Option[Boolean],
+  incomeCountries: Option[Array[Country]],
+  addAnotherCountry: Option[Boolean],
+  claimPropertyIncomeAllowance: Option[Boolean]
 )
+object ForeignPropertySelectCountry {
+  implicit val format: Format[ForeignPropertySelectCountry] = Json.format[ForeignPropertySelectCountry]
 
-object PropertyAbout {
-  implicit val format: Format[PropertyAbout] = Json.format[PropertyAbout]
-
-  def apply(propertyAbout: models.PropertyAbout): PropertyAbout = {
-    val (under, between, over) = propertyAbout.totalIncome match {
+  def apply(foreignPropertySelectCountry: models.ForeignPropertySelectCountry): ForeignPropertySelectCountry = {
+    val (under, between, over) = foreignPropertySelectCountry.totalIncome match {
       case Under =>   (true, false, false)
       case Between => (false, true, false)
       case Over =>    (false, false, true)
     }
-    PropertyAbout(
+    ForeignPropertySelectCountry(
       totalIncomeUnder1k = under,
       totalIncomeBetween1kAnd85k = between,
       totalIncomeOver85k = over,
-      ukProperty = propertyAbout.ukProperty,
-      reportPropertyIncome = propertyAbout.reportPropertyIncome
+      reportPropertyIncome = foreignPropertySelectCountry.reportPropertyIncome,
+      incomeCountries = foreignPropertySelectCountry.incomeCountries,
+      addAnotherCountry = foreignPropertySelectCountry.addAnotherCountry,
+      claimPropertyIncomeAllowance = foreignPropertySelectCountry.claimPropertyIncomeAllowance
     )
   }
 }

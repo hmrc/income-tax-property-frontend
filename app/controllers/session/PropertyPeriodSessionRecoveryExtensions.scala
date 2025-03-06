@@ -180,7 +180,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     private def updatePropertyAboutPages(
       userAnswers: UserAnswers,
-      maybePropertyAbout: Option[PropertyAbout]
+      maybePropertyAbout: Option[models.PropertyAbout]
     ): Try[UserAnswers] =
       maybePropertyAbout match {
         case None => Success(userAnswers)
@@ -194,7 +194,7 @@ object PropertyPeriodSessionRecoveryExtensions {
 
     private def updateForeignPropertySelectCountry(
       userAnswers: UserAnswers,
-      maybeForeignPropertySelectCountry: Option[ForeignPropertySelectCountry]
+      maybeForeignPropertySelectCountry: Option[models.ForeignPropertySelectCountry]
     ): Try[UserAnswers] =
       maybeForeignPropertySelectCountry match {
         case None => Success(userAnswers)
