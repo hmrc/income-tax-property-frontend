@@ -95,7 +95,7 @@ class CheckYourAnswersController @Inject() (
   private def auditCYA(taxYear: Int, request: DataRequest[AnyContent], propertyAbout: PropertyAbout, isFailed: Boolean)(
     implicit hc: HeaderCarrier
   ): Unit = {
-    val auditModel = AuditModel[PropertyAboutAudit](
+    val auditModel = AuditModel(
       request.user.affinityGroup,
       request.user.nino,
       request.user.mtditid,
