@@ -23,7 +23,7 @@ final case class FetchedForeignPropertyData(
   foreignPropertyIncome: Option[Map[String, ForeignIncomeAnswers]],
   foreignPropertyExpenses: Option[Map[String, ForeignExpensesAnswers]],
   foreignPropertyAllowances: Option[Map[String, ForeignPropertyAllowances]],
-  foreignPropertySba: Option[Map[String, ForeignSbaAnswers]],
+  foreignPropertyStructureAndBuildingAllowance: Option[Map[String, ForeignSbaAnswers]],
   foreignPropertyAdjustments: Option[Map[String, ForeignAdjustmentsAnswers]],
   foreignJourneyStatuses: Option[Map[String, List[JourneyWithStatus]]]
 )
