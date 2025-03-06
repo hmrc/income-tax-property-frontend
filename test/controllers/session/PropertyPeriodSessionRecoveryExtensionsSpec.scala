@@ -254,7 +254,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |          "otherCapitalAllowance": 45.15
        |         }
        |         },
-       |    "foreignPropertySba": {
+       |    "foreignPropertyStructureAndBuildingAllowance": {
        |    "$countryCode1": {
        |      "claimStructureBuildingAllowance": true,
        |      "allowances": [{
