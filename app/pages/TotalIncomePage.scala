@@ -17,12 +17,12 @@
 package pages
 
 import models.TotalIncome.{Between, Over}
-import models.{Rentals, TotalIncome, UserAnswers}
-import pages.propertyrentals.expenses.ConsolidatedExpensesPage
-import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
+import models.{PropertyType, RentARoom, Rentals, TotalIncome, UKPropertySelect, UserAnswers}
+import pages.propertyrentals.expenses.{ConsolidatedExpensesPage, ExpensesSectionFinishedPage}
+import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, ExpensesRRSectionCompletePage}
 import play.api.libs.json.JsPath
 
-import scala.util.Try
+import scala.util.{Success, Try}
 
 case object TotalIncomePage extends QuestionPage[TotalIncome] {
 
@@ -37,13 +37,22 @@ case object TotalIncomePage extends QuestionPage[TotalIncome] {
       .map(_ => userAnswers.remove(ReportPropertyIncomePage))
       .getOrElse(super.cleanup(totalIncome, userAnswers))
 
-    totalIncome match {
-      case Some(Over) =>
-        for {
-          answers           <- updatedUserAnswers
-          userAnswers       <- answers.remove(ConsolidatedExpensesPage(Rentals))
-          withOutRRExpenses <- userAnswers.remove(ConsolidatedExpensesRRPage)
-        } yield withOutRRExpenses
+    val propertyType: Option[PropertyType] = userAnswers.get(UKPropertyPage).map(_.toSeq).collect {
+      case Seq(UKPropertySelect.PropertyRentals) => Rentals
+      case Seq(UKPropertySelect.RentARoom) => RentARoom
+    }
+
+    propertyType match {
+      case Some(Rentals) => for {
+        answers                             <- updatedUserAnswers
+        withoutRentalsConsolidatedExpenses  <- if(totalIncome.contains(Over)) answers.remove(ConsolidatedExpensesPage(Rentals)) else Success(answers)
+        withoutRentalsSectionComplete       <- withoutRentalsConsolidatedExpenses.remove(ExpensesSectionFinishedPage)
+      } yield withoutRentalsSectionComplete
+      case Some(RentARoom) => for {
+        answers                       <- updatedUserAnswers
+        withoutRRConsolidatedExpenses <- if(totalIncome.contains(Over)) answers.remove(ConsolidatedExpensesRRPage) else Success(answers)
+        withoutRRSectionComplete      <- withoutRRConsolidatedExpenses.remove(ExpensesRRSectionCompletePage)
+      } yield withoutRRSectionComplete
       case _ => super.cleanup(totalIncome, userAnswers)
     }
   }
