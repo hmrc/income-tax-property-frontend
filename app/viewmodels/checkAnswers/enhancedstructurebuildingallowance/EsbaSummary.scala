@@ -32,14 +32,14 @@ object EsbaSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(EsbaOnIndex(index, propertyType)).map { answer =>
-      val value = HtmlFormat.escape(answer.esbaAddress.buildingName).toString + ", " +
-        HtmlFormat.escape(answer.esbaAddress.buildingNumber).toString + ", " + HtmlFormat
-          .escape(answer.esbaAddress.postCode)
+      val value = HtmlFormat.escape(answer.enhancedStructureBuildingAllowanceAddress.buildingName).toString + ", " +
+        HtmlFormat.escape(answer.enhancedStructureBuildingAllowanceAddress.buildingNumber).toString + ", " + HtmlFormat
+          .escape(answer.enhancedStructureBuildingAllowanceAddress.postCode)
           .toString
 
       SummaryListRowViewModel(
         key = value,
-        value = ValueViewModel(bigDecimalCurrency(answer.esbaClaim)),
+        value = ValueViewModel(bigDecimalCurrency(answer.enhancedStructureBuildingAllowanceClaim)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

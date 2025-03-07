@@ -25,7 +25,7 @@ object SectionName extends Enumerable.Implicits {
   case object Adjustments extends WithName("Adjustments") with SectionName
   case object Expenses extends WithName("Expenses") with SectionName
   case object SBA extends WithName("SBA") with SectionName
-  case object ESBA extends WithName("ESBA") with SectionName
+  case object ESBA extends WithName("EnhancedStructureAndBuildingAllowance") with SectionName
   case object ForeignPropertyTax extends WithName("ForeignPropertyTax") with SectionName
   case object ForeignPropertySelectCountry extends WithName("ForeignPropertySelectCountry") with SectionName
   case object ForeignPropertyIncome extends WithName("ForeignPropertyIncome") with SectionName

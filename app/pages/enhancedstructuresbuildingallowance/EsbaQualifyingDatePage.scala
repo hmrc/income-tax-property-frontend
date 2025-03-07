@@ -27,5 +27,5 @@ case class EsbaQualifyingDatePage(index: Int, propertyType: PropertyType) extend
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ esbas \ index \ toString
 
-  override def toString: String = "esbaQualifyingDate"
+  override def toString: String = "enhancedStructureBuildingAllowanceQualifyingDate"
 }

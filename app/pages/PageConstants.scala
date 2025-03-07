@@ -23,7 +23,7 @@ object PageConstants {
   val structureBuildingFormGroup: String = "structureBuildingFormGroup"
   val sbasWithSupportingQuestions = "sbasWithSupportingQuestions"
 
-  val esbas: String = "esbas"
+  val esbas: String = "enhancedStructureBuildingAllowances"
   val esbasWithSupportingQuestions = "esbasWithSupportingQuestions"
 
   val foreignSbaFormGroup = "foreignSbaFormGroup"
