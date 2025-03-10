@@ -157,7 +157,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               )
             )
           ),
-          foreignPropertyStructureAndBuildingAllowance = Some(
+          foreignPropertySba = Some(
             Map(
               "ESP" -> ForeignSbaAnswers(
                 claimStructureBuildingAllowance = true,
