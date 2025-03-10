@@ -16,7 +16,7 @@
 
 package controllers.about
 
-import audit.{AuditModel, AuditService, PropertyAbout}
+import audit.{AuditModel, AuditService, PropertyAbout => PropertyAboutAudit}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.{NotFoundException, SaveJourneyAnswersFailed}
@@ -108,7 +108,7 @@ class CheckYourAnswersController @Inject() (
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,
-      propertyAbout
+      PropertyAboutAudit(propertyAbout)
     )
 
     audit.sendRentalsAuditEvent(auditModel)

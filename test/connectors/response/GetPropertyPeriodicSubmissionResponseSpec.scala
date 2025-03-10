@@ -16,7 +16,7 @@
 
 package connectors.response
 
-import audit.PropertyAbout
+import models.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
 import models.ForeignWhenYouReportedTheLoss.y2018to2019
