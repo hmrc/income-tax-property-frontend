@@ -93,7 +93,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua24 <- updateForeignPropertyExpenses(ua23, fetchedData.foreignPropertyData.foreignPropertyExpenses)
         ua25 <- updateForeignPropertyTax(ua24, fetchedData.foreignPropertyData.foreignPropertyTax)
         ua26 <- updateForeignPropertyAllowances(ua25, fetchedData.foreignPropertyData.foreignPropertyAllowances)
-        ua27 <- updateforeignPropertySbaPage(ua26, fetchedData.foreignPropertyData.foreignPropertyStructureAndBuildingAllowance)
+        ua27 <- updateforeignPropertySbaPage(ua26, fetchedData.foreignPropertyData.foreignPropertySba)
         ua28 <- updateForeignPropertyAdjustments(ua27, fetchedData.foreignPropertyData.foreignPropertyAdjustments)
         ua29 <- updateForeignJourneyStatuses(ua28, fetchedData.foreignPropertyData.foreignJourneyStatuses)
         ua30 <- updateUkAndForeignPropertyAboutPages(ua29, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
