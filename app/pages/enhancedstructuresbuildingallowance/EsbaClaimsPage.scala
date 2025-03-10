@@ -25,5 +25,5 @@ case class EsbaClaimsPage(propertyType: PropertyType) extends QuestionPage[Boole
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
-  override def toString: String = "esbaClaims"
+  override def toString: String = "enhancedStructureBuildingAllowanceClaims"
 }

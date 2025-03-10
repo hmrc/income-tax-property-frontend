@@ -61,7 +61,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "esbasWithSupportingQuestions": {
        |    "claimEnhancedStructureBuildingAllowance" : true,
-       |    "esbas" : [
+       |    "enhancedStructureBuildingAllowances" : [
        |      {
        |        "esbaQualifyingDate" : "2022-01-04",
        |        "esbaQualifyingAmount" : 5,
@@ -83,7 +83,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        }
        |      }
        |    ],
-       |    "esbaClaims" : false
+       |    "enhancedStructureBuildingAllowanceClaims" : false
        |  },
        |  "propertyRentalsAbout" : {
        |    "claimPropertyIncomeAllowanceYesOrNo" : false
