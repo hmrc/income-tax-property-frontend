@@ -91,7 +91,7 @@ final case class SbaOnIndex(index: Int, propertyType: PropertyType) extends Gett
 
 final case class SbasWithSupportingQuestions(
   claimStructureBuildingAllowance: Boolean,
-  structureBuildingAllowanceClaims: Option[Boolean],
+  structureAndBuildingAllowanceClaims: Option[Boolean],
   structureBuildingFormGroup: List[Sba]
 )
 
