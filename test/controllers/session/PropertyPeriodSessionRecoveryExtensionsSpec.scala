@@ -127,7 +127,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "replacementOfDomesticGoodsAllowance" : 4,
        |    "otherCapitalAllowance" : 4
        |  },
-       |  "rentalsStructureAndBuildingAllowance": {
+       |  "rentalsSBA": {
        |    "claimStructureBuildingAllowance" : true,
        |    "structureAndBuildingAllowanceClaims" : true,
        |    "structureBuildingFormGroup" : [ {

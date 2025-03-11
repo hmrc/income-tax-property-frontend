@@ -70,8 +70,8 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
         ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
-        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsStructureAndBuildingAllowance, Rentals)
-        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsStructureAndBuildingAllowance, RentalsRentARoom)
+        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
+        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
         ua10 <-
           updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
         ua11 <- updateEnhancedStructureBuildingPages(
