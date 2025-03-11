@@ -99,7 +99,7 @@ class UkAndForeignBalancingChargeControllerSpec extends SpecBase with MockitoSug
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignBalancingChargeRoute)
-            .withFormUrlEncodedBody(("balancingChargeYesNo", "false"))
+            .withFormUrlEncodedBody(("isBalancingCharge", "false"))
 
         val result = route(application, request).value
 

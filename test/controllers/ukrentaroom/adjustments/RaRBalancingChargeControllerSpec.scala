@@ -89,7 +89,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(RaRBalancingChargePage, BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .set(RaRBalancingChargePage, BalancingCharge(isBalancingCharge = true, Some(7689.23)))
         .success
         .value
 
@@ -104,7 +104,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          form.fill(BalancingCharge(isBalancingCharge = true, Some(7689.23))),
           taxYear,
           NormalMode,
           "agent"
@@ -129,7 +129,7 @@ class RaRBalancingChargeControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, totalIncomeRoute)
-            .withFormUrlEncodedBody("raRbalancingChargeYesNo" -> "false")
+            .withFormUrlEncodedBody("isRaRBalancingCharge" -> "false")
 
         val result = route(application, request).value
 

@@ -1294,7 +1294,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       userAnswers.get(ClaimPropertyIncomeAllowancePage(Rentals))
     ) match {
       case (Some(current), Some(previous),Some(true))
-        if current.balancingChargeYesNo != previous.balancingChargeYesNo &&
+        if current.isBalancingCharge != previous.isBalancingCharge &&
           current.balancingChargeAmount != previous.balancingChargeAmount =>
         PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
 

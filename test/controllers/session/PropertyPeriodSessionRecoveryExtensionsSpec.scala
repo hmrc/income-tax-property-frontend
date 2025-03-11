@@ -156,7 +156,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "adjustments" : {
        |    "privateUseAdjustment" : 2,
        |    "balancingCharge" : {
-       |      "balancingChargeYesNo" : true,
+       |      "isBalancingCharge" : true,
        |      "balancingChargeAmount" : 3
        |    },
        |    "propertyIncomeAllowance" : 4,
@@ -179,7 +179,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "raRAdjustments": {
        |     "balancingCharge": {
        |         "balancingChargeAmount": 10,
-       |         "balancingChargeYesNo": true
+       |         "isBalancingCharge": true
        |     },
        |     "unusedLossesBroughtForward": {
        |         "unusedLossesBroughtForwardAmount": 5,
@@ -277,7 +277,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "$countryCode1": {
        |      "privateUseAdjustment": 50,
        |      "balancingCharge": {
-       |        "balancingChargeYesNo": true,
+       |        "isBalancingCharge": true,
        |        "balancingChargeAmount": 56.60
        |      },
        |      "residentialFinanceCost": 67.90,
@@ -371,7 +371,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(CostOfServicesProvidedRRPage).get mustBe 30
       updated.get(OtherPropertyExpensesRRPage).get mustBe 35
 
-      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10)))
       updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
       updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(5)))
 
@@ -381,7 +381,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(CostsOfServicesProvidedPage(Rentals)).get mustBe 34
       updated.get(PropertyBusinessTravelCostsPage(Rentals)).get mustBe 4
       updated.get(OtherAllowablePropertyExpensesPage(Rentals)).get mustBe 3
-      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(3))
+      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(isBalancingCharge = true, Some(3))
       updated.get(PrivateUseAdjustmentPage(Rentals)).get mustBe PrivateUseAdjustment(2)
       updated.get(PropertyIncomeAllowancePage(Rentals)).get mustBe 4
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
@@ -429,7 +429,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "4",
         "EH1 AB2"
       )
-      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(10))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(10))
 
       updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(
         capitalAllowancesForACarYesNo = true,
@@ -492,7 +492,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(ForeignPrivateUseAdjustmentPage(countryCode1)) mustBe Some(50)
       updated.get(ForeignBalancingChargePage(countryCode1)) mustBe Some(
-        BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(56.60)))
+        BalancingCharge(isBalancingCharge = true, Some(BigDecimal(56.60)))
       )
       updated.get(ForeignResidentialFinanceCostsPage(countryCode1)) mustBe Some(67.90)
       updated.get(ForeignUnusedResidentialFinanceCostPage(countryCode1)) mustBe Some(

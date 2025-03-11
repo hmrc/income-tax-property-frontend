@@ -104,7 +104,7 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
         .flatMap(
           _.set(
             ForeignBalancingChargePage(countryCode),
-            BalancingCharge(balancingChargeYesNo = true, balancingChargeAmount = Some(BigDecimal(50)))
+            BalancingCharge(isBalancingCharge = true, balancingChargeAmount = Some(BigDecimal(50)))
           )
         )
         .flatMap(_.set(PropertyIncomeAllowanceClaimPage(countryCode), BigDecimal(75)))

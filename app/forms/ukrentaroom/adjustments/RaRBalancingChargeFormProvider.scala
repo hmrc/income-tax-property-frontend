@@ -29,10 +29,10 @@ class RaRBalancingChargeFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[BalancingCharge] =
     Form[BalancingCharge](
       mapping(
-        "raRbalancingChargeYesNo" -> boolean(s"raRbalancingCharge.error.required.$individualOrAgent"),
+        "isRaRBalancingCharge" -> boolean(s"raRbalancingCharge.error.required.$individualOrAgent"),
         "raRbalancingChargeAmount" -> {
           mandatoryIfTrue(
-            "raRbalancingChargeYesNo",
+            "isRaRBalancingCharge",
             currency(
               s"raRbalancingCharge.amount.error.required.$individualOrAgent",
               s"raRbalancingCharge.amount.error.twoDecimalPlaces.$individualOrAgent",

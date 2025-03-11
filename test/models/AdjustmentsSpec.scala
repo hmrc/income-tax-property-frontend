@@ -28,7 +28,7 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
   val adjustmentsJson = """{
                           |            "privateUseAdjustment" : 2,
                           |            "balancingCharge" : {
-                          |                "balancingChargeYesNo" : true,
+                          |                "isBalancingCharge" : true,
                           |                "balancingChargeAmount" : 2
                           |            },
                           |            "propertyIncomeAllowance" : 2,

@@ -35,7 +35,7 @@ class TotalIncomeUtilSpec extends SpecBase {
       val userAnswers = UserAnswers("test")
         .set(PropertyRentalIncomePage(Rentals), BigDecimal(80000))
         .flatMap(
-          _.set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10000))))
+          _.set(BalancingChargePage(Rentals), BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10000))))
         )
         .get
 

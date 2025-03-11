@@ -56,7 +56,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             None,
             Some(
               Adjustments(
-                BalancingCharge(balancingChargeYesNo = true, Some(4.2)),
+                BalancingCharge(isBalancingCharge = true, Some(4.2)),
                 PrivateUseAdjustment(4.5),
                 45,
                 RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(4.2)),
@@ -185,7 +185,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             Map(
               "ESP" -> ForeignAdjustmentsAnswers(
                 privateUseAdjustment = Some(BigDecimal(54.00)),
-                balancingCharge = Some(BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(146.56)))),
+                balancingCharge = Some(BalancingCharge(isBalancingCharge = true, Some(BigDecimal(146.56)))),
                 residentialFinanceCost = Some(BigDecimal(99.00)),
                 unusedResidentialFinanceCost = Some(
                   ForeignUnusedResidentialFinanceCost(

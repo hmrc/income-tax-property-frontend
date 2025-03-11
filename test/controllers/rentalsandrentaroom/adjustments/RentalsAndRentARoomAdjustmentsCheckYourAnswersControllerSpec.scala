@@ -85,7 +85,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersControllerSpec extends SpecB
           RentalsAndRentARoomAdjustment,
           RentalsAndRentARoomAdjustment(
             privateUseAdjustment = 10,
-            balancingCharge = BalancingCharge(balancingChargeYesNo = true, Some(10)),
+            balancingCharge = BalancingCharge(isBalancingCharge = true, Some(10)),
             propertyIncomeAllowance = Some(10),
             renovationAllowanceBalancingCharge =
               RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(10)),

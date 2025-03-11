@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class BalancingCharge(balancingChargeYesNo: Boolean, balancingChargeAmount: Option[BigDecimal])
+final case class BalancingCharge(isBalancingCharge: Boolean, balancingChargeAmount: Option[BigDecimal])
 
 object BalancingCharge {
   implicit val format: Format[BalancingCharge] = Json.format
