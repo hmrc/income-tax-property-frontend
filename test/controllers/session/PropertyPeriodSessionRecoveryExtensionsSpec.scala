@@ -129,7 +129,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "rentalsSBA": {
        |    "claimStructureBuildingAllowance" : true,
-       |    "sbaClaims" : true,
+       |    "structureAndBuildingAllowanceClaims" : true,
        |    "structureBuildingFormGroup" : [ {
        |      "structureBuildingQualifyingDate" : "2022-04-03",
        |      "structureBuildingQualifyingAmount" : 3,
