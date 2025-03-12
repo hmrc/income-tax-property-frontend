@@ -19,7 +19,9 @@ package audit
 import models.{AccountingMethod, AuditPropertyType, JourneyName, SectionName}
 import play.api.libs.json.{Format, Json, OFormat}
 
-final case class AuditModel[T](
+final case class AuditModel[+T](
+  clientIP: String,
+  clientPort: String,
   userType: String,
   nino: String,
   mtdItId: String,
@@ -32,7 +34,7 @@ final case class AuditModel[T](
   isUpdate: Boolean,
   isFailed: Boolean,
   agentReferenceNumber: Option[String],
-  userEnteredDetails: T
+  userEnteredDetails:T
 )
 
 object AuditModel {

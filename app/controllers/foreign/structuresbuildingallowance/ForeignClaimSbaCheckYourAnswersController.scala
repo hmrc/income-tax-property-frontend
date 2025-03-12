@@ -114,6 +114,8 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
       request.user.affinityGroup,
       request.user.nino,
       request.user.mtditid,

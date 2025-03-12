@@ -194,6 +194,8 @@ class SbaClaimsController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
       userType = request.user.affinityGroup,
       nino = request.user.nino,
       mtdItId = request.user.mtditid,

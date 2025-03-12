@@ -118,6 +118,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
       .map {
         case Right(Some(PropertyDetails(_, _, Some(accrualsOrCash), _))) =>
           val auditModel = AuditModel(
+            clientIP = hc.trueClientIp.getOrElse("-"),
+            clientPort = hc.trueClientPort.getOrElse("-"),
             userType = request.user.affinityGroup,
             nino = request.user.nino,
             mtdItId = request.user.mtditid,
