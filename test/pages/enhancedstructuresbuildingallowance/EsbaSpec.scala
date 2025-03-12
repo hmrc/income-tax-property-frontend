@@ -29,10 +29,10 @@ import java.time.LocalDate
 class EsbaSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues with Generators {
   val esbaJson = """[
                    |            {
-                   |                "esbaQualifyingDate" : "2024-02-02",
-                   |                "esbaQualifyingAmount" : 2,
-                   |                "esbaClaim" : 2,
-                   |                "esbaAddress" : {
+                   |                "enhancedStructureBuildingAllowanceQualifyingDate" : "2024-02-02",
+                   |                "enhancedStructureBuildingAllowanceQualifyingAmount" : 2,
+                   |                "enhancedStructureBuildingAllowanceClaim" : 2,
+                   |                "enhancedStructureBuildingAllowanceAddress" : {
                    |                    "buildingName" : "2",
                    |                    "buildingNumber" : "2",
                    |                    "postCode" : "EH1 2QH"
@@ -51,10 +51,10 @@ class EsbaSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks w
 
       forAll(gen) { esba =>
         val json = Json.obj(
-          "esbaQualifyingDate"   -> esba.esbaQualifyingDate,
-          "esbaQualifyingAmount" -> esba.esbaQualifyingAmount,
-          "esbaClaim"            -> esba.esbaClaim,
-          "esbaAddress"          -> esba.esbaAddress
+          "enhancedStructureBuildingAllowanceQualifyingDate"   -> esba.enhancedStructureBuildingAllowanceQualifyingDate,
+          "enhancedStructureBuildingAllowanceQualifyingAmount" -> esba.enhancedStructureBuildingAllowanceQualifyingAmount,
+          "enhancedStructureBuildingAllowanceClaim"            -> esba.enhancedStructureBuildingAllowanceClaim,
+          "enhancedStructureBuildingAllowanceAddress"          -> esba.enhancedStructureBuildingAllowanceAddress
         )
         Json.toJson(esba) mustBe json
         json.validate[Esba] mustBe JsSuccess(esba)

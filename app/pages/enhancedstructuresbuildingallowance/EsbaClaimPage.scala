@@ -26,5 +26,5 @@ case class EsbaClaimPage(index: Int, propertyType: PropertyType) extends Questio
   override def path: JsPath =
     JsPath \ eSbaPath(propertyType) \ esbas \ index \ toString
 
-  override def toString: String = "esbaClaim"
+  override def toString: String = "enhancedStructureBuildingAllowanceClaim"
 }

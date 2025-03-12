@@ -746,8 +746,8 @@ object PropertyPeriodSessionRecoveryExtensions {
                      ClaimEsbaPage(propertyType),
                      esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance
                    )
-            ua2 <- ua1.set(EsbaClaimsPage(propertyType), esbasWithSupportingQuestions.esbaClaims.getOrElse(false))
-            ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.esbas, propertyType)
+            ua2 <- ua1.set(EsbaClaimsPage(propertyType), esbasWithSupportingQuestions.enhancedStructureBuildingAllowanceClaims.getOrElse(false))
+            ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.enhancedStructureBuildingAllowances, propertyType)
           } yield ua3
       }
 
@@ -770,10 +770,10 @@ object PropertyPeriodSessionRecoveryExtensions {
       case RentARoom => Success(userAnswers)
       case _ =>
         for {
-          ua1 <- userAnswers.set(EsbaAddressPage(index, Rentals), esba.esbaAddress)
-          ua2 <- ua1.set(EsbaQualifyingDatePage(index, Rentals), esba.esbaQualifyingDate)
-          ua3 <- ua2.set(EsbaQualifyingAmountPage(index, Rentals), esba.esbaQualifyingAmount)
-          ua4 <- ua3.set(EsbaClaimPage(index, Rentals), esba.esbaClaim)
+          ua1 <- userAnswers.set(EsbaAddressPage(index, Rentals), esba.enhancedStructureBuildingAllowanceAddress)
+          ua2 <- ua1.set(EsbaQualifyingDatePage(index, Rentals), esba.enhancedStructureBuildingAllowanceQualifyingDate)
+          ua3 <- ua2.set(EsbaQualifyingAmountPage(index, Rentals), esba.enhancedStructureBuildingAllowanceQualifyingAmount)
+          ua4 <- ua3.set(EsbaClaimPage(index, Rentals), esba.enhancedStructureBuildingAllowanceClaim)
         } yield ua4
     }
 

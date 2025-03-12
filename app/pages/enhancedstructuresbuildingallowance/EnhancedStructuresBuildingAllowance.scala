@@ -25,9 +25,9 @@ import queries.{Gettable, Settable}
 import java.time.LocalDate
 
 case class EnhancedStructuresBuildingAllowance(
-  esbaQualifyingDate: LocalDate,
-  esbaQualifyingAmount: BigDecimal,
-  esbaClaim: BigDecimal
+                                                enhancedStructureBuildingAllowanceQualifyingDate: LocalDate,
+                                                enhancedStructureBuildingAllowanceQualifyingAmount: BigDecimal,
+                                                enhancedStructureBuildingAllowanceClaim: BigDecimal
 )
 
 case object EnhancedStructuresBuildingAllowance {

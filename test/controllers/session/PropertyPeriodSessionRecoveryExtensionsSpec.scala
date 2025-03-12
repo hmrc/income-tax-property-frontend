@@ -61,29 +61,29 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "esbasWithSupportingQuestions": {
        |    "claimEnhancedStructureBuildingAllowance" : true,
-       |    "esbas" : [
+       |    "enhancedStructureBuildingAllowances" : [
        |      {
-       |        "esbaQualifyingDate" : "2022-01-04",
-       |        "esbaQualifyingAmount" : 5,
-       |        "esbaClaim" : 6,
-       |        "esbaAddress" : {
+       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-01-04",
+       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 5,
+       |        "enhancedStructureBuildingAllowanceClaim" : 6,
+       |        "enhancedStructureBuildingAllowanceAddress" : {
        |          "buildingName" : "12",
        |          "buildingNumber" : "12",
        |          "postCode" : "EH1 AB1"
        |        }
        |      },
        |      {
-       |        "esbaQualifyingDate" : "2022-03-03",
-       |        "esbaQualifyingAmount" : 4,
-       |        "esbaClaim" : 5,
-       |        "esbaAddress" : {
+       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-03-03",
+       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 4,
+       |        "enhancedStructureBuildingAllowanceClaim" : 5,
+       |        "enhancedStructureBuildingAllowanceAddress" : {
        |          "buildingName" : "2",
        |          "buildingNumber" : "2",
        |          "postCode" : "EH1 AB1"
        |        }
        |      }
        |    ],
-       |    "esbaClaims" : false
+       |    "enhancedStructureBuildingAllowanceClaims" : false
        |  },
        |  "propertyRentalsAbout" : {
        |    "claimPropertyIncomeAllowanceYesOrNo" : false

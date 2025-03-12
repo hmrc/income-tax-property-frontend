@@ -25,10 +25,10 @@ import queries.{Gettable, Settable}
 import java.time.LocalDate
 
 final case class Esba(
-  esbaQualifyingDate: LocalDate,
-  esbaQualifyingAmount: BigDecimal,
-  esbaClaim: BigDecimal,
-  esbaAddress: EsbaAddress
+  enhancedStructureBuildingAllowanceQualifyingDate: LocalDate,
+  enhancedStructureBuildingAllowanceQualifyingAmount: BigDecimal,
+  enhancedStructureBuildingAllowanceClaim: BigDecimal,
+  enhancedStructureBuildingAllowanceAddress: EsbaAddress
 )
 
 object Esba {
