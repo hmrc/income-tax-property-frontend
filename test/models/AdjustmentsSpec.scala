@@ -33,7 +33,7 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
                           |            },
                           |            "propertyIncomeAllowance" : 2,
                           |            "renovationAllowanceBalancingCharge" : {
-                          |                "renovationAllowanceBalancingChargeYesNo" : true,
+                          |                "isRenovationAllowanceBalancingCharge" : true,
                           |                "renovationAllowanceBalancingChargeAmount" : 2
                           |            },
                           |            "residentialFinanceCost" : 2,

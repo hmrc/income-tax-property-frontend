@@ -27,9 +27,9 @@ class RenovationAllowanceBalancingChargeFormProviderSpec extends BooleanFieldBeh
 
   val form = new RenovationAllowanceBalancingChargeFormProvider()("individual")
 
-  ".renovationAllowanceBalancingChargeYesNo" - {
+  ".isRenovationAllowanceBalancingCharge" - {
 
-    val fieldName = "renovationAllowanceBalancingChargeYesNo"
+    val fieldName = "isRenovationAllowanceBalancingCharge"
 
     behave like mandatoryField(
       form,

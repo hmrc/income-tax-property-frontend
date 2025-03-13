@@ -161,7 +161,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    },
        |    "propertyIncomeAllowance" : 4,
        |    "renovationAllowanceBalancingCharge" : {
-       |      "renovationAllowanceBalancingChargeYesNo" : true,
+       |      "isRenovationAllowanceBalancingCharge" : true,
        |      "renovationAllowanceBalancingChargeAmount" : 23
        |    },
        |    "residentialFinanceCost" : 2,
@@ -389,7 +389,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         Some(45)
       )
       updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(
-        renovationAllowanceBalancingChargeYesNo = true,
+        isRenovationAllowanceBalancingCharge = true,
         Some(23)
       )
       updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
