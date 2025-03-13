@@ -98,7 +98,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignForeignPremiumsForTheGrantOfALeaseRoute)
-            .withFormUrlEncodedBody(("ukAndForeignForeignPremiumsGrantLease", "true"))
+            .withFormUrlEncodedBody(("isUkAndForeignForeignPremiumsGrantLease", "true"))
 
         val result = route(application, request).value
 
@@ -114,9 +114,9 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignForeignPremiumsForTheGrantOfALeaseRoute)
-            .withFormUrlEncodedBody(("ukAndForeignForeignPremiumsGrantLease", ""))
+            .withFormUrlEncodedBody(("isUkAndForeignForeignPremiumsGrantLease", ""))
 
-        val boundForm = form.bind(Map("ukAndForeignForeignPremiumsGrantLease" -> ""))
+        val boundForm = form.bind(Map("isUkAndForeignForeignPremiumsGrantLease" -> ""))
 
         val view = application.injector.instanceOf[UkAndForeignForeignPremiumsForTheGrantOfALeaseView]
 
@@ -148,7 +148,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseControllerSpec extends SpecB
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignForeignPremiumsForTheGrantOfALeaseRoute)
-            .withFormUrlEncodedBody(("ukAndForeignForeignPremiumsGrantLease", "true"))
+            .withFormUrlEncodedBody(("isUkAndForeignForeignPremiumsGrantLease", "true"))
 
         val result = route(application, request).value
 

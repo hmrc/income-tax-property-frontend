@@ -27,7 +27,7 @@ case class PremiumForLeasePage(propertyType: PropertyType) extends QuestionPage[
 
   override def path: JsPath = JsPath \ incomePath(propertyType) \ toString
 
-  override def toString: String = "premiumForLeaseYesOrNo"
+  override def toString: String = "isPremiumForLease"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value

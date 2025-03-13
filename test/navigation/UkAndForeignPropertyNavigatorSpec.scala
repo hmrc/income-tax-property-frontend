@@ -1037,7 +1037,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               .set(
                 UKPremiumsGrantLeasePage,
                 UKPremiumsGrantLease(
-                  premiumsGrantLeaseReceived = true,
+                  isPremiumsGrantLeaseReceived = true,
                   premiumsGrantLease = Some(BigDecimal(123.45))
                 )
               )
@@ -1059,7 +1059,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               .set(
                 UKPremiumsGrantLeasePage,
                 UKPremiumsGrantLease(
-                  premiumsGrantLeaseReceived = true,
+                  isPremiumsGrantLeaseReceived = true,
                   premiumsGrantLease = Some(BigDecimal(123.45))
                 )
               )

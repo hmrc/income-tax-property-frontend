@@ -23,9 +23,9 @@ class UKPremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new UKPremiumsGrantLeaseFormProvider()("individual")
 
-  ".premiumsGrantLeaseYesNo" - {
+  ".premiumsGrantLease" - {
 
-    val fieldName = "premiumsGrantLeaseReceived"
+    val fieldName = "isPremiumsGrantLeaseReceived"
 
     behave like mandatoryField(
       form,
@@ -55,7 +55,7 @@ class UKPremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       nonNumericError = FormError(fieldName, "ukPremiumsGrantLease.error.amount.nonNumeric.individual"),
       twoDecimalPlacesError = FormError(fieldName, "ukPremiumsGrantLease.error.amount.twoDecimalPlaces"),
-      defaultFields = ("premiumsGrantLeaseReceived", "false")
+      defaultFields = ("isPremiumsGrantLeaseReceived", "false")
     )
 
     behave like currencyFieldWithRange(
@@ -64,7 +64,7 @@ class UKPremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
       minimum = minimum,
       maximum = maximum,
       expectedError = FormError(fieldName, "ukPremiumsGrantLease.error.outOfRange", Seq(minimum, maximum)),
-      defaultFields = ("premiumsGrantLeaseReceived", "false")
+      defaultFields = ("isPremiumsGrantLeaseReceived", "false")
     )
   }
 }

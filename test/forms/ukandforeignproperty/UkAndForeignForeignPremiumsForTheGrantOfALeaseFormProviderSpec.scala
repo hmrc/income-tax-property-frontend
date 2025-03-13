@@ -28,7 +28,7 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseFormProviderSpec extends Boo
 
   ".ukAndForeignForeignPremiumsGrantLease" - {
 
-    val fieldName = "ukAndForeignForeignPremiumsGrantLease"
+    val fieldName = "isUkAndForeignForeignPremiumsGrantLease"
 
     behave like booleanField(
       form,

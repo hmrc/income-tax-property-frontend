@@ -121,7 +121,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .set(YearLeaseAmountPage(Rentals), 10)
         .success
         .value
-        .set(PremiumsGrantLeasePage(Rentals), PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer)))
+        .set(PremiumsGrantLeasePage(Rentals), PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer)))
         .success
         .value
 
@@ -136,7 +136,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))),
+          form.fill(PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer))),
           taxYear,
           10,
           BigDecimal(100),
@@ -155,7 +155,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         .value
         .set(
           PremiumsGrantLeasePage(RentalsRentARoom),
-          PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))
+          PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer))
         )
         .success
         .value
@@ -172,7 +172,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))),
+          form.fill(PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer))),
           taxYear,
           10,
           BigDecimal(100),
@@ -304,7 +304,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val request =
           FakeRequest(POST, rentalsPremiumsGrantLeaseRoute)
             .withFormUrlEncodedBody(
-              ("premiumsGrantLeaseReceived", "false"),
+              ("isPremiumsGrantLeaseReceived", "false"),
               ("premiumsGrantLeaseAmount", validAnswer.toString())
             )
 
@@ -318,7 +318,7 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
         val request =
           FakeRequest(POST, rentalsRentARoomPremiumsGrantLeaseRoute)
             .withFormUrlEncodedBody(
-              ("premiumsGrantLeaseReceived", "false"),
+              ("isPremiumsGrantLeaseReceived", "false"),
               ("premiumsGrantLeaseAmount", validAnswer.toString())
             )
 

@@ -80,10 +80,10 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("premiumsGrantLeaseReceived"),
+                field = form("isPremiumsGrantLeaseReceived"),
                 legend = LegendViewModel(messages(s"ukPremiumsGrantLease.amount.label")).asPageHeading(LegendSize.Medium),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("premiumsGrantLeaseReceived"),
+                    field = form("isPremiumsGrantLeaseReceived"),
                     conditionalNoHtml = Some(
                         govukInput(InputViewModel(
                             field = form("premiumsGrantLeaseAmount"),

@@ -22,9 +22,9 @@ import play.api.data.FormError
 class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
   val form = new PremiumsGrantLeaseFormProvider()("individual")
 
-  ".premiumsGrantLeaseYesNo" - {
+  ".isPremiumsGrantLeaseReceived" - {
 
-    val fieldName = "premiumsGrantLeaseReceived"
+    val fieldName = "isPremiumsGrantLeaseReceived"
 
     behave like mandatoryField(
       form,
@@ -54,7 +54,7 @@ class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       nonNumericError = FormError(fieldName, "premiumsGrantLease.error.amount.nonNumeric.individual"),
       twoDecimalPlacesError = FormError(fieldName, "premiumsGrantLease.error.amount.twoDecimalPlaces"),
-      defaultFields = ("premiumsGrantLeaseReceived", "false")
+      defaultFields = ("isPremiumsGrantLeaseReceived", "false")
     )
 
     behave like currencyFieldWithRange(
@@ -63,7 +63,7 @@ class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
       minimum = minimum,
       maximum = maximum,
       expectedError = FormError(fieldName, "premiumsGrantLease.error.outOfRange", Seq(minimum, maximum)),
-      defaultFields = ("premiumsGrantLeaseReceived", "false")
+      defaultFields = ("isPremiumsGrantLeaseReceived", "false")
     )
   }
 }

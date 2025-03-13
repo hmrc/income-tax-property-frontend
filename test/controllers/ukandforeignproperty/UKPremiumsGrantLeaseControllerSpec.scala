@@ -96,7 +96,7 @@ class UKPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           .set(UkYearLeaseAmountPage, 10)
           .success
           .value
-          .set(UKPremiumsGrantLeasePage, UKPremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer)))
+          .set(UKPremiumsGrantLeasePage, UKPremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer)))
           .success
           .value
 
@@ -111,7 +111,7 @@ class UKPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(
-            form.fill(UKPremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(validAnswer))),
+            form.fill(UKPremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(validAnswer))),
             taxYear,
             10,
             BigDecimal(100),
@@ -189,7 +189,7 @@ class UKPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           val request =
             FakeRequest(POST, ukPremiumsGrantLeaseRoute)
               .withFormUrlEncodedBody(
-                ("premiumsGrantLeaseReceived", "false"),
+                ("isPremiumsGrantLeaseReceived", "false"),
                 ("premiumsGrantLeaseAmount", validAnswer.toString())
               )
 

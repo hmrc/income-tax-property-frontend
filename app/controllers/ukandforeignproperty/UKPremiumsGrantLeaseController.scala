@@ -93,7 +93,7 @@ class UKPremiumsGrantLeaseController @Inject() (
                                       request.userAnswers.set(
                                         UKPremiumsGrantLeasePage,
                                         UKPremiumsGrantLease(
-                                          value.premiumsGrantLeaseReceived,
+                                          value.isPremiumsGrantLeaseReceived,
                                           Some(
                                             value.premiumsGrantLease.getOrElse(
                                               UKPremiumsGrantLeasePage

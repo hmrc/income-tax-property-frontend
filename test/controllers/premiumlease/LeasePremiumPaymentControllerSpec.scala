@@ -113,7 +113,7 @@ class PremiumForLeaseControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, premiumForLeaseRoute)
-              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
+              .withFormUrlEncodedBody(("isPremiumForLease", "true"))
 
           val result = route(application, request).value
 
@@ -140,7 +140,7 @@ class PremiumForLeaseControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, premiumForLeaseRoute)
-              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
+              .withFormUrlEncodedBody(("isPremiumForLease", "true"))
 
           val result = route(application, request).value
 
@@ -156,9 +156,9 @@ class PremiumForLeaseControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, premiumForLeaseRoute)
-              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", ""))
+              .withFormUrlEncodedBody(("isPremiumForLease", ""))
 
-          val boundForm = form.bind(Map("premiumForLeaseYesOrNo" -> ""))
+          val boundForm = form.bind(Map("isPremiumForLease" -> ""))
 
           val view = application.injector.instanceOf[PremiumForLeaseView]
 
@@ -193,7 +193,7 @@ class PremiumForLeaseControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, premiumForLeaseRoute)
-              .withFormUrlEncodedBody(("premiumForLeaseYesOrNo", "true"))
+              .withFormUrlEncodedBody(("isPremiumForLease", "true"))
 
           val result = route(application, request).value
 
