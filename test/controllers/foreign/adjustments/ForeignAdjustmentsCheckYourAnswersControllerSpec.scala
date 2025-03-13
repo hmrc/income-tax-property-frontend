@@ -111,7 +111,7 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
         .flatMap(
           _.set(
             ForeignUnusedLossesPreviousYearsPage(countryCode),
-            UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = false, unusedLossesPreviousYearsAmount = None)
+            UnusedLossesPreviousYears(isUnusedLossesPreviousYears = false, unusedLossesPreviousYearsAmount = None)
           )
         )
         .toOption

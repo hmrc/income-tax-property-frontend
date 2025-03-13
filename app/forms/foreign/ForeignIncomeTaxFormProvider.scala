@@ -32,10 +32,10 @@ class ForeignIncomeTaxFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[ForeignIncomeTax] =
     Form[ForeignIncomeTax](
       mapping(
-        "foreignIncomeTaxYesNo" -> boolean(s"foreignIncomeTax.error.required.$individualOrAgent"),
+        "isForeignIncomeTax" -> boolean(s"foreignIncomeTax.error.required.$individualOrAgent"),
         "foreignTaxPaidOrDeducted" -> {
           mandatoryIfTrue(
-            "foreignIncomeTaxYesNo",
+            "isForeignIncomeTax",
             currency(
               s"foreignIncomeTax.error.amount.required.$individualOrAgent",
               "foreignIncomeTax.error.amount.nonNumeric",

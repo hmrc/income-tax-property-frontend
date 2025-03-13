@@ -31,7 +31,7 @@
 @layout(pageTitle = title(form, messages(s"foreignIncomeTax.title.$individualOrAgent", country.name))) {
 
     @if(form.errors.nonEmpty) {
-        @govukErrorSummary(ErrorSummaryViewModel(form, Map("foreignIncomeTaxYesNo" -> "foreignIncomeTaxForm")))
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("isForeignIncomeTax" -> "foreignIncomeTaxForm")))
     }
 
     <h1 class="govuk-heading-l">@messages(s"foreignIncomeTax.heading.$individualOrAgent", country.name)</h1>
@@ -47,7 +47,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("foreignIncomeTaxYesNo"),
+                field = form("isForeignIncomeTax"),
                 legend = Legend(),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("foreignIncomeTaxForm"),

@@ -30,26 +30,26 @@ class ForeignUnusedLossesPreviousYearsFormProviderSpec extends BooleanFieldBehav
   val form = new ForeignUnusedLossesPreviousYearsFormProvider()("individual")
 
   ".unusedLossesPreviousYearsAmount" - {
-    "unusedLossesPreviousYearsYesNo" - {
+    "isUnusedLossesPreviousYears" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> "true", "unusedLossesPreviousYearsAmount" -> "4534.65"))
-        boundForm.value.value mustBe UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(4534.65))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> "true", "unusedLossesPreviousYearsAmount" -> "4534.65"))
+        boundForm.value.value mustBe UnusedLossesPreviousYears(isUnusedLossesPreviousYears = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> "true"))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> "true"))
         boundForm.errors must contain(FormError("unusedLossesPreviousYearsAmount", "foreignUnusedLossesPreviousYears.error.required.amount.individual"))
       }
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> "true", "unusedLossesPreviousYearsAmount" -> "non-numeric-value"))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> "true", "unusedLossesPreviousYearsAmount" -> "non-numeric-value"))
         boundForm.errors must contain(FormError("unusedLossesPreviousYearsAmount", "foreignUnusedLossesPreviousYears.error.nonNumeric"))
       }
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> "true", "unusedLossesPreviousYearsAmount" -> "10.232323"))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> "true", "unusedLossesPreviousYearsAmount" -> "10.232323"))
         boundForm.errors must contain(FormError("unusedLossesPreviousYearsAmount", "foreignUnusedLossesPreviousYears.error.twoDecimalPlaces"))
       }
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> "true", "unusedLossesPreviousYearsAmount" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> "true", "unusedLossesPreviousYearsAmount" -> "4533455353453534543534"))
         boundForm.errors must contain(FormError("unusedLossesPreviousYearsAmount", "foreignUnusedLossesPreviousYears.error.outOfRange", ArraySeq(0, 100000000)))
       }
     }

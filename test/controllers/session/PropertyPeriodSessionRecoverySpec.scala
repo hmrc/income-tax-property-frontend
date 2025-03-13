@@ -78,7 +78,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
     "merged uk and foreign fetched data" in {
       val expectedForeignPropertyData = foreignPropertyData.copy(
         foreignPropertyTax = Some(Map("USA" ->
-          ForeignPropertyTax(Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(100))), Some(true))))
+          ForeignPropertyTax(Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(100))), Some(true))))
       )
 
       val expectedUkPropertyData = ukPropertyData.copy(

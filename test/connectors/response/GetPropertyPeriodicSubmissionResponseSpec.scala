@@ -92,7 +92,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           foreignPropertyTax = Some(
             Map(
               "ESP" -> ForeignPropertyTax(
-                Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(456.00)))),
+                Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(456.00)))),
                 Some(false)
               )
             )
@@ -195,7 +195,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 ),
                 propertyIncomeAllowanceClaim = Some(BigDecimal(15.00)),
                 unusedLossesPreviousYears =
-                  Some(UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(45.00)))),
+                  Some(UnusedLossesPreviousYears(isUnusedLossesPreviousYears = true, Some(BigDecimal(45.00)))),
                 whenYouReportedTheLoss = Some(y2018to2019)
               )
             )

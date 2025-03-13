@@ -40,10 +40,10 @@
     <p class="govuk-body">@messages(s"foreignUnusedLossesPreviousYears.p1.${individualOrAgent}")</p>
     @govukRadios(
         radios.RadiosViewModel.yesNoWithConditionalHtml(
-            field = form("unusedLossesPreviousYearsYesNo"),
+            field = form("isUnusedLossesPreviousYears"),
             legend = Legend(),
             items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                field = form("unusedLossesPreviousYearsYesNo"),
+                field = form("isUnusedLossesPreviousYears"),
                 conditionalYesHtml = Some(
                     govukInput(
                         InputViewModel(

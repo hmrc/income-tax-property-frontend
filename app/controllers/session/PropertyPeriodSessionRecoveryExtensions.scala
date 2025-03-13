@@ -288,7 +288,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                   foreignPropertyTax.foreignIncomeTax.fold[Try[UserAnswers]](Success(ua)) { incomeTax =>
                     ua.set(
                       ForeignIncomeTaxPage(countryCode),
-                      ForeignIncomeTax(incomeTax.foreignIncomeTaxYesNo, incomeTax.foreignTaxPaidOrDeducted)
+                      ForeignIncomeTax(incomeTax.isForeignIncomeTax, incomeTax.foreignTaxPaidOrDeducted)
                     )
                   }
                 ua2 <-

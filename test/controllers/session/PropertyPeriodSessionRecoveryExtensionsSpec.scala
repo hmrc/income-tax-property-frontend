@@ -241,7 +241,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "foreignPropertyTax": {
        |      "$countryCode1": {
        |      "foreignIncomeTax": {
-       |        "foreignIncomeTaxYesNo": true,
+       |        "isForeignIncomeTax": true,
        |        "foreignTaxPaidOrDeducted": 590.55
        |      },
        |      "foreignTaxCreditRelief": true
@@ -287,7 +287,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      },
        |      "propertyIncomeAllowanceClaim": 50,
        |      "unusedLossesPreviousYears": {
-       |        "unusedLossesPreviousYearsYesNo": true,
+       |        "isUnusedLossesPreviousYears": true,
        |        "unusedLossesPreviousYearsAmount": 500
        |      },
        |      "whenYouReportedTheLoss": "y2021to2022"
@@ -459,7 +459,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignTaxSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignExpensesSectionCompletePage(countryCode2)).get mustBe false
       updated.get(ForeignIncomeTaxPage(countryCode1)).get mustBe ForeignIncomeTax(
-        foreignIncomeTaxYesNo = true,
+        isForeignIncomeTax = true,
         Some(590.55)
       )
       updated.get(ClaimForeignTaxCreditReliefPage(countryCode1)).get mustBe true
@@ -500,7 +500,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       )
       updated.get(PropertyIncomeAllowanceClaimPage(countryCode1)) mustBe Some(50)
       updated.get(ForeignUnusedLossesPreviousYearsPage(countryCode1)) mustBe Some(
-        UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(500)))
+        UnusedLossesPreviousYears(isUnusedLossesPreviousYears = true, Some(BigDecimal(500)))
       )
       updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(y2021to2022)
       updated.get(ForeignAdjustmentsCompletePage(countryCode1)) mustBe Some(true)

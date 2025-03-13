@@ -29,9 +29,9 @@ class ForeignUnusedLossesPreviousYearsFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[UnusedLossesPreviousYears] = {
     Form[UnusedLossesPreviousYears](
       mapping(
-        "unusedLossesPreviousYearsYesNo" -> boolean(s"foreignUnusedLossesPreviousYears.error.required.${individualOrAgent}"),
+        "isUnusedLossesPreviousYears" -> boolean(s"foreignUnusedLossesPreviousYears.error.required.${individualOrAgent}"),
         "unusedLossesPreviousYearsAmount" -> {
-          mandatoryIfTrue("unusedLossesPreviousYearsYesNo",
+          mandatoryIfTrue("isUnusedLossesPreviousYears",
             currency(
               s"foreignUnusedLossesPreviousYears.error.required.amount.${individualOrAgent}",
               "foreignUnusedLossesPreviousYears.error.twoDecimalPlaces",

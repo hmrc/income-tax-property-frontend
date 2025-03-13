@@ -80,7 +80,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       val userAnswers = UserAnswers("foreign-tax-user-answers")
         .set(
           ForeignIncomeTaxPage(countryCode),
-          ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(foreignTaxPaidOrDeducted))
+          ForeignIncomeTax(isForeignIncomeTax = true, Some(foreignTaxPaidOrDeducted))
         )
         .flatMap(_.set(ClaimForeignTaxCreditReliefPage(countryCode), true))
         .flatMap(_.set(ForeignPropertyTaxSectionAddCountryCode(countryCode),countryCode))
