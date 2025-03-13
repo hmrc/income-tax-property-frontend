@@ -53,10 +53,10 @@ govukDetails: GovukDetails
 
 @govukRadios(
 radios.RadiosViewModel.yesNoWithConditionalHtml(
-field = form("raRCapitalAllowancesForACarYesNo"),
+field = form("isRaRCapitalAllowancesForACar"),
 legend = LegendViewModel(messages(s"raRCapitalAllowancesForACar.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-field = form("raRCapitalAllowancesForACarYesNo"),
+field = form("isRaRCapitalAllowancesForACar"),
 conditionalYesHtml = Some(
 govukInput(InputViewModel(
 field = form("raRCapitalAllowancesForACarAmount"),

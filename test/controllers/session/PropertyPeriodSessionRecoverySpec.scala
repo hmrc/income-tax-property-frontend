@@ -82,7 +82,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
       )
 
       val expectedUkPropertyData = ukPropertyData.copy(
-        capitalAllowancesForACar = Some(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(3)))
+        capitalAllowancesForACar = Some(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(3)))
       )
 
       val expectedForeignFetchedPropertyData = fetchedPropertyData.copy(foreignPropertyData = expectedForeignPropertyData)

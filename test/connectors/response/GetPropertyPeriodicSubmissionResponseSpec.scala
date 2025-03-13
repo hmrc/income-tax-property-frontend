@@ -44,7 +44,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
 
         val ukPropertyData =
           FetchedBackendData(
-            Some(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(3.2))),
+            Some(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(3.2))),
             Some(
               PropertyAbout(
                 TotalIncome.Between,

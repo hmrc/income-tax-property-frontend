@@ -52,10 +52,10 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("capitalAllowancesForACarYesNo"),
+                field = form("isCapitalAllowancesForACar"),
                     legend = LegendViewModel(messages(s"capitalAllowancesForACar.radio.legend.$individualOrAgent")).withSize(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("capitalAllowancesForACarYesNo"),
+                    field = form("isCapitalAllowancesForACar"),
                         conditionalYesHtml = Some(
                             govukInput(InputViewModel(
                                 field = form("capitalAllowancesForACarAmount"),

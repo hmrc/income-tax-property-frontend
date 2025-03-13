@@ -196,7 +196,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        | },
        |  "rentARoomAllowances" : {
        |    "capitalAllowancesForACar" : {
-       |      "capitalAllowancesForACarYesNo" : true,
+       |      "isCapitalAllowancesForACar" : true,
        |      "capitalAllowancesForACarAmount" : 20
        |    },
        |    "annualInvestmentAllowance" : 5,
@@ -432,7 +432,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(10))
 
       updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(
-        capitalAllowancesForACarYesNo = true,
+        isCapitalAllowancesForACar = true,
         Some(20)
       )
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5

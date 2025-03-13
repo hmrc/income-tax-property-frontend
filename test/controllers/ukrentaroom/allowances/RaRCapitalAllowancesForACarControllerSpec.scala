@@ -73,7 +73,7 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
       val userAnswers = UserAnswers(userAnswersId)
         .set(
           RaRCapitalAllowancesForACarPage,
-          CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
+          CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))
         )
         .success
         .value
@@ -89,7 +89,7 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))),
+          form.fill(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))),
           NormalMode,
           taxYear,
           "individual"
@@ -115,7 +115,7 @@ class RaRCapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSug
         val request =
           FakeRequest(POST, RaRcapitalAllowancesForACarRoute)
             .withFormUrlEncodedBody(
-              "raRCapitalAllowancesForACarYesNo"  -> "true",
+              "isRaRCapitalAllowancesForACar"  -> "true",
               "raRCapitalAllowancesForACarAmount" -> "1234"
             )
 
