@@ -23,7 +23,7 @@ final case class Income(
   propertyRentalIncome: BigDecimal,
   premiumForLease: Boolean,
   reversePremiumsReceived: ReversePremiumsReceived,
-  taxDeductedYesNo: Option[DeductingTax],
+  isTaxDeducted: Option[DeductingTax],
   calculatedFigureYourself: Option[CalculatedFigureYourself],
   yearLeaseAmount: Option[BigDecimal],
   premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
@@ -51,7 +51,7 @@ object CalculatedFigureYourself {
   implicit val format: OFormat[CalculatedFigureYourself] = Json.format[CalculatedFigureYourself]
 }
 
-final case class DeductingTax(taxDeductedYesNo: Boolean)
+final case class DeductingTax(isTaxDeducted: Boolean)
 
 object DeductingTax {
   implicit val format: OFormat[DeductingTax] = Json.format[DeductingTax]

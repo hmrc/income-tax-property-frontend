@@ -114,7 +114,7 @@ class DeductingTaxControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, RentalsRoute)
-            .withFormUrlEncodedBody(("taxDeductedYesNo", "false"))
+            .withFormUrlEncodedBody(("isTaxDeducted", "false"))
 
         val result = route(application, request).value
 

@@ -65,7 +65,7 @@
 
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("taxDeductedYesNo"),
+                    field = form("isTaxDeducted"),
                     legend = LegendViewModel(messages(s"deductingTax.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("deductingTax"),
