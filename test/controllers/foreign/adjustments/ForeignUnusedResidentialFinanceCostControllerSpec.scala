@@ -42,7 +42,7 @@ class ForeignUnusedResidentialFinanceCostControllerSpec extends SpecBase with Mo
   val countryCode: String = "USA"
   def onwardRoute: Call = Call("GET", "/foo")
   val validAnswer: ForeignUnusedResidentialFinanceCost =
-    ForeignUnusedResidentialFinanceCost(foreignUnusedResidentialFinanceCostYesNo = true, Some(BigDecimal(0)))
+    ForeignUnusedResidentialFinanceCost(isForeignUnusedResidentialFinanceCost = true, Some(BigDecimal(0)))
   val taxYear = 2024
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
   lazy val foreignUnusedResidentialFinanceCostRoute: String =
@@ -118,7 +118,7 @@ class ForeignUnusedResidentialFinanceCostControllerSpec extends SpecBase with Mo
           val request =
             FakeRequest(POST, foreignUnusedResidentialFinanceCostRoute)
               .withFormUrlEncodedBody(
-                ("foreignUnusedResidentialFinanceCostYesNo", "true"),
+                ("isForeignUnusedResidentialFinanceCost", "true"),
                 ("foreignUnusedResidentialFinanceCostAmount", "123.45")
               )
 
@@ -174,7 +174,7 @@ class ForeignUnusedResidentialFinanceCostControllerSpec extends SpecBase with Mo
           val request =
             FakeRequest(POST, foreignUnusedResidentialFinanceCostRoute)
               .withFormUrlEncodedBody(
-                ("foreignUnusedResidentialFinanceCostYesNo", "true"),
+                ("isForeignUnusedResidentialFinanceCost", "true"),
                 ("foreignUnusedResidentialFinanceCostAmount", "123.45")
               )
 

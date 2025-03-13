@@ -817,7 +817,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedResidentialFinanceCostPage(countryCode),
               ForeignUnusedResidentialFinanceCost(
-                foreignUnusedResidentialFinanceCostYesNo = true,
+                isForeignUnusedResidentialFinanceCost = true,
                 foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
               )
             )
@@ -1442,7 +1442,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedResidentialFinanceCostPage(countryCode),
               ForeignUnusedResidentialFinanceCost(
-                foreignUnusedResidentialFinanceCostYesNo = true,
+                isForeignUnusedResidentialFinanceCost = true,
                 foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
               )
             )

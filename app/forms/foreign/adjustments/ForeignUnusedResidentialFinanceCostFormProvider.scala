@@ -32,10 +32,10 @@ class ForeignUnusedResidentialFinanceCostFormProvider @Inject() extends Mappings
   def apply(individualOrAgent: String): Form[ForeignUnusedResidentialFinanceCost] =
     Form[ForeignUnusedResidentialFinanceCost](
   mapping(
-    "foreignUnusedResidentialFinanceCostYesNo" -> boolean(s"foreignUnusedResidentialFinanceCost.error.required.$individualOrAgent"),
+    "isForeignUnusedResidentialFinanceCost" -> boolean(s"foreignUnusedResidentialFinanceCost.error.required.$individualOrAgent"),
     "foreignUnusedResidentialFinanceCostAmount" -> {
       mandatoryIfTrue(
-        "foreignUnusedResidentialFinanceCostYesNo",
+        "isForeignUnusedResidentialFinanceCost",
         currency(
           s"foreignUnusedResidentialFinanceCost.error.amount.required.$individualOrAgent",
           "foreignUnusedResidentialFinanceCost.error.amount.nonNumeric",

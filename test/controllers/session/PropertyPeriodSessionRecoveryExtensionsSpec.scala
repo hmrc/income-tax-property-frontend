@@ -282,7 +282,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      },
        |      "residentialFinanceCost": 67.90,
        |      "unusedResidentialFinanceCost": {
-       |        "foreignUnusedResidentialFinanceCostYesNo": true,
+       |        "isForeignUnusedResidentialFinanceCost": true,
        |        "foreignUnusedResidentialFinanceCostAmount": 50
        |      },
        |      "propertyIncomeAllowanceClaim": 50,
@@ -496,7 +496,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       )
       updated.get(ForeignResidentialFinanceCostsPage(countryCode1)) mustBe Some(67.90)
       updated.get(ForeignUnusedResidentialFinanceCostPage(countryCode1)) mustBe Some(
-        ForeignUnusedResidentialFinanceCost(foreignUnusedResidentialFinanceCostYesNo = true, Some(BigDecimal(50)))
+        ForeignUnusedResidentialFinanceCost(isForeignUnusedResidentialFinanceCost = true, Some(BigDecimal(50)))
       )
       updated.get(PropertyIncomeAllowanceClaimPage(countryCode1)) mustBe Some(50)
       updated.get(ForeignUnusedLossesPreviousYearsPage(countryCode1)) mustBe Some(

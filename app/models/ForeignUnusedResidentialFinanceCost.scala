@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 case class ForeignUnusedResidentialFinanceCost (
-  foreignUnusedResidentialFinanceCostYesNo: Boolean,
+  isForeignUnusedResidentialFinanceCost: Boolean,
   foreignUnusedResidentialFinanceCostAmount: Option[BigDecimal]
 )
 

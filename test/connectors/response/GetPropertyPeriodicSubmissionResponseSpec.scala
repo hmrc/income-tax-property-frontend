@@ -189,7 +189,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 residentialFinanceCost = Some(BigDecimal(99.00)),
                 unusedResidentialFinanceCost = Some(
                   ForeignUnusedResidentialFinanceCost(
-                    foreignUnusedResidentialFinanceCostYesNo = true,
+                    isForeignUnusedResidentialFinanceCost = true,
                     Some(BigDecimal(56.77))
                   )
                 ),
