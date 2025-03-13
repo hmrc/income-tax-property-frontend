@@ -51,7 +51,7 @@ case class ForeignPropertyRentalIncomePage(countryCode:String) extends QuestionP
     if (isTotalIncomeUnder85K(userAnswers, countryCode)) {
       super.cleanup(value, userAnswers)
     } else if (
-      userAnswers.get(ConsolidatedOrIndividualExpensesPage(countryCode)).fold(false)(data => data.consolidatedOrIndividualExpensesYesNo)
+      userAnswers.get(ConsolidatedOrIndividualExpensesPage(countryCode)).fold(false)(data => data.isConsolidatedOrIndividualExpenses)
     ) {
       userAnswers.remove(ConsolidatedOrIndividualExpensesPage(countryCode))
     } else {

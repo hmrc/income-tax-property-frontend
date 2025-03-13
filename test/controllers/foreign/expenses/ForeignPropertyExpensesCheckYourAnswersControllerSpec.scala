@@ -97,7 +97,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
     "must return OK and the POST for onSubmit() should redirect to the correct URL" in {
       val userAnswers = UserAnswers("foreign-property-expenses-user-answers")
-        .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(BigDecimal(66))))
+        .set(ConsolidatedOrIndividualExpensesPage(countryCode), ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = true, Some(BigDecimal(66))))
         .flatMap(_.set(ForeignRentsRatesAndInsurancePage(countryCode), BigDecimal(67)))
         .flatMap(_.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
         .flatMap(_.set(ForeignPropertyRepairsAndMaintenancePage(countryCode), BigDecimal(68)))

@@ -113,7 +113,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           foreignPropertyExpenses = Some(
             Map(
               "ESP" -> ForeignExpensesAnswers(
-                Some(ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(456))),
+                Some(ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = true, Some(456))),
                 premisesRunningCosts = Some(11),
                 repairsAndMaintenance = Some(22.30),
                 financialCosts = Some(44),

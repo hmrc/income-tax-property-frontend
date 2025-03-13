@@ -55,10 +55,10 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
-                field  = form("consolidatedOrIndividualExpenses"),
+                field  = form("isConsolidatedOrIndividualExpenses"),
                 legend = LegendViewModel(messages(s"consolidatedOrIndividualExpenses.radio.legend.${individualOrAgent}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
-                  field = form("consolidatedOrIndividualExpenses"),
+                  field = form("isConsolidatedOrIndividualExpenses"),
                   conditionalYesHtml = Some (
                     govukInput(
                       InputViewModel(

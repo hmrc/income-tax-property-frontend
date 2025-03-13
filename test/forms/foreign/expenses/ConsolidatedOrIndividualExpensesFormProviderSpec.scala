@@ -32,30 +32,30 @@ class ConsolidatedOrIndividualExpensesFormProviderSpec extends OptionFieldBehavi
   ".consolidatedExpensesAmount" - {
     "consolidatedOrIndividualExpenses" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4534.65"))
-        boundForm.value.value mustBe ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(4534.65))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4534.65"))
+        boundForm.value.value mustBe ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true"))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "true"))
         boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedOrIndividualExpenses.amount.error.required.agent"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "non-numeric-value"))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "non-numeric-value"))
         boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedOrIndividualExpenses.amount.error.nonNumerical.agent"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4534.6545"))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4534.6545"))
         boundForm.errors must contain(FormError("consolidatedExpensesAmount", "consolidatedOrIndividualExpenses.amount.error.twoDecimalPlaces.agent"))
       }
 
 
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
             "consolidatedExpensesAmount",
