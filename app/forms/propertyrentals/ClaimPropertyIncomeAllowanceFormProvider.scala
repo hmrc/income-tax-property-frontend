@@ -25,7 +25,7 @@ class ClaimPropertyIncomeAllowanceFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "claimPropertyIncomeAllowanceYesOrNo" -> boolean(
+      "isClaimPropertyIncomeAllowance" -> boolean(
         s"claimPropertyIncomeAllowance.error.required.$individualOrAgent"
       )
     )

@@ -140,7 +140,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val rentalsRequest =
           FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", "true"))
 
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -149,7 +149,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
         val rentalsAndRentARoomRequest =
           FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", "true"))
 
         val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
@@ -165,9 +165,9 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val rentalsRequest =
           FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", ""))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", ""))
 
-        val boundForm = form.bind(Map("claimPropertyIncomeAllowanceYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isClaimPropertyIncomeAllowance" -> ""))
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceView]
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -179,7 +179,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
         val rentalsAndRentARoomRequest =
           FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", ""))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", ""))
 
         val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
@@ -222,7 +222,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val rentalsRequest =
           FakeRequest(POST, rentalsClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", "true"))
 
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -231,7 +231,7 @@ class ClaimPropertyIncomeAllowanceControllerSpec extends SpecBase with MockitoSu
 
         val rentalsAndRentARoomRequest =
           FakeRequest(POST, rentalsAndRentARoomClaimPropertyIncomeAllowanceRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowance", "true"))
 
         val rentalsAndRentARoomResult = route(application, rentalsAndRentARoomRequest).value
 
