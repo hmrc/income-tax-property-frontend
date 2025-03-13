@@ -80,10 +80,10 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             foreignPropertySelectCountry = Some(
               ForeignPropertySelectCountry(
                 totalIncome = Under,
-                reportPropertyIncome = Some(false),
+                isReportPropertyIncome = Some(false),
                 incomeCountries = None,
-                addAnotherCountry = None,
-                claimPropertyIncomeAllowance = None
+                isAddAnotherCountry = None,
+                isClaimPropertyIncomeAllowance = None
               )
             )
           )

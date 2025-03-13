@@ -209,7 +209,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "journeyStatuses": [],
        |  "foreignPropertySelectCountry" : {
        |    "totalIncome": "under",
-       |    "reportPropertyIncome": false}
+       |    "isReportPropertyIncome": false}
        |  },
        |  "foreignPropertyData": {
        |    "foreignPropertyIncome": {

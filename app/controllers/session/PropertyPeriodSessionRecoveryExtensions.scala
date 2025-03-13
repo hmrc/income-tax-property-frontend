@@ -203,7 +203,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             totalIncomeAnswers <-
               userAnswers.set(pages.foreign.TotalIncomePage, foreignPropertySelectCountry.totalIncome)
             reportIncomeUserAnswers <-
-              foreignPropertySelectCountry.reportPropertyIncome.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isReportPropertyIncome.fold[Try[UserAnswers]](
                 Success(totalIncomeAnswers)
               )(reportIncome => totalIncomeAnswers.set(pages.foreign.PropertyIncomeReportPage, reportIncome))
             incomeCountriesUserAnswers <-
@@ -211,11 +211,11 @@ object PropertyPeriodSessionRecoveryExtensions {
                 incomeCountries => reportIncomeUserAnswers.set(pages.foreign.IncomeSourceCountries, incomeCountries)
               )
             addCountriesUserAnswers <-
-              foreignPropertySelectCountry.addAnotherCountry.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isAddAnotherCountry.fold[Try[UserAnswers]](
                 Success(incomeCountriesUserAnswers)
               )(addCountries => incomeCountriesUserAnswers.set(pages.foreign.AddCountriesRentedPage, addCountries))
             claimPIAUserAnswers <-
-              foreignPropertySelectCountry.claimPropertyIncomeAllowance.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isClaimPropertyIncomeAllowance.fold[Try[UserAnswers]](
                 Success(addCountriesUserAnswers)
               )(claimAllowances =>
                 addCountriesUserAnswers.set(pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage, claimAllowances)

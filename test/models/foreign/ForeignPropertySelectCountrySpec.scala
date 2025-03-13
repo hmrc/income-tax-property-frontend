@@ -33,10 +33,10 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
       "must return a human-readable string" in {
         val instance = ForeignPropertySelectCountry(
           totalIncome = TotalIncome.Over,
-          reportPropertyIncome = Some(true),
+          isReportPropertyIncome = Some(true),
           incomeCountries = Some(Array(Country("France", "FRA"), Country("Brazil", "BRA"))),
-          addAnotherCountry = Some(false),
-          claimPropertyIncomeAllowance = Some(true)
+          isAddAnotherCountry = Some(false),
+          isClaimPropertyIncomeAllowance = Some(true)
         )
 
         instance.toString must include("ForeignPropertySelectCountry")
@@ -48,10 +48,10 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
       "must serialize and deserialize correctly" in {
         val instance = ForeignPropertySelectCountry(
           totalIncome = TotalIncome.Over,
-          reportPropertyIncome = Some(false),
+          isReportPropertyIncome = Some(false),
           incomeCountries = None,
-          addAnotherCountry = None,
-          claimPropertyIncomeAllowance = None
+          isAddAnotherCountry = None,
+          isClaimPropertyIncomeAllowance = None
         )
 
         val json = Json.toJson(instance)
@@ -63,10 +63,10 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
       "must handle optional fields correctly" in {
         val instance = ForeignPropertySelectCountry(
           totalIncome = TotalIncome.Under,
-          reportPropertyIncome = None,
+          isReportPropertyIncome = None,
           incomeCountries = None,
-          addAnotherCountry = None,
-          claimPropertyIncomeAllowance = Some(false)
+          isAddAnotherCountry = None,
+          isClaimPropertyIncomeAllowance = Some(false)
         )
 
         val json = Json.toJson(instance)
