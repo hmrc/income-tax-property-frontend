@@ -42,12 +42,12 @@
 
             @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("premiumGrantLeaseYesNo"),
+                    field = form("isPremiumGrantLease"),
                     legend = LegendViewModel(
                         messages(s"ukAndForeignPropertyRentalTypeUk.premiumGrantLease.legend.$individualOrAgent")
                     ).asPageHeading(viewmodels.LegendSize.Large),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                        field = form("premiumGrantLeaseYesNo"),
+                        field = form("isPremiumGrantLease"),
                         conditionalYesHtml = Some(
                             govukInput(
                                 InputViewModel(

@@ -867,7 +867,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
-                    premiumGrantLeaseYesNo = false,
+                    isPremiumGrantLease = false,
                     premiumGrantLeaseAmount = None
                   )
                 )
@@ -889,7 +889,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
-                    premiumGrantLeaseYesNo = true,
+                    isPremiumGrantLease = true,
                     premiumGrantLeaseAmount = Some(BigDecimal(123.45))
                   )
                 )
@@ -913,7 +913,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
-                    premiumGrantLeaseYesNo = false,
+                    isPremiumGrantLease = false,
                     premiumGrantLeaseAmount = None
                   )
                 )
@@ -935,7 +935,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkPremiumGrantLeaseTaxPage,
                   UkAndForeignPropertyPremiumGrantLeaseTax(
-                    premiumGrantLeaseYesNo = true,
+                    isPremiumGrantLease = true,
                     premiumGrantLeaseAmount = Some(BigDecimal(123.45))
                   )
                 )

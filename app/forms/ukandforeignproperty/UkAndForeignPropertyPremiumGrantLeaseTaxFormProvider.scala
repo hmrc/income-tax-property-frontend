@@ -29,9 +29,9 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxFormProvider @Inject() extends Map
   def apply(individualOrAgent: String): Form[UkAndForeignPropertyPremiumGrantLeaseTax] =
     Form[UkAndForeignPropertyPremiumGrantLeaseTax](
       mapping(
-        "premiumGrantLeaseYesNo" -> boolean(s"ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.$individualOrAgent"),
+        "isPremiumGrantLease" -> boolean(s"ukAndForeignPropertyRentalTypeUk.premiumGrantLease.error.required.$individualOrAgent"),
         "premiumGrantLeaseAmount" -> {
-          mandatoryIfTrue("premiumGrantLeaseYesNo",
+          mandatoryIfTrue("isPremiumGrantLease",
             currency(
               s"ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.required.$individualOrAgent",
               s"ukAndForeignPropertyRentalTypeUk.premiumGrantLease.amount.error.twoDecimalPlaces.$individualOrAgent",
