@@ -29,9 +29,9 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider @Inj
   def apply(individualOrAgent: String): Form[DeductingTaxFromNonUkResidentLandlord] = {
     Form[DeductingTaxFromNonUkResidentLandlord](
       mapping(
-      "deductingTaxFromNonUkResidentLandlordYesNo" -> boolean(s"ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.${individualOrAgent}"),
+      "isDeductingTaxFromNonUkResidentLandlord" -> boolean(s"ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.${individualOrAgent}"),
       "deductingTaxFromNonUkResidentLandlordAmount" -> {
-        mandatoryIfTrue("deductingTaxFromNonUkResidentLandlordYesNo",
+        mandatoryIfTrue("isDeductingTaxFromNonUkResidentLandlord",
           currency(
             s"ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.${individualOrAgent}",
             "ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces",
