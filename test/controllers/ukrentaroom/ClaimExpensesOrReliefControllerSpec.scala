@@ -87,7 +87,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
         withClaimExpenses <-
           withTotalIncome.set(
             ClaimExpensesOrReliefPage(RentARoom),
-            ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))
+            ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(100.65))
           )
       } yield withClaimExpenses
 
@@ -102,7 +102,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))),
+          form.fill(ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(100.65))),
           taxYear,
           NormalMode,
           "individual",
@@ -134,7 +134,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimExpensesOrReliefRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRelief", "false"))
+            .withFormUrlEncodedBody(("isClaimExpensesOrRelief", "false"))
 
         val result = route(application, request).value
 
@@ -155,9 +155,9 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimExpensesOrReliefRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRelief", ""))
+            .withFormUrlEncodedBody(("isClaimExpensesOrRelief", ""))
 
-        val boundForm = form.bind(Map("claimExpensesOrRelief" -> ""))
+        val boundForm = form.bind(Map("isClaimExpensesOrRelief" -> ""))
 
         val view = application.injector.instanceOf[ClaimExpensesOrReliefView]
 
@@ -199,7 +199,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimExpensesOrReliefRoute)
-            .withFormUrlEncodedBody(("claimExpensesOrRelief", "true"))
+            .withFormUrlEncodedBody(("isClaimExpensesOrRelief", "true"))
 
         val result = route(application, request).value
 

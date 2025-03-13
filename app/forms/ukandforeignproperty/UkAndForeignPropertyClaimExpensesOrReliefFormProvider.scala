@@ -28,7 +28,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefFormProvider @Inject() extends Ma
   def apply(individualOrAgent: String): Form[UkAndForeignPropertyClaimExpensesOrRelief] =
     Form[UkAndForeignPropertyClaimExpensesOrRelief](
       mapping(
-        "ukAndForeignPropertyClaimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent")
+        "isUkAndForeignPropertyClaimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent")
       )(UkAndForeignPropertyClaimExpensesOrRelief.apply)(UkAndForeignPropertyClaimExpensesOrRelief.unapply)
     )
 }

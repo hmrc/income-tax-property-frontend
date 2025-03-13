@@ -80,7 +80,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefControllerSpec extends SpecBase w
             val controller = application.injector.instanceOf[UkAndForeignPropertyClaimExpensesOrReliefController]
             val result     = controller.onSubmit(testTaxYear, NormalMode)(
               FakeRequest().withFormUrlEncodedBody(
-                ("ukAndForeignPropertyClaimExpensesOrRelief", isRelief)
+                ("isUkAndForeignPropertyClaimExpensesOrRelief", isRelief)
               )
             )
             status(result) mustBe expectedStatus

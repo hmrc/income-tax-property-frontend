@@ -28,7 +28,7 @@ class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChec
                                |    "jointlyLetYesOrNo" : true,
                                |    "totalIncomeAmount" : 34,
                                |    "claimExpensesOrRelief" : {
-                               |        "claimExpensesOrReliefYesNo" : true,
+                               |        "isClaimExpensesOrRelief" : true,
                                |        "rentARoomAmount" : 23
                                |    }
                                |}""".stripMargin
@@ -41,7 +41,7 @@ class RaRAboutSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChec
           jointlyLetYesOrNo = true,
           34,
           ClaimExpensesOrRelief(
-            claimExpensesOrReliefYesNo = true,
+            isClaimExpensesOrRelief = true,
             Some(23)
           )
         )

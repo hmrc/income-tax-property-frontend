@@ -172,7 +172,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "jointlyLetYesOrNo" : false,
        |    "totalIncomeAmount" : 30,
        |    "claimExpensesOrRelief" : {
-       |      "claimExpensesOrReliefYesNo" : false,
+       |      "isClaimExpensesOrRelief" : false,
        |      "rentARoomAmount" : 50
        |    }
        |  },
@@ -362,7 +362,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
       updated.get(ClaimExpensesOrReliefPage(RentARoom)).get mustBe ClaimExpensesOrRelief(
-        claimExpensesOrReliefYesNo = false,
+        isClaimExpensesOrRelief = false,
         Some(50)
       )
       updated.get(RentsRatesAndInsuranceRRPage).get mustBe 5

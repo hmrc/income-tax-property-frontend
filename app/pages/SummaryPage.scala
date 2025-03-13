@@ -102,7 +102,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     val claimRentARoomRelief =
-      userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.claimExpensesOrReliefYesNo)
+      userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.isClaimExpensesOrRelief)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {
@@ -160,7 +160,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     relief: ClaimExpensesOrRelief,
     pia: Boolean
   ) =
-    (relief.claimExpensesOrReliefYesNo, pia) match {
+    (relief.isClaimExpensesOrRelief, pia) match {
       // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
       case (true, true) =>
         Seq(
@@ -195,7 +195,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     relief: ClaimExpensesOrRelief,
     pia: Boolean
   ) =
-    (relief.claimExpensesOrReliefYesNo, pia) match {
+    (relief.isClaimExpensesOrRelief, pia) match {
       // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
       case (true, true) =>
         Seq(

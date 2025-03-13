@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class UkAndForeignPropertyClaimExpensesOrRelief(claimExpensesOrReliefYesNo: Boolean)
+final case class UkAndForeignPropertyClaimExpensesOrRelief(isClaimExpensesOrRelief: Boolean)
 
 object UkAndForeignPropertyClaimExpensesOrRelief {
   implicit val format: Format[UkAndForeignPropertyClaimExpensesOrRelief] = Json.format
