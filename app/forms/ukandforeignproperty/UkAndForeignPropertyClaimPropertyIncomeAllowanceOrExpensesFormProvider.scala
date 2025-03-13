@@ -27,7 +27,7 @@ class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider @In
   def apply(): Form[UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses] =
     Form[UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses](
       mapping(
-        "ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
+        "isClaimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
       )(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.apply)(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.unapply)
     )
 }
