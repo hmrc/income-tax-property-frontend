@@ -105,7 +105,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "propertyRentalsExpenses" : {
        |    "consolidatedExpenses" : {
-       |      "consolidatedExpensesYesOrNo" : false
+       |      "isConsolidatedExpenses" : false
        |    },
        |    "rentsRatesAndInsurance" : 55,
        |    "repairsAndMaintenanceCosts" : 7,

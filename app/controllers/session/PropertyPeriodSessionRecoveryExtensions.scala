@@ -801,7 +801,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- rarExpenses.consolidatedExpenses.fold[Try[UserAnswers]](Success(userAnswers))(consolidatedExpenses =>
               userAnswers.set(ConsolidatedExpensesRRPage, ConsolidatedRRExpenses(
-                consolidatedExpensesYesOrNo = consolidatedExpenses.consolidatedExpensesYesOrNo,
+                isConsolidatedExpenses = consolidatedExpenses.isConsolidatedExpenses,
                 consolidatedExpensesAmount = consolidatedExpenses.consolidatedExpensesAmount
               )))
             ua2 <- rarExpenses.rentsRatesAndInsurance.fold[Try[UserAnswers]](Success(ua1))(rentsRatesAndInsurance =>

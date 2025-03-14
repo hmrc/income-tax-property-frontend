@@ -81,7 +81,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
     "must return OK and the correct view for a POST (onSubmit)" in {
 
-      val consolidatedExpenses = ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(12))
+      val consolidatedExpenses = ConsolidatedExpenses(isConsolidatedExpenses = true, Some(12))
       val userAnswers = UserAnswers("test").set(ConsolidatedExpensesPage(Rentals), consolidatedExpenses).toOption
 
       val context =

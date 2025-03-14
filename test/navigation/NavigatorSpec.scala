@@ -433,7 +433,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 ConsolidatedExpensesPage(propertyType),
-                ConsolidatedExpenses(consolidatedExpensesYesOrNo = false, None)
+                ConsolidatedExpenses(isConsolidatedExpenses = false, None)
               )
               .get
 
@@ -452,7 +452,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 ConsolidatedExpensesPage(propertyType),
-                ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(100))
+                ConsolidatedExpenses(isConsolidatedExpenses = true, Some(100))
               )
               .get
 

@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 final case class ConsolidatedRRExpenses(
-  consolidatedExpensesYesOrNo: Boolean,
+  isConsolidatedExpenses: Boolean,
   consolidatedExpensesAmount: Option[BigDecimal]
 )
 

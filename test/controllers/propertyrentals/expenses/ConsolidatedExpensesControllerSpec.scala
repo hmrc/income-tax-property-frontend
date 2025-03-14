@@ -118,7 +118,7 @@ class ConsolidatedExpensesControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, consolidatedExpensesRoute)
-              .withFormUrlEncodedBody("consolidatedExpensesYesOrNo" -> "true", "consolidatedExpensesAmount" -> "1234")
+              .withFormUrlEncodedBody("isConsolidatedExpenses" -> "true", "consolidatedExpensesAmount" -> "1234")
 
           val result = route(application, request).value
 

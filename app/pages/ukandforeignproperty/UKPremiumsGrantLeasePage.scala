@@ -43,7 +43,7 @@ object UKPremiumsGrantLeasePage extends QuestionPage[UKPremiumsGrantLease] {
     } else if (
       userAnswers
         .get(ConsolidatedExpensesPage(UKAndForeignProperty))
-        .fold(false)(data => data.consolidatedExpensesYesOrNo)
+        .fold(false)(data => data.isConsolidatedExpenses)
     ) {
       userAnswers.remove(ConsolidatedExpensesPage(UKAndForeignProperty))
     } else {
