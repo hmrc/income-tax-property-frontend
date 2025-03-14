@@ -87,7 +87,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
         )
     }
   private def handleValidForm(
-    addAnotherClaim: Boolean,
+    isAddAnotherClaim: Boolean,
     taxYear: Int,
     request: DataRequest[AnyContent],
     countryCode: String
@@ -95,10 +95,10 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     for {
       updatedAnswers <-
         Future.fromTry(
-          request.userAnswers.set(ForeignStructureBuildingAllowanceClaimsPage(countryCode), addAnotherClaim)
+          request.userAnswers.set(ForeignStructureBuildingAllowanceClaimsPage(countryCode), isAddAnotherClaim)
         )
       _ <- sessionRepository.set(updatedAnswers)
-      result <- if (addAnotherClaim) {
+      result <- if (isAddAnotherClaim) {
                   val nextIndex = request.userAnswers
                     .get(ForeignStructureBuildingAllowanceGroup(countryCode))
                     .map(_.length)

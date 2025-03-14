@@ -147,12 +147,12 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       userAnswersDefinition: String,
       propertyType: PropertyType,
       propertyTypeDefinition: String,
-      addNewClaim: Boolean,
+      isAddNewClaim: Boolean,
       redirectionUrl: Option[String]
     ) =>
       lazy val esbaClaimsRoute: String = routes.EsbaClaimsController.onPageLoad(taxYear, propertyType).url
 
-      s"EsbaClaims Controller with $userAnswersDefinition for $propertyTypeDefinition if add new claim is selected as $addNewClaim" - {
+      s"EsbaClaims Controller with $userAnswersDefinition for $propertyTypeDefinition if add new claim is selected as $isAddNewClaim" - {
 
         "must return OK and the correct view for a GET" in {
 
@@ -208,7 +208,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           running(application) {
             val request =
               FakeRequest(POST, esbaClaimsRoute)
-                .withFormUrlEncodedBody(("anotherClaim", addNewClaim.toString))
+                .withFormUrlEncodedBody(("anotherClaim", isAddNewClaim.toString))
 
             val result = route(application, request).value
             redirectionUrl match {
@@ -216,7 +216,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
                 redirectLocation(result).value mustEqual url
 
                 whenReady(result) { _ =>
-                  val timesForSubmission = if (addNewClaim) 0 else 1
+                  val timesForSubmission = if (isAddNewClaim) 0 else 1
                   verify(mockPropertySubmissionService, times(timesForSubmission))
                     .saveJourneyAnswers(any(), any(), any())(any(), any())
                   verify(mockBusinessService, times(timesForSubmission)).getUkPropertyDetails(any(), any())(any())

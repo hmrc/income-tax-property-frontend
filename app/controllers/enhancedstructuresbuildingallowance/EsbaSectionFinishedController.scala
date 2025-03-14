@@ -85,7 +85,7 @@ class EsbaSectionFinishedController @Inject() (
         )
     }
 
-  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], value: Boolean, propertyType: PropertyType)(
+  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], isValue: Boolean, propertyType: PropertyType)(
     implicit hc: HeaderCarrier
   ): Future[Result] = {
     val sectionPath = if (propertyType == Rentals) RentalESBA else PropertyRentalsAndRentARoomESBA
@@ -94,7 +94,7 @@ class EsbaSectionFinishedController @Inject() (
     journeyAnswersService
       .setStatus(
         context,
-        statusForPage(value),
+        statusForPage(isValue),
         request.user
       )
       .flatMap {

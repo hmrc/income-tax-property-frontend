@@ -91,7 +91,7 @@ class SbaClaimsController @Inject() (
   }
 
   private def handleValidForm(
-    addAnotherClaim: Boolean,
+    isAddAnotherClaim: Boolean,
     taxYear: Int,
     request: DataRequest[AnyContent],
     propertyType: PropertyType
@@ -99,9 +99,9 @@ class SbaClaimsController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] =
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), addAnotherClaim))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), isAddAnotherClaim))
       _              <- sessionRepository.set(updatedAnswers)
-      result <- if (addAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
+      result <- if (isAddAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
                 else { saveJourneyAnswers(taxYear, request, propertyType) }
     } yield result
 
