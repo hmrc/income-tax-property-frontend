@@ -26,7 +26,7 @@ final case class Income(
   isTaxDeducted: Option[DeductingTax],
   calculatedFigureYourself: Option[CalculatedFigureYourself],
   yearLeaseAmount: Option[BigDecimal],
-  premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
+  premiumsGrantLease: Option[PremiumsGrantLease],
   receivedGrantLeaseAmount: Option[BigDecimal]
 )
 
