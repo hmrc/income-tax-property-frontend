@@ -17,6 +17,7 @@
 package models
 
 import audit.RentalsAdjustment
+import models.WhenYouReportedTheLoss.y2021to2022
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -37,13 +38,18 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
                           |                "renovationAllowanceBalancingChargeAmount" : 2
                           |            },
                           |            "residentialFinanceCost" : 2,
-                          |            "unusedResidentialFinanceCost" : 2
+                          |            "unusedResidentialFinanceCost" : 2,
+                          |            "unusedLossesBroughtForward" : {
+                          |               "unusedLossesBroughtForwardYesOrNo" : true,
+                          |               "unusedLossesBroughtForwardAmount" : 24
+                          |            },
+                          |            "whenYouReportedTheLoss" : "y2021to2022"
                           |        }""".stripMargin
 
   "Adjustments" - {
     "must deserialise from json" in {
       import audit.RentalsAdjustment._
-      Json.parse(adjustmentsJson).validate[RentalsAdjustment] mustBe JsSuccess(RentalsAdjustment(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), Some(2), RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2))
+      Json.parse(adjustmentsJson).validate[RentalsAdjustment] mustBe JsSuccess(RentalsAdjustment(PrivateUseAdjustment(2), BalancingCharge(true, Some(2)), Some(2), RenovationAllowanceBalancingCharge(true, Some(2)), 2, 2, Some(UnusedLossesBroughtForward(true, Some(24))), Some(y2021to2022)))
     }
   }
 }

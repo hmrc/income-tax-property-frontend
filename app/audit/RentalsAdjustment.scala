@@ -16,9 +16,9 @@
 
 package audit
 
-import models.{BalancingCharge, PrivateUseAdjustment, RenovationAllowanceBalancingCharge, Rentals}
+import models.{BalancingCharge, PrivateUseAdjustment, WhenYouReportedTheLoss, RenovationAllowanceBalancingCharge, UnusedLossesBroughtForward, Rentals}
 import pages.PageConstants.adjustmentsPath
-import play.api.libs.json.{Format, JsPath, Json}
+import play.api.libs.json.{Format, Json, JsPath}
 import queries.{Gettable, Settable}
 
 final case class RentalsAdjustment(
@@ -27,7 +27,9 @@ final case class RentalsAdjustment(
   propertyIncomeAllowance: Option[BigDecimal],
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
   residentialFinanceCost: BigDecimal,
-  unusedResidentialFinanceCost: BigDecimal
+  unusedResidentialFinanceCost: BigDecimal,
+  unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
+  whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
 
 object RentalsAdjustment extends Gettable[RentalsAdjustment] with Settable[RentalsAdjustment]{
