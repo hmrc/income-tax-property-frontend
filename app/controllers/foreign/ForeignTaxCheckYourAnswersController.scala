@@ -114,7 +114,7 @@ class ForeignTaxCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyTax: ForeignPropertyTax,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -127,7 +127,7 @@ class ForeignTaxCheckYourAnswersController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyTax,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,
