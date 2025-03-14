@@ -18,9 +18,7 @@ package controllers.session
 
 import base.SpecBase
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
-import models.ForeignWhenYouReportedTheLoss.y2021to2022
 import models._
-import models.ukAndForeign.UkAndForeignAbout
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
@@ -38,7 +36,7 @@ import pages.structurebuildingallowance._
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
 import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedLossesBroughtForwardPage, RaRUnusedResidentialCostsPage, RarWhenYouReportedTheLossPage}
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
+import pages.ukrentaroom.expenses.{CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
 import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
@@ -164,7 +162,12 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "renovationAllowanceBalancingChargeAmount" : 23
        |    },
        |    "residentialFinanceCost" : 2,
-       |    "unusedResidentialFinanceCost" : 3
+       |    "unusedResidentialFinanceCost" : 3,
+       |    "unusedLossesBroughtForward" : {
+       |      "unusedLossesBroughtForwardYesOrNo" : true,
+       |      "unusedLossesBroughtForwardAmount" : 24
+       |    },
+       |    "whenYouReportedTheLoss": "y2021to2022"
        |
        |  },
        |  "raRAbout" : {
@@ -184,6 +187,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |         "unusedLossesBroughtForwardAmount": 5,
        |         "unusedLossesBroughtForwardYesOrNo": true
        |     },
+       |     "whenYouReportedTheLoss": "y2021to2022",
        |     "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
        | },
        | "rarExpenses": {
@@ -373,6 +377,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))
       updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
       updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(5)))
+      updated.get(RarWhenYouReportedTheLossPage) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
 
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56
@@ -393,6 +398,11 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       )
       updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage(Rentals)).get mustBe 3
+      updated.get(UnusedLossesBroughtForwardPage(Rentals)).get mustBe UnusedLossesBroughtForward(
+        unusedLossesBroughtForwardYesOrNo = true,
+        Some(24)
+      )
+      updated.get(WhenYouReportedTheLossPage(Rentals)) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
       updated.get(ClaimEsbaPage(Rentals)).get mustBe true
       updated.get(EsbaAddressPage(0, Rentals)).get mustBe EsbaAddress(
         "12",
@@ -501,7 +511,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignUnusedLossesPreviousYearsPage(countryCode1)) mustBe Some(
         UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(500)))
       )
-      updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(y2021to2022)
+      updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(ForeignWhenYouReportedTheLoss.y2021to2022)
       updated.get(ForeignAdjustmentsCompletePage(countryCode1)) mustBe Some(true)
     }
   }

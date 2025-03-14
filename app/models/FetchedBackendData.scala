@@ -30,7 +30,9 @@ final case class Adjustments(
   propertyIncomeAllowance: BigDecimal,
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
   residentialFinanceCost: BigDecimal,
-  unusedResidentialFinanceCost: BigDecimal
+  unusedResidentialFinanceCost: BigDecimal,
+  unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
+  whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
 
 object Adjustments {
