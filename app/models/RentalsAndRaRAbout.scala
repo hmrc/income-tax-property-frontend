@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 final case class RentalsAndRaRAbout(
   jointlyLetYesOrNo: Boolean,
   totalIncomeAmount: BigDecimal,
-  claimPropertyIncomeAllowanceYesOrNo: Boolean,
+  isClaimPropertyIncomeAllowance: Boolean,
   claimExpensesOrRelief: ClaimExpensesOrRelief,
   propertyRentalIncome: BigDecimal
 )

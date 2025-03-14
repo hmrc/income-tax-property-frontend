@@ -86,7 +86,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "esbaClaims" : false
        |  },
        |  "propertyRentalsAbout" : {
-       |    "claimPropertyIncomeAllowanceYesOrNo" : false
+       |    "isClaimPropertyIncomeAllowance" : false
        |  },
        |  "propertyRentalsIncome" : {
        |    "isNonUKLandlord" : false,

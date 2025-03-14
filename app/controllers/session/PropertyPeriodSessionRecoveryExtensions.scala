@@ -489,7 +489,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua2 <- userAnswers.set(
                      ClaimPropertyIncomeAllowancePage(Rentals),
-                     propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo
+                     propertyRentalsAbout.isClaimPropertyIncomeAllowance
                    )
           } yield ua2
       }
@@ -835,7 +835,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua3 <- ua2.set(ClaimExpensesOrReliefPage(RentalsRentARoom), rentalsRaRAbout.claimExpensesOrRelief)
             ua4 <- ua3.set(
                      ClaimPropertyIncomeAllowancePage(RentalsRentARoom),
-                     rentalsRaRAbout.claimPropertyIncomeAllowanceYesOrNo
+                     rentalsRaRAbout.isClaimPropertyIncomeAllowance
                    )
             ua5 <- ua4.set(PropertyRentalIncomePage(RentalsRentARoom), rentalsRaRAbout.propertyRentalIncome)
 

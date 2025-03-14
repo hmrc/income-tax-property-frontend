@@ -100,7 +100,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         RentalsAndRaRAbout(
           jointlyLetYesOrNo = true,
           22.23,
-          claimPropertyIncomeAllowanceYesOrNo = true,
+          isClaimPropertyIncomeAllowance = true,
           ClaimExpensesOrRelief(isClaimExpensesOrRelief = false, Some(22.11)),
           45.65
         )
