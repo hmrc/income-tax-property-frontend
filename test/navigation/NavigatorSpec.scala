@@ -690,7 +690,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from UnusedLossesBroughtForwardPage to WhenYouReportedTheLossPage" in {
         val userAnswers = UserAnswers("test")
-          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(10))))
+          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(10))))
           .get
         navigator.nextPage(
           UnusedLossesBroughtForwardPage(Rentals),

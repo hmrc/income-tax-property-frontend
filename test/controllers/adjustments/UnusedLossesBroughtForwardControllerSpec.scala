@@ -47,7 +47,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
 
 
   val validAnswer: UnusedLossesBroughtForward = UnusedLossesBroughtForward(
-    unusedLossesBroughtForwardYesOrNo = true, unusedLossesBroughtForwardAmount = Some(123.45))
+    isUnusedLossesBroughtForward = true, unusedLossesBroughtForwardAmount = Some(123.45))
 
   s"UnusedLossesBroughtForward Controller" - {
 
@@ -121,7 +121,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
         val request =
           FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(
-              "unusedLossesBroughtForwardYesOrNo" -> "true",
+              "isUnusedLossesBroughtForward" -> "true",
               "unusedLossesBroughtForwardAmount" -> "123.45"
             )
 
@@ -174,7 +174,7 @@ class UnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoSuga
         val request =
           FakeRequest(POST, rentalsRoute)
             .withFormUrlEncodedBody(
-              "unusedLossesBroughtForwardYesOrNo" -> validAnswer.unusedLossesBroughtForwardYesOrNo.toString,
+              "isUnusedLossesBroughtForward" -> validAnswer.isUnusedLossesBroughtForward.toString,
               "unusedLossesBroughtForwardAmount" -> validAnswer.unusedLossesBroughtForwardAmount.toString
             )
 

@@ -42,10 +42,10 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("unusedLossesBroughtForwardYesOrNo"),
+                field = form("isUnusedLossesBroughtForward"),
                 legend = LegendViewModel(messages("")),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("unusedLossesBroughtForwardYesOrNo"),
+                    field = form("isUnusedLossesBroughtForward"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(

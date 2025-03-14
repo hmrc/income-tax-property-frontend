@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo: Boolean,
+case class UnusedLossesBroughtForward(isUnusedLossesBroughtForward: Boolean,
                                       unusedLossesBroughtForwardAmount: Option[BigDecimal])
 
 object UnusedLossesBroughtForward {

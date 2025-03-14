@@ -183,7 +183,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |     },
        |     "unusedLossesBroughtForward": {
        |         "unusedLossesBroughtForwardAmount": 5,
-       |         "unusedLossesBroughtForwardYesOrNo": true
+       |         "isUnusedLossesBroughtForward": true
        |     },
        |     "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
        | },
@@ -373,7 +373,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10)))
       updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
-      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(5)))
+      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(5)))
 
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56
