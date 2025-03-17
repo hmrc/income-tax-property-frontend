@@ -30,13 +30,11 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UkAndForeignPropertyRentalTypeUkPage
 import pages.foreign.Country
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import service.{BusinessService, CYADiversionService, ForeignCYADiversionService, UkAndForeignCYADiversionService}
 import viewmodels.summary.TaskListItem
-import viewmodels.summary.TaskListTag.{CanNotStart, Completed, InProgress, NotStarted}
+import viewmodels.summary.TaskListTag.{Completed, InProgress, NotStarted}
 
 import java.time.LocalDate
-import scala.concurrent.Future
 
 class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with MockitoSugar with ScalaFutures {
 
@@ -98,7 +96,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   "Uk Property section" should {
 
     "show the correct property rental items" when {
-      import ukRentalItems._
+      import UkRentalItems._
 
       "'Property rentals' selected and claiming PIA" in {
         val isClaimingPIA = true
@@ -108,7 +106,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
-          .flatMap(_.set(ClaimPropertyIncomeAllowancePage(Rentals), isClaimingPIA))
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyRentalTypeUkPage,
@@ -138,6 +136,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyRentalTypeUkPage,
@@ -166,7 +165,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     }
 
     "show the correct property rent a room items" when {
-      import ukRentARoomItems._
+      import UkRentARoomItems._
 
       "'Rent a room' selected and claiming:  Rent a room relief - PIA" in {
         val isClaimingRelief = true
@@ -328,7 +327,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     }
 
     "show the correct property rentals and rent a room items" when {
-      import ukRentalAndRentARoomItems._
+      import UkRentalAndRentARoomItems._
 
       "both 'Rentals', 'Rent a Room' selected and claiming:  Rent a room relief - PIA" in {
         val isClaimingRelief = true
@@ -339,7 +338,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
-          .flatMap(_.set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), isClaimingPIA))
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyClaimExpensesOrReliefPage,
@@ -380,7 +379,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
-          .flatMap(_.set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), isClaimingPIA))
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyClaimExpensesOrReliefPage,
@@ -426,7 +425,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
-          .flatMap(_.set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), isClaimingPIA))
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyClaimExpensesOrReliefPage,
@@ -469,7 +468,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage,
             UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(isClaimingPIA)
           )
-          .flatMap(_.set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), isClaimingPIA))
+          .flatMap(_.set(SectionCompletePage, true))
           .flatMap(
             _.set(
               UkAndForeignPropertyClaimExpensesOrReliefPage,
@@ -508,7 +507,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
   }
 
   "Foreign Property section" should {
-    import foreignItems._
+    import ForeignItems._
 
     "show the correct items when 'Property rentals' selected and not claiming PIA" in {
       val isClaimingPIA = false
@@ -796,7 +795,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     }
   }
 
-  object ukRentalItems {
+  object UkRentalItems {
     val incomeItem: TaskListItem =
       TaskListItem(
         "summary.income",
@@ -842,7 +841,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     )
   }
 
-  object ukRentARoomItems {
+  object UkRentARoomItems {
     val aboutItem: TaskListItem =
       TaskListItem(
         "summary.about",
@@ -879,7 +878,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     )
   }
 
-  object ukRentalAndRentARoomItems {
+  object UkRentalAndRentARoomItems {
     val aboutItem: TaskListItem =
       TaskListItem(
         "summary.about",
@@ -933,7 +932,7 @@ class UkAndForeignPropertySummaryPageSpec extends AnyWordSpec with Matchers with
     )
   }
 
-  object foreignItems {
+  object ForeignItems {
     val foreignTaxItem: TaskListItem = TaskListItem(
       content = "foreign.tax",
       call = ForeignIncomeTaxController.onPageLoad(taxYear, countryCode, NormalMode),

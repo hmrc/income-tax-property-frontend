@@ -16,12 +16,22 @@
 
 package pages.foreign
 
+import models.UserAnswers
 import pages.QuestionPage
+import pages.ukandforeignproperty.SectionCompletePage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object ForeignSelectCountriesCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "selectCountrySectionComplete"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    for {
+      ua <- userAnswers.remove(SectionCompletePage)
+    } yield ua
+  }
 }

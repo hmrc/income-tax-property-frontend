@@ -280,9 +280,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", Rentals, NormalMode) {
           controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(
             taxYear,
-            userAnswers
-              .flatMap(_.get(ClaimPropertyIncomeAllowancePage(Rentals)))
-              .getOrElse(false)
+            getIsClaimPIA(userAnswers, Rentals).getOrElse(false)
           )
         }(identity),
       if (isUkAndForeignJourney) {
@@ -443,9 +441,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
           controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsStartController
             .onPageLoad(
               taxYear,
-              userAnswers
-                .flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)))
-                .getOrElse(false)
+              getIsClaimPIA(userAnswers, RentalsRentARoom).getOrElse(false)
             )
         }(identity),
       if (isUkAndForeignJourney) {

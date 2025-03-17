@@ -148,9 +148,7 @@ class ForeignPropertySummaryPageSpec
         .flatMap(_.set(ForeignIncomeSectionCompletePage(countryCode), true))
         .toOption
 
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-//      TODO - TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(isComplete = true),
@@ -166,9 +164,7 @@ class ForeignPropertySummaryPageSpec
         .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         .toOption
 
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-//      TODO-TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(),
@@ -181,9 +177,7 @@ class ForeignPropertySummaryPageSpec
       val isClaimingPIA = false
       val accrualsOrCash = true
       val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-      //      TODO-TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(),
@@ -195,27 +189,25 @@ class ForeignPropertySummaryPageSpec
       taskList shouldBe res
     }
 
-//    "should show the correct items when not claiming PIA with Cash" in {
-//      val isClaimingPIA = false
-//      val accrualsOrCash = false
-//      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
-//      val res = Seq(
-//        foreignTaxItem,
-//        incomeItem(),
-//        expensesItem,
-//        allowancesItem,
-//        adjustmentsItem(isClaimingPIA)
-//      )
-//      taskList shouldBe res
-//    }
+    "should show the correct items when not claiming PIA with Cash" in {
+      val isClaimingPIA = false
+      val accrualsOrCash = false
+      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem,
+        incomeItem(),
+        expensesItem,
+        allowancesItem,
+        adjustmentsItem(isClaimingPIA)
+      )
+      taskList shouldBe res
+    }
 
     "should not show adjustments when PIA has not been specified" in {
       val accrualsOrCash = true
       val userAnswers = UserAnswers(id  = "foreign-property-items")
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, Some(userAnswers))
-//      TODO-TBG
-      //      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, Some(userAnswers))
+            val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, Some(userAnswers))
       val res = Seq(
         foreignTaxItem,
         incomeItem()
@@ -236,9 +228,7 @@ class ForeignPropertySummaryPageSpec
         ua6 <- ua5.set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
       } yield ua6).toOption
 
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-//      TODO-TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
@@ -274,9 +264,7 @@ class ForeignPropertySummaryPageSpec
         ua7 <- ua6.set(ForeignStructureBuildingAllowanceGroup(countryCode), Array(sbaAddress))
       } yield ua7).toOption
 
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-//      TODO-TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
@@ -300,9 +288,7 @@ class ForeignPropertySummaryPageSpec
         ua5 <- ua4.set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
       } yield ua5).toOption
 
-      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
-//      TODO-TBG
-//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),

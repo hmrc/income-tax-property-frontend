@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import models.{UKPropertySelect, UkAndForeignPropertyRentalTypeUk, UserAnswers}
+import models.{ForeignProperty, PropertyType, Rentals, RentalsRentARoom, UKPropertySelect, UkAndForeignPropertyRentalTypeUk, UserAnswers}
+import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
+import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.ukandforeignproperty.{SectionCompletePage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage}
 
 package object pages {
   def isSelected(userAnswers: Option[UserAnswers], select: UKPropertySelect): Boolean =
@@ -22,4 +25,24 @@ package object pages {
 
   def isSelected(userAnswers: Option[UserAnswers], select: UkAndForeignPropertyRentalTypeUk): Boolean =
     userAnswers.exists(_.get(UkAndForeignPropertyRentalTypeUkPage).exists(_.contains(select)))
+
+  def isUkAndForeignAboutJourneyComplete(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(SectionCompletePage).isDefined
+
+  def getIsClaimPIA(userAnswers: Option[UserAnswers], propertyType: PropertyType): Option[Boolean] =
+    userAnswers.map { ua =>
+      if (isUkAndForeignAboutJourneyComplete(ua)) {
+        ua
+          .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
+          .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+      } else
+        {
+          propertyType match {
+            case ForeignProperty  => ua.get(ClaimPropertyIncomeAllowanceOrExpensesPage)
+            case Rentals          => ua.get(ClaimPropertyIncomeAllowancePage(Rentals))
+            case RentalsRentARoom => ua.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))
+          }
+        }.getOrElse(false)
+    }
+
 }

@@ -61,37 +61,29 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     )
   }
 
-  def foreignPropertyItems(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+  def foreignPropertyItems(taxYear: Int, accrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
     val taskList =
       Seq(
         foreignTaxItem(taxYear, countryCode, userAnswers),
         foreignIncomeItem(taxYear, countryCode, userAnswers)
       )
+
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
-
-//    isClaimingAllowances match {
-//      case Some(true)  => Seq(foreignTaxTaskList, foreignIncomeTaskList, claimingAdjustmentsTaskList)
-//      case Some(false) if accrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
-//      case Some(false) => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
-//      case None        => Seq(foreignTaxTaskList, foreignIncomeTaskList)
-//    }
-
     isClaimingAllowances match {
-      case Some(true) =>
-        taskList.appendedAll(
-          Seq(
-            foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = true, userAnswers)
-          )
-        )
+      case Some(true) => taskList ++ Seq(
+        foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = true, userAnswers)
+      )
+      case Some(false) if accrualsOrCash => taskList ++ Seq(
+        foreignExpensesItem(taxYear, countryCode, userAnswers),
+        foreignAllowancesItem(taxYear, countryCode, userAnswers),
+        foreignSBAItem(taxYear, countryCode, userAnswers),
+        foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = false, userAnswers)
+      )
       case Some(false) =>
-        taskList.appendedAll(
-          Seq(
-            foreignExpensesItem(taxYear, countryCode, userAnswers),
-            foreignAllowancesItem(taxYear, countryCode, userAnswers),
-            foreignSBAItem(taxYear, countryCode, userAnswers),
-            foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = false, userAnswers)
-          )
-        )
+        taskList ++ Seq(
+          foreignExpensesItem(taxYear, countryCode, userAnswers),
+          foreignAllowancesItem(taxYear, countryCode, userAnswers),
+          foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = false, userAnswers))
       case None => taskList
     }
   }

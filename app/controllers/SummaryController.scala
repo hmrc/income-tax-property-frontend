@@ -86,8 +86,7 @@ class SummaryController @Inject() (
           val maybeCountries = foreignCountries.getOrElse(List.empty)
           val foreignPropertyItems = maybeCountries.map { country =>
             country.code -> foreignSummaryPage
-              .foreignPropertyItems(taxYear, country.code, request.userAnswers)
-//              .foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
+              .foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
           }.toMap
           Future.successful(
             Ok(
