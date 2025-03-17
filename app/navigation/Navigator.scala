@@ -1223,7 +1223,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case Some(CalculatedFigureYourself(false, _))
           if previousUserAnswers
             .get(CalculatedFigureYourselfPage(propertyType))
-            .map(_.calculatedFigureYourself)
+            .map(_.isCalculatedFigureYourself)
             .getOrElse(true) =>
         ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType)
       case _ =>

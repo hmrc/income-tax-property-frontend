@@ -93,7 +93,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "propertyRentalIncome" : 45,
        |    "premiumForLeaseYesOrNo" : true,
        |    "calculatedFigureYourself" : {
-       |      "calculatedFigureYourself" : true,
+       |      "isCalculatedFigureYourself" : true,
        |      "amount" : 45
        |    },
        |    "receivedGrantLeaseAmount": 6,
@@ -352,7 +352,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       //Todo: To be uncommented, and added to tests when related tickets implemented. updated.get(RentsRatesAndInsurancePage).get mustBe 55
       // Todo: do we need this? updated.get(PremiumForLeasePage).get mustBe true
       updated.get(CalculatedFigureYourselfPage(Rentals)).get mustBe CalculatedFigureYourself(
-        calculatedFigureYourself = true,
+        isCalculatedFigureYourself = true,
         Some(45)
       )
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(

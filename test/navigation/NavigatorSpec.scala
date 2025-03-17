@@ -260,7 +260,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = false, None)
+                CalculatedFigureYourself(isCalculatedFigureYourself = false, None)
               )
               .get
 
@@ -279,7 +279,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = true, Some(100))
+                CalculatedFigureYourself(isCalculatedFigureYourself = true, Some(100))
               )
               .get
 
@@ -952,14 +952,14 @@ class NavigatorSpec extends SpecBase {
               UserAnswers("test")
                 .set(
                   CalculatedFigureYourselfPage(propertyType),
-                  CalculatedFigureYourself(calculatedFigureYourself = true, None)
+                  CalculatedFigureYourself(isCalculatedFigureYourself = true, None)
                 )
                 .get
             val userAnswers =
               UserAnswers("test")
                 .set(
                   CalculatedFigureYourselfPage(propertyType),
-                  CalculatedFigureYourself(calculatedFigureYourself = false, None)
+                  CalculatedFigureYourself(isCalculatedFigureYourself = false, None)
                 )
                 .get
             navigator.nextPage(
@@ -976,14 +976,14 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = false, None)
+                CalculatedFigureYourself(isCalculatedFigureYourself = false, None)
               )
               .get
           val userAnswers =
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = false, None)
+                CalculatedFigureYourself(isCalculatedFigureYourself = false, None)
               )
               .get
           navigator.nextPage(
@@ -1000,14 +1000,14 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = false, None)
+                CalculatedFigureYourself(isCalculatedFigureYourself = false, None)
               )
               .get
           val userAnswers =
             UserAnswers("test")
               .set(
                 CalculatedFigureYourselfPage(propertyType),
-                CalculatedFigureYourself(calculatedFigureYourself = true, Some(100))
+                CalculatedFigureYourself(isCalculatedFigureYourself = true, Some(100))
               )
               .get
           navigator.nextPage(

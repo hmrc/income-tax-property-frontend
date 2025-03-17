@@ -30,7 +30,7 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
   val form = new BusinessPremisesRenovationBalancingChargeFormProvider()("individual")
 
   ".businessPremisesRenovationAllowanceBalancingChargeAmount" - {
-    "when businessPremisesRenovationAllowanceBalancingChargeYesOrNo is true" - {
+    "when isBusinessPremisesRenovationAllowanceBalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(
           Map(
