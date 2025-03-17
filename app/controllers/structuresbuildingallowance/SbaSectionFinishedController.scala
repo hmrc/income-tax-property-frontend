@@ -76,13 +76,13 @@ class SbaSectionFinishedController @Inject() (
         )
     }
 
-  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], value: Boolean, propertyType: PropertyType)(
+  private def saveStatus(taxYear: Int, request: DataRequest[AnyContent], isValue: Boolean, propertyType: PropertyType)(
     implicit hc: HeaderCarrier
   ): Future[Result] = {
     val sectionPath = if (propertyType == Rentals) RentalSBA else PropertyRentalsAndRentARoomSBA
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
     journeyAnswersService
-      .setStatus(context, statusForPage(value), request.user)
+      .setStatus(context, statusForPage(isValue), request.user)
       .flatMap {
         case Right(_) => Future.successful(Redirect(controllers.routes.SummaryController.show(taxYear)))
         case Left(_) =>

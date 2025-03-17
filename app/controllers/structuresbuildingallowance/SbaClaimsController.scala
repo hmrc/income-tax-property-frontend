@@ -148,7 +148,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = false,
-              accrualsOrCash = propertyDetails.isAccrualsOrCash.get
+              isAccrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
           case Left(_) =>
@@ -157,7 +157,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = true,
-              accrualsOrCash = propertyDetails.isAccrualsOrCash.get
+              isAccrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             logger.error("Error saving SBA Claims")
             Future.failed(InternalErrorFailure("Error saving SBA claims"))
@@ -183,7 +183,7 @@ class SbaClaimsController @Inject() (
     request: DataRequest[AnyContent],
     sbaInfo: SbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -196,7 +196,7 @@ class SbaClaimsController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.RentalsRentARoom,
       sectionName = SectionName.SBA,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       agentReferenceNumber = request.user.agentRef,

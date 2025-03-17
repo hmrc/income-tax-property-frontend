@@ -131,11 +131,11 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   private def getUkAndForeignSummaryList(
     taxYear: Int,
-    reportIncome: Boolean,
+    isReportIncome: Boolean,
     individualOrAgent: String,
     userAnswers: UserAnswers
   )(implicit messages: Messages): SummaryList =
-    if (reportIncome) {
+    if (isReportIncome) {
       SummaryListViewModel(
         rows = Seq(
           TotalPropertyIncomeSummary.row(taxYear, userAnswers),
