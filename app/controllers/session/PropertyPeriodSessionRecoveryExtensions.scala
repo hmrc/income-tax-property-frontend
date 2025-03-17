@@ -26,15 +26,13 @@ import pages.enhancedstructuresbuildingallowance._
 import pages.foreign.adjustments._
 import pages.foreign.allowances._
 import pages.foreign.expenses._
-import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignPremiumsGrantLeasePage, ForeignReceivedGrantLeaseAmountPage, ForeignSelectCountriesCompletePage, ForeignTaxSectionCompletePage, TwelveMonthPeriodsInLeasePage}
-import pages.foreign.expenses.ForeignExpensesSectionCompletePage
-import pages.foreign.{ClaimForeignTaxCreditReliefPage, ForeignIncomeTaxPage}
 import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, PremiumsGrantLeaseYNPage}
-import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
+import pages.foreign.structurebuildingallowance._
+import pages.foreign._
+import pages.{TotalIncomePage => UKTotalIncomePage}
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
-import pages.foreign.structurebuildingallowance._
 import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompletePage
@@ -43,9 +41,9 @@ import pages.rentalsandrentaroom.expenses.RentalsRaRExpensesCompletePage
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage
 import pages.structurebuildingallowance._
 import pages.ukandforeignproperty._
-import pages.ukrentaroom.adjustments.{RaRAdjustmentsCompletePage, RaRBalancingChargePage, RaRUnusedLossesBroughtForwardPage, RaRUnusedResidentialCostsPage, RarWhenYouReportedTheLossPage}
+import pages.ukrentaroom.adjustments._
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, CostOfServicesProvidedRRPage, ExpensesRRSectionCompletePage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
+import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.libs.json.Writes
 import queries.Settable
@@ -66,17 +64,17 @@ object PropertyPeriodSessionRecoveryExtensions {
                )
         ua2 <- updatePropertyAboutPages(ua1, fetchedData.ukPropertyData.propertyAbout)
         ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.ukPropertyData.propertyRentalsAbout)
-        ua4 <- updateAdjustmentsPages(ua3, fetchedData.ukPropertyData.adjustments)
+        ua4 <- updateRentalsAndRaRAbout(ua3, fetchedData.ukPropertyData.rentalsAndRaRAbout)
         ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
         ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
-        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.rentalsSBA, Rentals)
-        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsSBA, RentalsRentARoom)
+        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.sbasWithSupportingQuestions, Rentals)
+        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsAndRaRSbasWithSupportingQuestions, RentalsRentARoom)
         ua10 <-
           updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
         ua11 <- updateEnhancedStructureBuildingPages(
                   ua10,
-                  fetchedData.ukPropertyData.esbasWithSupportingQuestions,
+                  fetchedData.ukPropertyData.rentalsAndRaREsbasWithSupportingQuestions,
                   RentalsRentARoom
                 )
         ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.ukPropertyData.propertyRentalsIncome)
@@ -88,7 +86,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua17 <- updateRentARoomExpenses(ua16, fetchedData.ukPropertyData.rarExpenses)
         ua18 <- updateRentARoomAllowance(ua17, fetchedData.ukPropertyData.rentARoomAllowances)
         ua19 <- updateRentARoomAdjustments(ua18, fetchedData.ukPropertyData.raRAdjustments)
-        ua20 <- updateRentalsAndRaRAbout(ua19, fetchedData.ukPropertyData.rentalsAndRaRAbout)
+        ua20 <- updateAdjustmentsPages(ua19, fetchedData.ukPropertyData.adjustments)
         ua21 <- updateForeignPropertySelectCountry(ua20, fetchedData.ukPropertyData.foreignPropertySelectCountry)
         ua22 <- updateJourneyStatuses(ua21, fetchedData.ukPropertyData.journeyStatuses)
         ua23 <- updateForeignPropertyIncome(ua22, fetchedData.foreignPropertyData.foreignPropertyIncome)
@@ -187,7 +185,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(propertyAbout) =>
           for {
             ua1 <- propertyAbout.ukProperty.fold(Try(userAnswers))(ukps => userAnswers.set(UKPropertyPage, ukps.toSet))
-            ua2 <- ua1.set(TotalIncomePage, propertyAbout.totalIncome)
+            ua2 <- ua1.set(UKTotalIncomePage, propertyAbout.totalIncome)
             ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
           } yield ua3
       }

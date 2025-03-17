@@ -93,7 +93,7 @@ class ClaimSbaCheckYourAnswersController @Inject() (
     propertyDetails: PropertyDetails
   )(implicit hc: HeaderCarrier
   ): Future[Result] = {
-    val sbaInfo: SbaInfo = SbaInfo(claimStructureBuildingAllowance = false, allowances = Array.empty)
+    val sbaInfo: SbaInfo = SbaInfo(claimStructureBuildingAllowance = false, structureBuildingFormGroup = Array.empty)
     propertySubmissionService.saveJourneyAnswers(context, sbaInfo, propertyDetails.incomeSourceId).flatMap {
       case Right(_) =>
         auditSBANoClaim(

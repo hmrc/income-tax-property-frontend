@@ -176,7 +176,10 @@ class SbaClaimsController @Inject() (
     val sbaInfoOpt = for {
       claimSummaryPage <- userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType))
       sbaGroup         <- userAnswers.get(StructureBuildingAllowanceGroup(propertyType))
-    } yield SbaInfo(claimSummaryPage, sbaGroup)
+    } yield SbaInfo(
+      claimStructureBuildingAllowance = claimSummaryPage,
+      structureBuildingFormGroup = sbaGroup
+    )
     sbaInfoOpt
   }
 
