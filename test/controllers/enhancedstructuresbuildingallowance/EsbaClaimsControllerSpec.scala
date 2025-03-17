@@ -69,7 +69,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
   def userAnswersWithEsba(propertyType: PropertyType): UserAnswers = emptyUserAnswers
     .set(
       EsbasWithSupportingQuestionsPage(propertyType),
-      EsbasWithSupportingQuestions(claimEnhancedStructureBuildingAllowance = true, Some(false), List[Esba]())
+      EsbasWithSupportingQuestions(isClaimEnhancedStructureBuildingAllowance = true, Some(false), List[Esba]())
     )
     .get
 

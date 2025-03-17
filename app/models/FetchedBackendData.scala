@@ -118,8 +118,8 @@ final case class ForeignSbaOnIndex(index: Int, countryCode: String) extends Gett
 }
 
 final case class EsbasWithSupportingQuestions(
-  claimEnhancedStructureBuildingAllowance: Boolean,
-  esbaClaims: Option[Boolean],
+  isClaimEnhancedStructureBuildingAllowance: Boolean,
+  isEsbaClaims: Option[Boolean],
   esbas: List[Esba]
 )
 

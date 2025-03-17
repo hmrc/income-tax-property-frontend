@@ -60,7 +60,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    ]
        |  },
        |  "esbasWithSupportingQuestions": {
-       |    "claimEnhancedStructureBuildingAllowance" : true,
+       |    "isClaimEnhancedStructureBuildingAllowance" : true,
        |    "esbas" : [
        |      {
        |        "esbaQualifyingDate" : "2022-01-04",
