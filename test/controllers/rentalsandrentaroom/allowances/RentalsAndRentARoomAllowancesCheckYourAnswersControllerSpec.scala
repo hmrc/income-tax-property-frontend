@@ -101,7 +101,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
               PropertyDetails(
                 incomeSourceType = Some("incomeSourceId"),
                 tradingStartDate = Some(LocalDate.now),
-                accrualsOrCash = Some(true),
+                isAccrualsOrCash = Some(true),
                 incomeSourceId = "incomeSourceId"
               )
             )

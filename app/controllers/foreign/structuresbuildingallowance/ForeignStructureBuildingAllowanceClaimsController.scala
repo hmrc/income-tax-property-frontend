@@ -155,7 +155,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = false,
-                isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
               )
               Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
             case Left(_) =>
@@ -164,7 +164,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = true,
-                isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
               )
               logger.error("Error saving Foreign SBA Claims")
               Future.failed(InternalErrorFailure("Error saving Foreign SBA claims"))

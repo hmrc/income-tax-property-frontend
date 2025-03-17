@@ -33,12 +33,12 @@ object BusinessDetails {
 case class PropertyDetails(
   incomeSourceType: Option[String],
   tradingStartDate: Option[LocalDate],
-  accrualsOrCash: Option[Boolean],
+  isAccrualsOrCash: Option[Boolean],
   incomeSourceId: String
 ) {
 
   def getAccountingMethod: Option[AccountingMethod] =
-    accrualsOrCash.map {
+    isAccrualsOrCash.map {
       case true  => AccountingMethod.Traditional
       case false => AccountingMethod.Cash
     }

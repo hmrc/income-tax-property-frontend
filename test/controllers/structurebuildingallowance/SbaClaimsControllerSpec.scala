@@ -256,7 +256,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
               PropertyDetails(
                 Some("incomeSourceType"),
                 Some(LocalDate.now()),
-                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                isAccrualsOrCash = Some(true), // true -> Accruals,false -> Cash
                 incomeSourceId = "incomeSourceId"
               )
             )

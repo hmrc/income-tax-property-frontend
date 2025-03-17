@@ -56,7 +56,7 @@ class ForeignAllowancesCheckYourAnswersControllerSpec extends SpecBase with Summ
       val mockPropertyDetails = PropertyDetails(
         incomeSourceType = Some("ForeignProperty"),
         tradingStartDate = Some(LocalDate.now()),
-        accrualsOrCash = Some(false), // Cash accounting method
+        isAccrualsOrCash = Some(false), // Cash accounting method
         incomeSourceId = "12345"
       )
 

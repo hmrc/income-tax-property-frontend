@@ -148,7 +148,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = false,
-              accrualsOrCash = propertyDetails.accrualsOrCash.get
+              accrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
           case Left(_) =>
@@ -157,7 +157,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = true,
-              accrualsOrCash = propertyDetails.accrualsOrCash.get
+              accrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             logger.error("Error saving SBA Claims")
             Future.failed(InternalErrorFailure("Error saving SBA claims"))

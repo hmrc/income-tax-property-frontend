@@ -52,7 +52,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
           PropertyDetails(
             incomeSourceType = Some("incomeSourceId"),
             tradingStartDate = Some(LocalDate.now),
-            accrualsOrCash = Some(true),
+            isAccrualsOrCash = Some(true),
             incomeSourceId = "incomeSourceId"
           )
         )
@@ -89,7 +89,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
             PropertyDetails(
               incomeSourceType = Some("incomeSourceId"),
               tradingStartDate = Some(LocalDate.now),
-              accrualsOrCash = Some(true),
+              isAccrualsOrCash = Some(true),
               incomeSourceId = "incomeSourceId"
             )
           )

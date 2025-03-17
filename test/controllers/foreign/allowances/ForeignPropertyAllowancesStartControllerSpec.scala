@@ -50,7 +50,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -80,7 +80,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(accrualsOrCash), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -130,7 +130,7 @@ class ForeignPropertyAllowancesStartControllerSpec extends SpecBase with Mockito
       val userAnswers = UserAnswers("test").set(IncomeSourceCountries, Array(Country(countryName, countryCode))).get
 
       val propertyDetails =
-        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = accrualsOrCash, "incomeSourceId")
 
       val businessService = mock[BusinessService]
 

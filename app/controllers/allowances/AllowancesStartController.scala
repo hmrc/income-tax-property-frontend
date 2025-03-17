@@ -52,7 +52,7 @@ class AllowancesStartController @Inject() (
           val isPIA: Boolean = request.userAnswers
             .get(ClaimPropertyIncomeAllowancePage(propertyType))
             .getOrElse(false)
-          propertyDetails.accrualsOrCash match {
+          propertyDetails.isAccrualsOrCash match {
             case Some(true) =>
               Future(
                 Ok(

@@ -91,7 +91,7 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyExpenses)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val accrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertyExpenses)

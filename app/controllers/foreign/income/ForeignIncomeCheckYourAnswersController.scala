@@ -91,7 +91,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
-      val isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertyIncome)

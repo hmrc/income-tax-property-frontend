@@ -98,7 +98,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersControllerSpec extends SpecB
       val propertyDetails = PropertyDetails(
         Some(UKProperty.toString),
         Some(LocalDate.of(taxYear, 1, 2)),
-        accrualsOrCash = Some(false),
+        isAccrualsOrCash = Some(false),
         "incomeSourceId"
       )
 

@@ -188,7 +188,7 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
               PropertyDetails(
                 Some("incomeSourceType"),
                 Some(LocalDate.now()),
-                accrualsOrCash = Some(true),
+                isAccrualsOrCash = Some(true),
                 incomeSourceId = "incomeSourceId"
               )
             )

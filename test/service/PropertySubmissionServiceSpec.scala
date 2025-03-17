@@ -50,7 +50,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
       val incomeSourceId = "incomeSourceId"
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
+        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), incomeSourceId)
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
       when(
@@ -69,7 +69,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val resultFromConnector = ApiError(status = 500, SingleErrorBody("500", "Some error"))
       val incomeSourceId = "incomeSourceId"
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
+        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), incomeSourceId)
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
@@ -94,7 +94,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
       val foreignIncomeSourceId = "foreignIncomeSourceId"
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), foreignIncomeSourceId)
+        PropertyDetails(Some(IncomeSourcePropertyType.ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), foreignIncomeSourceId)
 
       when(mockBusinessConnector.getForeignPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
       when(
@@ -114,7 +114,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       val foreignIncomeSourceId = "foreignIncomeSourceId"
 
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), foreignIncomeSourceId)
+        PropertyDetails(Some(IncomeSourcePropertyType.ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), foreignIncomeSourceId)
 
       when(mockBusinessConnector.getForeignPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
@@ -158,7 +158,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
     "return empty for successful save" in {
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
@@ -171,7 +171,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
     "return error for failure save" in {
       val details =
-        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId")
 
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 

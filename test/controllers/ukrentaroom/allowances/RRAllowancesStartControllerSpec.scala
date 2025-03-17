@@ -40,7 +40,7 @@ class RRAllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
 
       val propertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]
@@ -69,7 +69,7 @@ class RRAllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
 
       val propertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "incomeSourceId")
       val businessDetails = BusinessDetails(List(propertyDetails))
 
       val businessService = mock[BusinessService]

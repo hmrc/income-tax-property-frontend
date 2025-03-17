@@ -86,7 +86,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
       val foreignSbaInfo = ForeignSbaInfo(countryCode, isClaimSba, None)
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignStructureBuildingAllowance)
-      val isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignSbaInfo)

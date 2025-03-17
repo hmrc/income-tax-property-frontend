@@ -62,11 +62,11 @@ class SummaryController @Inject() (
         case Right(propertyData) =>
           val isUkAccrualsOrCash: Boolean = propertyData
             .find(_.incomeSourceType.contains(UKProperty.toString))
-            .flatMap(_.accrualsOrCash)
+            .flatMap(_.isAccrualsOrCash)
             .getOrElse(true)
           val isForeignAccrualsOrCash: Boolean = propertyData
             .find(_.incomeSourceType.contains(ForeignProperty.toString))
-            .flatMap(_.accrualsOrCash)
+            .flatMap(_.isAccrualsOrCash)
             .getOrElse(true)
 
           val propertyRentalsRows =

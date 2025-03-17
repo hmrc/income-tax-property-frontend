@@ -88,7 +88,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
               PropertyDetails(
                 Some("incomeSourceType"),
                 Some(LocalDate.now()),
-                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                isAccrualsOrCash = Some(true), // true -> Accruals,false -> Cash
                 incomeSourceId = "incomeSourceId"
               )
             )

@@ -19,7 +19,6 @@ package models.ukAndForeign
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.{JsSuccess, Json}
 import models.{ReportIncome, TotalPropertyIncome}
-import pages.ukandforeignproperty.UkRentalPropertyIncomePage
 
 class UkAndForeignAboutSpec extends PlaySpec {
 
