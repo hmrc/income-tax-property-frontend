@@ -23,7 +23,7 @@ import forms.structurebuildingallowance.SbaClaimsFormProvider
 import models.JourneyPath.{PropertyRentalSBA, RentalsAndRentARoomSBA}
 import models.backend.PropertyDetails
 import models.requests.DataRequest
-import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, PropertyType, Rentals, SectionName, UserAnswers}
+import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, PropertyType, Rentals, RentalsRentARoom, SectionName, UserAnswers}
 import pages.foreign.Country
 import pages.structurebuildingallowance._
 import play.api.Logging
@@ -148,6 +148,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = false,
+              propertyType = propertyType,
               accrualsOrCash = propertyDetails.accrualsOrCash.get
             )
             Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
@@ -157,6 +158,7 @@ class SbaClaimsController @Inject() (
               request,
               sbaInfo,
               isFailed = true,
+              propertyType = propertyType,
               accrualsOrCash = propertyDetails.accrualsOrCash.get
             )
             logger.error("Error saving SBA Claims")
@@ -183,6 +185,7 @@ class SbaClaimsController @Inject() (
     request: DataRequest[AnyContent],
     sbaInfo: SbaInfo,
     isFailed: Boolean,
+    propertyType: PropertyType,
     accrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
@@ -194,7 +197,10 @@ class SbaClaimsController @Inject() (
       taxYear = taxYear,
       propertyType = AuditPropertyType.UKProperty,
       countryCode = Country.UK.code,
-      journeyName = JourneyName.RentalsRentARoom,
+      journeyName = propertyType match {
+        case Rentals          => JourneyName.Rentals
+        case RentalsRentARoom => JourneyName.RentalsRentARoom
+      },
       sectionName = SectionName.SBA,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
