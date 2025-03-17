@@ -26,11 +26,11 @@ import viewmodels.implicits._
 
 object CalculatedPremiumLeaseTaxableSummary {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, countryCode: String, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CalculatedPremiumLeaseTaxablePage(countryCode)).flatMap {
       case PremiumCalculated(true, _) =>
         Some(SummaryListRowViewModel(
-          key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel(s"calculatedPremiumLeaseTaxable.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value = ValueViewModel("site.yes").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",
@@ -39,7 +39,7 @@ object CalculatedPremiumLeaseTaxableSummary {
           )))
       case PremiumCalculated(false, _) =>
         Some(SummaryListRowViewModel(
-          key = KeyViewModel("calculatedPremiumLeaseTaxable.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel(s"calculatedPremiumLeaseTaxable.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value = ValueViewModel("site.no").withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change",

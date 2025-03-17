@@ -181,10 +181,13 @@ calculatedFigureYourself.title.agent	=	A wnaeth eich cleient gyfrifo’r ffigur 
 calculatedFigureYourself.title.individual	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
 calculatedFigureYourself.heading.agent	=	A wnaeth eich cleient gyfrifo’r ffigur ei hun?
 calculatedFigureYourself.heading.individual	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
-calculatedFigureYourself.radio.noText	=	Na, cyfrifwch y ffigur ar fy rhan
+calculatedFigureYourself.radio.noText.individual	=	Na, cyfrifwch y ffigur ar fy rhan
+calculatedFigureYourself.radio.noText.agent	=	*Missing Welsh*
 calculatedFigureYourself.checkYourAnswersAmountLabel	=	Ffigur hunangyfrifedig
-calculatedFigureYourself.checkYourAnswersQuestionLabel	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
-calculatedFigureYourself.change.hidden	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
+calculatedFigureYourself.checkYourAnswersQuestionLabel.individual	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
+calculatedFigureYourself.checkYourAnswersQuestionLabel.agent	=	*Missing Welsh*
+calculatedFigureYourself.change.hidden.individual	=	A wnaethoch chi gyfrifo’r ffigur eich hun?
+calculatedFigureYourself.change.hidden.agent	=	*Missing Welsh*
 calculatedFigureYourselfAmount.label	=	Nodwch y ffigur
 
 premiumForLease.title	=	Premiymau am ganiatáu prydles
@@ -2078,7 +2081,8 @@ calculatedPremiumLeaseTaxable.title = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.individual = *Missing Welsh*
 calculatedPremiumLeaseTaxable.heading.agent = *Missing Welsh*
 calculatedPremiumLeaseTaxable.p1 = *Missing Welsh*
-calculatedPremiumLeaseTaxable.checkYourAnswersLabel = *Missing Welsh*
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel.individual = *Missing Welsh*
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel.agent = *Missing Welsh*
 calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel = *Missing Welsh*
 premiumCalculatedAmount.radio.question.label = *Missing Welsh*
 calculatedPremiumLeaseTaxable.error.required.individual = *Missing Welsh*
@@ -2090,7 +2094,8 @@ premiumCalculated.amount.error.nonNumeric = *Missing Welsh*
 premiumCalculated.amount.error.outOfRange = *Missing Welsh*
 calculatedPremiumLeaseTaxable.change.hidden = *Missing Welsh*
 calculatedPremiumLeaseTaxable.input.yesText = *Missing Welsh*
-calculatedPremiumLeaseTaxable.input.noText = *Missing Welsh*
+calculatedPremiumLeaseTaxable.input.noText.individual = *Missing Welsh*
+calculatedPremiumLeaseTaxable.input.noText.agent = *Missing Welsh*
 
 foreignIncomeSectionComplete.change.hidden = *Missing Welsh*
 

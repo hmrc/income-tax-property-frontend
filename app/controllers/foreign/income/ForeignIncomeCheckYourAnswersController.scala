@@ -57,7 +57,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
         rows = Seq(
           ForeignPropertyRentalIncomeSummary.row(taxYear, request.userAnswers, countryCode),
           PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode, request.user.isAgentMessageKey),
-          CalculatedPremiumLeaseTaxableSummary.row(taxYear, countryCode, request.userAnswers),
+          CalculatedPremiumLeaseTaxableSummary.row(taxYear, countryCode, request.userAnswers, request.user.isAgentMessageKey),
           CalculatedPremiumLeaseTaxableAmountSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignReceivedGrantLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
           TwelveMonthPeriodsInLeaseSummary.row(taxYear, countryCode, request.userAnswers),
