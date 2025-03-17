@@ -19,9 +19,9 @@ package controllers.ukrentaroom.adjustments
 import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.JourneyContext
-import models.JourneyPath
+import models.{JourneyContext, JourneyPath}
 import models.requests.DataRequest
+import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -29,7 +29,7 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
+import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, RaRUnusedLossesBroughtForwardSummary, RarWhenYouReportedTheLossSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
@@ -49,13 +49,36 @@ class RaRAdjustmentsCYAController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val hasLossesBroughtForward: Boolean = request.userAnswers
+        .get(RaRUnusedLossesBroughtForwardPage)
+        .exists(_.unusedLossesBroughtForwardYesOrNo)
       val rows: Seq[SummaryListRow] =
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
           UnusedResidentialPropertyFinanceCostsBroughtFwdSummary
             .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
-      val list = SummaryListViewModel(rows = rows)
+      val unusedLossesBroughtForwardRows =
+        if (hasLossesBroughtForward) {
+          Seq(
+            RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
+            RarWhenYouReportedTheLossSummary.row(
+              taxYear,
+              request.userAnswers,
+              request.user.isAgentMessageKey,
+              request.userAnswers
+                .get(RaRUnusedLossesBroughtForwardPage)
+                .flatMap(_.unusedLossesBroughtForwardAmount)
+                .getOrElse(BigDecimal(0))
+            )
+          ).flatten
+        } else {
+          RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+        }
+      val list = SummaryListViewModel(
+        rows = rows
+          .appendedAll(unusedLossesBroughtForwardRows)
+      )
 
       Ok(view(list, taxYear))
   }
@@ -105,7 +128,8 @@ class RaRAdjustmentsCYAController @Inject() (
     audit.sendRentARoomAuditEvent(auditModel)
   }
 
-  private case object AdjustmentsNotFoundException extends Exception("Adjustments Section is not present in userAnswers")
+  private case object AdjustmentsNotFoundException
+      extends Exception("Adjustments Section is not present in userAnswers")
 
   private case object AdjustmentsSaveFailed extends Exception("Unable to save Adjustments")
 }

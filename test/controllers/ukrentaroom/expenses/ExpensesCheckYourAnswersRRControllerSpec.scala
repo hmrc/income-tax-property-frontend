@@ -19,11 +19,10 @@ package controllers.ukrentaroom.expenses
 import audit.{AuditService, RentARoomExpenses}
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes._
-import models.{JourneyContext, RentARoom, UserAnswers,JourneyPath}
+import models.{JourneyContext, JourneyPath, RentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.PageConstants.expensesPath
 import play.api.inject.bind
 import play.api.libs.json.{JsNumber, Json}
@@ -40,8 +39,6 @@ import scala.concurrent.Future
 class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryListFluency {
 
   val taxYear = 2024
-  private val propertySubmissionService = mock[PropertySubmissionService]
-  private val audit = mock[AuditService]
   val context: JourneyContext =
     JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = JourneyPath.RentARoomExpenses)
 
@@ -99,7 +96,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
             "repairsAndMaintenanceCosts"      -> JsNumber(repairsAndMaintenanceCosts),
             "legalManagementOtherFee"         -> JsNumber(legalManagementOtherFee),
             "residentialPropertyFinanceCosts" -> JsNumber(residentialPropertyFinanceCosts),
-            "costsOfServicesProvided"         -> JsNumber(costsOfServicesProvided),
+            "costOfServicesProvided"          -> JsNumber(costsOfServicesProvided),
             "unusedResidentialPropertyFinanceCostsBroughtFwd" -> JsNumber(
               unusedResidentialPropertyFinanceCostsBroughtFwd
             ),
@@ -121,7 +118,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
                 consolidatedExpenses = None,
                 rentsRatesAndInsurance = Some(rentsRatesAndInsurance),
                 repairsAndMaintenanceCosts = Some(repairsAndMaintenanceCosts),
-                costsOfServicesProvided = Some(costsOfServicesProvided),
+                costOfServicesProvided = Some(costsOfServicesProvided),
                 legalManagementOtherFee = Some(legalManagementOtherFee),
                 otherPropertyExpenses = Some(otherPropertyExpenses)
               )

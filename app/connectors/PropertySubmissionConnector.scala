@@ -36,11 +36,12 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
   def getPropertySubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
     hc: HeaderCarrier
   ): Future[Either[ApiError, FetchedPropertyData]] = {
-    val propertyPeriodicSubmissionUrl =
+
+    val propertyUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/$taxYear/income/${user.nino}/$incomeSourceId"
 
     httpClient
-      .get(url"$propertyPeriodicSubmissionUrl")
+      .get(url"$propertyUrl")
       .setHeader("mtditid" -> user.mtditid)
       .execute[GetPropertyPeriodicSubmissionResponse]
       .map { response: GetPropertyPeriodicSubmissionResponse =>
@@ -48,8 +49,9 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
           logger.error(
-            s"Error getting property periodic submission from the Integration Framework:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+            s"[getPropertySubmission] Error getting property data from the backend: " +
+              s"correlationId: $correlationId; url: $propertyUrl " +
+              s"status: ${response.httpResponse.status}; Response Body:${response.httpResponse.body}"
           )
         }
         response.result
@@ -61,6 +63,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
     body: A,
     incomeSourceId: String
   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
+
     val propertyUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/${ctx.journeyPath}/${ctx.nino}/answers"
 
@@ -75,8 +78,9 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
           logger.error(
-            "Error posting journey answers to income-tax-property:" +
-              s" correlationId: $correlationId; status: ${response.httpResponse.status}; Body:${response.httpResponse.body}"
+            "[saveJourneyAnswers] Error posting journey answers to income-tax-property:" +
+              s"correlationId: $correlationId; url: $propertyUrl " +
+              s"status: ${response.httpResponse.status}; Response Body:${response.httpResponse.body}"
           )
         }
         response.result

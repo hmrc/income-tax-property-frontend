@@ -24,6 +24,7 @@ import models.JourneyPath.{PropertyRentalSBA, RentalsAndRentARoomSBA}
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, PropertyType, Rentals, SectionName, UserAnswers}
+import pages.foreign.Country
 import pages.structurebuildingallowance._
 import play.api.Logging
 import play.api.data.Form
@@ -187,18 +188,19 @@ class SbaClaimsController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      nino = request.user.nino,
       userType = request.user.affinityGroup,
+      nino = request.user.nino,
       mtdItId = request.user.mtditid,
-      agentReferenceNumber = request.user.agentRef,
       taxYear = taxYear,
-      isUpdate = false,
-      sectionName = SectionName.SBA,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.RentalsRentARoom,
+      sectionName = SectionName.SBA,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
-      userEnteredDetails = sbaInfo,
-      isFailed = isFailed
+      isUpdate = false,
+      isFailed = isFailed,
+      agentReferenceNumber = request.user.agentRef,
+      userEnteredDetails = sbaInfo
     )
     auditService.sendAuditEvent(auditModel)
   }

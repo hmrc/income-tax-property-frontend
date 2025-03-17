@@ -34,18 +34,18 @@ import views.html.ukandforeignproperty.ForeignCountriesRentedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class ForeignCountriesRentedController @Inject()(
-                                                    override val messagesApi: MessagesApi,
-                                                    sessionRepository: SessionRepository,
-                                                    navigator: UkAndForeignPropertyNavigator,
-                                                    identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    formProvider: ForeignCountriesRentedFormProvider,
-                                                    val controllerComponents: MessagesControllerComponents,
-                                                    view: ForeignCountriesRentedView
-                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignCountriesRentedController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignCountriesRentedFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignCountriesRentedView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
@@ -76,10 +76,11 @@ class ForeignCountriesRentedController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignCountriesRentedPage, addAnotherCountry))
               countries      <- Future(request.userAnswers.get(SelectCountryPage).getOrElse(List.empty))
-              nextIndex      =  countries.size
-              _              <- sessionRepository.set(updatedAnswers)
+              nextIndex = countries.size
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextIndex(ForeignCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers, nextIndex)
+              navigator
+                .nextIndex(ForeignCountriesRentedPage, taxYear, mode, request.userAnswers, updatedAnswers, nextIndex)
             )
         )
   }

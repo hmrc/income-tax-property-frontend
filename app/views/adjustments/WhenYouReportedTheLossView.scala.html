@@ -1,0 +1,51 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.LegendSize.Medium
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukRadios: GovukRadios,
+    govukButton: GovukButton
+)
+
+@(form: Form[_], taxYear: Int, individualOrAgent: String, previousLoss: String, mode: Mode, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = title(form, messages("whenYouReportedTheLoss.title"))) {
+
+    @formHelper(action = controllers.adjustments.routes.WhenYouReportedTheLossController.onSubmit(taxYear, mode, propertyType), 'autoComplete -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("whenYouReportedTheLoss" -> "value_0")))
+        }
+        <h1 class="govuk-heading-l">@messages(s"whenYouReportedTheLoss.heading.${individualOrAgent}")</h1>
+        <p class="govuk-body">@messages(s"whenYouReportedTheLoss.p1.${individualOrAgent}")</p>
+        <p class="govuk-body">@messages(s"whenYouReportedTheLoss.p2.${individualOrAgent}")</p>
+        @govukRadios(
+            RadiosViewModel(
+                field  = form("whenYouReportedTheLoss"),
+                legend = LegendViewModel(messages(s"whenYouReportedTheLoss.label.${individualOrAgent}", previousLoss)).withSize(Medium),
+                items  = WhenYouReportedTheLoss.options
+            )
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+        )
+    }
+}

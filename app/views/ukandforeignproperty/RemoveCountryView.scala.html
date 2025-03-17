@@ -28,7 +28,7 @@
 @(form: Form[_],taxYear: Int, mode: Mode, index: Index, country: Country)(implicit request: Request[_], messages: Messages)
 
 @titleHtml = {
-  @messages("doYouWantToRemoveCountry.heading") @country.name @messages("doYouWantToRemoveCountry.heading2")
+  @messages("doYouWantToRemoveCountry.heading", country.name)
 }
 
 @layout(pageTitle = titleNoForm(titleHtml.toString()), showBackLink = true) {

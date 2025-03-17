@@ -45,36 +45,42 @@ class OtherPropertyRentalIncomeController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    val form = formProvider(request.user.isAgentMessageKey)
-    if (request.userAnswers.isEmpty) {
-      sessionService.createNewEmptySession(request.userId)
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData) { implicit request =>
+      val form = formProvider(request.user.isAgentMessageKey)
+      if (request.userAnswers.isEmpty) {
+        sessionService.createNewEmptySession(request.userId)
+      }
+
+      val preparedForm =
+        request.userAnswers
+          .getOrElse(UserAnswers(request.userId))
+          .get(OtherIncomeFromPropertyPage(propertyType)) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
+      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
     }
 
-    val preparedForm =
-      request.userAnswers.getOrElse(UserAnswers(request.userId)).get(OtherIncomeFromPropertyPage(propertyType)) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
-    Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
-  }
-
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(OtherIncomeFromPropertyPage(propertyType), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(OtherIncomeFromPropertyPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
                 .nextPage(OtherIncomeFromPropertyPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

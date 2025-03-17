@@ -63,11 +63,18 @@ class TwelveMonthPeriodsInLeaseController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(TwelveMonthPeriodsInLeasePage(countryCode), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(TwelveMonthPeriodsInLeasePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
               navigator
-                .nextPage(TwelveMonthPeriodsInLeasePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers)
+                .nextPage(
+                  TwelveMonthPeriodsInLeasePage(countryCode),
+                  taxYear,
+                  mode,
+                  request.userAnswers,
+                  updatedAnswers
+                )
             )
         )
     }

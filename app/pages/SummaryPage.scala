@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
+import models.{ClaimExpensesOrRelief, NormalMode, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers, UKProperty}
 import pages.adjustments.RentalsAdjustmentsCompletePage
 import pages.allowances.{AllowancesSectionFinishedPage, AnnualInvestmentAllowancePage, CapitalAllowancesForACarPage}
 import pages.enhancedstructuresbuildingallowance.{ClaimEsbaPage, EsbaSectionFinishedPage}
@@ -232,7 +232,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       TaskListItem(
         "summary.about",
         cyaDiversionService
-          .redirectToCYAIfFinished[Call](taxYear, userAnswers, "adjustments", Rentals, NormalMode) {
+          .redirectToCYAIfFinished[Call](taxYear, userAnswers, "about", UKProperty, NormalMode) {
             controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear)
           }(identity), {
           val sectionFinished = userAnswers.flatMap(_.get(AboutPropertyCompletePage))
@@ -645,8 +645,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       case RentalsRentARoom => userAnswers.flatMap(_.get(RentalsRaRIncomeCompletePage))
     }
     (claimPIA, incomeSectionFinishedPage, sectionFinished) match {
-      case (Some(true), Some(false), None)       => TaskListTag.CanNotStart
       case (Some(true), None, None)              => TaskListTag.CanNotStart
+      case (Some(true), Some(false), _)          => TaskListTag.CanNotStart
       case (Some(true), Some(true), None)        => TaskListTag.NotStarted
       case (Some(true), Some(true), Some(false)) => TaskListTag.InProgress
       case (Some(true), Some(true), Some(true))  => TaskListTag.Completed

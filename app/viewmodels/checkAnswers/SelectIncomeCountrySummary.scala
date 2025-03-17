@@ -17,10 +17,11 @@
 package viewmodels.checkAnswers
 
 import controllers.foreign.routes
-import models.{CheckMode, UserAnswers}
-import pages.foreign.SelectIncomeCountryPage
+import models.{UserAnswers, CheckMode}
+import pages.foreign.{SelectIncomeCountryPage, Country}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import service.CountryNamesDataSource
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.keyCssClass
 import viewmodels.govuk.summarylist._
@@ -28,11 +29,11 @@ import viewmodels.implicits._
 
 object SelectIncomeCountrySummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, index: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(SelectIncomeCountryPage(index)).map { answer =>
       SummaryListRowViewModel(
         key = KeyViewModel("selectIncomeCountry.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(HtmlFormat.escape(answer.name).toString),
+        value = ValueViewModel(HtmlFormat.escape(CountryNamesDataSource.getCountry(answer.code, currentLang).getOrElse(Country("", "")).name).toString),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

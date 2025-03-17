@@ -40,8 +40,8 @@ import java.time.LocalDate
 import scala.concurrent.Future
 
 class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
-  val taxYear = 2023
-
+  val taxYear: Int = 2023
+  val isPIA: Boolean = true
   "AllowancesStart Controller" - {
 
     "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
@@ -54,8 +54,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+      val userAnswers = UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(RentalsRentARoom), true).get
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
         .build()
 
@@ -68,7 +68,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, emptyUserAnswers, Rentals)
+          AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)
@@ -203,7 +203,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, RentalsRentARoom).url)
+          val request = FakeRequest(GET, routes.AllowancesStartController.onPageLoad(taxYear, Rentals).url)
           val result = route(application, request).value
 
           status(result) mustEqual OK
@@ -230,8 +230,8 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       when(businessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+      val userAnswers = UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
+      val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = true)
         .overrides(bind[BusinessService].toInstance(businessService))
         .build()
 
@@ -244,7 +244,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, emptyUserAnswers, Rentals)
+          AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)

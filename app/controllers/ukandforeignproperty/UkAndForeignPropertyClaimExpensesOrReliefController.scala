@@ -30,16 +30,16 @@ import views.html.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrRelief
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: UkAndForeignPropertyNavigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: UkAndForeignPropertyClaimExpensesOrReliefFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: UkAndForeignPropertyClaimExpensesOrReliefView
+class UkAndForeignPropertyClaimExpensesOrReliefController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkAndForeignPropertyClaimExpensesOrReliefFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkAndForeignPropertyClaimExpensesOrReliefView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -47,7 +47,7 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
-        case None        =>
+        case None =>
           form
         case Some(value) =>
           form.fill(value)
@@ -59,26 +59,27 @@ class UkAndForeignPropertyClaimExpensesOrReliefController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-        val form = formProvider(request.user.isAgentMessageKey)
-        form
-          .bindFromRequest()
-          .fold(
-            formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-            (value: UkAndForeignPropertyClaimExpensesOrRelief) =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, value))
-                _              <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(
-                navigator.nextPage(
-                  UkAndForeignPropertyClaimExpensesOrReliefPage,
-                  taxYear,
-                  mode,
-                  request.userAnswers,
-                  updatedAnswers
-                )
+      val form = formProvider(request.user.isAgentMessageKey)
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          (value: UkAndForeignPropertyClaimExpensesOrRelief) =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(UkAndForeignPropertyClaimExpensesOrReliefPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                UkAndForeignPropertyClaimExpensesOrReliefPage,
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
               )
-          )
+            )
+        )
     }
 
 }

@@ -23,7 +23,7 @@ import org.mockito.ArgumentMatchers.argThat
 import org.mockito.Mockito.when
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.PageConstants.{aboutPath, selectCountryPath}
+import pages.PageConstants.aboutPath
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.mvc.AnyContent
@@ -47,12 +47,14 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
   private def buildDataRequest(countries: List[Country]): DataRequest[AnyContent] =
     DataRequest(FakeRequest(), userAnswersId, user, buildUserAnswers(countries))
 
-  private def mockSessionSet(mockSessionRepository: SessionRepository, countries: List[Country]): OngoingStubbing[Future[Boolean]] =
+  private def mockSessionSet(
+    mockSessionRepository: SessionRepository,
+    countries: List[Country]
+  ): OngoingStubbing[Future[Boolean]] =
     when(
       mockSessionRepository.set(
-        argThat {
-          answers: UserAnswers =>
-            (answers.data \ aboutPath(UKAndForeignProperty) \ "countries").as[List[Country]] == countries
+        argThat { answers: UserAnswers =>
+          (answers.data \ aboutPath(UKAndForeignProperty) \ "countries").as[List[Country]] == countries
         }
       )
     ).thenReturn(Future.successful(true))
@@ -64,7 +66,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(spain))
 
-      val result    = await(service.upsertCountry(Some(spain), Index(1))(buildDataRequest(Nil)))
+      val result = await(service.upsertCountry(Some(spain), Index(1))(buildDataRequest(Nil)))
 
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(spain))
@@ -77,7 +79,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(spain))
 
-      val result    = await(service.upsertCountry(Some(spain), Index(1))(buildDataRequest(List(france))))
+      val result = await(service.upsertCountry(Some(spain), Index(1))(buildDataRequest(List(france))))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(spain))
     }
@@ -89,7 +91,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(france, greece))
 
-      val result    = await(service.upsertCountry(Some(greece), Index(2))(buildDataRequest(List(france, spain))))
+      val result = await(service.upsertCountry(Some(greece), Index(2))(buildDataRequest(List(france, spain))))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(france, greece))
     }
@@ -101,7 +103,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(france, spain, greece))
 
-      val result    = await(service.upsertCountry(Some(greece), Index(3))(buildDataRequest(List(france, spain))))
+      val result = await(service.upsertCountry(Some(greece), Index(3))(buildDataRequest(List(france, spain))))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(france, spain, greece))
     }
@@ -113,7 +115,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(france, spain))
 
-      val result    = await(service.upsertCountry(None, Index(3))(buildDataRequest(List(france, spain))))
+      val result = await(service.upsertCountry(None, Index(3))(buildDataRequest(List(france, spain))))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(france, spain))
     }
@@ -125,14 +127,16 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       // Note how sessionRepository.set is not mocked
 
-      val result    = await(service.upsertCountry(Some(spain), Index(2))(buildDataRequest(List(france, spain))))
+      val result = await(service.upsertCountry(Some(spain), Index(2))(buildDataRequest(List(france, spain))))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(france, spain))
     }
 
     "should do nothing if the given index is 0" in {
-      note("This test is for completeness, because this eventuality should be blocked before the service is called." +
-        "The Index class itself blocks an index of 0 when the request is received by the controller.")
+      note(
+        "This test is for completeness, because this eventuality should be blocked before the service is called." +
+          "The Index class itself blocks an index of 0 when the request is received by the controller."
+      )
 
       val mockSessionRepository: SessionRepository = mock[SessionRepository]
       val service = new UkAndForeignPropertyCountryService(mockSessionRepository)
@@ -152,7 +156,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
 
       mockSessionSet(mockSessionRepository, List(spain))
 
-      val result    = await(service.removeCountry(Index(1))(buildDataRequest(testCountries)))
+      val result = await(service.removeCountry(Index(1))(buildDataRequest(testCountries)))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(spain))
     }
@@ -163,7 +167,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
       val service = new UkAndForeignPropertyCountryService(mockSessionRepository)
       mockSessionSet(mockSessionRepository, List(france))
 
-      val result    = await(service.removeCountry(Index(2))(buildDataRequest(testCountries)))
+      val result = await(service.removeCountry(Index(2))(buildDataRequest(testCountries)))
       val countries = result.get(SelectCountryPage)
       countries mustBe Some(List(france))
     }

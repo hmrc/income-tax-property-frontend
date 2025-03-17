@@ -17,7 +17,7 @@
 package forms.ukrentaroom.adjustments
 
 import forms.behaviours.OptionFieldBehaviours
-import models.RarWhenYouReportedTheLoss
+import models.WhenYouReportedTheLoss
 import play.api.data.FormError
 
 class RarWhenYouReportedTheLossFormProviderSpec extends OptionFieldBehaviours {
@@ -29,10 +29,10 @@ class RarWhenYouReportedTheLossFormProviderSpec extends OptionFieldBehaviours {
     val fieldName = "rarWhenYouReportedTheLoss"
     val requiredKey = "rarWhenYouReportedTheLoss.error.required.individual"
 
-    behave like optionsField[RarWhenYouReportedTheLoss](
+    behave like optionsField[WhenYouReportedTheLoss](
       form,
       fieldName,
-      validValues  = RarWhenYouReportedTheLoss.values,
+      validValues  = WhenYouReportedTheLoss.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

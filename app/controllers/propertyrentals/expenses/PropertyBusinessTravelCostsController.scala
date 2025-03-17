@@ -50,7 +50,7 @@ class PropertyBusinessTravelCostsController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      
+
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
     }
 

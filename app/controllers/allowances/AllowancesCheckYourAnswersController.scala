@@ -20,9 +20,10 @@ import audit.{AuditModel, AuditService, RentalsAllowance}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
 import models.JourneyPath.PropertyRentalAllowances
+import models._
 import models.backend.ServiceError
 import models.requests.DataRequest
-import models._
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -115,17 +116,18 @@ class AllowancesCheckYourAnswersController @Inject() (
   )(implicit hc: HeaderCarrier): Unit = {
 
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Allowances,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.Allowances,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       allowances
     )
 

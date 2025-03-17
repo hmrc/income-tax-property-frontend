@@ -20,9 +20,8 @@ import audit.{AuditService, RentARoomAuditModel, RentARoomExpenses}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.propertyrentals.expenses.{ExpensesSaveFailed, NotFoundException}
-import models.JourneyContext
+import models.{JourneyContext, JourneyPath}
 import models.requests.DataRequest
-import models.JourneyPath
 import pages.ukrentaroom.expenses.ConsolidatedExpensesRRPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}

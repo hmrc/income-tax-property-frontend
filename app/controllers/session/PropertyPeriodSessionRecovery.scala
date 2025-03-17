@@ -19,8 +19,8 @@ package controllers.session
 import com.google.inject.Inject
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models.backend.ServiceError
-import models.{FetchedPropertyData, UserAnswers}
 import models.requests.OptionalDataRequest
+import models.{FetchedPropertyData, UserAnswers}
 import play.api.mvc.{AnyContent, Result}
 import repositories.SessionRepository
 import service.PropertySubmissionService
@@ -42,7 +42,7 @@ class PropertyPeriodSessionRecovery @Inject() (
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
     val basicUserAnswers = request.userAnswers.getOrElse(UserAnswers(request.userId))
     for {
-      ukFetchedData <- propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, request.user)
+      ukFetchedData      <- propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, request.user)
       foreignFetchedData <- propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, request.user)
       fetchedData = mergeFetchedData(ukFetchedData, foreignFetchedData)
       currentUserAnswersMaybe <- sessionRepository
@@ -70,16 +70,15 @@ class PropertyPeriodSessionRecovery @Inject() (
 
   def mergeFetchedData(
     eitherUkFetchedData: Either[ServiceError, FetchedPropertyData],
-    eitherForeignFetchedData: Either[ServiceError, FetchedPropertyData]): Either[ServiceError, FetchedPropertyData] = {
+    eitherForeignFetchedData: Either[ServiceError, FetchedPropertyData]
+  ): Either[ServiceError, FetchedPropertyData] =
     eitherUkFetchedData.fold(
       _ => eitherForeignFetchedData,
-      ukFetchedData => {
+      ukFetchedData =>
         eitherForeignFetchedData.fold(
           _ => Right(ukFetchedData),
           foreignFetchedData => Right(ukFetchedData.copy(foreignPropertyData = foreignFetchedData.foreignPropertyData))
         )
-      }
     )
 
-  }
 }

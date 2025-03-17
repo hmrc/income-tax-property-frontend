@@ -25,5 +25,5 @@ case object RaRUnusedLossesBroughtForwardPage extends QuestionPage[UnusedLossesB
 
   override def path: JsPath = JsPath \ adjustmentsPath(RentARoom) \ toString
 
-  override def toString: String = "raRUnusedLossesBroughtForward"
+  override def toString: String = "unusedLossesBroughtForward"
 }

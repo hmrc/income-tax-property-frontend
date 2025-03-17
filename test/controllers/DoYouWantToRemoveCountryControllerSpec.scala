@@ -89,7 +89,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, index, NormalMode, country.name)(
+        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, country.name)(
           request,
           messages(application)
         ).toString

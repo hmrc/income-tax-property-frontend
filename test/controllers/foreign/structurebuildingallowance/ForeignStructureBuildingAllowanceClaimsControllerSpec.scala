@@ -51,7 +51,6 @@ class ForeignStructureBuildingAllowanceClaimsControllerSpec extends SpecBase wit
   val taxYear = 2024
   val countryCode = "AUS"
   val list: SummaryList = SummaryListViewModel(Seq.empty)
-  val audit: AuditService = mock[AuditService]
   val index = 1
 
   lazy val foreignStructureBuildingAllowanceClaimsRoute: String =

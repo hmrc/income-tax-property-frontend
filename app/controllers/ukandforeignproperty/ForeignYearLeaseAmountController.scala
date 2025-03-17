@@ -30,26 +30,25 @@ import views.html.ukandforeignproperty.ForeignYearLeaseAmountView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class ForeignYearLeaseAmountController @Inject()(
-                                                              override val messagesApi: MessagesApi,
-                                                              sessionRepository: SessionRepository,
-                                                              navigator: UkAndForeignPropertyNavigator,
-                                                              identify: IdentifierAction,
-                                                              getData: DataRetrievalAction,
-                                                              requireData: DataRequiredAction,
-                                                              formProvider: ForeignYearLeaseAmountFormProvider,
-                                                              val controllerComponents: MessagesControllerComponents,
-                                                              view: ForeignYearLeaseAmountView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignYearLeaseAmountController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignYearLeaseAmountFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignYearLeaseAmountView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ForeignYearLeaseAmountPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,16 +57,17 @@ class ForeignYearLeaseAmountController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignYearLeaseAmountPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, taxYear, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignYearLeaseAmountPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(ForeignYearLeaseAmountPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

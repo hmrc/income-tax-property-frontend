@@ -142,12 +142,15 @@ class ForeignPropertySummaryPageSpec
   "foreignPropertyItems" - {
     "should show the correct items when claiming PIA and Income section is completed" in {
       val isClaimingPIA = true
-      val userAnswers = UserAnswers(id = "foreign-property-items")
+      val accrualsOrCash = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
         .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         .flatMap(_.set(ForeignIncomeSectionCompletePage(countryCode), true))
         .toOption
 
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+//      TODO - TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(isComplete = true),
@@ -158,11 +161,14 @@ class ForeignPropertySummaryPageSpec
 
     "should show the correct items when claiming PIA and Income section is incomplete" in {
       val isClaimingPIA = true
-      val userAnswers = UserAnswers(id = "foreign-property-items")
+      val accrualsOrCash = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
         .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         .toOption
 
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+//      TODO-TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(),
@@ -171,12 +177,13 @@ class ForeignPropertySummaryPageSpec
       taskList shouldBe res
     }
 
-    "should show the correct items when not claiming PIA" in {
+    "should show the correct items when not claiming PIA with accruals" in {
       val isClaimingPIA = false
-      val userAnswers = UserAnswers(id = "foreign-property-items")
-        .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
-        .toOption
+      val accrualsOrCash = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+      //      TODO-TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
         incomeItem(),
@@ -188,9 +195,27 @@ class ForeignPropertySummaryPageSpec
       taskList shouldBe res
     }
 
+//    "should show the correct items when not claiming PIA with Cash" in {
+//      val isClaimingPIA = false
+//      val accrualsOrCash = false
+//      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+//      val res = Seq(
+//        foreignTaxItem,
+//        incomeItem(),
+//        expensesItem,
+//        allowancesItem,
+//        adjustmentsItem(isClaimingPIA)
+//      )
+//      taskList shouldBe res
+//    }
+
     "should not show adjustments when PIA has not been specified" in {
-      val userAnswers = UserAnswers(id = "foreign-property-items")
+      val accrualsOrCash = true
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, Some(userAnswers))
+//      TODO-TBG
+      //      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, Some(userAnswers))
       val res = Seq(
         foreignTaxItem,
         incomeItem()
@@ -200,6 +225,7 @@ class ForeignPropertySummaryPageSpec
 
     "should redirect to the CYA page when the task list tag is 'Completed' and SBA is not being claimed" in {
       val isClaimingPIA = false
+      val accrualsOrCash = true
       val userAnswers = (for {
         ua  <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
@@ -211,25 +237,14 @@ class ForeignPropertySummaryPageSpec
       } yield ua6).toOption
 
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+//      TODO-TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
-        foreignTaxItem
-          .copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        incomeItem().copy(
-          taskListTag = Completed,
-          call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        expensesItem.copy(
-          taskListTag = Completed,
-          call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        allowancesItem.copy(
-          taskListTag = Completed,
-          call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        sbaItem.copy(
-          taskListTag = Completed,
-          call = ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
+        foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        sbaItem.copy(taskListTag = Completed, call = ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res
@@ -237,6 +252,7 @@ class ForeignPropertySummaryPageSpec
 
     "should redirect to the CYA page when the task list tag is 'Completed' and SBA is being claimed" in {
       val isClaimingPIA = false
+      val accrualsOrCash = true
       val sbaAddress: ForeignStructureBuildingAllowance = ForeignStructureBuildingAllowance(
         foreignStructureBuildingAllowanceClaim = 1,
         foreignStructureBuildingQualifyingDate = LocalDate.now(),
@@ -259,25 +275,39 @@ class ForeignPropertySummaryPageSpec
       } yield ua7).toOption
 
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+//      TODO-TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
-        foreignTaxItem
-          .copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
-        incomeItem().copy(
-          taskListTag = Completed,
-          call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        expensesItem.copy(
-          taskListTag = Completed,
-          call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        allowancesItem.copy(
-          taskListTag = Completed,
-          call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)
-        ),
-        sbaItem.copy(
-          taskListTag = Completed,
-          call = ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)
-        ),
+        foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        sbaItem.copy(taskListTag = Completed, call = ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)),
+        adjustmentsItem(isClaimingPIA)
+      )
+      taskList shouldBe res
+    }
+
+    "should redirect to the CYA page when the task list tag is 'Completed' and with no sba for Cash basis" in {
+      val isClaimingPIA = false
+      val accrualsOrCash = false
+      val userAnswers = (for {
+        ua <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
+        ua2 <- ua1.set(ForeignIncomeSectionCompletePage(countryCode), true)
+        ua3 <- ua2.set(ForeignAllowancesCompletePage(countryCode), true)
+        ua4 <- ua3.set(ForeignExpensesSectionCompletePage(countryCode), true)
+        ua5 <- ua4.set(ForeignClaimStructureBuildingAllowancePage(countryCode), false)
+      } yield ua5).toOption
+
+      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, countryCode, userAnswers)
+//      TODO-TBG
+//      val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
+      val res = Seq(
+        foreignTaxItem.copy(taskListTag = Completed, call = ForeignTaxCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        incomeItem().copy(taskListTag = Completed, call = ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        expensesItem.copy(taskListTag = Completed, call = ForeignPropertyExpensesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
+        allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA)
       )
       taskList shouldBe res

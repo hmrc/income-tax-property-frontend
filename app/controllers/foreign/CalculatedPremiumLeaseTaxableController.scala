@@ -32,46 +32,52 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CalculatedPremiumLeaseTaxableController @Inject() (
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         foreignPropertyNavigator: ForeignPropertyNavigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: CalculatedPremiumLeaseTaxableFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: CalculatedPremiumLeaseTaxableView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CalculatedPremiumLeaseTaxableFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CalculatedPremiumLeaseTaxableView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear:Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[PremiumCalculated] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(CalculatedPremiumLeaseTaxablePage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, mode, request.user.isAgentMessageKey))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[PremiumCalculated] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CalculatedPremiumLeaseTaxablePage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(
-            foreignPropertyNavigator.nextPage(
-              CalculatedPremiumLeaseTaxablePage(countryCode),
-              taxYear,
-              mode,
-              request.userAnswers,
-              updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(CalculatedPremiumLeaseTaxablePage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              foreignPropertyNavigator.nextPage(
+                CalculatedPremiumLeaseTaxablePage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

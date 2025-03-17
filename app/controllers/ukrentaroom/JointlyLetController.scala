@@ -18,8 +18,8 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.JointlyLetFormProvider
-import models.{Mode, PropertyType}
 import models.requests.DataRequest
+import models.{Mode, PropertyType}
 import navigation.Navigator
 import pages.ukrentaroom.JointlyLetPage
 import play.api.i18n.{I18nSupport, MessagesApi}

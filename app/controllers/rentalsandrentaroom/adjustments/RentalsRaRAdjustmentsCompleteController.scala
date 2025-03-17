@@ -33,7 +33,7 @@ import views.html.rentalsandrentaroom.adjustments.RentalsRaRAdjustmentsCompleteV
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RentalsRaRAdjustmentsCompleteController @Inject()(
+class RentalsRaRAdjustmentsCompleteController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   identify: IdentifierAction,

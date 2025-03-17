@@ -25,4 +25,6 @@ case class Country(
 
 object Country {
   implicit val format: Format[Country] = Json.format[Country]
+
+  val UK: Country = Country(name = "United Kingdom", code = "UK")
 }

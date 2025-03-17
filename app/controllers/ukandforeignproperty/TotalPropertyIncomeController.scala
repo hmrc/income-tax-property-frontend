@@ -18,7 +18,7 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.TotalPropertyIncomeFormProvider
-import models.{Mode, TotalIncome, TotalPropertyIncome, UserAnswers}
+import models.{Mode, TotalPropertyIncome, UserAnswers}
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.TotalPropertyIncomePage
 import play.api.data.Form
@@ -32,46 +32,46 @@ import views.html.ukandforeignproperty.TotalPropertyIncomeView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TotalPropertyIncomeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: UkAndForeignPropertyNavigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: TotalPropertyIncomeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       sessionService: SessionService,
-                                       view: TotalPropertyIncomeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TotalPropertyIncomeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: TotalPropertyIncomeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  sessionService: SessionService,
+  view: TotalPropertyIncomeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[TotalPropertyIncome] = formProvider()
 
-  def onPageLoad(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalPropertyIncomePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    if (request.userAnswers.isEmpty) { sessionService.createNewEmptySession(request.userId) }
+    val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalPropertyIncomePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
+    Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalPropertyIncomePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield  {
-              Redirect(navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
-            }
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalPropertyIncomePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(TotalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

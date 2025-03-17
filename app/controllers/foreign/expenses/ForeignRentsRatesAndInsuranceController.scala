@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.expenses.ForeignRentsRatesAndInsuranceFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.expenses.ForeignRentsRatesAndInsurancePage
+import pages.foreign.expenses.{ForeignExpensesSectionAddCountryCode, ForeignRentsRatesAndInsurancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,44 +30,57 @@ import views.html.foreign.expenses.ForeignRentsRatesAndInsuranceView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignRentsRatesAndInsuranceController @Inject()(
-                                                         override val messagesApi: MessagesApi,
-                                                         sessionRepository: SessionRepository,
-                                                         navigator: ForeignPropertyNavigator,
-                                                         identify: IdentifierAction,
-                                                         getData: DataRetrievalAction,
-                                                         requireData: DataRequiredAction,
-                                                         formProvider: ForeignRentsRatesAndInsuranceFormProvider,
-                                                         val controllerComponents: MessagesControllerComponents,
-                                                         view: ForeignRentsRatesAndInsuranceView
-                                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignRentsRatesAndInsuranceController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignRentsRatesAndInsuranceFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignRentsRatesAndInsuranceView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
       val preparedForm = request.userAnswers.get(ForeignRentsRatesAndInsurancePage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentsRatesAndInsurancePage(countryCode), value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignRentsRatesAndInsurancePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignRentsRatesAndInsurancePage(countryCode), value))
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignExpensesSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
+            } yield Redirect(
+              navigator.nextPage(
+                ForeignRentsRatesAndInsurancePage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

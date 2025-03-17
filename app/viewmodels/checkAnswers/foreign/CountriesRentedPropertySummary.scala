@@ -19,17 +19,19 @@ package viewmodels.checkAnswers.foreign
 import models.{CheckMode, UserAnswers}
 import pages.foreign.{Country, IncomeSourceCountries, SelectIncomeCountryPage}
 import play.api.i18n.Messages
+import service.CountryNamesDataSource
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, selectCountriesValueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object CountriesRentedPropertySummary {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, index: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(SelectIncomeCountryPage(index)).map { country =>
-      val value = s"${country.name}"
+      val countryChosen = CountryNamesDataSource.getCountry(country.code, currentLang).getOrElse(Country("", ""))
+      val value = s"${countryChosen.name}"
       SummaryListRowViewModel(
         key = KeyViewModel(HtmlContent(value)),
         value = ValueViewModel(HtmlContent(messages("countriesRentedProperty.staticContent"))),
@@ -49,15 +51,17 @@ object CountriesRentedPropertySummary {
       )
     }
 
-  def rowList(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def rowList(taxYear: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] = {
+
+
     answers.get(IncomeSourceCountries).map { country: Array[Country] =>
-      val value: Seq[String] = country.toList.map { c: Country =>
-        s"${c.name}"
+      val value: Seq[String] = country.toList.flatMap {
+        country => CountryNamesDataSource.getCountry(country.code, currentLang).map(c => c.name).toSeq
       }
       val countryList: String = value.mkString("<br>")
       SummaryListRowViewModel(
         key = KeyViewModel("countriesRentedProperty.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(HtmlContent(countryList)).withCssClass(valueCssClass),
+        value = ValueViewModel(HtmlContent(countryList)).withCssClass(selectCountriesValueCssClass),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
@@ -68,5 +72,6 @@ object CountriesRentedPropertySummary {
         actionsCss = "w-25"
       )
     }
+  }
 
 }

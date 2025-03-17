@@ -83,7 +83,12 @@ class RentalsRaRIncomeCompleteController @Inject() (
                         )
             } yield status.fold(
               _ =>
-                statusError(journeyName = "income", propertyType = RentalsRentARoom, user = request.user, taxYear = taxYear),
+                statusError(
+                  journeyName = "income",
+                  propertyType = RentalsRentARoom,
+                  user = request.user,
+                  taxYear = taxYear
+                ),
               _ =>
                 Redirect(
                   navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)

@@ -22,60 +22,73 @@ import forms.foreign.ForeignIncomeTaxFormProvider
 import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.ForeignIncomeTaxPage
+import pages.foreign.income.ForeignPropertyTaxSectionAddCountryCode
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.ForeignIncomeTaxView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignIncomeTaxController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         foreignPropertyNavigator: ForeignPropertyNavigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ForeignIncomeTaxFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignIncomeTaxView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignIncomeTaxController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignPropertyNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignIncomeTaxFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignIncomeTaxView,
+  languageUtils: LanguageUtils
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
       val preparedForm = request.userAnswers.get(ForeignIncomeTaxPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      CountryNamesDataSource.getCountry(countryCode) match {
-        case Some(country) => Future.successful(Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, country, mode)))
+      CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
+        case Some(country) =>
+          Future.successful(Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, country, mode)))
         case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
       }
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          CountryNamesDataSource.getCountry(countryCode) match {
-            case Some(country) => Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, country, mode)))
-            case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
-          },
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignIncomeTaxPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(foreignPropertyNavigator.nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
+              case Some(country) =>
+                Future
+                  .successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, country, mode)))
+              case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
+            },
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignIncomeTaxPage(countryCode), value))
+              updatedAnswersWithCountryCode <-
+                Future.fromTry(updatedAnswers.set(ForeignPropertyTaxSectionAddCountryCode(countryCode), countryCode))
+              _ <- sessionRepository.set(updatedAnswersWithCountryCode)
+            } yield Redirect(
+              foreignPropertyNavigator
+                .nextPage(ForeignIncomeTaxPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
+    }
 
 }

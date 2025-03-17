@@ -31,26 +31,25 @@ import views.html.about.UKPropertySelectView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UKPropertySelectController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: UKPropertyFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: UKPropertySelectView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-
+class UKPropertySelectController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UKPropertyFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UKPropertySelectView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(UKPropertyPage) match {
-          case None => form
-          case Some(value) => form.fill(value)
+        case None        => form
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
@@ -59,15 +58,16 @@ class UKPropertySelectController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form: Form[Set[UKPropertySelect]] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UKPropertyPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UKPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UKPropertyPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(UKPropertyPage, taxYear, mode, request.userAnswers, updatedAnswers))
+        )
   }
 }

@@ -19,7 +19,7 @@ package controllers.foreign.adjustments
 import controllers.actions._
 import forms.foreign.adjustments.ForeignUnusedLossesPreviousYearsFormProvider
 import models.{Mode, UnusedLossesPreviousYears}
-import navigation.{ForeignPropertyNavigator, Navigator}
+import navigation.ForeignPropertyNavigator
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,41 +31,53 @@ import views.html.foreign.adjustments.ForeignUnusedLossesPreviousYearsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignUnusedLossesPreviousYearsController @Inject()(
-                                                            override val messagesApi: MessagesApi,
-                                                            sessionRepository: SessionRepository,
-                                                            foreignNavigator: ForeignPropertyNavigator,
-                                                            identify: IdentifierAction,
-                                                            getData: DataRetrievalAction,
-                                                            requireData: DataRequiredAction,
-                                                            formProvider: ForeignUnusedLossesPreviousYearsFormProvider,
-                                                            val controllerComponents: MessagesControllerComponents,
-                                                            view: ForeignUnusedLossesPreviousYearsView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignUnusedLossesPreviousYearsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignUnusedLossesPreviousYearsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignUnusedLossesPreviousYearsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form: Form[UnusedLossesPreviousYears] = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignUnusedLossesPreviousYearsPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, mode))
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form: Form[UnusedLossesPreviousYears] = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignUnusedLossesPreviousYearsPage(countryCode), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(foreignNavigator.nextPage(ForeignUnusedLossesPreviousYearsPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-      )
-  }
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future
+              .successful(BadRequest(view(formWithErrors, taxYear, countryCode, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ForeignUnusedLossesPreviousYearsPage(countryCode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              foreignNavigator.nextPage(
+                ForeignUnusedLossesPreviousYearsPage(countryCode),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
+            )
+        )
+    }
 }

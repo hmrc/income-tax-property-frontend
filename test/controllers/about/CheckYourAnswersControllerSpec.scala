@@ -16,10 +16,9 @@
 
 package controllers.about
 
-import audit.PropertyAbout
 import base.SpecBase
 import models.TotalIncome.Under
-import models.{JourneyContext, JourneyPath, UKPropertySelect, UserAnswers}
+import models.{JourneyContext, JourneyPath, PropertyAbout, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -39,8 +38,6 @@ import scala.concurrent.Future
 class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
 
   val taxYear = 2024
-
-  private val propertySubmissionService = mock[PropertySubmissionService]
 
   def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/uk-property/about/complete-yes-no")
 

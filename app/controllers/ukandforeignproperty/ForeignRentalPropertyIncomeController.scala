@@ -18,39 +18,38 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.ForeignRentalPropertyIncomeFormProvider
-import views.html.ukandforeignproperty.ForeignRentalPropertyIncomeView
-
-import javax.inject.Inject
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.ForeignRentalPropertyIncomePage
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.ukandforeignproperty.ForeignRentalPropertyIncomeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignRentalPropertyIncomeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: UkAndForeignPropertyNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ForeignRentalPropertyIncomeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ForeignRentalPropertyIncomeView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignRentalPropertyIncomeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignRentalPropertyIncomeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignRentalPropertyIncomeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[BigDecimal] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ForeignRentalPropertyIncomePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,16 +58,18 @@ class ForeignRentalPropertyIncomeController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentalPropertyIncomePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignRentalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignRentalPropertyIncomePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(ForeignRentalPropertyIncomePage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

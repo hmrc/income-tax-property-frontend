@@ -36,18 +36,18 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class SectionCompleteController @Inject() (
-                                             override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
-                                             navigator: UkAndForeignPropertyNavigator,
-                                             identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             formProvider: SectionCompleteFormProvider,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: SectionCompleteView,
-                                             journeyAnswersService: JourneyAnswersService
-                                           )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport {
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: SectionCompleteFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: SectionCompleteView,
+  journeyAnswersService: JourneyAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider()
 
@@ -73,15 +73,15 @@ class SectionCompleteController @Inject() (
                 Future.fromTry(request.userAnswers.set(SectionCompletePage, value))
               _ <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService.setStatus(
-                JourneyContext(
-                  taxYear = taxYear,
-                  mtditid = request.user.mtditid,
-                  nino = request.user.nino,
-                  journeyPath = UkAndForeignPropertyAbout
-                ),
-                status = statusForPage(value),
-                request.user
-              )
+                          JourneyContext(
+                            taxYear = taxYear,
+                            mtditid = request.user.mtditid,
+                            nino = request.user.nino,
+                            journeyPath = UkAndForeignPropertyAbout
+                          ),
+                          status = statusForPage(value),
+                          request.user
+                        )
             } yield status.fold(
               _ =>
                 statusError(

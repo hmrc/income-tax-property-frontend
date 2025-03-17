@@ -23,9 +23,10 @@ import navigation.ForeignPropertyNavigator
 import pages.foreign.IncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.BusinessService
+import service.{BusinessService, CountryNamesDataSource}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.allowances.ForeignPropertyAllowancesStartView
 
 import javax.inject.Inject
@@ -39,14 +40,21 @@ class ForeignPropertyAllowancesStartController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignPropertyAllowancesStartView,
-  businessService: BusinessService
+  businessService: BusinessService,
+  languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val maybeCountryName =
-        request.userAnswers.get(IncomeSourceCountries).flatMap(_.find(_.code == countryCode)).map(_.name)
+        request.userAnswers
+          .get(IncomeSourceCountries)
+          .map(_.array.toList.flatMap { country =>
+            CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+          })
+          .flatMap(country => country.find(_.code == countryCode))
+          .map(_.name)
       val countryName = maybeCountryName.getOrElse("")
 
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
@@ -56,8 +64,8 @@ class ForeignPropertyAllowancesStartController @Inject() (
             case Some(true) =>
               logger.info("Accounting method: Accruals")
               Future.successful(
-                  Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
-          )
+                Ok(view(taxYear, countryCode, countryName, request.user.isAgentMessageKey, accrualsOrCash = true))
+              )
             case Some(false) =>
               logger.info("Accounting method: Cash")
               Future.successful(

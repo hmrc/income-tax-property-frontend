@@ -17,15 +17,18 @@
 package audit
 
 import models.AccountingMethod.Traditional
-import models.{AuditPropertyType, JourneyName, SectionName, TotalIncome, UKPropertySelect}
+import models.{AuditPropertyType, JourneyName, SectionName, TotalIncome, UKPropertySelect, PropertyAbout}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.Country
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import audit.{PropertyAbout => PropertyAboutAudit}
+
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -38,21 +41,22 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
     val hc = HeaderCarrier()
     val propertyAbout = PropertyAbout(TotalIncome.Under, Some(UKPropertySelect.values), Some(true))
     val auditModel = AuditModel(
-      "NINO",
       "Agent",
+      "NINO",
       "mtdItId",
-      agentReferenceNumber = Some("agentReferenceNumber"),
       2024,
-      isUpdate = false,
-      sectionName = SectionName.About,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.About,
       accountingMethod = Traditional,
+      isUpdate = false,
       isFailed = false,
-      propertyAbout
+      agentReferenceNumber = Some("agentReferenceNumber"),
+      PropertyAboutAudit(propertyAbout)
     )
 
-    service.sendRentalsAuditEvent(auditModel)(hc, implicitly[Writes[AuditModel[PropertyAbout]]])
+    service.sendRentalsAuditEvent(auditModel)(hc, implicitly[Writes[AuditModel[PropertyAboutAudit]]])
 
     verify(mockAuditConnector, times(1))
       .sendExplicitAudit(eqTo("CreateOrAmendRentalsUpdate"), eqTo(auditModel))(eqTo(hc), any(), any())

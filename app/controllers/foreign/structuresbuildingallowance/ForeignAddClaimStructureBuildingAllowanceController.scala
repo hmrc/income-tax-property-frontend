@@ -17,16 +17,16 @@
 package controllers.foreign.structuresbuildingallowance
 
 import controllers.actions._
+import pages.foreign.structurebuildingallowance.{ForeignStructureBuildingAllowanceGroup, ForeignStructureBuildingAllowancePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import pages.foreign.structurebuildingallowance.{ForeignStructureBuildingAllowanceGroup, ForeignStructureBuildingAllowancePage}
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class ForeignAddClaimStructureBuildingAllowanceController @Inject()(
+class ForeignAddClaimStructureBuildingAllowanceController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
@@ -38,7 +38,8 @@ class ForeignAddClaimStructureBuildingAllowanceController @Inject()(
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val nextIndex = request.userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)).map(_.length).getOrElse(0)
+      val nextIndex =
+        request.userAnswers.get(ForeignStructureBuildingAllowanceGroup(countryCode)).map(_.length).getOrElse(0)
       Ok(view(ForeignStructureBuildingAllowancePage(taxYear, countryCode, nextIndex, request.user.isAgentMessageKey)))
     }
 }

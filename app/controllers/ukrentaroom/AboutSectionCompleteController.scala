@@ -82,8 +82,7 @@ class AboutSectionCompleteController @Inject() (
                           request.user
                         )
             } yield status.fold(
-              _ =>
-                statusError(journeyName = "about", propertyType = RentARoom, user = request.user, taxYear = taxYear),
+              _ => statusError(journeyName = "about", propertyType = RentARoom, user = request.user, taxYear = taxYear),
               _ =>
                 Redirect(
                   navigator.nextPage(UKPropertySelectPage, taxYear, mode, request.userAnswers, updatedAnswers)

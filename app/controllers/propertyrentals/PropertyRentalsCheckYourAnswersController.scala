@@ -21,8 +21,9 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import controllers.exceptions.SaveJourneyAnswersFailed
 import models.JourneyPath.PropertyRentalAbout
-import models.requests.DataRequest
 import models._
+import models.requests.DataRequest
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -101,18 +102,19 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.About,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.About,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
-      propertyRentalsAbout
+      agentReferenceNumber = request.user.agentRef,
+      userEnteredDetails = propertyRentalsAbout
     )
 
     audit.sendRentalsAuditEvent(auditModel)

@@ -30,7 +30,7 @@ import views.html.ukrentaroom.expenses.ConsolidatedExpensesRRView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConsolidatedExpensesRRController @Inject()(
+class ConsolidatedExpensesRRController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,

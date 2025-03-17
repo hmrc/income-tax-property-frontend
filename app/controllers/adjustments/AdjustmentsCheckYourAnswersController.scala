@@ -23,10 +23,13 @@ import controllers.exceptions.{InternalErrorFailure, SaveJourneyAnswersFailed}
 import models.JourneyPath.PropertyRentalAdjustments
 import models._
 import models.requests.DataRequest
+import pages.adjustments.UnusedLossesBroughtForwardPage
+import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.PropertySubmissionService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.adjustments._
@@ -35,6 +38,7 @@ import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.math.BigDecimal.RoundingMode
 
 class AdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -50,17 +54,33 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val list = SummaryListViewModel(
-        rows = Seq(
-          BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
-          PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
-          PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
-          RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
-          ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
-          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
-        ).flatten
-      )
+      val summaryListRows = Seq(
+        PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, Rentals),
+        BalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
+        PropertyIncomeAllowanceSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+        RenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers, Rentals),
+        ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals),
+        UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, Rentals)
+      ).flatten
 
+      val unusedLossesBroughtForwardAmount = request.userAnswers.get(UnusedLossesBroughtForwardPage(Rentals)).flatMap(_.unusedLossesBroughtForwardAmount).getOrElse(BigDecimal(0))
+
+      val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
+        request.userAnswers
+          .get(UnusedLossesBroughtForwardPage(Rentals))
+          .filter(_.unusedLossesBroughtForwardYesOrNo)
+          .map(_ =>
+            Seq(
+              UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),
+              WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey, unusedLossesBroughtForwardAmount)
+            ).flatten
+          )
+          .getOrElse(Seq(UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey)).flatten)
+
+      val list = SummaryListViewModel(
+        rows = summaryListRows
+          .appendedAll(UnusedLossesBroughtForwardRows)
+      )
       Ok(view(list, taxYear))
   }
 
@@ -100,17 +120,18 @@ class AdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val auditModel = AuditModel(
-      request.user.nino,
       request.user.affinityGroup,
+      request.user.nino,
       request.user.mtditid,
-      request.user.agentRef,
       taxYear,
-      isUpdate = false,
-      sectionName = SectionName.Adjustments,
       propertyType = AuditPropertyType.UKProperty,
+      countryCode = Country.UK.code,
       journeyName = JourneyName.Rentals,
+      sectionName = SectionName.Adjustments,
       accountingMethod = accountingMethod,
+      isUpdate = false,
       isFailed = isFailed,
+      request.user.agentRef,
       adjustments
     )
 

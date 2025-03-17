@@ -85,8 +85,13 @@ class ForeignCountriesRentedViewSpec extends SpecBase with Matchers {
       val form = Form("addAnotherCountry" -> boolean)
       val country = Country("France", "FR")
       val userAnswers = UserAnswers("id").set(SelectIncomeCountryPage(0), country).success.value
+      val countryFromData = userAnswers.get(SelectIncomeCountryPage(0))
+      match {
+        case Some(country) => country.name
+        case _ => ""
+      }
       val rows = Seq(
-        CountriesRentedPropertySummary.row(taxYear, 0, userAnswers).get
+        SelectCountrySummary.row(taxYear, Index(0), countryFromData)
       )
       val list = SummaryList(rows)
       val mode = NormalMode

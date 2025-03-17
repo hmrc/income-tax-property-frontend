@@ -43,8 +43,8 @@ class RentsRatesAndInsuranceController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(RentsRatesAndInsurancePage(propertyType)) match {
         case None        => form
@@ -52,16 +52,18 @@ class RentsRatesAndInsuranceController @Inject() (
       }
 
       Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       form
         .bindFromRequest()
         .fold(
           formWithErrors =>
-            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))),
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey, propertyType))
+            ),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentsRatesAndInsurancePage(propertyType), value))
@@ -71,5 +73,5 @@ class RentsRatesAndInsuranceController @Inject() (
                 .nextPage(RentsRatesAndInsurancePage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
             )
         )
-  }
+    }
 }

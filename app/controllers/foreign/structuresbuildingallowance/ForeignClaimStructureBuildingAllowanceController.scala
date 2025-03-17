@@ -30,7 +30,7 @@ import views.html.foreign.structurebuildingallowance.ForeignClaimStructureBuildi
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ForeignClaimStructureBuildingAllowanceController @Inject()(
+class ForeignClaimStructureBuildingAllowanceController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   foreignNavigator: ForeignPropertyNavigator,

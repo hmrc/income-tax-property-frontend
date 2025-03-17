@@ -30,7 +30,7 @@ object SelectCountrySummary  {
   def row(taxYear: Int, index: Index, name: String)(implicit messages: Messages): SummaryListRow =
     SummaryListRowViewModel(
       key = KeyViewModel(HtmlFormat.escape(name).toString).withCssClass(keyCssClass),
-      value = ValueViewModel(HtmlFormat.escape("").toString),
+      value = ValueViewModel(HtmlFormat.escape(messages("countriesRentedProperty.staticContent")).toString),
       actions = Seq(
         ActionItemViewModel(
           "site.change",

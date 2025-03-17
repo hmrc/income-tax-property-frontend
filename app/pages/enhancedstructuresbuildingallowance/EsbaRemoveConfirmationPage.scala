@@ -25,5 +25,5 @@ case class EsbaRemoveConfirmationPage(propertyType: PropertyType) extends Questi
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
-  override def toString: String = "esbaRemoveConfirmation"
+  override def toString: String = "enhancedStructureBuildingAllowanceRemoveConfirmation"
 }

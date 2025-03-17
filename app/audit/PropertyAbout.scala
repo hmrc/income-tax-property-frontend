@@ -16,22 +16,33 @@
 
 package audit
 
-import models.{TotalIncome, UKPropertySelect}
-import pages.PageConstants
-import play.api.libs.json.{Format, JsPath, Json}
-import queries.Gettable
+import models.TotalIncome._
+import models.UKPropertySelect
+import play.api.libs.json.{Format, Json}
 
 case class PropertyAbout(
-  totalIncome: TotalIncome,
+  totalIncomeUnder1k: Boolean,
+  totalIncomeBetween1kAnd85k: Boolean,
+  totalIncomeOver85k: Boolean,
   ukProperty: Option[Seq[UKPropertySelect]],
   reportPropertyIncome: Option[Boolean]
 )
 
-case object PropertyAbout extends Gettable[PropertyAbout] {
+object PropertyAbout {
+  implicit val format: Format[PropertyAbout] = Json.format[PropertyAbout]
 
-  implicit val formats: Format[PropertyAbout] = Json.format[PropertyAbout]
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = PageConstants.propertyAbout
+  def apply(propertyAbout: models.PropertyAbout): PropertyAbout = {
+    val (under, between, over) = propertyAbout.totalIncome match {
+      case Under =>   (true, false, false)
+      case Between => (false, true, false)
+      case Over =>    (false, false, true)
+    }
+    PropertyAbout(
+      totalIncomeUnder1k = under,
+      totalIncomeBetween1kAnd85k = between,
+      totalIncomeOver85k = over,
+      ukProperty = propertyAbout.ukProperty,
+      reportPropertyIncome = propertyAbout.reportPropertyIncome
+    )
+  }
 }

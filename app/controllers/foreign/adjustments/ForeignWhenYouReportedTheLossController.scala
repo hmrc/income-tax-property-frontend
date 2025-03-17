@@ -32,56 +32,86 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.math.BigDecimal.RoundingMode
 
-class ForeignWhenYouReportedTheLossController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       foreignNavigator: ForeignPropertyNavigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: ForeignWhenYouReportedTheLossFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ForeignWhenYouReportedTheLossView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ForeignWhenYouReportedTheLossController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  foreignNavigator: ForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ForeignWhenYouReportedTheLossFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignWhenYouReportedTheLossView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignWhenYouReportedTheLossPage(countryCode)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
       request.userAnswers
         .get(ForeignUnusedLossesPreviousYearsPage(countryCode))
         .flatMap(_.unusedLossesPreviousYearsAmount) match {
         case Some(amount) =>
-          Ok(view(preparedForm, taxYear, countryCode, request.user.isAgentMessageKey, amount.setScale(2, RoundingMode.DOWN).toString, mode))
+          Ok(
+            view(
+              preparedForm,
+              taxYear,
+              countryCode,
+              request.user.isAgentMessageKey,
+              amount.setScale(2, RoundingMode.DOWN).toString,
+              mode
+            )
+          )
         case None =>
           Redirect(routes.JourneyRecoveryController.onPageLoad())
       }
 
-  }
+    }
 
-  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       request.userAnswers
         .get(ForeignUnusedLossesPreviousYearsPage(countryCode))
         .flatMap(_.unusedLossesPreviousYearsAmount) match {
         case Some(amount) =>
-          form.bindFromRequest().fold(
-            formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode,request.user.isAgentMessageKey, amount.setScale(2, RoundingMode.DOWN).toString, mode))),
-            value =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignWhenYouReportedTheLossPage(countryCode), value))
-                _              <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(foreignNavigator.nextPage(ForeignWhenYouReportedTheLossPage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
-          )
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors =>
+                Future.successful(
+                  BadRequest(
+                    view(
+                      formWithErrors,
+                      taxYear,
+                      countryCode,
+                      request.user.isAgentMessageKey,
+                      amount.setScale(2, RoundingMode.DOWN).toString,
+                      mode
+                    )
+                  )
+                ),
+              value =>
+                for {
+                  updatedAnswers <-
+                    Future.fromTry(request.userAnswers.set(ForeignWhenYouReportedTheLossPage(countryCode), value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  foreignNavigator.nextPage(
+                    ForeignWhenYouReportedTheLossPage(countryCode),
+                    taxYear,
+                    mode,
+                    request.userAnswers,
+                    updatedAnswers
+                  )
+                )
+            )
         case None =>
           Future(Redirect(routes.JourneyRecoveryController.onPageLoad()))
       }
-  }
+    }
 }

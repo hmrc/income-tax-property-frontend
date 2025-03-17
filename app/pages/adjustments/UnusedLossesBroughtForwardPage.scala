@@ -16,14 +16,25 @@
 
 package pages.adjustments
 
-import models.{UnusedLossesBroughtForward, Rentals}
+import models.{PropertyType, UnusedLossesBroughtForward, UserAnswers}
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object UnusedLossesBroughtForwardPage extends QuestionPage[UnusedLossesBroughtForward] {
+import scala.util.Try
 
-  override def path: JsPath = JsPath \ adjustmentsPath(Rentals) \ toString
+case class UnusedLossesBroughtForwardPage(propertyType: PropertyType) extends QuestionPage[UnusedLossesBroughtForward] {
+
+  override def path: JsPath = JsPath \ adjustmentsPath(propertyType) \ toString
 
   override def toString: String = "unusedLossesBroughtForward"
+
+  override def cleanup(value: Option[UnusedLossesBroughtForward], userAnswers: UserAnswers): Try[UserAnswers] = {
+    val hasUnusedLossesYesNo = value.map{_.unusedLossesBroughtForwardYesOrNo}
+    hasUnusedLossesYesNo.map {
+        case true => super.cleanup(value, userAnswers)
+        case false => userAnswers.remove(WhenYouReportedTheLossPage(propertyType))
+      }
+      .getOrElse(super.cleanup(value, userAnswers))
+  }
 }

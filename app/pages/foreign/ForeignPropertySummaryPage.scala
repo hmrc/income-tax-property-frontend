@@ -68,6 +68,14 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
         foreignIncomeItem(taxYear, countryCode, userAnswers)
       )
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
+
+//    isClaimingAllowances match {
+//      case Some(true)  => Seq(foreignTaxTaskList, foreignIncomeTaskList, claimingAdjustmentsTaskList)
+//      case Some(false) if accrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
+//      case Some(false) => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
+//      case None        => Seq(foreignTaxTaskList, foreignIncomeTaskList)
+//    }
+
     isClaimingAllowances match {
       case Some(true) =>
         taskList.appendedAll(

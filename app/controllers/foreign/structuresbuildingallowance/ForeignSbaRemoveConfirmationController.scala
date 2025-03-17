@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.foreign.structurebuildingallowance.ForeignSbaRemoveConfirmationFormProvider
 import models.{Mode, UserAnswers}
 import navigation.ForeignPropertyNavigator
-import pages.foreign.structurebuildingallowance.{ForeignSbaRemoveConfirmationPage, ForeignStructureBuildingAllowanceClaimPage, ForeignStructureBuildingAllowanceWithIndex}
+import pages.foreign.structurebuildingallowance.{ForeignSbaRemoveConfirmationPage, ForeignStructureBuildingAllowanceWithIndex}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -94,7 +94,8 @@ class ForeignSbaRemoveConfirmationController @Inject() (
   private def summaryList(taxYear: Int, userAnswers: UserAnswers, countryCode: String, index: Int)(implicit
     messages: Messages
   ) = {
-    val foreignSbaEntryToRemove = ForeignSbaRemoveConfirmationSummary.row(taxYear, index, userAnswers, countryCode).toSeq
+    val foreignSbaEntryToRemove =
+      ForeignSbaRemoveConfirmationSummary.row(taxYear, index, userAnswers, countryCode).toSeq
     SummaryListViewModel(foreignSbaEntryToRemove)
   }
 }

@@ -30,51 +30,54 @@ import views.html.allowances.ReplacementOfDomesticGoodsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReplacementOfDomesticGoodsController @Inject()(
-                                                      override val messagesApi: MessagesApi,
-                                                      sessionRepository: SessionRepository,
-                                                      navigator: Navigator,
-                                                      identify: IdentifierAction,
-                                                      getData: DataRetrievalAction,
-                                                      requireData: DataRequiredAction,
-                                                      formProvider: ReplacementOfDomesticGoodsFormProvider,
-                                                      val controllerComponents: MessagesControllerComponents,
-                                                      view: ReplacementOfDomesticGoodsView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ReplacementOfDomesticGoodsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ReplacementOfDomesticGoodsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ReplacementOfDomesticGoodsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-
-
-  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ReplacementOfDomesticGoodsPage(propertyType)) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode, propertyType))
-  }
+    }
 
-  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(taxYear: Int, mode: Mode, propertyType: PropertyType): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReplacementOfDomesticGoodsPage(propertyType), value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(
-            navigator.nextPage(
-              ReplacementOfDomesticGoodsPage(propertyType),
-              taxYear,
-              mode,
-              request.userAnswers,
-              updatedAnswers
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode, propertyType))
+            ),
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(ReplacementOfDomesticGoodsPage(propertyType), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(
+                ReplacementOfDomesticGoodsPage(propertyType),
+                taxYear,
+                mode,
+                request.userAnswers,
+                updatedAnswers
+              )
             )
-          )
-      )
-  }
+        )
+    }
 }

@@ -18,59 +18,59 @@ package controllers.ukandforeignproperty
 
 import controllers.actions._
 import forms.ukandforeignproperty.NonResidentLandlordUKFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.UkAndForeignPropertyNavigator
 import pages.ukandforeignproperty.UkNonUkResidentLandlordPage
-import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.NonResidentLandlordUKView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class NonResidentLandlordUKController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: UkAndForeignPropertyNavigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: NonResidentLandlordUKFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: NonResidentLandlordUKView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class NonResidentLandlordUKController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: NonResidentLandlordUKFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: NonResidentLandlordUKView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val form = formProvider(request.user.isAgentMessageKey)
 
       val preparedForm = request.userAnswers.get(UkNonUkResidentLandlordPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, mode))
   }
 
-  def onSubmit(taxYear:Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       val form = formProvider(request.user.isAgentMessageKey)
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkNonUkResidentLandlordPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkNonUkResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UkNonUkResidentLandlordPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              navigator.nextPage(UkNonUkResidentLandlordPage, taxYear, mode, request.userAnswers, updatedAnswers)
+            )
+        )
   }
 }

@@ -16,7 +16,7 @@
 
 package connectors.response
 
-import audit.PropertyAbout
+import models.PropertyAbout
 import connectors.error.{ApiError, SingleErrorBody}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
 import models.ForeignWhenYouReportedTheLoss.y2018to2019
@@ -151,7 +151,8 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                   )
                 ),
                 zeroEmissionsCarAllowance = Some(75.75),
-                propertyAllowance = Some(85.85)
+                propertyAllowance = Some(85.85),
+                capitalAllowancesForACar = None
               )
             )
           ),

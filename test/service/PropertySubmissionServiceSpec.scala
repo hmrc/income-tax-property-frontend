@@ -16,7 +16,7 @@
 
 package service
 
-import audit.PropertyAbout
+import models.PropertyAbout
 import base.SpecBase
 import connectors.PropertySubmissionConnector
 import connectors.error.{ApiError, SingleErrorBody}

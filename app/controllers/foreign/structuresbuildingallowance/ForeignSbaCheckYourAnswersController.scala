@@ -26,17 +26,17 @@ import views.html.foreign.structurebuildingallowance.ForeignSbaCheckYourAnswersV
 
 import javax.inject.Inject
 
-class ForeignSbaCheckYourAnswersController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ForeignSbaCheckYourAnswersView
-                                     ) extends FrontendBaseController with I18nSupport {
+class ForeignSbaCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: ForeignSbaCheckYourAnswersView
+) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String, index: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(taxYear: Int, countryCode: String, index: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
       val list = SummaryListViewModel(
         rows = Seq(
           ForeignStructureBuildingQualifyingDateSummary.row(taxYear, countryCode, index, request.userAnswers),
@@ -46,5 +46,5 @@ class ForeignSbaCheckYourAnswersController @Inject()(
         ).flatten
       )
       Ok(view(list, taxYear, countryCode))
-  }
+    }
 }

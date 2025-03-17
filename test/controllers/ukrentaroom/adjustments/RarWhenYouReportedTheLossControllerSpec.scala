@@ -19,7 +19,7 @@ package controllers.ukrentaroom.adjustments
 import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.adjustments.RarWhenYouReportedTheLossFormProvider
-import models.{NormalMode, UnusedLossesBroughtForward, RarWhenYouReportedTheLoss, UserAnswers}
+import models.{NormalMode, UnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -70,7 +70,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, RarWhenYouReportedTheLoss.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
           unusedLossesBroughtForwardYesOrNo = true,
@@ -87,7 +87,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(RarWhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -114,7 +114,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", RarWhenYouReportedTheLoss.values.head.toString))
+            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 
@@ -170,7 +170,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", RarWhenYouReportedTheLoss.values.head.toString))
+            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 

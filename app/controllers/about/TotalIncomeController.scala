@@ -30,43 +30,43 @@ import views.html.about.TotalIncomeView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TotalIncomeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: TotalIncomeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       sessionService: SessionService,
-                                       navigator: Navigator,
-                                       view: TotalIncomeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TotalIncomeController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: TotalIncomeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  sessionService: SessionService,
+  navigator: Navigator,
+  view: TotalIncomeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalIncomePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    if (request.userAnswers.isEmpty) { sessionService.createNewEmptySession(request.userId) }
+    val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(TotalIncomePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
+    Ok(view(preparedForm, taxYear, mode, request.user.isAgentMessageKey))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomePage, value))
-            _              <- sessionService.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TotalIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
-      )
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, taxYear, mode, request.user.isAgentMessageKey))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomePage, value))
+              _              <- sessionService.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(TotalIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+        )
   }
 }

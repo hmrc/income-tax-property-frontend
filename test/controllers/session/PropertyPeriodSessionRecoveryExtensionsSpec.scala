@@ -36,8 +36,9 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IsNonUKLandlordPage, PropertyRentalIncomePage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
-import pages.ukrentaroom.adjustments.RaRBalancingChargePage
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedLossesBroughtForwardPage, RaRUnusedResidentialCostsPage, RarWhenYouReportedTheLossPage}
 import pages.ukrentaroom.allowances._
+import pages.ukrentaroom.expenses.{ConsolidatedExpensesRRPage, CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
 import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
@@ -60,29 +61,29 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "esbasWithSupportingQuestions": {
        |    "claimEnhancedStructureBuildingAllowance" : true,
-       |    "esbas" : [
+       |    "enhancedStructureBuildingAllowances" : [
        |      {
-       |        "esbaQualifyingDate" : "2022-01-04",
-       |        "esbaQualifyingAmount" : 5,
-       |        "esbaClaim" : 6,
-       |        "esbaAddress" : {
+       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-01-04",
+       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 5,
+       |        "enhancedStructureBuildingAllowanceClaim" : 6,
+       |        "enhancedStructureBuildingAllowanceAddress" : {
        |          "buildingName" : "12",
        |          "buildingNumber" : "12",
        |          "postCode" : "EH1 AB1"
        |        }
        |      },
        |      {
-       |        "esbaQualifyingDate" : "2022-03-03",
-       |        "esbaQualifyingAmount" : 4,
-       |        "esbaClaim" : 5,
-       |        "esbaAddress" : {
+       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-03-03",
+       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 4,
+       |        "enhancedStructureBuildingAllowanceClaim" : 5,
+       |        "enhancedStructureBuildingAllowanceAddress" : {
        |          "buildingName" : "2",
        |          "buildingNumber" : "2",
        |          "postCode" : "EH1 AB1"
        |        }
        |      }
        |    ],
-       |    "esbaClaims" : false
+       |    "enhancedStructureBuildingAllowanceClaims" : false
        |  },
        |  "propertyRentalsAbout" : {
        |    "claimPropertyIncomeAllowanceYesOrNo" : false
@@ -175,6 +176,24 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "rentARoomAmount" : 50
        |    }
        |  },
+       |  "raRAdjustments": {
+       |     "balancingCharge": {
+       |         "balancingChargeAmount": 10,
+       |         "balancingChargeYesNo": true
+       |     },
+       |     "unusedLossesBroughtForward": {
+       |         "unusedLossesBroughtForwardAmount": 5,
+       |         "unusedLossesBroughtForwardYesOrNo": true
+       |     },
+       |     "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
+       | },
+       | "rarExpenses": {
+       |     "costOfServicesProvided": 30,
+       |     "legalManagementOtherFee": 20,
+       |     "otherPropertyExpenses": 35,
+       |     "rentsRatesAndInsurance": 5,
+       |     "repairsAndMaintenanceCosts": 10
+       | },
        |  "rentARoomAllowances" : {
        |    "capitalAllowancesForACar" : {
        |      "capitalAllowancesForACarYesNo" : true,
@@ -186,13 +205,6 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "zeroEmissionGoodsVehicleAllowance" : 10,
        |    "replacementOfDomesticGoodsAllowance" : 25,
        |    "otherCapitalAllowance" : 20
-       |  },
-       |  "raRAdjustments" : {
-       |    "balancingCharge" : {
-       |      "balancingChargeYesNo" : true,
-       |      "balancingChargeAmount" : 10
-       |    },
-       |    "unusedResidentialPropertyFinanceCostsBroughtFwd": 25
        |  },
        |  "journeyStatuses": [],
        |  "foreignPropertySelectCountry" : {
@@ -353,6 +365,16 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         claimExpensesOrReliefYesNo = false,
         Some(50)
       )
+      updated.get(RentsRatesAndInsuranceRRPage).get mustBe 5
+      updated.get(RepairsAndMaintenanceCostsRRPage).get mustBe 10
+      updated.get(LegalManagementOtherFeeRRPage).get mustBe 20
+      updated.get(CostOfServicesProvidedRRPage).get mustBe 30
+      updated.get(OtherPropertyExpensesRRPage).get mustBe 35
+
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))
+      updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
+      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(5)))
+
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56
       updated.get(OtherProfessionalFeesPage(Rentals)).get mustBe 4

@@ -25,6 +25,6 @@ case class EsbaAddressPage(index: Int, propertyType: PropertyType) extends Quest
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ esbas \ index \ toString
 
-  override def toString: String = "esbaAddress"
+  override def toString: String = "enhancedStructureBuildingAllowanceAddress"
 
 }

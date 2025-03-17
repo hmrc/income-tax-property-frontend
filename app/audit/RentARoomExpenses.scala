@@ -26,7 +26,7 @@ case class RentARoomExpenses(
   rentsRatesAndInsurance: Option[BigDecimal],
   repairsAndMaintenanceCosts: Option[BigDecimal],
   legalManagementOtherFee: Option[BigDecimal],
-  costsOfServicesProvided: Option[BigDecimal],
+  costOfServicesProvided: Option[BigDecimal],
   otherPropertyExpenses: Option[BigDecimal]
 )
 

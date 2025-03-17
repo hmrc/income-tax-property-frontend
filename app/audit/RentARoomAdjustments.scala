@@ -16,14 +16,16 @@
 
 package audit
 
-import models.{BalancingCharge, RentARoom}
+import models.{BalancingCharge, RentARoom, UnusedLossesBroughtForward, WhenYouReportedTheLoss}
 import pages.PageConstants.adjustmentsPath
 import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
 final case class RentARoomAdjustments(
   balancingCharge: BalancingCharge,
-  unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal
+  unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal,
+  unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
+  whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
 
 object RentARoomAdjustments extends Gettable[RentARoomAdjustments] {

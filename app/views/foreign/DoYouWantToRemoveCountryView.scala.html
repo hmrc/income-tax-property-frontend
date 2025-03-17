@@ -26,17 +26,17 @@
 
 @(form: Form[_], taxYear: Int, index: Int, mode: Mode, countryName: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("doYouWantToRemoveCountry.title"))) {
+@layout(pageTitle = title(form, messages("doYouWantToRemoveCountry.title", countryName))) {
 
-  <h1 class="govuk-heading-l">@messages("doYouWantToRemoveCountry.heading")@messages(s" $countryName ")@messages("doYouWantToRemoveCountry.heading2")</h1>
+  @if(form.errors.nonEmpty) {
+      @govukErrorSummary(ErrorSummaryViewModel(form))
+  }
+
+  <h1 class="govuk-heading-l">@messages("doYouWantToRemoveCountry.heading", countryName)</h1>
 
   <p class="govuk-body">@messages("doYouWantToRemoveCountry.p.1")</p>
 
     @formHelper(action = DoYouWantToRemoveCountryController.onSubmit(taxYear, index, mode), Symbol("autoComplete") -> "off") {
-
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
 
         @govukRadios(
             RadiosViewModel.yesNo(

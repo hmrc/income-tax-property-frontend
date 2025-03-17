@@ -31,17 +31,17 @@ import views.html.ukandforeignproperty.OtherIncomeFromUkPropertyView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class OtherUkPropertyIncomeController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: UkAndForeignPropertyNavigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: UkAndForeignPropertyOtherIncomeFromUkPropertyFormProvider,
-                                                 sessionService: SessionService,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: OtherIncomeFromUkPropertyView
+class OtherUkPropertyIncomeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: UkAndForeignPropertyNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkAndForeignPropertyOtherIncomeFromUkPropertyFormProvider,
+  sessionService: SessionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: OtherIncomeFromUkPropertyView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
