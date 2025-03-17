@@ -121,7 +121,7 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     allowances: ForeignPropertyAllowances,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit hc: HeaderCarrier): Unit = {
 
     val auditModel = AuditModel(
@@ -133,7 +133,7 @@ class ForeignAllowancesCheckYourAnswersController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.Allowances,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,
