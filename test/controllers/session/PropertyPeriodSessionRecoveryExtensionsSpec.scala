@@ -218,7 +218,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        "premiumsGrantLeaseReceived": true,
        |        "otherPropertyIncome": 345.65,
        |        "calculatedPremiumLeaseTaxable": {
-       |          "calculatedPremiumLeaseTaxable": true
+       |          "isCalculatedPremiumLeaseTaxable": true
        |        },
        |        "receivedGrantLeaseAmount": 555.55,
        |        "twelveMonthPeriodsInLease": 3,
@@ -445,7 +445,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignPropertyRentalIncomePage(countryCode1)).get mustBe 12345.75
       updated.get(PremiumsGrantLeaseYNPage(countryCode1)).get mustBe true
       updated.get(CalculatedPremiumLeaseTaxablePage(countryCode1)).get mustBe PremiumCalculated(
-        calculatedPremiumLeaseTaxable = true,
+        isCalculatedPremiumLeaseTaxable = true,
         None
       )
       updated.get(ForeignReceivedGrantLeaseAmountPage(countryCode1)).get mustBe 555.55

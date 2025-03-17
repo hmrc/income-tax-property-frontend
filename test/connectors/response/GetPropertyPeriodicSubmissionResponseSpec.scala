@@ -103,7 +103,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 Some(123.45),
                 premiumsGrantLeaseReceived = false,
                 otherPropertyIncome = Some(456.7),
-                calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
+                calculatedPremiumLeaseTaxable = Some(PremiumCalculated(isCalculatedPremiumLeaseTaxable = false, None)),
                 receivedGrantLeaseAmount = None,
                 twelveMonthPeriodsInLease = None,
                 premiumsOfLeaseGrantAgreed = None

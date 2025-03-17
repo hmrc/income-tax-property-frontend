@@ -1267,7 +1267,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               val ua = UserAnswers("id")
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
-                  PremiumCalculated(calculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
+                  PremiumCalculated(isCalculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
                 )
                 .get
 
@@ -1287,7 +1287,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
                   PremiumCalculated(
-                    calculatedPremiumLeaseTaxable = true,
+                    isCalculatedPremiumLeaseTaxable = true,
                     premiumsOfLeaseGrant = Some(BigDecimal(123.45))
                   )
                 )
@@ -1310,7 +1310,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
               val ua = UserAnswers("id")
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
-                  PremiumCalculated(calculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
+                  PremiumCalculated(isCalculatedPremiumLeaseTaxable = false, premiumsOfLeaseGrant = None)
                 )
                 .get
 
@@ -1330,7 +1330,7 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
                 .set(
                   UkAndForeignCalculatedForeignPremiumGrantLeaseTaxablePage,
                   PremiumCalculated(
-                    calculatedPremiumLeaseTaxable = true,
+                    isCalculatedPremiumLeaseTaxable = true,
                     premiumsOfLeaseGrant = Some(BigDecimal(123.45))
                   )
                 )

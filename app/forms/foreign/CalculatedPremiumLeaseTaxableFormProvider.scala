@@ -29,10 +29,10 @@ class CalculatedPremiumLeaseTaxableFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[PremiumCalculated] =
     Form[PremiumCalculated](
       mapping(
-        "calculatedPremiumLeaseTaxable" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
+        "isCalculatedPremiumLeaseTaxable" -> boolean(s"calculatedPremiumLeaseTaxable.error.required.$individualOrAgent"),
         "premiumsOfLeaseGrant" -> {
           mandatoryIfTrue(
-            "calculatedPremiumLeaseTaxable",
+            "isCalculatedPremiumLeaseTaxable",
             currency(
               s"premiumCalculated.amount.error.required.$individualOrAgent",
               "premiumCalculated.amount.error.twoDecimalPlaces",
