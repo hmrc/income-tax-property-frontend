@@ -45,7 +45,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
   val formProvider = new ForeignClaimStructureBuildingAllowanceFormProvider()
   private val isAgentMessageKey = "individual"
   val form: Form[Boolean] = formProvider(isAgentMessageKey)
-  val validAnswer: Boolean = true
+  val isValidAnswer: Boolean = true
   val taxYear = 2023
   val index = 0
   val countryCode = "AUS"
@@ -76,7 +76,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(ForeignClaimStructureBuildingAllowancePage(countryCode), validAnswer).success.value
+        UserAnswers(userAnswersId).set(ForeignClaimStructureBuildingAllowancePage(countryCode), isValidAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -87,7 +87,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(validAnswer),
+          form.fill(isValidAnswer),
           taxYear,
           countryCode,
           NormalMode,
@@ -116,7 +116,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, foreignClaimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", isValidAnswer.toString))
 
         val result = route(application, request).value
 
@@ -172,7 +172,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, foreignClaimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", validAnswer.toString))
+            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", isValidAnswer.toString))
 
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER

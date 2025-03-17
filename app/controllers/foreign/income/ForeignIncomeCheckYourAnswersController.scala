@@ -91,7 +91,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyIncome)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertyIncome)
@@ -103,9 +103,9 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
         }
         .andThen {
           case Success(_) =>
-            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, accrualsOrCash)
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false,isAccrualsOrCash)
           case Failure(_) =>
-            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, accrualsOrCash)
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, isAccrualsOrCash)
         }
     }
 
@@ -114,7 +114,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyIncome: ForeignPropertyIncome,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -127,7 +127,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyIncome,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

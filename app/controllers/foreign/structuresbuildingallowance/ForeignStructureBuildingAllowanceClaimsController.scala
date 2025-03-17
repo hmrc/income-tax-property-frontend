@@ -155,7 +155,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = false,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
               )
               Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
             case Left(_) =>
@@ -164,7 +164,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = true,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
               )
               logger.error("Error saving Foreign SBA Claims")
               Future.failed(InternalErrorFailure("Error saving Foreign SBA claims"))
@@ -179,7 +179,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     request: DataRequest[AnyContent],
     foreignSba: ForeignSbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -192,7 +192,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.SBA,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,
