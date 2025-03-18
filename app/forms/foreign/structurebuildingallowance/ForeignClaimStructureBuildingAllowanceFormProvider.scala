@@ -25,6 +25,6 @@ class ForeignClaimStructureBuildingAllowanceFormProvider @Inject() extends Mappi
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "foreignClaimStructureBuildingAllowance" -> boolean(s"foreignClaimStructureBuildingAllowance.error.required.$individualOrAgent")
+      "isForeignClaimStructureBuildingAllowance" -> boolean(s"foreignClaimStructureBuildingAllowance.error.required.$individualOrAgent")
     )
 }

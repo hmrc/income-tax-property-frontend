@@ -693,7 +693,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(
                      ClaimStructureBuildingAllowancePage(propertyType),
-                     sbasWithSupportingQuestions.claimStructureBuildingAllowance
+                     sbasWithSupportingQuestions.isClaimStructureBuildingAllowance
                    )
             ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup, propertyType)
           } yield ua3

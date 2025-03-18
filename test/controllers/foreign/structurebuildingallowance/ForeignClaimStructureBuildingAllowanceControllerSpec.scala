@@ -116,7 +116,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, foreignClaimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", isValidAnswer.toString))
+            .withFormUrlEncodedBody(("isForeignClaimStructureBuildingAllowance", isValidAnswer.toString))
 
         val result = route(application, request).value
 
@@ -128,13 +128,13 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-      val boundForm = form.bind(Map("foreignClaimStructureBuildingAllowance" -> "invalid value"))
+      val boundForm = form.bind(Map("isForeignClaimStructureBuildingAllowance" -> "invalid value"))
       val view = application.injector.instanceOf[ForeignClaimStructureBuildingAllowanceView]
 
       running(application) {
         val request =
           FakeRequest(POST, foreignClaimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", "invalid value"))
+            .withFormUrlEncodedBody(("isForeignClaimStructureBuildingAllowance", "invalid value"))
 
         val result = route(application, request).value
 
@@ -172,7 +172,7 @@ class ForeignClaimStructureBuildingAllowanceControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, foreignClaimStructureBuildingAllowanceRoute)
-            .withFormUrlEncodedBody(("foreignClaimStructureBuildingAllowance", isValidAnswer.toString))
+            .withFormUrlEncodedBody(("isForeignClaimStructureBuildingAllowance", isValidAnswer.toString))
 
         val result = route(application, request).value
         status(result) mustEqual SEE_OTHER

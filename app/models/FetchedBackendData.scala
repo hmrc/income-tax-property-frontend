@@ -60,7 +60,7 @@ object PropertyRentals {
 
 final case class PremiumLease(
   calculatedFigureYourself: CalculatedFigureYourself,
-  premiumForLease: Boolean,
+  isPremiumForLease: Boolean,
   premiumsGrantLease: PremiumsGrantLease,
   receivedGrantLeaseAmount: BigDecimal,
   yearLeaseAmount: Int
@@ -87,8 +87,8 @@ final case class SbaOnIndex(index: Int, propertyType: PropertyType) extends Gett
 }
 
 final case class SbasWithSupportingQuestions(
-  claimStructureBuildingAllowance: Boolean,
-  sbaClaims: Option[Boolean],
+  isClaimStructureBuildingAllowance: Boolean,
+  isSbaClaims: Option[Boolean],
   structureBuildingFormGroup: List[Sba]
 )
 
