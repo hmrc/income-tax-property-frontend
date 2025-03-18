@@ -76,6 +76,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             None,
             None,
             None,
+            None,
             List(),
             foreignPropertySelectCountry = Some(
               ForeignPropertySelectCountry(
