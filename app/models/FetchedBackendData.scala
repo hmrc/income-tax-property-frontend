@@ -38,12 +38,12 @@ object Adjustments {
 }
 
 final case class Allowances(
-  annualInvestmentAllowance: BigDecimal,
-  businessPremisesRenovationAllowance: BigDecimal,
-  otherCapitalAllowance: BigDecimal,
+  annualInvestmentAllowance: Option[BigDecimal],
+  businessPremisesRenovationAllowance: Option[BigDecimal],
+  otherCapitalAllowance: Option[BigDecimal],
   replacementOfDomesticGoodsAllowance: Option[BigDecimal],
-  zeroEmissionCarAllowance: BigDecimal,
-  zeroEmissionGoodsVehicleAllowance: BigDecimal
+  zeroEmissionCarAllowance: Option[BigDecimal],
+  zeroEmissionGoodsVehicleAllowance: Option[BigDecimal]
 )
 
 object Allowances {
