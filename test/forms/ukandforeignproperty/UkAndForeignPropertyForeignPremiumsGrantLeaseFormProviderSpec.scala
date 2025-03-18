@@ -32,26 +32,26 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseFormProviderSpec extends Bool
 
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
-    val premiumsOfLeaseGrantAgreed = false
+    val isPremiumsOfLeaseGrantAgreed = false
     val premiumsOfLeaseGrant: BigDecimal = 4534.65
 
     s".premiumsOfLeaseGrant for $individualOrAgent" - {
-      "when premiumsOfLeaseGrantAgreed is false" - {
+      "when isPremiumsOfLeaseGrantAgreed is false" - {
 
         "and an amount is entered, should successfully bind" in {
 
           val boundForm = form.bind(
             Map(
-              "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+              "isPremiumsOfLeaseGrantAgreed" -> s"$isPremiumsOfLeaseGrantAgreed",
               "premiumsOfLeaseGrant"       -> s"$premiumsOfLeaseGrant"
             )
           )
-          boundForm.value.value mustBe UkAndForeignPropertyForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed, Some(premiumsOfLeaseGrant))
+          boundForm.value.value mustBe UkAndForeignPropertyForeignPremiumsGrantLease(isPremiumsOfLeaseGrantAgreed, Some(premiumsOfLeaseGrant))
           boundForm.errors mustBe empty
         }
 
         "and no amount is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed"))
+          val boundForm = form.bind(Map("isPremiumsOfLeaseGrantAgreed" -> s"$isPremiumsOfLeaseGrantAgreed"))
           boundForm.errors must contain(
             FormError(
               "premiumsOfLeaseGrant",
@@ -64,7 +64,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseFormProviderSpec extends Bool
           val boundForm =
             form.bind(
               Map(
-                "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+                "isPremiumsOfLeaseGrantAgreed" -> s"$isPremiumsOfLeaseGrantAgreed",
                 "premiumsOfLeaseGrant"       -> "non-numeric-value"
               )
             )
@@ -80,7 +80,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseFormProviderSpec extends Bool
           val boundForm =
             form.bind(
               Map(
-                "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+                "isPremiumsOfLeaseGrantAgreed" -> s"$isPremiumsOfLeaseGrantAgreed",
                 "premiumsOfLeaseGrant"       -> "4534.6545"
               )
             )
@@ -95,7 +95,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseFormProviderSpec extends Bool
         "and an amount is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "premiumsOfLeaseGrantAgreed" -> s"$premiumsOfLeaseGrantAgreed",
+              "isPremiumsOfLeaseGrantAgreed" -> s"$isPremiumsOfLeaseGrantAgreed",
               "premiumsOfLeaseGrant"       -> "45334553534535345435345345434.65"
             )
           )

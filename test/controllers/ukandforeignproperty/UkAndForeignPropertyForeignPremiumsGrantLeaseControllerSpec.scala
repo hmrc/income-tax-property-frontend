@@ -48,7 +48,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new UkAndForeignPropertyForeignPremiumsGrantLeaseFormProvider()
   val foreignPremiumsGrantLeaseAnswers: UkAndForeignPropertyForeignPremiumsGrantLease =
-    UkAndForeignPropertyForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed = true, Some(123.45))
+    UkAndForeignPropertyForeignPremiumsGrantLease(isPremiumsOfLeaseGrantAgreed = true, Some(123.45))
 
   lazy val foreignPremiumsGrantLeaseRoute: String =
     routes.UkAndForeignPropertyForeignPremiumsGrantLeaseController.onPageLoad(taxYear, NormalMode).url
@@ -132,7 +132,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseControllerSpec extends SpecBa
 //          val request =
 //            FakeRequest(POST, foreignPremiumsGrantLeaseRoute)
 //              .withFormUrlEncodedBody(
-//                ("premiumsOfLeaseGrantAgreed", "true"),
+//                ("isPremiumsOfLeaseGrantAgreed", "true"),
 //                ("premiumsOfLeaseGrant", "123.45")
 //              )
 //

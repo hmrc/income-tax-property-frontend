@@ -223,7 +223,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        "receivedGrantLeaseAmount": 555.55,
        |        "twelveMonthPeriodsInLease": 3,
        |        "premiumsOfLeaseGrantAgreed": {
-       |          "premiumsOfLeaseGrantAgreed": true,
+       |          "isPremiumsOfLeaseGrantAgreed": true,
        |          "premiumsOfLeaseGrant": 234.5
        |        }
        |      }
@@ -451,7 +451,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignReceivedGrantLeaseAmountPage(countryCode1)).get mustBe 555.55
       updated.get(TwelveMonthPeriodsInLeasePage(countryCode1)).get mustBe 3
       updated.get(ForeignPremiumsGrantLeasePage(countryCode1)).get mustBe ForeignPremiumsGrantLease(
-        premiumsOfLeaseGrantAgreed = true,
+        isPremiumsOfLeaseGrantAgreed = true,
         premiumsOfLeaseGrant = Some(234.5)
       )
       updated.get(ForeignOtherIncomeFromPropertyPage(countryCode1)).get mustBe 345.65

@@ -263,8 +263,8 @@ object PropertyPeriodSessionRecoveryExtensions {
                          ua4.set(TwelveMonthPeriodsInLeasePage(countryCode), foreignYearLeaseAmount.intValue)
                      )
               ua6 <- foreignPropertyIncome.premiumsOfLeaseGrantAgreed.fold[Try[UserAnswers]](Success(ua5))(
-                       premiumsOfLeaseGrantAgreed =>
-                         ua5.set(ForeignPremiumsGrantLeasePage(countryCode), premiumsOfLeaseGrantAgreed)
+                       isPremiumsOfLeaseGrantAgreed =>
+                         ua5.set(ForeignPremiumsGrantLeasePage(countryCode), isPremiumsOfLeaseGrantAgreed)
                      )
               ua7 <-
                 foreignPropertyIncome.otherPropertyIncome.fold[Try[UserAnswers]](Success(ua6))(otherPropertyIncome =>

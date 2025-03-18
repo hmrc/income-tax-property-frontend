@@ -94,7 +94,7 @@ class ForeignPremiumsGrantLeaseController @Inject() (
                                       request.userAnswers.set(
                                         ForeignPremiumsGrantLeasePage(countryCode),
                                         ForeignPremiumsGrantLease(
-                                          value.premiumsOfLeaseGrantAgreed,
+                                          value.isPremiumsOfLeaseGrantAgreed,
                                           Some(
                                             value.premiumsOfLeaseGrant.getOrElse(
                                               ForeignPremiumsGrantLease.calculateTaxableAmount(amount, period)

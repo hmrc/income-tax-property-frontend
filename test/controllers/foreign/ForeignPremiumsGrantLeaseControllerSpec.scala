@@ -53,7 +53,7 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new ForeignPremiumsGrantLeaseFormProvider()
   val foreignPremiumsGrantLeaseAnswers: ForeignPremiumsGrantLease =
-    ForeignPremiumsGrantLease(premiumsOfLeaseGrantAgreed = true, Some(123.45))
+    ForeignPremiumsGrantLease(isPremiumsOfLeaseGrantAgreed = true, Some(123.45))
 
   lazy val foreignPremiumsGrantLeaseRoute: String =
     routes.ForeignPremiumsGrantLeaseController.onPageLoad(taxYear, countryCode, NormalMode).url
@@ -135,7 +135,7 @@ class ForeignPremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar
           val request =
             FakeRequest(POST, foreignPremiumsGrantLeaseRoute)
               .withFormUrlEncodedBody(
-                ("premiumsOfLeaseGrantAgreed", "true"),
+                ("isPremiumsOfLeaseGrantAgreed", "true"),
                 ("premiumsOfLeaseGrant", "123.45")
               )
 
