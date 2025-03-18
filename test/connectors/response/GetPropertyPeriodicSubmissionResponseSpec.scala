@@ -101,7 +101,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             Map(
               "ESP" -> ForeignIncomeAnswers(
                 Some(123.45),
-                premiumsGrantLeaseReceived = false,
+                isPremiumsGrantLeaseReceived = false,
                 otherPropertyIncome = Some(456.7),
                 calculatedPremiumLeaseTaxable = Some(PremiumCalculated(isCalculatedPremiumLeaseTaxable = false, None)),
                 receivedGrantLeaseAmount = None,

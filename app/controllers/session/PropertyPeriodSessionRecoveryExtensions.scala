@@ -250,7 +250,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua1 <- foreignPropertyIncome.rentIncome.fold[Try[UserAnswers]](Success(ua))(rentIncome =>
                        ua.set(ForeignPropertyRentalIncomePage(countryCode), rentIncome)
                      )
-              ua2 <- ua1.set(PremiumsGrantLeaseYNPage(countryCode), foreignPropertyIncome.premiumsGrantLeaseReceived)
+              ua2 <- ua1.set(PremiumsGrantLeaseYNPage(countryCode), foreignPropertyIncome.isPremiumsGrantLeaseReceived)
               ua3 <- foreignPropertyIncome.calculatedPremiumLeaseTaxable.fold[Try[UserAnswers]](Success(ua2))(
                        premiumCalculated => ua2.set(CalculatedPremiumLeaseTaxablePage(countryCode), premiumCalculated)
                      )

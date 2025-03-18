@@ -215,7 +215,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "foreignPropertyIncome": {
        |      "$countryCode1": {
        |        "rentIncome": 12345.75,
-       |        "premiumsGrantLeaseReceived": true,
+       |        "isPremiumsGrantLeaseReceived": true,
        |        "otherPropertyIncome": 345.65,
        |        "calculatedPremiumLeaseTaxable": {
        |          "isCalculatedPremiumLeaseTaxable": true

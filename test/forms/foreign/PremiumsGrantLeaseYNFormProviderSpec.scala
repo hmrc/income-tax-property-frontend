@@ -27,9 +27,9 @@ class PremiumsGrantLeaseYNFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new PremiumsGrantLeaseYNFormProvider()("individual")
 
-  ".premiumsGrantLeaseReceived" - {
+  ".isPremiumsGrantLeaseReceived" - {
 
-    val fieldName = "premiumsGrantLeaseReceived"
+    val fieldName = "isPremiumsGrantLeaseReceived"
 
     behave like booleanField(
       form,
