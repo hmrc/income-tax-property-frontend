@@ -551,15 +551,25 @@ object PropertyPeriodSessionRecoveryExtensions {
         case _ if propertyType == RentARoom => Success(userAnswers)
         case Some(allowances) =>
           for {
-            ua1 <- userAnswers.set(AnnualInvestmentAllowancePage(propertyType), allowances.annualInvestmentAllowance)
-            ua2 <- ua1.set(BusinessPremisesRenovationPage(propertyType), allowances.businessPremisesRenovationAllowance)
-            ua3 <- ua2.set(OtherCapitalAllowancePage(propertyType), allowances.otherCapitalAllowance)
-            ua4 <- allowances.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua3)){ replacementOfDomesticGoodsAllowance =>
-                     ua3.set(ReplacementOfDomesticGoodsPage(propertyType), replacementOfDomesticGoodsAllowance)
-                   } 
-            ua5 <- ua4.set(ZeroEmissionCarAllowancePage(propertyType), allowances.zeroEmissionCarAllowance)
+            ua1 <- allowances.annualInvestmentAllowance.fold[Try[UserAnswers]](Success(userAnswers)){
+              annualInvestmentAllowance => userAnswers.set(AnnualInvestmentAllowancePage(propertyType), annualInvestmentAllowance)
+            }
+            ua2 <- allowances.businessPremisesRenovationAllowance.fold[Try[UserAnswers]](Success(ua1)){
+              businessPremisesRenovationAllowance => ua1.set(BusinessPremisesRenovationPage(propertyType), businessPremisesRenovationAllowance)
+            }
+            ua3 <- allowances.otherCapitalAllowance.fold[Try[UserAnswers]](Success(ua2)){
+              otherCapitalAllowance => ua2.set(OtherCapitalAllowancePage(propertyType), otherCapitalAllowance)
+            }
+            ua4 <- allowances.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua3)){
+              replacementOfDomesticGoodsAllowance => ua3.set(ReplacementOfDomesticGoodsPage(propertyType), replacementOfDomesticGoodsAllowance)
+            }
+            ua5 <- allowances.zeroEmissionCarAllowance.fold[Try[UserAnswers]](Success(ua4)) {
+              zeroEmissionCarAllowance => ua4.set(ZeroEmissionCarAllowancePage(propertyType), zeroEmissionCarAllowance)
+            }
             ua6 <-
-              ua5.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), allowances.zeroEmissionGoodsVehicleAllowance)
+              allowances.zeroEmissionGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua5)) {
+                zeroEmissionGoodsVehicleAllowance => ua5.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), zeroEmissionGoodsVehicleAllowance)
+            }
           } yield ua6
       }
 

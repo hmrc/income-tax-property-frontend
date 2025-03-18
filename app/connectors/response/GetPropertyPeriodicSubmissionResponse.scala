@@ -19,6 +19,7 @@ package connectors.response
 import connectors.Parser
 import connectors.error.ApiError
 import models.FetchedPropertyData
+import play.api.Logging
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
@@ -30,7 +31,7 @@ final case class GetPropertyPeriodicSubmissionResponse(
 object GetPropertyPeriodicSubmissionResponse {
 
   implicit val getPropertyPeriodicSubmissionResponseReads: HttpReads[GetPropertyPeriodicSubmissionResponse] =
-    new HttpReads[GetPropertyPeriodicSubmissionResponse] with Parser {
+    new HttpReads[GetPropertyPeriodicSubmissionResponse] with Parser with Logging {
 
       override protected[connectors] val parserName: String = this.getClass.getSimpleName
 
@@ -48,6 +49,7 @@ object GetPropertyPeriodicSubmissionResponse {
           .fold[Either[ApiError, FetchedPropertyData]](
             e => {
               //Todo: Proper specific error to be logged.
+              logger.error(s"[GetPropertyPeriodicSubmissionResponse][extractResult]: Error parsing property submission JSON: $e")
               badSuccessJsonResponse
             },
             parsedModel => Right(parsedModel)
