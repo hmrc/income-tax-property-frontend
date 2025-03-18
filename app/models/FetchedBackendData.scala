@@ -41,7 +41,7 @@ final case class Allowances(
   annualInvestmentAllowance: BigDecimal,
   businessPremisesRenovationAllowance: BigDecimal,
   otherCapitalAllowance: BigDecimal,
-  replacementOfDomesticGoodsAllowance: BigDecimal,
+  replacementOfDomesticGoodsAllowance: Option[BigDecimal],
   zeroEmissionCarAllowance: BigDecimal,
   zeroEmissionGoodsVehicleAllowance: BigDecimal
 )

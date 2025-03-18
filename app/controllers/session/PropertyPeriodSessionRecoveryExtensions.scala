@@ -554,7 +554,9 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua1 <- userAnswers.set(AnnualInvestmentAllowancePage(propertyType), allowances.annualInvestmentAllowance)
             ua2 <- ua1.set(BusinessPremisesRenovationPage(propertyType), allowances.businessPremisesRenovationAllowance)
             ua3 <- ua2.set(OtherCapitalAllowancePage(propertyType), allowances.otherCapitalAllowance)
-            ua4 <- ua3.set(ReplacementOfDomesticGoodsPage(propertyType), allowances.replacementOfDomesticGoodsAllowance)
+            ua4 <- allowances.replacementOfDomesticGoodsAllowance.fold[Try[UserAnswers]](Success(ua3)){ replacementOfDomesticGoodsAllowance =>
+                     ua3.set(ReplacementOfDomesticGoodsPage(propertyType), replacementOfDomesticGoodsAllowance)
+                   } 
             ua5 <- ua4.set(ZeroEmissionCarAllowancePage(propertyType), allowances.zeroEmissionCarAllowance)
             ua6 <-
               ua5.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), allowances.zeroEmissionGoodsVehicleAllowance)
