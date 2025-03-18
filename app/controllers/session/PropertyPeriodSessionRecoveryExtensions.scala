@@ -388,7 +388,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               for {
                 ua <- userAnswers
                 ua1 <-
-                  ua.set(ForeignClaimStructureBuildingAllowancePage(countryCode), sba.claimStructureBuildingAllowance)
+                  ua.set(ForeignClaimStructureBuildingAllowancePage(countryCode), sba.isClaimStructureBuildingAllowance)
                 ua2 <- sba.allowances.fold[Try[UserAnswers]](Success(ua1))(sbas =>
                          updateAllForeignPropertySbas(ua1, sbas, countryCode)
                        )

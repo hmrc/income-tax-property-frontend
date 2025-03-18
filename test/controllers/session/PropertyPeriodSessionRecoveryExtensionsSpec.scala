@@ -257,7 +257,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |         },
        |    "foreignPropertySba": {
        |    "$countryCode1": {
-       |      "claimStructureBuildingAllowance": true,
+       |      "isClaimStructureBuildingAllowance": true,
        |      "allowances": [{
        |        "amount": 500,
        |        "firstYear": {
