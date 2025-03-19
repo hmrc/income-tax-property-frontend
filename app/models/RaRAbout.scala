@@ -21,7 +21,7 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.{Gettable, Settable}
 
 final case class RaRAbout(
-  jointlyLetYesOrNo: Boolean,
+  isJointlyLet: Boolean,
   totalIncomeAmount: BigDecimal,
   claimExpensesOrRelief: ClaimExpensesOrRelief
 )
