@@ -83,7 +83,7 @@ object SaveIncome {
       propertyRentalsIncome.propertyRentalIncome,
       propertyRentalsIncome.premiumsGrantLease.map(_.isPremiumsGrantLeaseReceived).getOrElse(false), // ToDo: Recheck
       ReversePremiumsReceived(
-        propertyRentalsIncome.reversePremiumsReceived.map(_.reversePremiumsReceived).getOrElse(false)
+        propertyRentalsIncome.reversePremiumsReceived.map(_.isReversePremiumsReceived).getOrElse(false)
       ), // Todo: Recheck
       propertyRentalsIncome.deductingTax.map(x => DeductingTax(x.isTaxDeducted)),
       propertyRentalsIncome.calculatedFigureYourself.map(x => CalculatedFigureYourself(x.isCalculatedFigureYourself)),

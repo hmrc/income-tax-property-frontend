@@ -98,7 +98,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    },
        |    "receivedGrantLeaseAmount": 6,
        |    "reversePremiumsReceived" : {
-       |      "reversePremiumsReceived" : true,
+       |      "isReversePremiumsReceived" : true,
        |      "reversePremiums" : 45
        |    },
        |    "otherIncomeFromProperty" : 45
@@ -356,7 +356,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         Some(45)
       )
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
-        reversePremiumsReceived = true,
+        isReversePremiumsReceived = true,
         Some(45)
       )
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
@@ -385,7 +385,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(PrivateUseAdjustmentPage(Rentals)).get mustBe PrivateUseAdjustment(2)
       updated.get(PropertyIncomeAllowancePage(Rentals)).get mustBe 4
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
-        reversePremiumsReceived = true,
+        isReversePremiumsReceived = true,
         Some(45)
       )
       updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(

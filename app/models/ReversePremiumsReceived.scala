@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class ReversePremiumsReceived(reversePremiumsReceived: Boolean, reversePremiums: Option[BigDecimal])
+final case class ReversePremiumsReceived(isReversePremiumsReceived: Boolean, reversePremiums: Option[BigDecimal])
 
 object ReversePremiumsReceived {
   implicit val format: Format[ReversePremiumsReceived] = Json.format
