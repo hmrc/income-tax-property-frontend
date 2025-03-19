@@ -61,7 +61,7 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     )
   }
 
-  def foreignPropertyItems(taxYear: Int, accrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+  def foreignPropertyItems(taxYear: Int, isAccrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
     val taskListTagForForeignTax =
       userAnswers
         .flatMap { answers =>
@@ -224,7 +224,7 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
       case Some(true)  => Seq(foreignTaxTaskList, foreignIncomeTaskList, claimingAdjustmentsTaskList)
-      case Some(false) if accrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
+      case Some(false) if isAccrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
       case Some(false) => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
       case None        => Seq(foreignTaxTaskList, foreignIncomeTaskList)
     }
