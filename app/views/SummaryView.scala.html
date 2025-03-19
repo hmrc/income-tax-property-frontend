@@ -148,9 +148,9 @@
     }
 
     @if(ukAndForeignProperty.foreignListItems.nonEmpty) {
-        <h2 class="govuk-heading-m">@messages("ukAndForeign.foreignList.title")</h2>
+        <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
         @for((countryName, listItems) <- ukAndForeignProperty.foreignListItems) {
-            <h2 class="govuk-heading-m">@messages(s"ukAndForeign.foreignList.heading", countryName) </h2>
+            <h2 class="govuk-heading-m">@messages(s"foreign.heading", countryName) </h2>
             @taskListSection(listItems)
         }
     }
