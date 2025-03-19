@@ -473,10 +473,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case OtherAllowablePropertyExpensesPage(Rentals) =>
       taxYear =>
         _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
-              ExpensesCheckYourAnswersController.onPageLoad(taxYear)
-            }
+          _ => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
 
         // Rentals and Rent a Room-Allowances
     case CapitalAllowancesForACarPage(RentalsRentARoom) =>
