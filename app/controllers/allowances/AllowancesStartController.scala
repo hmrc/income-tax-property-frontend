@@ -60,7 +60,7 @@ class AllowancesStartController @Inject() (
                     AllowancesStartPage(
                       taxYear,
                       request.user.isAgentMessageKey,
-                      cashOrAccruals = true,
+                      isCashOrAccruals = true,
                       request.userAnswers,
                       propertyType
                     ),
@@ -75,7 +75,7 @@ class AllowancesStartController @Inject() (
                     AllowancesStartPage(
                       taxYear,
                       request.user.isAgentMessageKey,
-                      cashOrAccruals = false,
+                      isCashOrAccruals = false,
                       request.userAnswers,
                       propertyType
                     ),

@@ -59,7 +59,7 @@ class RRAllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[RRAllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(RRAllowancesStartPage(taxYear, "agent", cashOrAccruals = false))(
+        contentAsString(result) mustEqual view(RRAllowancesStartPage(taxYear, "agent", isCashOrAccruals = false))(
           request,
           messages(application)
         ).toString
@@ -88,7 +88,7 @@ class RRAllowancesStartControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[RRAllowancesStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(RRAllowancesStartPage(taxYear, "agent", cashOrAccruals = true))(
+        contentAsString(result) mustEqual view(RRAllowancesStartPage(taxYear, "agent", isCashOrAccruals = true))(
           request,
           messages(application)
         ).toString

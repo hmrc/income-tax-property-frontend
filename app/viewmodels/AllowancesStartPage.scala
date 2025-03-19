@@ -24,11 +24,11 @@ import pages.ukrentaroom.ClaimExpensesOrReliefPage
 case class AllowancesStartPage(
   taxYear: Int,
   individualOrAgent: String,
-  cashOrAccruals: Boolean,
+  isCashOrAccruals: Boolean,
   userAnswers: UserAnswers,
   propertyType: PropertyType
 ) {
-  def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
+  def cashOrAccrualsMessageKey: String = if (isCashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
   def nextPageUrl: String = {
 
@@ -41,7 +41,7 @@ case class AllowancesStartPage(
         userAnswers.get(ClaimExpensesOrReliefPage(propertyType)).getOrElse(ClaimExpensesOrRelief(false, None))
       val propertyIncomeAllowance =
         userAnswers.get(ClaimPropertyIncomeAllowancePage(propertyType)).getOrElse(false)
-      if (cashOrAccruals) {
+      if (isCashOrAccruals) {
         (rentARoomRelief, propertyIncomeAllowance) match {
           case (ClaimExpensesOrRelief(false, None), true) =>
             controllers.allowances.routes.ZeroEmissionCarAllowanceController
@@ -60,7 +60,7 @@ case class AllowancesStartPage(
     }
     // If it's NOT the combined journey i.e. property rentals or rent a room
     else {
-      if (cashOrAccruals) {
+      if (isCashOrAccruals) {
         controllers.allowances.routes.AnnualInvestmentAllowanceController
           .onPageLoad(taxYear, NormalMode, propertyType)
           .url

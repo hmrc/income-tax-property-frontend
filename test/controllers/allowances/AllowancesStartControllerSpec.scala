@@ -68,7 +68,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, emptyUserAnswers, Rentals), isPIA
+          AllowancesStartPage(taxYear, "agent", isCashOrAccruals = false, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)
@@ -115,7 +115,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = true,
+            isCashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
@@ -163,7 +163,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = true,
+            isCashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
@@ -211,7 +211,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = false,
+            isCashOrAccruals = false,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.CapitalAllowancesForACarController
@@ -244,7 +244,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, emptyUserAnswers, Rentals), isPIA
+          AllowancesStartPage(taxYear, "agent", isCashOrAccruals = true, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)

@@ -18,10 +18,10 @@ package viewmodels
 
 import models.NormalMode
 
-case class RRAllowancesStartPage(taxYear: Int, individualOrAgent: String, cashOrAccruals: Boolean) {
-  def cashOrAccrualsMessageKey: String = if (cashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
+case class RRAllowancesStartPage(taxYear: Int, individualOrAgent: String, isCashOrAccruals: Boolean) {
+  def cashOrAccrualsMessageKey: String = if (isCashOrAccruals) "businessDetails.accruals" else "businessDetails.cash"
 
-  def nextPageUrl: String = if (cashOrAccruals) {
+  def nextPageUrl: String = if (isCashOrAccruals) {
     controllers.ukrentaroom.allowances.routes.RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode).url
   } else {
     controllers.ukrentaroom.allowances.routes.RaRCapitalAllowancesForACarController.onPageLoad(taxYear, NormalMode).url

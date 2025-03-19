@@ -28,7 +28,7 @@
     <h1 class="govuk-heading-l">@messages("allowancesStart.heading")</h1>
 
 
-    @if(page.cashOrAccruals) {
+    @if(page.isCashOrAccruals) {
         @accrualsContent
     } else {
         @cashContent
