@@ -98,7 +98,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, nonResidentLandlordUKRoute)
-              .withFormUrlEncodedBody(("value", "true"))
+              .withFormUrlEncodedBody(("isNonResidentLandlord", "true"))
 
           val result = route(application, request).value
 
@@ -114,9 +114,9 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, nonResidentLandlordUKRoute)
-              .withFormUrlEncodedBody(("value", ""))
+              .withFormUrlEncodedBody(("isNonResidentLandlord", ""))
 
-          val boundForm = form.bind(Map("value" -> ""))
+          val boundForm = form.bind(Map("isNonResidentLandlord" -> ""))
 
           val view = application.injector.instanceOf[NonResidentLandlordUKView]
 
@@ -149,7 +149,7 @@ class NonResidentLandlordUKControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, nonResidentLandlordUKRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("isNonResidentLandlord", "true"))
 
         val result = route(application, request).value
 
