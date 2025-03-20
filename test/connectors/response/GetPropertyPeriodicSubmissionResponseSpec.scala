@@ -17,15 +17,16 @@
 package connectors.response
 
 import models.PropertyAbout
-import connectors.error.{ApiError, SingleErrorBody}
+import connectors.error.{SingleErrorBody, ApiError}
 import connectors.response.GetPropertyPeriodicSubmissionResponse.getPropertyPeriodicSubmissionResponseReads
 import models.ForeignWhenYouReportedTheLoss.y2018to2019
 import models.TotalIncome.Under
+import models.WhenYouReportedTheLoss.y2021to2022
 import models._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Json, JsValue}
 import uk.gov.hmrc.http.HttpResponse
 
 import java.time.LocalDate
@@ -61,7 +62,9 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
                 45,
                 RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(4.2)),
                 4.2,
-                4.2
+                4.2,
+                Some(UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(4.2))),
+                Some(y2021to2022)
               )
             ),
             None,

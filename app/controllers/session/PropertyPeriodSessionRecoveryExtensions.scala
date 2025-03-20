@@ -510,7 +510,11 @@ object PropertyPeriodSessionRecoveryExtensions {
               )
             ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
             ua6 <- ua5.set(UnusedResidentialFinanceCostPage(Rentals), adjustments.unusedResidentialFinanceCost)
-          } yield ua6
+            ua7 <- adjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua6))(unusedLossesBroughtForward =>
+              ua6.set(UnusedLossesBroughtForwardPage(Rentals), unusedLossesBroughtForward))
+            ua8 <- adjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua7))(whenYouReportedTheLoss =>
+              ua7.set(WhenYouReportedTheLossPage(Rentals), whenYouReportedTheLoss))
+          } yield ua8
       }
 
     private def updateRentalsAndRaRAdjustmentsPages(
