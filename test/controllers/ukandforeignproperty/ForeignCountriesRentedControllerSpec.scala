@@ -114,7 +114,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
         val request = FakeRequest(POST, selectCountryRoute(1))
-          .withFormUrlEncodedBody(("addAnother", "true"))
+          .withFormUrlEncodedBody(("isAddAnother", "true"))
 
         running(application) {
           val controller = application.injector.instanceOf[ForeignCountriesRentedController]
@@ -141,7 +141,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
 
         val request =
           FakeRequest(POST, foreignCountriesRentedRoute)
-            .withFormUrlEncodedBody(("addAnother", "false"))
+            .withFormUrlEncodedBody(("isAddAnother", "false"))
 
         running(application) {
           val controller = application.injector.instanceOf[ForeignCountriesRentedController]
@@ -168,7 +168,7 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
 
         val request =
           FakeRequest(POST, foreignCountriesRentedRoute)
-            .withFormUrlEncodedBody(("addAnother", "false"))
+            .withFormUrlEncodedBody(("isAddAnother", "false"))
 
         running(application) {
           val controller = application.injector.instanceOf[ForeignCountriesRentedController]
