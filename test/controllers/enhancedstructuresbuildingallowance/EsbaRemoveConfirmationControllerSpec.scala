@@ -83,7 +83,7 @@ class EsbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, esbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("esbaRemoveConfirmation", "true"))
+            .withFormUrlEncodedBody(("isEsbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 
@@ -99,9 +99,9 @@ class EsbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, esbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("esbaRemoveConfirmation", ""))
+            .withFormUrlEncodedBody(("isEsbaRemoveConfirmation", ""))
 
-        val boundForm = form.bind(Map("esbaRemoveConfirmation" -> ""))
+        val boundForm = form.bind(Map("isEsbaRemoveConfirmation" -> ""))
 
         val view = application.injector.instanceOf[EsbaRemoveConfirmationView]
 
@@ -138,7 +138,7 @@ class EsbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, esbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("esbaRemoveConfirmation", "true"))
+            .withFormUrlEncodedBody(("isEsbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 

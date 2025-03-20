@@ -25,6 +25,6 @@ class EsbaRemoveConfirmationFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "esbaRemoveConfirmation" -> boolean(s"esbaRemoveConfirmation.error.required.$individualOrAgent")
+      "isEsbaRemoveConfirmation" -> boolean(s"esbaRemoveConfirmation.error.required.$individualOrAgent")
     )
 }
