@@ -889,8 +889,11 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None                       => Success(userAnswers)
         case Some(rentARoomAdjustments) =>
           for {
-            ua1 <- userAnswers.set(RaRBalancingChargePage, rentARoomAdjustments.balancingCharge)
-            ua2 <- ua1.set(RaRUnusedResidentialCostsPage, rentARoomAdjustments.unusedResidentialPropertyFinanceCostsBroughtFwd)
+            ua1 <- rentARoomAdjustments.balancingCharge.fold[Try[UserAnswers]](Success(userAnswers))(balancingCharge =>
+              userAnswers.set(RaRBalancingChargePage, balancingCharge))
+            ua2 <- rentARoomAdjustments.unusedResidentialPropertyFinanceCostsBroughtFwd.fold[Try[UserAnswers]](Success(ua1))(
+              unusedResidentialPropertyFinanceCostsBroughtFwd =>
+                ua1.set(RaRUnusedResidentialCostsPage, unusedResidentialPropertyFinanceCostsBroughtFwd))
             ua3 <- rentARoomAdjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua2))(unusedLossesBroughtForward =>
               ua2.set(RaRUnusedLossesBroughtForwardPage, unusedLossesBroughtForward))
             ua4 <- rentARoomAdjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua3))(whenYouReportedTheLoss =>

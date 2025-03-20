@@ -22,8 +22,8 @@ import play.api.libs.json.{Format, JsPath, Json}
 import queries.Gettable
 
 final case class RentARoomAdjustments(
-  balancingCharge: BalancingCharge,
-  unusedResidentialPropertyFinanceCostsBroughtFwd: BigDecimal,
+  balancingCharge: Option[BalancingCharge],
+  unusedResidentialPropertyFinanceCostsBroughtFwd: Option[BigDecimal],
   unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
   whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
