@@ -208,7 +208,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           running(application) {
             val request =
               FakeRequest(POST, esbaClaimsRoute)
-                .withFormUrlEncodedBody(("anotherClaim", isAddNewClaim.toString))
+                .withFormUrlEncodedBody(("isAnotherClaim", isAddNewClaim.toString))
 
             val result = route(application, request).value
             redirectionUrl match {
@@ -242,9 +242,9 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           running(application) {
             val request =
               FakeRequest(POST, esbaClaimsRoute)
-                .withFormUrlEncodedBody(("anotherClaim", ""))
+                .withFormUrlEncodedBody(("isAnotherClaim", ""))
 
-            val boundForm = form.bind(Map("anotherClaim" -> ""))
+            val boundForm = form.bind(Map("isAnotherClaim" -> ""))
 
             val view = application.injector.instanceOf[EsbaClaimsView]
 
@@ -279,7 +279,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
           running(application) {
             val request =
               FakeRequest(POST, esbaClaimsRoute)
-                .withFormUrlEncodedBody(("anotherClaim", "true"))
+                .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
             val result = route(application, request).value
 

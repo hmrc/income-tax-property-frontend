@@ -26,9 +26,9 @@ class EsbaClaimsFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new EsbaClaimsFormProvider()("agent")
 
-  ".anotherClaim" - {
+  ".isAnotherClaim" - {
 
-    val fieldName = "anotherClaim"
+    val fieldName = "isAnotherClaim"
 
     behave like booleanField(
       form,
