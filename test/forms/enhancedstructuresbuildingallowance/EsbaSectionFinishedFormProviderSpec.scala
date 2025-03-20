@@ -26,9 +26,9 @@ class EsbaSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new EsbaSectionFinishedFormProvider()()
 
-  ".esbaSectionFinishedYesOrNo" - {
+  ".isEsbaSectionFinished" - {
 
-    val fieldName = "esbaSectionFinishedYesOrNo"
+    val fieldName = "isEsbaSectionFinished"
 
     behave like booleanField(
       form,

@@ -25,5 +25,5 @@ case class EsbaSectionFinishedPage(propertyType: PropertyType) extends QuestionP
 
   override def path: JsPath = JsPath \ eSbaPath(propertyType) \ toString
 
-  override def toString: String = "propertyRentalsEsbaSectionFinishedYesOrNo"
+  override def toString: String = "propertyRentalsIsEsbaSectionFinished"
 }
