@@ -26,9 +26,9 @@ class ForeignExpensesSectionCompleteFormProviderSpec extends BooleanFieldBehavio
 
   val form = new ForeignExpensesSectionCompleteFormProvider()()
 
-  ".foreignExpensesSectionComplete" - {
+  ".isForeignExpensesSectionComplete" - {
 
-    val fieldName = "foreignExpensesSectionComplete"
+    val fieldName = "isForeignExpensesSectionComplete"
 
     behave like booleanField(
       form,
