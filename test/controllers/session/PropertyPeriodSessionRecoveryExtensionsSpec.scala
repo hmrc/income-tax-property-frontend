@@ -118,7 +118,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "allowances" : {
        |    "annualInvestmentAllowance" : 44,
        |    "electricChargePointAllowance" : {
-       |      "electricChargePointAllowance" : true,
+       |      "isElectricChargePointAllowance" : true,
        |      "electricChargePointAllowanceAmount" : 45
        |    },
        |    "zeroEmissionCarAllowance" : 4,
