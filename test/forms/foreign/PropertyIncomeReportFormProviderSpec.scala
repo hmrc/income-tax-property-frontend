@@ -25,9 +25,9 @@ class PropertyIncomeReportFormProviderSpec extends BooleanFieldBehaviours {
   val requiredKey = "propertyIncomeReport.error.required.individual"
   val invalidKey = "error.boolean"
 
-  ".value" - {
+  ".isPropertyIncomeReport" - {
 
-    val fieldName = "value"
+    val fieldName = "isPropertyIncomeReport"
 
     behave like booleanField(
       form,
