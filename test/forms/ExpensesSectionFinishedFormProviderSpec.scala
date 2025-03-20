@@ -26,9 +26,9 @@ class ExpensesSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new ExpensesSectionFinishedFormProvider()()
 
-  ".expensesSectionFinishedYesOrNo" - {
+  ".isExpensesSectionFinished" - {
 
-    val fieldName = "expensesSectionFinishedYesOrNo"
+    val fieldName = "isExpensesSectionFinished"
 
     behave like booleanField(
       form,

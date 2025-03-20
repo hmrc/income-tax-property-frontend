@@ -121,7 +121,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, expensesSectionFinishedRoute)
-            .withFormUrlEncodedBody(("expensesSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isExpensesSectionFinished", "true"))
 
         val result = route(application, request).value
 
