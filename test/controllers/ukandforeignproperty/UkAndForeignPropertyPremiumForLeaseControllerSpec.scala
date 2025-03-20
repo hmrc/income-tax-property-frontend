@@ -102,7 +102,7 @@ class UkAndForeignPropertyPremiumForLeaseControllerSpec extends SpecBase with Mo
         running(application) {
           val request =
             FakeRequest(POST, ukAndForeignPropertyPremiumForLeaseRoute)
-              .withFormUrlEncodedBody(("ukAndForeignPropertyPremiumForLeaseYesOrNo", "true"))
+              .withFormUrlEncodedBody(("isUkAndForeignPropertyPremiumForLease", "true"))
 
           val result = route(application, request).value
 
@@ -118,9 +118,9 @@ class UkAndForeignPropertyPremiumForLeaseControllerSpec extends SpecBase with Mo
         running(application) {
           val request =
             FakeRequest(POST, ukAndForeignPropertyPremiumForLeaseRoute)
-              .withFormUrlEncodedBody(("ukAndForeignPropertyPremiumForLeaseYesOrNo", ""))
+              .withFormUrlEncodedBody(("isUkAndForeignPropertyPremiumForLease", ""))
 
-          val boundForm = form.bind(Map("ukAndForeignPropertyPremiumForLeaseYesOrNo" -> ""))
+          val boundForm = form.bind(Map("isUkAndForeignPropertyPremiumForLease" -> ""))
 
           val view = application.injector.instanceOf[UkAndForeignPropertyPremiumForLeaseView]
 
@@ -152,7 +152,7 @@ class UkAndForeignPropertyPremiumForLeaseControllerSpec extends SpecBase with Mo
         running(application) {
           val request =
             FakeRequest(POST, ukAndForeignPropertyPremiumForLeaseRoute)
-              .withFormUrlEncodedBody(("ukAndForeignPropertyPremiumForLeaseYesOrNo", "true"))
+              .withFormUrlEncodedBody(("isUkAndForeignPropertyPremiumForLease", "true"))
 
           val result = route(application, request).value
 

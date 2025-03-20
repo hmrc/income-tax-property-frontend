@@ -30,9 +30,9 @@ class UkAndForeignPropertyPremiumForLeaseFormProviderSpec extends BooleanFieldBe
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
 
-    s".ukAndForeignPropertyPremiumForLeaseYesOrNo for an $individualOrAgent" - {
+    s".isUkAndForeignPropertyPremiumForLease for an $individualOrAgent" - {
 
-      val fieldName = "ukAndForeignPropertyPremiumForLeaseYesOrNo"
+      val fieldName = "isUkAndForeignPropertyPremiumForLease"
 
       behave like booleanField(
         form,

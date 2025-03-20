@@ -91,7 +91,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "propertyRentalsIncome" : {
        |    "isNonUKLandlord" : false,
        |    "propertyRentalIncome" : 45,
-       |    "premiumForLeaseYesOrNo" : true,
+       |    "isPremiumForLease" : true,
        |    "calculatedFigureYourself" : {
        |      "isCalculatedFigureYourself" : true,
        |      "amount" : 45
