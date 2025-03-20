@@ -98,7 +98,7 @@ class ReportPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reportPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("reportPropertyIncome", "true"))
+            .withFormUrlEncodedBody(("isReportPropertyIncome", "true"))
 
         val result = route(application, request).value
 
@@ -114,9 +114,9 @@ class ReportPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reportPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("reportPropertyIncome", ""))
+            .withFormUrlEncodedBody(("isReportPropertyIncome", ""))
 
-        val boundForm = form.bind(Map("reportPropertyIncome" -> ""))
+        val boundForm = form.bind(Map("isReportPropertyIncome" -> ""))
 
         val view = application.injector.instanceOf[ReportPropertyIncomeView]
 
@@ -148,7 +148,7 @@ class ReportPropertyIncomeControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, reportPropertyIncomeRoute)
-            .withFormUrlEncodedBody(("reportPropertyIncome", "true"))
+            .withFormUrlEncodedBody(("isReportPropertyIncome", "true"))
 
         val result = route(application, request).value
 

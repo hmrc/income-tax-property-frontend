@@ -26,9 +26,9 @@ class ReportPropertyIncomeFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new ReportPropertyIncomeFormProvider()("individual")
 
-  ".reportPropertyIncome" - {
+  ".isReportPropertyIncome" - {
 
-    val fieldName = "reportPropertyIncome"
+    val fieldName = "isReportPropertyIncome"
 
     behave like booleanField(
       form,
