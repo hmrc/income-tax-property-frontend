@@ -25,6 +25,6 @@ class RemoveCountryFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("doYouWantToRemoveCountry.error.required")
+      "isRemoveCountry" -> boolean("doYouWantToRemoveCountry.error.required")
     )
 }

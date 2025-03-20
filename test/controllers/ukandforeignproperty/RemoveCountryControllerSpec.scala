@@ -71,7 +71,7 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val controller = application.injector.instanceOf[RemoveCountryController]
-        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("value", "true")))
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("isRemoveCountry", "true")))
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value must startWith(routes.ForeignCountriesRentedController.onPageLoad(taxYear = testTaxYear, mode = NormalMode).url)
@@ -84,9 +84,9 @@ class RemoveCountryControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val controller = application.injector.instanceOf[RemoveCountryController]
-        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("value", " ")))
+        val result = controller.onSubmit(testTaxYear, testIndex, NormalMode)(FakeRequest(POST, "/").withFormUrlEncodedBody(("isRemoveCountry", " ")))
 
-        val boundForm = form.bind(Map("value" -> " "))
+        val boundForm = form.bind(Map("isRemoveCountry" -> " "))
 
         val view = application.injector.instanceOf[RemoveCountryView]
 
