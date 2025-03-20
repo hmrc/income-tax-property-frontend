@@ -25,6 +25,6 @@ class ForeignAdjustmentsCompleteFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "foreignAdjustmentsCompleteYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+      "isForeignAdjustmentsComplete" -> boolean("haveYouFinishedThisSection.error.required")
     )
 }

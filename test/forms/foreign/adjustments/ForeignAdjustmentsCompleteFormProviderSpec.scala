@@ -27,9 +27,9 @@ class ForeignAdjustmentsCompleteFormProviderSpec extends BooleanFieldBehaviours 
 
   val form = new ForeignAdjustmentsCompleteFormProvider()()
 
-  ".foreignAdjustmentsCompleteYesOrNo" - {
+  ".isForeignAdjustmentsComplete" - {
 
-    val fieldName = "foreignAdjustmentsCompleteYesOrNo"
+    val fieldName = "isForeignAdjustmentsComplete"
 
     behave like booleanField(
       form,
