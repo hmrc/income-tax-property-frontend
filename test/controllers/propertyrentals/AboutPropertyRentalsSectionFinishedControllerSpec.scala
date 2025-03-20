@@ -123,7 +123,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
       running(application) {
         val request =
           FakeRequest(POST, aboutExpenseIncomeAllowanceSectionFinishedRoute)
-            .withFormUrlEncodedBody(("aboutPropertyRentalsSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isAboutPropertyRentalsSectionFinished", "true"))
 
         val result = route(application, request).value
 
@@ -139,9 +139,9 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
       running(application) {
         val request =
           FakeRequest(POST, aboutExpenseIncomeAllowanceSectionFinishedRoute)
-            .withFormUrlEncodedBody(("aboutPropertyRentalsSectionFinishedYesOrNo", ""))
+            .withFormUrlEncodedBody(("isAboutPropertyRentalsSectionFinished", ""))
 
-        val boundForm = form.bind(Map("aboutPropertyRentalsSectionFinishedYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isAboutPropertyRentalsSectionFinished" -> ""))
 
         val view = application.injector.instanceOf[AboutPropertyRentalsSectionFinishedView]
 
@@ -173,7 +173,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
       running(application) {
         val request =
           FakeRequest(POST, aboutExpenseIncomeAllowanceSectionFinishedRoute)
-            .withFormUrlEncodedBody(("aboutPropertyRentalsSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isAboutPropertyRentalsSectionFinished", "true"))
 
         val result = route(application, request).value
 

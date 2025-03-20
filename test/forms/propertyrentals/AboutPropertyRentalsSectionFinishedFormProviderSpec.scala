@@ -26,9 +26,9 @@ class AboutPropertyRentalsSectionFinishedFormProviderSpec extends BooleanFieldBe
 
   val form = new AboutPropertyRentalsSectionFinishedFormProvider()()
 
-  ".aboutPropertyRentalsSectionFinishedYesOrNo" - {
+  ".isAboutPropertyRentalsSectionFinished" - {
 
-    val fieldName = "aboutPropertyRentalsSectionFinishedYesOrNo"
+    val fieldName = "isAboutPropertyRentalsSectionFinished"
 
     behave like booleanField(
       form,
