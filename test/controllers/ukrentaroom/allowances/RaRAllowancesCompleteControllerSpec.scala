@@ -132,7 +132,7 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, rarAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("rarAllowancesCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isRarAllowancesComplete", "true"))
 
         val result = route(application, request).value
 
@@ -148,9 +148,9 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, rarAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("rarAllowancesCompleteYesOrNo", ""))
+            .withFormUrlEncodedBody(("isRarAllowancesComplete", ""))
 
-        val boundForm = form.bind(Map("rarAllowancesCompleteYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isRarAllowancesComplete" -> ""))
 
         val view = application.injector.instanceOf[RaRAllowancesCompleteView]
 
@@ -182,7 +182,7 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, rarAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("rarAllowancesCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isRarAllowancesComplete", "true"))
 
         val result = route(application, request).value
 
