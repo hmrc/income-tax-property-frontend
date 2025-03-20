@@ -132,7 +132,7 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, RentalsAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("rentalsAdjustmentsCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isRentalsAdjustmentsComplete", "true"))
 
         val result = route(application, request).value
 
@@ -148,9 +148,9 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, RentalsAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("rentalsAdjustmentsCompleteYesOrNo", ""))
+            .withFormUrlEncodedBody(("isRentalsAdjustmentsComplete", ""))
 
-        val boundForm = form.bind(Map("rentalsAdjustmentsCompleteYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isRentalsAdjustmentsComplete" -> ""))
 
         val view = application.injector.instanceOf[RentalsAdjustmentsCompleteView]
 
@@ -182,7 +182,7 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, RentalsAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("rentalsAdjustmentsCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isRentalsAdjustmentsComplete", "true"))
 
         val result = route(application, request).value
 
