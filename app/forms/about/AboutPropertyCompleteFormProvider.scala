@@ -25,6 +25,6 @@ class AboutPropertyCompleteFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "aboutPropertyCompleteYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+      "isAboutPropertyComplete" -> boolean("haveYouFinishedThisSection.error.required")
     )
 }
