@@ -27,7 +27,7 @@ import viewmodels.implicits._
 
 object CalculatedFigureYourselfSummary {
 
-  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
+  def row(taxYear: Int, answers: UserAnswers, propertyType: PropertyType, individualOrAgent: String)(implicit
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(CalculatedFigureYourselfPage(propertyType)).flatMap {
@@ -41,21 +41,21 @@ object CalculatedFigureYourselfSummary {
                 "site.change",
                 routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
-                .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
+                .withVisuallyHiddenText(messages(s"calculatedFigureYourself.change.hidden.$individualOrAgent"))
             )
           )
         )
       case CalculatedFigureYourself(false, _) =>
         Some(
           SummaryListRowViewModel(
-            key = KeyViewModel("calculatedFigureYourself.checkYourAnswersQuestionLabel").withCssClass(keyCssClass),
+            key = KeyViewModel(s"calculatedFigureYourself.checkYourAnswersQuestionLabel.$individualOrAgent").withCssClass(keyCssClass),
             value = ValueViewModel("site.no").withCssClass(valueCssClass),
             actions = Seq(
               ActionItemViewModel(
                 "site.change",
                 routes.CalculatedFigureYourselfController.onPageLoad(taxYear, CheckMode, propertyType).url
               )
-                .withVisuallyHiddenText(messages("calculatedFigureYourself.change.hidden"))
+                .withVisuallyHiddenText(messages(s"calculatedFigureYourself.change.hidden.$individualOrAgent"))
             )
           )
         )

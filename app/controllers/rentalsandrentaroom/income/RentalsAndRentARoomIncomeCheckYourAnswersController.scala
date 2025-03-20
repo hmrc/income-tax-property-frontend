@@ -57,7 +57,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
           IsNonUKLandlordSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           DeductingTaxSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           PremiumForLeaseSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          CalculatedFigureYourselfSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
           ReceivedGrantLeaseAmountSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           YearLeaseAmountSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
           ReversePremiumsReceivedSummary.row(taxYear, request.userAnswers, RentalsRentARoom),

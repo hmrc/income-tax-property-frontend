@@ -193,16 +193,19 @@ claimPropertyIncomeAllowance.error.required.agent = Select yes if your client wa
 claimPropertyIncomeAllowance.error.required.individual = Select yes if you want to claim property income allowance
 claimPropertyIncomeAllowance.change.hidden = Change would you like to claim property income allowance?
 
-calculatedFigureYourself.title.agent = Did your client calculate the figure themselves?
+calculatedFigureYourself.title.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedFigureYourself.title.individual = Have you calculated the figure yourself?
-calculatedFigureYourself.heading.agent = Did your client calculate the figure themselves?
+calculatedFigureYourself.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedFigureYourself.heading.individual = Have you calculated the figure yourself?
-calculatedFigureYourself.radio.noText = No, calculate it for me
+calculatedFigureYourself.radio.noText.individual = No, calculate it for me
+calculatedFigureYourself.radio.noText.agent = No, we''ll calculate it for your client
 calculatedFigureYourself.checkYourAnswersAmountLabel = Self calculated figure
-calculatedFigureYourself.checkYourAnswersQuestionLabel = Have you calculated the figure yourself?
+calculatedFigureYourself.checkYourAnswersQuestionLabel.individual = Have you calculated the figure yourself?
+calculatedFigureYourself.checkYourAnswersQuestionLabel.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedFigureYourself.error.required.agent = Select yes if your client has calculated the premium for the grant of a lease taxable amount
 calculatedFigureYourself.error.required.individual = Select yes if you’ve calculated the premium for the grant of a lease taxable amount
-calculatedFigureYourself.change.hidden = Have you calculated the figure yourself?
+calculatedFigureYourself.change.hidden.individual = Have you calculated the figure yourself?
+calculatedFigureYourself.change.hidden.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedFigureYourselfAmount.label = Enter the amount
 calculatedFigureYourselfAmount.amount.error.required.individual = Enter the amount you’ve calculated yourself
 calculatedFigureYourselfAmount.amount.error.required.agent = Enter the amount your client has calculated
@@ -2160,9 +2163,10 @@ foreignPropertyRentalIncome.error.outOfRange = Enter an amount between £{0} and
 
 calculatedPremiumLeaseTaxable.title = Have you calculated the taxable amount for the premium for the grant of a lease?
 calculatedPremiumLeaseTaxable.heading.individual = Have you calculated the taxable amount for the premium for the grant of a lease?
-calculatedPremiumLeaseTaxable.heading.agent = Has your client calculated the taxable amount for the premium for the grant of a lease themselves?
+calculatedPremiumLeaseTaxable.heading.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedPremiumLeaseTaxable.p1 = Do not include income from reverse premiums.
-calculatedPremiumLeaseTaxable.checkYourAnswersLabel = Have you calculated the figure yourself?
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel.individual = Have you calculated the figure yourself?
+calculatedPremiumLeaseTaxable.checkYourAnswersLabel.agent = Has your client calculated the premium for the grant of a lease taxable amount themselves?
 calculatedPremiumLeaseTaxable.checkYourAnswersAmountLabel = Premium for the grant of a lease taxable amount
 premiumCalculatedAmount.radio.question.label = Enter the amount calculated
 calculatedPremiumLeaseTaxable.error.required.individual = Select yes if you''ve calculated the amount yourself
@@ -2174,7 +2178,8 @@ premiumCalculated.amount.error.nonNumeric = The amount you''ve calculated yourse
 premiumCalculated.amount.error.outOfRange = Enter an amount between £0 and £100,000,000,000
 calculatedPremiumLeaseTaxable.change.hidden = Have you calculated the premium for the grant of a lease taxable amount?
 calculatedPremiumLeaseTaxable.input.yesText = Yes
-calculatedPremiumLeaseTaxable.input.noText = No, calculate it for me
+calculatedPremiumLeaseTaxable.input.noText.individual = No, calculate it for me
+calculatedPremiumLeaseTaxable.input.noText.agent = No, we''ll calculate it for your client
 
 foreignIncomeSectionComplete.change.hidden = Have you finished this section?
 
