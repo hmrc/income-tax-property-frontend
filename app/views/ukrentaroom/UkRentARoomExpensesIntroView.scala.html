@@ -45,10 +45,11 @@
         @messages(s"ukRentARoom.expensesIntro.p5.${request.user.isAgentMessageKey}")
         </p>
     }
-
-    @govukButton(
-        ButtonViewModel(messages("site.continue")).withId("continue").asLink(url).preventingDoubleClick()
-    )
+    <p class="govuk-body">
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue").asLink(url).preventingDoubleClick()
+        )
+    </p>
 }
 
 @{

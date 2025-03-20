@@ -35,9 +35,11 @@
             <li>@messages("raRAdjustmentsIntro.bullet.content.l3")</li>
         </ul>
 
-        @govukButton(
-            ButtonViewModel(messages("propertyIncomeStart.button"))
-            .asLink(routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url)
-            .withId("continue")
-        )
+        <p class="govuk-body">
+            @govukButton(
+                ButtonViewModel(messages("propertyIncomeStart.button"))
+                .asLink(routes.RaRBalancingChargeController.onPageLoad(taxYear, NormalMode).url)
+                .withId("continue")
+            )
+        </p>
     }

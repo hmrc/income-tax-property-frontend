@@ -39,9 +39,11 @@
         }
         </ul>
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue"))
-            .asLink(page.nextPageUrl)
-            .withId("continue")
-        )
+        <p class="govuk-body">
+            @govukButton(
+                ButtonViewModel(messages("site.continue"))
+                .asLink(page.nextPageUrl)
+                .withId("continue")
+            )
+        </p>
     }
