@@ -23,7 +23,7 @@ import play.api.data.FormError
 class ClaimForeignTaxCreditReliefFormProviderSpec extends BooleanFieldBehaviours {
 
   val scenarios: TableFor1[String] = Table[String]("individualOrAgent", "individual", "agent")
-  val fieldName = "claimForeignTaxCreditRelief"
+  val fieldName = "isClaimForeignTaxCreditRelief"
   val formProvider = new ClaimForeignTaxCreditReliefFormProvider()
   
   forAll(scenarios) { (individualOrAgent: String) =>
