@@ -21,7 +21,7 @@ import play.api.libs.json.{Format, Json}
 case class ForeignPropertyTaxWithCountryCode(
   countryCode: String,
   foreignIncomeTax: Option[ForeignIncomeTax],
-  foreignTaxCreditRelief: Option[Boolean]
+  isForeignTaxCreditRelief: Option[Boolean]
 )
 
 object ForeignPropertyTaxWithCountryCode {

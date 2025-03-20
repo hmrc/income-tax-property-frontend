@@ -244,7 +244,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |        "isForeignIncomeTax": true,
        |        "foreignTaxPaidOrDeducted": 590.55
        |      },
-       |      "foreignTaxCreditRelief": true
+       |      "isForeignTaxCreditRelief": true
        |      }
        |    },
        |    "foreignPropertyAllowances": {

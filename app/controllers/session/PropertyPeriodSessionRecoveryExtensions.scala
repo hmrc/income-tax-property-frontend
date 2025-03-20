@@ -292,7 +292,7 @@ object PropertyPeriodSessionRecoveryExtensions {
                     )
                   }
                 ua2 <-
-                  foreignPropertyTax.foreignTaxCreditRelief.fold[Try[UserAnswers]](Success(ua1)) { taxRelief =>
+                  foreignPropertyTax.isForeignTaxCreditRelief.fold[Try[UserAnswers]](Success(ua1)) { taxRelief =>
                     ua1.set(ClaimForeignTaxCreditReliefPage(countryCode), taxRelief)
                   }
               } yield ua2
