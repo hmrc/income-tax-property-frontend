@@ -104,7 +104,7 @@ class ClaimPropertyIncomeAllowanceOrExpensesControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, claimPropertyIncomeAllowanceOrExpensesRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceOrExpenses", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowanceOrExpenses", "true"))
 
         val result = route(application, request).value
 
@@ -120,9 +120,9 @@ class ClaimPropertyIncomeAllowanceOrExpensesControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, claimPropertyIncomeAllowanceOrExpensesRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceOrExpenses", ""))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowanceOrExpenses", ""))
 
-        val boundForm = form.bind(Map("claimPropertyIncomeAllowanceOrExpenses" -> ""))
+        val boundForm = form.bind(Map("isClaimPropertyIncomeAllowanceOrExpenses" -> ""))
 
         val view = application.injector.instanceOf[ClaimPropertyIncomeAllowanceOrExpensesView]
 
@@ -157,7 +157,7 @@ class ClaimPropertyIncomeAllowanceOrExpensesControllerSpec extends SpecBase with
       running(application) {
         val request =
           FakeRequest(POST, claimPropertyIncomeAllowanceOrExpensesRoute)
-            .withFormUrlEncodedBody(("claimPropertyIncomeAllowanceOrExpenses", "true"))
+            .withFormUrlEncodedBody(("isClaimPropertyIncomeAllowanceOrExpenses", "true"))
 
         val result = route(application, request).value
 
