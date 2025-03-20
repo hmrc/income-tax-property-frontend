@@ -25,5 +25,5 @@ case class SbaRemoveConfirmationPage(propertyType: PropertyType) extends Questio
 
   override def path: JsPath = JsPath \ sbaPath(propertyType) \ toString
 
-  override def toString: String = "sbaRemoveConfirmation"
+  override def toString: String = "isSbaRemoveConfirmation"
 }

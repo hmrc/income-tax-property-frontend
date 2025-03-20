@@ -25,6 +25,6 @@ class ForeignSbaRemoveConfirmationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "foreignSbaRemoveConfirmation" -> boolean("foreignSbaRemoveConfirmation.error.required")
+      "isForeignSbaRemoveConfirmation" -> boolean("foreignSbaRemoveConfirmation.error.required")
     )
 }
