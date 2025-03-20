@@ -28,7 +28,7 @@ class CountriesRentedPropertyFormProviderSpec extends BooleanFieldBehaviours {
 
   ".value" - {
 
-    val fieldName = "countriesRentedPropertyYesOrNo"
+    val fieldName = "isCountriesRentedProperty"
 
     behave like booleanField(
       form,
