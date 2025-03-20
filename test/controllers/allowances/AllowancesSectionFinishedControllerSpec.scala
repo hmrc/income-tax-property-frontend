@@ -124,7 +124,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, allowancesSectionFinishedRoute)
-            .withFormUrlEncodedBody(("allowancesSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isAllowancesSectionFinished", "true"))
 
         val result = route(application, request).value
 
@@ -140,9 +140,9 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, allowancesSectionFinishedRoute)
-            .withFormUrlEncodedBody(("allowancesSectionFinishedYesOrNo", ""))
+            .withFormUrlEncodedBody(("isAllowancesSectionFinished", ""))
 
-        val boundForm = form.bind(Map("allowancesSectionFinishedYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isAllowancesSectionFinished" -> ""))
 
         val view = application.injector.instanceOf[AllowancesSectionFinishedView]
 
@@ -174,7 +174,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, allowancesSectionFinishedRoute)
-            .withFormUrlEncodedBody(("allowancesSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isAllowancesSectionFinished", "true"))
 
         val result = route(application, request).value
 
