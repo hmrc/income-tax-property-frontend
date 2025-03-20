@@ -25,5 +25,5 @@ case class SbaSectionFinishedPage(propertyType: PropertyType) extends QuestionPa
 
   override def path: JsPath = JsPath \ sbaPath(propertyType) \ toString
 
-  override def toString: String = "propertyRentalsSbaSectionFinishedYesOrNo"
+  override def toString: String = "isPropertyRentalsSbaSectionFinished"
 }

@@ -180,7 +180,7 @@ class ForeignSbaCompleteControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, foreignSbaCompleteRoute)
-            .withFormUrlEncodedBody(("sbaSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isSbaSectionFinished", "true"))
 
         val result = route(application, request).value
 
