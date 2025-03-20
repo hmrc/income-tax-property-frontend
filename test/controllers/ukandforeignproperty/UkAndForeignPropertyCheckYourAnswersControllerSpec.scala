@@ -55,11 +55,11 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
   )
 
   val aboutUk: AboutUk = AboutUk(
-    nonUkResidentLandlord = None,
+    isNonUkResidentLandlord = None,
     deductingTaxFromNonUkResidentLandlord = None,
     ukRentalPropertyIncomeAmount = None,
     balancingCharge = None,
-    premiumForLease = None,
+    isPremiumForLease = None,
     premiumGrantLeaseTax = None,
     amountReceivedForGrantOfLeasePage = None,
     yearLeaseAmount = None,
@@ -70,7 +70,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
   val aboutForeign: AboutForeign = AboutForeign(
     foreignRentalPropertyIncomeAmount = None,
     foreignBalancingCharge = None,
-    foreignPremiumsForTheGrantOfALease = None,
+    isForeignPremiumsForTheGrantOfALease = None,
     foreignCalculatedPremiumGrantLeaseTaxable = None,
     foreignLeaseGrantReceivedAmount = None,
     foreignYearLeaseAmount = None,

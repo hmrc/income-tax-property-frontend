@@ -45,11 +45,11 @@ case object AboutUkAndForeign extends Gettable[AboutUkAndForeign] {
 }
 
 final case class AboutUk(
-  nonUkResidentLandlord: Option[Boolean],
+  isNonUkResidentLandlord: Option[Boolean],
   deductingTaxFromNonUkResidentLandlord: Option[DeductingTaxFromNonUkResidentLandlord],
   ukRentalPropertyIncomeAmount: Option[BigDecimal],
   balancingCharge: Option[BalancingCharge],
-  premiumForLease: Option[Boolean],
+  isPremiumForLease: Option[Boolean],
   premiumGrantLeaseTax: Option[UkAndForeignPropertyPremiumGrantLeaseTax],
   amountReceivedForGrantOfLeasePage: Option[UkAndForeignPropertyAmountReceivedForGrantOfLease],
   yearLeaseAmount: Option[Int],
@@ -67,7 +67,7 @@ case object AboutUk extends Gettable[AboutUk] {
 final case class AboutForeign(
   foreignRentalPropertyIncomeAmount: Option[BigDecimal],
   foreignBalancingCharge: Option[BalancingCharge],
-  foreignPremiumsForTheGrantOfALease: Option[Boolean],
+  isForeignPremiumsForTheGrantOfALease: Option[Boolean],
   foreignCalculatedPremiumGrantLeaseTaxable: Option[PremiumCalculated],
   foreignLeaseGrantReceivedAmount: Option[BigDecimal],
   foreignYearLeaseAmount: Option[Int],
