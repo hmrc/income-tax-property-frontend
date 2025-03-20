@@ -25,7 +25,7 @@ import queries.Gettable
 case class ForeignPropertyTax(
   countryCode: String,
   foreignIncomeTax: Option[ForeignIncomeTax],
-  foreignTaxCreditRelief: Option[Boolean]
+  isForeignTaxCreditRelief: Option[Boolean]
 )
 object ForeignPropertyTax {
   implicit val format: OFormat[ForeignPropertyTax] = Json.format[ForeignPropertyTax]
