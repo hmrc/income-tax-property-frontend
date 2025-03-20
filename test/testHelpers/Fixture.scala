@@ -38,6 +38,8 @@ trait Fixture {
     None,
     None,
     None,
+    None,
+    None,
     List(),
     None
   )

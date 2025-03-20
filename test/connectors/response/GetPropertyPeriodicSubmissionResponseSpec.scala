@@ -59,14 +59,16 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
               Adjustments(
                 BalancingCharge(balancingChargeYesNo = true, Some(4.2)),
                 PrivateUseAdjustment(4.5),
-                45,
+                Some(45),
                 RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(4.2)),
                 4.2,
-                4.2,
+                Some(4.2),
                 Some(UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(4.2))),
                 Some(y2021to2022)
               )
             ),
+            None,
+            None,
             None,
             None,
             None,
