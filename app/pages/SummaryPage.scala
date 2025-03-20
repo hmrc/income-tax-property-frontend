@@ -260,8 +260,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(EsbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(EsbaSectionFinishedPage(Rentals)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -295,8 +295,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(SbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(SbaSectionFinishedPage(Rentals)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -312,8 +312,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(AllowancesSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -329,8 +329,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ExpensesSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -347,8 +347,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(IncomeSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(IncomeSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
