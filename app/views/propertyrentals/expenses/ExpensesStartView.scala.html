@@ -53,12 +53,13 @@
             </p>
         }
 
-
-        @govukButton(
-            ButtonViewModel(messages("site.continue"))
-            .asLink(under85KUrl)
-            .withId("continue")
-        )
+        <p class="govuk-body">
+            @govukButton(
+                ButtonViewModel(messages("site.continue"))
+                .asLink(under85KUrl)
+                .withId("continue")
+            )
+        </p>
 
     }
 

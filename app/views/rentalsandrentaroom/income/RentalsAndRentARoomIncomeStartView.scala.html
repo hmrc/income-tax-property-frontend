@@ -35,9 +35,11 @@
     </ul>
     <p class="govuk-body">@messages(s"rentalsAndRentARoomIncomeStart.p2.$individualOrAgent")</p>
 
-    @govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .withId("continue")
-        .asLink(controllers.propertyrentals.income.routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, models.RentalsRentARoom).url)
-    )
+    <p class="govuk-body">
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .withId("continue")
+            .asLink(controllers.propertyrentals.income.routes.IsNonUKLandlordController.onPageLoad(taxYear, NormalMode, models.RentalsRentARoom).url)
+        )
+    </p>
 }
