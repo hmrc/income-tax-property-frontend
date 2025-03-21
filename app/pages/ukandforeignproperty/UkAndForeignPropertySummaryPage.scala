@@ -290,14 +290,7 @@ object UkAndForeignPropertySummaryPage {
       case (false, true, _, true)            => foreignTaxAndAdjustmentsItems
       case (false, true, Some(false), false) => foreignFullTaskList
       // Ref: MJ06
-      case (false, true, Some(true), false) =>
-        Seq(
-          foreignSummary.foreignTaxItem(taxYear, countryCode, userAnswers),
-          foreignSummary.foreignIncomeItem(taxYear, countryCode, userAnswers),
-          foreignSummary.foreignAllowancesItem(taxYear, countryCode, userAnswers),
-          foreignSummary.foreignSBAItem(taxYear, countryCode, userAnswers),
-          foreignSummary.foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = claimPIA, userAnswers)
-        )
+      case (false, true, Some(true), false) => foreignFullTaskList
       // Property Rentals and Rent a Room
       case (true, true, _, true)  => foreignTaxAndAdjustmentsItems
       case (true, true, _, false) => foreignFullTaskList
