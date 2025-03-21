@@ -67,7 +67,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua4 <- updateRentalsAndRaRAbout(ua3, fetchedData.ukPropertyData.rentalsAndRaRAbout)
         ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
         ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
-        ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.allowances, RentalsRentARoom)
+        ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.rentalsAndRaRAllowances, RentalsRentARoom)
         ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.sbasWithSupportingQuestions, Rentals)
         ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsAndRaRSbasWithSupportingQuestions, RentalsRentARoom)
         ua10 <-
@@ -81,7 +81,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.ukPropertyData.rentalsAndRaRIncome)
         ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.ukPropertyData.propertyRentalsExpenses, Rentals)
         ua15 <-
-          updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.propertyRentalsExpenses, RentalsRentARoom)
+          updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.rentalsAndRaRExpenses, RentalsRentARoom)
         ua16 <- updateRentARoomAbout(ua15, fetchedData.ukPropertyData.raRAbout)
         ua17 <- updateRentARoomExpenses(ua16, fetchedData.ukPropertyData.rarExpenses)
         ua18 <- updateRentARoomAllowance(ua17, fetchedData.ukPropertyData.rentARoomAllowances)
@@ -135,8 +135,8 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "property-rentals-and-rent-a-room-allowances"  => RentalsRaRAllowancesCompletePage
         case "property-rentals-and-rent-a-room-expenses"    => RentalsRaRExpensesCompletePage
         case "property-rentals-and-rent-a-room-adjustments" => RentalsRaRAdjustmentsCompletePage
-        case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentARoom)
-        case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentARoom)
+        case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentalsRentARoom)
+        case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentalsRentARoom)
         case "foreign-property-select-country"              => ForeignSelectCountriesCompletePage
       }
 
@@ -502,14 +502,17 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(BalancingChargePage(Rentals), adjustments.balancingCharge)
             ua2 <- ua1.set(PrivateUseAdjustmentPage(Rentals), adjustments.privateUseAdjustment)
-            ua3 <- ua2.set(PropertyIncomeAllowancePage(Rentals), adjustments.propertyIncomeAllowance)
+            ua3 <- adjustments.propertyIncomeAllowance.fold[Try[UserAnswers]](Success(ua2)) { propertyIncomeAllowance =>
+              ua2.set(PropertyIncomeAllowancePage(Rentals), propertyIncomeAllowance) }
             ua4 <-
               ua3.set(
                 RenovationAllowanceBalancingChargePage(Rentals),
                 adjustments.renovationAllowanceBalancingCharge
               )
             ua5 <- ua4.set(ResidentialFinanceCostPage(Rentals), adjustments.residentialFinanceCost)
-            ua6 <- ua5.set(UnusedResidentialFinanceCostPage(Rentals), adjustments.unusedResidentialFinanceCost)
+            ua6 <- adjustments.unusedResidentialFinanceCost.fold[Try[UserAnswers]](Success(ua5)){
+              unusedResidentialFinanceCost =>  ua5.set(UnusedResidentialFinanceCostPage(Rentals), unusedResidentialFinanceCost)
+            }
             ua7 <- adjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua6))(unusedLossesBroughtForward =>
               ua6.set(UnusedLossesBroughtForwardPage(Rentals), unusedLossesBroughtForward))
             ua8 <- adjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua7))(whenYouReportedTheLoss =>
@@ -574,7 +577,11 @@ object PropertyPeriodSessionRecoveryExtensions {
               allowances.zeroEmissionGoodsVehicleAllowance.fold[Try[UserAnswers]](Success(ua5)) {
                 zeroEmissionGoodsVehicleAllowance => ua5.set(ZeroEmissionGoodsVehicleAllowancePage(propertyType), zeroEmissionGoodsVehicleAllowance)
             }
-          } yield ua6
+            ua7 <-
+              allowances.capitalAllowancesForACar.fold[Try[UserAnswers]](Success(ua6)) {
+                capitalAllowancesForACar => ua6.set(CapitalAllowancesForACarPage(propertyType), capitalAllowancesForACar)
+              }
+          } yield ua7
       }
 
     private def updatePropertyRentalsIncomePages(
@@ -784,10 +791,10 @@ object PropertyPeriodSessionRecoveryExtensions {
       case RentARoom => Success(userAnswers)
       case _ =>
         for {
-          ua1 <- userAnswers.set(EsbaAddressPage(index, Rentals), esba.enhancedStructureBuildingAllowanceAddress)
-          ua2 <- ua1.set(EsbaQualifyingDatePage(index, Rentals), esba.enhancedStructureBuildingAllowanceQualifyingDate)
-          ua3 <- ua2.set(EsbaQualifyingAmountPage(index, Rentals), esba.enhancedStructureBuildingAllowanceQualifyingAmount)
-          ua4 <- ua3.set(EsbaClaimPage(index, Rentals), esba.enhancedStructureBuildingAllowanceClaim)
+          ua1 <- userAnswers.set(EsbaAddressPage(index, propertyType), esba.enhancedStructureBuildingAllowanceAddress)
+          ua2 <- ua1.set(EsbaQualifyingDatePage(index, propertyType), esba.enhancedStructureBuildingAllowanceQualifyingDate)
+          ua3 <- ua2.set(EsbaQualifyingAmountPage(index, propertyType), esba.enhancedStructureBuildingAllowanceQualifyingAmount)
+          ua4 <- ua3.set(EsbaClaimPage(index, propertyType), esba.enhancedStructureBuildingAllowanceClaim)
         } yield ua4
     }
 
@@ -893,8 +900,11 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None                       => Success(userAnswers)
         case Some(rentARoomAdjustments) =>
           for {
-            ua1 <- userAnswers.set(RaRBalancingChargePage, rentARoomAdjustments.balancingCharge)
-            ua2 <- ua1.set(RaRUnusedResidentialCostsPage, rentARoomAdjustments.unusedResidentialPropertyFinanceCostsBroughtFwd)
+            ua1 <- rentARoomAdjustments.balancingCharge.fold[Try[UserAnswers]](Success(userAnswers))(balancingCharge =>
+              userAnswers.set(RaRBalancingChargePage, balancingCharge))
+            ua2 <- rentARoomAdjustments.unusedResidentialPropertyFinanceCostsBroughtFwd.fold[Try[UserAnswers]](Success(ua1))(
+              unusedResidentialPropertyFinanceCostsBroughtFwd =>
+                ua1.set(RaRUnusedResidentialCostsPage, unusedResidentialPropertyFinanceCostsBroughtFwd))
             ua3 <- rentARoomAdjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua2))(unusedLossesBroughtForward =>
               ua2.set(RaRUnusedLossesBroughtForwardPage, unusedLossesBroughtForward))
             ua4 <- rentARoomAdjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua3))(whenYouReportedTheLoss =>

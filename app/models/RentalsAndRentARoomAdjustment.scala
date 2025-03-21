@@ -26,7 +26,9 @@ final case class RentalsAndRentARoomAdjustment(
   propertyIncomeAllowance: Option[BigDecimal],
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
   residentialFinanceCost: BigDecimal,
-  unusedResidentialFinanceCost: Option[BigDecimal]
+  unusedResidentialFinanceCost: Option[BigDecimal],
+  unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
+  whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
 
 case object RentalsAndRentARoomAdjustment

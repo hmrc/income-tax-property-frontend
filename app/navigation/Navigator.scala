@@ -275,7 +275,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", propertyType) {
               BalancingChargeController.onPageLoad(taxYear, NormalMode, propertyType)
             }
     case BalancingChargePage(Rentals) =>
@@ -341,7 +341,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
               RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
             } else {
-              diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
+              diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", RentalsRentARoom) {
                 UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
               }
             }
@@ -453,7 +453,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", RentalsRentARoom) {
               ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
             }
     case ReplacementOfDomesticGoodsPage(Rentals) =>
@@ -533,7 +533,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "sba", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "sba", propertyType) {
               structureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
             }
     case StructureBuildingAllowancePage =>
@@ -547,7 +547,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "sba", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "sba", propertyType) {
               sbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
             }
 
@@ -556,21 +556,21 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", propertyType) {
               enhancedStructureBuildingAllowanceNavigation(taxYear, userAnswers, propertyType)
             }
     case EsbaClaimsPage(propertyType) =>
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", propertyType) {
               esbaClaimsNavigationNormalMode(taxYear, userAnswers, propertyType)
             }
     case EsbaRemoveConfirmationPage(propertyType) =>
       taxYear =>
         _ =>
           userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", Rentals) {
+            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "esba", propertyType) {
               esbaRemoveConfirmationNavigationNormalMode(taxYear, userAnswers, propertyType)
             }
     case EsbaSectionFinishedPage(propertyType) => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -1287,7 +1287,10 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     propertyType: PropertyType
   ): Call =
     userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType)) match {
-      case Some(true)  => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
+      case Some(true) => userAnswers.get(StructureBuildingAllowanceGroup(propertyType)) match {
+        case Some(sbaForm) if sbaForm.nonEmpty => SbaClaimsController.onPageLoad(taxYear, propertyType)
+        case _ => AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
+      }
       case Some(false) => ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }
@@ -1298,7 +1301,10 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     propertyType: PropertyType
   ): Call =
     userAnswers.get(ClaimEsbaPage(propertyType)) match {
-      case Some(true)  => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
+      case Some(true)  => userAnswers.get(EnhancedStructureBuildingAllowanceGroup(propertyType)) match {
+        case Some(esbaForm) if esbaForm.nonEmpty => EsbaClaimsController.onPageLoad(taxYear, propertyType)
+        case _ => EsbaAddClaimController.onPageLoad(taxYear, propertyType)
+      }
       case Some(false) => ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
       case _           => SummaryController.show(taxYear)
     }

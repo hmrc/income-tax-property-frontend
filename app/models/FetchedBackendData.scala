@@ -27,10 +27,10 @@ import java.time.LocalDate
 final case class Adjustments(
   balancingCharge: BalancingCharge,
   privateUseAdjustment: PrivateUseAdjustment,
-  propertyIncomeAllowance: BigDecimal,
+  propertyIncomeAllowance: Option[BigDecimal],
   renovationAllowanceBalancingCharge: RenovationAllowanceBalancingCharge,
   residentialFinanceCost: BigDecimal,
-  unusedResidentialFinanceCost: BigDecimal,
+  unusedResidentialFinanceCost: Option[BigDecimal],
   unusedLossesBroughtForward: Option[UnusedLossesBroughtForward],
   whenYouReportedTheLoss: Option[WhenYouReportedTheLoss]
 )
@@ -40,6 +40,7 @@ object Adjustments {
 }
 
 final case class Allowances(
+  capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   annualInvestmentAllowance: Option[BigDecimal],
   businessPremisesRenovationAllowance: Option[BigDecimal],
   otherCapitalAllowance: Option[BigDecimal],
@@ -152,6 +153,7 @@ final case class FetchedBackendData(
   adjustments: Option[Adjustments],
   rentalsAndRaRAdjustments: Option[RentalsAndRentARoomAdjustment],
   allowances: Option[Allowances],
+  rentalsAndRaRAllowances: Option[Allowances],
   esbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
   rentalsAndRaREsbasWithSupportingQuestions: Option[EsbasWithSupportingQuestions],
   sbasWithSupportingQuestions: Option[SbasWithSupportingQuestions],
@@ -159,6 +161,7 @@ final case class FetchedBackendData(
   propertyRentalsIncome: Option[RentalsIncome],
   rentalsAndRaRIncome: Option[RentalsAndRentARoomIncome],
   propertyRentalsExpenses: Option[RentalsExpense],
+  rentalsAndRaRExpenses: Option[RentalsExpense],
   raRAbout: Option[RaRAbout],
   rarExpenses: Option[RentARoomExpenses],
   raRAdjustments: Option[RentARoomAdjustments],
