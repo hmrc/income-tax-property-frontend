@@ -26,7 +26,7 @@
 )
 
 
-@(ukproperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage, ukAndForeignProperty: UkAndForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, ukProperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage, ukAndForeignProperty: UkAndForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
 
 @taskListSection(items: Seq[TaskListItem]) = {
     <ol class="govuk-task-list">
@@ -70,34 +70,43 @@
     pageTitle = titleNoForm(messages("summary.title")),
     showBackLink = true
 ) {
-
+    <span class="govuk-caption-l">@messages("property.caption", (taxYear - 1).toString, taxYear.toString)</span>
     <h1 class="govuk-heading-l">@messages("summary.page.heading")</h1>
 
-    @if(ukproperty.startItems.nonEmpty) {
+    @if(ukProperty.startItems.nonEmpty && foreignProperty.startItems.nonEmpty){
+        @ukAndForeignPropertySection(ukAndForeignProperty)
+        @ukPropertySection(ukProperty)
+        @foreignPropertySection(foreignProperty)
+    } else {
+        @ukPropertySection(ukProperty)
+        @foreignPropertySection(foreignProperty)
+    }
+
+}
+
+
+@ukPropertySection(ukProperty: UKPropertySummaryPage) = {
+    @if(ukProperty.startItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("summary.aboutUKProperties.heading")</h2>
-        @taskListSection(ukproperty.startItems)
+        @taskListSection(ukProperty.startItems)
     }
 
-    @if(ukproperty.rentalsRows.nonEmpty) {
+    @if(ukProperty.rentalsRows.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
-        @taskListSection(ukproperty.rentalsRows)
+        @taskListSection(ukProperty.rentalsRows)
     }
 
-    @if(ukproperty.rentARoomRows.nonEmpty) {
+    @if(ukProperty.rentARoomRows.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
-        @taskListSection(ukproperty.rentARoomRows)
+        @taskListSection(ukProperty.rentARoomRows)
     }
 
-    @if(ukproperty.combinedItems.nonEmpty) {
+    @if(ukProperty.combinedItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
-        @taskListSection(ukproperty.combinedItems)
+        @taskListSection(ukProperty.combinedItems)
     }
-
-    @if(ukproperty.startItems.nonEmpty && foreignProperty.startItems.nonEmpty) {
-        <h2 class="govuk-heading-m">@messages("ukAndForeign.summary.title")</h2>
-        @taskListSection(ukAndForeignProperty.startItems)
-    }
-
+}
+@foreignPropertySection(foreignProperty: ForeignPropertySummaryPage) = {
     @if(foreignProperty.startItems.nonEmpty) {
         <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
         @taskListSection(foreignProperty.startItems)
@@ -113,6 +122,38 @@
     }
 
 
+}
+
+
+@ukAndForeignPropertySection(ukAndForeignProperty: UkAndForeignPropertySummaryPage) = {
+
+    @if(ukAndForeignProperty.startItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("ukAndForeign.summary.title")</h2>
+        @taskListSection(ukAndForeignProperty.startItems)
+    }
+
+    @if(ukAndForeignProperty.ukPropertyRentalListItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.rentals.heading")</h2>
+        @taskListSection(ukAndForeignProperty.ukPropertyRentalListItems)
+    }
+
+    @if(ukAndForeignProperty.ukPropertyRentARoomListItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.rentARoom.heading")</h2>
+        @taskListSection(ukAndForeignProperty.ukPropertyRentARoomListItems)
+    }
+
+    @if(ukAndForeignProperty.ukPropertyRentalAndRentARoomListItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("summary.combined.heading")</h2>
+        @taskListSection(ukAndForeignProperty.ukPropertyRentalAndRentARoomListItems)
+    }
+
+    @if(ukAndForeignProperty.foreignListItems.nonEmpty) {
+        <h2 class="govuk-heading-m">@messages("foreign.summary.title")</h2>
+        @for((countryName, listItems) <- ukAndForeignProperty.foreignListItems) {
+            <h2 class="govuk-heading-m">@messages(s"foreign.heading", countryName) </h2>
+            @taskListSection(listItems)
+        }
+    }
 }
 
 @{

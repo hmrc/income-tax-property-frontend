@@ -62,6 +62,33 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
   }
 
   def foreignPropertyItems(taxYear: Int, accrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+    val taskList =
+      Seq(
+        foreignTaxItem(taxYear, countryCode, userAnswers),
+        foreignIncomeItem(taxYear, countryCode, userAnswers)
+      )
+
+    val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
+    isClaimingAllowances match {
+      case Some(true) => taskList ++ Seq(
+        foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = true, userAnswers)
+      )
+      case Some(false) if accrualsOrCash => taskList ++ Seq(
+        foreignExpensesItem(taxYear, countryCode, userAnswers),
+        foreignAllowancesItem(taxYear, countryCode, userAnswers),
+        foreignSBAItem(taxYear, countryCode, userAnswers),
+        foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = false, userAnswers)
+      )
+      case Some(false) =>
+        taskList ++ Seq(
+          foreignExpensesItem(taxYear, countryCode, userAnswers),
+          foreignAllowancesItem(taxYear, countryCode, userAnswers),
+          foreignAdjustmentsItem(taxYear, countryCode, isClaimPIA = false, userAnswers))
+      case None => taskList
+    }
+  }
+
+  def foreignTaxItem(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): TaskListItem = {
     val taskListTagForForeignTax =
       userAnswers
         .flatMap { answers =>
@@ -71,63 +98,7 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
         }
         .getOrElse(TaskListTag.NotStarted)
 
-    val taskListTagForIncome =
-      userAnswers
-        .flatMap { answers =>
-          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
-          }
-        }
-        .getOrElse(TaskListTag.NotStarted)
-
-    val taskListTagForExpenses =
-      userAnswers
-        .flatMap { answers =>
-          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
-          }
-        }
-        .getOrElse(TaskListTag.NotStarted)
-
-    val taskListTagForSba =
-      userAnswers
-        .flatMap { answers =>
-          answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
-          }
-        }
-        .getOrElse(TaskListTag.NotStarted)
-
-    val taskListTagForAllowances =
-      userAnswers
-        .flatMap { answers =>
-          answers.get(ForeignAllowancesCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
-          }
-        }
-        .getOrElse(TaskListTag.NotStarted)
-
-    val taskListTagForAdjustments = {
-      val isAdjustmentsComplete = userAnswers.flatMap(_.get(ForeignAdjustmentsCompletePage(countryCode)))
-      isAdjustmentsComplete
-        .map { finishedYesOrNo =>
-          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
-        }
-        .getOrElse {
-          val isPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage)).getOrElse(false)
-          if (isPIA) {
-            if (taskListTagForIncome == TaskListTag.Completed) {
-              TaskListTag.NotStarted
-            } else {
-              TaskListTag.CanNotStart
-            }
-          } else {
-            TaskListTag.NotStarted
-          }
-        }
-    }
-
-    val foreignTaxTaskList = TaskListItem(
+    TaskListItem(
       "foreign.tax",
       foreignCYADiversionService.redirectCallToCYAIfFinished(
         taxYear,
@@ -140,36 +111,40 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
       taskListTagForForeignTax,
       s"foreign_property_income_tax_$countryCode"
     )
-    val foreignIncomeTaskList = TaskListItem(
+  }
+
+  def foreignIncomeItem(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): TaskListItem = {
+    val taskListTagForIncome =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
+
+    TaskListItem(
       "foreign.income",
-      foreignCYADiversionService.redirectCallToCYAIfFinished(
-        taxYear,
-        userAnswers,
-        ForeignCYADiversionService.INCOME,
-        Some(countryCode)
-      ) {
-        controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode)
-      },
+      foreignCYADiversionService
+        .redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignCYADiversionService.INCOME, Some(countryCode)) {
+          controllers.foreign.income.routes.ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode)
+        },
       taskListTagForIncome,
       s"foreign_property_income_$countryCode"
     )
+  }
 
-    val claimingAdjustmentsTaskList = TaskListItem(
-      "summary.adjustments",
-      foreignCYADiversionService.redirectCallToCYAIfFinished(
-        taxYear,
-        userAnswers,
-        ForeignCYADiversionService.ADJUSTMENTS,
-        Some(countryCode)
-      ) {
-        controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController
-          .onPageLoad(taxYear, countryCode, isPIA = true)
-      },
-      taskListTagForAdjustments,
-      s"foreign_property_adjustments_$countryCode"
-    )
+  def foreignExpensesItem(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): TaskListItem = {
+    val taskListTagForExpenses =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
 
-    val expensesTaskList = TaskListItem(
+    TaskListItem(
       "summary.expenses",
       foreignCYADiversionService.redirectCallToCYAIfFinished(
         taxYear,
@@ -183,8 +158,19 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
       taskListTagForExpenses,
       s"foreign_property_expenses_$countryCode"
     )
+  }
 
-    val allowancesTaskList = TaskListItem(
+  def foreignAllowancesItem(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): TaskListItem = {
+    val taskListTagForAllowances =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignAllowancesCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
+
+    TaskListItem(
       "summary.allowances",
       foreignCYADiversionService.redirectCallToCYAIfFinished(
         taxYear,
@@ -198,15 +184,51 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
       taskListTagForAllowances,
       s"foreign_property_allowances_$countryCode"
     )
+  }
 
-    val sbaTaskList =TaskListItem(
-        "summary.structuresAndBuildingAllowance",
-        getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
-        taskListTagForSba,
-        s"foreign_structure_and_building_allowance_$countryCode"
-      )
+  def foreignSBAItem(taxYear: Int, countryCode: String, userAnswers: Option[UserAnswers]): TaskListItem = {
+    val taskListTagForSba =
+      userAnswers
+        .flatMap { answers =>
+          answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
+            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          }
+        }
+        .getOrElse(TaskListTag.NotStarted)
 
-    val nonClaimingAdjustmentsTaskList = TaskListItem(
+    TaskListItem(
+      "summary.structuresAndBuildingAllowance",
+      getSbaRouteDestination(taxYear, countryCode, userAnswers, taskListTagForSba),
+      taskListTagForSba,
+      s"foreign_structure_and_building_allowance_$countryCode"
+    )
+  }
+
+  def foreignAdjustmentsItem(
+    taxYear: Int,
+    countryCode: String,
+    isClaimPIA: Boolean,
+    userAnswers: Option[UserAnswers],
+    isUkAndForeignJourney: Boolean = false
+  ): TaskListItem = {
+    val taskListTagForAdjustments = {
+      val isAdjustmentsComplete = userAnswers.flatMap(_.get(ForeignAdjustmentsCompletePage(countryCode)))
+      isAdjustmentsComplete
+        .map { finishedYesOrNo =>
+          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        }
+        .getOrElse {
+          val isPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage)).getOrElse(false)
+          (isUkAndForeignJourney, isPIA) match {
+            case (false, true) =>
+              val isIncomeSectionCompleted =
+                userAnswers.flatMap(_.get(ForeignIncomeSectionCompletePage(countryCode))).contains(true)
+              if (isIncomeSectionCompleted) TaskListTag.NotStarted else TaskListTag.CanNotStart
+            case (_, _) => TaskListTag.NotStarted
+          }
+        }
+    }
+    TaskListItem(
       "summary.adjustments",
       foreignCYADiversionService.redirectCallToCYAIfFinished(
         taxYear,
@@ -215,19 +237,11 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
         Some(countryCode)
       ) {
         controllers.foreign.adjustments.routes.ForeignAdjustmentsStartController
-          .onPageLoad(taxYear, countryCode, isPIA = false)
+          .onPageLoad(taxYear, countryCode, isPIA = isClaimPIA)
       },
       taskListTagForAdjustments,
       s"foreign_property_adjustments_$countryCode"
     )
-
-    val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
-    isClaimingAllowances match {
-      case Some(true)  => Seq(foreignTaxTaskList, foreignIncomeTaskList, claimingAdjustmentsTaskList)
-      case Some(false) if accrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
-      case Some(false) => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
-      case None        => Seq(foreignTaxTaskList, foreignIncomeTaskList)
-    }
   }
 
   private def getSbaRouteDestination(

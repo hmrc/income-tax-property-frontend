@@ -16,43 +16,284 @@
 
 package pages.ukandforeignproperty
 
-import models.{UKPropertySelect, UserAnswers}
+import models.{UkAndForeignPropertyRentalTypeUk, UserAnswers}
 import pages.foreign.ForeignSummaryPage
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage._
 import pages.{SummaryPage, isSelected}
-import service.{CYADiversionService, ForeignCYADiversionService}
+import service.{CYADiversionService, ForeignCYADiversionService, UkAndForeignCYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
-
 case class UkAndForeignPropertySummaryPage(
-                                            taxYear: Int,
-                                            startItems: Seq[TaskListItem]
-                                          )
+  taxYear: Int,
+  startItems: Seq[TaskListItem],
+  ukPropertyRentalListItems: Seq[TaskListItem],
+  ukPropertyRentARoomListItems: Seq[TaskListItem],
+  ukPropertyRentalAndRentARoomListItems: Seq[TaskListItem],
+  foreignListItems: Seq[(CountryName, Seq[TaskListItem])]
+)
 
 object UkAndForeignPropertySummaryPage {
+  type CountryName = String
+  def apply(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    cyaDiversionService: CYADiversionService,
+    foreignCYADiversionService: ForeignCYADiversionService,
+    ukAndForeignCYADiversionService: UkAndForeignCYADiversionService
+  ): UkAndForeignPropertySummaryPage = {
+    val isClaimPIA: Boolean = userAnswers
+      .flatMap(
+        _.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
+          .map(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+      )
+      .contains(true)
+    val isClaimRelief: Option[Boolean] = userAnswers
+      .flatMap(
+        _.get(UkAndForeignPropertyClaimExpensesOrReliefPage)
+          .map(_.claimExpensesOrReliefYesNo)
+      )
+    val foreignPropertyTaskListItems =
+      foreignTaskList(taxYear, userAnswers, isClaimPIA, isClaimRelief, foreignCYADiversionService)
 
-  def ukAndForeignPropertyAboutItems(taxYear: Int, userAnswers: Option[UserAnswers], cyaDiversionService: CYADiversionService, foreignCYADiversionService: ForeignCYADiversionService): Seq[TaskListItem] = {
+    val (ukRentals, ukRentARoom, ukRentalsAndRentARoom) = getUkPropertyTaskListItems(
+      taxYear,
+      userAnswers,
+      isClaimPIA,
+      isClaimRelief.contains(true),
+      cyaDiversionService
+    )
 
-    val summaryPage = SummaryPage(cyaDiversionService)
-    val foreignSummaryPage = ForeignSummaryPage(foreignCYADiversionService)
+    UkAndForeignPropertySummaryPage(
+      taxYear = taxYear,
+      startItems = aboutItems(taxYear, userAnswers, ukAndForeignCYADiversionService),
+      ukPropertyRentalListItems = ukRentals,
+      ukPropertyRentARoomListItems = ukRentARoom,
+      ukPropertyRentalAndRentARoomListItems = ukRentalsAndRentARoom,
+      foreignListItems = foreignPropertyTaskListItems
+    )
+  }
 
-    val ukPropertyItems: Seq[TaskListItem] = if (isSelected(userAnswers, UKPropertySelect.PropertyRentals)) {
-      summaryPage.propertyAboutItems(userAnswers, taxYear)
-    } else {
-      Seq.empty
+  def getUkPropertyTaskListItems(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    isClaimPIA: Boolean,
+    isClaimRelief: Boolean,
+    cyaDiversionService: CYADiversionService
+  ): (Seq[TaskListItem], Seq[TaskListItem], Seq[TaskListItem]) = {
+    val isUkPropertyRentalsSelected: Boolean = isSelected(userAnswers, UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+    val isUkRentARoomSelected: Boolean = isSelected(userAnswers, UkAndForeignPropertyRentalTypeUk.RentARoom)
+
+    val emptyTaskItemList = Seq.empty[TaskListItem]
+
+    (isUkPropertyRentalsSelected, isUkRentARoomSelected) match {
+      case (true, false) =>
+        (
+          ukPropertyRentalTaskList(taxYear, userAnswers, isClaimPIA, cyaDiversionService),
+          emptyTaskItemList,
+          emptyTaskItemList
+        )
+      case (false, true) =>
+        (
+          emptyTaskItemList,
+          ukRentARoomTaskList(taxYear, userAnswers, isClaimRelief, cyaDiversionService),
+          emptyTaskItemList
+        )
+      case (true, true) =>
+        (
+          emptyTaskItemList,
+          emptyTaskItemList,
+          ukPropertyRentalAndRentARoomTaskList(taxYear, userAnswers, isClaimRelief, isClaimPIA, cyaDiversionService)
+        )
+      case (false, false) =>
+        (emptyTaskItemList, emptyTaskItemList, emptyTaskItemList)
     }
+  }
 
-    val foreignPropertyItems: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyAboutItems(taxYear, userAnswers)
-
-    val ukPropertyComplete = ukPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
-    val foreignPropertyComplete = foreignPropertyItems.exists(_.taskListTag == TaskListTag.Completed)
+  def aboutItems(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    ukAndForeignCYADiversionService: UkAndForeignCYADiversionService
+  ): Seq[TaskListItem] = {
+    val isAboutSectionComplete = userAnswers.flatMap(_.get(SectionCompletePage))
+    val taskListTag = isAboutSectionComplete
+      .map(haveYouFinished => if (haveYouFinished) TaskListTag.Completed else TaskListTag.InProgress)
+      .getOrElse {
+        if (isAboutSectionComplete.isDefined) {
+          TaskListTag.InProgress
+        } else {
+          TaskListTag.NotStarted
+        }
+      }
 
     Seq(
       TaskListItem(
         "summary.aboutUKAndForeignProperties",
-        controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear),
-        TaskListTag.NotStarted, //TODO complete logic to make the status work correctly
+        ukAndForeignCYADiversionService
+          .redirectCallToCYAIfFinished(taxYear, userAnswers, UkAndForeignCYADiversionService.ABOUT) {
+            controllers.ukandforeignproperty.routes.UkAndForeignPropertyDetailsController.onPageLoad(taxYear)
+          },
+        taskListTag,
         "uk_and_foreign_property_about_link"
       )
     )
+  }
+
+  def ukPropertyRentalTaskList(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    claimPIA: Boolean,
+    cyaDiversionService: CYADiversionService
+  ): Seq[TaskListItem] = {
+
+    val ukSummary = SummaryPage(cyaDiversionService)
+    if (claimPIA) {
+      Seq(
+        ukSummary.propertyRentalsAdjustmentsItem(userAnswers, taxYear, isUkAndForeignJourney = true)
+      )
+    } else {
+      Seq(
+        ukSummary.propertyRentalsIncomeItem(userAnswers, taxYear),
+        ukSummary.propertyRentalsExpensesItem(userAnswers, taxYear),
+        ukSummary.propertyAllowancesItem(taxYear, userAnswers),
+        ukSummary.structuresAndBuildingAllowanceItem(userAnswers, taxYear),
+        ukSummary.rentalsEsbaItem(userAnswers, taxYear),
+        ukSummary
+          .propertyRentalsAdjustmentsItem(userAnswers, taxYear)
+      )
+    }
+  }
+
+  def ukRentARoomTaskList(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    claimRelief: Boolean,
+    cyaDiversionService: CYADiversionService
+  ): Seq[TaskListItem] = {
+    val ukSummary = SummaryPage(cyaDiversionService)
+
+    if (claimRelief) {
+      Seq(ukSummary.ukRentARoomAboutItem(userAnswers, taxYear))
+    } else {
+      Seq(
+        ukSummary.ukRentARoomAboutItem(userAnswers, taxYear),
+        ukSummary.ukRentARoomExpensesItem(userAnswers, taxYear),
+        ukSummary.ukRentARoomAllowancesItem(userAnswers, taxYear),
+        ukSummary.ukRentARoomAdjustmentsItem(userAnswers, taxYear)
+      )
+    }
+  }
+
+  def ukPropertyRentalAndRentARoomTaskList(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    claimRelief: Boolean,
+    claimPIA: Boolean,
+    cyaDiversionService: CYADiversionService
+  ): Seq[TaskListItem] = {
+
+    val ukSummary = SummaryPage(cyaDiversionService)
+
+    (claimRelief, claimPIA) match {
+      case (true, true) =>
+        Seq(
+          ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
+        )
+      case (true, false) =>
+        Seq(
+          ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRIncomeItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRSBAItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRESBAItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+        )
+      case (false, true) =>
+        Seq(
+          ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
+        )
+      case (false, false) =>
+        Seq(
+          ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRSBAItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRESBAItem(taxYear, userAnswers),
+          ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
+        )
+    }
+  }
+
+  def foreignTaskList(
+    taxYear: Int,
+    userAnswers: Option[UserAnswers],
+    claimPIA: Boolean,
+    claimRelief: Option[Boolean],
+    foreignCYADiversionService: ForeignCYADiversionService
+  ): Seq[(CountryName, Seq[TaskListItem])] = {
+
+    val res = for {
+      foreignCountries <- userAnswers.flatMap(_.get(SelectCountryPage))
+      list =
+        foreignCountries.map(c =>
+          (
+            c.name,
+            getTaskListForForeignCountry(
+              taxYear,
+              claimPIA,
+              claimRelief,
+              c.code,
+              userAnswers,
+              foreignCYADiversionService
+            )
+          )
+        )
+    } yield list
+    res.getOrElse(Seq.empty)
+  }
+
+  def getTaskListForForeignCountry(
+    taxYear: Int,
+    claimPIA: Boolean,
+    claimRelief: Option[Boolean],
+    countryCode: String,
+    userAnswers: Option[UserAnswers],
+    foreignCYADiversionService: ForeignCYADiversionService
+  ): Seq[TaskListItem] = {
+    val foreignSummary = ForeignSummaryPage(foreignCYADiversionService)
+
+    val foreignTaxAndAdjustmentsItems = Seq(
+      foreignSummary.foreignTaxItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignAdjustmentsItem(taxYear, countryCode, claimPIA, userAnswers, isUkAndForeignJourney = true)
+    )
+    val foreignFullTaskList = Seq(
+      foreignSummary.foreignTaxItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignIncomeItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignExpensesItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignAllowancesItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignSBAItem(taxYear, countryCode, userAnswers),
+      foreignSummary.foreignAdjustmentsItem(taxYear, countryCode, claimPIA, userAnswers)
+    )
+
+    val isRentalsSelected: Boolean = isSelected(userAnswers, UkAndForeignPropertyRentalTypeUk.PropertyRentals)
+    val isRentARoomSelected: Boolean = isSelected(userAnswers, UkAndForeignPropertyRentalTypeUk.RentARoom)
+
+    (isRentalsSelected, isRentARoomSelected, claimRelief, claimPIA) match {
+      // Property Rentals
+      case (true, false, _, true)  => foreignTaxAndAdjustmentsItems
+      case (true, false, _, false) => foreignFullTaskList
+      // Property Rent a Room
+      case (false, true, _, true)            => foreignTaxAndAdjustmentsItems
+      case (false, true, Some(false), false) => foreignFullTaskList
+      // Ref: MJ06
+      case (false, true, Some(true), false) => foreignFullTaskList
+      // Property Rentals and Rent a Room
+      case (true, true, _, true)  => foreignTaxAndAdjustmentsItems
+      case (true, true, _, false) => foreignFullTaskList
+    }
   }
 }

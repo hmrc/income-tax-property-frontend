@@ -47,7 +47,7 @@ class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController @Inje
     (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
       val preparedForm = request.userAnswers.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage) match {
-        case None =>
+        case None        =>
           form
         case Some(value) =>
           form.fill(value)
