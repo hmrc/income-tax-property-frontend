@@ -112,7 +112,7 @@ class CheckYourAnswersController @Inject() (
       request.user.agentRef,
       PropertyAboutAudit(propertyAbout)
     )
-
+    logger.info(s"[PropertyAboutAudit] - Audit Model: $auditModel")
     audit.sendRentalsAuditEvent(auditModel)
   }
 }
