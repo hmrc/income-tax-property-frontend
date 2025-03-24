@@ -116,6 +116,8 @@ class RaRAdjustmentsCYAController @Inject() (
     implicit hc: HeaderCarrier
   ): Unit = {
     val auditModel = RentARoomAuditModel(
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
       request.user.nino,
       request.user.affinityGroup,
       request.user.mtditid,

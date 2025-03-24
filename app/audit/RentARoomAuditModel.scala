@@ -19,6 +19,8 @@ package audit
 import play.api.libs.json.{Format, Json, OFormat}
 
 case class RentARoomAuditModel[T](
+  clientIP: String,
+  clientPort: String,
   nino: String,
   userType: String,
   mtdItId: String,

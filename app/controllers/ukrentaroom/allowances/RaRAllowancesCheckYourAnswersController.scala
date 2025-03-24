@@ -106,6 +106,8 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Unit = {
     val event = RentARoomAuditModel[RentARoomAllowance](
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
       nino = request.user.nino,
       userType = request.user.affinityGroup,
       mtdItId = request.user.mtditid,
