@@ -18,8 +18,11 @@ package audit
 
 import models.{AccountingMethod, AuditPropertyType, JourneyName, SectionName}
 import play.api.libs.json.{Format, Json, OFormat}
+import uk.gov.hmrc.http.HeaderCarrier
 
 final case class AuditModel[T](
+  clientIP: String,
+  clientPort: String,
   userType: String,
   nino: String,
   mtdItId: String,
@@ -40,4 +43,36 @@ object AuditModel {
     auditModelFormat: Format[T]
   ): OFormat[AuditModel[T]] =
     Json.format[AuditModel[T]]
+
+  def apply[T](userType: String,
+               nino: String,
+               mtdItId: String,
+               taxYear: Int,
+               propertyType: AuditPropertyType,
+               countryCode: String,
+               journeyName: JourneyName,
+               sectionName: SectionName,
+               accountingMethod: AccountingMethod,
+               isUpdate: Boolean,
+               isFailed: Boolean,
+               agentReferenceNumber: Option[String],
+               userEnteredDetails: T)(implicit hc: HeaderCarrier): AuditModel[T] = {
+    AuditModel[T](
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
+      userType,
+      nino,
+      mtdItId,
+      taxYear,
+      propertyType,
+      countryCode,
+      journeyName,
+      sectionName,
+      accountingMethod,
+      isUpdate,
+      isFailed,
+      agentReferenceNumber,
+      userEnteredDetails
+    )
+  }
 }
