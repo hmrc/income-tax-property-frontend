@@ -122,7 +122,10 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
       request.user.mtditid,
       taxYear,
       propertyType = AuditPropertyType.ForeignProperty,
-      countryCode = Country.UK.code,
+      countryCode = foreignPropertySelectCountry.incomeCountries
+        .flatMap(countries => countries.headOption)
+        .map(_.code)
+        .getOrElse(Country.UK.code),
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertySelectCountry,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,

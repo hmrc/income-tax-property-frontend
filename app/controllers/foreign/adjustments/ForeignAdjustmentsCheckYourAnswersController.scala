@@ -123,8 +123,8 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
             throw SaveJourneyAnswersFailed("Failed to save Foreign Adjustments section")
         }
         .andThen {
-          case Success(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, accrualsOrCash)
-          case Failure(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, accrualsOrCash)
+          case Success(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, accrualsOrCash, countryCode)
+          case Failure(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, accrualsOrCash, countryCode)
         }
     }
 
@@ -133,7 +133,8 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyAdjustments: ForeignPropertyAdjustments,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    accrualsOrCash: Boolean,
+    countryCode: String
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -143,7 +144,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
       request.user.mtditid,
       taxYear,
       propertyType = ForeignProperty,
-      countryCode = Country.UK.code,
+      countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyAdjustments,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
