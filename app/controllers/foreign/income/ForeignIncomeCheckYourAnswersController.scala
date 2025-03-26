@@ -23,7 +23,6 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.income.routes.ForeignIncomeCompleteController
 import models._
 import models.requests.DataRequest
-import pages.foreign.Country
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, PropertySubmissionService}
@@ -57,7 +56,8 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
         rows = Seq(
           ForeignPropertyRentalIncomeSummary.row(taxYear, request.userAnswers, countryCode),
           PremiumsGrantLeaseYNSummary.row(request.userAnswers, taxYear, countryCode, request.user.isAgentMessageKey),
-          CalculatedPremiumLeaseTaxableSummary.row(taxYear, countryCode, request.userAnswers, request.user.isAgentMessageKey),
+          CalculatedPremiumLeaseTaxableSummary
+            .row(taxYear, countryCode, request.userAnswers, request.user.isAgentMessageKey),
           CalculatedPremiumLeaseTaxableAmountSummary.row(taxYear, countryCode, request.userAnswers),
           ForeignReceivedGrantLeaseAmountSummary.row(taxYear, countryCode, request.userAnswers),
           TwelveMonthPeriodsInLeaseSummary.row(taxYear, countryCode, request.userAnswers),
@@ -103,9 +103,9 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
         }
         .andThen {
           case Success(_) =>
-            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, accrualsOrCash)
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = false, accrualsOrCash, countryCode)
           case Failure(_) =>
-            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, accrualsOrCash)
+            auditCYA(taxYear, request, foreignPropertyIncome, isFailed = true, accrualsOrCash, countryCode)
         }
     }
 
@@ -114,7 +114,8 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyIncome: ForeignPropertyIncome,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    accrualsOrCash: Boolean,
+    countryCode: String
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -124,7 +125,7 @@ class ForeignIncomeCheckYourAnswersController @Inject() (
       request.user.mtditid,
       taxYear,
       propertyType = AuditPropertyType.ForeignProperty,
-      countryCode = Country.UK.code,
+      countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyIncome,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,

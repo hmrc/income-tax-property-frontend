@@ -98,9 +98,9 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
         }
         .andThen {
           case Success(_) =>
-            auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, accrualsOrCash)
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, accrualsOrCash, countryCode)
           case Failure(_) =>
-            auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, accrualsOrCash)
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, accrualsOrCash, countryCode)
         }
     }
 
@@ -109,7 +109,8 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignSbaInfo: ForeignSbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    accrualsOrCash: Boolean,
+    countryCode: String
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -119,7 +120,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
       request.user.mtditid,
       taxYear,
       propertyType = AuditPropertyType.ForeignProperty,
-      countryCode = Country.UK.code,
+      countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignStructureBuildingAllowance,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
