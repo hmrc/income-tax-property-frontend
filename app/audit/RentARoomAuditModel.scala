@@ -17,8 +17,11 @@
 package audit
 
 import play.api.libs.json.{Format, Json, OFormat}
+import uk.gov.hmrc.http.HeaderCarrier
 
 case class RentARoomAuditModel[T](
+  clientIP: String,
+  clientPort: String,
   nino: String,
   userType: String,
   mtdItId: String,
@@ -32,4 +35,26 @@ case class RentARoomAuditModel[T](
 object RentARoomAuditModel {
   implicit def format[T](implicit rentARoomAuditModelFormat: Format[T]): OFormat[RentARoomAuditModel[T]] =
     Json.format[RentARoomAuditModel[T]]
+
+  def apply[T](nino: String,
+            userType: String,
+            mtdItId: String,
+            agentReferenceNumber: Option[String],
+            taxYear: Int,
+            isUpdate: Boolean,
+            sectionName: String,
+            userEnteredRentARoomDetails: T)(implicit hc: HeaderCarrier): RentARoomAuditModel[T] = {
+    RentARoomAuditModel(
+      clientIP = hc.trueClientIp.getOrElse("-"),
+      clientPort = hc.trueClientPort.getOrElse("-"),
+      nino,
+      userType,
+      mtdItId,
+      agentReferenceNumber,
+      taxYear,
+      isUpdate,
+      sectionName,
+      userEnteredRentARoomDetails
+    )
+  }
 }

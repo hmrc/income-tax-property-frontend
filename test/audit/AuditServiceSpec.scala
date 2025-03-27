@@ -41,6 +41,8 @@ class AuditServiceSpec extends AnyWordSpec with MockitoSugar {
     val hc = HeaderCarrier()
     val propertyAbout = PropertyAbout(TotalIncome.Under, Some(UKPropertySelect.values), Some(true))
     val auditModel = AuditModel(
+      clientIP = "clientIP",
+      clientPort = "clientPort",
       "Agent",
       "NINO",
       "mtdItId",
