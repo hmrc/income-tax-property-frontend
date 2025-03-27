@@ -55,36 +55,38 @@ class ForeignPropertySummaryPageSpec
   )
   def incomeItem(isComplete: Boolean = false): TaskListItem = TaskListItem(
     content = "foreign.income",
-    call = if(isComplete) ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode) else ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
-    taskListTag = if(isComplete) Completed else NotStarted,
-    id =  s"foreign_property_income_$countryCode"
+    call =
+      if (isComplete) ForeignIncomeCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+      else ForeignPropertyIncomeStartController.onPageLoad(taxYear, countryCode),
+    taskListTag = if (isComplete) Completed else NotStarted,
+    id = s"foreign_property_income_$countryCode"
   )
   def adjustmentsItem(isPIA: Boolean, isIncomeSectionComplete: Boolean = false): TaskListItem = TaskListItem(
     content = "summary.adjustments",
     call = ForeignAdjustmentsStartController.onPageLoad(taxYear, countryCode, isPIA),
     taskListTag = (isPIA, isIncomeSectionComplete) match {
       case (true, false) => CanNotStart
-      case (_, _) => NotStarted
+      case (_, _)        => NotStarted
     },
-    id =  s"foreign_property_adjustments_$countryCode"
+    id = s"foreign_property_adjustments_$countryCode"
   )
   val allowancesItem: TaskListItem = TaskListItem(
     content = "summary.allowances",
     call = ForeignPropertyAllowancesStartController.onPageLoad(taxYear, countryCode),
     taskListTag = NotStarted,
-    id =  s"foreign_property_allowances_$countryCode"
+    id = s"foreign_property_allowances_$countryCode"
   )
   val expensesItem: TaskListItem = TaskListItem(
     content = "summary.expenses",
     call = ForeignPropertyExpensesStartController.onPageLoad(taxYear, countryCode),
     taskListTag = NotStarted,
-    id =  s"foreign_property_expenses_$countryCode"
+    id = s"foreign_property_expenses_$countryCode"
   )
-  val sbaItem :TaskListItem = TaskListItem(
+  val sbaItem: TaskListItem = TaskListItem(
     content = "summary.structuresAndBuildingAllowance",
     call = ForeignClaimStructureBuildingAllowanceController.onPageLoad(taxYear, countryCode, NormalMode),
     taskListTag = NotStarted,
-    id =  s"foreign_structure_and_building_allowance_$countryCode"
+    id = s"foreign_structure_and_building_allowance_$countryCode"
   )
 
   ".ForeignPropertySummaryPage for the Foreign property Select Country" - {
@@ -174,7 +176,9 @@ class ForeignPropertySummaryPageSpec
     "should show the correct items when not claiming PIA with accruals" in {
       val isClaimingPIA = false
       val accrualsOrCash = true
-      val userAnswers = UserAnswers(id  = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA).toOption
+      val userAnswers = UserAnswers(id  = "foreign-property-items")
+        .set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        .toOption
       val taskList: Seq[TaskListItem] = foreignSummaryPage.foreignPropertyItems(taxYear, accrualsOrCash, countryCode, userAnswers)
       val res = Seq(
         foreignTaxItem,
@@ -217,7 +221,7 @@ class ForeignPropertySummaryPageSpec
       val isClaimingPIA = false
       val accrualsOrCash = true
       val userAnswers = (for {
-        ua <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        ua  <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
         ua2 <- ua1.set(ForeignIncomeSectionCompletePage(countryCode), true)
         ua3 <- ua2.set(ForeignAllowancesCompletePage(countryCode), true)
@@ -252,7 +256,7 @@ class ForeignPropertySummaryPageSpec
         )
       )
       val userAnswers = (for {
-        ua <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
+        ua  <- UserAnswers(id = "foreign-property-items").set(ClaimPropertyIncomeAllowanceOrExpensesPage, isClaimingPIA)
         ua1 <- ua.set(ForeignTaxSectionCompletePage(countryCode), true)
         ua2 <- ua1.set(ForeignIncomeSectionCompletePage(countryCode), true)
         ua3 <- ua2.set(ForeignAllowancesCompletePage(countryCode), true)

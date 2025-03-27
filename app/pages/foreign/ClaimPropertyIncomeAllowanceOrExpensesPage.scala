@@ -16,10 +16,9 @@
 
 package pages.foreign
 
-import models.{ForeignProperty, ForeignPropertySelectCountry, UserAnswers}
+import models.{ForeignProperty, ForeignPropertySelectCountry, ReadForeignPropertyAdjustments, UserAnswers}
 import pages.PageConstants.selectCountryPath
 import pages.QuestionPage
-import pages.foreign.adjustments._
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -39,15 +38,7 @@ case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Bool
 
     countryCodes.foldLeft(Try(userAnswers)) { (acc, countryCode) =>
       acc.flatMap { ua =>
-        ua.remove(ForeignPrivateUseAdjustmentPage(countryCode))
-          .flatMap(_.remove(ForeignAdjustmentsSectionAddCountryCode(countryCode)))
-          .flatMap(_.remove(ForeignBalancingChargePage(countryCode)))
-          .flatMap(_.remove(PropertyIncomeAllowanceClaimPage(countryCode)))
-          .flatMap(_.remove(ForeignResidentialFinanceCostsPage(countryCode)))
-          .flatMap(_.remove(ForeignUnusedResidentialFinanceCostPage(countryCode)))
-          .flatMap(_.remove(ForeignUnusedLossesPreviousYearsPage(countryCode)))
-          .flatMap(_.remove(ForeignWhenYouReportedTheLossPage(countryCode)))
-          .flatMap(_.remove(ForeignAdjustmentsCompletePage(countryCode)))
+        ua.remove(ReadForeignPropertyAdjustments(countryCode))
       }
     }
   }

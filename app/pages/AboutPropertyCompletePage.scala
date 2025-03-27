@@ -17,11 +17,21 @@
 package pages
 
 
+import models.UserAnswers
+import pages.ukandforeignproperty.SectionCompletePage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object AboutPropertyCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "aboutPropertyComplete"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    for {
+      ua <- userAnswers.remove(SectionCompletePage)
+    } yield ua
+  }
 }

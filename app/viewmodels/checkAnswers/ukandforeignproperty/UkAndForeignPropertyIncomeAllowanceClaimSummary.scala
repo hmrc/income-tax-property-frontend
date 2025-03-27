@@ -26,11 +26,11 @@ import viewmodels.govuk.all.{ActionItemViewModel, FluentActionItem, FluentKey, F
 import viewmodels.implicits._
 
 object UkAndForeignPropertyIncomeAllowanceClaimSummary {
-  def row(taxYear: Int, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UkAndForeignPropertyIncomeAllowanceClaimPage).map {
       answer =>
         SummaryListRowViewModel(
-          key = KeyViewModel("propertyIncomeAllowance.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key = KeyViewModel(s"propertyIncomeAllowance.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", PropertyIncomeAllowanceClaimController.onPageLoad(taxYear, CheckMode).url)

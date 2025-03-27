@@ -27,7 +27,7 @@ import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.i18n.Lang.logger
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{BusinessService, CYADiversionService, CountryNamesDataSource, ForeignCYADiversionService}
+import service.{BusinessService, CYADiversionService, CountryNamesDataSource, ForeignCYADiversionService, UkAndForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -43,6 +43,7 @@ class SummaryController @Inject() (
   sessionRecovery: SessionRecovery,
   cyaDiversionService: CYADiversionService,
   foreignCYADiversionService: ForeignCYADiversionService,
+  ukAndForeignCYADiversionService: UkAndForeignCYADiversionService,
   view: SummaryView,
   businessService: BusinessService,
   languageUtils: LanguageUtils
@@ -90,6 +91,7 @@ class SummaryController @Inject() (
           Future.successful(
             Ok(
               view(
+                taxYear,
                 UKPropertySummaryPage(taxYear, startItems, propertyRentalsRows, ukRentARoomRows, combinedItems),
                 ForeignPropertySummaryPage(
                   taxYear = taxYear,
@@ -99,19 +101,22 @@ class SummaryController @Inject() (
                   userAnswers = request.userAnswers
                 ),
                 UkAndForeignPropertySummaryPage(
-                  taxYear = taxYear,
-                  startItems = UkAndForeignPropertySummaryPage.ukAndForeignPropertyAboutItems(
-                    taxYear,
-                    request.userAnswers,
-                    cyaDiversionService,
-                    foreignCYADiversionService
-                  )
+                  taxYear,
+                  ukAccrualsOrCash,
+                  foreignAccrualsOrCash,
+                  request.userAnswers,
+                  cyaDiversionService,
+                  foreignCYADiversionService,
+                  ukAndForeignCYADiversionService
                 )
               )
             )
           )
-        case ex =>
-          logger.error(UnexpectedPropertyDataError(request.user.nino, request.user.mtditid, ex).toString)
+        case Left(error) =>
+          logger.error(UnexpectedPropertyDataError(request.user.nino, request.user.mtditid, Left(error)).toString)
+          Future.failed(PropertyDataError)
+
+        case _ =>
           Future.failed(PropertyDataError)
       }
     }(requestBeforeUpdate, controllerComponents.executionContext, hc)

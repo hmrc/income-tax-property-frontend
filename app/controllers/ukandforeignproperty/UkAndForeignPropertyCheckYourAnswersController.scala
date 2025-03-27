@@ -190,7 +190,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
         ForeignYearLeaseAmountSummary.row(taxYear, userAnswers),
         ForeignPremiumsGrantLeaseSummary.row(taxYear, userAnswers),
         ForeignOtherIncomeFromForeignPropertySummary.row(taxYear, userAnswers),
-        UkAndForeignPropertyIncomeAllowanceClaimSummary.row(taxYear, userAnswers)
+        UkAndForeignPropertyIncomeAllowanceClaimSummary.row(taxYear, userAnswers, individualOrAgent)
       ).flatten
     )
 }
