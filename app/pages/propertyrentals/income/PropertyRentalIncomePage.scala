@@ -38,7 +38,7 @@ case class PropertyRentalIncomePage(propertyType: PropertyType) extends Question
     if (isTotalIncomeUnder85K(userAnswers, propertyType)) {
       super.cleanup(value, userAnswers)
     } else if (
-      userAnswers.get(ConsolidatedExpensesPage(propertyType)).fold(false)(data => data.consolidatedExpensesYesOrNo)
+      userAnswers.get(ConsolidatedExpensesPage(propertyType)).fold(false)(data => data.isConsolidatedExpenses)
     ) {
       userAnswers.remove(ConsolidatedExpensesPage(propertyType))
     } else {

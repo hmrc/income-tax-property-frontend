@@ -28,31 +28,31 @@ class RaRCapitalAllowancesForACarFormProviderSpec extends FieldBehaviours {
   val form = new RaRCapitalAllowancesForACarFormProvider()("individual")
 
   "RaRCapitalAllowancesForACar" - {
-    "when raRCapitalAllowancesForACar is true" - {
+    "when isRaRCapitalAllowancesForACar is true" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm =
-          form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "true", "raRCapitalAllowancesForACarAmount" -> "12.34"))
-        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
+          form.bind(Map("isRaRCapitalAllowancesForACar" -> "true", "raRCapitalAllowancesForACarAmount" -> "12.34"))
+        boundForm.value.value mustBe CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "true"))
+        val boundForm = form.bind(Map("isRaRCapitalAllowancesForACar" -> "true"))
         boundForm.errors must contain(
           FormError("raRCapitalAllowancesForACarAmount", "raRCapitalAllowancesForACar.error.required.amount.individual")
         )
       }
     }
-    "when raRCapitalAllowancesForACarYesNo is false" - {
+    "when isRaRCapitalAllowancesForACar is false" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm =
-          form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false", "raRCapitalAllowancesForACarAmount" -> "1234"))
-        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
+          form.bind(Map("isRaRCapitalAllowancesForACar" -> "false", "raRCapitalAllowancesForACarAmount" -> "1234"))
+        boundForm.value.value mustBe CapitalAllowancesForACar(isCapitalAllowancesForACar = false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("raRCapitalAllowancesForACarYesNo" -> "false"))
-        boundForm.value.value mustBe CapitalAllowancesForACar(capitalAllowancesForACarYesNo = false, None)
+        val boundForm = form.bind(Map("isRaRCapitalAllowancesForACar" -> "false"))
+        boundForm.value.value mustBe CapitalAllowancesForACar(isCapitalAllowancesForACar = false, None)
         boundForm.errors mustBe empty
       }
     }

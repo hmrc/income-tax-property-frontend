@@ -92,8 +92,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForForeignTax =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignTaxSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignTaxSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -117,8 +117,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForIncome =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -138,8 +138,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForExpenses =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -164,8 +164,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForAllowances =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignAllowancesCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignAllowancesCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -190,8 +190,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForSba =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignSbaCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -214,8 +214,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForAdjustments = {
       val isAdjustmentsComplete = userAnswers.flatMap(_.get(ForeignAdjustmentsCompletePage(countryCode)))
       isAdjustmentsComplete
-        .map { finishedYesOrNo =>
-          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        .map { isFinished =>
+          if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
         }
         .getOrElse {
           val isPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage)).getOrElse(false)

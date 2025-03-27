@@ -32,7 +32,7 @@ class UkAndForeignPropertyPremiumForLeaseFormProviderSpec extends BooleanFieldBe
 
     s".ukAndForeignPropertyPremiumForLeaseYesOrNo for an $individualOrAgent" - {
 
-      val fieldName = "ukAndForeignPropertyPremiumForLeaseYesOrNo"
+      val fieldName = "isUkAndForeignPropertyPremiumForLease"
 
       behave like booleanField(
         form,

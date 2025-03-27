@@ -45,7 +45,7 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new ForeignIncomeTaxFormProvider()
   val country: Country = Country("United States of America", "USA")
-  val foreignIncomeTaxAnswers: ForeignIncomeTax = ForeignIncomeTax(foreignIncomeTaxYesNo = true, foreignTaxPaidOrDeducted = Some(123.45))
+  val foreignIncomeTaxAnswers: ForeignIncomeTax = ForeignIncomeTax(isForeignIncomeTax = true, foreignTaxPaidOrDeducted = Some(123.45))
   lazy val foreignIncomeTaxRoute: String = routes.ForeignIncomeTaxController.onPageLoad(taxYear, country.code, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
@@ -108,7 +108,7 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
           val request =
             FakeRequest(POST, foreignIncomeTaxRoute)
               .withFormUrlEncodedBody(
-                ("foreignIncomeTaxYesNo", "true"),
+                ("isForeignIncomeTax", "true"),
                 ("foreignTaxPaidOrDeducted", "123.45")
               )
 
@@ -160,7 +160,7 @@ class ForeignIncomeTaxControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request =
             FakeRequest(POST, foreignIncomeTaxRoute)
-              .withFormUrlEncodedBody(("foreignIncomeTaxYesNo", "true"),
+              .withFormUrlEncodedBody(("isForeignIncomeTax", "true"),
                 ("foreignTaxPaidOrDeducted", "123.45"))
 
           val result = route(application, request).value

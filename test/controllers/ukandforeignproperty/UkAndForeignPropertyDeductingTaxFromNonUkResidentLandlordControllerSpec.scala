@@ -66,7 +66,7 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordControllerSpec ex
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
       val amount = 100
-      val formAnswers = DeductingTaxFromNonUkResidentLandlord(deductingTaxFromNonUkResidentLandlordYesNo = true, Some(amount))
+      val formAnswers = DeductingTaxFromNonUkResidentLandlord(isDeductingTaxFromNonUkResidentLandlord = true, Some(amount))
       val userAnswers = UserAnswers(userAnswersId).set(
         UkDeductingTaxFromNonUkResidentLandlordPage,
         formAnswers
@@ -103,7 +103,7 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordControllerSpec ex
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlordRoute)
-            .withFormUrlEncodedBody(("deductingTaxFromNonUkResidentLandlordYesNo", "true"), ("deductingTaxFromNonUkResidentLandlordAmount","100"))
+            .withFormUrlEncodedBody(("isDeductingTaxFromNonUkResidentLandlord", "true"), ("deductingTaxFromNonUkResidentLandlordAmount","100"))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordControllerSpec ex
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlordRoute)
-            .withFormUrlEncodedBody(("deductingTaxFromNonUkResidentLandlordYesNo", ""))
+            .withFormUrlEncodedBody(("isDeductingTaxFromNonUkResidentLandlord", ""))
 
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> ""))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> ""))
 
         val view = application.injector.instanceOf[UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordView]
 

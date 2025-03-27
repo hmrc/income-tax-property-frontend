@@ -36,7 +36,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("allowancesSectionFinishedYesOrNo"),
+                field = form("isAllowancesSectionFinished"),
                 legend = LegendViewModel(messages(s"haveYouFinishedThisSection.heading")).asPageHeading(LegendSize.Large)
             ).withHint(HintViewModel(messages(s"haveYouFinishedThisSection.hint")))
         )

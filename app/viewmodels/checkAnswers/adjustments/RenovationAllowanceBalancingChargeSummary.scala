@@ -31,7 +31,7 @@ object RenovationAllowanceBalancingChargeSummary {
     answers.get(RenovationAllowanceBalancingChargePage(propertyType)).map {
       answer =>
 
-        val value = if (answer.renovationAllowanceBalancingChargeYesNo) {
+        val value = if (answer.isRenovationAllowanceBalancingCharge) {
           ValueViewModel(bigDecimalCurrency(answer.renovationAllowanceBalancingChargeAmount.get))
         } else {
           ValueViewModel("site.no")

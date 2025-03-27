@@ -35,23 +35,23 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
     val form = formProvider(individualOrAgent)
 
     s".foreignIncomeTax for $individualOrAgent" - {
-      "when foreignIncomeTaxYesNo is true" - {
-        val foreignIncomeTaxYesNo = true
+      "when isForeignIncomeTax is true" - {
+        val isForeignIncomeTax = true
 
         "and an reversePremiums is entered, should successfully bind" in {
           val foreignTaxPaidOrDeducted: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
-              "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
+              "isForeignIncomeTax" -> s"$isForeignIncomeTax",
               "foreignTaxPaidOrDeducted" -> s"$foreignTaxPaidOrDeducted"
             )
           )
-          boundForm.value.value mustBe ForeignIncomeTax(foreignIncomeTaxYesNo, Some(foreignTaxPaidOrDeducted))
+          boundForm.value.value mustBe ForeignIncomeTax(isForeignIncomeTax, Some(foreignTaxPaidOrDeducted))
           boundForm.errors mustBe empty
         }
 
         "and no reversePremiums is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo"))
+          val boundForm = form.bind(Map("isForeignIncomeTax" -> s"$isForeignIncomeTax"))
           boundForm.errors must contain(
             FormError(
               "foreignTaxPaidOrDeducted",
@@ -64,7 +64,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm =
             form.bind(
               Map(
-                "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
+                "isForeignIncomeTax" -> s"$isForeignIncomeTax",
                 "foreignTaxPaidOrDeducted" -> "non-numeric-value"
               )
             )
@@ -80,7 +80,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
           val boundForm =
             form.bind(
               Map(
-                "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
+                "isForeignIncomeTax" -> s"$isForeignIncomeTax",
                 "foreignTaxPaidOrDeducted" -> "4534.6545"
               )
             )
@@ -95,7 +95,7 @@ class ForeignIncomeTaxFormProviderSpec extends BooleanFieldBehaviours with Optio
         "and an reversePremiums is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "foreignIncomeTaxYesNo" -> s"$foreignIncomeTaxYesNo",
+              "isForeignIncomeTax" -> s"$isForeignIncomeTax",
               "foreignTaxPaidOrDeducted" -> "45334553534535345435345345434.65"
             )
           )

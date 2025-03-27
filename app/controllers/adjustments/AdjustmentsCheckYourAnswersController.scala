@@ -68,7 +68,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
       val UnusedLossesBroughtForwardRows: IterableOnce[SummaryListRow] with Equals =
         request.userAnswers
           .get(UnusedLossesBroughtForwardPage(Rentals))
-          .filter(_.unusedLossesBroughtForwardYesOrNo)
+          .filter(_.isUnusedLossesBroughtForward)
           .map(_ =>
             Seq(
               UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, Rentals, request.user.isAgentMessageKey),

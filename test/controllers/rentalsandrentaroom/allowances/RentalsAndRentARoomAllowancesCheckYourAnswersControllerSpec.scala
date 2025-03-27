@@ -81,7 +81,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
               UserAnswers(userAnswersId)
                 .set(
                   CapitalAllowancesForACarPage(RentalsRentARoom),
-                  CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(1.23))
+                  CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(1.23))
                 )
             ua2 <- ua1.set(AnnualInvestmentAllowancePage(RentalsRentARoom), BigDecimal(1.01))
             ua3 <- ua2.set(ZeroEmissionCarAllowancePage(RentalsRentARoom), BigDecimal(1.01))

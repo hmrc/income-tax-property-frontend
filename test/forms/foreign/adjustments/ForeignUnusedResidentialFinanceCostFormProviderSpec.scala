@@ -32,26 +32,26 @@ class ForeignUnusedResidentialFinanceCostFormProviderSpec extends BooleanFieldBe
   forAll(scenarios) { (individualOrAgent: String) =>
     val form = formProvider(individualOrAgent)
     s".foreignUnusedResidentialFinanceCost $individualOrAgent" - {
-      "when foreignUnusedResidentialFinanceCostYesNo is true" - {
-        val foreignUnusedResidentialFinanceCostYesNo = true
+      "when isForeignUnusedResidentialFinanceCost is true" - {
+        val isForeignUnusedResidentialFinanceCost = true
 
         "and an reversePremiums is entered, should successfully bind" in {
           val foreignUnusedResidentialFinanceCostAmount: BigDecimal = 4534.65
           val boundForm = form.bind(
             Map(
-              "foreignUnusedResidentialFinanceCostYesNo" -> s"$foreignUnusedResidentialFinanceCostYesNo",
+              "isForeignUnusedResidentialFinanceCost" -> s"$isForeignUnusedResidentialFinanceCost",
               "foreignUnusedResidentialFinanceCostAmount" -> s"$foreignUnusedResidentialFinanceCostAmount"
             )
           )
           boundForm.value.value mustBe ForeignUnusedResidentialFinanceCost(
-            foreignUnusedResidentialFinanceCostYesNo,
+            isForeignUnusedResidentialFinanceCost,
             Some(foreignUnusedResidentialFinanceCostAmount)
           )
           boundForm.errors mustBe empty
         }
 
         "and no reversePremiums is entered, should fail to bind" in {
-          val boundForm = form.bind(Map("foreignUnusedResidentialFinanceCostYesNo" -> s"$foreignUnusedResidentialFinanceCostYesNo"))
+          val boundForm = form.bind(Map("isForeignUnusedResidentialFinanceCost" -> s"$isForeignUnusedResidentialFinanceCost"))
           boundForm.errors must contain(
             FormError(
               "foreignUnusedResidentialFinanceCostAmount",
@@ -64,7 +64,7 @@ class ForeignUnusedResidentialFinanceCostFormProviderSpec extends BooleanFieldBe
           val boundForm =
             form.bind(
               Map(
-                "foreignUnusedResidentialFinanceCostYesNo" -> s"$foreignUnusedResidentialFinanceCostYesNo",
+                "isForeignUnusedResidentialFinanceCost" -> s"$isForeignUnusedResidentialFinanceCost",
                 "foreignUnusedResidentialFinanceCostAmount" -> "non-numeric-value"
               )
             )
@@ -80,7 +80,7 @@ class ForeignUnusedResidentialFinanceCostFormProviderSpec extends BooleanFieldBe
           val boundForm =
             form.bind(
               Map(
-                "foreignUnusedResidentialFinanceCostYesNo" -> s"$foreignUnusedResidentialFinanceCostYesNo",
+                "isForeignUnusedResidentialFinanceCost" -> s"$isForeignUnusedResidentialFinanceCost",
                 "foreignUnusedResidentialFinanceCostAmount" -> "4534.6545"
               )
             )
@@ -95,7 +95,7 @@ class ForeignUnusedResidentialFinanceCostFormProviderSpec extends BooleanFieldBe
         "and an reversePremiums is entered that is out of range then should fail to bind" in {
           val boundForm = form.bind(
             Map(
-              "foreignUnusedResidentialFinanceCostYesNo" -> s"$foreignUnusedResidentialFinanceCostYesNo",
+              "isForeignUnusedResidentialFinanceCost" -> s"$isForeignUnusedResidentialFinanceCost",
               "foreignUnusedResidentialFinanceCostAmount" -> "45334553534535345435345345434.65"
             )
           )

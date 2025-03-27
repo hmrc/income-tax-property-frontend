@@ -45,7 +45,7 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
   val taxYear: Int = LocalDate.now().getYear
   val formProvider = new RaRUnusedLossesBroughtForwardFormProvider()
   val validAnswer: UnusedLossesBroughtForward = UnusedLossesBroughtForward(
-    unusedLossesBroughtForwardYesOrNo = true, unusedLossesBroughtForwardAmount = Some(123.45))
+    isUnusedLossesBroughtForward = true, unusedLossesBroughtForwardAmount = Some(123.45))
   lazy val raRUnusedLossesBroughtForwardRoute: String = routes.RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode).url
 
   forAll(scenarios) { (individualOrAgent: String) =>
@@ -106,7 +106,7 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
           val request =
             FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
               .withFormUrlEncodedBody(
-                "unusedLossesBroughtForwardYesOrNo" -> "true",
+                "isUnusedLossesBroughtForward" -> "true",
                 "unusedLossesBroughtForwardAmount" -> "123.45"
               )
 
@@ -159,7 +159,7 @@ class RaRUnusedLossesBroughtForwardControllerSpec extends SpecBase with MockitoS
           val request =
             FakeRequest(POST, raRUnusedLossesBroughtForwardRoute)
               .withFormUrlEncodedBody(
-                "rnusedLossesBroughtForwardYesOrNo" -> validAnswer.unusedLossesBroughtForwardYesOrNo.toString,
+                "isUnusedLossesBroughtForward" -> validAnswer.isUnusedLossesBroughtForward.toString,
                 "unusedLossesBroughtForwardAmount" -> validAnswer.unusedLossesBroughtForwardAmount.toString
               )
 

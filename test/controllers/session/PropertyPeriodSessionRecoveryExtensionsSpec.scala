@@ -84,12 +84,12 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "enhancedStructureBuildingAllowanceClaims" : false
        |  },
        |  "propertyRentalsAbout" : {
-       |    "claimPropertyIncomeAllowanceYesOrNo" : false
+       |    "isClaimPropertyIncomeAllowance" : false
        |  },
        |  "propertyRentalsIncome" : {
        |    "isNonUKLandlord" : false,
        |    "propertyRentalIncome" : 45,
-       |    "premiumForLeaseYesOrNo" : true,
+       |    "isPremiumForLease" : true,
        |    "calculatedFigureYourself" : {
        |      "calculatedFigureYourself" : true,
        |      "amount" : 45
@@ -103,7 +103,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  },
        |  "propertyRentalsExpenses" : {
        |    "consolidatedExpenses" : {
-       |      "consolidatedExpensesYesOrNo" : false
+       |      "isConsolidatedExpenses" : false
        |    },
        |    "rentsRatesAndInsurance" : 55,
        |    "repairsAndMaintenanceCosts" : 7,
@@ -116,7 +116,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "allowances" : {
        |    "annualInvestmentAllowance" : 44,
        |    "electricChargePointAllowance" : {
-       |      "electricChargePointAllowanceYesOrNo" : true,
+       |      "isElectricChargePointAllowance" : true,
        |      "electricChargePointAllowanceAmount" : 45
        |    },
        |    "zeroEmissionCarAllowance" : 4,
@@ -153,39 +153,39 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |  "adjustments" : {
        |    "privateUseAdjustment" : 2,
        |    "balancingCharge" : {
-       |      "balancingChargeYesNo" : true,
+       |      "isBalancingCharge" : true,
        |      "balancingChargeAmount" : 3
        |    },
        |    "propertyIncomeAllowance" : 4,
        |    "renovationAllowanceBalancingCharge" : {
-       |      "renovationAllowanceBalancingChargeYesNo" : true,
+       |      "isRenovationAllowanceBalancingCharge" : true,
        |      "renovationAllowanceBalancingChargeAmount" : 23
        |    },
        |    "residentialFinanceCost" : 2,
        |    "unusedResidentialFinanceCost" : 3,
        |    "unusedLossesBroughtForward" : {
-       |      "unusedLossesBroughtForwardYesOrNo" : true,
+       |      "isUnusedLossesBroughtForward" : true,
        |      "unusedLossesBroughtForwardAmount" : 24
        |    },
        |    "whenYouReportedTheLoss": "y2021to2022"
        |
        |  },
        |  "raRAbout" : {
-       |    "jointlyLetYesOrNo" : false,
+       |    "isJointlyLet" : false,
        |    "totalIncomeAmount" : 30,
        |    "claimExpensesOrRelief" : {
-       |      "claimExpensesOrReliefYesNo" : false,
+       |      "isClaimExpensesOrRelief" : false,
        |      "rentARoomAmount" : 50
        |    }
        |  },
        |  "raRAdjustments": {
        |     "balancingCharge": {
        |         "balancingChargeAmount": 10,
-       |         "balancingChargeYesNo": true
+       |         "isBalancingCharge": true
        |     },
        |     "unusedLossesBroughtForward": {
        |         "unusedLossesBroughtForwardAmount": 5,
-       |         "unusedLossesBroughtForwardYesOrNo": true
+       |         "isUnusedLossesBroughtForward": true
        |     },
        |     "whenYouReportedTheLoss": "y2021to2022",
        |     "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
@@ -199,7 +199,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        | },
        |  "rentARoomAllowances" : {
        |    "capitalAllowancesForACar" : {
-       |      "capitalAllowancesForACarYesNo" : true,
+       |      "isCapitalAllowancesForACar" : true,
        |      "capitalAllowancesForACarAmount" : 20
        |    },
        |    "annualInvestmentAllowance" : 5,
@@ -244,7 +244,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |      "foreignPropertyTax": {
        |      "$countryCode1": {
        |      "foreignIncomeTax": {
-       |        "foreignIncomeTaxYesNo": true,
+       |        "isForeignIncomeTax": true,
        |        "foreignTaxPaidOrDeducted": 590.55
        |      },
        |      "foreignTaxCreditRelief": true
@@ -280,17 +280,17 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
        |    "$countryCode1": {
        |      "privateUseAdjustment": 50,
        |      "balancingCharge": {
-       |        "balancingChargeYesNo": true,
+       |        "isBalancingCharge": true,
        |        "balancingChargeAmount": 56.60
        |      },
        |      "residentialFinanceCost": 67.90,
        |      "unusedResidentialFinanceCost": {
-       |        "foreignUnusedResidentialFinanceCostYesNo": true,
+       |        "isForeignUnusedResidentialFinanceCost": true,
        |        "foreignUnusedResidentialFinanceCostAmount": 50
        |      },
        |      "propertyIncomeAllowanceClaim": 50,
        |      "unusedLossesPreviousYears": {
-       |        "unusedLossesPreviousYearsYesNo": true,
+       |        "isUnusedLossesPreviousYears": true,
        |        "unusedLossesPreviousYearsAmount": 500
        |      },
        |      "whenYouReportedTheLoss": "y2021to2022"
@@ -365,7 +365,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(JointlyLetPage(RentARoom)).get mustBe false
       updated.get(TotalIncomeAmountPage(RentARoom)).get mustBe 30
       updated.get(ClaimExpensesOrReliefPage(RentARoom)).get mustBe ClaimExpensesOrRelief(
-        claimExpensesOrReliefYesNo = false,
+        isClaimExpensesOrRelief = false,
         Some(50)
       )
       updated.get(RentsRatesAndInsuranceRRPage).get mustBe 5
@@ -374,9 +374,9 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(CostOfServicesProvidedRRPage).get mustBe 30
       updated.get(OtherPropertyExpensesRRPage).get mustBe 35
 
-      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10)))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10)))
       updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
-      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(5)))
+      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(5)))
       updated.get(RarWhenYouReportedTheLossPage) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
 
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
@@ -385,7 +385,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(CostsOfServicesProvidedPage(Rentals)).get mustBe 34
       updated.get(PropertyBusinessTravelCostsPage(Rentals)).get mustBe 4
       updated.get(OtherAllowablePropertyExpensesPage(Rentals)).get mustBe 3
-      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(3))
+      updated.get(BalancingChargePage(Rentals)).get mustBe BalancingCharge(isBalancingCharge = true, Some(3))
       updated.get(PrivateUseAdjustmentPage(Rentals)).get mustBe PrivateUseAdjustment(2)
       updated.get(PropertyIncomeAllowancePage(Rentals)).get mustBe 4
       updated.get(ReversePremiumsReceivedPage(Rentals)).get mustBe ReversePremiumsReceived(
@@ -393,13 +393,13 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         Some(45)
       )
       updated.get(RenovationAllowanceBalancingChargePage(Rentals)).get mustBe RenovationAllowanceBalancingCharge(
-        renovationAllowanceBalancingChargeYesNo = true,
+        isRenovationAllowanceBalancingCharge = true,
         Some(23)
       )
       updated.get(ResidentialFinanceCostPage(Rentals)).get mustBe 2
       updated.get(UnusedResidentialFinanceCostPage(Rentals)).get mustBe 3
       updated.get(UnusedLossesBroughtForwardPage(Rentals)).get mustBe UnusedLossesBroughtForward(
-        unusedLossesBroughtForwardYesOrNo = true,
+        isUnusedLossesBroughtForward = true,
         Some(24)
       )
       updated.get(WhenYouReportedTheLossPage(Rentals)) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
@@ -438,10 +438,10 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
         "4",
         "EH1 AB2"
       )
-      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(balancingChargeYesNo = true, Some(10))
+      updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(10))
 
       updated.get(RaRCapitalAllowancesForACarPage).get mustBe CapitalAllowancesForACar(
-        capitalAllowancesForACarYesNo = true,
+        isCapitalAllowancesForACar = true,
         Some(20)
       )
       updated.get(RaRAnnualInvestmentAllowancePage).get mustBe 5
@@ -468,7 +468,7 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       updated.get(ForeignTaxSectionCompletePage(countryCode1)).get mustBe true
       updated.get(ForeignExpensesSectionCompletePage(countryCode2)).get mustBe false
       updated.get(ForeignIncomeTaxPage(countryCode1)).get mustBe ForeignIncomeTax(
-        foreignIncomeTaxYesNo = true,
+        isForeignIncomeTax = true,
         Some(590.55)
       )
       updated.get(ClaimForeignTaxCreditReliefPage(countryCode1)).get mustBe true
@@ -501,15 +501,15 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(ForeignPrivateUseAdjustmentPage(countryCode1)) mustBe Some(50)
       updated.get(ForeignBalancingChargePage(countryCode1)) mustBe Some(
-        BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(56.60)))
+        BalancingCharge(isBalancingCharge = true, Some(BigDecimal(56.60)))
       )
       updated.get(ForeignResidentialFinanceCostsPage(countryCode1)) mustBe Some(67.90)
       updated.get(ForeignUnusedResidentialFinanceCostPage(countryCode1)) mustBe Some(
-        ForeignUnusedResidentialFinanceCost(foreignUnusedResidentialFinanceCostYesNo = true, Some(BigDecimal(50)))
+        ForeignUnusedResidentialFinanceCost(isForeignUnusedResidentialFinanceCost = true, Some(BigDecimal(50)))
       )
       updated.get(PropertyIncomeAllowanceClaimPage(countryCode1)) mustBe Some(50)
       updated.get(ForeignUnusedLossesPreviousYearsPage(countryCode1)) mustBe Some(
-        UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(500)))
+        UnusedLossesPreviousYears(isUnusedLossesPreviousYears = true, Some(BigDecimal(500)))
       )
       updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(ForeignWhenYouReportedTheLoss.y2021to2022)
       updated.get(ForeignAdjustmentsCompletePage(countryCode1)) mustBe Some(true)

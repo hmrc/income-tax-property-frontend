@@ -30,8 +30,8 @@ case class UnusedLossesBroughtForwardPage(propertyType: PropertyType) extends Qu
   override def toString: String = "unusedLossesBroughtForward"
 
   override def cleanup(value: Option[UnusedLossesBroughtForward], userAnswers: UserAnswers): Try[UserAnswers] = {
-    val hasUnusedLossesYesNo = value.map{_.unusedLossesBroughtForwardYesOrNo}
-    hasUnusedLossesYesNo.map {
+    val isUnusedLosses = value.map{_.isUnusedLossesBroughtForward}
+    isUnusedLosses.map {
         case true => super.cleanup(value, userAnswers)
         case false => userAnswers.remove(WhenYouReportedTheLossPage(propertyType))
       }

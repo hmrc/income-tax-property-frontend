@@ -28,7 +28,7 @@ class ClaimPropertyIncomeAllowanceFormProviderSpec extends BooleanFieldBehaviour
 
   ".claimPropertyIncomeAllowanceYesOrNo" - {
 
-    val fieldName = "claimPropertyIncomeAllowanceYesOrNo"
+    val fieldName = "isClaimPropertyIncomeAllowance"
 
     behave like booleanField(
       form,

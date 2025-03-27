@@ -31,7 +31,7 @@ case class ForeignIncomeTaxPage(countryCode: String) extends QuestionPage[Foreig
 
   override def cleanup(value: Option[ForeignIncomeTax], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(foreignIncomeTax) if !foreignIncomeTax.foreignIncomeTaxYesNo =>
+      case Some(foreignIncomeTax) if !foreignIncomeTax.isForeignIncomeTax =>
         userAnswers.remove(ClaimForeignTaxCreditReliefPage(countryCode))
       case _ => super.cleanup(value, userAnswers)
     }

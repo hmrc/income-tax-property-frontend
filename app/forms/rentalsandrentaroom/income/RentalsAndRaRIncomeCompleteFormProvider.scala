@@ -25,6 +25,6 @@ class RentalsAndRaRIncomeCompleteFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "rentalsRentARoomSectionCompleteYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+      "isRentalsRentARoomSectionComplete" -> boolean("haveYouFinishedThisSection.error.required")
     )
 }

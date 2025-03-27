@@ -450,7 +450,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           val userAnswers = UserAnswers("test")
             .set(
               ConsolidatedOrIndividualExpensesPage(countryCode),
-              ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = false, None)
+              ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = false, None)
             )
             .get
           navigator.nextPage(
@@ -467,7 +467,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ConsolidatedOrIndividualExpensesPage(countryCode),
               ConsolidatedOrIndividualExpenses(
-                consolidatedOrIndividualExpensesYesNo = true,
+                isConsolidatedOrIndividualExpenses = true,
                 consolidatedExpense = Some(BigDecimal(789.00))
               )
             )
@@ -817,7 +817,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedResidentialFinanceCostPage(countryCode),
               ForeignUnusedResidentialFinanceCost(
-                foreignUnusedResidentialFinanceCostYesNo = true,
+                isForeignUnusedResidentialFinanceCost= true,
                 foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
               )
             )
@@ -837,7 +837,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedLossesPreviousYearsPage(countryCode),
               UnusedLossesPreviousYears(
-                unusedLossesPreviousYearsYesNo = true,
+                isUnusedLossesPreviousYears = true,
                 unusedLossesPreviousYearsAmount = Some(BigDecimal(125.25))
               )
             )
@@ -857,7 +857,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedLossesPreviousYearsPage(countryCode),
               UnusedLossesPreviousYears(
-                unusedLossesPreviousYearsYesNo = false,
+                isUnusedLossesPreviousYears = false,
                 unusedLossesPreviousYearsAmount = None
               )
             )
@@ -1207,7 +1207,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           .set(
             ConsolidatedOrIndividualExpensesPage(countryCode),
             ConsolidatedOrIndividualExpenses(
-              consolidatedOrIndividualExpensesYesNo = true,
+              isConsolidatedOrIndividualExpenses = true,
               consolidatedExpense = Some(BigDecimal(789.00))
             )
           )
@@ -1225,7 +1225,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         val userAnswers = UserAnswers("test")
           .set(
             ConsolidatedOrIndividualExpensesPage(countryCode),
-            ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = false, None)
+            ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = false, None)
           )
           .get
         navigator.nextPage(
@@ -1442,7 +1442,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedResidentialFinanceCostPage(countryCode),
               ForeignUnusedResidentialFinanceCost(
-                foreignUnusedResidentialFinanceCostYesNo = true,
+                isForeignUnusedResidentialFinanceCost = true,
                 foreignUnusedResidentialFinanceCostAmount = Some(BigDecimal(100))
               )
             )
@@ -1462,7 +1462,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedLossesPreviousYearsPage(countryCode),
               UnusedLossesPreviousYears(
-                unusedLossesPreviousYearsYesNo = false,
+                isUnusedLossesPreviousYears = false,
                 unusedLossesPreviousYearsAmount = None
               )
             )
@@ -1471,7 +1471,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedLossesPreviousYearsPage(countryCode),
               UnusedLossesPreviousYears(
-                unusedLossesPreviousYearsYesNo = true,
+                isUnusedLossesPreviousYears = true,
                 unusedLossesPreviousYearsAmount = Some(BigDecimal(125.25))
               )
             )
@@ -1491,7 +1491,7 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
             .set(
               ForeignUnusedLossesPreviousYearsPage(countryCode),
               UnusedLossesPreviousYears(
-                unusedLossesPreviousYearsYesNo = false,
+                isUnusedLossesPreviousYears = false,
                 unusedLossesPreviousYearsAmount = None
               )
             )

@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo: Boolean, unusedLossesPreviousYearsAmount: Option[BigDecimal])
+final case class UnusedLossesPreviousYears(isUnusedLossesPreviousYears: Boolean, unusedLossesPreviousYearsAmount: Option[BigDecimal])
 
 object UnusedLossesPreviousYears {
   implicit val format: Format[UnusedLossesPreviousYears] = Json.format

@@ -569,7 +569,7 @@ class SummaryPageSpec extends SpecBase {
         .value
         .set(
           ClaimExpensesOrReliefPage(RentARoom),
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(12.34))
+          ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(12.34))
         )
         .success
         .value
@@ -592,7 +592,7 @@ class SummaryPageSpec extends SpecBase {
         .value
         .set(
           ClaimExpensesOrReliefPage(RentARoom),
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(12.34))
+          ClaimExpensesOrRelief(isClaimExpensesOrRelief = false, Some(12.34))
         )
         .success
         .value

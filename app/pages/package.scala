@@ -34,7 +34,7 @@ package object pages {
       if (isUkAndForeignAboutJourneyComplete(ua)) {
         ua
           .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
-          .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+          .exists(_.isClaimPropertyIncomeAllowanceOrExpenses)
       } else
         {
           propertyType match {

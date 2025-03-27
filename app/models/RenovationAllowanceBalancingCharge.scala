@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-final case class RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo: Boolean,
+final case class RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge: Boolean,
                                                     renovationAllowanceBalancingChargeAmount: Option[BigDecimal])
 
 object RenovationAllowanceBalancingCharge {

@@ -23,7 +23,7 @@ class UKPremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
 
   val form = new UKPremiumsGrantLeaseFormProvider()("individual")
 
-  ".premiumsGrantLeaseYesNo" - {
+  ".isPremiumsGrantLease" - {
 
     val fieldName = "premiumsGrantLeaseReceived"
 
