@@ -42,7 +42,7 @@ object PropertyAbout {
       isTotalIncomeBetween1kAnd85k = between,
       isTotalIncomeOver85k = over,
       ukProperty = propertyAbout.ukProperty,
-      isReportPropertyIncome = propertyAbout.reportPropertyIncome
+      isReportPropertyIncome = propertyAbout.isReportPropertyIncome
     )
   }
 }

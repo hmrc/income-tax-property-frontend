@@ -23,7 +23,7 @@ import queries.Gettable
 case class PropertyAbout(
   totalIncome: TotalIncome,
   ukProperty: Option[Seq[UKPropertySelect]],
-  reportPropertyIncome: Option[Boolean]
+  isReportPropertyIncome: Option[Boolean]
 )
 
 case object PropertyAbout extends Gettable[PropertyAbout] {

@@ -186,7 +186,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- propertyAbout.ukProperty.fold(Try(userAnswers))(ukps => userAnswers.set(UKPropertyPage, ukps.toSet))
             ua2 <- ua1.set(UKTotalIncomePage, propertyAbout.totalIncome)
-            ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.reportPropertyIncome)
+            ua3 <- updatePart(ua2, ReportPropertyIncomePage, propertyAbout.isReportPropertyIncome)
           } yield ua3
       }
 

@@ -23,7 +23,7 @@ import queries.{Gettable, Settable}
 case class ForeignPropertyIncome(
   countryCode: String,
   rentIncome: BigDecimal,
-  premiumsGrantLeaseReceived: Boolean,
+  isPremiumsGrantLeaseReceived: Boolean,
   otherPropertyIncome: BigDecimal,
   calculatedPremiumLeaseTaxable: Option[CalculatedPremiumLeaseTaxable],
   receivedGrantLeaseAmount: Option[BigDecimal],

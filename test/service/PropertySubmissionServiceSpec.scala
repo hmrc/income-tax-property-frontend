@@ -144,7 +144,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         nino = user.nino,
         journeyPath = JourneyPath.PropertyAbout
       )
-    val propertyAbout = PropertyAbout(Under, ukProperty = Some(UKPropertySelect.values), reportPropertyIncome = Some(true))
+    val propertyAbout = PropertyAbout(Under, ukProperty = Some(UKPropertySelect.values), isReportPropertyIncome = Some(true))
 
     "return error when fails to get property data" in {
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(

@@ -27,7 +27,7 @@ case object PropertyIncomeReportPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
 
-  override def toString: String = "reportPropertyIncome"
+  override def toString: String = "isReportPropertyIncome"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     for {

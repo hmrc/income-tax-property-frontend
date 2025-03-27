@@ -25,7 +25,7 @@ case object ReportPropertyIncomePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ PageConstants.propertyAbout \ toString
 
-  override def toString: String = "reportPropertyIncome"
+  override def toString: String = "isReportPropertyIncome"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value.map {
