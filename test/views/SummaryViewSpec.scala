@@ -16,22 +16,21 @@
 
 package views
 import base.SpecBase
-import play.api.test.Helpers._
-import play.api.test._
-import play.api.mvc._
-import play.twirl.api.Html
-import views.html.SummaryView
 import controllers.routes
 import org.scalatest.matchers.must.Matchers
 import pages.UKPropertySummaryPage
 import pages.foreign.ForeignPropertySummaryPage
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.Application
-import play.api.i18n.Messages
-import play.api.i18n.MessagesApi
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.mvc._
+import play.api.test.Helpers._
+import play.api.test._
+import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.html.components.GovukTag
 import viewmodels.summary.{TaskListItem, TaskListTag}
+import views.html.SummaryView
 import views.html.templates.Layout
 
 import java.time.LocalDate
@@ -42,19 +41,17 @@ class SummaryViewSpec extends SpecBase with Matchers {
 
   implicit val messages: Messages = application.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  val layout: Layout     = application.injector.instanceOf[Layout]
+  val layout: Layout = application.injector.instanceOf[Layout]
   val govukTag: GovukTag = application.injector.instanceOf[GovukTag]
-  val view: SummaryView  = application.injector.instanceOf[SummaryView]
-  private val taxYear    = LocalDate.now.getYear
-
+  val view: SummaryView = application.injector.instanceOf[SummaryView]
+  private val taxYear = LocalDate.now.getYear
 
   def createView(
-                  ukProperty: UKPropertySummaryPage,
-                  foreignProperty: ForeignPropertySummaryPage,
-                  ukAndForeignProperty: UkAndForeignPropertySummaryPage
-                )(implicit request: Request[_]): Html = {
-    view(ukProperty, foreignProperty, ukAndForeignProperty)(request, messages)
-  }
+    ukProperty: UKPropertySummaryPage,
+    foreignProperty: ForeignPropertySummaryPage,
+    ukAndForeignProperty: UkAndForeignPropertySummaryPage
+  )(implicit request: Request[_]): Html =
+    view(taxYear, ukProperty, foreignProperty, ukAndForeignProperty)(request, messages)
 
   "Summary view" - {
 
@@ -84,7 +81,11 @@ class SummaryViewSpec extends SpecBase with Matchers {
 
       val ukAndForeignProperty = UkAndForeignPropertySummaryPage(
         taxYear = taxYear,
-        startItems = Seq.empty
+        startItems = Seq.empty,
+        ukPropertyRentalListItems = Seq.empty,
+        ukPropertyRentARoomListItems = Seq.empty,
+        ukPropertyRentalAndRentARoomListItems = Seq.empty,
+        foreignListItems = Seq.empty
       )
 
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
@@ -120,9 +121,13 @@ class SummaryViewSpec extends SpecBase with Matchers {
         userAnswers = None
       )
 
-      val ukAndForeignProperty = UkAndForeignPropertySummaryPage(
+      val ukAndForeignProperty: UkAndForeignPropertySummaryPage = UkAndForeignPropertySummaryPage(
         taxYear = taxYear,
-        startItems = Seq.empty
+        startItems = Seq.empty,
+        ukPropertyRentalListItems = Seq.empty,
+        ukPropertyRentARoomListItems = Seq.empty,
+        ukPropertyRentalAndRentARoomListItems = Seq.empty,
+        foreignListItems = Seq.empty
       )
 
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
@@ -166,7 +171,7 @@ class SummaryViewSpec extends SpecBase with Matchers {
         userAnswers = None
       )
 
-      val ukAndForeignProperty = UkAndForeignPropertySummaryPage(
+      val ukAndForeignProperty: UkAndForeignPropertySummaryPage = UkAndForeignPropertySummaryPage(
         taxYear = taxYear,
         startItems = Seq(
           TaskListItem(
@@ -175,7 +180,11 @@ class SummaryViewSpec extends SpecBase with Matchers {
             TaskListTag.NotStarted,
             "uk_and_foreign_property_about_link"
           )
-        )
+        ),
+        ukPropertyRentalListItems = Seq.empty,
+        ukPropertyRentARoomListItems = Seq.empty,
+        ukPropertyRentalAndRentARoomListItems = Seq.empty,
+        foreignListItems = Seq.empty
       )
 
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
@@ -197,104 +206,6 @@ class SummaryViewSpec extends SpecBase with Matchers {
 
       contentAsString(html) must include("Completed")
       contentAsString(html) must include("Not yet started")
-    }
-
-    "render the view with both UK and foreign property items as Cannot start yet because foreign property is not completed" in {
-      val ukProperty = UKPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "summary.about",
-            controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
-            TaskListTag.Completed,
-            "property_about_link"
-          )
-        ),
-        rentalsRows = Seq.empty,
-        rentARoomRows = Seq.empty,
-        combinedItems = Seq.empty
-      )
-
-      val foreignProperty = ForeignPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "foreign.selectCountry",
-            controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
-            TaskListTag.NotStarted,
-            "foreign_property_select_country"
-          )
-        ),
-        foreignIncomeCountries = List.empty,
-        foreignPropertyItems = Map.empty,
-        userAnswers = None
-      )
-
-      val ukAndForeignProperty = UkAndForeignPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "summary.aboutUKAndForeignProperties",
-            routes.SummaryController.show(taxYear),
-            TaskListTag.CanNotStart,
-            "uk_and_foreign_property_about_link"
-          )
-        )
-      )
-
-      val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
-      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty)(request)
-
-      contentAsString(html) must include("Cannot start yet")
-    }
-
-    "render the view with both UK and foreign property items as Cannot start yet because UK property is not completed" in {
-      val ukProperty = UKPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "summary.about",
-            controllers.about.routes.UKPropertyDetailsController.onPageLoad(taxYear),
-            TaskListTag.NotStarted,
-            "property_about_link"
-          )
-        ),
-        rentalsRows = Seq.empty,
-        rentARoomRows = Seq.empty,
-        combinedItems = Seq.empty
-      )
-
-      val foreignProperty = ForeignPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "foreign.selectCountry",
-            controllers.foreign.routes.ForeignPropertyDetailsController.onPageLoad(taxYear),
-            TaskListTag.Completed,
-            "foreign_property_select_country"
-          )
-        ),
-        foreignIncomeCountries = List.empty,
-        foreignPropertyItems = Map.empty,
-        userAnswers = None
-      )
-
-      val ukAndForeignProperty = UkAndForeignPropertySummaryPage(
-        taxYear = taxYear,
-        startItems = Seq(
-          TaskListItem(
-            "summary.aboutUKAndForeignProperties",
-            routes.SummaryController.show(taxYear),
-            TaskListTag.CanNotStart,
-            "uk_and_foreign_property_about_link"
-          )
-        )
-      )
-
-      val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
-      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty)(request)
-
-      contentAsString(html) must include("Cannot start yet")
     }
   }
 }

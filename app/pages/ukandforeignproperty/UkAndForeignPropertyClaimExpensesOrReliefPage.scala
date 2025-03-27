@@ -16,14 +16,28 @@
 
 package pages.ukandforeignproperty
 
-import models.{UKAndForeignProperty, UkAndForeignPropertyClaimExpensesOrRelief}
+import models.{UKAndForeignProperty, UkAndForeignPropertyClaimExpensesOrRelief, UserAnswers}
+import models.RentalsAndRaRAbout
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
+import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import play.api.libs.json.JsPath
 
-case object UkAndForeignPropertyClaimExpensesOrReliefPage extends QuestionPage[UkAndForeignPropertyClaimExpensesOrRelief] {
+import scala.util.Try
+
+case object UkAndForeignPropertyClaimExpensesOrReliefPage
+    extends QuestionPage[UkAndForeignPropertyClaimExpensesOrRelief] {
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
   override def toString: String = "claimExpensesOrRelief"
+
+  override def cleanup(
+    value: Option[UkAndForeignPropertyClaimExpensesOrRelief],
+    userAnswers: UserAnswers
+  ): Try[UserAnswers] =
+    for {
+      ua  <- userAnswers.remove(RentalsRaRAboutCompletePage)
+      ua2 <- ua.remove(RentalsAndRaRAbout)
+    } yield ua2
 }

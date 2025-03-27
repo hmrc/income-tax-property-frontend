@@ -39,7 +39,7 @@ object ForeignPropertyAdjustments
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty)
 }
 
-case class ReadForeignPropertyAdjustments(countryCode: String) extends Gettable[ForeignPropertyAdjustments] {
+case class ReadForeignPropertyAdjustments(countryCode: String) extends Gettable[ForeignPropertyAdjustments] with Settable[ForeignPropertyAdjustments] {
 
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ toString
 
