@@ -21,11 +21,11 @@ import models.UKPropertySelect
 import play.api.libs.json.{Format, Json}
 
 case class PropertyAbout(
-  totalIncomeUnder1k: Boolean,
-  totalIncomeBetween1kAnd85k: Boolean,
-  totalIncomeOver85k: Boolean,
+  isTotalIncomeUnder1k: Boolean,
+  isTotalIncomeBetween1kAnd85k: Boolean,
+  isTotalIncomeOver85k: Boolean,
   ukProperty: Option[Seq[UKPropertySelect]],
-  reportPropertyIncome: Option[Boolean]
+  isReportPropertyIncome: Option[Boolean]
 )
 
 object PropertyAbout {
@@ -38,11 +38,11 @@ object PropertyAbout {
       case Over =>    (false, false, true)
     }
     PropertyAbout(
-      totalIncomeUnder1k = under,
-      totalIncomeBetween1kAnd85k = between,
-      totalIncomeOver85k = over,
+      isTotalIncomeUnder1k = under,
+      isTotalIncomeBetween1kAnd85k = between,
+      isTotalIncomeOver85k = over,
       ukProperty = propertyAbout.ukProperty,
-      reportPropertyIncome = propertyAbout.reportPropertyIncome
+      isReportPropertyIncome = propertyAbout.reportPropertyIncome
     )
   }
 }

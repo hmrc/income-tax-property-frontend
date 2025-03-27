@@ -76,15 +76,15 @@ class BusinessService @Inject() (businessConnector: BusinessConnector)(implicit 
   private def isUkProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
       UKProperty.toString
-    ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
+    ) && property.tradingStartDate.isDefined && property.isAccrualsOrCash.isDefined
 
   private def isForeignProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.contains(
       ForeignProperty.toString
-    ) && property.tradingStartDate.isDefined && property.accrualsOrCash.isDefined
+    ) && property.tradingStartDate.isDefined && property.isAccrualsOrCash.isDefined
 
   private def isValidProperty(property: PropertyDetails): Boolean =
     property.incomeSourceType.exists(str => str.contains(UKProperty.toString)  ||  str.contains(ForeignProperty.toString) ) &&
       property.tradingStartDate.isDefined &&
-      property.accrualsOrCash.isDefined
+      property.isAccrualsOrCash.isDefined
   }

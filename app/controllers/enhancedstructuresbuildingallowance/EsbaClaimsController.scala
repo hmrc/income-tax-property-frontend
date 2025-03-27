@@ -85,14 +85,14 @@ class EsbaClaimsController @Inject() (
     taxYear: Int,
     propertyType: PropertyType,
     request: DataRequest[AnyContent],
-    addAnotherClaim: Boolean
+    isAddAnotherClaim: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Future[Result] =
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), addAnotherClaim))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(EsbaClaimsPage(propertyType), isAddAnotherClaim))
       _              <- sessionRepository.set(updatedAnswers)
-      result <- if (!addAnotherClaim) {
+      result <- if (!isAddAnotherClaim) {
                   getBusinessDetailsAndSaveEsba(taxYear, request, propertyType)
                 } else {
                   redirectToAddClaim(taxYear, propertyType)

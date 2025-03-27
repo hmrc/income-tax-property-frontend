@@ -21,12 +21,12 @@ import play.api.libs.json.{Json, OFormat}
 final case class Income(
   isNonUKLandlord: Boolean,
   propertyRentalIncome: BigDecimal,
-  premiumForLease: Boolean,
+  isPremiumForLease: Boolean,
   reversePremiumsReceived: ReversePremiumsReceived,
-  taxDeductedYesNo: Option[DeductingTax],
+  isTaxDeducted: Option[DeductingTax],
   calculatedFigureYourself: Option[CalculatedFigureYourself],
   yearLeaseAmount: Option[BigDecimal],
-  premiumsGrantLeaseYesNo: Option[PremiumsGrantLease],
+  premiumsGrantLease: Option[PremiumsGrantLease],
   receivedGrantLeaseAmount: Option[BigDecimal]
 )
 
@@ -34,24 +34,24 @@ object Income {
   implicit val format: OFormat[Income] = Json.format[Income]
 }
 
-final case class PremiumsGrantLease(yesOrNo: Boolean)
+final case class PremiumsGrantLease(isPremiumsGrantLease: Boolean)
 
 object PremiumsGrantLease {
   implicit val format: OFormat[PremiumsGrantLease] = Json.format[PremiumsGrantLease]
 }
-final case class ReversePremiumsReceived(reversePremiumsReceived: Boolean)
+final case class ReversePremiumsReceived(isReversePremiumsReceived: Boolean)
 
 object ReversePremiumsReceived {
   implicit val format: OFormat[ReversePremiumsReceived] = Json.format[ReversePremiumsReceived]
 }
 
-final case class CalculatedFigureYourself(calculatedFigureYourself: Boolean)
+final case class CalculatedFigureYourself(isCalculatedFigureYourself: Boolean)
 
 object CalculatedFigureYourself {
   implicit val format: OFormat[CalculatedFigureYourself] = Json.format[CalculatedFigureYourself]
 }
 
-final case class DeductingTax(taxDeductedYesNo: Boolean)
+final case class DeductingTax(isTaxDeducted: Boolean)
 
 object DeductingTax {
   implicit val format: OFormat[DeductingTax] = Json.format[DeductingTax]

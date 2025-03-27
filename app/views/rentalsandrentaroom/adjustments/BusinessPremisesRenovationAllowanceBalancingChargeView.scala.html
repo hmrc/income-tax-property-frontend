@@ -48,7 +48,7 @@
 
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("renovationAllowanceBalancingChargeYesNo"),
+                    field = form("isRenovationAllowanceBalancingCharge"),
                     legend = LegendViewModel(messages(s"businessPremisesRenovationAllowanceBalancingChargeAmount.radio.legend.$individualOrAgent")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("renovationAllowanceBalancingChargeForm"),

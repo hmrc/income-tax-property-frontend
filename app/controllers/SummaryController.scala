@@ -60,23 +60,23 @@ class SummaryController @Inject() (
           Future.failed(PropertyDataError)
 
         case Right(propertyData) =>
-          val ukAccrualsOrCash: Boolean = propertyData
+          val isUkAccrualsOrCash: Boolean = propertyData
             .find(_.incomeSourceType.contains(UKProperty.toString))
-            .flatMap(_.accrualsOrCash)
+            .flatMap(_.isAccrualsOrCash)
             .getOrElse(true)
-          val foreignAccrualsOrCash: Boolean = propertyData
+          val isForeignAccrualsOrCash: Boolean = propertyData
             .find(_.incomeSourceType.contains(ForeignProperty.toString))
-            .flatMap(_.accrualsOrCash)
+            .flatMap(_.isAccrualsOrCash)
             .getOrElse(true)
 
           val propertyRentalsRows =
             summaryPage
-              .createUkPropertyRows(request.userAnswers, taxYear, ukAccrualsOrCash)
+              .createUkPropertyRows(request.userAnswers, taxYear, isUkAccrualsOrCash)
           val ukRentARoomRows = summaryPage.createUkRentARoomRows(request.userAnswers, taxYear)
           val startItems = summaryPage.propertyAboutItems(request.userAnswers, taxYear)
           val combinedItems =
             summaryPage
-              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, ukAccrualsOrCash)
+              .createRentalsAndRentARoomRows(request.userAnswers, taxYear, isUkAccrualsOrCash)
           val foreignCountries = request.userAnswers
             .flatMap(_.get(IncomeSourceCountries))
             .map(_.array.toList.flatMap { country =>
@@ -85,7 +85,7 @@ class SummaryController @Inject() (
           val maybeCountries = foreignCountries.getOrElse(List.empty)
           val foreignPropertyItems = maybeCountries.map { country =>
             country.code -> foreignSummaryPage
-              .foreignPropertyItems(taxYear, foreignAccrualsOrCash, country.code, request.userAnswers)
+              .foreignPropertyItems(taxYear, isForeignAccrualsOrCash, country.code, request.userAnswers)
           }.toMap
           Future.successful(
             Ok(

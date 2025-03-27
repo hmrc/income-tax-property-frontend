@@ -156,7 +156,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       running(rentalsApplication) {
         val request =
           FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
-            .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
+            .withFormUrlEncodedBody("isCalculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
 
         val result = route(rentalsApplication, request).value
 
@@ -181,7 +181,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       running(rentalsRentARoomApplication) {
         val request =
           FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
-            .withFormUrlEncodedBody("calculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
+            .withFormUrlEncodedBody("isCalculatedFigureYourself" -> "true", "calculatedFigureYourselfAmount" -> "866.65")
 
         val result = route(rentalsRentARoomApplication, request).value
 
@@ -211,7 +211,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       running(rentalsApplication) {
         val request =
           FakeRequest(POST, rentalsCalculatedFigureYourselfRoute)
-            .withFormUrlEncodedBody("calculatedFigureYourself" -> "false")
+            .withFormUrlEncodedBody("isCalculatedFigureYourself" -> "false")
 
         val result = route(rentalsApplication, request).value
 
@@ -234,7 +234,7 @@ class CalculatedFigureYourselfControllerSpec extends SpecBase with MockitoSugar 
       running(rentalsRentARoomApplication) {
         val request =
           FakeRequest(POST, rentalsRentARoomCalculatedFigureYourselfRoute)
-            .withFormUrlEncodedBody("calculatedFigureYourself" -> "false")
+            .withFormUrlEncodedBody("isCalculatedFigureYourself" -> "false")
 
         val result = route(rentalsRentARoomApplication, request).value
 

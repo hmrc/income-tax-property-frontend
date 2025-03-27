@@ -26,9 +26,9 @@ class RaRAllowancesCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new RaRAllowancesCompleteFormProvider()()
 
-  ".rarAllowancesCompleteYesOrNo" - {
+  ".isRarAllowancesComplete" - {
 
-    val fieldName = "rarAllowancesCompleteYesOrNo"
+    val fieldName = "isRarAllowancesComplete"
 
     behave like booleanField(
       form,

@@ -26,9 +26,9 @@ class AboutSectionCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new AboutSectionCompleteFormProvider()()
 
-  ".rentARoomIsSectionCompleteYesOrNo" - {
+  ".isRentARoomIsSectionComplete" - {
 
-    val fieldName = "rentARoomIsSectionCompleteYesOrNo"
+    val fieldName = "isRentARoomIsSectionComplete"
 
     behave like booleanField(
       form,

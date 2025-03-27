@@ -96,7 +96,7 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseController @Inject() (
                                       request.userAnswers.set(
                                         UkAndForeignPropertyForeignPremiumsGrantLeasePage,
                                         UkAndForeignPropertyForeignPremiumsGrantLease(
-                                          value.premiumsOfLeaseGrantAgreed,
+                                          value.isPremiumsOfLeaseGrantAgreed,
                                           Option(
                                             value.premiumsOfLeaseGrant.getOrElse(
                                               UkAndForeignPropertyForeignPremiumsGrantLease

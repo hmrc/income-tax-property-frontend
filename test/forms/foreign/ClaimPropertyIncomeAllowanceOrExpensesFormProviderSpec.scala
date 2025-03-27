@@ -21,13 +21,13 @@ import play.api.data.FormError
 
 class ClaimPropertyIncomeAllowanceOrExpensesFormProviderSpec extends BooleanFieldBehaviours {
 
-  val fieldName = "claimPropertyIncomeAllowanceOrExpenses"
+  val fieldName = "isClaimPropertyIncomeAllowanceOrExpenses"
   val formProvider = new ClaimPropertyIncomeAllowanceOrExpensesFormProvider()()
   val requiredKey = "claimPropertyIncomeAllowanceOrExpenses.error.required"
 
-  ".claimPropertyIncomeAllowanceOrExpenses" - {
+  ".isClaimPropertyIncomeAllowanceOrExpenses" - {
 
-    val fieldName = "claimPropertyIncomeAllowanceOrExpenses"
+    val fieldName = "isClaimPropertyIncomeAllowanceOrExpenses"
 
     behave like booleanField(
       formProvider,

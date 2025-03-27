@@ -79,14 +79,14 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
   private def saveForeignPropertySba(
     taxYear: Int,
     request: DataRequest[AnyContent],
-    claimSba: Boolean,
+    isClaimSba: Boolean,
     countryCode: String
   )(implicit hc: HeaderCarrier): Future[Result] =
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
-      val foreignSbaInfo = ForeignSbaInfo(countryCode, claimSba, None)
+      val foreignSbaInfo = ForeignSbaInfo(countryCode, isClaimSba, None)
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignStructureBuildingAllowance)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignSbaInfo)
@@ -98,9 +98,9 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
         }
         .andThen {
           case Success(_) =>
-            auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, accrualsOrCash, countryCode)
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = false, isAccrualsOrCash, countryCode)
           case Failure(_) =>
-            auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, accrualsOrCash, countryCode)
+            auditCYA(taxYear, request, foreignSbaInfo, isFailed = true, isAccrualsOrCash, countryCode)
         }
     }
 
@@ -109,7 +109,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignSbaInfo: ForeignSbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean,
+    isAccrualsOrCash: Boolean,
     countryCode: String
   )(implicit
     hc: HeaderCarrier
@@ -123,7 +123,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
       countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignStructureBuildingAllowance,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

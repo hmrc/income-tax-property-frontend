@@ -28,7 +28,7 @@ class ClaimStructureBuildingAllowanceFormProviderSpec extends BooleanFieldBehavi
 
   ".value" - {
 
-    val fieldName = "claimStructureBuildingAllowance"
+    val fieldName = "isClaimStructureBuildingAllowance"
 
     behave like booleanField(
       form,

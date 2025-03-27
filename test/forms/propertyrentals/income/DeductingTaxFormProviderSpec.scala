@@ -26,9 +26,9 @@ class DeductingTaxFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new DeductingTaxFormProvider()("agent")
 
-  ".taxDeductedYesNo" - {
+  ".isTaxDeducted" - {
 
-    val fieldName = "taxDeductedYesNo"
+    val fieldName = "isTaxDeducted"
 
     behave like mandatoryField(
       form,

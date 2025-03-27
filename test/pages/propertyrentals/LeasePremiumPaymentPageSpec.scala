@@ -37,7 +37,7 @@ class PremiumForLeasePageSpec extends SpecBase {
         .get
         .set(
           PremiumsGrantLeasePage(propertyType),
-          PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
+          PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
         )
         .get
         .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))
@@ -62,7 +62,7 @@ class PremiumForLeasePageSpec extends SpecBase {
         .get
         .set(
           PremiumsGrantLeasePage(propertyType),
-          PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
+          PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
         )
         .get
         .set(CalculatedFigureYourselfPage(propertyType), CalculatedFigureYourself(false, None))

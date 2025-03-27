@@ -33,7 +33,7 @@ class CalculatedFigureYoureselfPageSpec extends SpecBase {
       .value
       .set(
         PremiumsGrantLeasePage(Rentals),
-        PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
+        PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
       )
       .success
       .value
@@ -57,7 +57,7 @@ class CalculatedFigureYoureselfPageSpec extends SpecBase {
       .get
       .set(
         PremiumsGrantLeasePage(Rentals),
-        PremiumsGrantLease(premiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
+        PremiumsGrantLease(isPremiumsGrantLeaseReceived = true, Some(BigDecimal(10.12)))
       )
       .get
 

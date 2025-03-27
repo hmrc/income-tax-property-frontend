@@ -93,7 +93,7 @@ class ClaimSbaCheckYourAnswersController @Inject() (
     propertyDetails: PropertyDetails
   )(implicit hc: HeaderCarrier
   ): Future[Result] = {
-    val sbaInfo: SbaInfo = SbaInfo(claimStructureBuildingAllowance = false, structureBuildingFormGroup = Array.empty)
+    val sbaInfo: SbaInfo = SbaInfo(isClaimStructureBuildingAllowance = false, structureBuildingFormGroup = Array.empty)
     propertySubmissionService.saveJourneyAnswers(context, sbaInfo, propertyDetails.incomeSourceId).flatMap {
       case Right(_) =>
         auditSBANoClaim(
@@ -102,7 +102,7 @@ class ClaimSbaCheckYourAnswersController @Inject() (
           sbaInfo,
           propertyType,
           isFailed = false,
-          accrualsOrCash = propertyDetails.accrualsOrCash.get
+          accrualsOrCash = propertyDetails.isAccrualsOrCash.get
         )
         Future.successful(Redirect(
           controllers.structuresbuildingallowance.routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)
@@ -114,7 +114,7 @@ class ClaimSbaCheckYourAnswersController @Inject() (
           sbaInfo,
           propertyType,
           isFailed = true,
-          accrualsOrCash = propertyDetails.accrualsOrCash.get
+          accrualsOrCash = propertyDetails.isAccrualsOrCash.get
         )
         logger.error("Error saving SBA with no claims")
         Future.failed(InternalErrorFailure("Error saving SBA with no claims"))

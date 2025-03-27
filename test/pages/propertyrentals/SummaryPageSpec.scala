@@ -569,7 +569,7 @@ class SummaryPageSpec extends SpecBase {
         .value
         .set(
           ClaimExpensesOrReliefPage(RentARoom),
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(12.34))
+          ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(12.34))
         )
         .success
         .value
@@ -592,7 +592,7 @@ class SummaryPageSpec extends SpecBase {
         .value
         .set(
           ClaimExpensesOrReliefPage(RentARoom),
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(12.34))
+          ClaimExpensesOrRelief(isClaimExpensesOrRelief = false, Some(12.34))
         )
         .success
         .value
@@ -662,7 +662,7 @@ class SummaryPageSpec extends SpecBase {
 
     "return empty rows, given an empty user data" in {
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear, isAccrualsOrCash = true)
         .length should be(0)
     }
 
@@ -676,12 +676,12 @@ class SummaryPageSpec extends SpecBase {
         .value
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(1)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(summaryAboutItem)
       )
@@ -708,12 +708,12 @@ class SummaryPageSpec extends SpecBase {
         .value
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem.copy(
@@ -755,12 +755,12 @@ class SummaryPageSpec extends SpecBase {
         createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(true, Some(100)), true)
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(3)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem.copy(
@@ -779,12 +779,12 @@ class SummaryPageSpec extends SpecBase {
         createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), true)
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem.copy(
@@ -805,12 +805,12 @@ class SummaryPageSpec extends SpecBase {
         createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), false)
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(7)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem.copy(
@@ -837,12 +837,12 @@ class SummaryPageSpec extends SpecBase {
         createTestUserAnswersForRentalsRaRAbout(ClaimExpensesOrRelief(false, None), true)
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = false)
         .length should be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem.copy(
@@ -892,12 +892,12 @@ class SummaryPageSpec extends SpecBase {
         .value
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = false)
         .length should be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = false
+        isAccrualsOrCash = false
       ) should be(
         Seq(
           summaryAboutItem,
@@ -944,12 +944,12 @@ class SummaryPageSpec extends SpecBase {
         .value
 
       SummaryPage(cyaDiversionService)
-        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
+        .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, isAccrualsOrCash = true)
         .length should be(7)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
-        accrualsOrCash = true
+        isAccrualsOrCash = true
       ) should be(
         Seq(
           summaryAboutItem,

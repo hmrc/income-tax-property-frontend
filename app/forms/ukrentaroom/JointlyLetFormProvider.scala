@@ -25,6 +25,6 @@ class JointlyLetFormProvider @Inject() extends Mappings {
 
   def apply(agentOrIndividual: String): Form[Boolean] =
     Form(
-      "jointlyLetYesOrNo" -> boolean(s"jointlyLet.error.required.$agentOrIndividual")
+      "isJointlyLet" -> boolean(s"jointlyLet.error.required.$agentOrIndividual")
     )
 }

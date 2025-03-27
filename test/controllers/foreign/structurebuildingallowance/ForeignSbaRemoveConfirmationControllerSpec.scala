@@ -88,7 +88,7 @@ class ForeignSbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, foreignSbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("foreignSbaRemoveConfirmation", "true"))
+            .withFormUrlEncodedBody(("isForeignSbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 
@@ -104,9 +104,9 @@ class ForeignSbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, foreignSbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("foreignSbaRemoveConfirmation", ""))
+            .withFormUrlEncodedBody(("isForeignSbaRemoveConfirmation", ""))
 
-        val boundForm = form.bind(Map("foreignSbaRemoveConfirmation" -> ""))
+        val boundForm = form.bind(Map("isForeignSbaRemoveConfirmation" -> ""))
 
         val view = application.injector.instanceOf[ForeignSbaRemoveConfirmationView]
 
@@ -141,7 +141,7 @@ class ForeignSbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSu
       running(application) {
         val request =
           FakeRequest(POST, foreignSbaRemoveConfirmationRoute)
-            .withFormUrlEncodedBody(("foreignSbaRemoveConfirmation", "true"))
+            .withFormUrlEncodedBody(("isForeignSbaRemoveConfirmation", "true"))
 
         val result = route(application, request).value
 

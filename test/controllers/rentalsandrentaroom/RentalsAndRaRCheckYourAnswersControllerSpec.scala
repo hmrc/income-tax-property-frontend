@@ -98,10 +98,10 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       val rentalsAndRaRAbout =
         RentalsAndRaRAbout(
-          jointlyLetYesOrNo = true,
+          isJointlyLet = true,
           22.23,
-          claimPropertyIncomeAllowanceYesOrNo = true,
-          ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11)),
+          isClaimPropertyIncomeAllowance = true,
+          ClaimExpensesOrRelief(isClaimExpensesOrRelief = false, Some(22.11)),
           45.65
         )
       val userAnswersWithRaRAbout =

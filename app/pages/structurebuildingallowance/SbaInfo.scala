@@ -19,7 +19,7 @@ package pages.structurebuildingallowance
 import play.api.libs.json.{Json, OFormat}
 
 final case class SbaInfo(
-  claimStructureBuildingAllowance: Boolean,
+  isClaimStructureBuildingAllowance: Boolean,
   structureBuildingFormGroup: Array[StructureBuildingAllowance]
 )
 object SbaInfo {

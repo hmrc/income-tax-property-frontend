@@ -47,7 +47,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("value"),
+                field = form("isNonResidentLandlord"),
                 legend = LegendViewModel(messages(s"nonResidentLandlordUK.legend.$userType")).withSize(LegendSize.Medium)
             )
         )

@@ -30,7 +30,7 @@
         <p class="govuk-body">@messages(s"rRAllowancesStart.details.content1.${page.individualOrAgent}")</p>
 
         <ul id="list" class="govuk-list govuk-list--bullet">
-        @if(page.cashOrAccruals) {
+        @if(page.isCashOrAccruals) {
             <li>@messages("rRAllowancesStart.bullet.content.l2")</li>
             <li>@messages("rRAllowancesStart.bullet.content.l3")</li>
             <li>@messages("rRAllowancesStart.bullet.content.l4")</li>

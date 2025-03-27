@@ -131,7 +131,7 @@ class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesControllerSpec e
             application.injector.instanceOf[UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesController]
           val result = controller.onSubmit(testTaxYear, NormalMode)(
             FakeRequest().withFormUrlEncodedBody(
-              ("ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses", value)
+              ("isClaimPropertyIncomeAllowanceOrExpenses", value)
             )
           )
           status(result) mustBe expectedStatus

@@ -43,7 +43,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
 
   val raRBalancingChargeValue = 200
   val raRBalancingCharge: BalancingCharge = BalancingCharge(
-    balancingChargeYesNo = true,
+    isBalancingCharge = true,
     balancingChargeAmount = Some(raRBalancingChargeValue)
   )
 

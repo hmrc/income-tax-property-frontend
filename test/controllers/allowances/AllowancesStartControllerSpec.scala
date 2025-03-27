@@ -47,7 +47,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the capital allowances for a car page for a GET if cashOrAccruals is false " in {
 
       val propertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -68,7 +68,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = false, emptyUserAnswers, Rentals), isPIA
+          AllowancesStartPage(taxYear, "agent", isCashOrAccruals = false, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)
@@ -80,7 +80,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = true" in {
 
         val propertyDetails =
-          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -115,7 +115,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = true,
+            isCashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
@@ -128,7 +128,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = true" in {
 
         val propertyDetails =
-          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -163,7 +163,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = true,
+            isCashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
@@ -176,7 +176,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       "and cashOrAccruals = false" in {
 
         val propertyDetails =
-          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
+          PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId")
 
         val businessService = mock[BusinessService]
 
@@ -211,7 +211,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
           AllowancesStartPage(
             taxYear,
             "agent",
-            cashOrAccruals = false,
+            isCashOrAccruals = false,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
           ).nextPageUrl shouldBe controllers.allowances.routes.CapitalAllowancesForACarController
@@ -223,7 +223,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
     "must return OK and the annual investment allowances page for a GET if cashOrAccruals is true " in {
 
       val propertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "incomeSourceId")
 
       val businessService = mock[BusinessService]
 
@@ -244,7 +244,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          AllowancesStartPage(taxYear, "agent", cashOrAccruals = true, emptyUserAnswers, Rentals), isPIA
+          AllowancesStartPage(taxYear, "agent", isCashOrAccruals = true, emptyUserAnswers, Rentals), isPIA
         )(
           request,
           messages(application)
@@ -275,7 +275,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
       val accrualsOrCash = None
 
       val propertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = accrualsOrCash, "incomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = accrualsOrCash, "incomeSourceId")
 
       val businessService = mock[BusinessService]
 

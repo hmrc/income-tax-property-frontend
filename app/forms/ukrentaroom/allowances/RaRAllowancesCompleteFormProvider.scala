@@ -25,6 +25,6 @@ class RaRAllowancesCompleteFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "rarAllowancesCompleteYesOrNo" -> boolean("haveYouFinishedThisSection.error.required")
+      "isRarAllowancesComplete" -> boolean("haveYouFinishedThisSection.error.required")
     )
 }

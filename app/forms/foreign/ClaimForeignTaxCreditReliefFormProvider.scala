@@ -25,6 +25,6 @@ class ClaimForeignTaxCreditReliefFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "claimForeignTaxCreditRelief" -> boolean(s"claimForeignTaxCreditRelief.error.required.$individualOrAgent")
+      "isClaimForeignTaxCreditRelief" -> boolean(s"claimForeignTaxCreditRelief.error.required.$individualOrAgent")
     )
 }

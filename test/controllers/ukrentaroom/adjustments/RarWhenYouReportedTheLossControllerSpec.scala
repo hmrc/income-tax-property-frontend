@@ -51,7 +51,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
@@ -73,7 +73,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
@@ -95,7 +95,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
@@ -127,7 +127,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
       val userAnswers = UserAnswers("test").set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 

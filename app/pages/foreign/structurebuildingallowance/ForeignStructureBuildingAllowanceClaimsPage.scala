@@ -25,5 +25,5 @@ case class ForeignStructureBuildingAllowanceClaimsPage(countryCode: String) exte
 
   override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode \ toString
 
-  override def toString: String = "addAnotherClaim"
+  override def toString: String = "isAddAnotherClaim"
 }

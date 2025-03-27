@@ -32,30 +32,30 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableFormProviderSpec exte
   ".premiumsOfLeaseGrant" - {
     "calculatedPremiumLeaseTaxable" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.65"))
-        boundForm.value.value mustBe PremiumCalculated(calculatedPremiumLeaseTaxable = true, Some(4534.65))
+        val boundForm = form.bind(Map("isCalculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.65"))
+        boundForm.value.value mustBe PremiumCalculated(isCalculatedPremiumLeaseTaxable = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true"))
+        val boundForm = form.bind(Map("isCalculatedPremiumLeaseTaxable" -> "true"))
         boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "premiumCalculated.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "non-numeric-value"))
+        val boundForm = form.bind(Map("isCalculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "non-numeric-value"))
         boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.nonNumeric.individual"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.6545"))
+        val boundForm = form.bind(Map("isCalculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4534.6545"))
         boundForm.errors must contain(FormError("premiumsOfLeaseGrant", "ukAndForeignCalculatedForeignPremiumGrantLeaseTaxable.amount.error.twoDecimalPlaces.individual"))
       }
 
 
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("calculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("isCalculatedPremiumLeaseTaxable" -> "true", "premiumsOfLeaseGrant" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
             "premiumsOfLeaseGrant",

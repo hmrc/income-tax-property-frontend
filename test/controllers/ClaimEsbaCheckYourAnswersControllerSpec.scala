@@ -22,6 +22,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.ClaimEsbaCheckYourAnswersView
+
 class ClaimEsbaCheckYourAnswersControllerSpec extends SpecBase {
   private val taxYear = 2024
   "ClaimEsbaCheckYourAnswers Controller" - {

@@ -118,7 +118,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
       // Rentals
       val rentalsUserAnswers = UserAnswers(userAnswersId)
-        .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .set(BalancingChargePage(Rentals), BalancingCharge(isBalancingCharge = true, Some(7689.23)))
         .success
         .value
 
@@ -131,7 +131,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          form.fill(BalancingCharge(isBalancingCharge = true, Some(7689.23))),
           taxYear,
           NormalMode,
           "agent",
@@ -141,7 +141,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
       // Rentals and Rent a Room
       val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
-        .set(BalancingChargePage(RentalsRentARoom), BalancingCharge(balancingChargeYesNo = true, Some(7689.23)))
+        .set(BalancingChargePage(RentalsRentARoom), BalancingCharge(isBalancingCharge = true, Some(7689.23)))
         .success
         .value
 
@@ -155,7 +155,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(BalancingCharge(balancingChargeYesNo = true, Some(7689.23))),
+          form.fill(BalancingCharge(isBalancingCharge = true, Some(7689.23))),
           taxYear,
           NormalMode,
           "agent",
@@ -182,7 +182,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         // Rentals
         val rentalsRequest =
           FakeRequest(POST, rentalsBalancingChargeRoute)
-            .withFormUrlEncodedBody("balancingChargeYesNo" -> "false")
+            .withFormUrlEncodedBody("isBalancingCharge" -> "false")
 
         val result = route(application, rentalsRequest).value
 
@@ -192,7 +192,7 @@ class BalancingChargeControllerSpec extends SpecBase with MockitoSugar {
         // Rentals and Rent a Room
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomBalancingChargeRoute)
-            .withFormUrlEncodedBody("balancingChargeYesNo" -> "false")
+            .withFormUrlEncodedBody("isBalancingCharge" -> "false")
 
         val rentalsResult = route(application, rentalsRentARoomRequest).value
 

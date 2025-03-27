@@ -54,16 +54,16 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val claimPIA: Boolean = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage).contains(true)
-      val hasUnusedLosses: Boolean = request.userAnswers
+      val isClaimPIA: Boolean = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage).contains(true)
+      val isUnusedLosses: Boolean = request.userAnswers
         .get(ForeignUnusedLossesPreviousYearsPage(countryCode))
-        .exists(_.unusedLossesPreviousYearsYesNo)
+        .exists(_.isUnusedLossesPreviousYears)
       val summaryListRows = Seq(
         ForeignPrivateUseAdjustmentSummary.row(taxYear, countryCode, request.userAnswers),
         ForeignBalancingChargeSummary.row(taxYear, countryCode, request.userAnswers)
       ).flatten
       val residentialFinanceOrPIARows =
-        if (claimPIA) {
+        if (isClaimPIA) {
           PropertyIncomeAllowanceClaimSummary.row(request.userAnswers, taxYear, countryCode)
         } else {
           Seq(
@@ -72,7 +72,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
           ).flatten
         }
       val foreignLossesPrevYearsRows =
-        if (hasUnusedLosses) {
+        if (isUnusedLosses) {
           Seq(
             ForeignUnusedLossesPreviousYearsSummary.row(taxYear, countryCode, request.userAnswers),
             ForeignWhenYouReportedTheLossSummary.row(taxYear, countryCode, request.userAnswers)
@@ -112,7 +112,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyAdjustments)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertyAdjustments)
@@ -123,8 +123,8 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
             throw SaveJourneyAnswersFailed("Failed to save Foreign Adjustments section")
         }
         .andThen {
-          case Success(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, accrualsOrCash, countryCode)
-          case Failure(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, accrualsOrCash, countryCode)
+          case Success(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = false, isAccrualsOrCash, countryCode)
+          case Failure(_) => auditCYA(taxYear, request, foreignPropertyAdjustments, isFailed = true, isAccrualsOrCash, countryCode)
         }
     }
 
@@ -133,7 +133,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyAdjustments: ForeignPropertyAdjustments,
     isFailed: Boolean,
-    accrualsOrCash: Boolean,
+    isAccrualsOrCash: Boolean,
     countryCode: String
   )(implicit
     hc: HeaderCarrier
@@ -147,7 +147,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
       countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyAdjustments,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

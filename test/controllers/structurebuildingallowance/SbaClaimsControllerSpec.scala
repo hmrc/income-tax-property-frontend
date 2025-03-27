@@ -115,7 +115,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         // Rentals
         val rentalsRequest =
           FakeRequest(POST, rentalsSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
+            .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -125,7 +125,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         // Rentals and Rent a Room
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
+            .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
         val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
         status(rentalsRentARoomResult) mustEqual SEE_OTHER
@@ -135,14 +135,14 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
     "must return a Bad Request and errors when invalid data is submitted for both the Rentals and Rentals and Rent a Room journeys" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
-      val boundForm = form.bind(Map("anotherClaim" -> ""))
+      val boundForm = form.bind(Map("isAnotherClaim" -> ""))
       val view = application.injector.instanceOf[SbaClaimsView]
 
       running(application) {
         // Rentals
         val rentalsRequest =
           FakeRequest(POST, rentalsSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", ""))
+            .withFormUrlEncodedBody(("isAnotherClaim", ""))
 
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -155,7 +155,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         // Rentals and Rent a Room
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", ""))
+            .withFormUrlEncodedBody(("isAnotherClaim", ""))
 
         val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
 
@@ -198,7 +198,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         // Rentals
         val rentalsRequest =
           FakeRequest(POST, rentalsSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
+            .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
         val rentalsResult = route(application, rentalsRequest).value
 
@@ -208,7 +208,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         // Rentals and Rent a Room
         val rentalsRentARoomRequest =
           FakeRequest(POST, rentalsRentARoomSbaClaimsRoute)
-            .withFormUrlEncodedBody(("anotherClaim", "true"))
+            .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
         val rentalsRentARoomResult = route(application, rentalsRentARoomRequest).value
 
@@ -256,7 +256,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
               PropertyDetails(
                 Some("incomeSourceType"),
                 Some(LocalDate.now()),
-                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                isAccrualsOrCash = Some(true), // true -> Accruals,false -> Cash
                 incomeSourceId = "incomeSourceId"
               )
             )
@@ -274,7 +274,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
 
       running(rentalsApplication) {
         val addOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url)
-          .withFormUrlEncodedBody(("anotherClaim", "true"))
+          .withFormUrlEncodedBody(("isAnotherClaim", "true"))
 
         val addOtherClaimResult = route(rentalsApplication, addOtherClaimRequest).value
 
@@ -282,7 +282,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(addOtherClaimResult).value mustEqual rentalsOnwardRouteAddClaim(Rentals).url
 
         val noOtherClaimRequest = FakeRequest(POST, routes.SbaClaimsController.onPageLoad(taxYear, Rentals).url)
-          .withFormUrlEncodedBody(("anotherClaim", "false"))
+          .withFormUrlEncodedBody(("isAnotherClaim", "false"))
 
         val noOtherClaimResult = route(rentalsApplication, noOtherClaimRequest).value
 

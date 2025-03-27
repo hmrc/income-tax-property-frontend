@@ -90,7 +90,7 @@ class PremiumsGrantLeaseController @Inject() (
                                       request.userAnswers.set(
                                         PremiumsGrantLeasePage(propertyType),
                                         PremiumsGrantLease(
-                                          value.premiumsGrantLeaseReceived,
+                                          value.isPremiumsGrantLeaseReceived,
                                           Some(
                                             value.premiumsGrantLease.getOrElse(
                                               PremiumsGrantLeasePage(propertyType)

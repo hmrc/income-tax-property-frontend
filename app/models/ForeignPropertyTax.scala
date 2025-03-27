@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class ForeignPropertyTax(foreignIncomeTax: Option[ForeignIncomeTax],foreignTaxCreditRelief:Option[Boolean])
+case class ForeignPropertyTax(foreignIncomeTax: Option[ForeignIncomeTax],isForeignTaxCreditRelief:Option[Boolean])
 
 object ForeignPropertyTax {
   implicit val format:Format[ForeignPropertyTax] = Json.format

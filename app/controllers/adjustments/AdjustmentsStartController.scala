@@ -35,8 +35,8 @@ class AdjustmentsStartController @Inject() (
   view: AdjustmentsStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] =
+  def onPageLoad(taxYear: Int, isExpensesOrPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(taxYear, expensesOrPIA, request.user.isAgentMessageKey))
+      Ok(view(taxYear, isExpensesOrPIA, request.user.isAgentMessageKey))
     }
 }

@@ -29,15 +29,15 @@ class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Opt
   val form = new RaRBalancingChargeFormProvider()("individual")
 
   "raRbalancingChargeAmount" - {
-    "when raRbalancingCharge is true" - {
+    "when isRaRBalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true", "raRbalancingChargeAmount" -> "12.34"))
-        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = true, Some(12.34))
+        val boundForm = form.bind(Map("isRaRBalancingCharge" -> "true", "raRbalancingChargeAmount" -> "12.34"))
+        boundForm.value.value mustBe BalancingCharge(isBalancingCharge = true, Some(12.34))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "true"))
+        val boundForm = form.bind(Map("isRaRBalancingCharge" -> "true"))
         boundForm.errors must contain(
           FormError("raRbalancingChargeAmount", "raRbalancingCharge.amount.error.required.individual")
         )
@@ -45,13 +45,13 @@ class RaRBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with Opt
     }
     "when consolidatedExpenses is false" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false", "raRbalancingChargeAmount" -> "1234"))
-        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
+        val boundForm = form.bind(Map("isRaRBalancingCharge" -> "false", "raRbalancingChargeAmount" -> "1234"))
+        boundForm.value.value mustBe BalancingCharge(isBalancingCharge = false, None)
         boundForm.errors mustBe empty
       }
       "and no amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("raRbalancingChargeYesNo" -> "false"))
-        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = false, None)
+        val boundForm = form.bind(Map("isRaRBalancingCharge" -> "false"))
+        boundForm.value.value mustBe BalancingCharge(isBalancingCharge = false, None)
         boundForm.errors mustBe empty
       }
     }

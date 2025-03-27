@@ -49,9 +49,9 @@ class RaRAdjustmentsCYAController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val hasLossesBroughtForward: Boolean = request.userAnswers
+      val isLossesBroughtForward: Boolean = request.userAnswers
         .get(RaRUnusedLossesBroughtForwardPage)
-        .exists(_.unusedLossesBroughtForwardYesOrNo)
+        .exists(_.isUnusedLossesBroughtForward)
       val rows: Seq[SummaryListRow] =
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
@@ -59,7 +59,7 @@ class RaRAdjustmentsCYAController @Inject() (
             .row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
         ).flatten
       val unusedLossesBroughtForwardRows =
-        if (hasLossesBroughtForward) {
+        if (isLossesBroughtForward) {
           Seq(
             RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
             RarWhenYouReportedTheLossSummary.row(

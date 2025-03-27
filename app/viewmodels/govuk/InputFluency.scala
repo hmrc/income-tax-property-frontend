@@ -49,7 +49,7 @@ trait InputFluency {
       input
         .withInputType("email")
         .withAutocomplete("email")
-        .withSpellcheck(on = false)
+        .withSpellcheck(isOn = false)
 
     def asNumeric(): Input =
       input
@@ -86,8 +86,8 @@ trait InputFluency {
     def withAttribute(attribute: (String, String)): Input =
       input.copy(attributes = input.attributes + attribute)
 
-    def withSpellcheck(on: Boolean = true): Input =
-      input.copy(spellcheck = Some(on))
+    def withSpellcheck(isOn: Boolean = true): Input =
+      input.copy(spellcheck = Some(isOn))
 
     def withPrefix(prefix: PrefixOrSuffix): Input =
       input.copy(prefix = Some(prefix))

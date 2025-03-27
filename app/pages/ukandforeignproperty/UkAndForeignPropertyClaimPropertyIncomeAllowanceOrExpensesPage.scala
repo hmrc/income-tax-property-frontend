@@ -25,7 +25,7 @@ case object UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage exten
 
   override def path: JsPath = JsPath \ aboutPath(UKAndForeignProperty) \ toString
 
-  override def toString: String = "claimPropertyIncomeAllowanceOrExpenses"
+  override def toString: String = "isClaimPropertyIncomeAllowanceOrExpenses"
 
 }
 

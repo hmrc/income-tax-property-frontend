@@ -103,7 +103,7 @@ class ClaimEsbaControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimEnhancedSBAControllerRoute)
-            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", "true"))
+            .withFormUrlEncodedBody(("isClaimEnhancedStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class ClaimEsbaControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimEnhancedSBAControllerRoute)
-            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", ""))
+            .withFormUrlEncodedBody(("isClaimEnhancedStructureBuildingAllowance", ""))
 
-        val boundForm = form.bind(Map("claimEnhancedStructureBuildingAllowance" -> ""))
+        val boundForm = form.bind(Map("isClaimEnhancedStructureBuildingAllowance" -> ""))
 
         val view = application.injector.instanceOf[ClaimEnhancedSBAView]
 
@@ -156,7 +156,7 @@ class ClaimEsbaControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, claimEnhancedSBAControllerRoute)
-            .withFormUrlEncodedBody(("claimEnhancedStructureBuildingAllowance", "true"))
+            .withFormUrlEncodedBody(("isClaimEnhancedStructureBuildingAllowance", "true"))
 
         val result = route(application, request).value
 

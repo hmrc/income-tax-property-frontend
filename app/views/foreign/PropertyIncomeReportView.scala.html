@@ -40,7 +40,7 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithOtherNames(
-                field  = form("value"),
+                field  = form("isPropertyIncomeReport"),
                 legend = LegendViewModel("").asPageHeading(LegendSize.Large),
                 yesText = messages(s"propertyIncomeReport.reportPropertyIncome.$individualOrAgent"),
                 noText = messages(s"propertyIncomeReport.doNotReportPropertyIncome.$individualOrAgent")

@@ -87,7 +87,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
         )
     }
   private def handleValidForm(
-    addAnotherClaim: Boolean,
+    isAddAnotherClaim: Boolean,
     taxYear: Int,
     request: DataRequest[AnyContent],
     countryCode: String
@@ -95,10 +95,10 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     for {
       updatedAnswers <-
         Future.fromTry(
-          request.userAnswers.set(ForeignStructureBuildingAllowanceClaimsPage(countryCode), addAnotherClaim)
+          request.userAnswers.set(ForeignStructureBuildingAllowanceClaimsPage(countryCode), isAddAnotherClaim)
         )
       _ <- sessionRepository.set(updatedAnswers)
-      result <- if (addAnotherClaim) {
+      result <- if (isAddAnotherClaim) {
                   val nextIndex = request.userAnswers
                     .get(ForeignStructureBuildingAllowanceGroup(countryCode))
                     .map(_.length)
@@ -155,7 +155,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = false,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
               )
               Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
             case Left(_) =>
@@ -164,7 +164,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = true,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                isAccrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
               )
               logger.error("Error saving Foreign SBA Claims")
               Future.failed(InternalErrorFailure("Error saving Foreign SBA claims"))
@@ -179,7 +179,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     request: DataRequest[AnyContent],
     foreignSba: ForeignSbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -192,7 +192,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.SBA,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

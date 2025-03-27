@@ -23,10 +23,10 @@ case class PropertyDetailsPage(
   taxYear: Int,
   individualOrAgent: String,
   tradingStartDate: LocalDate,
-  accrualsOrCash: Boolean
+  isAccrualsOrCash: Boolean
 ) {
 
-  def cashOrAccrualsMessageKey: String = if (accrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
+  def cashOrAccrualsMessageKey: String = if (isAccrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
 
   def tradingStartDateFormatted: String = tradingStartDate.format(ofPattern("d MMM yyyy"))
 

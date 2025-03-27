@@ -41,10 +41,10 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("calculatedPremiumLeaseTaxable"),
+                field = form("isCalculatedPremiumLeaseTaxable"),
                 legend = LegendViewModel(messages("")),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("calculatedPremiumLeaseTaxable"),
+                    field = form("isCalculatedPremiumLeaseTaxable"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(

@@ -140,7 +140,7 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
         running(application) {
           val request =
             FakeRequest(POST, foreignExpensesSectionCompleteRoute)
-              .withFormUrlEncodedBody(("foreignExpensesSectionComplete", "true"))
+              .withFormUrlEncodedBody(("isForeignExpensesSectionComplete", "true"))
 
           val result = route(application, request).value
 
@@ -156,9 +156,9 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
         running(application) {
           val request =
             FakeRequest(POST, foreignExpensesSectionCompleteRoute)
-              .withFormUrlEncodedBody(("foreignExpensesSectionComplete", ""))
+              .withFormUrlEncodedBody(("isForeignExpensesSectionComplete", ""))
 
-          val boundForm = form.bind(Map("foreignExpensesSectionComplete" -> ""))
+          val boundForm = form.bind(Map("isForeignExpensesSectionComplete" -> ""))
 
           val view = application.injector.instanceOf[ForeignExpensesSectionCompleteView]
 
@@ -193,7 +193,7 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
         running(application) {
           val request =
             FakeRequest(POST, foreignExpensesSectionCompleteRoute)
-              .withFormUrlEncodedBody(("foreignExpensesSectionComplete", "true"))
+              .withFormUrlEncodedBody(("isForeignExpensesSectionComplete", "true"))
 
           val result = route(application, request).value
 

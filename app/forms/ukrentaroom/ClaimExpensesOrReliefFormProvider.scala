@@ -29,10 +29,10 @@ class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String, maxAllowedIncome: BigDecimal): Form[ClaimExpensesOrRelief] =
     Form[ClaimExpensesOrRelief](
       mapping(
-        "claimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent"),
+        "isClaimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent"),
         "rentARoomAmount" -> {
           mandatoryIfTrue(
-            "claimExpensesOrRelief",
+            "isClaimExpensesOrRelief",
             currency(
               s"claimExpensesOrRelief.amount.error.required.$individualOrAgent",
               s"claimExpensesOrRelief.amount.error.twoDecimalPlaces.$individualOrAgent",

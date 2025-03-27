@@ -118,7 +118,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
                 request,
                 rentalsRentARoomExpenses,
                 isFailed = false,
-                propertyDetails.accrualsOrCash.get
+                propertyDetails.isAccrualsOrCash.get
               )
               Future.successful(Redirect(routes.RentalsRaRExpensesCompleteController.onPageLoad(context.taxYear)))
             case Left(_) =>
@@ -127,7 +127,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
                 request,
                 rentalsRentARoomExpenses,
                 isFailed = true,
-                propertyDetails.accrualsOrCash.get
+                propertyDetails.isAccrualsOrCash.get
               )
               Future.failed(InternalErrorFailure("Failed to save Rentals and Rent a Room Expenses section."))
           }
@@ -141,7 +141,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     rentalsAndRentARoomExpenses: RentalsAndRentARoomExpenses,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -154,7 +154,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
       countryCode = Country.UK.code,
       journeyName = JourneyName.RentalsRentARoom,
       sectionName = SectionName.Expenses,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       agentReferenceNumber = request.user.agentRef,

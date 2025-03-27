@@ -61,12 +61,12 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     )
   }
 
-  def foreignPropertyItems(taxYear: Int, accrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
+  def foreignPropertyItems(taxYear: Int, isAccrualsOrCash: Boolean, countryCode: String, userAnswers: Option[UserAnswers]): Seq[TaskListItem] = {
     val taskListTagForForeignTax =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignTaxSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignTaxSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -74,8 +74,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForIncome =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignIncomeSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -83,8 +83,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForExpenses =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignExpensesSectionCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -92,8 +92,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForSba =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignSbaCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignSbaCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -101,8 +101,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForAllowances =
       userAnswers
         .flatMap { answers =>
-          answers.get(ForeignAllowancesCompletePage(countryCode)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ForeignAllowancesCompletePage(countryCode)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted)
@@ -110,8 +110,8 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val taskListTagForAdjustments = {
       val isAdjustmentsComplete = userAnswers.flatMap(_.get(ForeignAdjustmentsCompletePage(countryCode)))
       isAdjustmentsComplete
-        .map { finishedYesOrNo =>
-          if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+        .map { isFinished =>
+          if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
         }
         .getOrElse {
           val isPIA = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage)).getOrElse(false)
@@ -224,7 +224,7 @@ case class ForeignSummaryPage(foreignCYADiversionService: ForeignCYADiversionSer
     val isClaimingAllowances = userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowanceOrExpensesPage))
     isClaimingAllowances match {
       case Some(true)  => Seq(foreignTaxTaskList, foreignIncomeTaskList, claimingAdjustmentsTaskList)
-      case Some(false) if accrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
+      case Some(false) if isAccrualsOrCash => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(sbaTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
       case Some(false) => Seq(foreignTaxTaskList, foreignIncomeTaskList, expensesTaskList, allowancesTaskList) ++ Seq(nonClaimingAdjustmentsTaskList)
       case None        => Seq(foreignTaxTaskList, foreignIncomeTaskList)
     }

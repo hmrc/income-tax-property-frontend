@@ -70,7 +70,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
 
       val amount = 100
       val formAnswers = PremiumCalculated(
-        calculatedPremiumLeaseTaxable = true,
+        isCalculatedPremiumLeaseTaxable = true,
         Some(amount)
       )
 
@@ -107,7 +107,7 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableControllerSpec extend
       running(application) {
         val request =
           FakeRequest(POST, ukAndForeignCalculatedForeignPremiumGrantLeaseTaxableRoute)
-            .withFormUrlEncodedBody(("calculatedPremiumLeaseTaxable", "false"), ("premiumsOfLeaseGrant","100"))
+            .withFormUrlEncodedBody(("isCalculatedPremiumLeaseTaxable", "false"), ("premiumsOfLeaseGrant","100"))
 
         val result = route(application, request).value
 

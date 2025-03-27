@@ -67,7 +67,7 @@ class ForeignUnusedLossesPreviousYearsControllerSpec extends SpecBase with Mocki
     "must populate the view correctly on a GET when the question has previously been answered" in {
       val amount = 100
       val formAnswers = UnusedLossesPreviousYears(
-        unusedLossesPreviousYearsYesNo = true,
+        isUnusedLossesPreviousYears = true,
         Some(amount)
       )
       val userAnswers = UserAnswers(userAnswersId).set(ForeignUnusedLossesPreviousYearsPage(countryCode), formAnswers).success.value
@@ -103,7 +103,7 @@ class ForeignUnusedLossesPreviousYearsControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, foreignUnusedLossesPreviousYearsRoute)
-            .withFormUrlEncodedBody(("unusedLossesPreviousYearsYesNo", "true"), ("unusedLossesPreviousYearsAmount", "100"))
+            .withFormUrlEncodedBody(("isUnusedLossesPreviousYears", "true"), ("unusedLossesPreviousYearsAmount", "100"))
 
         val result = route(application, request).value
 
@@ -119,9 +119,9 @@ class ForeignUnusedLossesPreviousYearsControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, foreignUnusedLossesPreviousYearsRoute)
-            .withFormUrlEncodedBody(("unusedLossesPreviousYearsYesNo", ""))
+            .withFormUrlEncodedBody(("isUnusedLossesPreviousYears", ""))
 
-        val boundForm = form.bind(Map("unusedLossesPreviousYearsYesNo" -> ""))
+        val boundForm = form.bind(Map("isUnusedLossesPreviousYears" -> ""))
 
         val view = application.injector.instanceOf[ForeignUnusedLossesPreviousYearsView]
 

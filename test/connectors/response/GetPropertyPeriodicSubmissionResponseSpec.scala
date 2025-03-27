@@ -45,7 +45,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
 
         val ukPropertyData =
           FetchedBackendData(
-            Some(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(3.2))),
+            Some(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(3.2))),
             Some(
               PropertyAbout(
                 TotalIncome.Between,
@@ -57,13 +57,13 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             None,
             Some(
               Adjustments(
-                BalancingCharge(balancingChargeYesNo = true, Some(4.2)),
+                BalancingCharge(isBalancingCharge = true, Some(4.2)),
                 PrivateUseAdjustment(4.5),
                 Some(45),
-                RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(4.2)),
+                RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge = true, Some(4.2)),
                 4.2,
                 Some(4.2),
-                Some(UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(4.2))),
+                Some(UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(4.2))),
                 Some(y2021to2022)
               )
             ),
@@ -86,10 +86,10 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             foreignPropertySelectCountry = Some(
               ForeignPropertySelectCountry(
                 totalIncome = Under,
-                reportPropertyIncome = Some(false),
+                isReportPropertyIncome = Some(false),
                 incomeCountries = None,
-                addAnotherCountry = None,
-                claimPropertyIncomeAllowance = None
+                isAddAnotherCountry = None,
+                isClaimPropertyIncomeAllowance = None
               )
             )
           )
@@ -98,7 +98,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           foreignPropertyTax = Some(
             Map(
               "ESP" -> ForeignPropertyTax(
-                Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(456.00)))),
+                Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(456.00)))),
                 Some(false)
               )
             )
@@ -107,9 +107,9 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             Map(
               "ESP" -> ForeignIncomeAnswers(
                 Some(123.45),
-                premiumsGrantLeaseReceived = false,
+                isPremiumsGrantLeaseReceived = false,
                 otherPropertyIncome = Some(456.7),
-                calculatedPremiumLeaseTaxable = Some(PremiumCalculated(calculatedPremiumLeaseTaxable = false, None)),
+                calculatedPremiumLeaseTaxable = Some(PremiumCalculated(isCalculatedPremiumLeaseTaxable = false, None)),
                 receivedGrantLeaseAmount = None,
                 twelveMonthPeriodsInLease = None,
                 premiumsOfLeaseGrantAgreed = None
@@ -119,7 +119,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           foreignPropertyExpenses = Some(
             Map(
               "ESP" -> ForeignExpensesAnswers(
-                Some(ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(456))),
+                Some(ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = true, Some(456))),
                 premisesRunningCosts = Some(11),
                 repairsAndMaintenance = Some(22.30),
                 financialCosts = Some(44),
@@ -165,7 +165,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
           foreignPropertySba = Some(
             Map(
               "ESP" -> ForeignSbaAnswers(
-                claimStructureBuildingAllowance = true,
+                isClaimStructureBuildingAllowance = true,
                 allowances = Some(
                   Seq(
                     StructuredBuildingAllowance(
@@ -191,17 +191,17 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             Map(
               "ESP" -> ForeignAdjustmentsAnswers(
                 privateUseAdjustment = Some(BigDecimal(54.00)),
-                balancingCharge = Some(BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(146.56)))),
+                balancingCharge = Some(BalancingCharge(isBalancingCharge = true, Some(BigDecimal(146.56)))),
                 residentialFinanceCost = Some(BigDecimal(99.00)),
                 unusedResidentialFinanceCost = Some(
                   ForeignUnusedResidentialFinanceCost(
-                    foreignUnusedResidentialFinanceCostYesNo = true,
+                    isForeignUnusedResidentialFinanceCost = true,
                     Some(BigDecimal(56.77))
                   )
                 ),
                 propertyIncomeAllowanceClaim = Some(BigDecimal(15.00)),
                 unusedLossesPreviousYears =
-                  Some(UnusedLossesPreviousYears(unusedLossesPreviousYearsYesNo = true, Some(BigDecimal(45.00)))),
+                  Some(UnusedLossesPreviousYears(isUnusedLossesPreviousYears = true, Some(BigDecimal(45.00)))),
                 whenYouReportedTheLoss = Some(y2018to2019)
               )
             )

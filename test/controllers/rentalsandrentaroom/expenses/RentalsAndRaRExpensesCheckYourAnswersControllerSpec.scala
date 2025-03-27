@@ -88,7 +88,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
               PropertyDetails(
                 Some("incomeSourceType"),
                 Some(LocalDate.now()),
-                accrualsOrCash = Some(true), // true -> Accruals,false -> Cash
+                isAccrualsOrCash = Some(true), // true -> Accruals,false -> Cash
                 incomeSourceId = "incomeSourceId"
               )
             )
@@ -97,7 +97,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
 
       val expenses = 12
       val consolidatedExpenses =
-        ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, consolidatedExpensesAmount = Some(expenses))
+        ConsolidatedExpenses(isConsolidatedExpenses = true, consolidatedExpensesAmount = Some(expenses))
       val userAnswers =
         UserAnswers("test").set(ConsolidatedExpensesPage(RentalsRentARoom), consolidatedExpenses).toOption
 

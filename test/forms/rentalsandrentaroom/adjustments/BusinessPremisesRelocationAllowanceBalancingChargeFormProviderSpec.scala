@@ -30,11 +30,11 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
   val form = new BusinessPremisesRenovationBalancingChargeFormProvider()("individual")
 
   ".businessPremisesRenovationAllowanceBalancingChargeAmount" - {
-    "when businessPremisesRenovationAllowanceBalancingChargeYesOrNo is true" - {
+    "when isBusinessPremisesRenovationAllowanceBalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(
           Map(
-            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "isRenovationAllowanceBalancingCharge" -> "true",
             "renovationAllowanceBalancingChargeAmount"  -> "4534.65"
           )
         )
@@ -43,7 +43,7 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("renovationAllowanceBalancingChargeYesNo" -> "true"))
+        val boundForm = form.bind(Map("isRenovationAllowanceBalancingCharge" -> "true"))
         boundForm.errors must contain(
           FormError(
             "renovationAllowanceBalancingChargeAmount",
@@ -56,7 +56,7 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
         val boundForm =
           form.bind(
             Map(
-              "renovationAllowanceBalancingChargeYesNo" -> "true",
+              "isRenovationAllowanceBalancingCharge" -> "true",
               "renovationAllowanceBalancingChargeAmount"  -> "non-numeric-value"
             )
           )
@@ -71,7 +71,7 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
         val boundForm = form.bind(
           Map(
-            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "isRenovationAllowanceBalancingCharge" -> "true",
             "renovationAllowanceBalancingChargeAmount"  -> "4534.6545"
           )
         )
@@ -86,7 +86,7 @@ class BusinessPremisesRelocationAllowanceBalancingChargeFormProviderSpec
       "and an amount is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(
           Map(
-            "renovationAllowanceBalancingChargeYesNo" -> "true",
+            "isRenovationAllowanceBalancingCharge" -> "true",
             "renovationAllowanceBalancingChargeAmount"  -> "45334553534535345435345345434.65"
           )
         )

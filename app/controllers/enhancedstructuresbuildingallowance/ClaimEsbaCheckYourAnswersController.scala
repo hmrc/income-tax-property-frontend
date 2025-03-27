@@ -97,7 +97,7 @@ class ClaimEsbaCheckYourAnswersController @Inject() (
     ec: ExecutionContext
   ): Future[Result] = {
     val esbaAnswers: EsbasWithSupportingQuestions =
-      EsbasWithSupportingQuestions(claimEnhancedStructureBuildingAllowance = false, Some(false), List.empty)
+      EsbasWithSupportingQuestions(isClaimEnhancedStructureBuildingAllowance = false, Some(false), List.empty)
     for {
       accountingMethod <- checkAccountingMethod(propertyDetails)
       result <-

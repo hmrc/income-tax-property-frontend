@@ -28,7 +28,7 @@ class ClaimEnhancedSBAFormProviderSpec extends BooleanFieldBehaviours {
 
   ".value" - {
 
-    val fieldName = "claimEnhancedStructureBuildingAllowance"
+    val fieldName = "isClaimEnhancedStructureBuildingAllowance"
 
     behave like booleanField(
       form,

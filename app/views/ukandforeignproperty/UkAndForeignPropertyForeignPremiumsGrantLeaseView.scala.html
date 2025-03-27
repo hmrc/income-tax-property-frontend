@@ -33,7 +33,7 @@
 @layout(pageTitle = title(form, messages("ukAndForeignProperty.foreignPremiumsGrantLease.title"))) {
 
     @if(form.errors.nonEmpty) {
-        @govukErrorSummary(ErrorSummaryViewModel(form, Map("premiumsOfLeaseGrantAgreed" -> "foreignPremiumsGrantLeaseForm")))
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("isPremiumsOfLeaseGrantAgreed" -> "foreignPremiumsGrantLeaseForm")))
     }
 
     <h1 class="govuk-heading-l">@messages("ukAndForeignProperty.foreignPremiumsGrantLease.heading")</h1>
@@ -86,7 +86,7 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("premiumsOfLeaseGrantAgreed"),
+                field = form("isPremiumsOfLeaseGrantAgreed"),
                 legend = LegendViewModel(messages(s"ukAndForeignProperty.foreignPremiumsGrantLease.amount.label")).asPageHeading(LegendSize.Medium),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                     field = form("foreignPremiumsGrantLeaseForm"),

@@ -48,8 +48,8 @@ class UkAndForeignPropertyDetailsController @Inject() (
                 taxYear,
                 request.user.isAgentMessageKey,
                 ukData.tradingStartDate.getOrElse(throw InternalErrorFailure("Missing UK trading start date")),
-                ukData.accrualsOrCash.getOrElse(throw InternalErrorFailure("Missing UK accruals or cash data")),
-                foreignData.accrualsOrCash
+                ukData.isAccrualsOrCash.getOrElse(throw InternalErrorFailure("Missing UK accruals or cash data")),
+                foreignData.isAccrualsOrCash
                   .getOrElse(throw InternalErrorFailure("Missing foreign accruals or cash data")),
                 foreignData.tradingStartDate.getOrElse(throw InternalErrorFailure("Missing foreign trading start date"))
               )

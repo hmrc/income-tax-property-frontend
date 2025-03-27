@@ -44,7 +44,7 @@ class ForeignCapitalAllowancesForACarControllerSpec extends SpecBase with Mockit
   val isAgentMessageString = "individual"
   val formProvider = new ForeignCapitalAllowancesForACarFormProvider()
   val form = formProvider(isAgentMessageString)
-  val formAnswers = CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
+  val formAnswers = CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))
   lazy val foreignCapitalAllowancesForACarRoute: String = controllers.foreign.allowances.routes.ForeignCapitalAllowancesForACarController.onPageLoad(taxYear, countryCode, NormalMode).url
 
   "ForeignCapitalAllowancesForACar Controller" - {
@@ -104,7 +104,7 @@ class ForeignCapitalAllowancesForACarControllerSpec extends SpecBase with Mockit
         val request =
           FakeRequest(POST, foreignCapitalAllowancesForACarRoute)
             .withFormUrlEncodedBody(
-              "capitalAllowancesForACarYesNo"  -> "false"
+              "isCapitalAllowancesForACar"  -> "false"
             )
 
         val result = route(application, request).value
@@ -122,12 +122,12 @@ class ForeignCapitalAllowancesForACarControllerSpec extends SpecBase with Mockit
         val request =
           FakeRequest(POST, foreignCapitalAllowancesForACarRoute)
             .withFormUrlEncodedBody(
-              "capitalAllowancesForACarYesNo"  -> "true",
+              "isCapitalAllowancesForACar"  -> "true",
               "capitalAllowancesForACarAmount" -> "1234.121212121212"
             )
 
         val boundForm = form.bind(Map(
-          "capitalAllowancesForACarYesNo"  -> "true",
+          "isCapitalAllowancesForACar"  -> "true",
           "capitalAllowancesForACarAmount" -> "1234.121212121212"
         ))
 

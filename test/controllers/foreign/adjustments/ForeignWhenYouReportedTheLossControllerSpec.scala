@@ -55,7 +55,7 @@ class ForeignWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoS
       val userAnswers =
         UserAnswers("test").set(ForeignUnusedLossesPreviousYearsPage(countryCode),
           UnusedLossesPreviousYears(
-            unusedLossesPreviousYearsYesNo = true,
+            isUnusedLossesPreviousYears = true,
             Some(previousLoss)
           )
         ).get
@@ -79,7 +79,7 @@ class ForeignWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoS
       val userAnswers = UserAnswers(userAnswersId).set(ForeignWhenYouReportedTheLossPage(countryCode), ForeignWhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(ForeignUnusedLossesPreviousYearsPage(countryCode),
         UnusedLossesPreviousYears(
-          unusedLossesPreviousYearsYesNo = true,
+          isUnusedLossesPreviousYears = true,
           Some(previousLoss)
         )
       ).get
@@ -104,7 +104,7 @@ class ForeignWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoS
       val userAnswers =
         UserAnswers("test").set(ForeignUnusedLossesPreviousYearsPage(countryCode),
           UnusedLossesPreviousYears(
-            unusedLossesPreviousYearsYesNo = true,
+            isUnusedLossesPreviousYears = true,
             Some(previousLoss)
           )
         ).get
@@ -135,7 +135,7 @@ class ForeignWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoS
       val userAnswers =
         UserAnswers("test").set(ForeignUnusedLossesPreviousYearsPage(countryCode),
           UnusedLossesPreviousYears(
-            unusedLossesPreviousYearsYesNo = true,
+            isUnusedLossesPreviousYears = true,
             Some(previousLoss)
           )
         ).get

@@ -126,7 +126,7 @@ POST        /:taxYear/rentals/income/complete-yes-no                            
 
 ############## Rentals  Adjustments  ##############
 
-GET         /:taxYear/rentals/adjustments/start                                                                          controllers.adjustments.AdjustmentsStartController.onPageLoad(taxYear: Int, expensesOrPIA: Boolean)
+GET         /:taxYear/rentals/adjustments/start                                                                          controllers.adjustments.AdjustmentsStartController.onPageLoad(taxYear: Int, isExpensesOrPIA: Boolean)
 
 GET         /:taxYear/rentals/adjustments/private-use-adjustment                                                         controllers.adjustments.PrivateUseAdjustmentController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
 POST        /:taxYear/rentals/adjustments/private-use-adjustment                                                         controllers.adjustments.PrivateUseAdjustmentController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = Rentals)
@@ -705,7 +705,7 @@ POST        /:taxYear/rentals-rent-a-room/enhanced-structures-buildings-allowanc
 
 ############## Rentals  and Rent a room Adjustments  ##############
 
-GET         /:taxYear/rentals-rent-a-room/adjustments/start                                                              controllers.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsStartController.onPageLoad(taxYear: Int, expensesOrPIA: Boolean)
+GET         /:taxYear/rentals-rent-a-room/adjustments/start                                                              controllers.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsStartController.onPageLoad(taxYear: Int, isExpensesOrPIA: Boolean)
 
 GET         /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                              controllers.adjustments.RenovationAllowanceBalancingChargeController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)
 POST        /:taxYear/rentals-rent-a-room/adjustments/renovation-allowance-balancing-charge                              controllers.adjustments.RenovationAllowanceBalancingChargeController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentalsRentARoom)

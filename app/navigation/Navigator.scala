@@ -1178,7 +1178,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case Some(CalculatedFigureYourself(false, _))
           if previousUserAnswers
             .get(CalculatedFigureYourselfPage(propertyType))
-            .map(_.calculatedFigureYourself)
+            .map(_.isCalculatedFigureYourself)
             .getOrElse(true) =>
         ReceivedGrantLeaseAmountController.onPageLoad(taxYear, CheckMode, propertyType)
       case _ =>
@@ -1225,7 +1225,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       case Some(ConsolidatedExpenses(false, _))
           if previousUserAnswers
             .get(ConsolidatedExpensesPage(propertyType))
-            .map(_.consolidatedExpensesYesOrNo)
+            .map(_.isConsolidatedExpenses)
             .getOrElse(true) =>
         RentsRatesAndInsuranceController.onPageLoad(taxYear, NormalMode, propertyType)
       case _ =>
@@ -1249,7 +1249,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       userAnswers.get(ClaimPropertyIncomeAllowancePage(Rentals))
     ) match {
       case (Some(current), Some(previous),Some(true))
-        if current.balancingChargeYesNo != previous.balancingChargeYesNo &&
+        if current.isBalancingCharge != previous.isBalancingCharge &&
           current.balancingChargeAmount != previous.balancingChargeAmount =>
         PropertyIncomeAllowanceController.onPageLoad(taxYear, CheckMode, propertyType)
 

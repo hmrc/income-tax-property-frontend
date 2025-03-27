@@ -25,6 +25,6 @@ class EsbaClaimsFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "anotherClaim" -> boolean(s"esbaClaims.error.required.$individualOrAgent")
+      "isAnotherClaim" -> boolean(s"esbaClaims.error.required.$individualOrAgent")
     )
 }

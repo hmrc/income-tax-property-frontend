@@ -25,6 +25,6 @@ class NonResidentLandlordUKFormProvider @Inject() extends Mappings {
 
   def apply(userType: String): Form[Boolean] =
     Form(
-      "value" -> boolean(s"nonResidentLandlordUK.error.required.$userType")
+      "isNonResidentLandlord" -> boolean(s"nonResidentLandlordUK.error.required.$userType")
     )
 }

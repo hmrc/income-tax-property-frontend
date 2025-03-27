@@ -89,7 +89,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignSelectCountry)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val accrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertySelectCountry)
@@ -112,7 +112,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertySelectCountry: ForeignPropertySelectCountry,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -128,7 +128,7 @@ class ForeignCountriesCheckYourAnswersController @Inject() (
         .getOrElse(Country.UK.code),
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertySelectCountry,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

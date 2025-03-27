@@ -25,6 +25,6 @@ class UkAndForeignForeignPremiumsForTheGrantOfALeaseFormProvider @Inject() exten
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "ukAndForeignForeignPremiumsGrantLease" -> boolean(s"ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.${individualOrAgent}")
+      "isUkAndForeignForeignPremiumsGrantLease" -> boolean(s"ukAndForeignForeignPremiumsForTheGrantOfALease.error.required.${individualOrAgent}")
     )
 }

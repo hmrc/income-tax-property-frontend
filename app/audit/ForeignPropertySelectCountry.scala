@@ -21,13 +21,13 @@ import pages.foreign.Country
 import play.api.libs.json.{Format, Json}
 
 final case class ForeignPropertySelectCountry(
-  totalIncomeUnder1k: Boolean,
-  totalIncomeBetween1kAnd85k: Boolean,
-  totalIncomeOver85k: Boolean,
-  reportPropertyIncome: Option[Boolean],
+  isTotalIncomeUnder1k: Boolean,
+  isTotalIncomeBetween1kAnd85k: Boolean,
+  isTotalIncomeOver85k: Boolean,
+  isReportPropertyIncome: Option[Boolean],
   incomeCountries: Option[Array[Country]],
-  addAnotherCountry: Option[Boolean],
-  claimPropertyIncomeAllowance: Option[Boolean]
+  isAddAnotherCountry: Option[Boolean],
+  isClaimPropertyIncomeAllowance: Option[Boolean]
 )
 object ForeignPropertySelectCountry {
   implicit val format: Format[ForeignPropertySelectCountry] = Json.format[ForeignPropertySelectCountry]
@@ -39,13 +39,13 @@ object ForeignPropertySelectCountry {
       case Over =>    (false, false, true)
     }
     ForeignPropertySelectCountry(
-      totalIncomeUnder1k = under,
-      totalIncomeBetween1kAnd85k = between,
-      totalIncomeOver85k = over,
-      reportPropertyIncome = foreignPropertySelectCountry.reportPropertyIncome,
+      isTotalIncomeUnder1k = under,
+      isTotalIncomeBetween1kAnd85k = between,
+      isTotalIncomeOver85k = over,
+      isReportPropertyIncome = foreignPropertySelectCountry.isReportPropertyIncome,
       incomeCountries = foreignPropertySelectCountry.incomeCountries,
-      addAnotherCountry = foreignPropertySelectCountry.addAnotherCountry,
-      claimPropertyIncomeAllowance = foreignPropertySelectCountry.claimPropertyIncomeAllowance
+      isAddAnotherCountry = foreignPropertySelectCountry.isAddAnotherCountry,
+      isClaimPropertyIncomeAllowance = foreignPropertySelectCountry.isClaimPropertyIncomeAllowance
     )
   }
 }

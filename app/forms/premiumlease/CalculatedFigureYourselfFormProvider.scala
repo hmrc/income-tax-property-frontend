@@ -28,9 +28,9 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[CalculatedFigureYourself] = {
     Form(mapping(
-      "calculatedFigureYourself" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent"),
+      "isCalculatedFigureYourself" -> boolean(s"calculatedFigureYourself.error.required.$individualOrAgent"),
       "calculatedFigureYourselfAmount" -> {
-        mandatoryIfTrue("calculatedFigureYourself",
+        mandatoryIfTrue("isCalculatedFigureYourself",
           currency(
             s"calculatedFigureYourselfAmount.amount.error.required.$individualOrAgent",
             s"calculatedFigureYourselfAmount.amount.error.twoDecimalPlaces.$individualOrAgent",

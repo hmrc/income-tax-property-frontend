@@ -134,7 +134,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, foreignAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAdjustmentsCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isForeignAdjustmentsComplete", "true"))
 
         val result = route(application, request).value
 
@@ -150,9 +150,9 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, foreignAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAdjustmentsCompleteYesOrNo", ""))
+            .withFormUrlEncodedBody(("isForeignAdjustmentsComplete", ""))
 
-        val boundForm = form.bind(Map("foreignAdjustmentsCompleteYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isForeignAdjustmentsComplete" -> ""))
 
         val view = application.injector.instanceOf[ForeignAdjustmentsCompleteView]
 
@@ -184,7 +184,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       running(application) {
         val request =
           FakeRequest(POST, foreignAdjustmentsCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAdjustmentsCompleteYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isForeignAdjustmentsComplete", "true"))
 
         val result = route(application, request).value
 

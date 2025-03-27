@@ -63,7 +63,7 @@ object PropertyRentals {
 
 final case class PremiumLease(
   calculatedFigureYourself: CalculatedFigureYourself,
-  premiumForLease: Boolean,
+  isPremiumForLease: Boolean,
   premiumsGrantLease: PremiumsGrantLease,
   receivedGrantLeaseAmount: BigDecimal,
   yearLeaseAmount: Int
@@ -90,8 +90,8 @@ final case class SbaOnIndex(index: Int, propertyType: PropertyType) extends Gett
 }
 
 final case class SbasWithSupportingQuestions(
-  claimStructureBuildingAllowance: Boolean,
-  sbaClaims: Option[Boolean],
+  isClaimStructureBuildingAllowance: Boolean,
+  isSbaClaims: Option[Boolean],
   structureBuildingFormGroup: List[Sba]
 )
 
@@ -121,8 +121,8 @@ final case class ForeignSbaOnIndex(index: Int, countryCode: String) extends Gett
 }
 
 final case class EsbasWithSupportingQuestions(
-  claimEnhancedStructureBuildingAllowance: Boolean,
-  enhancedStructureBuildingAllowanceClaims: Option[Boolean],
+  isClaimEnhancedStructureBuildingAllowance: Boolean,
+  isEnhancedStructureBuildingAllowanceClaims: Option[Boolean],
   enhancedStructureBuildingAllowances: List[Esba]
 )
 

@@ -22,12 +22,12 @@ case class UkAndForeignPropertyDetailsPage(
                                             taxYear: Int,
                                             individualOrAgent: String,
                                             ukPropertyTradingStartDate: LocalDate,
-                                            ukPropertyAccrualsOrCash: Boolean,
-                                            foreignPropertyAccrualsOrCash: Boolean,
+                                            isUkPropertyAccrualsOrCash: Boolean,
+                                            isForeignPropertyAccrualsOrCash: Boolean,
                                             foreignPropertyTradingStartDate: LocalDate
                                           ) {
-  def ukCashOrAccrualsMessageKey: String = if (ukPropertyAccrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
+  def ukCashOrAccrualsMessageKey: String = if (isUkPropertyAccrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
   def ukTradingStartDateFormatted: String = ukPropertyTradingStartDate.format(ofPattern("dd/MM/yyyy"))
-  def foreignCashOrAccrualsMessageKey: String = if (foreignPropertyAccrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
+  def foreignCashOrAccrualsMessageKey: String = if (isForeignPropertyAccrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
   def foreignTradingStartDateFormatted: String = foreignPropertyTradingStartDate.format(ofPattern("dd/MM/yyyy"))
 }

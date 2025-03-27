@@ -50,7 +50,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
   def createUkPropertyRows(
     userAnswers: Option[UserAnswers],
     taxYear: Int,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   ): Seq[TaskListItem] = {
     val propertyRentalsAbout: TaskListItem = propertyRentalsAboutItem(userAnswers, taxYear)
     val propertyRentalsIncome: TaskListItem = propertyRentalsIncomeItem(userAnswers, taxYear)
@@ -68,7 +68,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
       claimPropertyIncomeAllowance
         .collect {
           case true => Seq(propertyRentalsAbout, propertyRentalsIncome, propertyRentalsAdjustments)
-          case false if accrualsOrCash =>
+          case false if isAccrualsOrCash =>
             Seq(
               propertyRentalsAbout,
               propertyRentalsIncome,
@@ -102,7 +102,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
 
     val claimRentARoomRelief =
-      userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.claimExpensesOrReliefYesNo)
+      userAnswers.flatMap(_.get(ClaimExpensesOrReliefPage(RentARoom))).map(_.isClaimExpensesOrRelief)
     if (isRentARoomSelected && !isPropertyRentalsSelected) {
       claimRentARoomRelief
         .collect {
@@ -118,7 +118,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
   def createRentalsAndRentARoomRows(
     userAnswers: Option[UserAnswers],
     taxYear: Int,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   ): Seq[TaskListItem] = {
     val isRentARoomSelected = isSelected(userAnswers, UKPropertySelect.RentARoom)
     val isPropertyRentalsSelected = isSelected(userAnswers, UKPropertySelect.PropertyRentals)
@@ -129,7 +129,7 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         userAnswers.flatMap(_.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom))),
         userAnswers,
         taxYear,
-        accrualsOrCash
+        isAccrualsOrCash
       )
     } else {
       Seq.empty[TaskListItem]
@@ -138,12 +138,12 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
 
   private def createTaskListForCombinedJourney(
     claimExpensesOrRelief: Option[ClaimExpensesOrRelief],
-    claimPropertyIncomeAllowance: Option[Boolean],
+    isClaimPropertyIncomeAllowance: Option[Boolean],
     userAnswers: Option[UserAnswers],
     taxYear: Int,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   ): Seq[TaskListItem] =
-    (claimExpensesOrRelief, claimPropertyIncomeAllowance, accrualsOrCash) match {
+    (claimExpensesOrRelief, isClaimPropertyIncomeAllowance, isAccrualsOrCash) match {
       case (None, None, _) | (None, Some(_), _) | (Some(_), None, _) =>
         Seq(rentalsAndRaRAboutItem(taxYear, userAnswers))
       // Accounting method == accruals
@@ -158,9 +158,9 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     userAnswers: Option[UserAnswers],
     taxYear: Int,
     relief: ClaimExpensesOrRelief,
-    pia: Boolean
+    isPia: Boolean
   ) =
-    (relief.claimExpensesOrReliefYesNo, pia) match {
+    (relief.isClaimExpensesOrRelief, isPia) match {
       // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
       case (true, true) =>
         Seq(
@@ -193,9 +193,9 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
     userAnswers: Option[UserAnswers],
     taxYear: Int,
     relief: ClaimExpensesOrRelief,
-    pia: Boolean
+    isPia: Boolean
   ) =
-    (relief.claimExpensesOrReliefYesNo, pia) match {
+    (relief.isClaimExpensesOrRelief, isPia) match {
       // RR01 - Rent a Room Relief (true) and Yes, claim property income allowance (true)
       case (true, true) =>
         Seq(
@@ -260,8 +260,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(EsbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(EsbaSectionFinishedPage(Rentals)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -295,8 +295,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(SbaSectionFinishedPage(Rentals)).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(SbaSectionFinishedPage(Rentals)).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -312,8 +312,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(AllowancesSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(AllowancesSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -329,8 +329,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(ExpensesSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(ExpensesSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),
@@ -347,8 +347,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
         }(identity),
       userAnswers
         .flatMap { answers =>
-          answers.get(IncomeSectionFinishedPage).map { finishedYesOrNo =>
-            if (finishedYesOrNo) TaskListTag.Completed else TaskListTag.InProgress
+          answers.get(IncomeSectionFinishedPage).map { isFinished =>
+            if (isFinished) TaskListTag.Completed else TaskListTag.InProgress
           }
         }
         .getOrElse(TaskListTag.NotStarted),

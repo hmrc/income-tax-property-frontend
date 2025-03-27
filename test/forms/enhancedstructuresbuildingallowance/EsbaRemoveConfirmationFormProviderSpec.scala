@@ -27,9 +27,9 @@ class EsbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new EsbaRemoveConfirmationFormProvider()("agent")
 
-  ".esbaRemoveConfirmation" - {
+  ".isEsbaRemoveConfirmation" - {
 
-    val fieldName = "esbaRemoveConfirmation"
+    val fieldName = "isEsbaRemoveConfirmation"
 
     behave like booleanField(
       form,

@@ -25,6 +25,6 @@ class UkAndForeignPropertyPremiumForLeaseFormProvider @Inject() extends Mappings
 
   def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "ukAndForeignPropertyPremiumForLeaseYesOrNo" -> boolean(s"ukAndForeignPropertyPremiumForLease.error.required.$individualOrAgent")
+      "isUkAndForeignPropertyPremiumForLease" -> boolean(s"ukAndForeignPropertyPremiumForLease.error.required.$individualOrAgent")
     )
 }

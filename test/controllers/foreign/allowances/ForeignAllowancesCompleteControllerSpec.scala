@@ -127,7 +127,7 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, foreignAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAllowancesComplete", "true"))
+            .withFormUrlEncodedBody(("isForeignAllowancesComplete", "true"))
 
         val result = route(application, request).value
 
@@ -143,9 +143,9 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, foreignAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAllowancesComplete", ""))
+            .withFormUrlEncodedBody(("isForeignAllowancesComplete", ""))
 
-        val boundForm = form.bind(Map("foreignAllowancesComplete" -> ""))
+        val boundForm = form.bind(Map("isForeignAllowancesComplete" -> ""))
 
         val view = application.injector.instanceOf[ForeignAllowancesCompleteView]
 
@@ -180,7 +180,7 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, foreignAllowancesCompleteRoute)
-            .withFormUrlEncodedBody(("foreignAllowancesComplete", "true"))
+            .withFormUrlEncodedBody(("isForeignAllowancesComplete", "true"))
 
         val result = route(application, request).value
 

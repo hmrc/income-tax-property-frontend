@@ -106,7 +106,7 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
         .flatMap(
           _.set(
             CalculatedPremiumLeaseTaxablePage(countryCode),
-            PremiumCalculated(calculatedPremiumLeaseTaxable = true, premiumsOfLeaseGrant = Some(10.45))
+            PremiumCalculated(isCalculatedPremiumLeaseTaxable = true, premiumsOfLeaseGrant = Some(10.45))
           )
         )
         .flatMap(

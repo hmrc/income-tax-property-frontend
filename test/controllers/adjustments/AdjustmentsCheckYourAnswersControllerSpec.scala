@@ -31,7 +31,6 @@ class AdjustmentsCheckYourAnswersControllerSpec extends SpecBase with SummaryLis
 
     "must return OK and the correct view for a GET" in {
 
-      //val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(123.23))).get
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true).build()
       val list = SummaryListViewModel(Seq.empty)
       val taxYear = 2023

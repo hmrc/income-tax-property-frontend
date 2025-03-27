@@ -27,7 +27,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
 
   ".claimExpensesOrRelief" - {
 
-    val fieldName = "claimExpensesOrRelief"
+    val fieldName = "isClaimExpensesOrRelief"
 
     behave like mandatoryField(
       form,
@@ -53,7 +53,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       nonNumericError = FormError(fieldName, "claimExpensesOrRelief.amount.error.nonNumeric.individual"),
       twoDecimalPlacesError = FormError(fieldName, "claimExpensesOrRelief.amount.error.twoDecimalPlaces.individual"),
-      ("claimExpensesOrRelief", "true")
+      ("isClaimExpensesOrRelief", "true")
     )
 
     behave like currencyFieldWithMaximum(
@@ -61,7 +61,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       maximum,
       expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.maxAllowedClaim", List(maximum)),
-      ("claimExpensesOrRelief", "true")
+      ("isClaimExpensesOrRelief", "true")
     )
 
     behave like currencyFieldWithMinimum(
@@ -69,7 +69,7 @@ class ClaimExpensesOrReliefFormProviderSpec extends CurrencyFieldBehaviours {
       fieldName,
       0,
       expectedError = FormError(fieldName, "claimExpensesOrRelief.amount.error.outOfRange", List(minimum, maximum)),
-      ("claimExpensesOrRelief", "true")
+      ("isClaimExpensesOrRelief", "true")
     )
   }
 }

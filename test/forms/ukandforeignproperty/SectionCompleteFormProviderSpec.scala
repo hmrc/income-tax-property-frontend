@@ -25,9 +25,9 @@ class SectionCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new SectionCompleteFormProvider()()
 
-  ".sectionComplete" - {
+  ".isSectionComplete" - {
 
-    val fieldName = "sectionComplete"
+    val fieldName = "isSectionComplete"
 
     behave like booleanField(
       form,

@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class ForeignSbaInfo(
   countryCode:String,
-  claimStructureBuildingAllowance: Boolean,
+  isClaimStructureBuildingAllowance: Boolean,
   allowances: Option[Array[ForeignStructureBuildingAllowance]]
 )
 object ForeignSbaInfo {

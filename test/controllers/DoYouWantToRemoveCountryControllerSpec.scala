@@ -116,7 +116,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isDoYouWantToRemoveCountry", "true"))
 
         val result = route(application, request).value
 
@@ -137,9 +137,9 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", ""))
+            .withFormUrlEncodedBody(("isDoYouWantToRemoveCountry", ""))
 
-        val boundForm = form.bind(Map("doYouWantToRemoveCountryYesOrNo" -> ""))
+        val boundForm = form.bind(Map("isDoYouWantToRemoveCountry" -> ""))
 
         val view = application.injector.instanceOf[DoYouWantToRemoveCountryView]
 
@@ -174,7 +174,7 @@ class DoYouWantToRemoveCountryControllerSpec extends SpecBase with MockitoSugar 
       running(application) {
         val request =
           FakeRequest(POST, doYouWantToRemoveCountryRoute)
-            .withFormUrlEncodedBody(("doYouWantToRemoveCountryYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isDoYouWantToRemoveCountry", "true"))
 
         val result = route(application, request).value
 

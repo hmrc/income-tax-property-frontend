@@ -26,9 +26,9 @@ class ForeignSbaRemoveConfirmationFormProviderSpec extends BooleanFieldBehaviour
 
   val form = new ForeignSbaRemoveConfirmationFormProvider()()
 
-  ".foreignSbaRemoveConfirmation" - {
+  ".isForeignSbaRemoveConfirmation" - {
 
-    val fieldName = "foreignSbaRemoveConfirmation"
+    val fieldName = "isForeignSbaRemoveConfirmation"
 
     behave like booleanField(
       form,

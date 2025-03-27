@@ -28,10 +28,10 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     """{
       |  "countryCode": "USA",
       |  "foreignIncomeTax": {
-      |    "foreignIncomeTaxYesNo": true,
+      |    "isForeignIncomeTax": true,
       |    "foreignTaxPaidOrDeducted": 23
       |  },
-      |  "foreignTaxCreditRelief": true
+      |  "isForeignTaxCreditRelief": true
       |}""".stripMargin
 
   "ForeignPropertyTaxWithCountryCode" - {
@@ -39,8 +39,8 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     "must serialize to JSON correctly" in {
       val model = ForeignPropertyTaxWithCountryCode(
         countryCode = "USA",
-        foreignIncomeTax = Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(23)))),
-        foreignTaxCreditRelief = Some(true)
+        foreignIncomeTax = Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(23)))),
+        isForeignTaxCreditRelief = Some(true)
       )
 
       val expectedJson = Json.parse(jsonWithAllFields)
@@ -50,8 +50,8 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     "must deserialize from JSON correctly" in {
       val expectedModel = ForeignPropertyTaxWithCountryCode(
         countryCode = "USA",
-        foreignIncomeTax = Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(23)))),
-        foreignTaxCreditRelief = Some(true)
+        foreignIncomeTax = Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(23)))),
+        isForeignTaxCreditRelief = Some(true)
       )
 
       Json.parse(jsonWithAllFields).validate[ForeignPropertyTaxWithCountryCode] mustBe JsSuccess(expectedModel)

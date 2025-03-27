@@ -91,7 +91,7 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject() (
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context =
         JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignPropertyExpenses)
-      val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+      val accrualsOrCash = propertyDetails.isAccrualsOrCash.getOrElse(true)
 
       propertySubmissionService
         .saveForeignPropertyJourneyAnswers(context, foreignPropertyExpenses)
@@ -114,7 +114,7 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject() (
     request: DataRequest[AnyContent],
     foreignPropertyExpenses: ForeignPropertyExpenses,
     isFailed: Boolean,
-    accrualsOrCash: Boolean,
+    isAccrualsOrCash: Boolean,
     countryCode: String
   )(implicit
     hc: HeaderCarrier
@@ -128,7 +128,7 @@ class ForeignPropertyExpensesCheckYourAnswersController @Inject() (
       countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
       sectionName = SectionName.ForeignPropertyExpenses,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       request.user.agentRef,

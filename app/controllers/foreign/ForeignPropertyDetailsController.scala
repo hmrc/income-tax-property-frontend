@@ -47,7 +47,7 @@ class ForeignPropertyDetailsController @Inject() (
                 taxYear,
                 request.user.isAgentMessageKey,
                 propertyData.tradingStartDate.get,
-                propertyData.accrualsOrCash.get
+                propertyData.isAccrualsOrCash.get
               )
             )
           )

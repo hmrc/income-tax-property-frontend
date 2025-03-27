@@ -25,5 +25,5 @@ case class ForeignSbaRemoveConfirmationPage(countryCode: String) extends Questio
 
   override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
-  override def toString: String = "foreignSbaRemoveConfirmation"
+  override def toString: String = "isForeignSbaRemoveConfirmation"
 }

@@ -92,7 +92,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
     "must return OK and the correct view for a POST (onSubmit)" in {
       val userAnswers = UserAnswers("test").set(AboutSectionCompletePage, false).get
 
-      val rarAbout = RaRAbout(jointlyLetYesOrNo = true, 22.23, ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = false, Some(22.11)))
+      val rarAbout = RaRAbout(isJointlyLet = true, 22.23, ClaimExpensesOrRelief(isClaimExpensesOrRelief = false, Some(22.11)))
       val userAnswersWithRaRAbout =
         userAnswers.set(RaRAbout, rarAbout).get
 

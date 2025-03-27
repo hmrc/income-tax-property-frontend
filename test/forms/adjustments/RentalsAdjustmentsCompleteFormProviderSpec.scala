@@ -27,9 +27,9 @@ class RentalsAdjustmentsCompleteFormProviderSpec extends BooleanFieldBehaviours 
 
   val form = new RentalsAdjustmentsCompleteFormProvider()()
 
-  ".rentalsAdjustmentsCompleteYesOrNo" - {
+  ".isRentalsAdjustmentsComplete" - {
 
-    val fieldName = "rentalsAdjustmentsCompleteYesOrNo"
+    val fieldName = "isRentalsAdjustmentsComplete"
 
     behave like booleanField(
       form,

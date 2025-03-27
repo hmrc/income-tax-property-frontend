@@ -53,22 +53,22 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val reportIncome: Boolean = request.userAnswers.get(ReportIncomePage) match {
+      val isReportIncome: Boolean = request.userAnswers.get(ReportIncomePage) match {
         case Some(reportIncome) => reportIncome == WantToReport
         case None               => true
       }
       val ukAndForeignPropertyList =
-        getUkAndForeignSummaryList(taxYear, reportIncome, request.user.isAgentMessageKey, request.userAnswers)
+        getUkAndForeignSummaryList(taxYear, isReportIncome, request.user.isAgentMessageKey, request.userAnswers)
 
-      val hasPropertyRentals: Boolean =
+      val isPropertyRentals: Boolean =
         request.userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).forall(_.contains(PropertyRentals))
       val isPIA: Boolean = request.userAnswers
         .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
-        .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+        .exists(_.isClaimPropertyIncomeAllowanceOrExpenses)
 
-      val ukPropertyList: Option[SummaryList] = (reportIncome, isPIA) match {
+      val ukPropertyList: Option[SummaryList] = (isReportIncome, isPIA) match {
         case (true, true) =>
-          if (hasPropertyRentals) {
+          if (isPropertyRentals) {
             Some(getUkSummaryList(taxYear, request.user.isAgentMessageKey, request.userAnswers))
           } else {
             None
@@ -76,7 +76,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
         case (_, _) => None
       }
 
-      val foreignPropertyList: Option[SummaryList] = (reportIncome, isPIA) match {
+      val foreignPropertyList: Option[SummaryList] = (isReportIncome, isPIA) match {
         case (true, true) => Some(getForeignSummaryList(taxYear, request.user.isAgentMessageKey, request.userAnswers))
         case (_, _)       => None
       }
@@ -131,11 +131,11 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
 
   private def getUkAndForeignSummaryList(
     taxYear: Int,
-    reportIncome: Boolean,
+    isReportIncome: Boolean,
     individualOrAgent: String,
     userAnswers: UserAnswers
   )(implicit messages: Messages): SummaryList =
-    if (reportIncome) {
+    if (isReportIncome) {
       SummaryListViewModel(
         rows = Seq(
           TotalPropertyIncomeSummary.row(taxYear, userAnswers),

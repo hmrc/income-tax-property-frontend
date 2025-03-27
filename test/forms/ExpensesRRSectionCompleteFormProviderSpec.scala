@@ -27,9 +27,9 @@ class ExpensesRRSectionCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   val form = new ExpensesRRSectionCompleteFormProvider()()
 
-  ".expensesRRSectionCompleteYesOrNo" - {
+  "isExpensesRRSectionComplete" - {
 
-    val fieldName = "expensesRRSectionCompleteYesOrNo"
+    val fieldName = "isExpensesRRSectionComplete"
 
     behave like booleanField(
       form,

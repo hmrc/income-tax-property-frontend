@@ -59,9 +59,9 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
         new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val ukPropertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "ukIncomeSourceId")
       val foreignPropertyDetails =
-        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
           org.mockito.ArgumentMatchers.eq("nino"),
@@ -89,8 +89,8 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
             taxYear,
             "individual",
             ukPropertyDetails.tradingStartDate.get,
-            ukPropertyDetails.accrualsOrCash.get,
-            foreignPropertyDetails.accrualsOrCash.get,
+            ukPropertyDetails.isAccrualsOrCash.get,
+            foreignPropertyDetails.isAccrualsOrCash.get,
             foreignPropertyDetails.tradingStartDate.get
           )
         )(request, messages(application)).toString
@@ -100,9 +100,9 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
       val authConnector = new FakeAuthConnector(Some(Agent) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
       val businessService = mock[BusinessService]
       val ukPropertyDetails =
-        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(true), "ukIncomeSourceId")
+        PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(true), "ukIncomeSourceId")
       val foreignPropertyDetails =
-        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
+        PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
           org.mockito.ArgumentMatchers.eq("nino"),
@@ -131,8 +131,8 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
             taxYear,
             "agent",
             ukPropertyDetails.tradingStartDate.get,
-            ukPropertyDetails.accrualsOrCash.get,
-            foreignPropertyDetails.accrualsOrCash.get,
+            ukPropertyDetails.isAccrualsOrCash.get,
+            foreignPropertyDetails.isAccrualsOrCash.get,
             foreignPropertyDetails.tradingStartDate.get
           )
         )(request, messages(application)).toString

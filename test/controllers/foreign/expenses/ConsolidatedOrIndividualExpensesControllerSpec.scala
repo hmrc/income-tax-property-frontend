@@ -69,7 +69,7 @@ class ConsolidatedOrIndividualExpensesControllerSpec extends SpecBase with Mocki
 
       val amount = 100
       val formAnswers = ConsolidatedOrIndividualExpenses(
-        consolidatedOrIndividualExpensesYesNo = true,
+        isConsolidatedOrIndividualExpenses = true,
         Some(amount)
       )
       val userAnswers = UserAnswers(userAnswersId).set(
@@ -108,7 +108,7 @@ class ConsolidatedOrIndividualExpensesControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, consolidatedOrIndividualExpensesRoute)
-            .withFormUrlEncodedBody(("consolidatedOrIndividualExpenses", "false"), ("consolidatedExpensesAmount", "100"))
+            .withFormUrlEncodedBody(("isConsolidatedOrIndividualExpenses", "false"), ("consolidatedExpensesAmount", "100"))
 
         val result = route(application, request).value
 
@@ -124,9 +124,9 @@ class ConsolidatedOrIndividualExpensesControllerSpec extends SpecBase with Mocki
       running(application) {
         val request =
           FakeRequest(POST, consolidatedOrIndividualExpensesRoute)
-            .withFormUrlEncodedBody(("consolidatedOrIndividualExpensesYesNo", "invalid value"))
+            .withFormUrlEncodedBody(("isConsolidatedOrIndividualExpenses", "invalid value"))
 
-        val boundForm = form.bind(Map("consolidatedOrIndividualExpensesYesNo" -> "invalid value"))
+        val boundForm = form.bind(Map("isConsolidatedOrIndividualExpenses" -> "invalid value"))
 
         val view = application.injector.instanceOf[ConsolidatedOrIndividualExpensesView]
 

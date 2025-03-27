@@ -91,7 +91,7 @@ class SbaClaimsController @Inject() (
   }
 
   private def handleValidForm(
-    addAnotherClaim: Boolean,
+    isAddAnotherClaim: Boolean,
     taxYear: Int,
     request: DataRequest[AnyContent],
     propertyType: PropertyType
@@ -99,9 +99,9 @@ class SbaClaimsController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] =
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), addAnotherClaim))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(SbaClaimsPage(propertyType), isAddAnotherClaim))
       _              <- sessionRepository.set(updatedAnswers)
-      result <- if (addAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
+      result <- if (isAddAnotherClaim) { redirectToAddClaim(taxYear, propertyType) }
                 else { saveJourneyAnswers(taxYear, request, propertyType) }
     } yield result
 
@@ -149,7 +149,7 @@ class SbaClaimsController @Inject() (
               sbaInfo,
               isFailed = false,
               propertyType = propertyType,
-              accrualsOrCash = propertyDetails.accrualsOrCash.get
+              isAccrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             Future.successful(Redirect(routes.SbaSectionFinishedController.onPageLoad(taxYear, propertyType)))
           case Left(_) =>
@@ -159,7 +159,7 @@ class SbaClaimsController @Inject() (
               sbaInfo,
               isFailed = true,
               propertyType = propertyType,
-              accrualsOrCash = propertyDetails.accrualsOrCash.get
+              isAccrualsOrCash = propertyDetails.isAccrualsOrCash.get
             )
             logger.error("Error saving SBA Claims")
             Future.failed(InternalErrorFailure("Error saving SBA claims"))
@@ -177,7 +177,7 @@ class SbaClaimsController @Inject() (
       claimSummaryPage <- userAnswers.get(ClaimStructureBuildingAllowancePage(propertyType))
       sbaGroup         <- userAnswers.get(StructureBuildingAllowanceGroup(propertyType))
     } yield SbaInfo(
-      claimStructureBuildingAllowance = claimSummaryPage,
+      isClaimStructureBuildingAllowance = claimSummaryPage,
       structureBuildingFormGroup = sbaGroup
     )
     sbaInfoOpt
@@ -189,7 +189,7 @@ class SbaClaimsController @Inject() (
     sbaInfo: SbaInfo,
     isFailed: Boolean,
     propertyType: PropertyType,
-    accrualsOrCash: Boolean
+    isAccrualsOrCash: Boolean
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -205,7 +205,7 @@ class SbaClaimsController @Inject() (
         case RentalsRentARoom => JourneyName.RentalsRentARoom
       },
       sectionName = SectionName.SBA,
-      accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
+      accountingMethod = if (isAccrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
       agentReferenceNumber = request.user.agentRef,

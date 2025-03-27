@@ -60,7 +60,7 @@ class ForeignPropertyAllowancesStartController @Inject() (
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withForeignPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
         (propertyData: PropertyDetails) =>
-          propertyData.accrualsOrCash match {
+          propertyData.isAccrualsOrCash match {
             case Some(true) =>
               logger.info("Accounting method: Accruals")
               Future.successful(

@@ -106,7 +106,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
         running(application) {
           val request =
             FakeRequest(POST, claimForeignTaxCreditReliefRoute)
-              .withFormUrlEncodedBody(("claimForeignTaxCreditRelief", "true"))
+              .withFormUrlEncodedBody(("isClaimForeignTaxCreditRelief", "true"))
 
           val result = route(application, request).value
 
@@ -121,8 +121,8 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
 
         running(application) {
           val request =
-            FakeRequest(POST, claimForeignTaxCreditReliefRoute).withFormUrlEncodedBody(("claimForeignTaxCreditRelief", ""))
-          val boundForm = form.bind(Map("claimForeignTaxCreditRelief" -> ""))
+            FakeRequest(POST, claimForeignTaxCreditReliefRoute).withFormUrlEncodedBody(("isClaimForeignTaxCreditRelief", ""))
+          val boundForm = form.bind(Map("isClaimForeignTaxCreditRelief" -> ""))
 
           val view = application.injector.instanceOf[ClaimForeignTaxCreditReliefView]
 
@@ -154,7 +154,7 @@ class ClaimForeignTaxCreditReliefControllerSpec extends SpecBase with MockitoSug
         running(application) {
           val request =
             FakeRequest(POST, claimForeignTaxCreditReliefRoute)
-              .withFormUrlEncodedBody(("claimForeignTaxCreditRelief", "true"))
+              .withFormUrlEncodedBody(("isClaimForeignTaxCreditRelief", "true"))
 
           val result = route(application, request).value
 

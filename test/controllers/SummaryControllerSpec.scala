@@ -56,8 +56,8 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
       block(request)
   }
   val propertyDetails: Seq[PropertyDetails] = Seq(
-    PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId"),
-    PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId2")
+    PropertyDetails(Some(UKProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId"),
+    PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), isAccrualsOrCash = Some(false), "incomeSourceId2")
   )
 
   when(

@@ -201,7 +201,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             totalIncomeAnswers <-
               userAnswers.set(pages.foreign.TotalIncomePage, foreignPropertySelectCountry.totalIncome)
             reportIncomeUserAnswers <-
-              foreignPropertySelectCountry.reportPropertyIncome.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isReportPropertyIncome.fold[Try[UserAnswers]](
                 Success(totalIncomeAnswers)
               )(reportIncome => totalIncomeAnswers.set(pages.foreign.PropertyIncomeReportPage, reportIncome))
             incomeCountriesUserAnswers <-
@@ -209,11 +209,11 @@ object PropertyPeriodSessionRecoveryExtensions {
                 incomeCountries => reportIncomeUserAnswers.set(pages.foreign.IncomeSourceCountries, incomeCountries)
               )
             addCountriesUserAnswers <-
-              foreignPropertySelectCountry.addAnotherCountry.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isAddAnotherCountry.fold[Try[UserAnswers]](
                 Success(incomeCountriesUserAnswers)
               )(addCountries => incomeCountriesUserAnswers.set(pages.foreign.AddCountriesRentedPage, addCountries))
             claimPIAUserAnswers <-
-              foreignPropertySelectCountry.claimPropertyIncomeAllowance.fold[Try[UserAnswers]](
+              foreignPropertySelectCountry.isClaimPropertyIncomeAllowance.fold[Try[UserAnswers]](
                 Success(addCountriesUserAnswers)
               )(claimAllowances =>
                 addCountriesUserAnswers.set(pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage, claimAllowances)
@@ -248,7 +248,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua1 <- foreignPropertyIncome.rentIncome.fold[Try[UserAnswers]](Success(ua))(rentIncome =>
                        ua.set(ForeignPropertyRentalIncomePage(countryCode), rentIncome)
                      )
-              ua2 <- ua1.set(PremiumsGrantLeaseYNPage(countryCode), foreignPropertyIncome.premiumsGrantLeaseReceived)
+              ua2 <- ua1.set(PremiumsGrantLeaseYNPage(countryCode), foreignPropertyIncome.isPremiumsGrantLeaseReceived)
               ua3 <- foreignPropertyIncome.calculatedPremiumLeaseTaxable.fold[Try[UserAnswers]](Success(ua2))(
                        premiumCalculated => ua2.set(CalculatedPremiumLeaseTaxablePage(countryCode), premiumCalculated)
                      )
@@ -261,8 +261,8 @@ object PropertyPeriodSessionRecoveryExtensions {
                          ua4.set(TwelveMonthPeriodsInLeasePage(countryCode), foreignYearLeaseAmount.intValue)
                      )
               ua6 <- foreignPropertyIncome.premiumsOfLeaseGrantAgreed.fold[Try[UserAnswers]](Success(ua5))(
-                       premiumsOfLeaseGrantAgreed =>
-                         ua5.set(ForeignPremiumsGrantLeasePage(countryCode), premiumsOfLeaseGrantAgreed)
+                       isPremiumsOfLeaseGrantAgreed =>
+                         ua5.set(ForeignPremiumsGrantLeasePage(countryCode), isPremiumsOfLeaseGrantAgreed)
                      )
               ua7 <-
                 foreignPropertyIncome.otherPropertyIncome.fold[Try[UserAnswers]](Success(ua6))(otherPropertyIncome =>
@@ -286,11 +286,11 @@ object PropertyPeriodSessionRecoveryExtensions {
                   foreignPropertyTax.foreignIncomeTax.fold[Try[UserAnswers]](Success(ua)) { incomeTax =>
                     ua.set(
                       ForeignIncomeTaxPage(countryCode),
-                      ForeignIncomeTax(incomeTax.foreignIncomeTaxYesNo, incomeTax.foreignTaxPaidOrDeducted)
+                      ForeignIncomeTax(incomeTax.isForeignIncomeTax, incomeTax.foreignTaxPaidOrDeducted)
                     )
                   }
                 ua2 <-
-                  foreignPropertyTax.foreignTaxCreditRelief.fold[Try[UserAnswers]](Success(ua1)) { taxRelief =>
+                  foreignPropertyTax.isForeignTaxCreditRelief.fold[Try[UserAnswers]](Success(ua1)) { taxRelief =>
                     ua1.set(ClaimForeignTaxCreditReliefPage(countryCode), taxRelief)
                   }
               } yield ua2
@@ -386,7 +386,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               for {
                 ua <- userAnswers
                 ua1 <-
-                  ua.set(ForeignClaimStructureBuildingAllowancePage(countryCode), sba.claimStructureBuildingAllowance)
+                  ua.set(ForeignClaimStructureBuildingAllowancePage(countryCode), sba.isClaimStructureBuildingAllowance)
                 ua2 <- sba.allowances.fold[Try[UserAnswers]](Success(ua1))(sbas =>
                          updateAllForeignPropertySbas(ua1, sbas, countryCode)
                        )
@@ -487,7 +487,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua2 <- userAnswers.set(
                      ClaimPropertyIncomeAllowancePage(Rentals),
-                     propertyRentalsAbout.claimPropertyIncomeAllowanceYesOrNo
+                     propertyRentalsAbout.isClaimPropertyIncomeAllowance
                    )
           } yield ua2
       }
@@ -714,7 +714,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(
                      ClaimStructureBuildingAllowancePage(propertyType),
-                     sbasWithSupportingQuestions.claimStructureBuildingAllowance
+                     sbasWithSupportingQuestions.isClaimStructureBuildingAllowance
                    )
             ua3 <- updateAllSbas(ua1, sbasWithSupportingQuestions.structureBuildingFormGroup, propertyType)
           } yield ua3
@@ -765,9 +765,9 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- userAnswers.set(
                      ClaimEsbaPage(propertyType),
-                     esbasWithSupportingQuestions.claimEnhancedStructureBuildingAllowance
+                     esbasWithSupportingQuestions.isClaimEnhancedStructureBuildingAllowance
                    )
-            ua2 <- ua1.set(EsbaClaimsPage(propertyType), esbasWithSupportingQuestions.enhancedStructureBuildingAllowanceClaims.getOrElse(false))
+            ua2 <- ua1.set(EsbaClaimsPage(propertyType), esbasWithSupportingQuestions.isEnhancedStructureBuildingAllowanceClaims.getOrElse(false))
             ua3 <- updateAllEsbas(ua2, esbasWithSupportingQuestions.enhancedStructureBuildingAllowances, propertyType)
           } yield ua3
       }
@@ -806,7 +806,7 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(raRAbout) =>
           for {
-            ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.jointlyLetYesOrNo)
+            ua1 <- userAnswers.set(JointlyLetPage(RentARoom), raRAbout.isJointlyLet)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentARoom), raRAbout.totalIncomeAmount)
             ua3 <- ua2.set(ClaimExpensesOrReliefPage(RentARoom), raRAbout.claimExpensesOrRelief)
           } yield ua3
@@ -822,7 +822,7 @@ object PropertyPeriodSessionRecoveryExtensions {
           for {
             ua1 <- rarExpenses.consolidatedExpenses.fold[Try[UserAnswers]](Success(userAnswers))(consolidatedExpenses =>
               userAnswers.set(ConsolidatedExpensesRRPage, ConsolidatedRRExpenses(
-                consolidatedExpensesYesOrNo = consolidatedExpenses.consolidatedExpensesYesOrNo,
+                isConsolidatedExpenses = consolidatedExpenses.isConsolidatedExpenses,
                 consolidatedExpensesAmount = consolidatedExpenses.consolidatedExpensesAmount
               )))
             ua2 <- rarExpenses.rentsRatesAndInsurance.fold[Try[UserAnswers]](Success(ua1))(rentsRatesAndInsurance =>
@@ -851,12 +851,12 @@ object PropertyPeriodSessionRecoveryExtensions {
         case None => Success(userAnswers)
         case Some(rentalsRaRAbout) =>
           for {
-            ua1 <- userAnswers.set(JointlyLetPage(RentalsRentARoom), rentalsRaRAbout.jointlyLetYesOrNo)
+            ua1 <- userAnswers.set(JointlyLetPage(RentalsRentARoom), rentalsRaRAbout.isJointlyLet)
             ua2 <- ua1.set(TotalIncomeAmountPage(RentalsRentARoom), rentalsRaRAbout.totalIncomeAmount)
             ua3 <- ua2.set(ClaimExpensesOrReliefPage(RentalsRentARoom), rentalsRaRAbout.claimExpensesOrRelief)
             ua4 <- ua3.set(
                      ClaimPropertyIncomeAllowancePage(RentalsRentARoom),
-                     rentalsRaRAbout.claimPropertyIncomeAllowanceYesOrNo
+                     rentalsRaRAbout.isClaimPropertyIncomeAllowance
                    )
             ua5 <- ua4.set(PropertyRentalIncomePage(RentalsRentARoom), rentalsRaRAbout.propertyRentalIncome)
 
@@ -903,8 +903,8 @@ object PropertyPeriodSessionRecoveryExtensions {
             ua1 <- rentARoomAdjustments.balancingCharge.fold[Try[UserAnswers]](Success(userAnswers))(balancingCharge =>
               userAnswers.set(RaRBalancingChargePage, balancingCharge))
             ua2 <- rentARoomAdjustments.unusedResidentialPropertyFinanceCostsBroughtFwd.fold[Try[UserAnswers]](Success(ua1))(
-              unusedResidentialPropertyFinanceCostsBroughtFwd =>
-                ua1.set(RaRUnusedResidentialCostsPage, unusedResidentialPropertyFinanceCostsBroughtFwd))
+              isUnusedResidentialPropertyFinanceCostsBroughtFwd =>
+                ua1.set(RaRUnusedResidentialCostsPage, isUnusedResidentialPropertyFinanceCostsBroughtFwd))
             ua3 <- rentARoomAdjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua2))(unusedLossesBroughtForward =>
               ua2.set(RaRUnusedLossesBroughtForwardPage, unusedLossesBroughtForward))
             ua4 <- rentARoomAdjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua3))(whenYouReportedTheLoss =>
