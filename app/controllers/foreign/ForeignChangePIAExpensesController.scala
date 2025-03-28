@@ -22,11 +22,14 @@ import forms.ForeignChangePIAExpensesFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, ForeignChangePIAExpensesPage, ForeignPropertySummaryPage}
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
+import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, IncomeSourceCountries, ForeignChangePIAExpensesPage, ForeignPropertySummaryPage}
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.ForeignChangePIAExpensesView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +43,8 @@ class ForeignChangePIAExpensesController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: ForeignChangePIAExpensesFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignChangePIAExpensesView
+                                         view: ForeignChangePIAExpensesView,
+                                         languageUtils: LanguageUtils
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -53,9 +57,18 @@ class ForeignChangePIAExpensesController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.remove(ForeignPropertySummaryPage))
+      val test = request.userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap { country =>
+          CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
+        })
+        .toList
+        .flatten
+      println(s"\n\n\nCountries: $test\n\n\n")
+        def clearData = test.foreach(country => request.userAnswers.remove(ForeignAdjustmentsCompletePage(country.code)))
+        for {
+            updatedAnswers <- Future.fromTry(
+              request.userAnswers.set(ForeignAdjustmentsCompletePage(""), None))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignChangePIAExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield
+    Redirect(navigator.nextPage(ForeignChangePIAExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
   }
 }
