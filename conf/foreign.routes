@@ -32,6 +32,9 @@ POST       /:taxYear/foreign-property/claim-property-income-allowance-or-expense
 GET        /:taxYear/foreign-property/change-claim-property-income-allowance-or-expenses         controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-property/change-claim-property-income-allowance-or-expenses         controllers.foreign.ClaimPropertyIncomeAllowanceOrExpensesController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
+GET        /:taxYear/foreign-property/foreign-change-property-income-allowance-expenses          controllers.foreign.ForeignChangePIAExpensesController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-property/foreign-change-property-income-allowance-expenses          controllers.foreign.ForeignChangePIAExpensesController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+
 GET        /:taxYear/foreign-property/select-country/check-your-answers                          controllers.foreign.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST       /:taxYear/foreign-property/select-country/check-your-answers                          controllers.foreign.ForeignCountriesCheckYourAnswersController.onSubmit(taxYear: Int)
 

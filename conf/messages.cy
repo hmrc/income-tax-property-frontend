@@ -1989,6 +1989,13 @@ claimPropertyIncomeAllowanceOrExpenses.content.l4 = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.PIA = *Missing Welsh*
 claimPropertyIncomeAllowanceOrExpenses.expenses = *Missing Welsh*
 
+foreignChangePIAExpenses.title = *Missing Welsh*
+foreignChangePIAExpenses.heading = *Missing Welsh*
+foreignChangePIAExpenses.p1 = *Missing Welsh*
+foreignChangePIAExpenses.checkYourAnswersLabel = *Missing Welsh*
+foreignChangePIAExpenses.error.required = *Missing Welsh*
+foreignChangePIAExpenses.change.hidden = *Missing Welsh*
+
 doYouWantToRemoveCountry.title = *Missing Welsh*
 doYouWantToRemoveCountry.heading = *Missing Welsh*
 doYouWantToRemoveCountry.p.1 = *Missing Welsh*
