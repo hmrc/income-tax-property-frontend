@@ -122,7 +122,7 @@ class ForeignClaimSbaCheckYourAnswersController @Inject() (
       propertyType = AuditPropertyType.ForeignProperty,
       countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
-      sectionName = SectionName.ForeignStructureBuildingAllowance,
+      sectionName = SectionName.ForeignPropertyStructureAndBuildingAllowance,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,

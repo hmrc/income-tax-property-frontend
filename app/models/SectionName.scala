@@ -31,7 +31,7 @@ object SectionName extends Enumerable.Implicits {
   case object ForeignPropertyIncome extends WithName("ForeignPropertyIncome") with SectionName
   case object ForeignPropertyExpenses extends WithName("ForeignPropertyExpenses") with SectionName
   case object ForeignPropertyAdjustments extends WithName("ForeignPropertyAdjustments") with SectionName
-  case object ForeignStructureBuildingAllowance extends WithName("ForeignPropertyStructureAndBuildingAllowance") with SectionName
+  case object ForeignPropertyStructureAndBuildingAllowance extends WithName("ForeignPropertyStructureAndBuildingAllowance") with SectionName
 
 
 
@@ -47,7 +47,7 @@ object SectionName extends Enumerable.Implicits {
     ForeignPropertyTax,
     ForeignPropertyIncome,
     ForeignPropertyExpenses,
-    ForeignStructureBuildingAllowance
+    ForeignPropertyStructureAndBuildingAllowance
   )
 
   implicit val enumerable: Enumerable[SectionName] =

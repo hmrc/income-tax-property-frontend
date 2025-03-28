@@ -194,7 +194,7 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       propertyType = AuditPropertyType.ForeignProperty,
       countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
-      sectionName = SectionName.SBA,
+      sectionName = SectionName.ForeignPropertyStructureAndBuildingAllowance,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
