@@ -1949,7 +1949,7 @@ propertyIncomeReport.error.required.individual = Select ‘I want to report my p
 propertyIncomeReport.error.required.agent = Select ‘I want to report my client''s property income’, or ‘I do not want to report my client''s property income’
 propertyIncomeReport.details.hint.individual = You do not need to report property income if it is less than £1,000. You may want to report it if your allowable expenses are higher than your income and you want to claim relief for the loss against future property income.
 propertyIncomeReport.details.hint.agent = Your client does not need to report property income if it is less than £1,000. Your client may want to report it if your client''s allowable expenses are higher than their income and your client wants to claim relief for the loss against future property income.
-propertyIncomeReport.change.hidden = PropertyIncomeReport
+propertyIncomeReport.change.hidden = Do you want to report your property income?
 
 
 
@@ -2023,7 +2023,7 @@ claimPropertyIncomeAllowanceOrExpenses.legend.individual = What do you want to d
 claimPropertyIncomeAllowanceOrExpenses.legend.agent = What does your client want to do?
 claimPropertyIncomeAllowanceOrExpenses.checkYourAnswersLabel = Claim property income allowance or expenses
 claimPropertyIncomeAllowanceOrExpenses.error.required = Select property income allowance or expenses
-claimPropertyIncomeAllowanceOrExpenses.change.hidden = ClaimPropertyIncomeAllowanceOrExpenses
+claimPropertyIncomeAllowanceOrExpenses.change.hidden = Claim property income allowance or expenses
 claimPropertyIncomeAllowanceOrExpenses.details.input.yesText = Property income allowance
 claimPropertyIncomeAllowanceOrExpenses.details.input.noText = Expenses
 claimPropertyIncomeAllowanceOrExpenses.content.para1.individual = The property income allowance is a tax relief of up to £1,000 per year which you can use against your total property income.
