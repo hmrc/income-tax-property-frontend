@@ -155,7 +155,8 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = false,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true),
+                countryCode
               )
               Future.successful(Redirect(routes.ForeignSbaCompleteController.onPageLoad(taxYear, countryCode)))
             case Left(_) =>
@@ -164,7 +165,8 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
                 request,
                 foreignSbaInfo,
                 isFailed = true,
-                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
+                accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true),
+                countryCode
               )
               logger.error("Error saving Foreign SBA Claims")
               Future.failed(InternalErrorFailure("Error saving Foreign SBA claims"))
@@ -179,7 +181,8 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
     request: DataRequest[AnyContent],
     foreignSba: ForeignSbaInfo,
     isFailed: Boolean,
-    accrualsOrCash: Boolean
+    accrualsOrCash: Boolean,
+    countryCode: String
   )(implicit
     hc: HeaderCarrier
   ): Unit = {
@@ -189,9 +192,9 @@ class ForeignStructureBuildingAllowanceClaimsController @Inject() (
       request.user.mtditid,
       taxYear,
       propertyType = AuditPropertyType.ForeignProperty,
-      countryCode = Country.UK.code,
+      countryCode = countryCode,
       journeyName = JourneyName.ForeignProperty,
-      sectionName = SectionName.SBA,
+      sectionName = SectionName.ForeignPropertyStructureAndBuildingAllowance,
       accountingMethod = if (accrualsOrCash) AccountingMethod.Traditional else AccountingMethod.Cash,
       isUpdate = false,
       isFailed = isFailed,
