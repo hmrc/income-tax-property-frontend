@@ -50,6 +50,8 @@ class ForeignPropertyNavigator {
       taxYear => _ => userAnswers => addCountryNavigationNormalMode(taxYear, userAnswers)
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
       taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    case ForeignChangePIAExpensesPage =>
+      taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     case ForeignSelectCountriesCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case ForeignIncomeTaxPage(countryCode) =>
       taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers)
@@ -215,7 +217,7 @@ class ForeignPropertyNavigator {
     case AddCountriesRentedPage =>
       taxYear => _ => userAnswers => addCountryNavigationCheckMode(taxYear, userAnswers)
     case ClaimPropertyIncomeAllowanceOrExpensesPage =>
-      taxYear => _ => _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      taxYear => previousAnswers => userAnswers => claimPropertyIncomeAllowanceOrExpensesCheckMode(taxYear, previousAnswers, userAnswers)
     case ForeignIncomeTaxPage(countryCode) =>
       taxYear => _ => userAnswers => foreignIncomeTaxNavigation(taxYear, countryCode, userAnswers, CheckMode)
     case ForeignPropertyRentalIncomePage(countryCode) =>
@@ -459,4 +461,19 @@ class ForeignPropertyNavigator {
       case _ =>
         ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     }
+
+  private def claimPropertyIncomeAllowanceOrExpensesCheckMode(
+                                                               taxYear: Int,
+                                                               previousAnswers: UserAnswers,
+                                                               userAnswers: UserAnswers
+                                                             ): Call =
+    (
+      previousAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage),
+      userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage)
+    ) match {
+      case (Some(true), Some(false)) | (Some(false), Some(true)) =>
+        ForeignChangePIAExpensesController.onPageLoad(taxYear)
+      case _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+    }
+
 }

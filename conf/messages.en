@@ -2045,6 +2045,10 @@ claimPropertyIncomeAllowanceOrExpenses.content.l4 = property repairs and mainten
 claimPropertyIncomeAllowanceOrExpenses.PIA = Property income allowance
 claimPropertyIncomeAllowanceOrExpenses.expenses = Expenses
 
+foreignChangePIAExpenses.title = You are about to change your answer
+foreignChangePIAExpenses.heading = You are about to change your answer
+foreignChangePIAExpenses.p1 = You''re about to change the information you previously entered. This information will now be deleted. You will also have to answer some different questions.
+
 doYouWantToRemoveCountry.title = Do you want to remove {0}?
 doYouWantToRemoveCountry.heading = Do you want to remove {0}?
 doYouWantToRemoveCountry.p.1 = You''re about to change the information you previously entered. This information will now be deleted. You will also have to answer some different questions.
