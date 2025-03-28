@@ -33,7 +33,7 @@ class ConsolidatedOrIndividualExpensesFormProviderSpec extends OptionFieldBehavi
     "consolidatedOrIndividualExpenses" - {
       "and an amount is entered, should successfully bind" in {
         val boundForm = form.bind(Map("consolidatedOrIndividualExpenses" -> "true", "consolidatedExpensesAmount" -> "4534.65"))
-        boundForm.value.value mustBe ConsolidatedOrIndividualExpenses(consolidatedOrIndividualExpensesYesNo = true, Some(4534.65))
+        boundForm.value.value mustBe ConsolidatedOrIndividualExpenses(isConsolidatedOrIndividualExpenses = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 

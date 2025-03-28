@@ -48,7 +48,7 @@
 
             @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("raRbalancingChargeYesNo"),
+                    field = form("isRaRbalancingCharge"),
                     legend = LegendViewModel(messages(s"raRbalancingCharge.radio.legend.$individualOrAgent")).asPageHeading(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("raRbalancingCharge"),

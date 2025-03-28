@@ -23,5 +23,5 @@ case object ExpensesRRSectionCompletePage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ PageConstants.rentARoomSectionFinished \ toString
 
-  override def toString: String = "expensesSectionFinishedYesOrNo"
+  override def toString: String = "isExpensesSectionFinished"
 }

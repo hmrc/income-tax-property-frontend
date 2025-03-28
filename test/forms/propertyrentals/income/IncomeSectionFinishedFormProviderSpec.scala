@@ -28,7 +28,7 @@ class IncomeSectionFinishedFormProviderSpec extends BooleanFieldBehaviours {
 
   ".incomeSectionFinishedYesOrNo" - {
 
-    val fieldName = "incomeSectionFinishedYesOrNo"
+    val fieldName = "isIncomeSectionFinished"
 
     behave like booleanField(
       form,

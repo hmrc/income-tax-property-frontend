@@ -126,7 +126,7 @@ class EsbaSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, esbaSectionFinishedRoute)
-            .withFormUrlEncodedBody(("esbaSectionFinishedYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isEsbaSectionFinished", "true"))
 
         val result = route(application, request).value
 

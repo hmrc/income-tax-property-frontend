@@ -30,32 +30,32 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProviderSpec 
   val form = new UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider()("individual")
 
   ".deductingTaxFromNonUkResidentLandlordAmount" - {
-    "deductingTaxFromNonUkResidentLandlordYesNo" - {
+    "isDeductingTaxFromNonUkResidentLandlord" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4534.65"))
-        boundForm.value.value mustBe DeductingTaxFromNonUkResidentLandlord(deductingTaxFromNonUkResidentLandlordYesNo = true, Some(4534.65))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4534.65"))
+        boundForm.value.value mustBe DeductingTaxFromNonUkResidentLandlord(isDeductingTaxFromNonUkResidentLandlord = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> "true"))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> "true"))
         boundForm.errors must contain(FormError("deductingTaxFromNonUkResidentLandlordAmount", "ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.required.amount.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "non-numeric-value"))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "non-numeric-value"))
         boundForm.errors must contain(FormError("deductingTaxFromNonUkResidentLandlordAmount", "ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.nonNumeric"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4534.6545"))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4534.6545"))
         boundForm.errors must contain(FormError("deductingTaxFromNonUkResidentLandlordAmount", "ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.twoDecimalPlaces"))
       }
 
 
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("deductingTaxFromNonUkResidentLandlordYesNo" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("isDeductingTaxFromNonUkResidentLandlord" -> "true", "deductingTaxFromNonUkResidentLandlordAmount" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
             "deductingTaxFromNonUkResidentLandlordAmount",

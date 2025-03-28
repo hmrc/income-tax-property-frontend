@@ -31,7 +31,7 @@ case class ClaimPropertyIncomeAllowancePage(propertyType: PropertyType) extends 
 
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
-  override def toString: String = "claimPropertyIncomeAllowanceYesOrNo"
+  override def toString: String = "isClaimPropertyIncomeAllowance"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     userAnswers

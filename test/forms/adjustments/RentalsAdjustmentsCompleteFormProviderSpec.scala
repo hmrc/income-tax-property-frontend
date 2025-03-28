@@ -29,7 +29,7 @@ class RentalsAdjustmentsCompleteFormProviderSpec extends BooleanFieldBehaviours 
 
   ".rentalsAdjustmentsCompleteYesOrNo" - {
 
-    val fieldName = "rentalsAdjustmentsCompleteYesOrNo"
+    val fieldName = "isRentalsAdjustmentsComplete"
 
     behave like booleanField(
       form,

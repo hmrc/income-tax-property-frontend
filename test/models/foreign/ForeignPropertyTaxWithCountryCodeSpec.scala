@@ -28,7 +28,7 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     """{
       |  "countryCode": "USA",
       |  "foreignIncomeTax": {
-      |    "foreignIncomeTaxYesNo": true,
+      |    "isForeignIncomeTax": true,
       |    "foreignTaxPaidOrDeducted": 23
       |  },
       |  "foreignTaxCreditRelief": true
@@ -39,7 +39,7 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     "must serialize to JSON correctly" in {
       val model = ForeignPropertyTaxWithCountryCode(
         countryCode = "USA",
-        foreignIncomeTax = Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(23)))),
+        foreignIncomeTax = Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(23)))),
         foreignTaxCreditRelief = Some(true)
       )
 
@@ -50,7 +50,7 @@ class ForeignPropertyTaxWithCountryCodeSpec extends AnyFreeSpec with Matchers wi
     "must deserialize from JSON correctly" in {
       val expectedModel = ForeignPropertyTaxWithCountryCode(
         countryCode = "USA",
-        foreignIncomeTax = Some(ForeignIncomeTax(foreignIncomeTaxYesNo = true, Some(BigDecimal(23)))),
+        foreignIncomeTax = Some(ForeignIncomeTax(isForeignIncomeTax = true, Some(BigDecimal(23)))),
         foreignTaxCreditRelief = Some(true)
       )
 

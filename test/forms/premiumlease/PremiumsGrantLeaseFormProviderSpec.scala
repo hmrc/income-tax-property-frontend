@@ -22,7 +22,7 @@ import play.api.data.FormError
 class PremiumsGrantLeaseFormProviderSpec extends CurrencyFieldBehaviours {
   val form = new PremiumsGrantLeaseFormProvider()("individual")
 
-  ".premiumsGrantLeaseYesNo" - {
+  ".premiumsGrantLease" - {
 
     val fieldName = "premiumsGrantLeaseReceived"
 

@@ -51,7 +51,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
         emptyUserAnswers
           .set(
             UkPremiumGrantLeaseTaxPage,
-            UkAndForeignPropertyPremiumGrantLeaseTax(premiumGrantLeaseYesNo = true,Some(34.56))
+            UkAndForeignPropertyPremiumGrantLeaseTax(isPremiumGrantLease = true,Some(34.56))
           )
           .toOption,
         "true"
@@ -60,7 +60,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
         emptyUserAnswers
           .set(
             UkPremiumGrantLeaseTaxPage,
-            UkAndForeignPropertyPremiumGrantLeaseTax(premiumGrantLeaseYesNo = false,None)
+            UkAndForeignPropertyPremiumGrantLeaseTax(isPremiumGrantLease = false,None)
           )
           .toOption,
         "false"
@@ -96,12 +96,12 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxControllerSpec extends SpecBase wi
   "POST" - {
     val answersAndExpectedStatus = Seq(
       (Seq(), BAD_REQUEST),
-      (Seq(("premiumGrantLeaseYesNo","true")), BAD_REQUEST),
-      (Seq(("premiumGrantLeaseYesNo","true"), ("premiumGrantLeaseAmount", "1.o1")), BAD_REQUEST),
-      (Seq(("premiumGrantLeaseYesNo","true"), ("premiumGrantLeaseAmount", "abcde")), BAD_REQUEST),
-      (Seq(("premiumGrantLeaseYesNo","true"), ("premiumGrantLeaseAmount", "999.999")), BAD_REQUEST),
-      (Seq(("premiumGrantLeaseYesNo","true"), ("premiumGrantLeaseAmount", "999.99")), SEE_OTHER),
-      (Seq(("premiumGrantLeaseYesNo","false")), SEE_OTHER)
+      (Seq(("isPremiumGrantLease","true")), BAD_REQUEST),
+      (Seq(("isPremiumGrantLease","true"), ("premiumGrantLeaseAmount", "1.o1")), BAD_REQUEST),
+      (Seq(("isPremiumGrantLease","true"), ("premiumGrantLeaseAmount", "abcde")), BAD_REQUEST),
+      (Seq(("isPremiumGrantLease","true"), ("premiumGrantLeaseAmount", "999.999")), BAD_REQUEST),
+      (Seq(("isPremiumGrantLease","true"), ("premiumGrantLeaseAmount", "999.99")), SEE_OTHER),
+      (Seq(("isPremiumGrantLease","false")), SEE_OTHER)
     )
 
     val userTypeAndAnswerCombinations = for {

@@ -31,7 +31,7 @@ object ClaimPropertyIncomeAllowanceOrExpensesSummary {
     answers
       .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
       .map { answer =>
-        val value = if (answer.claimPropertyIncomeAllowanceOrExpensesYesNo) "claimPropertyIncomeAllowance.summary.yes" else "claimPropertyIncomeAllowance.summary.no"
+        val value = if (answer.isClaimPropertyIncomeAllowanceOrExpenses) "claimPropertyIncomeAllowance.summary.yes" else "claimPropertyIncomeAllowance.summary.no"
 
         SummaryListRowViewModel(
           key = KeyViewModel("ukAndForeignPropertyIncomeAllowanceClaim.checkYourAnswersLabel")

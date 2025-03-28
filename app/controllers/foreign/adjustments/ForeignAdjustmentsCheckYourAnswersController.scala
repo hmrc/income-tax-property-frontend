@@ -57,7 +57,7 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
       val claimPIA: Boolean = request.userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage).contains(true)
       val hasUnusedLosses: Boolean = request.userAnswers
         .get(ForeignUnusedLossesPreviousYearsPage(countryCode))
-        .exists(_.unusedLossesPreviousYearsYesNo)
+        .exists(_.isUnusedLossesPreviousYears)
       val summaryListRows = Seq(
         ForeignPrivateUseAdjustmentSummary.row(taxYear, countryCode, request.userAnswers),
         ForeignBalancingChargeSummary.row(taxYear, countryCode, request.userAnswers)

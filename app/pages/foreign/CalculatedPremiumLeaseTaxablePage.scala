@@ -30,8 +30,8 @@ case class CalculatedPremiumLeaseTaxablePage(countryCode: String) extends Questi
   override def toString: String = "calculatedPremiumLeaseTaxable"
 
   override def cleanup(value: Option[PremiumCalculated], userAnswers: UserAnswers): Try[UserAnswers] = {
-    val premiumCalculatedYesNo = value.map(_.calculatedPremiumLeaseTaxable)
-    premiumCalculatedYesNo
+    val isPremiumCalculated = value.map(_.calculatedPremiumLeaseTaxable)
+    isPremiumCalculated
       .map {
         case true =>
           for {

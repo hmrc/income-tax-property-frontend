@@ -51,7 +51,7 @@ class RaRAdjustmentsCYAController @Inject() (
     implicit request =>
       val hasLossesBroughtForward: Boolean = request.userAnswers
         .get(RaRUnusedLossesBroughtForwardPage)
-        .exists(_.unusedLossesBroughtForwardYesOrNo)
+        .exists(_.isUnusedLossesBroughtForward)
       val rows: Seq[SummaryListRow] =
         Seq(
           RaRBalancingChargeSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),

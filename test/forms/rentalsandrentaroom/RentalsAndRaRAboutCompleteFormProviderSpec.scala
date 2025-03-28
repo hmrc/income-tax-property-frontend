@@ -28,7 +28,7 @@ class RentalsAndRaRAboutCompleteFormProviderSpec extends BooleanFieldBehaviours 
 
   ".rentalsRentARoomSectionCompleteYesOrNo" - {
 
-    val fieldName = "rentalsRentARoomSectionCompleteYesOrNo"
+    val fieldName = "isRentalsRentARoomSectionComplete"
 
     behave like booleanField(
       form,

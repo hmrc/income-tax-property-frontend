@@ -31,7 +31,7 @@
 @layout(pageTitle = title(form, messages(s"raRUnusedLossesBroughtForward.title.$individualOrAgent"))) {
 
     @if(form.errors.nonEmpty) {
-        @govukErrorSummary(ErrorSummaryViewModel(form, Map("unusedLossesBroughtForwardYesOrNo" -> "raRUnusedLossesBroughtForwardForm")))
+        @govukErrorSummary(ErrorSummaryViewModel(form, Map("isUnusedLossesBroughtForward" -> "raRUnusedLossesBroughtForwardForm")))
     }
 
     <h1 class="govuk-heading-l">@messages(s"raRUnusedLossesBroughtForward.heading.$individualOrAgent")</h1>
@@ -41,10 +41,10 @@
 
         @govukRadios(
             RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("unusedLossesBroughtForwardYesOrNo"),
+                field = form("isUnusedLossesBroughtForward"),
                 legend = Legend(),
                 items = RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("unusedLossesBroughtForwardYesOrNo"),
+                    field = form("isUnusedLossesBroughtForward"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(

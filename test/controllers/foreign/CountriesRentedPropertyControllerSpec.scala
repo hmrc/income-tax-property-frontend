@@ -92,7 +92,7 @@ class CountriesRentedPropertyControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, countriesRentedPropertyRoute)
-            .withFormUrlEncodedBody(("countriesRentedPropertyYesOrNo", "true"))
+            .withFormUrlEncodedBody(("isCountriesRentedProperty", "true"))
 
         val result = route(application, request).value
 

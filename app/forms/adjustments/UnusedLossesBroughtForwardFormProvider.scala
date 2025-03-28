@@ -32,10 +32,10 @@ class UnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[UnusedLossesBroughtForward] =
     Form[UnusedLossesBroughtForward](
       mapping(
-        "unusedLossesBroughtForwardYesOrNo" -> boolean(s"unusedLossesBroughtForward.error.required.$individualOrAgent"),
+        "isUnusedLossesBroughtForward" -> boolean(s"unusedLossesBroughtForward.error.required.$individualOrAgent"),
         "unusedLossesBroughtForwardAmount" -> {
           mandatoryIfTrue(
-            "unusedLossesBroughtForwardYesOrNo",
+            "isUnusedLossesBroughtForward",
             currency(
               s"unusedLossesBroughtForward.error.amount.required.$individualOrAgent",
               "unusedLossesBroughtForward.error.amount.nonNumeric",

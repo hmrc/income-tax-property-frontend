@@ -47,10 +47,10 @@
 
         @govukRadios(
             radios.RadiosViewModel.yesNoWithConditionalHtml(
-                field = form("deductingTaxFromNonUkResidentLandlordYesNo"),
+                field = form("isDeductingTaxFromNonUkResidentLandlord"),
                 legend = LegendViewModel(messages(s"ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.label.${individualOrAgent}")).withCssClass("govuk-fieldset__legend govuk-fieldset__legend--m"),
                 items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
-                    field = form("deductingTaxFromNonUkResidentLandlordYesNo"),
+                    field = form("isDeductingTaxFromNonUkResidentLandlord"),
                     conditionalYesHtml = Some(
                         govukInput(
                             InputViewModel(

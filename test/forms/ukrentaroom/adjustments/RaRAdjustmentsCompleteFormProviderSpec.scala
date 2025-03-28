@@ -29,7 +29,7 @@ class RaRAdjustmentsCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   ".raRAdjustmentsCompleteYesOrNo" - {
 
-    val fieldName = "raRAdjustmentsCompleteYesOrNo"
+    val fieldName = "isRaRAdjustmentsComplete"
 
     behave like booleanField(
       form,

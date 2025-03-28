@@ -33,23 +33,23 @@ class UnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviours 
   val form = formProvider(individualOrAgent)
 
   s".unusedLossesBroughtForward" - {
-    "when unusedLossesBroughtForwardYesOrNo is true" - {
-      val unusedLossesBroughtForwardYesOrNo = true
+    "when isUnusedLossesBroughtForward is true" - {
+      val isUnusedLossesBroughtForward = true
 
       "and an amount is entered, should successfully bind" in {
         val unusedLossesBroughtForwardAmount: BigDecimal = 4534.65
         val boundForm = form.bind(
           Map(
-            "unusedLossesBroughtForwardYesOrNo" -> s"$unusedLossesBroughtForwardYesOrNo",
+            "isUnusedLossesBroughtForward" -> s"$isUnusedLossesBroughtForward",
             "unusedLossesBroughtForwardAmount" -> s"$unusedLossesBroughtForwardAmount"
           )
         )
-        boundForm.value.value mustBe UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo, Some(unusedLossesBroughtForwardAmount))
+        boundForm.value.value mustBe UnusedLossesBroughtForward(isUnusedLossesBroughtForward, Some(unusedLossesBroughtForwardAmount))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("unusedLossesBroughtForwardYesOrNo" -> s"$unusedLossesBroughtForwardYesOrNo"))
+        val boundForm = form.bind(Map("isUnusedLossesBroughtForward" -> s"$isUnusedLossesBroughtForward"))
         boundForm.errors must contain(
           FormError(
             "unusedLossesBroughtForwardAmount",
@@ -62,7 +62,7 @@ class UnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviours 
         val boundForm =
           form.bind(
             Map(
-              "unusedLossesBroughtForwardYesOrNo" -> s"$unusedLossesBroughtForwardYesOrNo",
+              "isUnusedLossesBroughtForward" -> s"$isUnusedLossesBroughtForward",
               "unusedLossesBroughtForwardAmount" -> "non-numeric-value"
             )
           )
@@ -78,7 +78,7 @@ class UnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviours 
         val boundForm =
           form.bind(
             Map(
-              "unusedLossesBroughtForwardYesOrNo" -> s"$unusedLossesBroughtForwardYesOrNo",
+              "isUnusedLossesBroughtForward" -> s"$isUnusedLossesBroughtForward",
               "unusedLossesBroughtForwardAmount" -> "4534.6545"
             )
           )
@@ -93,7 +93,7 @@ class UnusedLossesBroughtForwardFormProviderSpec extends BooleanFieldBehaviours 
       "and an amount is entered that is out of range then should fail to bind" in {
         val boundForm = form.bind(
           Map(
-            "unusedLossesBroughtForwardYesOrNo" -> s"$unusedLossesBroughtForwardYesOrNo",
+            "isUnusedLossesBroughtForward" -> s"$isUnusedLossesBroughtForward",
             "unusedLossesBroughtForwardAmount" -> "45334553534535345435345345434.65"
           )
         )

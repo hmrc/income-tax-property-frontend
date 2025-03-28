@@ -66,7 +66,7 @@ class RenovationAllowanceBalancingChargeControllerSpec extends SpecBase with Moc
     "On rentals only journey must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(RenovationAllowanceBalancingChargePage(Rentals),
-        RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(100.65))).success.value
+        RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge = true, Some(100.65))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -78,7 +78,7 @@ class RenovationAllowanceBalancingChargeControllerSpec extends SpecBase with Moc
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(100.65)))
+        contentAsString(result) mustEqual view(form.fill(RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge = true, Some(100.65)))
           ,taxYear, NormalMode, "individual", Rentals)(request, messages(application)).toString
       }
     }
@@ -86,7 +86,7 @@ class RenovationAllowanceBalancingChargeControllerSpec extends SpecBase with Moc
     "On rentals and rent a room journey must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(RenovationAllowanceBalancingChargePage(RentalsRentARoom),
-        RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(100.65))).success.value
+        RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge = true, Some(100.65))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -98,7 +98,7 @@ class RenovationAllowanceBalancingChargeControllerSpec extends SpecBase with Moc
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(RenovationAllowanceBalancingCharge(renovationAllowanceBalancingChargeYesNo = true, Some(100.65)))
+        contentAsString(result) mustEqual view(form.fill(RenovationAllowanceBalancingCharge(isRenovationAllowanceBalancingCharge = true, Some(100.65)))
           , taxYear, NormalMode, "individual", RentalsRentARoom)(request, messages(application)).toString
       }
     }
@@ -120,7 +120,7 @@ class RenovationAllowanceBalancingChargeControllerSpec extends SpecBase with Moc
       running(application) {
         val request =
           FakeRequest(POST, rentalsRoute)
-            .withFormUrlEncodedBody(("renovationAllowanceBalancingChargeYesNo", "false"))
+            .withFormUrlEncodedBody(("isRenovationAllowanceBalancingCharge", "false"))
 
         val result = route(application, request).value
 

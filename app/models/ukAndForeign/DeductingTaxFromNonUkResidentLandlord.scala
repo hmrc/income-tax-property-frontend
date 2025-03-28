@@ -18,7 +18,7 @@ package models.ukAndForeign
 
 import play.api.libs.json.{Format, Json}
 
-final case class DeductingTaxFromNonUkResidentLandlord(deductingTaxFromNonUkResidentLandlordYesNo: Boolean, deductingTaxFromNonUkResidentLandlordAmount: Option[BigDecimal])
+final case class DeductingTaxFromNonUkResidentLandlord(isDeductingTaxFromNonUkResidentLandlord: Boolean, deductingTaxFromNonUkResidentLandlordAmount: Option[BigDecimal])
 
 object DeductingTaxFromNonUkResidentLandlord {
   implicit val format: Format[DeductingTaxFromNonUkResidentLandlord] = Json.format

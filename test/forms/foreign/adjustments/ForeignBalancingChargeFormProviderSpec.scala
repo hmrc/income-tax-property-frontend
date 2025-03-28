@@ -31,32 +31,32 @@ class ForeignBalancingChargeFormProviderSpec extends BooleanFieldBehaviours with
   val form = new ForeignBalancingChargeFormProvider()("individual")
 
   ".balancingChargeAmount" - {
-    "when balancingChargeYesNo is true" - {
+    "when isBalancingCharge is true" - {
       "and an amount is entered, should successfully bind" in {
-        val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "4534.65"))
-        boundForm.value.value mustBe BalancingCharge(balancingChargeYesNo = true, Some(4534.65))
+        val boundForm = form.bind(Map("isBalancingCharge" -> "true", "balancingChargeAmount" -> "4534.65"))
+        boundForm.value.value mustBe BalancingCharge(isBalancingCharge = true, Some(4534.65))
         boundForm.errors mustBe empty
       }
 
       "and no amount is entered, should fail to bind" in {
-        val boundForm = form.bind(Map("balancingChargeYesNo" -> "true"))
+        val boundForm = form.bind(Map("isBalancingCharge" -> "true"))
         boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.required.individual"))
       }
 
       "and a non numeric value is entered then should fail to bind" in {
-        val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "non-numeric-value"))
+        val boundForm = form.bind(Map("isBalancingCharge" -> "true", "balancingChargeAmount" -> "non-numeric-value"))
         boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.nonNumeric.individual"))
       }
 
 
       "and an amount is entered that has more than 2 decimal places then it should fail to bind" in {
-        val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "4534.6545"))
+        val boundForm = form.bind(Map("isBalancingCharge" -> "true", "balancingChargeAmount" -> "4534.6545"))
         boundForm.errors must contain(FormError("balancingChargeAmount", "foreignBalancingCharge.amount.error.twoDecimalPlaces.individual"))
       }
 
 
       "and an amount is entered that is out of range then should fail to bind" in {
-        val boundForm = form.bind(Map("balancingChargeYesNo" -> "true", "balancingChargeAmount" -> "4533455353453534543534"))
+        val boundForm = form.bind(Map("isBalancingCharge" -> "true", "balancingChargeAmount" -> "4533455353453534543534"))
         boundForm.errors must contain(
           FormError(
             "balancingChargeAmount",

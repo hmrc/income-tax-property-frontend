@@ -87,7 +87,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
         withClaimExpenses <-
           withTotalIncome.set(
             ClaimExpensesOrReliefPage(RentARoom),
-            ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))
+            ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(100.65))
           )
       } yield withClaimExpenses
 
@@ -102,7 +102,7 @@ class ClaimExpensesOrReliefControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(ClaimExpensesOrRelief(claimExpensesOrReliefYesNo = true, Some(100.65))),
+          form.fill(ClaimExpensesOrRelief(isClaimExpensesOrRelief = true, Some(100.65))),
           taxYear,
           NormalMode,
           "individual",

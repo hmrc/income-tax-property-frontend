@@ -31,9 +31,9 @@ class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
 
   def apply(individualOrAgent: String): Form[CapitalAllowancesForACar] = {
     Form(mapping(
-      "capitalAllowancesForACarYesNo" -> boolean(s"capitalAllowancesForACar.error.required.$individualOrAgent"),
+      "isCapitalAllowancesForACar" -> boolean(s"capitalAllowancesForACar.error.required.$individualOrAgent"),
       "capitalAllowancesForACarAmount" -> {
-        mandatoryIfTrue("capitalAllowancesForACarYesNo",
+        mandatoryIfTrue("isCapitalAllowancesForACar",
           currency(
             s"capitalAllowancesForACar.error.required.amount.$individualOrAgent",
             "capitalAllowancesForACar.error.twoDecimalPlaces",

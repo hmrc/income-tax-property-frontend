@@ -53,7 +53,7 @@ class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
@@ -75,7 +75,7 @@ class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
@@ -98,7 +98,7 @@ class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
@@ -120,7 +120,7 @@ class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 
@@ -152,7 +152,7 @@ class WhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers("test").set(UnusedLossesBroughtForwardPage(Rentals),
         UnusedLossesBroughtForward(
-          unusedLossesBroughtForwardYesOrNo = true,
+          isUnusedLossesBroughtForward = true,
           unusedLossesBroughtForwardAmount = Some(previousLoss)
         )).get
 

@@ -29,7 +29,7 @@ class AboutPropertyCompleteFormProviderSpec extends BooleanFieldBehaviours {
 
   ".aboutPropertyCompleteYesOrNo" - {
 
-    val fieldName = "aboutPropertyCompleteYesOrNo"
+    val fieldName = "isAboutPropertyComplete"
 
     behave like booleanField(
       form,

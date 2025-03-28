@@ -29,9 +29,9 @@ class DeductingTaxFormProvider @Inject() extends Mappings {
   def apply(individualOrAgent: String): Form[DeductingTax] =
     Form[DeductingTax](
       mapping(
-        "taxDeductedYesNo" -> boolean(s"deductingTax.error.required.$individualOrAgent"),
+        "isTaxDeducted" -> boolean(s"deductingTax.error.required.$individualOrAgent"),
         "taxDeductedAmount" -> {
-          mandatoryIfTrue("taxDeductedYesNo",
+          mandatoryIfTrue("isTaxDeducted",
             currency(
               s"deductingTax.amount.error.required.$individualOrAgent",
               s"deductingTax.amount.error.twoDecimalPlaces.$individualOrAgent",

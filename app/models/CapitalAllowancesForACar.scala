@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 final case class CapitalAllowancesForACar(
-  capitalAllowancesForACarYesNo: Boolean,
+  isCapitalAllowancesForACar: Boolean,
   capitalAllowancesForACarAmount: Option[BigDecimal]
 )
 

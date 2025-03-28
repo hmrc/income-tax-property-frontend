@@ -72,7 +72,7 @@ class CapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSugar 
       val userAnswers = UserAnswers(userAnswersId)
         .set(
           CapitalAllowancesForACarPage(Rentals),
-          CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))
+          CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))
         )
         .success
         .value
@@ -88,7 +88,7 @@ class CapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSugar 
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(CapitalAllowancesForACar(capitalAllowancesForACarYesNo = true, Some(12.34))),
+          form.fill(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(12.34))),
           NormalMode,
           taxYear,
           "individual",
@@ -115,7 +115,7 @@ class CapitalAllowancesForACarControllerSpec extends SpecBase with MockitoSugar 
         val request =
           FakeRequest(POST, capitalAllowancesForACarRoute)
             .withFormUrlEncodedBody(
-              "capitalAllowancesForACarYesNo"  -> "true",
+              "isCapitalAllowancesForACar"  -> "true",
               "capitalAllowancesForACarAmount" -> "1234"
             )
 

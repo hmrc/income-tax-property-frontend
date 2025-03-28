@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Format, Json}
 
 final case class BusinessPremisesRenovationAllowanceBalancingCharge(
-  businessPremisesRenovationAllowanceBalancingChargeYesOrNo: Boolean,
+  isBusinessPremisesRenovationAllowanceBalancingChargeY: Boolean,
   businessPremisesRenovationAllowanceBalancingChargeAmount: Option[BigDecimal]
 )
 

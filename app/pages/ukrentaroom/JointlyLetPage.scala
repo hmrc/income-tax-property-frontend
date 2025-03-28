@@ -23,5 +23,5 @@ import play.api.libs.json.JsPath
 
 case class JointlyLetPage(propertyType: PropertyType) extends QuestionPage[Boolean] {
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
-  override def toString: String = "jointlyLetYesOrNo"
+  override def toString: String = "isJointlyLet"
 }

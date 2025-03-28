@@ -64,7 +64,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
         request.userAnswers.get(UkAndForeignPropertyRentalTypeUkPage).forall(_.contains(PropertyRentals))
       val isPIA: Boolean = request.userAnswers
         .get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
-        .exists(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+        .exists(_.isClaimPropertyIncomeAllowanceOrExpenses)
 
       val ukPropertyList: Option[SummaryList] = (reportIncome, isPIA) match {
         case (true, true) =>

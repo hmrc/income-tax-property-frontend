@@ -433,7 +433,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 ConsolidatedExpensesPage(propertyType),
-                ConsolidatedExpenses(consolidatedExpensesYesOrNo = false, None)
+                ConsolidatedExpenses(isConsolidatedExpenses = false, None)
               )
               .get
 
@@ -452,7 +452,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
               .set(
                 ConsolidatedExpensesPage(propertyType),
-                ConsolidatedExpenses(consolidatedExpensesYesOrNo = true, Some(100))
+                ConsolidatedExpenses(isConsolidatedExpenses = true, Some(100))
               )
               .get
 
@@ -690,7 +690,7 @@ class NavigatorSpec extends SpecBase {
       }
       "must go from UnusedLossesBroughtForwardPage to WhenYouReportedTheLossPage" in {
         val userAnswers = UserAnswers("test")
-          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(unusedLossesBroughtForwardYesOrNo = true, Some(BigDecimal(10))))
+          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(10))))
           .get
         navigator.nextPage(
           UnusedLossesBroughtForwardPage(Rentals),
@@ -1412,7 +1412,7 @@ class NavigatorSpec extends SpecBase {
 
       "must go from BalancingChargePage to AdjustmentsCheckYourAnswersPage if no change in user-answers" in {
         val userAnswers = UserAnswers("test")
-          .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
+          .set(BalancingChargePage(Rentals), BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10))))
           .get
         navigator.nextPage(
           BalancingChargePage(Rentals),
@@ -1425,14 +1425,14 @@ class NavigatorSpec extends SpecBase {
 
       "must go from BalancingChargePage to PropertyIncomeAllowancePage if change in user-answers" in {
         val previousUserAnswers = UserAnswers("test")
-          .set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = true, Some(BigDecimal(10))))
+          .set(BalancingChargePage(Rentals), BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10))))
           .get
         val userAnswers =
           UserAnswers("test")
             .set(ClaimPropertyIncomeAllowancePage(Rentals), true)
             .get
         val updateUserAnswers =
-          userAnswers.set(BalancingChargePage(Rentals), BalancingCharge(balancingChargeYesNo = false, None)).get
+          userAnswers.set(BalancingChargePage(Rentals), BalancingCharge(isBalancingCharge = false, None)).get
         navigator.nextPage(
           BalancingChargePage(Rentals),
           taxYear,

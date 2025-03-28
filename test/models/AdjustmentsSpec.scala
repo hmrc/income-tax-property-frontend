@@ -29,18 +29,18 @@ class AdjustmentsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
   val adjustmentsJson = """{
                           |            "privateUseAdjustment" : 2,
                           |            "balancingCharge" : {
-                          |                "balancingChargeYesNo" : true,
+                          |                "isBalancingCharge" : true,
                           |                "balancingChargeAmount" : 2
                           |            },
                           |            "propertyIncomeAllowance" : 2,
                           |            "renovationAllowanceBalancingCharge" : {
-                          |                "renovationAllowanceBalancingChargeYesNo" : true,
+                          |                "isRenovationAllowanceBalancingCharge" : true,
                           |                "renovationAllowanceBalancingChargeAmount" : 2
                           |            },
                           |            "residentialFinanceCost" : 2,
                           |            "unusedResidentialFinanceCost" : 2,
                           |            "unusedLossesBroughtForward" : {
-                          |               "unusedLossesBroughtForwardYesOrNo" : true,
+                          |               "isUnusedLossesBroughtForward" : true,
                           |               "unusedLossesBroughtForwardAmount" : 24
                           |            },
                           |            "whenYouReportedTheLoss" : "y2021to2022"

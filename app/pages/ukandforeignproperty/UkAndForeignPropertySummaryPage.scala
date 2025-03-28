@@ -47,13 +47,13 @@ object UkAndForeignPropertySummaryPage {
     val isClaimPIA: Boolean = userAnswers
       .flatMap(
         _.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage)
-          .map(_.claimPropertyIncomeAllowanceOrExpensesYesNo)
+          .map(_.isClaimPropertyIncomeAllowanceOrExpenses)
       )
       .contains(true)
     val isClaimRelief: Option[Boolean] = userAnswers
       .flatMap(
         _.get(UkAndForeignPropertyClaimExpensesOrReliefPage)
-          .map(_.claimExpensesOrReliefYesNo)
+          .map(_.isClaimExpensesOrRelief)
       )
 
     val foreignPropertyTaskListItems =

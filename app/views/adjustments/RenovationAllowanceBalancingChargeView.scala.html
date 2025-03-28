@@ -47,7 +47,7 @@
 
         @govukRadios(
                 radios.RadiosViewModel.yesNoWithConditionalHtml(
-                    field = form("renovationAllowanceBalancingChargeYesNo"),
+                    field = form("isRenovationAllowanceBalancingCharge"),
                     legend = LegendViewModel(messages("renovationAllowanceBalancingCharge.legend")).asPageHeading(LegendSize.Medium),
                     items = radios.RadiosViewModel.yesNoItemsWithConditionalHtml(
                         field = form("renovationAllowanceBalancingCharge"),

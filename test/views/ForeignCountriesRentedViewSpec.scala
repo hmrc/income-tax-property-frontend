@@ -70,7 +70,7 @@ class ForeignCountriesRentedViewSpec extends SpecBase with Matchers {
     }
 
     "show error summary when form has errors" in {
-      val form = Form("foreignCountriesRentedPropertyYesOrNo" -> boolean).withError("value", "selectIncomeCountry.error.required.individual")
+      val form = Form("isForeignCountriesRentedProperty" -> boolean).withError("value", "selectIncomeCountry.error.required.individual")
       val list = SummaryList(Seq.empty)
       val mode = NormalMode
       val individualOrAgent = "individual"
