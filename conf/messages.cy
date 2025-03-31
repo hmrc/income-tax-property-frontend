@@ -1892,7 +1892,7 @@ propertyIncomeReport.doNotReportPropertyIncome.agent = *Missing Welsh*
 propertyIncomeReport.checkYourAnswersLabel = A ydych am roi gwybod am eich incwm o eiddo?
 propertyIncomeReport.error.required.individual = Dewiswch ''Rwyf am roi gwybod am fy incwm o eiddo'', neu ''Nid wyf am roi gwybod am fy incwm o eiddo''
 propertyIncomeReport.error.required.agent = Dewiswch ''Rwyf am roi gwybod am incwm fy nghleient o eiddo'', neu ''Nid wyf am roi gwybod am incwm fy nghleient o eiddo''
-propertyIncomeReport.details.hint.individual = Nid oes angen i chi roi gwybod am incwm o eiddo os yw''n llai na £1,000. Mae''n bosibl y byddwch am roi gwybod amdano os yw''ch treuliau caniataol yn uwch na''ch incwm a''ch bod am hawlio rhyddhad am y golled yn erbyn incwm o eiddo yn y dyfodol
+propertyIncomeReport.details.hint.individual = Nid oes angen i chi roi gwybod am incwm o eiddo os yw''n llai na £1,000. Mae''n bosibl y byddwch am roi gwybod amdano os yw''ch treuliau caniataol yn uwch na''ch incwm a''ch bod am hawlio rhyddhad am y golled yn erbyn incwm o eiddo yn y dyfodol.
 propertyIncomeReport.details.hint.agent = Nid oes angen i''ch cleient roi gwybod am incwm o eiddo os yw''n llai na £1,000. Mae''n bosibl y bydd eich cleient am roi gwybod amdano os yw ei dreuliau caniataol yn uwch na''i incwm ac am hawlio rhyddhad am y golled yn erbyn incwm o eiddo yn y dyfodol.
 propertyIncomeReport.change.hidden = A ydych am roi gwybod am eich incwm o eiddo?
 
@@ -1966,7 +1966,7 @@ claimPropertyIncomeAllowanceOrExpenses.heading = Hawlio lwfans incwm o eiddo neu
 claimPropertyIncomeAllowanceOrExpenses.legend.individual = Beth hoffech ei wneud?
 claimPropertyIncomeAllowanceOrExpenses.legend.agent = Beth hoffai''ch cleient ei wneud?
 claimPropertyIncomeAllowanceOrExpenses.checkYourAnswersLabel = Hawlio lwfans incwm o eiddo neu dreuliau
-claimPropertyIncomeAllowanceOrExpenses.error.required = Dewiswch lwfans incwm o eiddo neu treuliau.
+claimPropertyIncomeAllowanceOrExpenses.error.required = Dewiswch lwfans incwm o eiddo neu treuliau
 claimPropertyIncomeAllowanceOrExpenses.change.hidden = Hawlio lwfans incwm o eiddo neu dreuliau
 claimPropertyIncomeAllowanceOrExpenses.details.input.yesText = Lwfans incwm o eiddo
 claimPropertyIncomeAllowanceOrExpenses.details.input.noText = Treuliau
