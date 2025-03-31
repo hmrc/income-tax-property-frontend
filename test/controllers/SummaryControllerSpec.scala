@@ -27,6 +27,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
+import pages.foreignincome.ForeignIncomeSummaryViewModel
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage.CountryName
 import pages.{UKPropertyPage, UKPropertySummaryPage}
@@ -99,6 +100,21 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
     )
   )
 
+  def foreignIncomeItems: Seq[TaskListItem] = Seq(
+    TaskListItem(
+      "foreignIncome.dividends",
+      controllers.foreignincome.dividends.routes.ForeignDividendsStartController.onPageLoad(taxYear),
+      TaskListTag.NotStarted,
+      "foreign_income_dividends"
+    ),
+    TaskListItem(
+      "foreignIncome.interest",
+      controllers.routes.IndexController.onPageLoad,
+      TaskListTag.NotStarted,
+      "foreign_income_interest"
+    )
+  )
+
   "Summary Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -141,6 +157,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem],
             Seq.empty[(CountryName, Seq[TaskListItem])]
+          ),
+          ForeignIncomeSummaryViewModel(
+            taxYear = taxYear,
+            foreignIncomeItems = foreignIncomeItems,
+            userAnswers = None
           )
         )(request, messages(application)).toString
       }
@@ -247,6 +268,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem],
             Seq.empty[(CountryName, Seq[TaskListItem])]
+          ),
+          ForeignIncomeSummaryViewModel(
+            taxYear = taxYear,
+            foreignIncomeItems = foreignIncomeItems,
+            userAnswers = None
           )
         )(request, messages(application)).toString
       }
@@ -298,6 +324,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem],
             Seq.empty[(CountryName, Seq[TaskListItem])]
+          ),
+          ForeignIncomeSummaryViewModel(
+            taxYear = taxYear,
+            foreignIncomeItems = foreignIncomeItems,
+            userAnswers = None
           )
         )(request, messages(application)).toString
       }
@@ -360,6 +391,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem],
             Seq.empty[(CountryName, Seq[TaskListItem])]
+          ),
+          ForeignIncomeSummaryViewModel(
+            taxYear = taxYear,
+            foreignIncomeItems = foreignIncomeItems,
+            userAnswers = None
           )
         )(request, messages(application)).toString
       }
@@ -422,6 +458,11 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
             Seq.empty[TaskListItem],
             Seq.empty[TaskListItem],
             Seq.empty[(CountryName, Seq[TaskListItem])]
+          ),
+          ForeignIncomeSummaryViewModel(
+            taxYear = taxYear,
+            foreignIncomeItems = foreignIncomeItems,
+            userAnswers = None
           )
         )(request, messages(application)).toString
       }

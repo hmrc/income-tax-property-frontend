@@ -33,7 +33,7 @@ class ForeignDividendsStartController @Inject()(
   view: ForeignDividendsStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       Ok(view())
   }

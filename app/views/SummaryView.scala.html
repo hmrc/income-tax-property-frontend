@@ -165,8 +165,10 @@
 }
 
 @foreignIncomeSection(foreignIncome: ForeignIncomeSummaryViewModel) = {
-    <h2 class="govuk-heading-m">@messages("foreignIncome.summary.heading")</h2>
-    @taskListSection(foreignIncome.foreignIncomeItems)
+  @if(foreignIncome.foreignIncomeItems.nonEmpty) {
+      <h2 class="govuk-heading-m">@messages("foreignIncome.summary.heading")</h2>
+      @taskListSection(foreignIncome.foreignIncomeItems)
+  }
 }
 
 @{

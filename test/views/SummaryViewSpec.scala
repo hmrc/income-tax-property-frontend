@@ -20,6 +20,7 @@ import controllers.routes
 import org.scalatest.matchers.must.Matchers
 import pages.UKPropertySummaryPage
 import pages.foreign.ForeignPropertySummaryPage
+import pages.foreignincome.ForeignIncomeSummaryViewModel
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
@@ -49,9 +50,10 @@ class SummaryViewSpec extends SpecBase with Matchers {
   def createView(
     ukProperty: UKPropertySummaryPage,
     foreignProperty: ForeignPropertySummaryPage,
-    ukAndForeignProperty: UkAndForeignPropertySummaryPage
+    ukAndForeignProperty: UkAndForeignPropertySummaryPage,
+    foreignIncome: ForeignIncomeSummaryViewModel
   )(implicit request: Request[_]): Html =
-    view(taxYear, ukProperty, foreignProperty, ukAndForeignProperty)(request, messages)
+    view(taxYear, ukProperty, foreignProperty, ukAndForeignProperty, foreignIncome)(request, messages)
 
   "Summary view" - {
 
@@ -88,8 +90,14 @@ class SummaryViewSpec extends SpecBase with Matchers {
         foreignListItems = Seq.empty
       )
 
+      val foreignIncomeSummaryViewModel = ForeignIncomeSummaryViewModel(
+        taxYear = taxYear,
+        foreignIncomeItems = Seq.empty,
+        userAnswers = None
+      )
+
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
-      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty)(request)
+      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty, foreignIncomeSummaryViewModel)(request)
 
       contentAsString(html) must include(messages("summary.aboutUKProperties.heading"))
       contentAsString(html) must include(messages("summary.about"))
@@ -130,8 +138,14 @@ class SummaryViewSpec extends SpecBase with Matchers {
         foreignListItems = Seq.empty
       )
 
+      val foreignIncomeSummaryViewModel = ForeignIncomeSummaryViewModel(
+        taxYear = taxYear,
+        foreignIncomeItems = Seq.empty,
+        userAnswers = None
+      )
+
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
-      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty)(request)
+      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty,foreignIncomeSummaryViewModel )(request)
 
       contentAsString(html) must include(messages("foreign.summary.title"))
       contentAsString(html) must include(messages("foreign.selectCountry"))
@@ -187,8 +201,14 @@ class SummaryViewSpec extends SpecBase with Matchers {
         foreignListItems = Seq.empty
       )
 
+      val foreignIncomeSummaryViewModel = ForeignIncomeSummaryViewModel(
+        taxYear = taxYear,
+        foreignIncomeItems = Seq.empty,
+        userAnswers = None
+      )
+
       val request = FakeRequest(GET, routes.SummaryController.show(taxYear).url)
-      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty)(request)
+      val html = createView(ukProperty, foreignProperty, ukAndForeignProperty, foreignIncomeSummaryViewModel)(request)
 
       contentAsString(html) must include(messages("summary.aboutUKProperties.heading"))
       contentAsString(html) must include(messages("summary.about"))
@@ -207,5 +227,6 @@ class SummaryViewSpec extends SpecBase with Matchers {
       contentAsString(html) must include("Completed")
       contentAsString(html) must include("Not yet started")
     }
+
   }
 }
