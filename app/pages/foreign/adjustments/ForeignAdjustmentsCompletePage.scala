@@ -16,12 +16,10 @@
 
 package pages.foreign.adjustments
 
-import models.{ForeignProperty, UserAnswers}
+import models.ForeignProperty
 import pages.PageConstants.adjustmentsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-
-import scala.util.Try
 
 case class ForeignAdjustmentsCompletePage(countryCode: String) extends QuestionPage[Boolean] {
 
@@ -29,10 +27,4 @@ case class ForeignAdjustmentsCompletePage(countryCode: String) extends QuestionP
 
   override def toString: String = "foreignAdjustmentsComplete"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value.map {
-      case false => userAnswers.remove(ForeignAdjustmentsCompletePage(countryCode))
-      case _ => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))
-  }
 }

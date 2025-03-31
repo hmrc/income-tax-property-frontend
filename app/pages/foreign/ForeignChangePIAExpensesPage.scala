@@ -16,7 +16,7 @@
 
 package pages.foreign
 
-import models.{UserAnswers, ForeignProperty}
+import models.{UserAnswers, ReadForeignPropertyAdjustments, ForeignProperty, ForeignPropertySelectCountry}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
@@ -36,15 +36,17 @@ case object ForeignChangePIAExpensesPage extends QuestionPage[Boolean] {
 
   override def toString: String = "foreignChangePIAExpenses"
 
-  def clean(value: Option[Boolean], userAnswers: UserAnswers, country: String): Try[UserAnswers] = {
-    value.map {
-      case false =>
-        userAnswers.remove(ForeignAdjustmentsCompletePage(country))
-        userAnswers.remove(ForeignAllowancesCompletePage(country))
-        userAnswers.remove(ForeignExpensesSectionCompletePage(country))
-        userAnswers.remove(ForeignIncomeSectionCompletePage(country))
-        userAnswers.remove(ForeignTaxSectionCompletePage(country))
-        userAnswers.remove(ForeignSbaCompletePage(country))
-      case _ => super.cleanup(value, userAnswers)
-    }.getOrElse(super.cleanup(value, userAnswers))}
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    val countryCodes: Array[String] =
+      userAnswers
+        .get(ForeignPropertySelectCountry)
+        .flatMap(_.incomeCountries.map(_.map(_.code)))
+        .getOrElse(Array.empty)
+
+    countryCodes.foldLeft(Try(userAnswers)) { (acc, countryCode) =>
+      acc.flatMap { ua =>
+        ua.remove(ReadForeignPropertyAdjustments(countryCode))
+      }
+    }
+  }
 }
