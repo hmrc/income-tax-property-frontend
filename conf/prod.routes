@@ -3,5 +3,6 @@
 ->         /update-and-submit-income-tax-return/property            rarApp.Routes
 ->         /update-and-submit-income-tax-return/property            foreign.Routes
 ->         /update-and-submit-income-tax-return/property            ukAndForeignProperty.Routes
+->         /update-and-submit-income-tax-return/foreign-income      foreignIncome.Routes
 ->         /                                                        health.Routes
 

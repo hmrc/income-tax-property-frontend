@@ -38,24 +38,30 @@ case object ForeignProperty extends PropertyType {
 case object UKAndForeignProperty extends PropertyType {
   override def toString: String = "uk and foreign property"
 }
+case object ForeignIncome extends PropertyType {
+  override def toString: String = "foreign income"
+}
+
 object PropertyType {
   def toPath(propertyType: PropertyType): String = propertyType match {
-    case Rentals          => "rentals"
-    case RentARoom        => "rent-a-room"
-    case RentalsRentARoom => "rentals-rent-a-room"
-    case UKProperty       => "uk-property"
-    case ForeignProperty  => "foreign-property"
+    case Rentals              => "rentals"
+    case RentARoom            => "rent-a-room"
+    case RentalsRentARoom     => "rentals-rent-a-room"
+    case UKProperty           => "uk-property"
+    case ForeignProperty      => "foreign-property"
     case UKAndForeignProperty => "uk-and-foreign-property"
+    case ForeignIncome        => "foreign-income"
   }
 
   implicit val jsLiteral: JavascriptLiteral[PropertyType] = new JavascriptLiteral[PropertyType] {
     override def to(value: PropertyType): String = value match {
-      case Rentals          => "Rentals"
-      case RentARoom        => "RentARoom"
-      case RentalsRentARoom => "RentalsRentARoom"
-      case UKProperty       => "UKProperty"
-      case ForeignProperty  => "ForeignProperty"
+      case Rentals              => "Rentals"
+      case RentARoom            => "RentARoom"
+      case RentalsRentARoom     => "RentalsRentARoom"
+      case UKProperty           => "UKProperty"
+      case ForeignProperty      => "ForeignProperty"
       case UKAndForeignProperty => "UKAndForeignProperty"
+      case ForeignIncome        => "ForeignIncome"
     }
   }
 }

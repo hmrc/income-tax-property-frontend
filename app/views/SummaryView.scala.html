@@ -17,6 +17,7 @@
 @import pages.UKPropertySummaryPage
 @import pages.foreign.ForeignPropertySummaryPage
 @import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
+@import pages.foreignincome.ForeignIncomeSummaryViewModel
 @import viewmodels.summary.TaskListItem
 @import viewmodels.summary.TaskListTag.{CanNotStart, Completed}
 
@@ -25,8 +26,15 @@
         govukTag: GovukTag
 )
 
+@(
+    taxYear: Int,
+    ukProperty: UKPropertySummaryPage,
+    foreignProperty: ForeignPropertySummaryPage,
+    ukAndForeignProperty: UkAndForeignPropertySummaryPage,
+    foreignIncome: ForeignIncomeSummaryViewModel
+)(implicit request: Request[_], messages: Messages)
 
-@(taxYear: Int, ukProperty: UKPropertySummaryPage, foreignProperty: ForeignPropertySummaryPage, ukAndForeignProperty: UkAndForeignPropertySummaryPage)(implicit request: Request[_], messages: Messages)
+
 
 @taskListSection(items: Seq[TaskListItem]) = {
     <ol class="govuk-task-list">
@@ -81,7 +89,7 @@
         @ukPropertySection(ukProperty)
         @foreignPropertySection(foreignProperty)
     }
-
+    @foreignIncomeSection(foreignIncome)
 }
 
 
@@ -154,6 +162,11 @@
             @taskListSection(listItems)
         }
     }
+}
+
+@foreignIncomeSection(foreignIncome: ForeignIncomeSummaryViewModel) = {
+    <h2 class="govuk-heading-m">@messages("foreignIncome.summary.heading")</h2>
+    @taskListSection(foreignIncome.foreignIncomeItems)
 }
 
 @{
