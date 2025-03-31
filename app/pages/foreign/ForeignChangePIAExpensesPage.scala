@@ -16,14 +16,35 @@
 
 package pages.foreign
 
-import models.ForeignProperty
+import models.{UserAnswers, ForeignProperty}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
+import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
+import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.income.ForeignIncomeSectionCompletePage
+import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import play.api.libs.json.JsPath
+import service.CountryNamesDataSource
+import uk.gov.hmrc.play.language.LanguageUtils
+
+import scala.util.Try
 
 case object ForeignChangePIAExpensesPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ aboutPath(ForeignProperty) \ toString
 
   override def toString: String = "foreignChangePIAExpenses"
+
+  def clean(value: Option[Boolean], userAnswers: UserAnswers, country: String): Try[UserAnswers] = {
+    value.map {
+      case false =>
+        userAnswers.remove(ForeignAdjustmentsCompletePage(country))
+        userAnswers.remove(ForeignAllowancesCompletePage(country))
+        userAnswers.remove(ForeignExpensesSectionCompletePage(country))
+        userAnswers.remove(ForeignIncomeSectionCompletePage(country))
+        userAnswers.remove(ForeignTaxSectionCompletePage(country))
+        userAnswers.remove(ForeignSbaCompletePage(country))
+      case _ => super.cleanup(value, userAnswers)
+    }.getOrElse(super.cleanup(value, userAnswers))}
 }

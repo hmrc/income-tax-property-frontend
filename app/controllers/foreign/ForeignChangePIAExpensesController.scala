@@ -23,7 +23,11 @@ import javax.inject.Inject
 import models.Mode
 import navigation.ForeignPropertyNavigator
 import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
-import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, IncomeSourceCountries, ForeignChangePIAExpensesPage, ForeignPropertySummaryPage}
+import pages.foreign.allowances.ForeignAllowancesCompletePage
+import pages.foreign.expenses.ForeignExpensesSectionCompletePage
+import pages.foreign.income.ForeignIncomeSectionCompletePage
+import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
+import pages.foreign.{IncomeSourceCountries, ForeignPropertySummaryPage, ForeignTaxSectionCompletePage, ForeignChangePIAExpensesPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -57,16 +61,28 @@ class ForeignChangePIAExpensesController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val test = request.userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap { country =>
+
+      val countryList = request.userAnswers.get(IncomeSourceCountries).map(_.array.toList.flatMap { country =>
           CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
         })
         .toList
         .flatten
-      println(s"\n\n\nCountries: $test\n\n\n")
-        def clearData = test.foreach(country => request.userAnswers.remove(ForeignAdjustmentsCompletePage(country.code)))
+        .map(c => c.code)
+      println(s"\n\n\nCountries: $countryList\n\n\n")
+//        def clearData = test.foreach(country => {
+//          request.userAnswers.remove(ForeignAdjustmentsCompletePage(country))
+//          request.userAnswers.remove(ForeignAllowancesCompletePage(country))
+//          request.userAnswers.remove(ForeignExpensesSectionCompletePage(country))
+//          request.userAnswers.remove(ForeignIncomeSectionCompletePage(country))
+//          request.userAnswers.remove(ForeignTaxSectionCompletePage(country))
+//          request.userAnswers.remove(ForeignSbaCompletePage(country))
+//        })
+
         for {
-            updatedAnswers <- Future.fromTry(
-              request.userAnswers.set(ForeignAdjustmentsCompletePage(""), None))
+
+            updatedAnswers <- Future.fromTry(countryList.foreach(country => ForeignChangePIAExpensesPage.clean(Some(false), request.userAnswers, country)))
+
+             // Future.fromTry(request.userAnswers.remove(ForeignAdjustmentsCompletePage("")))
             _              <- sessionRepository.set(updatedAnswers)
           } yield
     Redirect(navigator.nextPage(ForeignChangePIAExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
