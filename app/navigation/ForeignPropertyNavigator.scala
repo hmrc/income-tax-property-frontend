@@ -472,7 +472,28 @@ class ForeignPropertyNavigator {
       userAnswers.get(ClaimPropertyIncomeAllowanceOrExpensesPage)
     ) match {
       case (Some(true), Some(false)) | (Some(false), Some(true)) =>
-        ForeignChangePIAExpensesController.onPageLoad(taxYear)
+        val countryCodes: Array[String] =
+          userAnswers
+            .get(ForeignPropertySelectCountry)
+            .flatMap(_.incomeCountries.map(_.map(_.code)))
+            .getOrElse(Array.empty)
+
+        val foreignSectionStarted = countryCodes.foldLeft(false){ (acc, countryCode) =>
+          acc |
+          userAnswers.get(ForeignAdjustmentsCompletePage(countryCode)).isDefined |
+          userAnswers.get(ForeignAllowancesCompletePage(countryCode)).isDefined |
+          userAnswers.get(ForeignIncomeSectionCompletePage(countryCode)).isDefined |
+          userAnswers.get(ForeignExpensesSectionCompletePage(countryCode)).isDefined |
+          userAnswers.get(ForeignSbaCompletePage(countryCode)).isDefined |
+          userAnswers.get(ForeignTaxSectionCompletePage(countryCode)).isDefined
+        }
+
+        if(foreignSectionStarted) {
+          ForeignChangePIAExpensesController.onPageLoad(taxYear)
+        } else {
+          ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+        }
+
       case _ => ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     }
 

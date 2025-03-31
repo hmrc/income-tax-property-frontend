@@ -22,18 +22,12 @@ import forms.ForeignChangePIAExpensesFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.ForeignPropertyNavigator
-import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
-import pages.foreign.allowances.ForeignAllowancesCompletePage
-import pages.foreign.expenses.ForeignExpensesSectionCompletePage
-import pages.foreign.income.ForeignIncomeSectionCompletePage
-import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
-import pages.foreign.{IncomeSourceCountries, ForeignPropertySummaryPage, ForeignTaxSectionCompletePage, ForeignChangePIAExpensesPage, ClaimPropertyIncomeAllowanceOrExpensesPage}
+
+import pages.foreign.ForeignChangePIAExpensesPage
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.ForeignChangePIAExpensesView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,11 +41,8 @@ class ForeignChangePIAExpensesController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: ForeignChangePIAExpensesFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignChangePIAExpensesView,
-                                         languageUtils: LanguageUtils
+                                         view: ForeignChangePIAExpensesView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  val form = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -61,25 +52,11 @@ class ForeignChangePIAExpensesController @Inject()(
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors =>
-            Future.successful(BadRequest(view(taxYear, mode))),
-          value =>
-            for {
-              updatedAnswers <-
-                Future.fromTry(request.userAnswers.set(ForeignChangePIAExpensesPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              navigator.nextPage(
-                ForeignChangePIAExpensesPage,
-                taxYear,
-                mode,
-                request.userAnswers,
-                updatedAnswers
-              )
-            )
-        )
+
+      for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignChangePIAExpensesPage, true))
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield
+      Redirect(navigator.nextPage(ForeignChangePIAExpensesPage, taxYear, mode, request.userAnswers, updatedAnswers))
   }
 }

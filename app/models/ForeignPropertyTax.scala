@@ -16,7 +16,9 @@
 
 package models
 
-import play.api.libs.json.{Format, Json}
+import pages.PageConstants.foreignTaxPath
+import play.api.libs.json.{Format, Json, JsPath}
+import queries.{Gettable, Settable}
 
 case class ForeignPropertyTax(foreignIncomeTax: Option[ForeignIncomeTax],foreignTaxCreditRelief:Option[Boolean])
 
@@ -24,4 +26,10 @@ object ForeignPropertyTax {
   implicit val format:Format[ForeignPropertyTax] = Json.format
 }
 
+case class ReadWriteForeignPropertyTax(countryCode: String) extends Gettable[ForeignPropertyTax] with Settable[ForeignPropertyTax] {
 
+  override def path: JsPath = JsPath \ foreignTaxPath(ForeignProperty) \ toString
+
+  override def toString: String = countryCode.toUpperCase
+
+}

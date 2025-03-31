@@ -16,17 +16,10 @@
 
 package pages.foreign
 
-import models.{UserAnswers, ReadForeignPropertyAdjustments, ForeignProperty, ForeignPropertySelectCountry}
+import models.{UserAnswers, ForeignProperty, ReadWriteForeignPropertyAllowances, ReadForeignPropertyIncome, ReadForeignPropertyExpenses, ReadWriteStructuredBuildingAllowance, ReadWriteForeignPropertyTax, ReadForeignPropertyAdjustments, ForeignPropertySelectCountry}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
-import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
-import pages.foreign.allowances.ForeignAllowancesCompletePage
-import pages.foreign.expenses.ForeignExpensesSectionCompletePage
-import pages.foreign.income.ForeignIncomeSectionCompletePage
-import pages.foreign.structurebuildingallowance.ForeignSbaCompletePage
 import play.api.libs.json.JsPath
-import service.CountryNamesDataSource
-import uk.gov.hmrc.play.language.LanguageUtils
 
 import scala.util.Try
 
@@ -46,6 +39,11 @@ case object ForeignChangePIAExpensesPage extends QuestionPage[Boolean] {
     countryCodes.foldLeft(Try(userAnswers)) { (acc, countryCode) =>
       acc.flatMap { ua =>
         ua.remove(ReadForeignPropertyAdjustments(countryCode))
+        ua.remove(ReadWriteForeignPropertyAllowances(countryCode))
+        ua.remove(ReadWriteStructuredBuildingAllowance(countryCode))
+        ua.remove(ReadForeignPropertyExpenses(countryCode))
+        ua.remove(ReadForeignPropertyIncome(countryCode))
+        ua.remove(ReadWriteForeignPropertyTax(countryCode))
       }
     }
   }
