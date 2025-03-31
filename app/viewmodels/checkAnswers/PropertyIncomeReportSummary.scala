@@ -36,7 +36,7 @@ object PropertyIncomeReportSummary {
         s"propertyIncomeReport.doNotReportPropertyIncome.$individualOrAgent"
       }
       SummaryListRowViewModel(
-        key = KeyViewModel("propertyIncomeReport.checkYourAnswersLabel") withCssClass keyAlignLeftCssClass,
+        key = KeyViewModel(s"propertyIncomeReport.checkYourAnswersLabel.${individualOrAgent}") withCssClass keyAlignLeftCssClass,
         value = ValueViewModel(value).withCssClass(selectCountriesValueAlignLeftCssClass),
         actions = Seq(
           ActionItemViewModel(
