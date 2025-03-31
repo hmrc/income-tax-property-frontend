@@ -31,14 +31,14 @@ class RentalsRentARoomStartControllerSpec extends SpecBase {
       (false, "individual"),
       (true, "agent")
     )
-    forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
+    forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
       val user = User(
         "",
         "",
         "",
         agentRef = Option.when(isAgent)("agentReferenceNumber")
       )
-      s"must return OK and the correct view for a GET for $agencyOrIndividual" in {
+      s"must return OK and the correct view for a GET for $agentOrIndividual" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent).build()
 

@@ -44,8 +44,8 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
     (false, "individual"),
     (true, "agent")
   )
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    s"RentalsAndRentARoomAllowancesCheckYourAnswers Controller $agencyOrIndividual" - {
+  forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
+    s"RentalsAndRentARoomAllowancesCheckYourAnswers Controller $agentOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
 

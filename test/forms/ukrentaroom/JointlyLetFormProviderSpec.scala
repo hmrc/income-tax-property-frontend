@@ -21,14 +21,14 @@ import play.api.data.FormError
 
 class JointlyLetFormProviderSpec extends BooleanFieldBehaviours {
 
-  val scenarios = Table[String]("AgencyOrIndividual", "agency", "individual")
+  val scenarios = Table[String]("AgentOrIndividual", "agent", "individual")
   val invalidKey = s"error.boolean"
 
-  forAll(scenarios) { (agencyOrIndividual: String) =>
-    val form = new JointlyLetFormProvider()(agencyOrIndividual)
-    val requiredKey = s"jointlyLet.error.required.$agencyOrIndividual"
+  forAll(scenarios) { (agentOrIndividual: String) =>
+    val form = new JointlyLetFormProvider()(agentOrIndividual)
+    val requiredKey = s"jointlyLet.error.required.$agentOrIndividual"
 
-    s".value $agencyOrIndividual" - {
+    s".value $agentOrIndividual" - {
 
       val fieldName = "isJointlyLet"
 
