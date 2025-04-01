@@ -37,14 +37,15 @@ case object ForeignChangePIAExpensesPage extends QuestionPage[Boolean] {
         .getOrElse(Array.empty)
 
     countryCodes.foldLeft(Try(userAnswers)) { (acc, countryCode) =>
-      acc.flatMap { ua =>
-        ua.remove(ReadForeignPropertyAdjustments(countryCode))
-        ua.remove(ReadWriteForeignPropertyAllowances(countryCode))
-        ua.remove(ReadWriteStructuredBuildingAllowance(countryCode))
-        ua.remove(ReadForeignPropertyExpenses(countryCode))
-        ua.remove(ReadForeignPropertyIncome(countryCode))
-        ua.remove(ReadWriteForeignPropertyTax(countryCode))
-      }
+      for {
+        ua <- acc
+        ua1 <- ua.remove(ReadForeignPropertyAdjustments(countryCode))
+        ua2 <- ua1.remove(ReadWriteForeignPropertyAllowances(countryCode))
+        ua3 <- ua2.remove(ReadWriteStructuredBuildingAllowance(countryCode))
+        ua4 <- ua3.remove(ReadForeignPropertyExpenses(countryCode))
+        ua5 <- ua4.remove(ReadForeignPropertyIncome(countryCode))
+        ua6 <- ua5.remove(ReadWriteForeignPropertyTax(countryCode))
+      } yield ua6
     }
   }
 }
