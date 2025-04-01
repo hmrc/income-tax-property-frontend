@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package forms.foreign
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import javax.inject.Inject
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class ForeignChangePIAExpensesFormProviderSpec extends BooleanFieldBehaviours {
+class ForeignChangePIAExpensesFormProvider @Inject() extends Mappings {
 
-  val requiredKey = "foreignChangePIAExpenses.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new ForeignChangePIAExpensesFormProvider()()
-
-  ".value" - {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("foreignChangePIAExpenses.error.required")
     )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.foreign
 
 import base.SpecBase
-import forms.ForeignChangePIAExpensesFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import controllers.routes
+import models.NormalMode
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -35,18 +35,17 @@ import scala.concurrent.Future
 
 class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", controllers.foreign.routes.ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear).url)
 
-  val formProvider = new ForeignChangePIAExpensesFormProvider()
-  val form = formProvider()
+  val taxYear = 2024
 
-  lazy val foreignChangePIAExpensesRoute = ForeignChangePIAExpensesController.onPageLoad(NormalMode).url
+  lazy val foreignChangePIAExpensesRoute: String = controllers.foreign.routes.ForeignChangePIAExpensesController.onPageLoad(taxYear).url
 
   "ForeignChangePIAExpenses Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignChangePIAExpensesRoute)
@@ -56,25 +55,7 @@ class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar 
         val view = application.injector.instanceOf[ForeignChangePIAExpensesView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignChangePIAExpensesPage, true).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, foreignChangePIAExpensesRoute)
-
-        val view = application.injector.instanceOf[ForeignChangePIAExpensesView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -85,7 +66,7 @@ class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = emptyUserAnswers.set(ForeignChangePIAExpensesPage, true).toOption, isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -104,29 +85,9 @@ class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar 
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, foreignChangePIAExpensesRoute)
-            .withFormUrlEncodedBody(("value", ""))
-
-        val boundForm = form.bind(Map("value" -> ""))
-
-        val view = application.injector.instanceOf[ForeignChangePIAExpensesView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
-      }
-    }
-
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request = FakeRequest(GET, foreignChangePIAExpensesRoute)
@@ -140,7 +101,7 @@ class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar 
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None, true).build()
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
 
       running(application) {
         val request =

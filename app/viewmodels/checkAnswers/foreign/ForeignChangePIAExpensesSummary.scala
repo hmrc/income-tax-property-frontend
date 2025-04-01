@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.foreign
 
-import models.{UserAnswers, CheckMode}
+import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._

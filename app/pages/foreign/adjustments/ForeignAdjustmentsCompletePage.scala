@@ -26,5 +26,4 @@ case class ForeignAdjustmentsCompletePage(countryCode: String) extends QuestionP
   override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "foreignAdjustmentsComplete"
-
 }

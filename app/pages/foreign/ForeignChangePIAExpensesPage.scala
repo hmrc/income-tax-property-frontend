@@ -16,7 +16,7 @@
 
 package pages.foreign
 
-import models.{UserAnswers, ForeignProperty, ReadWriteForeignPropertyAllowances, ReadForeignPropertyIncome, ReadForeignPropertyExpenses, ReadWriteStructuredBuildingAllowance, ReadWriteForeignPropertyTax, ReadForeignPropertyAdjustments, ForeignPropertySelectCountry}
+import models._
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath

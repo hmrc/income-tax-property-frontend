@@ -17,7 +17,6 @@
 package controllers.foreign
 
 import controllers.actions._
-import forms.ForeignChangePIAExpensesFormProvider
 
 import javax.inject.Inject
 import models.Mode
@@ -39,7 +38,6 @@ class ForeignChangePIAExpensesController @Inject()(
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: ForeignChangePIAExpensesFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: ForeignChangePIAExpensesView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
