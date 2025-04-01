@@ -22,13 +22,13 @@ import play.api.data.FormError
 class EsbaClaimAmountFormProviderSpec extends CurrencyFieldBehaviours {
 
   val scenarios = Table[String](
-    ("AgencyOrIndividual"),
-    ("agency"),
+    ("AgentOrIndividual"),
+    ("agent"),
     ("individual"))
 
-  forAll(scenarios)(agencyOrIndividual => {
-    val form = new EsbaClaimAmountFormProvider()(agencyOrIndividual)
-    s".value for $agencyOrIndividual" - {
+  forAll(scenarios)(agentOrIndividual => {
+    val form = new EsbaClaimAmountFormProvider()(agentOrIndividual)
+    s".value for $agentOrIndividual" - {
 
       val fieldName = "esbaClaim"
 
@@ -61,7 +61,7 @@ class EsbaClaimAmountFormProviderSpec extends CurrencyFieldBehaviours {
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"esbaClaimAmount.error.required.$agencyOrIndividual")
+        requiredError = FormError(fieldName, s"esbaClaimAmount.error.required.$agentOrIndividual")
       )
     }
   })

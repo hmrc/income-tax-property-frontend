@@ -43,10 +43,10 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
   def onwardRoute = Call("GET", "/foo")
 
   val validAnswer = BigDecimal(155.2)
-  val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
+  val scenarios = Table[Boolean, String](("Is Agent", "AgentOrIndividual"), (true, "agent"), (false, "individual"))
   val taxYear = 2024
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    val form = formProvider(agencyOrIndividual)
+  forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
+    val form = formProvider(agentOrIndividual)
     val user = User(
       "",
       "",
@@ -56,7 +56,7 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
     lazy val costOfServicesProvidedRoute =
       controllers.ukrentaroom.expenses.routes.CostOfServicesProvidedRRController.onPageLoad(taxYear, NormalMode).url
 
-    s"CostOfServicesProvided Controller for $agencyOrIndividual" - {
+    s"CostOfServicesProvided Controller for $agentOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {
         val userAnswers = emptyUserAnswers

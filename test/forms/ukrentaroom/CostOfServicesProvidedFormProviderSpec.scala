@@ -22,16 +22,16 @@ import play.api.data.FormError
 
 class CostOfServicesProvidedFormProviderSpec extends CurrencyFieldBehaviours {
   val scenarios = Table[String](
-    ("AgencyOrIndividual"),
-    ("agency"),
+    ("AgentOrIndividual"),
+    ("agent"),
     ("individual"))
   val invalidKey = s"error.boolean"
 
-  forAll(scenarios) { (agencyOrIndividual: String) =>
+  forAll(scenarios) { (agentOrIndividual: String) =>
 
-    val form = new CostOfServicesProvidedFormProvider()(agencyOrIndividual)
+    val form = new CostOfServicesProvidedFormProvider()(agentOrIndividual)
 
-    s".value for $agencyOrIndividual" - {
+    s".value for $agentOrIndividual" - {
 
       val fieldName = "uKRentARoomCostOfServicesProvided"
 
@@ -49,8 +49,8 @@ class CostOfServicesProvidedFormProviderSpec extends CurrencyFieldBehaviours {
       behave like currencyField(
         form,
         fieldName,
-        nonNumericError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.nonNumeric.$agencyOrIndividual"),
-        twoDecimalPlacesError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.twoDecimalPlaces.$agencyOrIndividual")
+        nonNumericError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.nonNumeric.$agentOrIndividual"),
+        twoDecimalPlacesError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.twoDecimalPlaces.$agentOrIndividual")
       )
 
       behave like currencyFieldWithRange(
@@ -64,7 +64,7 @@ class CostOfServicesProvidedFormProviderSpec extends CurrencyFieldBehaviours {
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.required.$agencyOrIndividual")
+        requiredError = FormError(fieldName, s"ukrentaroom.costOfServicesProvided.error.required.$agentOrIndividual")
       )
     }
   }

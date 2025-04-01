@@ -46,7 +46,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
     Table[Boolean, String, UserAnswers, Option[(Boolean, String)], String](
       (
         "Is Agent",
-        "AgencyOrIndividual",
+        "AgentOrIndividual",
         "Property Income",
         "IsLessThanEightyFiveThousandWithContainingString",
         "nextPageLink"
@@ -72,7 +72,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
   forAll(scenarios) {
     (
       isAgent: Boolean,
-      agencyOrIndividual: String,
+      agentOrIndividual: String,
       userAnswers: UserAnswers,
       isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)],
       nextPageUrl: String

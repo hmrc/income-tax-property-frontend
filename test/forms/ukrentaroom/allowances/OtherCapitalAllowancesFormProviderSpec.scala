@@ -24,11 +24,11 @@ import scala.math.BigDecimal.RoundingMode
 class OtherCapitalAllowancesFormProviderSpec extends CurrencyFieldBehaviours {
 
   val formProvider = new OtherCapitalAllowancesFormProvider()
-  val scenarios = Table[String]("AgencyOrIndividual", "agent", "individual")
+  val scenarios = Table[String]("AgentOrIndividual", "agent", "individual")
   val hundredBillion = BigDecimal("100000000000")
-  forAll(scenarios) { (agencyOrIndividual: String) =>
-    val form = formProvider(agencyOrIndividual)
-    s".otherCapitalAllowances for $agencyOrIndividual" - {
+  forAll(scenarios) { (agentOrIndividual: String) =>
+    val form = formProvider(agentOrIndividual)
+    s".otherCapitalAllowances for $agentOrIndividual" - {
 
       val fieldName = "otherCapitalAllowances"
 
@@ -47,9 +47,9 @@ class OtherCapitalAllowancesFormProviderSpec extends CurrencyFieldBehaviours {
         form,
         fieldName,
         nonNumericError =
-          FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.nonNumeric.$agencyOrIndividual"),
+          FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.nonNumeric.$agentOrIndividual"),
         twoDecimalPlacesError =
-          FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.twoDecimalPlaces.$agencyOrIndividual")
+          FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.twoDecimalPlaces.$agentOrIndividual")
       )
 
       behave like currencyFieldWithRange(
@@ -64,7 +64,7 @@ class OtherCapitalAllowancesFormProviderSpec extends CurrencyFieldBehaviours {
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.required.$agencyOrIndividual")
+        requiredError = FormError(fieldName, s"ukRentARoom.otherCapitalAllowances.error.required.$agentOrIndividual")
       )
     }
   }

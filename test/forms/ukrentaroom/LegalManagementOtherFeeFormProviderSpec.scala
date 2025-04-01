@@ -23,16 +23,16 @@ import play.api.data.FormError
 class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {
 
   val scenarios = Table[String](
-    ("AgencyOrIndividual"),
-    ("agency"),
+    ("AgentOrIndividual"),
+    ("agent"),
     ("individual"))
   val invalidKey = s"error.boolean"
 
-  forAll(scenarios) { (agencyOrIndividual: String) =>
+  forAll(scenarios) { (agentOrIndividual: String) =>
 
-    val form = new LegalManagementOtherFeeFormProvider()(agencyOrIndividual)
+    val form = new LegalManagementOtherFeeFormProvider()(agentOrIndividual)
 
-    s".value $agencyOrIndividual" - {
+    s".value $agentOrIndividual" - {
 
       val fieldName = "legalManagementOtherFee"
 
@@ -50,8 +50,8 @@ class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {
       behave like currencyField(
         form,
         fieldName,
-        nonNumericError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.nonNumeric.$agencyOrIndividual"),
-        twoDecimalPlacesError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.$agencyOrIndividual")
+        nonNumericError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.nonNumeric.$agentOrIndividual"),
+        twoDecimalPlacesError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.twoDecimalPlaces.$agentOrIndividual")
       )
 
       behave like currencyFieldWithRange(
@@ -65,7 +65,7 @@ class LegalManagementOtherFeeFormProviderSpec extends CurrencyFieldBehaviours {
       behave like mandatoryField(
         form,
         fieldName,
-        requiredError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.required.$agencyOrIndividual")
+        requiredError = FormError(fieldName, s"ukrentaroom.legalManagementOtherFee.error.required.$agentOrIndividual")
       )
     }
   }

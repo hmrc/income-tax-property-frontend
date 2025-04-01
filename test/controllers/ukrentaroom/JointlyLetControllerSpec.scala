@@ -52,17 +52,17 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
       .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
       .url
 
-  val scenarios = Table[Boolean, String](("Is Agent", "AgencyOrIndividual"), (true, "agent"), (false, "individual"))
+  val scenarios = Table[Boolean, String](("Is Agent", "AgentOrIndividual"), (true, "agent"), (false, "individual"))
 
-  forAll(scenarios) { (isAgent: Boolean, agencyOrIndividual: String) =>
-    val form = formProvider(agencyOrIndividual)
+  forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
+    val form = formProvider(agentOrIndividual)
     val user = User(
       "",
       "",
       "",
       Option.when(isAgent)("agentReferenceNumber")
     )
-    s"JointlyLet Controller for $agencyOrIndividual" - {
+    s"JointlyLet Controller for $agentOrIndividual" - {
 
       "must return OK and the correct view for a GET for both rent a room and combined journeys" in {
 
