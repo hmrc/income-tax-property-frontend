@@ -3083,3 +3083,12 @@ whenYouReportedTheLoss.checkYourAnswersLabel.agent = *Missing Welsh*
 whenYouReportedTheLoss.error.required.individual = *Missing Welsh*
 whenYouReportedTheLoss.error.required.agent = *Missing Welsh*
 whenYouReportedTheLoss.change.hidden = *Missing Welsh*
+
+foreignDividendsStart.title = *Missing Welsh*
+foreignDividendsStart.heading = *Missing Welsh*
+foreignDividendsStart.p1.individual = *Missing Welsh*
+foreignDividendsStart.p1.agent = *Missing Welsh*
+foreignDividendsStart.p2.individual = *Missing Welsh*
+foreignDividendsStart.p2.agent = *Missing Welsh*
+foreignDividendsStart.p3.individual = *Missing Welsh*
+foreignDividendsStart.p3.agent = *Missing Welsh*
