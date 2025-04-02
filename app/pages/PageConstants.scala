@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{RentalsRentARoom, ForeignProperty, UKAndForeignProperty, Rentals, PropertyType, RentARoom}
+import models.{ForeignIncome, ForeignProperty, PropertyType, RentARoom, Rentals, RentalsRentARoom, UKAndForeignProperty}
 
 object PageConstants {
 
@@ -34,11 +34,12 @@ object PageConstants {
 
   val labelForPropertyType: (PropertyType, String) => String = (propertyType, suffix) =>
     propertyType match {
-      case Rentals          => s"rentals$suffix"
-      case RentARoom        => s"rentARoom$suffix"
-      case RentalsRentARoom => s"rentalsRentARoom$suffix"
-      case ForeignProperty  => s"foreignProperty$suffix"
+      case Rentals              => s"rentals$suffix"
+      case RentARoom            => s"rentARoom$suffix"
+      case RentalsRentARoom     => s"rentalsRentARoom$suffix"
+      case ForeignProperty      => s"foreignProperty$suffix"
       case UKAndForeignProperty => s"ukAndForeignProperty$suffix"
+      case ForeignIncome        => s"foreignIncome$suffix"
     }
 
   val countriesRentedPropertyGroup: String = "countriesRentedPropertyGroup"
@@ -65,5 +66,7 @@ object PageConstants {
   val selectCountryPath: PropertyType => String = labelForPropertyType(_, "SelectCountry")
 
   val foreignTaxPath: PropertyType => String = labelForPropertyType(_, "ForeignTax")
+
+  val foreignDividendsPath: PropertyType => String = labelForPropertyType(_, "Dividends")
 
 }

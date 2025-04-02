@@ -23,11 +23,12 @@ import models.backend.{NoPropertyDataError, UnexpectedPropertyDataError}
 import models.requests.OptionalDataRequest
 import pages._
 import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
+import pages.foreignincome.{ForeignIncomeSummaryPage, ForeignIncomeSummaryViewModel}
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.i18n.Lang.logger
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{BusinessService, CYADiversionService, CountryNamesDataSource, ForeignCYADiversionService, UkAndForeignCYADiversionService}
+import service.{BusinessService, CYADiversionService, CountryNamesDataSource, ForeignCYADiversionService, ForeignIncomeCYADiversionService, UkAndForeignCYADiversionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -44,6 +45,7 @@ class SummaryController @Inject() (
   cyaDiversionService: CYADiversionService,
   foreignCYADiversionService: ForeignCYADiversionService,
   ukAndForeignCYADiversionService: UkAndForeignCYADiversionService,
+  foreignIncomeCYADiversionService: ForeignIncomeCYADiversionService,
   view: SummaryView,
   businessService: BusinessService,
   languageUtils: LanguageUtils
@@ -108,6 +110,11 @@ class SummaryController @Inject() (
                   cyaDiversionService,
                   foreignCYADiversionService,
                   ukAndForeignCYADiversionService
+                ),
+                ForeignIncomeSummaryPage(
+                  taxYear = taxYear,
+                  userAnswers = request.userAnswers,
+                  foreignIncomeCYADiversionService = foreignIncomeCYADiversionService
                 )
               )
             )

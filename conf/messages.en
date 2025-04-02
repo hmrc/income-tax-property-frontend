@@ -3109,3 +3109,18 @@ whenYouReportedTheLoss.checkYourAnswersLabel.agent = In which tax year did your 
 whenYouReportedTheLoss.error.required.individual = Select which tax year you most recently reported the loss
 whenYouReportedTheLoss.error.required.agent = Select which tax year your client most recently reported the loss
 whenYouReportedTheLoss.change.hidden = When you reported the loss
+
+###################### Foreign Income ######################
+
+foreignIncome.summary.heading = Foreign income
+foreignIncome.dividends = Dividends from foreign companies
+foreignIncome.interest = Interest and other income from foreign savings
+
+###################### Dividends ######################
+
+foreignDividendsStart.heading = Foreign dividends by country
+foreignDividendsStart.title = Foreign dividends by country
+foreignDividendsStart.p1 = On the next few screens, we''ll ask about your foreign dividend income by country.
+foreignDividendsStart.p2 = We''ll ask questions including, how much dividend income you received, and which taxes you paid on it.
+foreignDividendsStart.p3 = If the country where your dividend income came from took off foreign tax, you may be able to claim Foreign Tax Credit Relief.
+
