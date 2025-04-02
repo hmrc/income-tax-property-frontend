@@ -67,6 +67,6 @@ object PageConstants {
 
   val foreignTaxPath: PropertyType => String = labelForPropertyType(_, "ForeignTax")
 
-  val foreignDividendsPath: String = labelForPropertyType(ForeignIncome, "Dividends")
+  val foreignDividendsPath: PropertyType => String = labelForPropertyType(_, "Dividends")
 
 }

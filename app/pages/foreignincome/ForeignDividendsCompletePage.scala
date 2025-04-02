@@ -16,13 +16,14 @@
 
 package pages.foreignincome
 
+import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 object ForeignDividendsCompletePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ foreignDividendsPath \ toString
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
 
   override def toString: String = "sectionComplete"
 }
