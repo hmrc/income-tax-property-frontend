@@ -76,8 +76,7 @@ class CountryReceiveDividendIncomeController @Inject()(
                 .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognised")))
             )
             _              <- sessionRepository.set(updatedAnswers)
-          } //yield Redirect(navigator.nextPage(CountryReceiveDividendIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
-        yield Redirect(controllers.foreignincome.dividends.routes.CountryReceiveDividendIncomeController.onPageLoad(taxYear, mode))
+          } yield Redirect(navigator.nextPage(CountryReceiveDividendIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
