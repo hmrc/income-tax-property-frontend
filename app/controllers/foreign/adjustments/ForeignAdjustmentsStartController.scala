@@ -17,6 +17,9 @@
 package controllers.foreign.adjustments
 
 import controllers.actions._
+import models.{ForeignProperty, NormalMode}
+import controllers.foreign.adjustments.routes.{ForeignPrivateUseAdjustmentController, ForeignUnusedLossesPreviousYearsController}
+import pages.{getIsClaimPIA, isUkAndForeignAboutJourneyComplete}
 import pages.foreign.IncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -48,7 +51,14 @@ class ForeignAdjustmentsStartController @Inject() (
           .flatMap(country => country.find(_.code == countryCode))
           .map(_.name)
       val countryName = maybeCountryName.getOrElse("")
-      Ok(view(taxYear, countryName, countryCode, isPIA))
+      val isUkAndForeignJourney: Boolean = isUkAndForeignAboutJourneyComplete(request.userAnswers)
+      val continueLink: String =
+        if(isUkAndForeignJourney && isPIA){
+          ForeignUnusedLossesPreviousYearsController.onPageLoad(taxYear, countryCode, NormalMode).url
+        } else {
+        ForeignPrivateUseAdjustmentController.onPageLoad(taxYear, countryCode, NormalMode).url
+      }
+      Ok(view(taxYear, countryName, countryCode, isPIA, isUkAndForeignJourney, continueLink))
 
     }
 }

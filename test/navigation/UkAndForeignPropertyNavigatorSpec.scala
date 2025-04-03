@@ -21,8 +21,11 @@ import controllers.ukandforeignproperty.routes
 import models.JourneyName.{reads, writes}
 import models._
 import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyPremiumGrantLeaseTax}
+import pages.adjustments.ResidentialFinanceCostPage
 import pages.foreign.Country
+import pages.propertyrentals.income.PropertyRentalIncomePage
 import pages.ukandforeignproperty._
+import pages.ukrentaroom.TotalIncomeAmountPage
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.libs.json.Format.GenericFormat
 
@@ -1517,5 +1520,201 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
       ) mustBe controllers.routes.SummaryController.show(taxYear)
     }
 
+    "Uk Rent a Room Task List" - {
+
+      "Total Rent a Room Income Page" - {
+        "in Normal mode" - {
+          "must go to the 'CYA' page when 'claim rent a room relief' is false" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(false))
+              .success
+              .value
+
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+          }
+          "must go to the 'Rent a Room Relief Amount' page when 'claim rent a room relief' is true" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(true))
+              .success
+              .value
+
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+            // TODO - when page is created, must update to:
+            //  controllers.ukrentaroom.routes.ReliefAmountController(taxYear, NormalMode, RentARoom)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentARoom),
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id"),
+            ) mustBe controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+          }
+        }
+      }
+
+    }
+
+    "Uk Rentals Task List" - {
+      "Total Property Rentals Income Page" - {
+        "in Normal mode" - {
+          "must go to the 'Premiums for the grant of lease page'" in {
+            navigator.nextPage(
+              PropertyRentalIncomePage(Rentals),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe controllers.premiumlease.routes.PremiumForLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              PropertyRentalIncomePage(Rentals),
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id"),
+            ) mustBe controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+          }
+        }
+      }
+    }
+
+    "Uk Rentals & Rent a Room Task List" - {
+      "Total Rentals Income Page" - {
+        "in Normal mode" - {
+          "must go to the 'Premiums for the grant of lease page'" in {
+            navigator.nextPage(
+              PropertyRentalIncomePage(RentalsRentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              UserAnswers("id")
+            ) mustBe controllers.premiumlease.routes.PremiumForLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              PropertyRentalIncomePage(RentalsRentARoom),
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id"),
+            ) mustBe controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController.onPageLoad(taxYear)
+          }
+        }
+      }
+
+      "Total Rent a Room Income Page" - {
+        "in Normal mode" - {
+          "must go to the 'CYA' page when 'claim rent a room relief' is false" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(false))
+              .success
+              .value
+
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentalsRentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+          }
+          "must go to the 'Rent a Room Relief Amount' page when 'claim rent a room relief' is true" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(true))
+              .success
+              .value
+
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentalsRentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+            // TODO - when page is created, must update to:
+            //  controllers.ukrentaroom.routes.ReliefAmountController(taxYear, NormalMode, RentalsRentARoom)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              TotalIncomeAmountPage(RentalsRentARoom),
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id"),
+            ) mustBe controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+          }
+        }
+      }
+
+      "Residential Finance Cost Page" - {
+        "in Normal mode" - {
+          "must go to 'Unused Losses Brought Forward Page' when 'claim PIA' and 'claim rent a room relief' are set to true" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(true))
+              .flatMap(_.set(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)))
+              .success
+              .value
+
+            navigator.nextPage(
+              ResidentialFinanceCostPage(RentalsRentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.adjustments.routes.UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+          }
+          "must go to 'Unused Residential Finance Costs' when 'claim PIA' or 'claim rent a room relief' are set to false" in {
+            val ua = UserAnswers("id")
+              .set(UkAndForeignPropertyClaimExpensesOrReliefPage, UkAndForeignPropertyClaimExpensesOrRelief(false))
+              .flatMap(_.set(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses(true)))
+              .success
+              .value
+
+            navigator.nextPage(
+              ResidentialFinanceCostPage(RentalsRentARoom),
+              taxYear,
+              NormalMode,
+              UserAnswers("id"),
+              ua
+            ) mustBe controllers.adjustments.routes.UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+          }
+        }
+        "in Check mode" - {
+          "must go to 'CYA' page" in {
+            navigator.nextPage(
+              ResidentialFinanceCostPage(RentalsRentARoom),
+              taxYear,
+              CheckMode,
+              UserAnswers("id"),
+              UserAnswers("id"),
+            ) mustBe controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          }
+        }
+      }
+
+    }
   }
 }
