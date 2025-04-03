@@ -17,6 +17,7 @@
 package controllers.ukrentaroom
 
 import controllers.actions._
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
@@ -37,6 +38,7 @@ class RentARoomStartController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(taxYear, request.user.isAgentMessageKey))
+      val isUkAndForeignJourney: Boolean = isUkAndForeignAboutJourneyComplete(request.userAnswers)
+      Ok(view(taxYear, request.user.isAgentMessageKey, isUkAndForeignJourney))
   }
 }
