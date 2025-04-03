@@ -54,12 +54,6 @@ class CountryReceiveDividendIncomeFormProviderSpec extends StringFieldBehaviours
       Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code))
     )
 
-//    behave like fieldThatBindsValidData(
-//      form,
-//      fieldName,
-//      Gen.alphaStr
-//    )
-
     "fail for invalid characters" in {
             form
               .bind(Map(fieldName -> invalidCharCountry))
