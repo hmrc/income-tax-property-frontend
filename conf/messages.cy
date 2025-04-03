@@ -3095,3 +3095,9 @@ foreignDividendsStart.title = *Missing Welsh*
 foreignDividendsStart.p1 = *Missing Welsh*
 foreignDividendsStart.p2 = *Missing Welsh*
 foreignDividendsStart.p3 = *Missing Welsh*
+
+foreignTaxDeductedFromDividendIncome.title = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.heading = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.error.required = Select yes if foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.change.hidden = ForeignTaxDeductedFromDividendIncome

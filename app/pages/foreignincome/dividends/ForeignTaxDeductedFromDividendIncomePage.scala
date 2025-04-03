@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package pages.foreignincome
+package pages.foreignincome.dividends
 
-import models.ForeignIncome
-import pages.PageConstants.foreignDividendsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-object ForeignDividendsCompletePage extends QuestionPage[Boolean] {
+case object ForeignTaxDeductedFromDividendIncomePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "sectionComplete"
+  override def toString: String = "foreignTaxDeductedFromDividendIncome"
 }

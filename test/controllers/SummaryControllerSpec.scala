@@ -27,7 +27,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
-import pages.foreignincome.ForeignIncomeSummaryViewModel
+import pages.foreignincome.dividends.ForeignIncomeSummaryViewModel
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage.CountryName
 import pages.{UKPropertyPage, UKPropertySummaryPage}
