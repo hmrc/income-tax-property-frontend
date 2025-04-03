@@ -3090,8 +3090,11 @@ foreignIncome.summary.heading = *Missing Welsh*
 foreignIncome.dividends = *Missing Welsh*
 foreignIncome.interest = *Missing Welsh*
 
-foreignDividendsStart.heading = *Missing Welsh*
 foreignDividendsStart.title = *Missing Welsh*
-foreignDividendsStart.p1 = *Missing Welsh*
-foreignDividendsStart.p2 = *Missing Welsh*
-foreignDividendsStart.p3 = *Missing Welsh*
+foreignDividendsStart.heading = *Missing Welsh*
+foreignDividendsStart.p1.individual = *Missing Welsh*
+foreignDividendsStart.p1.agent = *Missing Welsh*
+foreignDividendsStart.p2.individual = *Missing Welsh*
+foreignDividendsStart.p2.agent = *Missing Welsh*
+foreignDividendsStart.p3.individual = *Missing Welsh*
+foreignDividendsStart.p3.agent = *Missing Welsh*

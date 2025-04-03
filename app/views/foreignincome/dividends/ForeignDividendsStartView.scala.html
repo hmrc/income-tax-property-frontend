@@ -19,15 +19,15 @@
     govukButton: GovukButton
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("foreignDividendsStart.title"))) {
 
     <h1 class="govuk-heading-l">@messages("foreignDividendsStart.heading")</h1>
 
-    <p class="govuk-body">@messages("foreignDividendsStart.p1")</p>
-    <p class="govuk-body">@messages("foreignDividendsStart.p2")</p>
-    <p class="govuk-body">@messages("foreignDividendsStart.p3")</p>
+    <p class="govuk-body">@messages(s"foreignDividendsStart.p1.${individualOrAgent}")</p>
+    <p class="govuk-body">@messages(s"foreignDividendsStart.p2.${individualOrAgent}")</p>
+    <p class="govuk-body">@messages(s"foreignDividendsStart.p3.${individualOrAgent}")</p>
 
     <div>
         @govukButton(

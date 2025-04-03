@@ -3120,9 +3120,12 @@ foreignIncome.interest = Interest and other income from foreign savings
 
 ###################### Dividends ######################
 
-foreignDividendsStart.heading = Foreign dividends by country
 foreignDividendsStart.title = Foreign dividends by country
-foreignDividendsStart.p1 = On the next few screens, we''ll ask about your foreign dividend income by country.
-foreignDividendsStart.p2 = We''ll ask questions including, how much dividend income you received, and which taxes you paid on it.
-foreignDividendsStart.p3 = If the country where your dividend income came from took off foreign tax, you may be able to claim Foreign Tax Credit Relief.
+foreignDividendsStart.heading = Foreign dividends by country
+foreignDividendsStart.p1.individual = On the next few screens, we''ll ask about your foreign dividend income by country.
+foreignDividendsStart.p1.agent = On the next few screens, we''ll ask about your client''s foreign dividend income by country.
+foreignDividendsStart.p2.individual = We''ll ask questions including, how much dividend income you received, and which taxes you paid on it.
+foreignDividendsStart.p2.agent = We''ll ask questions including, how much dividend income your client received, and which taxes they paid on it.
+foreignDividendsStart.p3.individual = If the country where your dividend income came from took off foreign tax, you may be able to claim Foreign Tax Credit Relief.
+foreignDividendsStart.p3.agent = If the country where your client''s dividend income came from took off foreign tax, they may be able to claim Foreign Tax Credit Relief.
 

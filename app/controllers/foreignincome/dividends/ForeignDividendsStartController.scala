@@ -35,6 +35,6 @@ class ForeignDividendsStartController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-      Ok(view())
+      Ok(view(request.user.isAgentMessageKey))
   }
 }
