@@ -17,6 +17,9 @@
 package controllers.adjustments
 
 import controllers.actions._
+import controllers.adjustments.routes.{PrivateUseAdjustmentController, UnusedLossesBroughtForwardController}
+import models.{NormalMode, Rentals}
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
@@ -37,6 +40,12 @@ class AdjustmentsStartController @Inject() (
 
   def onPageLoad(taxYear: Int, expensesOrPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(taxYear, expensesOrPIA, request.user.isAgentMessageKey))
+      val isUkAndForeignJourney: Boolean = isUkAndForeignAboutJourneyComplete(request.userAnswers)
+      val continueLink = if(isUkAndForeignJourney && expensesOrPIA){
+        UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals).url
+      } else {
+        PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, Rentals).url
+      }
+      Ok(view(taxYear, expensesOrPIA, request.user.isAgentMessageKey, isUkAndForeignJourney, continueLink))
     }
 }
