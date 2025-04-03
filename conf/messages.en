@@ -3157,3 +3157,8 @@ incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, f
 incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
 incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
 
+foreignTaxDeductedFromDividendIncome.title = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.heading = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.error.required = Select yes if foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.change.hidden = ForeignTaxDeductedFromDividendIncome

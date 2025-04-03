@@ -3126,3 +3126,9 @@ incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.error.nonNumeric = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.change.hidden = *Missing Welsh*
+
+foreignTaxDeductedFromDividendIncome.title = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.heading = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel = foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.error.required = Select yes if foreignTaxDeductedFromDividendIncome
+foreignTaxDeductedFromDividendIncome.change.hidden = ForeignTaxDeductedFromDividendIncome
