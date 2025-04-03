@@ -23,6 +23,7 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import models.JourneyPath.RentARoomAbout
 import models.requests.DataRequest
 import models.{JourneyContext, RaRAbout, RentARoom}
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -65,26 +66,36 @@ class CheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentARoomAbout)
+      // TODO - Remove
+      if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+        Future.successful(
+          Redirect(
+            controllers.ukrentaroom.routes.AboutSectionCompleteController
+              .onPageLoad(taxYear)
+          )
+        )
+      } else {
+        val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentARoomAbout)
 
-      val rarAboutMaybe: Option[RaRAbout] = request.userAnswers.get(RaRAbout)
+        val rarAboutMaybe: Option[RaRAbout] = request.userAnswers.get(RaRAbout)
 
-      rarAboutMaybe.fold[Future[Result]] {
-        logger.error("UK Rent A Room Section is not present in userAnswers")
-        Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
-      } { rarAbout =>
-        propertySubmissionService
-          .saveUkPropertyJourneyAnswers[RaRAbout](context, rarAbout)
-          .flatMap {
-            case Right(_) =>
-              auditCYA(taxYear, request, rarAbout)
-              Future.successful(
-                Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
-              )
-            case Left(_) =>
-              logger.error("Failed to save rent a room about section")
-              Future.failed(SaveJourneyAnswersFailed("Failed to save rent a room about section"))
-          }
+        rarAboutMaybe.fold[Future[Result]] {
+          logger.error("UK Rent A Room Section is not present in userAnswers")
+          Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+        } { rarAbout =>
+          propertySubmissionService
+            .saveUkPropertyJourneyAnswers[RaRAbout](context, rarAbout)
+            .flatMap {
+              case Right(_) =>
+                auditCYA(taxYear, request, rarAbout)
+                Future.successful(
+                  Redirect(controllers.ukrentaroom.routes.AboutSectionCompleteController.onPageLoad(taxYear))
+                )
+              case Left(_) =>
+                logger.error("Failed to save rent a room about section")
+                Future.failed(SaveJourneyAnswersFailed("Failed to save rent a room about section"))
+            }
+        }
       }
   }
 

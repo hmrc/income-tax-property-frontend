@@ -26,6 +26,7 @@ import models.requests.DataRequest
 import models.{AccountingMethod, ForeignPropertyAdjustments, JourneyContext, JourneyName, JourneyPath, ReadForeignPropertyAdjustments, SectionName}
 import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country}
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.{BusinessService, PropertySubmissionService}
@@ -91,16 +92,26 @@ class ForeignAdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      request.userAnswers
-        .get(ReadForeignPropertyAdjustments(countryCode))
-        .fold {
-          val errorMsg =
-            s"Foreign property adjustments section is missing for userId: ${request.userId}, taxYear: $taxYear, countryCode: $countryCode"
-          logger.error(errorMsg)
-          Future.successful(NotFound(errorMsg))
-        } { foreignPropertyAdjustments =>
-          saveForeignPropertyAdjustments(taxYear, request, foreignPropertyAdjustments, countryCode)
-        }
+      // TODO - Remove
+      if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+        Future.successful(
+          Redirect(
+            controllers.foreign.adjustments.routes.ForeignAdjustmentsCompleteController
+              .onPageLoad(taxYear, countryCode)
+          )
+        )
+      } else {
+        request.userAnswers
+          .get(ReadForeignPropertyAdjustments(countryCode))
+          .fold {
+            val errorMsg =
+              s"Foreign property adjustments section is missing for userId: ${request.userId}, taxYear: $taxYear, countryCode: $countryCode"
+            logger.error(errorMsg)
+            Future.successful(NotFound(errorMsg))
+          } { foreignPropertyAdjustments =>
+            saveForeignPropertyAdjustments(taxYear, request, foreignPropertyAdjustments, countryCode)
+          }
+      }
     }
 
   private def saveForeignPropertyAdjustments(

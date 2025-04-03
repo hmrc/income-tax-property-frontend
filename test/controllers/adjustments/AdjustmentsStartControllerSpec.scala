@@ -17,6 +17,8 @@
 package controllers.adjustments
 
 import base.SpecBase
+import controllers.adjustments.routes.PrivateUseAdjustmentController
+import models.{NormalMode, Rentals}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.adjustments.AdjustmentsStartView
@@ -28,8 +30,9 @@ class AdjustmentsStartControllerSpec extends SpecBase {
   "AdjustmentsStart Controller" - {
 
     "must return OK and the correct view for an individual" in {
-
+      val continueUrl: String = PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, Rentals).url
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = false).build()
+
 
       running(application) {
         val request = FakeRequest(GET, controllers.adjustments.routes.AdjustmentsStartController.onPageLoad(taxYear, true).url)
@@ -39,12 +42,12 @@ class AdjustmentsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, true, "individual")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, true, "individual", isUkAndForeignJourney = false, continueUrl)(request, messages(application)).toString
       }
     }
 
     "must return OK and the correct view for an agent" in {
-
+      val continueUrl: String = PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, Rentals).url
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),isAgent = true).build()
 
       running(application) {
@@ -55,7 +58,7 @@ class AdjustmentsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AdjustmentsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, true, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, true, "agent", isUkAndForeignJourney = false, continueUrl)(request, messages(application)).toString
       }
     }
   }

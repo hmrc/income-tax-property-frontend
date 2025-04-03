@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.adjustments.routes.PrivateUseAdjustmentController
+@import controllers.adjustments.routes.{PrivateUseAdjustmentController, UnusedLossesBroughtForwardController}
 @import models.RentalsRentARoom
 @import models.NormalMode
 
@@ -23,31 +23,49 @@
     govukButton: GovukButton
 )
 
-@(taxYear: Int, expensesOrPIA: Boolean)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, expensesOrPIA: Boolean, claimRentARoomRelief: Boolean, isUkAndForeignJourney: Boolean, continueLink: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("rentalsAndRentARoomAdjustmentsStart.title"))) {
     <h1 class="govuk-heading-l">@messages("rentalsAndRentARoomAdjustmentsStart.heading")</h1>
     <p class="govuk-body">@messages("rentalsAndRentARoomAdjustmentsStart.details.content")</p>
     <ul id="list" class="govuk-list govuk-list--bullet" >
-        @if(expensesOrPIA){
-            <li>@messages("adjustmentsStart.details.content.l1")</li>
-            <li>@messages("adjustmentsStart.details.content.l2")</li>
-            <li>@messages("adjustmentsStart.details.content.l6")</li>
-            <li>@messages("adjustmentsStart.details.content.l3")</li>
-            <li>@messages("adjustmentsStart.details.content.l4")</li>
+        @if(isUkAndForeignJourney && expensesOrPIA && claimRentARoomRelief){
+            @ukForeignClaimPIAAndReliefBulletPoints
+        } else if(isUkAndForeignJourney){
+            @claimExpensesBulletPoints
+            <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l7")</li>
+        } else if (expensesOrPIA){
+                @claimPIABulletPoints
         } else {
-            <li>@messages("adjustmentsStart.details.content.l1")</li>
-            <li>@messages("adjustmentsStart.details.content.l2")</li>
-            <li>@messages("adjustmentsStart.details.content.l3")</li>
-            <li>@messages("adjustmentsStart.details.content.l4")</li>
-            <li>@messages("adjustmentsStart.details.content.l5")</li>
+            @claimExpensesBulletPoints
         }
     </ul>
+
     <p class="govuk-body">
         @govukButton(
             ButtonViewModel(messages("site.continue"))
-            .asLink(PrivateUseAdjustmentController.onPageLoad(taxYear, NormalMode, RentalsRentARoom).url)
+            .asLink(continueLink)
             .withId("continue")
             )
     </p>
+}
+
+@claimExpensesBulletPoints = {
+    <li>@messages("adjustmentsStart.details.content.l1")</li>
+    <li>@messages("adjustmentsStart.details.content.l2")</li>
+    <li>@messages("adjustmentsStart.details.content.l3")</li>
+    <li>@messages("adjustmentsStart.details.content.l4")</li>
+    <li>@messages("adjustmentsStart.details.content.l5")</li>
+}
+@claimPIABulletPoints = {
+    <li>@messages("adjustmentsStart.details.content.l1")</li>
+    <li>@messages("adjustmentsStart.details.content.l2")</li>
+    <li>@messages("adjustmentsStart.details.content.l6")</li>
+    <li>@messages("adjustmentsStart.details.content.l3")</li>
+    <li>@messages("adjustmentsStart.details.content.l4")</li>
+}
+@ukForeignClaimPIAAndReliefBulletPoints = {
+    <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l3")</li>
+    <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l4")</li>
+    <li>@messages("rentalsAndRentARoomAdjustmentsStart.details.content.l7")</li>
 }
