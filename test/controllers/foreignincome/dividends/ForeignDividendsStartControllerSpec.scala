@@ -30,7 +30,7 @@ class ForeignDividendsStartControllerSpec extends SpecBase {
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
-
+      val isAgentMessageString: String = "individual"
       running(application) {
         val request = FakeRequest(GET, controllers.foreignincome.dividends.routes.ForeignDividendsStartController.onPageLoad(taxYear).url)
 
@@ -39,7 +39,7 @@ class ForeignDividendsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ForeignDividendsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view(isAgentMessageString)(request, messages(application)).toString
       }
     }
   }
