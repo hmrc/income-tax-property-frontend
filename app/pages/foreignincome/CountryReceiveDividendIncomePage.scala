@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package pages.foreignincome
 
 import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
+import pages.QuestionPage
 import pages.foreign.Country
 import play.api.libs.json.JsPath
 import queries.{Gettable, Settable}
 
-case object CountryReceiveDividendIncomePage extends QuestionPage[Country] {
+case class CountryReceiveDividendIncomePage(index: Int) extends QuestionPage[Country] {
 
-  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString \ index
 
   override def toString: String = "dividendIncomeCountries"
 }

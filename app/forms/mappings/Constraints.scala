@@ -16,9 +16,10 @@
 
 package forms.mappings
 
-import models.{UserAnswers, ForeignAddressable, Addressable}
+import models.{Addressable, ForeignAddressable, UserAnswers}
 import pages.foreign.IncomeSourceCountries
-import play.api.data.validation.{Valid, Constraint, Invalid}
+import pages.foreignincome.DividendIncomeSourceCountries
+import play.api.data.validation.{Constraint, Invalid, Valid}
 import service.CountryNamesDataSource.loadCountriesEn
 
 import java.time.LocalDate
@@ -166,4 +167,14 @@ trait Constraints {
       case _ =>
         Invalid(errorMsg)
     }
+
+  def dividendCountryAlreadySelected(errorMsg: String, userAnswers: UserAnswers): Constraint[String] =
+    Constraint {
+      case countryCode
+        if !userAnswers.get(DividendIncomeSourceCountries).toSeq.flatten.map(_.code).contains(countryCode) =>
+        Valid
+      case _ =>
+        Invalid(errorMsg)
+    }
+
 }

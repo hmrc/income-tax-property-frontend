@@ -22,9 +22,9 @@ import forms.foreignincome.dividends.CountryReceiveDividendIncomeFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.CountryReceiveDividendIncomePage
+import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
@@ -49,34 +49,34 @@ class CountryReceiveDividendIncomeController @Inject()(
                                         languageUtils: LanguageUtils
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form: Form[String] = formProvider(request.userAnswers)
-      val preparedForm = request.userAnswers.get(CountryReceiveDividendIncomePage) match {
+      val preparedForm = request.userAnswers.get(CountryReceiveDividendIncomePage(index)) match {
         case None => form
         case Some(value) => form.fill(value.code)
       }
 
-      Ok(view(preparedForm, taxYear, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))
+      Ok(view(preparedForm, taxYear, index, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form: Form[String] = formProvider(request.userAnswers)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),
 
         countryCode =>
           for {
             updatedAnswers <- Future.fromTry(
               CountryNamesDataSource
                 .getCountry(countryCode, languageUtils.getCurrentLang.locale.toString)
-                .map(country => request.userAnswers.set(CountryReceiveDividendIncomePage, country))
+                .map(country => request.userAnswers.set(CountryReceiveDividendIncomePage(index), country))
                 .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognised")))
             )
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CountryReceiveDividendIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(CountryReceiveDividendIncomePage(index), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }
