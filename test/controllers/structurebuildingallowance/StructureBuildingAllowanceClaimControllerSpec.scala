@@ -43,11 +43,11 @@ class StructureBuildingAllowanceClaimControllerSpec extends SpecBase with Mockit
     routes.StructureBuildingAllowanceClaimController.onPageLoad(taxYear, NormalMode, index, RentalsRentARoom).url
 
   val formProvider = new StructureBuildingAllowanceClaimFormProvider()
-  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
   val validAnswer: BigDecimal = BigDecimal(0)
   val taxYear = 2023
   val index = 0
   private val isAgentMessageKey = "individual"
+  val form: Form[BigDecimal] = formProvider(isAgentMessageKey)
 
   def onwardRoute: Call = Call("GET", "/foo")
 
