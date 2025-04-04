@@ -14,6 +14,9 @@
  * limitations under the License.
  *@
 
+@import pages.foreign.Country
+@import viewmodels.LegendSize
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -22,11 +25,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, countryCode: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, country: Country, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("foreignTaxDeductedFromDividendIncome.title"))) {
+@layout(pageTitle = title(form, messages(s"foreignTaxDeductedFromDividendIncome.title.${individualOrAgent}", country.name))) {
 
-    @formHelper(action = controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onSubmit(taxYear, country.code, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -34,8 +37,8 @@
 
         @govukRadios(
             RadiosViewModel.yesNo(
-                field = form("value"),
-                legend = LegendViewModel(messages("foreignTaxDeductedFromDividendIncome.heading")).asPageHeading()
+                field = form("foreignTaxDeductedFromDividendIncome"),
+                legend = LegendViewModel(messages(s"foreignTaxDeductedFromDividendIncome.heading.${individualOrAgent}", country.name)).asPageHeading(LegendSize.Large)
             )
         )
 

@@ -24,7 +24,9 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.Country
 import pages.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -39,11 +41,11 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ForeignTaxDeductedFromDividendIncomeFormProvider()
-  val form = formProvider()
   val taxYear: Int = 2024
-  val countryCode: String = "AUS"
+  val country: Country = Country("Australia","AUS")
   val isAgentMessageString: String = "individual"
-  lazy val foreignTaxDeductedFromDividendIncomeRoute = controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, countryCode, NormalMode).url
+  val form: Form[Boolean] = formProvider(isAgentMessageString)
+  lazy val foreignTaxDeductedFromDividendIncomeRoute = controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, country.code, NormalMode).url
 
   "ForeignTaxDeductedFromDividendIncome Controller" - {
 
@@ -59,7 +61,7 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
         val view = application.injector.instanceOf[ForeignTaxDeductedFromDividendIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, country, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -77,7 +79,7 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), taxYear, isAgentMessageString, country, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -98,7 +100,7 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
       running(application) {
         val request =
           FakeRequest(POST, foreignTaxDeductedFromDividendIncomeRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+            .withFormUrlEncodedBody(("foreignTaxDeductedFromDividendIncome", "true"))
 
         val result = route(application, request).value
 
@@ -114,16 +116,16 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
       running(application) {
         val request =
           FakeRequest(POST, foreignTaxDeductedFromDividendIncomeRoute)
-            .withFormUrlEncodedBody(("value", ""))
+            .withFormUrlEncodedBody(("foreignTaxDeductedFromDividendIncome", ""))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("foreignTaxDeductedFromDividendIncome" -> ""))
 
         val view = application.injector.instanceOf[ForeignTaxDeductedFromDividendIncomeView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, countryCode, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, country, NormalMode)(request, messages(application)).toString
       }
     }
 

@@ -17,6 +17,7 @@
 package controllers.foreignincome.dividends
 
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomeFormProvider
 import models.Mode
 import navigation.Navigator
@@ -24,7 +25,9 @@ import pages.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomeView
 
 import javax.inject.Inject
@@ -39,29 +42,38 @@ class ForeignTaxDeductedFromDividendIncomeController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: ForeignTaxDeductedFromDividendIncomeFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: ForeignTaxDeductedFromDividendIncomeView
+                                         view: ForeignTaxDeductedFromDividendIncomeView,
+                                         languageUtils: LanguageUtils
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
 
-  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+
+  def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form = formProvider(request.user.isAgentMessageKey)
       val preparedForm = request.userAnswers.get(ForeignTaxDeductedFromDividendIncomePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm,taxYear, countryCode, mode))
+      CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
+        case Some(country) =>
+          Future.successful(Ok(view(preparedForm, taxYear, request.user.isAgentMessageKey, country, mode)))
+        case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
+      }
   }
 
   def onSubmit(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
+      val form = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, countryCode, mode))),
-
+          CountryNamesDataSource.getCountry(countryCode, languageUtils.getCurrentLang.locale.toString) match {
+            case Some(country) =>
+              Future
+                .successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, country, mode)))
+            case _ => Future.failed(InternalErrorFailure(s"Country code '$countryCode' not recognized"))
+          },
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignTaxDeductedFromDividendIncomePage, value))
