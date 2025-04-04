@@ -16,7 +16,9 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import pages.PageConstants.{allowancesPath, sbaPath}
+import play.api.libs.json.{OFormat, Json, JsPath}
+import queries.{Gettable, Settable}
 
 import java.time.LocalDate
 
@@ -37,6 +39,14 @@ object ForeignPropertyAllowances {
     Json.format[ForeignPropertyAllowances]
 }
 
+case class ReadWriteForeignPropertyAllowances(countryCode: String) extends Gettable[ForeignPropertyAllowances] with Settable[ForeignPropertyAllowances] {
+
+  override def path: JsPath = JsPath \ allowancesPath(ForeignProperty) \ toString
+
+  override def toString: String = countryCode.toUpperCase
+
+}
+
 case class StructuredBuildingAllowance(
   amount: BigDecimal,
   firstYear: Option[StructuredBuildingAllowanceDate],
@@ -46,6 +56,15 @@ case class StructuredBuildingAllowance(
 object StructuredBuildingAllowance {
   implicit val format: OFormat[StructuredBuildingAllowance] = Json.format[StructuredBuildingAllowance]
 }
+
+case class ReadWriteStructuredBuildingAllowance(countryCode: String) extends Gettable[StructuredBuildingAllowance] with Settable[StructuredBuildingAllowance] {
+
+  override def path: JsPath = JsPath \ sbaPath(ForeignProperty) \ toString
+
+  override def toString: String = countryCode.toUpperCase
+
+}
+
 case class StructuredBuildingAllowanceDate(qualifyingDate: LocalDate, qualifyingAmountExpenditure: BigDecimal)
 
 object StructuredBuildingAllowanceDate {

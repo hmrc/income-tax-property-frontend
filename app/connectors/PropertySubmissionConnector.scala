@@ -18,8 +18,8 @@ package connectors
 
 import config.FrontendAppConfig
 import connectors.error.ApiError
-import connectors.response.{CreateOrUpdateJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.{FetchedPropertyData, JourneyContext, User}
+import connectors.response.{CreateOrUpdateJourneyAnswersResponse, DeleteJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
+import models.{DeleteJourneyAnswers, FetchedPropertyData, JourneyContext, JourneyName, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -79,6 +79,34 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
           logger.error(
             "[saveJourneyAnswers] Error posting journey answers to income-tax-property:" +
+              s"correlationId: $correlationId; url: $propertyUrl " +
+              s"status: ${response.httpResponse.status}; Response Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
+
+  def deleteJourneyAnswers(
+    ctx: JourneyContext,
+    deleteJourneyAnswers: DeleteJourneyAnswers,
+    incomeSourceId: String
+  )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
+    val propertyUrl =
+      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/foreign-property-delete/${ctx.nino}/answers"
+
+    httpClient
+      .post(url"$propertyUrl")
+      .setHeader("mtditid" -> ctx.mtditid)
+      .setHeader("CorrelationId" -> UUID.randomUUID().toString)
+      .withBody(Json.toJson(deleteJourneyAnswers))
+      .execute[DeleteJourneyAnswersResponse]
+      .map { response: DeleteJourneyAnswersResponse =>
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            "[deleteJourneyAnswers] Error deleting journey answers from income-tax-property:" +
               s"correlationId: $correlationId; url: $propertyUrl " +
               s"status: ${response.httpResponse.status}; Response Body:${response.httpResponse.body}"
           )

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package forms.foreign
 
-import models.ForeignProperty
-import pages.PageConstants.selectCountryPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import javax.inject.Inject
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
+class ForeignChangePIAExpensesFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
-
-  override def toString: String = "claimPropertyIncomeAllowance"
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("foreignChangePIAExpenses.error.required")
+    )
 }

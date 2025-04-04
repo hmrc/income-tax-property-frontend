@@ -31,12 +31,8 @@ case class ForeignPropertyAdjustments(
   whenYouReportedTheLoss: Option[ForeignWhenYouReportedTheLoss]
 )
 
-object ForeignPropertyAdjustments
-    extends Gettable[ForeignPropertyAdjustments] with Settable[ForeignPropertyAdjustments] {
-
+object ForeignPropertyAdjustments {
   implicit val format: Format[ForeignPropertyAdjustments] = Json.format[ForeignPropertyAdjustments]
-
-  override def path: JsPath = JsPath \ adjustmentsPath(ForeignProperty)
 }
 
 case class ReadForeignPropertyAdjustments(countryCode: String) extends Gettable[ForeignPropertyAdjustments] with Settable[ForeignPropertyAdjustments] {
