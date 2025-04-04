@@ -19,16 +19,18 @@ package controllers.foreign
 import base.SpecBase
 import controllers.routes
 import models.NormalMode
-import navigation.{Navigator, FakeNavigator}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.foreign.ForeignChangePIAExpensesPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import service.PropertySubmissionService
 import views.html.foreign.ForeignChangePIAExpensesView
 
 import scala.concurrent.Future
@@ -64,12 +66,14 @@ class ForeignChangePIAExpensesControllerSpec extends SpecBase with MockitoSugar 
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
+      when(propertySubmissionService.deleteForeignPropertyJourneyAnswers(any(), any())(any())).thenReturn(Future.successful(Right(())))
+      
       val application =
         applicationBuilder(userAnswers = emptyUserAnswers.set(ForeignChangePIAExpensesPage, true).toOption, isAgent = false)
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[SessionRepository].toInstance(mockSessionRepository),
+            bind[PropertySubmissionService].toInstance(propertySubmissionService)
           )
           .build()
 

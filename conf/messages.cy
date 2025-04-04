@@ -1992,9 +1992,6 @@ claimPropertyIncomeAllowanceOrExpenses.expenses = Treuliau
 foreignChangePIAExpenses.title = *Missing Welsh*
 foreignChangePIAExpenses.heading = *Missing Welsh*
 foreignChangePIAExpenses.p1 = *Missing Welsh*
-foreignChangePIAExpenses.checkYourAnswersLabel = *Missing Welsh*
-foreignChangePIAExpenses.error.required = *Missing Welsh*
-foreignChangePIAExpenses.change.hidden = *Missing Welsh*
 
 doYouWantToRemoveCountry.title = A ydych am dynnu {0}?
 doYouWantToRemoveCountry.heading = A ydych am dynnu {0}?

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package pages.foreign
+package models
 
-import models.ForeignProperty
-import pages.PageConstants.selectCountryPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object ClaimPropertyIncomeAllowanceOrExpensesPage extends QuestionPage[Boolean] {
+case class DeleteJourneyAnswers(
+  journeyNames: Seq[String]
+)
 
-  override def path: JsPath = JsPath \ selectCountryPath(ForeignProperty) \ toString
-
-  override def toString: String = "claimPropertyIncomeAllowance"
-
+object DeleteJourneyAnswers {
+  implicit val format: Format[DeleteJourneyAnswers] = Json.format
 }
