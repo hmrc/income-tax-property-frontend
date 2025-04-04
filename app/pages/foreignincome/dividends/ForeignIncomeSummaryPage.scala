@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.foreignincome
+package pages.foreignincome.dividends
 
 import models.UserAnswers
 import service.ForeignIncomeCYADiversionService

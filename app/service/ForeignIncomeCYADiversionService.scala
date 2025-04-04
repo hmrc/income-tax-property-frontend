@@ -18,7 +18,7 @@ package service
 
 import models.{Mode, NormalMode, UserAnswers}
 import pages.QuestionPage
-import pages.foreignincome.ForeignDividendsCompletePage
+import pages.foreignincome.dividends.ForeignDividendsCompletePage
 import play.api.mvc.Call
 import queries.Gettable
 
