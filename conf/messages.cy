@@ -3095,3 +3095,15 @@ foreignDividendsStart.title = *Missing Welsh*
 foreignDividendsStart.p1 = *Missing Welsh*
 foreignDividendsStart.p2 = *Missing Welsh*
 foreignDividendsStart.p3 = *Missing Welsh*
+
+countryReceiveDividendIncome.title = *Missing Welsh*
+countryReceiveDividendIncome.heading = *Missing Welsh*
+countryReceiveDividendIncome.info = *Missing Welsh*
+countryReceiveDividendIncome.legend = *Missing Welsh*
+countryReceiveDividendIncome.hint = *Missing Welsh*
+countryReceiveDividendIncome.error.required = *Missing Welsh*
+countryReceiveDividendIncome.error.validCountry = *Missing Welsh*
+countryReceiveDividendIncome.error.countryAlreadySelected = *Missing Welsh*
+countryReceiveDividendIncome.error.validCharacters = *Missing Welsh*
+countryReceiveDividendIncome.checkYourAnswersLabel = *Missing Welsh*
+countryReceiveDividendIncome.change.hidden = *Missing Welsh*

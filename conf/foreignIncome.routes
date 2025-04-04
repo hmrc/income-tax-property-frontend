@@ -1,4 +1,9 @@
 
 #################### Dividends ##########################
 
-GET         /:taxYear/dividends/start                                                                       controllers.foreignincome.dividends.ForeignDividendsStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/dividends/start                                                                    controllers.foreignincome.dividends.ForeignDividendsStartController.onPageLoad(taxYear: Int)
+
+GET         /:taxYear/dividends/:index/country-receive-dividend-income                                   controllers.foreignincome.dividends.CountryReceiveDividendIncomeController.onPageLoad(taxYear: Int, index:Int, mode: Mode = NormalMode)
+POST        /:taxYear/dividends/:index/country-receive-dividend-income                                   controllers.foreignincome.dividends.CountryReceiveDividendIncomeController.onSubmit(taxYear: Int, index:Int, mode: Mode = NormalMode)
+GET         /:taxYear/dividends/:index/change-country-receive-dividend-income                            controllers.foreignincome.dividends.CountryReceiveDividendIncomeController.onPageLoad(taxYear: Int, index:Int, mode: Mode = CheckMode)
+POST        /:taxYear/dividends/:index/change-country-receive-dividend-income                            controllers.foreignincome.dividends.CountryReceiveDividendIncomeController.onSubmit(taxYear: Int, index:Int, mode: Mode = CheckMode)
