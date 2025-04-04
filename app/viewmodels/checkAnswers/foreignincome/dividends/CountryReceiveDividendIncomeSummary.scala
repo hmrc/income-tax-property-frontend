@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.foreignincome.dividends
 
 import models.{UserAnswers, CheckMode}
-import pages.CountryReceiveDividendIncomePage
+import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -30,15 +30,15 @@ import viewmodels.checkAnswers.FormatUtils.keyCssClass
 
 object CountryReceiveDividendIncomeSummary  {
 
-  def row(taxYear: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(CountryReceiveDividendIncomePage).map {
+  def row(taxYear: Int, index: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(CountryReceiveDividendIncomePage(index)).map {
       answer =>
 
         SummaryListRowViewModel(
           key     = KeyViewModel("countryReceiveDividendIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
           value   = ValueViewModel(HtmlFormat.escape(CountryNamesDataSource.getCountry(answer.code, currentLang).getOrElse(Country("", "")).name).toString),
           actions = Seq(
-            ActionItemViewModel("site.change", CountryReceiveDividendIncomeController.onPageLoad(taxYear, CheckMode).url)
+            ActionItemViewModel("site.change", CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, CheckMode).url)
               .withVisuallyHiddenText(messages("countryReceiveDividendIncome.change.hidden"))
           )
         )

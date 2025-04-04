@@ -27,7 +27,7 @@ class CountryReceiveDividendIncomeFormProvider @Inject() extends Mappings {
     Form(
       "country-autocomplete" -> text("countryReceiveDividendIncome.error.required")
         .verifying(validCountry("countryReceiveDividendIncome.error.validCountry"))
-        .verifying(countryAlreadySelected("countryReceiveDividendIncome.error.countryAlreadySelected", userAnswers))
+        .verifying(dividendCountryAlreadySelected("countryReceiveDividendIncome.error.countryAlreadySelected", userAnswers))
         .verifying(regexp("^[A-Za-z ]*?$", "countryReceiveDividendIncome.error.validCharacters"))
     )
 }

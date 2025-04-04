@@ -26,11 +26,11 @@
 )
 
 
-@(form: Form[_], taxYear: Int, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, index: Int, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("countryReceiveDividendIncome.title"))) {
 
-    @formHelper(action = CountryReceiveDividendIncomeController.onSubmit(taxYear, mode)) {
+    @formHelper(action = CountryReceiveDividendIncomeController.onSubmit(taxYear, index, mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
