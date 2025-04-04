@@ -16,12 +16,14 @@
 
 package pages.foreignincome.dividends
 
+import models.ForeignIncome
+import pages.PageConstants.foreignDividendsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object ForeignTaxDeductedFromDividendIncomePage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
 
   override def toString: String = "foreignTaxDeductedFromDividendIncome"
 }

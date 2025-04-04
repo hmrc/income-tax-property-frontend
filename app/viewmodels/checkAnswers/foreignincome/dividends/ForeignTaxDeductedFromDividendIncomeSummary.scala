@@ -18,26 +18,28 @@ package viewmodels.checkAnswers.foreignincome.dividends
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
+import pages.foreign.Country
 import pages.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object ForeignTaxDeductedFromDividendIncomeSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, countryCode: String, individualOrAgent: String, country: Country, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ForeignTaxDeductedFromDividendIncomePage).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key     = "foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel",
-          value   = ValueViewModel(value),
+          key     = KeyViewModel(messages(s"foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.${individualOrAgent}", country.name)).withCssClass(keyCssClass),
+          value   = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignTaxDeductedFromDividendIncome.change.hidden"))
+              .withVisuallyHiddenText(messages(s"foreignTaxDeductedFromDividendIncome.change.hidden.${individualOrAgent}", country.name))
           )
         )
     }

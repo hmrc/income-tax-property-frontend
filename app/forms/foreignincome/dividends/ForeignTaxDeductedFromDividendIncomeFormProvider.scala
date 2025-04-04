@@ -17,14 +17,15 @@
 package forms.foreignincome.dividends
 
 import forms.mappings.Mappings
+import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage.CountryName
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class ForeignTaxDeductedFromDividendIncomeFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(individualOrAgent: String): Form[Boolean] =
     Form(
-      "value" -> boolean("foreignTaxDeductedFromDividendIncome.error.required")
+      "foreignTaxDeductedFromDividendIncome" -> boolean(s"foreignTaxDeductedFromDividendIncome.error.required.${individualOrAgent}")
     )
 }

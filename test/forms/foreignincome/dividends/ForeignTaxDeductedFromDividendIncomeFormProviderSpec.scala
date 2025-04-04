@@ -21,14 +21,14 @@ import play.api.data.FormError
 
 class ForeignTaxDeductedFromDividendIncomeFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "foreignTaxDeductedFromDividendIncome.error.required"
+  val requiredKey = "foreignTaxDeductedFromDividendIncome.error.required.individual"
   val invalidKey = "error.boolean"
 
-  val form = new ForeignTaxDeductedFromDividendIncomeFormProvider()()
+  val form = new ForeignTaxDeductedFromDividendIncomeFormProvider()("individual")
 
   ".value" - {
 
-    val fieldName = "value"
+    val fieldName = "foreignTaxDeductedFromDividendIncome"
 
     behave like booleanField(
       form,
