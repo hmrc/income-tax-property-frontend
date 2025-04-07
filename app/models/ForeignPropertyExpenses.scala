@@ -38,7 +38,7 @@ object ForeignPropertyExpenses extends Gettable[ForeignPropertyExpenses] with Se
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty)
 }
 
-case class ReadForeignPropertyExpenses(countryCode: String) extends Gettable[ForeignPropertyExpenses] {
+case class ReadForeignPropertyExpenses(countryCode: String) extends Gettable[ForeignPropertyExpenses] with Settable[ForeignPropertyExpenses] {
 
   override def path: JsPath = JsPath \ expensesPath(ForeignProperty) \ toString
 

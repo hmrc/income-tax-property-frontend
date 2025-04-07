@@ -38,7 +38,7 @@ object ForeignPropertyIncome extends Gettable[ForeignPropertyIncome] with Settab
   override def path: JsPath = JsPath \ incomePath(ForeignProperty)
 }
 
-case class ReadForeignPropertyIncome(countryCode: String) extends Gettable[ForeignPropertyIncome] {
+case class ReadForeignPropertyIncome(countryCode: String) extends Gettable[ForeignPropertyIncome] with Settable[ForeignPropertyIncome] {
 
   override def path: JsPath = JsPath \ incomePath(ForeignProperty) \ toString
 

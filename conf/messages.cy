@@ -1989,6 +1989,10 @@ claimPropertyIncomeAllowanceOrExpenses.content.l4 = gwaith atgyweirio a chynnal 
 claimPropertyIncomeAllowanceOrExpenses.PIA = Lwfans incwm o eiddo
 claimPropertyIncomeAllowanceOrExpenses.expenses = Treuliau
 
+foreignChangePIAExpenses.title = *Missing Welsh*
+foreignChangePIAExpenses.heading = *Missing Welsh*
+foreignChangePIAExpenses.p1 = *Missing Welsh*
+
 doYouWantToRemoveCountry.title = A ydych am dynnu {0}?
 doYouWantToRemoveCountry.heading = A ydych am dynnu {0}?
 doYouWantToRemoveCountry.p.1 = Rydych ar fin newid yr wybodaeth rydych wedi nodi o''r blaen. Bydd yr wybodaeth hon yn cael ei dileu nawr. Bydd angen i chi ateb rhai cwestiynau gwahanol hefyd.
