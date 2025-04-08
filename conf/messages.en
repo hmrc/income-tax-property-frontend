@@ -3133,3 +3133,27 @@ foreignDividendsStart.p2.agent = We''ll ask questions including, how much divide
 foreignDividendsStart.p3.individual = If the country where your dividend income came from took off foreign tax, you may be able to claim Foreign Tax Credit Relief.
 foreignDividendsStart.p3.agent = If the country where your client''s dividend income came from took off foreign tax, they may be able to claim Foreign Tax Credit Relief.
 
+incomeBeforeForeignTaxDeducted.heading.individual = Tell us about dividend income you received from {0} before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.heading.agent = Tell us about dividend income your client received from {0} before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.title.individual = Tell us about dividend income you received from {0} before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.title.agent = Tell us about dividend income your client received from {0} before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.p1.individual = You can find these details on documents you may have received from the company paying your dividends.
+incomeBeforeForeignTaxDeducted.p1.agent = You can find these details on documents your client may have received from the company paying their dividends.
+incomeBeforeForeignTaxDeducted.p2 = These documents might be called a dividend voucher, certificate, or statement.
+incomeBeforeForeignTaxDeducted.p3.individual = You''ll need to convert your foreign dividend income into British pounds.
+incomeBeforeForeignTaxDeducted.p3.agent = You''ll need to convert your client''s foreign dividend income into British pounds.
+incomeBeforeForeignTaxDeducted.p4 = You can use the
+incomeBeforeForeignTaxDeducted.href = official HMRC foreign currency exchange monthly rates at GOV.UK (opens in new tab)
+incomeBeforeForeignTaxDeducted.link = https://www.trade-tariff.service.gov.uk/exchange_rates/monthly
+incomeBeforeForeignTaxDeducted.p5.individual = Use the conversion rate for the month in which you received your dividend income.
+incomeBeforeForeignTaxDeducted.p5.agent = Use the conversion rate for the month in which your client received their dividend income.
+incomeBeforeForeignTaxDeducted.input.label.individual = How much dividend income did you receive from {0} before foreign tax was deducted?
+incomeBeforeForeignTaxDeducted.input.label.agent = How much dividend income did your client receive from {0} before foreign tax was deducted?
+incomeBeforeForeignTaxDeducted.input.p = Enter the amount in pounds for 6 April 2023 to 5 April 2024.
+incomeBeforeForeignTaxDeducted.input.hint = For example, £600 or £600.20
+incomeBeforeForeignTaxDeducted.error.required = Enter an amount between 0 and 100,000,000
+incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = The amount entered can only include pounds and pence
+incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, for example £900 or £100.20
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
+

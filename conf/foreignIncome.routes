@@ -1,4 +1,10 @@
 
 #################### Dividends ##########################
 
-GET         /:taxYear/dividends/start                                                                       controllers.foreignincome.dividends.ForeignDividendsStartController.onPageLoad(taxYear: Int)
+GET         /:taxYear/foreign-income/dividends/start                                                                    controllers.foreignincome.dividends.ForeignDividendsStartController.onPageLoad(taxYear: Int)
+
+GET         /:taxYear/foreign-income/dividends/:countryCode/income-received-before-foreign-tax-deducted                 controllers.foreignincome.dividends.IncomeBeforeForeignTaxDeductedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+POST        /:taxYear/foreign-income/dividends/:countryCode/income-received-before-foreign-tax-deducted                 controllers.foreignincome.dividends.IncomeBeforeForeignTaxDeductedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
+GET         /:taxYear/foreign-income/dividends/:countryCode/change-income-received-before-foreign-tax-deducted          controllers.foreignincome.dividends.IncomeBeforeForeignTaxDeductedController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+POST        /:taxYear/foreign-income/dividends/:countryCode/change-income-received-before-foreign-tax-deducted          controllers.foreignincome.dividends.IncomeBeforeForeignTaxDeductedController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
