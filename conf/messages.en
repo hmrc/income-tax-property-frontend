@@ -3225,3 +3225,17 @@ dividendsClaimForeignTaxCreditRelief.change.hidden = Do you want to claim Foreig
 foreignIncomeDividendsComplete.title = Have you completed this section?
 foreignIncomeDividendsComplete.heading = Have you completed this section?
 foreignIncomeDividendsComplete.hint = You''ll still be able to go back and review the information that you''ve given us once you''ve completed it.
+
+howMuchForeignTaxDeductedFromDividendIncome.title.individual = How much foreign tax was deducted from your dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.title.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.heading.individual = How much foreign tax was deducted from your dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.heading.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.p1 = Enter the amount for 6 April {0} to 5 April {1}.
+howMuchForeignTaxDeductedFromDividendIncome.hint = For example, £600 or £600.20
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = How much foreign tax was deducted from your dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+howMuchForeignTaxDeductedFromDividendIncome.error.nonNumeric = The amount must be a number, for example £600 or £600.20
+howMuchForeignTaxDeductedFromDividendIncome.error.required = Enter an amount between 0 and 100,000,000
+howMuchForeignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = The amount entered can only include pounds and pence
+howMuchForeignTaxDeductedFromDividendIncome.error.outOfRange = Enter an amount between £{0} and £{1}
+howMuchForeignTaxDeductedFromDividendIncome.change.hidden = How much foreign tax was deducted from your dividend income from {0}?
