@@ -3157,3 +3157,14 @@ incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, f
 incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
 incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
 
+foreignTaxDeductedFromDividendIncome.title.individual = Have you had foreign tax deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.title.agent = Has your client had foreign tax deducted from their dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.heading.individual = Have you had foreign tax deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.heading.agent = Has your client had foreign tax deducted from their dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = Have you had foreign tax deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = Has your client had foreign tax deducted from their dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.error.required.individual = Select yes if you have had foreign tax deducted from your dividend income
+foreignTaxDeductedFromDividendIncome.error.required.agent = Select yes if your client had foreign tax deducted from their dividend income
+foreignTaxDeductedFromDividendIncome.change.hidden.individual = Have you had foreign tax deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.change.hidden.agent = Has your client had foreign tax deducted from their dividend income from {0}?
+

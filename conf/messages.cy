@@ -3126,3 +3126,14 @@ incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.error.nonNumeric = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.change.hidden = *Missing Welsh*
+
+foreignTaxDeductedFromDividendIncome.title.individual = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.title.agent = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.heading.individual = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.heading.agent = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.error.required.individual = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.error.required.agent = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.change.hidden.individual = *Missing Welsh*
+foreignTaxDeductedFromDividendIncome.change.hidden.agent = *Missing Welsh*
