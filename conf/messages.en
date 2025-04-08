@@ -3157,3 +3157,17 @@ incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, f
 incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
 incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
 
+
+foreignTaxDeductedFromDividendIncome.title.individual = How much foreign tax was deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.title.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.heading.individual = How much foreign tax was deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.heading.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.p1 = Enter the amount for 6 April {0} to 5 April {1}.
+foreignTaxDeductedFromDividendIncome.hint = For example, £600 or £600.20
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = How much foreign tax was deducted from your dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = How much foreign tax was deducted from your client''s dividend income from {0}?
+foreignTaxDeductedFromDividendIncome.error.nonNumeric = The amount must be a number, for example £600 or £600.20
+foreignTaxDeductedFromDividendIncome.error.required = Enter an amount between 0 and 100,000,000
+foreignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = The amount entered can only include pounds and pence
+foreignTaxDeductedFromDividendIncome.error.outOfRange = Enter an amount between £{0} and £{1}
+foreignTaxDeductedFromDividendIncome.change.hidden = How much foreign tax was deducted from your dividend income from {0}?
