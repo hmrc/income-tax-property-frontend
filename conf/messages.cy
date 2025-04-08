@@ -3137,9 +3137,6 @@ foreignTaxDeductedFromDividendIncome.error.required.individual = *Missing Welsh*
 foreignTaxDeductedFromDividendIncome.error.required.agent = *Missing Welsh*
 foreignTaxDeductedFromDividendIncome.change.hidden.individual = *Missing Welsh*
 foreignTaxDeductedFromDividendIncome.change.hidden.agent = *Missing Welsh*
-foreignDividendsStart.p1 = *Missing Welsh*
-foreignDividendsStart.p2 = *Missing Welsh*
-foreignDividendsStart.p3 = *Missing Welsh*
 
 countryReceiveDividendIncome.title.individual = *Missing Welsh*
 countryReceiveDividendIncome.title.agent = *Missing Welsh*
@@ -3154,3 +3151,17 @@ countryReceiveDividendIncome.error.countryAlreadySelected = *Missing Welsh*
 countryReceiveDividendIncome.error.validCharacters = *Missing Welsh*
 countryReceiveDividendIncome.checkYourAnswersLabel = *Missing Welsh*
 countryReceiveDividendIncome.change.hidden = *Missing Welsh*
+
+howMuchForeignTaxDeductedFromDividendIncome.title.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.title.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.heading.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.heading.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.p1 = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.hint = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.nonNumeric = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.required = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.outOfRange = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.change.hidden = *Missing Welsh*
